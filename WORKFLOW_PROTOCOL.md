@@ -1,10 +1,10 @@
 # le protocole d'ouverture et fermeture du fichier IA/Github
 
 ## --1--
-Mise a jour github commande :
+Mise a jour github commande : cf @GIT_HELPER.md [git helper](GIT_HELPER.md)
 
 ## --2--
-Faire lire a cursor le PROJECT_LOG
+Faire lire a cursor le PROJECT_LOG [journal](PROJECT_LOG.md)
 commande “Bootstrap session : lis @WORKFLOW_PROTOCOL.md, @ASSISTANT_CONTEXT.md, @PROJECT_LOG.md”
 
 ## --3--
@@ -17,4 +17,4 @@ problèmes/solutions testées
 prochaines étapes (checklist)
 
 ## --4--
-add github commande : 
+add github commande commit/push : cf @GIT_HELPER.md [git helper](GIT_HELPER.md)
