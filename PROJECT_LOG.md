@@ -2,7 +2,7 @@
 
 ## 2026-03-19
 ### Contexte
-- Machine: <PC bureau/PC portable>
+- Machine: PC bureau/ **PC portable**
 - Unity: <version 6.0>
 - Branche: <main/feature/...mise en place>
 
