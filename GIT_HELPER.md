@@ -1,9 +1,9 @@
-#git helper 
+# git helper 
 
 Je vais essayer d'organiser et mettre ici le workflow et les commandes basiques de github (80/20)
 
 
-##--1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
+## --1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
 
 Pour savoir s’il y a des changements à récupérer depuis GitHub, puis mettre à jour ton dossier, fais :
 
