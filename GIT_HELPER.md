@@ -1,7 +1,9 @@
+#git helper 
+
 Je vais essayer d'organiser et mettre ici le workflow et les commandes basiques de github (80/20)
 
 
---1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
+##--1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
 
 Pour savoir s’il y a des changements à récupérer depuis GitHub, puis mettre à jour ton dossier, fais :
 
@@ -21,7 +23,7 @@ Vérifie :
 git status
 Si tu as des fichiers modifiés, il faudra commit ou stash avant de pull (sinon conflits/erreurs possibles).
 
-Protocole “fin de session” pour push proprement (PowerShell)
+## --2--Protocole “fin de session” pour push proprement (PowerShell)
 Dans le dossier du projet :
 
 Vérifier l’état local
