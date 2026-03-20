@@ -1,3 +1,13 @@
 ---
 alwaysApply: true
 ---
+Code style:
+
+- Always write clean and readable code
+- Add comments for important logic
+- Avoid magic numbers (use constants)
+- Keep functions under 30 lines if possible
+
+When unsure:
+- Ask for clarification
+- Do not assume complex systems

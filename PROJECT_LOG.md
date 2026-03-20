@@ -29,3 +29,30 @@
 ### Liens utiles
 - Issue/PR: …
 - Docs: …
+
+## 2026-03-20
+### Contexte
+- Machine: **PC bureau**/ PC portable
+- Unity: <version 6.0>
+- Branche: <main/feature/...mise en place/rules>
+
+### Ce qu’on a fait
+- [x] Mise en place des fichiers de rules architectures
+- [x] premier jet d'organisation de prise de note et tache a accomplir
+
+### Problèmes rencontrés / pistes
+- Blocage sur le type d'ui et gameplay
+- Quel organisation/structuration suivre sans se perdre
+
+### Décisions
+- Utiliser le dossiers note pour y inscrire les idées les recherches et possible futur action
+
+### Prochaines actions (priorité)
+1. Définir et créer une architecture d'organisation des données et taches à accomplir en mode thèmatique par exemple UI avec fichier enfant + regles de nomage 
+2. Commencer à esquisser un GDD simple pour le jeu (concept, boucle de gameplay, scope minimal)
+3. Continuer à stabiliser le workflow Git (autosave, routine début/fin de session)
+4. comment suivre mes credit IA pour pouvoir lancer au minimum encore la commande de fin de session
+
+### Liens utiles
+- Issue/PR: …
+- Docs: …
