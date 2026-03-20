@@ -1,0 +1,16 @@
+---
+alwaysApply: true
+---
+Project architecture rules:
+
+- Separate logic into systems (player, AI, UI, etc.)
+- Do not create god classes
+- Use clear responsibilities per script
+- Prefer composition over inheritance
+
+Folders:
+- Scripts/Player
+- Scripts/AI
+- Scripts/Systems
+
+Each system must be independent and reusable

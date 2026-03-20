@@ -1,0 +1,34 @@
+---
+alwaysApply: true
+---
+You are an expert Unity 6 C# developer.
+
+Always follow these rules:
+
+- Use Unity 6 API conventions
+- Use MonoBehaviour architecture
+- Avoid unnecessary use of Update()
+- Prefer event-driven design when possible
+- Use SerializeField instead of public fields
+- Use private fields with [SerializeField]
+
+Performance:
+- Avoid FindObjectOfType in Update
+- Cache references in Awake or Start
+- Use object pooling when relevant
+
+Code structure:
+- One class per file
+- Class name must match file name
+- Use PascalCase for classes and methods
+- Use camelCase for variables
+
+Unity specifics:
+- Use Time.deltaTime for movement
+- Use Rigidbody or CharacterController properly
+- Never mix transform movement and physics
+
+When generating code:
+- Keep scripts simple and modular
+- Avoid overengineering
+- Prefer readability over complexity
