@@ -39,19 +39,28 @@
 ### Ce qu’on a fait
 - [x] Mise en place des fichiers de rules architectures
 - [x] premier jet d'organisation de prise de note et tache a accomplir
+- [x] Clarification du rôle des fichiers Cursor `.mdc` (règles `alwaysApply`)
+- [x] Proposition d’organisation des notes en `Notes/` avec sous-dossiers par thème et convention de nommage (`INBOX_`, `TODO_`, `DECISIONS_`, `SPEC_`)
+- [x] Cadrage UI : architecture panneaux en stack 2-3 layers + animation via `Animator` (fade + slide) + localisation TMP
 
 ### Problèmes rencontrés / pistes
 - Blocage sur le type d'ui et gameplay
 - Quel organisation/structuration suivre sans se perdre
+- Confusion “UI/UX” sur la consommation Cursor Pro (pas de barre de progression visible) -> repérage via les lignes `Included/free` et l’entête de quota (quand affiché)
 
 ### Décisions
 - Utiliser le dossiers note pour y inscrire les idées les recherches et possible futur action
+- UI : démarrer en UI “super basic” (prototype), organiser les écrans en stack de profondeur 2-3, piloter les transitions via `Animator` (fade + slide).
+- Localization : séparer `country` (détection locale pour pub/market) et `language` (choix joueur), avec un `LanguageManager` déclenché lors du changement d’option.
+- Notes : plusieurs fichiers par thème (au lieu d’un “journal” unique) avec nommage stable : `INBOX_{theme}.md`, `TODO_{theme}.md`, `DECISIONS_{theme}.md`, `SPEC_{theme}.md` (et sous-thèmes optionnels).
 
 ### Prochaines actions (priorité)
 1. Définir et créer une architecture d'organisation des données et taches à accomplir en mode thèmatique par exemple UI avec fichier enfant + regles de nomage 
 2. Commencer à esquisser un GDD simple pour le jeu (concept, boucle de gameplay, scope minimal)
 3. Continuer à stabiliser le workflow Git (autosave, routine début/fin de session)
 4. comment suivre mes credit IA pour pouvoir lancer au minimum encore la commande de fin de session
+5. Remplir `Notes/Ui/SPEC_ui.md` avec la trame (stack 2-3 layers, contrat UIPanel, localization TMP country vs language)
+6. Définir une convention de “keys” pour les TextMeshPro (pour faciliter le futur passage au vrai LanguageManager)
 
 ### Liens utiles
 - Issue/PR: …
