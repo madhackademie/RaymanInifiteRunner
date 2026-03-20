@@ -46,7 +46,7 @@
 ### Problèmes rencontrés / pistes
 - Blocage sur le type d'ui et gameplay
 - Quel organisation/structuration suivre sans se perdre
-- Confusion “UI/UX” sur la consommation Cursor Pro (pas de barre de progression visible) -> repérage via les lignes `Included/free` et l’entête de quota (quand affiché)
+
 
 ### Décisions
 - Utiliser le dossiers note pour y inscrire les idées les recherches et possible futur action
