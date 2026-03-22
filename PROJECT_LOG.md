@@ -92,3 +92,30 @@
 ### Liens utiles
 - Bezi Welcome : https://docs.bezi.com/get-started/welcome
 - Index doc : https://docs.bezi.com/llms.txt
+
+## 2026-03-22
+### Contexte
+- Machine: **PC bureau** (session courante) · PC portable
+- Unity: 6000.3.x (réf. build locale)
+- Branche: <main / feature selon le repo>
+
+### Ce qu’on a fait
+- [x] **Bezi (Sidekick)** : package installé `Packages/com.bezi.sidekick` — **Bezi Plugin v0.79.17** (dépendance `com.unity.nuget.newtonsoft-json`).
+- [x] **UI prototype menu principal** (UGUI) sur la scène `Assets/SampleScene.unity` :
+  - `Canvas` + `CanvasScaler`
+  - `MainMenuPanel` avec composant **`MainMenuUI`**
+  - boutons **`StartButton`** / **`OptionsButton`**
+  - **`OptionsPanel`** (masqué au `Awake`, affiché/masqué au clic Options)
+- [x] Script **`Assets/Scripts/UI/MainMenuUI.cs`** : `SerializeField` pour les boutons et le panel ; Start → `Debug.Log` + `SceneManager.LoadScene` en commentaire ; pas de `Update()` inutile.
+- [x] Arborescence scripts amorcée : dossiers `Assets/Scripts/` avec `UI/`, et métas pour `Core/`, `Farm/`, `Data/`, `Localisation/` (structure projet).
+
+### Problèmes rencontrés / pistes
+- **Scène de build vs scène du menu** : `ProjectSettings/EditorBuildSettings` pointe vers `Assets/Scenes/SampleScene.unity`, alors que le menu prototype est dans **`Assets/SampleScene.unity`** — à aligner (une seule scène de démarrage ou fusion) avant build / tests device.
+
+### Prochaines actions (priorité)
+1. Choisir la scène unique de démarrage et mettre à jour **Editor Build Settings** + éventuellement supprimer le doublon `SampleScene`.
+2. Remplacer le `Debug.Log` Start par `SceneManager.LoadScene` quand la scène gameplay existe.
+3. Brancher le contenu réel du panneau Options (langue, audio, etc.) selon `Notes/Ui/Todo_ui.md`.
+
+### Liens utiles
+- Bezi install : https://docs.bezi.com/bezi/install-setup
