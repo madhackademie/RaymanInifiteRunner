@@ -65,3 +65,30 @@
 ### Liens utiles
 - Issue/PR: …
 - Docs: …
+
+## 2026-03-21
+### Contexte
+- Machine: **PC bureau** (session courante) · PC portable
+- Unity: <version 6.0>
+- Branche: <main / feature selon le repo>
+
+### Ce qu’on a fait
+- [x] Note de référence Bezi : `Notes/Bezi/README_bezi.md` (Welcome, index `llms.txt`, prompting, threads `@`, images, sécurité IP)
+- [x] Transfert des tâches **LanguageManager / TextMeshPro** de `Notes/Ui/Decision_ui.md` vers `Notes/Ui/Todo_ui.md` (checklist d’implémentation)
+- [x] `Decision_ui.md` : section localisation réduite à la **décision** + renvoi vers `Todo_ui.md` ; DoD UI (stack / fade-slide) conservé hors critère langue
+
+### Problèmes rencontrés / pistes
+- Clarifier plus tard **bezi.actions** dans la même note ou fichier dédié quand l’usage est figé
+
+### Décisions
+- Garder la doc agent **dans le repo** sous `Notes/Bezi/` pour partage Cursor / équipe et traçabilité
+
+### Prochaines actions (priorité)
+1. Compléter `Notes/Bezi/README_bezi.md` (Unity exact, scènes de travail, bezi.actions)
+2. Remplir `Notes/Ui/Spec_ui.md` si la spec UI doit vivre séparément de `Decision_ui.md`
+3. Poursuivre le hub `Notes/Todo_project.md` (liens vers TODOs thématiques sans dupliquer `PROJECT_LOG`)
+4. Mise en place règle pour bezi voir [Thomas brush](https://youtu.be/LdZ0po5wU_0?t=204)
+
+### Liens utiles
+- Bezi Welcome : https://docs.bezi.com/get-started/welcome
+- Index doc : https://docs.bezi.com/llms.txt
