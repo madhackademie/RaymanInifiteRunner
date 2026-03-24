@@ -119,3 +119,27 @@
 
 ### Liens utiles
 - Bezi install : https://docs.bezi.com/bezi/install-setup
+
+## 2026-03-23
+### Contexte
+- Machine: **PC bureau** (session courante) · PC portable
+- Unity: 6000.3.x
+- Branche: <main / feature selon le repo>
+
+### Ce qu’on a fait
+- [x] **Références UI mobile** : pistes pour blueprints (stores, Behance/Dribbble, moodboards, contraintes safe area / zones pouces / HUD farm).
+- [x] **Todo polish post-prototype** : entrée dans `Notes/Todo_project.md` — workflow graphique + [Adobe Firefly (jeu vidéo)](https://www.adobe.com/products/firefly/discover/ai-for-game-developers.html) ; rappel licence / usage commercial à valider plus tard.
+- [x] **Game design (temps)** : discussion sur la modélisation du temps en farm (ex. croissance type ~1 % masse/jour) via compression, phases/jalons, parallélisme (plusieurs bassins / cultures), boucles courtes en session.
+- [x] **Progression hors ligne (mobile)** : principe `lastUtc` → `delta` à la reprise, intégration analytique ou taux par seconde, **plafond offline**, UTC + gestion horloge ; salades 6–8 semaines réelles mappées sur temps compressé + sessions ~3 min/jour.
+
+### Décisions
+- **Todo projet** : conserver une **vue globale** dans `Notes/Todo_project.md` pour le polish Firefly ; **pas** de migration vers `Notes/Art/` tant que le volet n’est pas attaqué.
+
+### Prochaines actions (priorité)
+1. Collecter 2–3 **jeux références** (screenshots) + noter dans `Notes/Ui/` ce qui est repris ou évité.
+2. Esquisser une **spec temps** (durée d’un « jour ferme », cap offline, formule croissance) dans le GDD ou une note `Notes/GDD/`.
+3. Aligner **Editor Build Settings** / scène menu (`Assets/SampleScene.unity` vs `Assets/Scenes/SampleScene.unity`) quand le proto gameplay est prêt.
+
+### Liens utiles
+- Firefly & jeu : https://www.adobe.com/products/firefly/discover/ai-for-game-developers.html
+- Cozy UI (article de référence) : https://sdlccorp.com/post/the-art-of-designing-intuitive-user-interfaces-in-cozy-games/
