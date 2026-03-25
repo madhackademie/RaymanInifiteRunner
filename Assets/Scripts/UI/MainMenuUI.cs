@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Controls the main menu UI with Start and Options buttons.
@@ -21,6 +22,7 @@ public class MainMenuUI : MonoBehaviour
     /// <summary>Loads the game scene.</summary>
     public void OnStartClicked()
     {
+        SceneManager.LoadScene("FirstLvl");
         Debug.Log("Start clicked — load game scene here.");
         // SceneManager.LoadScene("GameScene");
     }

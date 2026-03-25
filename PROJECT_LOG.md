@@ -143,3 +143,32 @@
 ### Liens utiles
 - Firefly & jeu : https://www.adobe.com/products/firefly/discover/ai-for-game-developers.html
 - Cozy UI (article de référence) : https://sdlccorp.com/post/the-art-of-designing-intuitive-user-interfaces-in-cozy-games/
+
+## 2026-03-24
+### Contexte
+- Machine: **PC bureau** (relecture du projet après restore / remise en route Unity)
+- Unity: 6000.3.x
+- Branche: <main / feature selon le repo>
+
+### Ce qu’on a fait / état constaté (relecture)
+- [x] **Build Settings** (`EditorBuildSettings`) : scène **0** = `Assets/Scenes/SampleScene.unity`, scène **1** = `Assets/Scenes/FirstLvl.unity` (les deux activées) — flux menu → niveau.
+- [x] **Menu** : `MainMenuUI` est référencé dans **`Assets/Scenes/SampleScene.unity`**.
+- [x] **Script** `Assets/Scripts/UI/MainMenuUI.cs` : Start / Options + panneau options ; `SceneManager.LoadScene("FirstLvl")` au clic Start.
+- [x] Rappel : `git restore` n’affiche souvent rien si OK ; l’UI disparaît si le `.unity` **dans Git** n’avait pas les branchements — **commit** menu + `.meta` une fois stable.
+- [x] **Placement UI** : contrôleur sous le **Canvas**, pas sur la Main Camera.
+- [x] **Timer (Core)** : premier script **`Assets/Scripts/Core/Timer.cs`** — minuteur générique **Countdown** ou **Stopwatch** sur `MonoBehaviour`, incrément `elapsedTime` dans `Update` via `Time.deltaTime`, durée configurable, `autoStart` / `loop`, événements **`UnityEvent<float> onTick`** (temps courant : restant ou écoulé selon le mode) et **`onCompleted`**, plus `StartTimer` / `Pause` / `Stop` / `Restart` / `SetDuration` ; exposé : `ElapsedTime`, `RemainingTime`, `NormalizedProgress`, `IsRunning`.
+- [x] **Usage prévu** : s’appuyer sur ce timer (ou une évolution) pour **valider les durées de croissance** des ressources du joueur **avant** qu’elles deviennent **collectables** (prototype en jeu ; lien futur avec spec **temps réel / offline UTC** du GDD).
+- [ ] **Suivi** : prévoir une passe **revue + améliorations** du `Timer` avec l’assistant (perf si nombreux timers, `unscaledDeltaTime`, persistance / reprise hors ligne, etc.).
+
+### Problèmes rencontrés / pistes
+- Possible **doublon** `Assets/SampleScene.unity` vs `Assets/Scenes/SampleScene.unity` — à trancher / nettoyer.
+- Le `Timer` actuel est **temps de jeu** (`Time.deltaTime`) : pour croissance longue + **offline**, il faudra probablement compléter avec une couche **données + timestamp** (voir discussions 2026-03-23) plutôt que uniquement ce composant seul.
+
+### Prochaines actions (priorité)
+1. **Commit** scène menu + branchements `MainMenuUI` après validation play mode.
+2. Supprimer le `SampleScene` dupliqué si inutile.
+3. Panneau **Options** : contenu réel selon `Notes/Ui/Todo_ui.md`.
+4. **Session Timer** : relire `Timer.cs` avec l’assistant (comportement détaillé + pistes d’évolution pour croissance / collecte + offline).
+
+### Liens utiles
+- `Notes/Ui/Todo_ui.md` — LanguageManager / TMP
