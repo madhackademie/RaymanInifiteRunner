@@ -212,3 +212,23 @@
 - `WORKFLOW_PROTOCOL.md` — protocole début/fin de session
 - `Notes/Learning/README_learning.md` — index des notes pédagogiques
 - `Notes/Learning/Event_Listener_Unity_CSharp.md` — cours event/listener Unity C#
+
+## 2026-03-26 (suite)
+### Contexte
+- Machine: **PC bureau**
+- Unity: 6000.3.x
+- Branche: `main`
+
+### Ce qu’on a fait
+- [x] Création / import des assets **laitue** (modèles et matériaux) pour avancer le prototype visuel.
+
+### Problèmes rencontrés / pistes
+- À valider ensuite: quels assets “laitue” restent dans le scope prototype et lesquels seront nettoyés/remplacés après validation du concept art.
+
+### Prochaines actions (priorité)
+1. Finaliser la version “prototype” des assets laitue à conserver.
+2. Nettoyer les assets temporaires non retenus avant commit final art.
+
+### Liens utiles
+- `Assets/Art/Models/`
+- `Assets/GeneratedModels/`
