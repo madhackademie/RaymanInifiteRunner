@@ -172,3 +172,43 @@
 
 ### Liens utiles
 - `Notes/Ui/Todo_ui.md` — LanguageManager / TMP
+
+## 2026-03-26
+### Contexte
+- Machine: **PC portable** (session de reprise et stabilisation workflow)
+- Unity: 6000.3.x
+- Branche: `main`
+
+### Ce qu’on a fait
+- [x] Stabilisation du workflow Git/Markdown (rappels sur `fetch`, `status`, `pull`, `add`, `commit`, `push`).
+- [x] Clarification du comportement Git : `git status` ne reflète l’état distant qu’après `git fetch`.
+- [x] Diagnostic des confusions locale/distant (fichier perçu vide sur GitHub car non sauvegardé/commit/push au bon moment).
+- [x] Clarification UI GitHub : différence entre vue `Code` (source actuelle) et vue `commit/PR/compare` (diff coloré).
+- [x] Clarification Markdown : coloration des blocs de commandes (`bash` souvent plus lisible que `powershell` pour simples commandes Git).
+- [x] Cadrage gameplay technique : modèle “plante qui mûrit puis récolte” avec état mature, clic, tentative d’ajout inventaire, refus si plein.
+- [x] Proposition d’architecture event-driven : objet récoltable -> demande de récolte -> inventaire répond succès/échec -> UI message si inventaire plein.
+- [x] Création d’un dossier de notes pédagogiques `Notes/Learning/`.
+- [x] Ajout d’une fiche explicative `Notes/Learning/Event_Listener_Unity_CSharp.md` (concepts, patterns d’abonnement, erreurs fréquentes, mini plan d’implémentation).
+- [x] Ajout d’un index `Notes/Learning/README_learning.md` pour structurer l’apprentissage technique.
+
+### Problèmes rencontrés / pistes
+- Incompréhension fréquente entre “fichier modifié en mémoire éditeur” vs “fichier sauvegardé sur disque” avant Git.
+- `@review-changes` interprété comme blocage, alors que c’est un écran de revue (pas l’état Git réel).
+- Attente de coloration forte des commandes Git dans tous les contextes (rendu variable selon chat/Cursor/GitHub).
+
+### Décisions
+- Conserver un protocole simple de début de session : `git fetch` puis `git status -sb`.
+- Continuer à documenter les commandes dans `GIT_HELPER.md` en blocs `bash` pour lisibilité.
+- Garder la logique de récolte “all-or-nothing” tant que la règle d’ajout partiel n’est pas explicitement définie.
+
+### Prochaines actions (priorité)
+1. Spécifier précisément le système inventaire (slots, stack max, ajout partiel ou non) dans une note GDD dédiée.
+2. Définir les états de culture (`graine`, `croissance`, `mature`, `récolté`) et leurs transitions.
+3. Implémenter un flux de test minimal : clic objet mature -> `TryAdd` inventaire -> succès/réussite UI -> reset état plante.
+4. Ajouter dans `WORKFLOW_PROTOCOL.md` un rappel explicite “Save All avant Git”.
+
+### Liens utiles
+- `GIT_HELPER.md` — routine Git opératoire
+- `WORKFLOW_PROTOCOL.md` — protocole début/fin de session
+- `Notes/Learning/README_learning.md` — index des notes pédagogiques
+- `Notes/Learning/Event_Listener_Unity_CSharp.md` — cours event/listener Unity C#
