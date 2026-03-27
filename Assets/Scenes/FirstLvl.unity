@@ -370,6 +370,63 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1001 &1036252165
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4814140183114437194, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_Name
+      value: FiltreBiologiqueMinimaliste
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -12.596716
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2897181
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.0138507
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 3150474306388093854, guid: 5c88961fd10b33043aac410269a52cf6, type: 3}
 --- !u!1001 &1262731407
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -511,6 +568,63 @@ MonoBehaviour:
   onTick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1001 &1668828467
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4814140183114437194, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_Name
+      value: Planteur octogonal en bois et perles d'argile
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6147826009795423660, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 3150474306388093854, guid: 0299b985f6f35e046b9220151b26ba0d, type: 3}
 --- !u!1 &1880593933
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,3 +844,5 @@ SceneRoots:
   - {fileID: 1880593936}
   - {fileID: 1405175431}
   - {fileID: 1262731407}
+  - {fileID: 1036252165}
+  - {fileID: 1668828467}
