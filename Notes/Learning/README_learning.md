@@ -5,6 +5,7 @@ Ce dossier contient des notes pedagogiques pour comprendre les concepts techniqu
 ## Index
 
 - `Event_Listener_Unity_CSharp.md` : comprendre les evenements (`event`) et les listeners en C# / Unity, avec exemples concrets.
+- `Plant_Architecture_Unity_SO_MB.md` : architecture plante generique (ScriptableObject + MonoBehaviour) + squelette de code pret a coller.
 
 ## Comment utiliser ces notes
 

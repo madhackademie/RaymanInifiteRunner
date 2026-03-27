@@ -232,3 +232,33 @@
 ### Liens utiles
 - `Assets/Art/Models/`
 - `Assets/GeneratedModels/`
+
+## 2026-03-26 (mini session PC portable)
+### Contexte
+- Machine: **PC portable**
+- Unity: 6000.3.x
+- Branche: `main`
+
+### Ce qu’on a fait
+- [x] Clarification technique sur l’erreur réseau du package 404 Gen3D (connexion coupée côté hôte distant, probable limitation temporaire/charge service).
+- [x] Consolidation du hub `Notes/Todo_project.md` à partir de `PROJECT_LOG.md` (synthèse et priorisation par sections).
+- [x] Ajout de la piste “double procédé graphique” (pipeline léger + pipeline 3D) et règle de décision mobile -> 3D si performances stables.
+- [x] Marquage des tâches non bloquantes avec `[OPTIONNEL]`.
+- [x] Cadrage architectural pour le système plante générique: `ScriptableObject` (données statiques) + `MonoBehaviour` (état runtime), événements de récolte et règles inventaire.
+
+### Problèmes rencontrés / pistes
+- Le service 404 Gen3D peut couper la connexion en période de charge (retry à heures creuses recommandé).
+- Besoin de transformer le cadrage d’architecture plante en note de référence + squelette de code exploitable.
+
+### Décisions
+- Démarrer le système plante sur un modèle **hybride SO + MB** plutôt que “MB only” pour éviter un gros refactor.
+- Conserver la règle de récolte **all-or-nothing** tant que l’ajout partiel n’est pas défini.
+
+### Prochaines actions (priorité)
+1. Implémenter le squelette `PlantDefinition` + `PlantInstance`.
+2. Définir l’API `Inventory.TryAdd(...)` et l’enum `InventoryAddResult`.
+3. Tester le flux minimal: `Mature` -> clic -> `TryAdd` -> succès/échec + UI.
+
+### Liens utiles
+- `Notes/Todo_project.md`
+- `Notes/Learning/Event_Listener_Unity_CSharp.md`
