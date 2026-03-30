@@ -262,3 +262,34 @@
 ### Liens utiles
 - `Notes/Todo_project.md`
 - `Notes/Learning/Event_Listener_Unity_CSharp.md`
+
+## 2026-03-30
+### Contexte
+- Machine: **PC portable**
+- Unity: 6000.3.x
+- Branche: `main`
+
+### Ce qu’on a fait
+- [x] Allégement du projet côté assets en supprimant une partie des contenus 3D de test non prioritaires (samples 404 Gen plugin, `GeneratedModels`, anciens modèles laitue 3D).
+- [x] Orientation confirmée vers un flux **SpriteRenderer 2D** pour accélérer le prototypage mobile.
+- [x] Ajout du `ScriptableObject` générique `PlantDefinition` avec stades visuels (`seedling`, `babyLeaf`, `growing`, `mature`, `bolting`).
+- [x] Création de l’asset plante `Laitue.asset` pour initialiser un premier type de plante data-driven.
+- [x] Mise à jour de `PlantGrow` pour lire `PlantDefinition` et appliquer le sprite selon le stade.
+
+### Problèmes rencontrés / pistes
+- Temps de reload/compilation Unity encore élevé même pour de petites modifications de scripts.
+- Choix assumé: continuer en version simple orientée 2D pour limiter la friction de prod.
+
+### Décisions
+- Prioriser la livraison d’un prototype jouable léger avec pipeline sprite.
+- Garder le 3D comme piste ultérieure conditionnée à la stabilité/performance et au temps disponible.
+
+### Prochaines actions (priorité)
+1. Brancher la logique de croissance temporelle dans `PlantGrow` (transition de stades avec timer).
+2. Connecter la récolte à l’inventaire (`TryAdd`) avec gestion d’échec inventaire plein.
+3. Nettoyer les références orphelines Unity éventuelles après la suppression d’assets 3D.
+
+### Liens utiles
+- `Assets/Scripts/Data/PlantDefinition.cs`
+- `Assets/Scripts/Farm/PlantGrow.cs`
+- `Assets/Scripts/Data/Laitue.asset`

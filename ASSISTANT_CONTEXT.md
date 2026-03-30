@@ -3,7 +3,8 @@
 ### Etat actuel (compact)
 - Projet Unity 6000.3.x avec base menu + premier niveau + scripts initiaux (`MainMenuUI`, `Timer`).
 - Workflow notes en place: `PROJECT_LOG.md` (chronologique), `Notes/Todo_project.md` (hub TODO), `Notes/Learning/` (fiches pédagogiques).
-- Pipeline art en exploration avec assets laitue (stades initiaux) + orientation possible vers un rendu 3D selon performances mobile.
+- Pipeline art recentré sur une approche **2D SpriteRenderer** pour accélérer le prototypage mobile.
+- Données plante amorcées en mode data-driven avec `PlantDefinition` + `Laitue.asset`.
 
 ### Décisions techniques actées
 - Workflow Git: commencer les sessions par `git fetch` + `git status -sb`; penser `Save All` avant commit.
@@ -14,12 +15,13 @@
 
 ### Priorités en cours
 1. Spécifier inventaire (slots, pile max, API `TryAdd`, résultats d’ajout).
-2. Définir machine d’états plante (`Seed -> Growing -> Mature -> Harvested`).
-3. Implémenter flux minimal jouable (clic plante mature -> tentative inventaire -> feedback UI).
-4. Continuer nettoyage/scoping assets prototype.
+2. Finaliser machine d’états plante (stades visuels déjà posés : `Seedling -> BabyLeaf -> Growing -> Mature -> Bolting`).
+3. Implémenter flux minimal jouable (croissance timer + clic mature -> tentative inventaire -> feedback UI).
+4. Continuer nettoyage/scoping assets prototype et vérifier les références Unity après purge 3D.
 
 ### Références clés
 - `PROJECT_LOG.md`
 - `Notes/Todo_project.md`
 - `Notes/Learning/Event_Listener_Unity_CSharp.md`
+- `Assets/Scripts/Data/PlantDefinition.cs`
 

@@ -7,7 +7,7 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, etc.
 ## Prototype (phase actuelle)
 
 - [ ] **Inventaire récolte (spécification)** : définir précisément le système (slots, taille max des piles, règle ajout partiel vs tout-ou-rien, codes retour de `TryAdd`).
-- [ ] **State machine culture** : formaliser les états `graine -> croissance -> mature -> récolté` + transitions et conditions.
+- [~] **State machine culture** : stades visuels posés (`Seedling`, `BabyLeaf`, `Growing`, `Mature`, `Bolting`) ; finaliser transitions gameplay + règles de récolte.
 - [ ] **Flux récolte minimal jouable** : clic sur objet mature -> tentative d’ajout inventaire -> succès = récolte/transition d’état, échec = popup inventaire plein et objet reste mature.
 - [ ] **Timer gameplay** : revoir `Assets/Scripts/Core/Timer.cs` (scalabilité, `unscaledDeltaTime`, persistance/reprise offline via timestamp UTC).
 - [ ] **Scènes Unity** : supprimer le doublon éventuel `Assets/SampleScene.unity` vs `Assets/Scenes/SampleScene.unity` et garder une seule scène de démarrage.
@@ -34,8 +34,8 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, etc.
 
 ## Art / Assets (prototype)
 
-- [ ] **Laitue prototype** : finaliser les assets à conserver pour le prototype.
-- [ ] **Nettoyage assets temporaires** : retirer les éléments non retenus avant commit art final.
+- [~] **Laitue prototype** : `PlantDefinition` + asset `Laitue` créés ; finaliser le prefab et le cycle complet en jeu.
+- [~] **Nettoyage assets temporaires** : purge 3D engagée (samples plugin / generated models) ; valider les références restantes.
 - [ ] **Deux procédés graphiques** : documenter les 2 voies visuelles (procédé graphique léger + workflow 3D) et leurs conditions d’usage.
 - [ ] **Workflow 3D validé** : centraliser le pipeline de sortie des assets 3D (sources, exports, intégration Unity) puisque des assets sont déjà produits via ce workflow.
 - [ ] **Décision cible mobile (2D vs 3D)** : si les tests mobile sont fluides/stables (FPS, chauffe, mémoire, batterie), valider une direction finale en **3D** ; sinon conserver une option plus légère.

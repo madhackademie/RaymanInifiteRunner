@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90f46b2e555107644b10c0b037574d38, type: 3}
+  m_Name: Laitue
+  m_EditorClassIdentifier: Assembly-CSharp::PlantDefinition
+  plantId: lettuce
+  displayName: Laitue
+  growthDurationSeconds: 300
+  harvestItemId: lettuce_item
+  harvestAmountMin: 1
+  harvestAmountMax: 3
+  maxHarvestCount: 1
+  seedlingSprite: {fileID: -1998701242846231088, guid: 2aa7e2e95f45edc4f96a2ec549e01a0f, type: 3}
+  babyLeafSprite: {fileID: 4199202771324736086, guid: 8e94ed3cabd2d0e40926fbfaf25c5303, type: 3}
+  growingSprite: {fileID: -7470447602432057622, guid: ccfda2c4ec4ce204b8a2e4ed4157f101, type: 3}
+  matureSprite: {fileID: 8475342436658970671, guid: e0c581e3075f5724384babfffc2be058, type: 3}
+  boltingSprite: {fileID: 1013713583689713315, guid: d33d89d28a9ae1743a96b0b913d713bd, type: 3}
