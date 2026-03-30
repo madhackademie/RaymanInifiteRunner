@@ -6,10 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class PlantGrow : MonoBehaviour
 {
-    public enum GrowthStage { Seedling, Baby, Growing, Mature, Bolting }
+    public enum GrowthStage { Graine, Starting, Baby, Growing, Mature, Flowering, Seedling }
 
     [SerializeField] private PlantDefinition plantDefinition;
-    [SerializeField] private GrowthStage initialStage = GrowthStage.Baby;
+    [SerializeField] private GrowthStage initialStage = GrowthStage.Starting;
 
     private SpriteRenderer spriteRenderer;
     private GrowthStage currentStage;
@@ -17,6 +17,17 @@ public class PlantGrow : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void OnValidate()
+    {
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer == null || plantDefinition == null)
+            return;
+
+        SetStage(initialStage);
     }
 
     private void Start()
@@ -42,11 +53,13 @@ public class PlantGrow : MonoBehaviour
 
     private Sprite GetSpriteForStage(GrowthStage stage) => stage switch
     {
-        GrowthStage.Seedling => plantDefinition.seedlingSprite,
-        GrowthStage.Baby     => plantDefinition.babyLeafSprite,
-        GrowthStage.Growing  => plantDefinition.growingSprite,
-        GrowthStage.Mature   => plantDefinition.matureSprite,
-        GrowthStage.Bolting  => plantDefinition.boltingSprite,
-        _                    => null
+        GrowthStage.Graine    => plantDefinition.spriteGraine,
+        GrowthStage.Starting  => plantDefinition.spriteStarting,
+        GrowthStage.Baby      => plantDefinition.spriteBaby,
+        GrowthStage.Growing   => plantDefinition.spriteGrowing,
+        GrowthStage.Mature    => plantDefinition.spriteMature,
+        GrowthStage.Flowering => plantDefinition.spriteFlowering,
+        GrowthStage.Seedling  => plantDefinition.spriteSeedling,
+        _                     => null
     };
 }

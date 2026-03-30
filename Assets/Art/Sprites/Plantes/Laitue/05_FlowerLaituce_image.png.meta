@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8e94ed3cabd2d0e40926fbfaf25c5303
+guid: 99a87de444fe6b840aba5c599607f0f4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4199202771324736086
-    second: "Jeune laitue g\xE9om\xE9trique en 3D_0"
+      213: -7733185540504500407
+    second: 05_FlowerLaituce_image_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -98,14 +98,14 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 47
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Jeune laitue g\xE9om\xE9trique en 3D_0"
+      name: 05_FlowerLaituce_image_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 756
+        height: 617
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 65295a41ca0964a30800000000000000
-      internalID: 4199202771324736086
+      spriteID: 947ca0c19b43ea490800000000000000
+      internalID: -7733185540504500407
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Jeune laitue g\xE9om\xE9trique en 3D_0": 4199202771324736086
+      05_FlowerLaituce_image_0: -7733185540504500407
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,6 +1,13 @@
 # Todo projet — hub global
 
-Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, etc.
+Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, etc.
+
+---
+
+## Prochaine session (priorité immédiate)
+
+- [ ] **Art — sprites** : retirer le **fond blanc** sur les sprites concernés et les exporter avec **transparence** (canal alpha) ; dans Unity, vérifier l’import texture (alpha / compression) pour éviter les halos blancs.
+- [ ] **Gameplay — grille** : implémenter le **footprint** des plantes (offsets sur `PlantDefinition` + validation à la pose, type `BuildManager` / service grille). **Spec + prompt** prêts dans `Notes/Farm/SPEC_plant_footprint_prompt.md` — faire implémenter par **Bezi** et/ou **Cursor** en s’appuyant sur cette note.
 
 ---
 
@@ -45,6 +52,8 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, etc.
 ## Polish — après validation du prototype
 
 - [ ] **[OPTIONNEL] Workflow graphique + IA** : définir et mettre en place (ou intégrer au pipeline) un flux de production visuelle pour la phase polish — génération / itération d’assets avec [Adobe Firefly — AI pour le développement de jeux](https://www.adobe.com/products/firefly/discover/ai-for-game-developers.html), **uniquement** si la direction art retenue en a besoin après validation prototype/performance mobile (documentation et bonnes pratiques licence / usage à valider avant production commerciale).
+
+- [ ] **[SUPPER_POLISH] graphique animation** création d'une animation d'abeille qui rode autour des plantes en fleurs avant passage fruits/graines
 
 ---
 

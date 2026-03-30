@@ -293,3 +293,22 @@
 - `Assets/Scripts/Data/PlantDefinition.cs`
 - `Assets/Scripts/Farm/PlantGrow.cs`
 - `Assets/Scripts/Data/Laitue.asset`
+
+## 2026-03-31
+### Contexte
+- Machine: **PC bureau** (organisation docs / prochaine session)
+- Unity: 6000.3.x
+- Branche: `main`
+
+### Ce qu’on a fait
+- [x] Ajout dans `Notes/Todo_project.md` de **2 tâches à cocher** pour la prochaine session : (1) sprites **sans fond blanc** / transparence, (2) **footprint** plantes + grille / `BuildManager` (Bezi et/ou Cursor).
+- [x] Création de `Notes/Farm/SPEC_plant_footprint_prompt.md` : modèle `origin + offsets`, exemples poireau / salade 2×2 / tomate en croix, extension type `PlantDefinition` avec `Vector2Int[] footprint`, pseudo-code de validation, conventions à trancher (axes, rotation), **bloc prompt** copier-coller.
+- [x] Hub `Todo_project.md` : lien vers la note Farm pour retrouver vite le spec/prompt.
+
+### Prochaines actions (priorité)
+1. Traiter les deux cases **Prochaine session** dans `Notes/Todo_project.md`.
+2. Après impl footprint, aligner `PlantGrow` / prefab avec une seule racine par instance multi-cellules si souhaité.
+
+### Liens utiles
+- `Notes/Todo_project.md`
+- `Notes/Farm/SPEC_plant_footprint_prompt.md`

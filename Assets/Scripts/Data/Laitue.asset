@@ -19,8 +19,10 @@ MonoBehaviour:
   harvestAmountMin: 1
   harvestAmountMax: 3
   maxHarvestCount: 1
-  seedlingSprite: {fileID: 21300000, guid: 2aa7e2e95f45edc4f96a2ec549e01a0f, type: 3}
-  babyLeafSprite: {fileID: 21300000, guid: 8e94ed3cabd2d0e40926fbfaf25c5303, type: 3}
-  growingSprite: {fileID: 21300000, guid: ccfda2c4ec4ce204b8a2e4ed4157f101, type: 3}
-  matureSprite: {fileID: 21300000, guid: e0c581e3075f5724384babfffc2be058, type: 3}
-  boltingSprite: {fileID: 21300000, guid: d33d89d28a9ae1743a96b0b913d713bd, type: 3}
+  spriteGraine: {fileID: 8997401980803306944, guid: de09412c8bb7a8b449a75c0217588b17, type: 3}
+  spriteStarting: {fileID: -7563757053863171705, guid: da396c48ed420804c8c39bf1cd2a0fb5, type: 3}
+  spriteBaby: {fileID: 5868853936893412767, guid: 2d33423248e2b0a4992d25cc56b25920, type: 3}
+  spriteGrowing: {fileID: -8110990150710747552, guid: 10e7e9ba1f4ac7d49944694a5c8ee0ee, type: 3}
+  spriteMature: {fileID: 350555719694310779, guid: 4137567ff6bf2aa4a9b30aaffab71dd9, type: 3}
+  spriteFlowering: {fileID: -7733185540504500407, guid: 99a87de444fe6b840aba5c599607f0f4, type: 3}
+  spriteSeedling: {fileID: -983521974740562808, guid: 10409ef9f5e117a47add3db8a83c9726, type: 3}

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d33d89d28a9ae1743a96b0b913d713bd
+guid: 10e7e9ba1f4ac7d49944694a5c8ee0ee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1013713583689713315
-    second: Laitue en fleurs_0
+      213: -8110990150710747552
+    second: 03_GrowingLaituce_image_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -98,14 +98,14 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 45
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Laitue en fleurs_0
+      name: 03_GrowingLaituce_image_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3a640db222f611e00800000000000000
-      internalID: 1013713583689713315
+      spriteID: 06e913a8e69ff6f80800000000000000
+      internalID: -8110990150710747552
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Laitue en fleurs_0: 1013713583689713315
+      03_GrowingLaituce_image_0: -8110990150710747552
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

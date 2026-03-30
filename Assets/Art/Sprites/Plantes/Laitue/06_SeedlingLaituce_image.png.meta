@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e0c581e3075f5724384babfffc2be058
+guid: 10409ef9f5e117a47add3db8a83c9726
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8475342436658970671
-    second: Laitue 3D en style low-poly recoltable_0
+      213: -983521974740562808
+    second: 06_SeedlingLaituce_image_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -98,14 +98,14 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 45
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Laitue 3D en style low-poly recoltable_0
+      name: 06_SeedlingLaituce_image_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f200ad6ba077e9570800000000000000
-      internalID: 8475342436658970671
+      spriteID: 88c4cc299f3d952f0800000000000000
+      internalID: -983521974740562808
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Laitue 3D en style low-poly recoltable_0: 8475342436658970671
+      06_SeedlingLaituce_image_0: -983521974740562808
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
