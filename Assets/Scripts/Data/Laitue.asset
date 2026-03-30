@@ -19,8 +19,8 @@ MonoBehaviour:
   harvestAmountMin: 1
   harvestAmountMax: 3
   maxHarvestCount: 1
-  seedlingSprite: {fileID: -1998701242846231088, guid: 2aa7e2e95f45edc4f96a2ec549e01a0f, type: 3}
-  babyLeafSprite: {fileID: 4199202771324736086, guid: 8e94ed3cabd2d0e40926fbfaf25c5303, type: 3}
-  growingSprite: {fileID: -7470447602432057622, guid: ccfda2c4ec4ce204b8a2e4ed4157f101, type: 3}
-  matureSprite: {fileID: 8475342436658970671, guid: e0c581e3075f5724384babfffc2be058, type: 3}
-  boltingSprite: {fileID: 1013713583689713315, guid: d33d89d28a9ae1743a96b0b913d713bd, type: 3}
+  seedlingSprite: {fileID: 21300000, guid: 2aa7e2e95f45edc4f96a2ec549e01a0f, type: 3}
+  babyLeafSprite: {fileID: 21300000, guid: 8e94ed3cabd2d0e40926fbfaf25c5303, type: 3}
+  growingSprite: {fileID: 21300000, guid: ccfda2c4ec4ce204b8a2e4ed4157f101, type: 3}
+  matureSprite: {fileID: 21300000, guid: e0c581e3075f5724384babfffc2be058, type: 3}
+  boltingSprite: {fileID: 21300000, guid: d33d89d28a9ae1743a96b0b913d713bd, type: 3}
