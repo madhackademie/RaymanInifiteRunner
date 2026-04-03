@@ -312,3 +312,28 @@
 ### Liens utiles
 - `Notes/Todo_project.md`
 - `Notes/Farm/SPEC_plant_footprint_prompt.md`
+
+## 2026-04-02
+### Contexte
+- Machine: **PC bureau** (compte rendu session + doc footprint)
+- Unity: 6000.3.x
+- Branche: `main` (commit utilisateur prévu après cette mise à jour)
+
+### Ce qu’on a fait
+- [x] **Revue `PlantDefinition`** : footprint en `Vector2Int[]` (offsets relatifs), défaut `(0,0)` ; `GetOccupiedCells(origin)` pour projeter l’origine de pose sur les cellules absolues ; `OnValidate` pour imposer la présence de `(0,0)` dans le footprint.
+- [x] **Alignement avec la spec** : comportement conforme à l’intention décrite dans `Notes/Farm/SPEC_plant_footprint_prompt.md` (prochaine étape côté code : grille + `BuildManager` / service qui consomme `GetOccupiedCells`).
+- [x] **Documentation** : création de `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md` — fonctionnement de `GetOccupiedCells`, pseudo-appel depuis un `BuildManager` (`CanPlace` / `Occupy`), exemple **footprint 2×2** (salade), et rappel pour la session suivante sur le **dédoublonnage** des cellules.
+
+### Points d’attention (prochaine session avec l’assistant)
+1. **Dédoublonnage** : expliquer en détail pourquoi et comment éviter les **offsets dupliqués** dans `footprint` (effets sur `Occupy` / compteurs), et quelles options d’implémentation (HashSet, normalisation dans `OnValidate`, API distincte).
+2. **`GetOccupiedCells` + `BuildManager`** : reprendre le guide `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md` si besoin ; câbler la **vraie** grille (`IsFree` / `Occupy` / `Release`) et trancher la **convention d’axes** (X/Y) pour les offsets 2×2 et suivants.
+
+### Prochaines actions (priorité)
+1. **Commit** par l’utilisateur : `PROJECT_LOG.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, et tout autre fichier déjà prêt dans le working tree.
+2. Implémenter le **module grille** + premier **placement** utilisant `PlantDefinition.GetOccupiedCells`.
+3. Poursuivre les tâches **Prochaine session** dans `Notes/Todo_project.md` (sprites transparence, etc.).
+
+### Liens utiles
+- `Assets/Scripts/Data/PlantDefinition.cs`
+- `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`
+- `Notes/Farm/SPEC_plant_footprint_prompt.md`

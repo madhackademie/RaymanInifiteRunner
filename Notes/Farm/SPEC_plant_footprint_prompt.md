@@ -114,3 +114,4 @@ bool CanPlace(PlantDefinition plant, Vector2Int origin)
 - `Assets/Scripts/Data/PlantDefinition.cs`
 - `Assets/Scripts/Farm/PlantGrow.cs`
 - `Notes/Learning/Plant_Architecture_Unity_SO_MB.md`
+- `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md` — utilisation de `GetOccupiedCells`, BuildManager, exemple 2×2, piste dédoublonnage

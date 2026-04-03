@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlantDefinition
   plantId: lettuce
   displayName: Laitue
-  growthDurationSeconds: 300
   harvestItemId: lettuce_item
   harvestAmountMin: 1
   harvestAmountMax: 3
@@ -26,3 +25,18 @@ MonoBehaviour:
   spriteMature: {fileID: 350555719694310779, guid: 4137567ff6bf2aa4a9b30aaffab71dd9, type: 3}
   spriteFlowering: {fileID: -7733185540504500407, guid: 99a87de444fe6b840aba5c599607f0f4, type: 3}
   spriteSeedling: {fileID: -983521974740562808, guid: 10409ef9f5e117a47add3db8a83c9726, type: 3}
+  stageDurations:
+  - stage: 0
+    durationSeconds: 5
+  - stage: 1
+    durationSeconds: 5
+  - stage: 2
+    durationSeconds: 5
+  - stage: 3
+    durationSeconds: 5
+  - stage: 4
+    durationSeconds: 5
+  - stage: 5
+    durationSeconds: 5
+  - stage: 6
+    durationSeconds: 5
