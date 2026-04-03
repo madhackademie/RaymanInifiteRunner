@@ -1,6 +1,6 @@
 # Todo projet — hub global
 
-Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, etc.
+Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, etc.
 
 ---
 
@@ -8,7 +8,10 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 - [ ] **Art — sprites** : retirer le **fond blanc** sur les sprites concernés et les exporter avec **transparence** (canal alpha) ; dans Unity, vérifier l’import texture (alpha / compression) pour éviter les halos blancs.
 - [ ] **Gameplay — footprint (données)** : le `PlantDefinition` contient déjà `footprint` + `GetOccupiedCells` ; finaliser la **compréhension** (dont **dédoublonnage** des offsets — voir session assistant) et les assets plantes avec les bons footprints (ex. salade 2×2). Réfs : `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`.
-- [ ] **Après validation de la compréhension du code** : implémenter au minimum un **`GridSystem`** (état par `Vector2Int` : `IsFree` / `Occupy` / `Release`) **et** un **`BuildManager`** (ou service de placement) qui utilise `plant.GetOccupiedCells(origin)` pour `CanPlace` puis spawn — **idéalement les deux**, dans l’ordre **grille d’abord**, **manager ensuite** comme consommateur. Faire implémenter par **Bezi** et/ou **Cursor** si besoin.
+- [ ] **Gameplay — grille + plantation** : le noyau **`GridData` + `GridManager` + `GridConfig`** est en place (grille modulable par SO ou par instance). Suite détaillée dans **`Notes/Farm/TODO_plantation_pipeline.md`** :
+  1. Prefab **base plantation** avec `GridManager` (réglage taille zone / cellules / origine).
+  2. **UI plantation** en premier (sélection `PlantDefinition` + rappel footprint) pour référencer la graine active avant le fantôme.
+  3. **`BuildManager`** / service de placement : `GetOccupiedCells`, `CanPlace`, `Occupy`, preview, clic — voir `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`.
 
 ---
 

@@ -84,11 +84,91 @@ footprint = new Vector2Int[]
 };
 ```
 
-Si `origin = (5, 3)`, les cellules occupées seront : `(5,3), (6,3), (5,4), (6,4)` — **selon ta convention d’axes** (X droite, Y haut ou bas : à figer une fois pour le projet).
+Si `origin = (5, 3)`, les cellules occupées seront : `(5,3), (6,3), (5,4), (6,4)` avec la convention grille ci-dessous.
+
+### Convention grille (lecture « européenne »)
+
+- **Origine** : coin **haut-gauche** = `(0,0)`.
+- **+X** : une colonne vers la **droite**.
+- **+Y** : une ligne vers le **bas** (comme une double boucle `for (y…)` puis `for (x…)` sur une image).
+
+Tous les offsets du `footprint` et les rotations ci-dessous supposent cette convention.
 
 ---
 
-## 4) À traiter en prochaine session : **dédoublonnage**
+## 4) Rotation **sens des aiguilles d’une montre** (↻) — les 4 orientations
+
+Le `footprint` dans l’asset reste défini **sans rotation** (orientation de référence). À la pose ou en prévisualisation, tu appliques une rotation **uniquement horaire** en nombre de **quarts de tour**.
+
+### Paramètre à utiliser
+
+- **`clockwiseQuarters`** (ou `rotationIndex`) : entier **`0`, `1`, `2` ou `3`**.
+  - **`0`** : pas de rotation (footprint tel quel).
+  - **`1`** : un quart de tour **horaire** (90° ↻).
+  - **`2`** : deux quarts (180°).
+  - **`3`** : trois quarts (270° ↻ = un quart **anti**-horaire visuel, mais tu n’as pas besoin d’une API séparée : c’est « 3× horaire »).
+
+Tu **ne changes pas** une valeur dans le `PlantDefinition` pour tourner : tu gardes ce paramètre sur le **contexte de placement** (preview, `BuildManager`, ou données d’instance posée). Si tu préfères des **degrés** dans l’Inspector, convertis : `clockwiseQuarters = (degrees / 90) % 4` (avec normalisation pour les négatifs si besoin).
+
+### Une étape horaire sur un offset `(dx, dy)`
+
+\[
+(dx, dy) \xrightarrow{\text{↻}} (-dy,\; dx)
+\]
+
+### Table des **4** rotations (toutes en quarts **horaires**)
+
+En notant `o = (dx, dy)` :
+
+| `clockwiseQuarters` | Offset résultant |
+|--------------------:|------------------|
+| 0 | `(dx, dy)` |
+| 1 | `(-dy, dx)` |
+| 2 | `(-dx, -dy)` |
+| 3 | `(dy, -dx)` |
+
+### Code C# — appliquer aux offsets puis aux cellules absolues
+
+```csharp
+/// <summary>
+/// Rotation d’un offset autour de l’ancrage (0,0), par quarts de tour **horaires**.
+/// Grille : origine haut-gauche, +X droite, +Y bas.
+/// </summary>
+public static Vector2Int RotateFootprintOffsetClockwise(Vector2Int o, int clockwiseQuarters)
+{
+    int k = ((clockwiseQuarters % 4) + 4) % 4;
+    switch (k)
+    {
+        case 0: return o;
+        case 1: return new Vector2Int(-o.y, o.x);
+        case 2: return new Vector2Int(-o.x, -o.y);
+        case 3: return new Vector2Int(o.y, -o.x);
+        default: return o;
+    }
+}
+
+// Exemple : cellules occupées avec rotation (sans toucher au ScriptableObject)
+public static IEnumerable<Vector2Int> GetOccupiedCellsRotated(
+    PlantDefinition plant,
+    Vector2Int origin,
+    int clockwiseQuarters)
+{
+    if (plant?.footprint == null) yield break;
+    foreach (Vector2Int offset in plant.footprint)
+    {
+        Vector2Int r = RotateFootprintOffsetClockwise(offset, clockwiseQuarters);
+        yield return origin + r;
+    }
+}
+```
+
+*(Tu pourras plus tard déplacer cette logique dans `PlantDefinition` sous la forme `GetOccupiedCells(origin, clockwiseQuarters)` si tu veux un seul point d’entrée.)*
+
+**Rappel** : `(0,0)` reste `(0,0)` pour tout `k` — l’ancrage ne bouge pas.
+
+---
+
+## 5) À traiter en prochaine session : **dédoublonnage**
 
 *(Tu as mentionné « déboulonnage » : on part du principe que c’est le **dédoublonnage** des entrées du `footprint`.)*
 
@@ -101,7 +181,7 @@ Si `origin = (5, 3)`, les cellules occupées seront : `(5,3), (6,3), (5,4), (6,4
 
 ---
 
-## 5) Liens
+## 6) Liens
 
 - Spec d’ensemble : `Notes/Farm/SPEC_plant_footprint_prompt.md`
 - Architecture plante : `Notes/Learning/Plant_Architecture_Unity_SO_MB.md`

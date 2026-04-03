@@ -337,3 +337,33 @@
 - `Assets/Scripts/Data/PlantDefinition.cs`
 - `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`
 - `Notes/Farm/SPEC_plant_footprint_prompt.md`
+
+## 2026-04-03
+### Contexte
+- Machine : **PC bureau** / PC portable (selon session)
+- Unity : 6000.3.x
+- Branche : `main` (push utilisateur prévu après cette mise à jour)
+
+### Ce qu’on a fait
+- [x] **Grille modulable** : extension de `GridConfig` (cases **carrées** via `cellSize` ou **rectangulaires** via `cellWidth` / `cellHeight` + `uniformCellSize`).
+- [x] **`GridManager`** : mise en page soit depuis un **ScriptableObject** `GridConfig`, soit **par instance** (colonnes, lignes, taille de cellule) pour prefabs type zone de culture / biofiltre ; origine monde = **`GridConfig.origin`** ou **`transform` + offset** (`originFromTransform`).
+- [x] **Décision design** : **pas de rotation des cultures** pour le prototype (un seul footprint par plante, pas de retournement horizontal des assets) ; cases « vides » = règles de placement / forme de zone.
+- [x] **Documentation / suite** : entrée de journal (cette section) ; note d’enchaînement **`Notes/Farm/TODO_plantation_pipeline.md`** (prefab grille → UI plantation → BuildManager) ; mise à jour du hub **`Notes/Todo_project.md`**.
+
+### Problèmes rencontrés / pistes
+- Première grille en scène : caler **taille de cellule** et **origine** sur les sprites (itération visuelle) ; les gizmos du `GridManager` aident au réglage.
+
+### Décisions
+- **Ordre d’implémentation plantation** : (1) prefab de base avec `GridManager` ; (2) **UI de sélection de graine en premier** pour figer la référence `PlantDefinition` / footprint côté joueur et pour le fantôme ; (3) **`BuildManager`** (ou service équivalent) consommateur de `GetOccupiedCells` + grille. Détail : `Notes/Farm/TODO_plantation_pipeline.md`.
+
+### Prochaines actions (priorité)
+1. **Prefab « base plantation »** : GameObject + `GridManager` (mode instance recommandé pour prototyper), dimensions et `instanceCellSize` / origine ; optionnel collider 2D sur la zone pour futurs raycasts.
+2. **UI plantation** : sélection de graine (`PlantDefinition`), affichage ou rappel du footprint (icône / grille miniature / texte) selon le niveau de polish souhaité.
+3. **`BuildManager` / placement** : `WorldToGrid`, `CanPlace` / `OccupyCells`, preview semi-transparent, clic pour instancier — voir `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`.
+
+### Liens utiles
+- `Assets/Scripts/Farm/GridManager.cs`
+- `Assets/Scripts/Data/GridConfig.cs`
+- `Assets/Scripts/Data/GridData.cs`
+- `Notes/Farm/TODO_plantation_pipeline.md`
+- `Notes/Todo_project.md`
