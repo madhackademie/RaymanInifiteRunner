@@ -1,17 +1,15 @@
 # Todo projet — hub global
 
-Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, etc.
+Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`, etc.
 
 ---
 
 ## Prochaine session (priorité immédiate)
 
-- [ ] **Art — sprites** : retirer le **fond blanc** sur les sprites concernés et les exporter avec **transparence** (canal alpha) ; dans Unity, vérifier l’import texture (alpha / compression) pour éviter les halos blancs.
-- [ ] **Gameplay — footprint (données)** : le `PlantDefinition` contient déjà `footprint` + `GetOccupiedCells` ; finaliser la **compréhension** (dont **dédoublonnage** des offsets — voir session assistant) et les assets plantes avec les bons footprints (ex. salade 2×2). Réfs : `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`.
-- [ ] **Gameplay — grille + plantation** : le noyau **`GridData` + `GridManager` + `GridConfig`** est en place (grille modulable par SO ou par instance). Suite détaillée dans **`Notes/Farm/TODO_plantation_pipeline.md`** :
-  1. Prefab **base plantation** avec `GridManager` (réglage taille zone / cellules / origine).
-  2. **UI plantation** en premier (sélection `PlantDefinition` + rappel footprint) pour référencer la graine active avant le fantôme.
-  3. **`BuildManager`** / service de placement : `GetOccupiedCells`, `CanPlace`, `Occupy`, preview, clic — voir `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`.
+- [ ] **Documentation — nouvelles plantes** : rédiger le **workflow pas à pas** pour ajouter une plante (création / duplication `PlantDefinition`, footprint + prefab `PlantGrow`, entrée `SeedSelectionUI` / `SeedEntry`, vérification sur la grille). Réfs code : `BiofiltreManager`, `PlantPlacementPreview`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`.
+- [x] **Art — sprites** : retirer le **fond blanc** sur les sprites concernés et les exporter avec **transparence** (canal alpha) ; dans Unity, vérifier l’import texture (alpha / compression) pour éviter les halos blancs.
+- [x] **Gameplay — footprint (données)** : le `PlantDefinition` contient déjà `footprint` + `GetOccupiedCells` ; finaliser la **compréhension** (dont **dédoublonnage** des offsets — voir session assistant) et les assets plantes avec les bons footprints (ex. salade 2×2). Réfs : `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`.
+- [x] **Gameplay — grille + plantation** : noyau **`GridData` + `GridManager` + `GridConfig`** + **flux biofiltre** (`BiofiltreManager`, `BiofiltreGridVisualizer`, `BiofiltreCell`, preview `PlantPlacementPreview`, UI `SeedSelectionUI` / `SeedSlotUI`). Détail historique : **`Notes/Farm/TODO_plantation_pipeline.md`** (étapes 1–3 réalisées ; pas de classe `BuildManager`, équivalent fonctionnel ci-dessus).
 
 ---
 
@@ -29,7 +27,8 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 ## GDD / Design
 
 - [ ] **Esquisser le GDD simple** : concept, boucle principale, scope MVP.
-- [ ] **Spec temps de ferme** : durée d’un jour ferme, vitesse de croissance, plafond offline, formule de reprise (`lastUtc -> delta`).
+- [ ] **Spec temps de ferme** : durée d’un jour ferme, vitesse de croissance, plafond offline, formule de reprise (`lastUtc -> delta`) ; **croiser** avec la maturité système / cycles (`Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`).
+- [ ] **Progression** : **XP joueur** + **maturité biofiltre / système** (cycles, ~1 an temps réel, ordre de grandeur ~10 salades pour cultures fruits avancées) — brouillon : `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`.
 - [ ] **[OPTIONNEL] Références UI** : collecter 2–3 jeux de référence (captures) et noter ce qui est repris/évité.
 
 ---

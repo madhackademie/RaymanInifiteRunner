@@ -25,6 +25,12 @@ MonoBehaviour:
   spriteMature: {fileID: 350555719694310779, guid: 4137567ff6bf2aa4a9b30aaffab71dd9, type: 3}
   spriteFlowering: {fileID: -7733185540504500407, guid: 99a87de444fe6b840aba5c599607f0f4, type: 3}
   spriteSeedling: {fileID: -983521974740562808, guid: 10409ef9f5e117a47add3db8a83c9726, type: 3}
+  footprint:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  spriteWorldOffset: {x: 0.175, y: -0.525}
   stageDurations:
   - stage: 0
     durationSeconds: 5

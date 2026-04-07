@@ -6,11 +6,11 @@ Références : `GUIDE_footprint_GetOccupiedCells.md`, `SPEC_plant_footprint_prom
 
 ## Objectif
 
-Avoir une **zone cultivable** (prefab) avec une **grille logique** cohérente, puis permettre au joueur de **choisir une graine**, voir un **feedback de placement** (footprint), et enfin **poser** la plante via un service type **BuildManager**.
+Avoir une **zone cultivable** (prefab) avec une **grille logique** cohérente, puis permettre au joueur de **choisir une graine**, voir un **feedback de placement** (footprint), et enfin **poser** la plante. **Implémenté** (2026-04) : pas de classe `BuildManager` — équivalent **`BiofiltreManager`** + **`PlantPlacementPreview`** + UI **`SeedSelectionUI`** (voir `PROJECT_LOG.md` du 2026-04-07).
 
 ---
 
-## Étape 1 — Prefab base plantation (grille)
+## Étape 1 — Prefab base plantation (grille) — **fait**
 
 - Créer un GameObject racine (ex. `PlantationBed` / futur biofiltre).
 - Ajouter **`GridManager`**.
@@ -23,7 +23,7 @@ Avoir une **zone cultivable** (prefab) avec une **grille logique** cohérente, p
 
 ---
 
-## Étape 2 — UI plantation (avant le BuildManager)
+## Étape 2 — UI plantation — **fait**
 
 **Pourquoi en premier** : le flux « graine sélectionnée » fixe une **`PlantDefinition`** active ; tout le reste (fantôme, couleur vert/rouge, texte d’aide) peut lire **`footprint`** / `GetOccupiedCells` sur cette référence. L’UI ne remplace pas la logique de placement mais **porte la vérité** « quelle plante je pose ».
 
@@ -36,7 +36,9 @@ Contenu minimal possible :
 
 ---
 
-## Étape 3 — BuildManager (ou `PlacementService`)
+## Étape 3 — Placement (équivalent « BuildManager ») — **fait**
+
+Implémentation réelle : **`BiofiltreManager`** (`CanPlace`, `PlantSeedAt`, `OccupyCells`) + **`PlantPlacementPreview`** (fantôme, snap grille, clic confirme / annule). Entrée utilisateur : clic sur **`BiofiltreCell`** → UI graine → preview.
 
 - Entrée : `GridManager`, `PlantDefinition` courante, position monde (raycast) ou cellule sous curseur.
 - **`WorldToGrid`** → origine de pose (convention : case sous le curseur = ancrage `(0,0)` du footprint, à figer une fois).
@@ -62,3 +64,10 @@ Contenu minimal possible :
 | `Assets/Scripts/Data/GridData.cs` | Stockage libre / occupé |
 | `Assets/Scripts/Data/GridConfig.cs` | Preset optionnel SO |
 | `Assets/Scripts/Data/PlantDefinition.cs` | `footprint`, `GetOccupiedCells` |
+| `Assets/Scripts/Farm/BiofiltreManager.cs` | Pont grille / UI, placement, occupation |
+| `Assets/Scripts/Farm/BiofiltreGridVisualizer.cs` | Cellules cliquables, conteneur plantes |
+| `Assets/Scripts/Farm/BiofiltreCell.cs` | Une case du biofiltre |
+| `Assets/Scripts/Farm/PlantPlacementPreview.cs` | Fantôme + validation footprint |
+| `Assets/Scripts/UI/SeedSelectionUI.cs` | Panneau choix de graine |
+| `Assets/Scripts/UI/SeedSlotUI.cs` | Slot une graine dans la liste |
+| `Assets/Scripts/Farm/GridLinesRenderer.cs` | Lignes de grille (optionnel) |

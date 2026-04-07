@@ -171,25 +171,40 @@ public class GridManager : MonoBehaviour
     {
         ResolveLayout(out int cols, out int rows, out Vector2 cellSz, out Vector2 origin);
 
-        Gizmos.color = new Color(0f, 1f, 0.4f, 0.3f);
-
         for (int col = 0; col < cols; col++)
         {
             for (int row = 0; row < rows; row++)
             {
-                Vector2Int cell   = new Vector2Int(col, row);
+                Vector2Int cell    = new Vector2Int(col, row);
                 Vector2    topLeft = origin + new Vector2(col * cellSz.x, -row * cellSz.y);
-                Vector2    center = topLeft + new Vector2(cellSz.x * 0.5f, -cellSz.y * 0.5f);
-                bool occupied = Grid != null && Grid.IsInBounds(cell) && Grid.IsOccupied(cell);
+                bool       occupied = Grid != null && Grid.IsInBounds(cell) && Grid.IsOccupied(cell);
 
-                Gizmos.color = occupied
+                Color fillColor = occupied
                     ? new Color(1f, 0.2f, 0.2f, 0.4f)
                     : new Color(0f, 1f, 0.4f, 0.15f);
 
-                Gizmos.DrawCube(center, new Vector3(cellSz.x * 0.95f, cellSz.y * 0.95f, 0f));
+                Color outlineColor = new Color(0f, 1f, 0.4f, 0.5f);
 
-                Gizmos.color = new Color(0f, 1f, 0.4f, 0.5f);
-                Gizmos.DrawWireCube(center, new Vector3(cellSz.x, cellSz.y, 0f));
+                // Inset the fill slightly so the outline stays visible
+                float inset = 0.025f;
+                Vector3[] fillCorners =
+                {
+                    new Vector3(topLeft.x + inset,            topLeft.y - inset,            0f),
+                    new Vector3(topLeft.x + cellSz.x - inset, topLeft.y - inset,            0f),
+                    new Vector3(topLeft.x + cellSz.x - inset, topLeft.y - cellSz.y + inset, 0f),
+                    new Vector3(topLeft.x + inset,            topLeft.y - cellSz.y + inset, 0f),
+                };
+
+                Vector3[] outlineCorners =
+                {
+                    new Vector3(topLeft.x,            topLeft.y,            0f),
+                    new Vector3(topLeft.x + cellSz.x, topLeft.y,            0f),
+                    new Vector3(topLeft.x + cellSz.x, topLeft.y - cellSz.y, 0f),
+                    new Vector3(topLeft.x,            topLeft.y - cellSz.y, 0f),
+                };
+
+                UnityEditor.Handles.DrawSolidRectangleWithOutline(fillCorners,    fillColor,    Color.clear);
+                UnityEditor.Handles.DrawSolidRectangleWithOutline(outlineCorners, Color.clear,  outlineColor);
             }
         }
     }

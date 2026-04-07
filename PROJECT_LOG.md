@@ -367,3 +367,39 @@
 - `Assets/Scripts/Data/GridData.cs`
 - `Notes/Farm/TODO_plantation_pipeline.md`
 - `Notes/Todo_project.md`
+
+## 2026-04-07
+### Contexte
+- Machine : **PC bureau** / PC portable (selon session)
+- Unity : 6000.3.x
+- Branche : `main`
+
+### Ce qu’on a fait
+- [x] **Pipeline plantation complet (Bezi / éditeur)** : le rôle prévu pour un futur `BuildManager` est assumé par **`BiofiltreManager`** + **`PlantPlacementPreview`** (pas de classe nommée `BuildManager` dans le projet).
+- [x] **`BiofiltreManager`** : pont grille ↔ UI ; écoute les clics sur cellules via **`BiofiltreGridVisualizer`** ; ouvre **`SeedSelectionUI`** sur cellule libre ; `CanPlace(anchor, PlantDefinition)` via `GetOccupiedCells` + `GridManager.AreAllCellsFree` ; **`PlantSeedAt`** : instanciation du prefab sous le conteneur plantes, `PlantGrow` → stade `Graine`, **`OccupyCells`** + mise à jour visuelle des **`BiofiltreCell`** touchées.
+- [x] **`PlantPlacementPreview`** : fantôme semi-transparent collé à la grille (Input System souris) ; teinte vert / rouge selon validité du footprint ; clic gauche confirme, clic droit / **Escape** annulent.
+- [x] **`SeedSelectionUI`** + **`SeedSlotUI`** : panneau de graines (`SeedEntry` définition + prefab), activation conditionnelle des slots selon `CanPlace` à l’ancre de la cellule cliquée ; lancement du preview à la sélection (repli possible sans preview si non assigné).
+- [x] **`BiofiltreGridVisualizer`** : génère les **`BiofiltreCell`** (collider 2D, `IPointerClickHandler`) alignées sur **`GridManager`** ; expose un conteneur pour les instances de plantes.
+- [x] **`BiofiltreCell`** : cellule cliquable, coordonnées grille, états visuels vide / occupé.
+- [x] **`GridLinesRenderer`** (optionnel) : rendu de lignes de grille sur le même objet que `GridManager`.
+
+### Décisions / nomenclature
+- Le **service de placement** est **scindé** : logique métier grille + pose dans **`BiofiltreManager`**, interaction souris + fantôme dans **`PlantPlacementPreview`**. Les guides qui parlent encore de `BuildManager` restent valables conceptuellement (`CanPlace` / `Occupy` / preview).
+
+### Problèmes rencontrés / pistes
+- Aucun blocage noté dans cette entrée ; **prochaine doc** : formaliser le **workflow d’ajout d’une nouvelle plante** (asset `PlantDefinition`, footprint, prefab, entrées UI).
+
+### Prochaines actions (priorité)
+1. **Rédiger la documentation** : workflow « ajout de nouvelles plantes » (références : `PlantDefinition`, `SeedSelectionUI` / `SeedEntry`, prefab avec `PlantGrow`, règles footprint — voir `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`).
+2. Enchaîner sur le **prototype** : récolte ↔ inventaire, timers de croissance, ou maturité biofiltre / progression selon `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`.
+
+### Liens utiles
+- `Assets/Scripts/Farm/BiofiltreManager.cs`
+- `Assets/Scripts/Farm/PlantPlacementPreview.cs`
+- `Assets/Scripts/Farm/BiofiltreGridVisualizer.cs`
+- `Assets/Scripts/Farm/BiofiltreCell.cs`
+- `Assets/Scripts/UI/SeedSelectionUI.cs`
+- `Assets/Scripts/UI/SeedSlotUI.cs`
+- `Assets/Scripts/Farm/GridLinesRenderer.cs`
+- `Notes/Farm/TODO_plantation_pipeline.md`
+- `Notes/Todo_project.md`
