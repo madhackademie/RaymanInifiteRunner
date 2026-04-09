@@ -1,0 +1,168 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// Manages the player's inventory. Exposes add/remove operations and fires
+/// OnInventoryChanged whenever the state changes.
+/// </summary>
+public class PlayerInventory : MonoBehaviour
+{
+    [SerializeField] private int slotCount = 20;
+
+    private readonly List<InventorySlot> slots = new();
+
+    /// <summary>Fired after any successful mutation of the inventory.</summary>
+    public event Action OnInventoryChanged;
+
+    /// <summary>Read-only view of all inventory slots.</summary>
+    public IReadOnlyList<InventorySlot> Slots => slots;
+
+    private void Awake()
+    {
+        InitialiseSlots();
+    }
+
+    // ── Initialisation ────────────────────────────────────────────────────────
+
+    private void InitialiseSlots()
+    {
+        slots.Clear();
+        for (int i = 0; i < slotCount; i++)
+            slots.Add(new InventorySlot());
+    }
+
+    // ── Public API ────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Tries to add the given quantity of an item to the inventory.
+    /// Items are stacked into existing matching slots first, then into empty slots.
+    /// </summary>
+    /// <returns>
+    /// <see cref="InventoryResult.Success"/>     — all added.<br/>
+    /// <see cref="InventoryResult.Partial"/>     — partially added (inventory nearly full).<br/>
+    /// <see cref="InventoryResult.Full"/>        — nothing could be added.<br/>
+    /// <see cref="InventoryResult.InvalidItem"/> — item reference is null.
+    /// </returns>
+    public InventoryResult TryAdd(ItemDefinition item, int quantity)
+    {
+        if (item == null)
+            return InventoryResult.InvalidItem;
+
+        if (quantity <= 0)
+            return InventoryResult.Success;
+
+        int remaining = quantity;
+
+        // Pass 1 — fill existing partial stacks
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.IsEmpty || slot.Item != item || slot.IsFull)
+                continue;
+
+            remaining -= slot.Add(remaining);
+
+            if (remaining <= 0)
+                break;
+        }
+
+        // Pass 2 — use empty slots
+        if (remaining > 0)
+        {
+            foreach (InventorySlot slot in slots)
+            {
+                if (!slot.IsEmpty)
+                    continue;
+
+                slot.Set(item, 0);
+                remaining -= slot.Add(remaining);
+
+                if (remaining <= 0)
+                    break;
+            }
+        }
+
+        bool anythingAdded = remaining < quantity;
+
+        if (anythingAdded)
+            OnInventoryChanged?.Invoke();
+
+        if (remaining >= quantity)
+            return InventoryResult.Full;
+
+        return remaining > 0 ? InventoryResult.Partial : InventoryResult.Success;
+    }
+
+    /// <summary>
+    /// Tries to remove the given quantity of an item from the inventory.
+    /// </summary>
+    /// <returns>
+    /// <see cref="InventoryResult.Success"/>     — all removed.<br/>
+    /// <see cref="InventoryResult.Partial"/>     — partially removed (not enough stock).<br/>
+    /// <see cref="InventoryResult.Full"/>        — none found to remove.<br/>
+    /// <see cref="InventoryResult.InvalidItem"/> — item reference is null.
+    /// </returns>
+    public InventoryResult TryRemove(ItemDefinition item, int quantity)
+    {
+        if (item == null)
+            return InventoryResult.InvalidItem;
+
+        if (quantity <= 0)
+            return InventoryResult.Success;
+
+        int remaining = quantity;
+
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.IsEmpty || slot.Item != item)
+                continue;
+
+            remaining -= slot.Remove(remaining);
+
+            if (remaining <= 0)
+                break;
+        }
+
+        bool anythingRemoved = remaining < quantity;
+
+        if (anythingRemoved)
+            OnInventoryChanged?.Invoke();
+
+        if (remaining >= quantity)
+            return InventoryResult.Full;
+
+        return remaining > 0 ? InventoryResult.Partial : InventoryResult.Success;
+    }
+
+    /// <summary>Returns the total quantity of the given item across all slots.</summary>
+    public int Count(ItemDefinition item)
+    {
+        if (item == null)
+            return 0;
+
+        int total = 0;
+        foreach (InventorySlot slot in slots)
+        {
+            if (!slot.IsEmpty && slot.Item == item)
+                total += slot.Quantity;
+        }
+        return total;
+    }
+
+    /// <summary>Returns true if the inventory can accept at least one unit of the given item.</summary>
+    public bool HasSpaceFor(ItemDefinition item)
+    {
+        if (item == null)
+            return false;
+
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.IsEmpty)
+                return true;
+
+            if (slot.Item == item && !slot.IsFull)
+                return true;
+        }
+        return false;
+    }
+}

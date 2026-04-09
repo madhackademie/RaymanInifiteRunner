@@ -1,12 +1,16 @@
 # Todo projet — hub global
 
-Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`, etc.
+Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, `Notes/Farm/SYSTEMES_carte_mentale.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`, etc.
 
 ---
 
 ## Prochaine session (priorité immédiate)
 
-- [ ] **Documentation — nouvelles plantes** : rédiger le **workflow pas à pas** pour ajouter une plante (création / duplication `PlantDefinition`, footprint + prefab `PlantGrow`, entrée `SeedSelectionUI` / `SeedEntry`, vérification sur la grille). Réfs code : `BiofiltreManager`, `PlantPlacementPreview`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`.
+- [ ] **Inventaire — implémentation jouable + tests** : câbler sur la **laitue** (et scène `FirstLvl` ou niveau de test) les références nécessaires — `ItemDefinition` + entrée dans `ItemDatabase`, `PlayerInventory` sur le joueur ou objet dédié, `PlantHarvestInteractor` + `ItemDatabase` + `InventoryFeedbackUI`, prefab `InventoryPanel` / slots. Vérifier : ajout au clic quand `PlantGrow` est au `HarvestStage`, affichage UI, cas **inventaire plein** ; optionnel : tests EditMode/PlayMode si le projet en adopte.
+- [ ] **Récolte — verrou d’état + double récolte (refactor)** : après succès `TryAdd`, faire avancer la plante (ou consommer `maxHarvestCount`) pour **éviter la double récolte** au même stade. Trancher / modéliser les **deux récoltes** du cycle (ex. Leafy : **Mature** = item feuille, **Seedling** = graines) : soit second `harvestItemId` + stade dans `PlantDefinition`, soit composant / stratégie dédiée — mettre à jour `PlantHarvestInteractor` en conséquence.
+- [ ] **Documentation systèmes** : lire / compléter la **carte des flux** (`Notes/Farm/SYSTEMES_carte_mentale.md`) : plantation (grille, `BiofiltreManager`, `PlantDefinition`), croissance (`PlantGrow`), récolte ↔ inventaire ; ajuster le schéma si de nouveaux points d’entrée apparaissent.
+
+- [x] **Documentation — nouvelles plantes** : rédiger le **workflow pas à pas** pour ajouter une plante (création / duplication `PlantDefinition`, footprint + prefab `PlantGrow`, entrée `SeedSelectionUI` / `SeedEntry`, vérification sur la grille). Réfs code : `BiofiltreManager`, `PlantPlacementPreview`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`. **Guide** : `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md`.
 - [x] **Art — sprites** : retirer le **fond blanc** sur les sprites concernés et les exporter avec **transparence** (canal alpha) ; dans Unity, vérifier l’import texture (alpha / compression) pour éviter les halos blancs.
 - [x] **Gameplay — footprint (données)** : le `PlantDefinition` contient déjà `footprint` + `GetOccupiedCells` ; finaliser la **compréhension** (dont **dédoublonnage** des offsets — voir session assistant) et les assets plantes avec les bons footprints (ex. salade 2×2). Réfs : `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`.
 - [x] **Gameplay — grille + plantation** : noyau **`GridData` + `GridManager` + `GridConfig`** + **flux biofiltre** (`BiofiltreManager`, `BiofiltreGridVisualizer`, `BiofiltreCell`, preview `PlantPlacementPreview`, UI `SeedSelectionUI` / `SeedSlotUI`). Détail historique : **`Notes/Farm/TODO_plantation_pipeline.md`** (étapes 1–3 réalisées ; pas de classe `BuildManager`, équivalent fonctionnel ci-dessus).
@@ -15,7 +19,7 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prototype (phase actuelle)
 
-- [ ] **Inventaire récolte (spécification)** : définir précisément le système (slots, taille max des piles, règle ajout partiel vs tout-ou-rien, codes retour de `TryAdd`).
+- [~] **Inventaire récolte (spécification)** : une première implémentation existe (`PlayerInventory.TryAdd`, piles, `InventoryResult` y compris partiel) ; finaliser la **spec joueur** (tout-ou-rien vs partiel accepté en gameplay) après tests en scène.
 - [~] **State machine culture** : stades visuels posés (`Seedling`, `BabyLeaf`, `Growing`, `Mature`, `Bolting`) ; finaliser transitions gameplay + règles de récolte.
 - [ ] **Flux récolte minimal jouable** : clic sur objet mature -> tentative d’ajout inventaire -> succès = récolte/transition d’état, échec = popup inventaire plein et objet reste mature.
 - [ ] **Timer gameplay** : revoir `Assets/Scripts/Core/Timer.cs` (scalabilité, `unscaledDeltaTime`, persistance/reprise offline via timestamp UTC).

@@ -14,14 +14,17 @@
 - Récolte/inventaire: comportement courant prévu en “all-or-nothing” tant que l’ajout partiel n’est pas formalisé.
 
 ### Priorités en cours
-1. Spécifier inventaire (slots, pile max, API `TryAdd`, résultats d’ajout).
-2. Finaliser machine d’états plante (stades visuels déjà posés : `Seedling -> BabyLeaf -> Growing -> Mature -> Bolting`).
-3. Implémenter flux minimal jouable (croissance timer + clic mature -> tentative inventaire -> feedback UI).
+1. **Inventaire** : câbler et **tester** en scène (laitue : items DB, prefabs UI, `PlantHarvestInteractor`) — code présent, **non validé** en jeu.
+2. **Récolte** : verrou post-récolte + modèle pour **deux récoltes** (ex. feuilles à `Mature`, graines à `Seedling`) — refactor `PlantDefinition` / `PlantHarvestInteractor` à planifier.
+3. **Doc flux** : carte des systèmes — `Notes/Farm/SYSTEMES_carte_mentale.md` (plantation, croissance, inventaire).
 4. Continuer nettoyage/scoping assets prototype et vérifier les références Unity après purge 3D.
 
 ### Références clés
-- `PROJECT_LOG.md`
+- `PROJECT_LOG.md` (entrée **2026-04-09** — inventaire non testé)
 - `Notes/Todo_project.md`
+- `Notes/Farm/SYSTEMES_carte_mentale.md`
 - `Notes/Learning/Event_Listener_Unity_CSharp.md`
 - `Assets/Scripts/Data/PlantDefinition.cs`
+- `Assets/Scripts/Inventory/PlayerInventory.cs`
+- `Assets/Scripts/Farm/PlantHarvestInteractor.cs`
 

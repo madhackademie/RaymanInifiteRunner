@@ -115,6 +115,10 @@ public class BiofiltreManager : MonoBehaviour
         if (instance.TryGetComponent(out PlantGrow plantGrow))
             plantGrow.SetStage(PlantGrow.GrowthStage.Graine);
 
+        // Provide PlantDefinition to optional harvest interactor
+        if (instance.TryGetComponent(out PlantDefinitionHolder holder))
+            holder.Initialise(plantDefinition);
+
         // Mark cells occupied in GridData
         gridManager.OccupyCells(plantDefinition.GetOccupiedCells(anchor));
 

@@ -403,3 +403,35 @@
 - `Assets/Scripts/Farm/GridLinesRenderer.cs`
 - `Notes/Farm/TODO_plantation_pipeline.md`
 - `Notes/Todo_project.md`
+
+## 2026-04-09
+### Contexte
+- Machine : **PC bureau** / PC portable (selon session)
+- Unity : 6000.3.x
+- Branche : `main` (fichiers inventaire / ferme en cours d’intégration scène)
+
+### Ce qu’on a fait
+- [x] **Système d’inventaire (code)** : couche données + runtime + UI de base, **non validé en jeu** (pas de scénario de test bout-en-bout sur la laitue / prefab plante).
+  - **Données** : `ItemDefinition` (id, nom, icône, `maxStack`), `ItemDatabase` (résolution par `itemId`).
+  - **Runtime** : `PlayerInventory` (`TryAdd` / `TryRemove` / `Count` / `HasSpaceFor`, résultats `InventoryResult` incluant ajout partiel), `InventorySlot`.
+  - **UI** : `InventoryUI` + `InventorySlotUI`, `InventoryFeedbackUI` (ex. inventaire plein).
+  - **Pont ferme** : `PlantHarvestInteractor` sur la plante (`Collider2D`, `PlantGrow`) — clic souris (`OnMouseDown`), résolution de l’item via `PlantDefinition.harvestItemId` ou override, appel `PlayerInventory.TryAdd`.
+- [x] **Support placement → récolte** : `PlantDefinitionHolder` (définition posée par `BiofiltreManager` à l’instanciation) pour que la récolte lise `HarvestStage` et `harvestItemId` sans coupler au pipeline de pose.
+
+### Problèmes rencontrés / pistes
+- **Récolte** : le pipeline prévoit **deux moments** de récolte possibles sur un cycle (ex. profil **Leafy** : récolte **Mature** puis cycle **Flowering → Seedling** pour graines) ; `PlantDefinition` n’expose aujourd’hui qu’un seul `harvestStage` + un `harvestItemId`. `PlantHarvestInteractor.OnHarvestSuccess` est un **placeholder** : pas d’avancement de stade ni de **verrou** d’état (risque de double-clic / récolte hors design).
+- **Tests** : aucun test automatisé ni check-list scène documentée pour valider ajout d’item, UI, et échec « inventaire plein » sur la salade.
+
+### Décisions / suite
+- **Prochaine session** : (1) **implémenter et tester** l’inventaire en conditions réelles (assets laitue : `PlantDefinition`, entrées `ItemDatabase`, composants sur le prefab plante / joueur / canvas) ; (2) **verrouiller** le comportement de récolte (une fois récolté, transition d’état ou compteur `maxHarvestCount`) ; (3) **refactor** à envisager pour distinguer clairement **récolte « corps de récolte »** (feuilles / fruit au stade configuré) vs **récolte graines** (ex. `Seedling`) — données (`itemId`, stade, quantités min/max) + un seul interactor ou stratégie par type de récolte.
+- **Documentation** : carte des systèmes existants (plantation, croissance, récolte, inventaire) — voir `Notes/Farm/SYSTEMES_carte_mentale.md`.
+
+### Liens utiles
+- `Assets/Scripts/Inventory/`
+- `Assets/Scripts/UI/Inventory/`
+- `Assets/Scripts/Farm/PlantHarvestInteractor.cs`
+- `Assets/Scripts/Farm/PlantDefinitionHolder.cs`
+- `Assets/Scripts/Farm/BiofiltreManager.cs`
+- `Assets/Scripts/Data/PlantDefinition.cs`
+- `Notes/Farm/SYSTEMES_carte_mentale.md`
+- `Notes/Todo_project.md`

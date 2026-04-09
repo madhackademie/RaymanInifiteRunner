@@ -9,16 +9,33 @@ public class PlantGrow : MonoBehaviour
 {
     public enum GrowthStage { Graine, Starting, Baby, Growing, Mature, Flowering, Seedling }
 
-    private static readonly GrowthStage[] StageOrder =
+    private static readonly GrowthStage[] StageOrderLeafy =
     {
         GrowthStage.Graine,
         GrowthStage.Starting,
         GrowthStage.Baby,
         GrowthStage.Growing,
-        GrowthStage.Mature,
+        GrowthStage.Mature,    // récolte feuilles
         GrowthStage.Flowering,
         GrowthStage.Seedling,
     };
+
+    // Fruiting : floraison avant maturation (tomate, poivron…)
+    private static readonly GrowthStage[] StageOrderFruiting =
+    {
+        GrowthStage.Graine,
+        GrowthStage.Starting,
+        GrowthStage.Baby,
+        GrowthStage.Growing,
+        GrowthStage.Flowering,
+        GrowthStage.Mature,    // récolte fruit
+        GrowthStage.Seedling,
+    };
+
+    /// <summary>Séquence de stades active, déterminée par le GrowthPattern de la PlantDefinition assignée.</summary>
+    private GrowthStage[] ActiveStageOrder => plantDefinition != null && plantDefinition.GrowthPattern == PlantGrowthPattern.Fruiting
+        ? StageOrderFruiting
+        : StageOrderLeafy;
 
     [SerializeField] private PlantDefinition plantDefinition;
     [SerializeField] private GrowthStage initialStage = GrowthStage.Graine;
@@ -87,16 +104,17 @@ public class PlantGrow : MonoBehaviour
 
     private void AdvanceToNextStage()
     {
-        int currentIndex = System.Array.IndexOf(StageOrder, currentStage);
-        int nextIndex = currentIndex + 1;
+        GrowthStage[] order = ActiveStageOrder;
+        int currentIndex = System.Array.IndexOf(order, currentStage);
+        int nextIndex    = currentIndex + 1;
 
-        if (nextIndex >= StageOrder.Length)
+        if (nextIndex >= order.Length)
         {
             stageTimer = currentStageDuration;
             return;
         }
 
-        SetStage(StageOrder[nextIndex]);
+        SetStage(order[nextIndex]);
     }
 
     private Sprite GetSpriteForStage(GrowthStage stage) => stage switch
