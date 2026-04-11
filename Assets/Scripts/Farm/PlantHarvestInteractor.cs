@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
-/// Attached to a plant GameObject. On click, checks whether the plant is mature,
-/// resolves the harvest item via ItemDatabase, and adds it to the PlayerInventory.
-/// Triggers InventoryFeedbackUI if the inventory is full.
+/// Attached to a plant GameObject. On click, vérifie la maturité, résout l'item
+/// via ItemDatabase et ajoute la récolte au PlayerInventory.
+/// Délègue l'affichage du panneau à <see cref="HarvestPanelUI"/>.
 /// </summary>
 [RequireComponent(typeof(PlantGrow))]
 [RequireComponent(typeof(Collider2D))]
@@ -14,125 +13,190 @@ public class PlantHarvestInteractor : MonoBehaviour
     [SerializeField] private ItemDatabase itemDatabase;
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private InventoryFeedbackUI feedbackUI;
+    [SerializeField] private HarvestPanelUI harvestPanelUI;
 
     [Header("Harvest")]
-    [Tooltip("Overrides PlantDefinition.harvestItemId when non-empty.")]
+    [Tooltip("Surcharge le harvestItemId de la PlantDefinition si renseigné.")]
     [SerializeField] private string harvestItemIdOverride;
 
     private PlantGrow plantGrow;
-    private PlantDefinition plantDefinition;
+    private PlantDefinition cachedDefinition;
+
+    // Contexte grille — fourni par BiofiltreManager après instantiation.
+    private GridManager gridManager;
+    private BiofiltreGridVisualizer visualizer;
+    private Vector2Int[] occupiedCells;
 
     private void Awake()
     {
         plantGrow = GetComponent<PlantGrow>();
     }
 
-    // PlantGrow does not expose the PlantDefinition directly — we retrieve it
-    // via a sibling component that caches the reference after placement.
-    // If a PlantDefinitionHolder is not present, harvestItemIdOverride must be set.
-
-    private void OnMouseDown()
-    {
-        TryHarvest();
-    }
-
-    // ── Harvest logic ─────────────────────────────────────────────────────────
+    // ── Initialisation ────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Attempts to harvest the plant. Resolves the item, tries to add it to the
-    /// inventory, and triggers feedback on failure.
+    /// Appelé par BiofiltreManager après l'instantiation pour fournir le contexte de grille.
+    /// </summary>
+    public void Initialise(GridManager grid, BiofiltreGridVisualizer gridVisualizer, Vector2Int[] cells)
+    {
+        gridManager   = grid;
+        visualizer    = gridVisualizer;
+        occupiedCells = cells;
+    }
+
+    /// <summary>
+    /// Injecte le HarvestPanelUI depuis BiofiltreManager si non assigné dans le prefab.
+    /// </summary>
+    public void InjectHarvestPanel(HarvestPanelUI panel)
+    {
+        harvestPanelUI ??= panel;
+    }
+
+    // ── Logique de récolte ────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Vérifie la maturité et ouvre le HarvestPanel si disponible,
+    /// ou applique directement la récolte sinon.
     /// </summary>
     public void TryHarvest()
     {
         if (!IsMature())
         {
-            Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' is not mature yet.");
+            Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' n'est pas encore mature.");
             return;
         }
 
-        string itemId = ResolveHarvestItemId();
-
-        if (string.IsNullOrEmpty(itemId))
-        {
-            Debug.LogWarning($"[PlantHarvestInteractor] No harvestItemId configured on '{gameObject.name}'.", this);
-            return;
-        }
-
-        if (itemDatabase == null)
-        {
-            Debug.LogWarning("[PlantHarvestInteractor] No ItemDatabase assigned.", this);
-            return;
-        }
-
-        ItemDefinition item = itemDatabase.GetById(itemId);
+        PlantDefinition definition = ResolveDefinition();
+        ItemDefinition  item       = ResolveItem(definition);
 
         if (item == null)
+            return;
+
+        if (harvestPanelUI != null && definition != null)
         {
-            Debug.LogWarning($"[PlantHarvestInteractor] ItemId '{itemId}' not found in ItemDatabase.", this);
+            int amount = ResolveHarvestAmount(definition);
+            harvestPanelUI.Open(this, definition, amount);
             return;
         }
 
-        if (playerInventory == null)
+        // Fallback direct sans panel
+        ApplyHarvest(item, definition);
+    }
+
+    /// <summary>
+    /// Appelé par HarvestPanelUI quand le joueur confirme la récolte.
+    /// </summary>
+    public void ConfirmHarvest()
+    {
+        PlantDefinition definition = ResolveDefinition();
+        ItemDefinition  item       = ResolveItem(definition);
+
+        if (item != null)
+            ApplyHarvest(item, definition);
+    }
+
+    // ── Application ───────────────────────────────────────────────────────────
+
+    private void ApplyHarvest(ItemDefinition item, PlantDefinition definition)
+    {
+        int amount = ResolveHarvestAmount(definition);
+        InventoryResult result = playerInventory.TryAdd(item, amount);
+
+        switch (result)
         {
-            Debug.LogWarning("[PlantHarvestInteractor] No PlayerInventory assigned.", this);
-            return;
+            case InventoryResult.Success:
+            case InventoryResult.Partial:
+                Debug.Log($"[PlantHarvestInteractor] Récolté '{item.DisplayName}' x{amount}. Résultat : {result}.");
+                OnHarvestSuccess();
+                break;
+
+            case InventoryResult.Full:
+                Debug.Log($"[PlantHarvestInteractor] Inventaire plein — '{item.DisplayName}' non ajouté.");
+                feedbackUI?.ShowInventoryFull();
+                break;
+
+            case InventoryResult.InvalidItem:
+                Debug.LogWarning($"[PlantHarvestInteractor] Item invalide résolu pour '{gameObject.name}'.", this);
+                break;
+        }
+    }
+
+    private void OnHarvestSuccess()
+    {
+        // Libérer les cellules dans la grille
+        if (gridManager != null && occupiedCells != null)
+            gridManager.FreeCells(occupiedCells);
+
+        // Remettre les cellules visuelles à l'état vide
+        if (visualizer != null && occupiedCells != null)
+        {
+            foreach (Vector2Int coords in occupiedCells)
+                visualizer.GetCell(coords)?.SetVisualState(false);
         }
 
-        InventoryResult result = playerInventory.TryAdd(item, 1);
-        HandleResult(result, item);
+        // Supprimer la plante de la scène
+        Destroy(gameObject);
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private bool IsMature()
     {
-        // Defer to the PlantDefinition's configured harvest stage if available.
-        if (TryGetComponent(out PlantDefinitionHolder holder) && holder.Definition != null)
-            return plantGrow.CurrentStage == holder.Definition.HarvestStage;
+        PlantDefinition def = ResolveDefinition();
+        if (def != null)
+            return plantGrow.CurrentStage == def.HarvestStage;
 
-        // Fallback: accept Mature as the universal harvest stage.
         return plantGrow.CurrentStage == PlantGrow.GrowthStage.Mature;
     }
 
-    private string ResolveHarvestItemId()
+    private PlantDefinition ResolveDefinition()
     {
-        if (!string.IsNullOrEmpty(harvestItemIdOverride))
-            return harvestItemIdOverride;
+        if (cachedDefinition != null)
+            return cachedDefinition;
 
         if (TryGetComponent(out PlantDefinitionHolder holder) && holder.Definition != null)
-            return holder.Definition.harvestItemId;
+            cachedDefinition = holder.Definition;
 
-        return null;
+        return cachedDefinition;
     }
 
-    private void HandleResult(InventoryResult result, ItemDefinition item)
+    private ItemDefinition ResolveItem(PlantDefinition definition)
     {
-        switch (result)
+        if (playerInventory == null)
         {
-            case InventoryResult.Success:
-            case InventoryResult.Partial:
-                Debug.Log($"[PlantHarvestInteractor] Harvested '{item.DisplayName}' from '{gameObject.name}'. Result: {result}.");
-                OnHarvestSuccess();
-                break;
-
-            case InventoryResult.Full:
-                Debug.Log($"[PlantHarvestInteractor] Inventory full — could not harvest '{item.DisplayName}'.");
-                feedbackUI?.ShowInventoryFull();
-                break;
-
-            case InventoryResult.InvalidItem:
-                Debug.LogWarning($"[PlantHarvestInteractor] Invalid item resolved for '{gameObject.name}'.", this);
-                break;
+            Debug.LogWarning("[PlantHarvestInteractor] Aucun PlayerInventory assigné.", this);
+            return null;
         }
+
+        if (itemDatabase == null)
+        {
+            Debug.LogWarning("[PlantHarvestInteractor] Aucun ItemDatabase assigné.", this);
+            return null;
+        }
+
+        string itemId = !string.IsNullOrEmpty(harvestItemIdOverride)
+            ? harvestItemIdOverride
+            : definition?.harvestItemId;
+
+        if (string.IsNullOrEmpty(itemId))
+        {
+            Debug.LogWarning($"[PlantHarvestInteractor] Aucun harvestItemId configuré sur '{gameObject.name}'.", this);
+            return null;
+        }
+
+        ItemDefinition item = itemDatabase.GetById(itemId);
+
+        if (item == null)
+            Debug.LogWarning($"[PlantHarvestInteractor] ItemId '{itemId}' introuvable dans l'ItemDatabase.", this);
+
+        return item;
     }
 
-    /// <summary>
-    /// Called when a harvest succeeds. Override or extend this placeholder to trigger
-    /// animations, advance the plant stage, or reduce harvest count.
-    /// </summary>
-    protected virtual void OnHarvestSuccess()
+    private static int ResolveHarvestAmount(PlantDefinition definition)
     {
-        // Placeholder — advance to next stage after harvest, mirroring PlantGrow's pipeline.
-        // Extend this in a subclass or wire an event when the design is finalised.
+        if (definition == null)
+            return 1;
+
+        return Random.Range(definition.harvestAmountMin, definition.harvestAmountMax + 1);
     }
 }

@@ -4,6 +4,243 @@ Document de **visualisation** des liaisons entre scripts existants (Unity 6). À
 
 ---
 
+## Carte multi-niveaux (monde → cellule)
+
+**Métaphore** : tu zoomes comme sur une carte — d’abord le **monde** (tous les domaines), puis l’**organisme** (le biofiltre et ses composants), puis un **organe** (un cycle : plantation, croissance, récolte), puis la **cellule** (les méthodes à ouvrir dans l’IDE). Chaque zoom est **un diagramme séparé** pour ne pas tout mélanger ; le schéma « Vue synthèse » plus bas reste la vue d’ensemble en un coup d’œil.
+
+| Niveau | Tu te demandes… | Où aller |
+|--------|-----------------|----------|
+| **Monde** | Quels domaines et flux entre eux ? | Diagramme *Niveau 1* |
+| **Organisme** | Qu’est-ce qui vit sur le même objet / la même zone ? | *Niveau 2 — Biofiltre* |
+| **Organe** | Pour *cette* interaction joueur, qui appelle qui ? | Zoom A, B, C ou D |
+| **Cellule** | Nom exact de la fonction | Étiquettes `()` dans les zooms |
+
+Outils : [Mermaid Live](https://mermaid.live) pour exporter PNG/SVG ; ou copier un bloc dans Cursor avec extension Mermaid.
+
+### Niveau 1 — Monde (domaines + ponts)
+
+```mermaid
+flowchart TB
+  subgraph Monde["Monde — scène & persistance"]
+    direction TB
+    subgraph D["Données (assets)"]
+      PD[PlantDefinition]
+      CFG[GridConfig / données grille]
+      IDB[ItemDatabase]
+      ID[ItemDefinition]
+    end
+    subgraph BF["Biofiltre — interaction sol"]
+      BFM[BiofiltreManager]
+      BGV[BiofiltreGridVisualizer]
+      GM[GridManager]
+      BCell[BiofiltreCell]
+    end
+    subgraph UI_Farm["UI ferme"]
+      SSU[SeedSelectionUI]
+      PPP[PlantPlacementPreview]
+      HUI[HarvestPanelUI]
+    end
+    subgraph Plante["Instance plante (prefab)"]
+      PG[PlantGrow]
+      PDH[PlantDefinitionHolder]
+      PHI[PlantHarvestInteractor]
+    end
+    subgraph Inv["Inventaire joueur"]
+      PI[PlayerInventory]
+      IUI[InventoryUI…]
+      IFB[InventoryFeedbackUI]
+    end
+  end
+
+  CFG --> GM
+  PD --> PDH
+  PD --> PG
+  IDB --> ID
+
+  BGV --> GM
+  BGV --> BCell
+  BFM --> BGV
+  BFM --> GM
+  BFM --> SSU
+  BFM --> HUI
+  SSU --> PPP
+  PPP --> BFM
+
+  BFM -->|"instancie"| Plante
+  PHI --> PG
+  PHI --> PDH
+  PHI --> IDB
+  PHI --> PI
+  PHI --> HUI
+  PHI --> IFB
+  PI --> IUI
+```
+
+### Niveau 2 — Organisme « un biofiltre » (composants sur le même GameObject)
+
+```mermaid
+flowchart LR
+  subgraph GO["GameObject Biofiltre (typique)"]
+    GM[GridManager]
+    BGV[BiofiltreGridVisualizer]
+    BFM[BiofiltreManager]
+  end
+
+  BFM --- BGV
+  BFM --- GM
+  BGV --- GM
+
+  BGV -->|"Start →"| Gen[GenerateGrid]
+  Gen --> Cells["Cell_x_y + BiofiltreCell"]
+```
+
+---
+
+### Zoom A — Cycle « grille visible & cliquable »
+
+```mermaid
+flowchart TD
+  Start([Start scène]) --> BGV_Start[BiofiltreGridVisualizer.Start]
+  BGV_Start --> Gen[BiofiltreGridVisualizer.GenerateGrid]
+  Gen --> Loop["Pour chaque case col, row"]
+  Loop --> NewGO[new GameObject + SpriteRenderer + BoxCollider2D]
+  NewGO --> Add[BiofiltreCell.Initialize coords]
+  Add --> Sub[BiofiltreCell.OnCellClicked += HandleCellClicked]
+  Sub --> VizHandler[BiofiltreGridVisualizer.HandleCellClicked]
+  VizHandler --> Event[BiofiltreGridVisualizer.OnCellClicked.Invoke]
+
+  Click([Joueur clique cellule]) --> IPC[BiofiltreCell.OnPointerClick]
+  IPC --> Fire[BiofiltreCell.OnCellClicked]
+  Fire --> VizHandler
+```
+
+### Zoom B — Cycle « plantation » (chaîne d’appels)
+
+```mermaid
+flowchart TD
+  C([Clic cellule]) --> Mgr[BiofiltreManager.HandleCellClicked]
+  Mgr --> Preview{SeedSelectionUI.IsPreviewActive ?}
+  Preview -->|oui| Ignore[return — pas de re-route cellule]
+  Preview -->|non| Free{GridManager.IsCellFree}
+  Free -->|oui| Open[SeedSelectionUI.Open cell, manager]
+  Open --> Build[SeedSelectionUI.BuildSlots]
+  Build --> Can[BiofiltreManager.CanPlace anchor, PlantDefinition]
+  Can --> GridFree[GridManager.AreAllCellsFree]
+
+  Pick([Joueur choisit un slot]) --> HS[SeedSelectionUI.HandleSeedSelected]
+  HS --> Close[SeedSelectionUI.Close]
+  HS --> HasPPP{placementPreview != null ?}
+  HasPPP -->|non| PS[BiofiltreManager.PlantSeed]
+  PS --> PSA[PlantSeedAt]
+  HasPPP -->|oui| Begin[PlantPlacementPreview.Begin]
+  Begin --> Upd[PlantPlacementPreview.Update — souris]
+  Upd --> Conf{clic gauche valide ?}
+  Conf -->|oui| PSA
+  PSA --> Inst[Instantiate prefab sous PlantsContainer]
+  PSA --> Grow[PlantGrow.SetStage Graine]
+  PSA --> Hold[PlantDefinitionHolder.Initialise]
+  PSA --> HarvInit[PlantHarvestInteractor.Initialise + InjectHarvestPanel]
+  PSA --> Occ[GridManager.OccupyCells]
+  PSA --> Vis[BiofiltreCell.SetVisualState true par case]
+```
+
+### Zoom C — Cycle « croissance » (autonome sur la plante)
+
+```mermaid
+flowchart TD
+  Aw([Après pose]) --> ST[PlantGrow.SetStage Graine — appelé par BiofiltreManager]
+  ST --> Start[PlantGrow.Start]
+  Start --> Set2[SetStage initialStage si besoin]
+
+  Loop[Chaque frame] --> Up[PlantGrow.Update]
+  Up --> Tim{stageTimer >= currentStageDuration ?}
+  Tim -->|non| Loop
+  Tim -->|oui| Adv[AdvanceToNextStage]
+  Adv --> Spr[GetSpriteForStage + définition PlantDefinition]
+
+  Note1[Données : PlantDefinition.GetDuration par stade, GrowthPattern Leafy/Fruiting]
+```
+
+### Zoom D — Cycle « récolte » (cellule occupée ou panel)
+
+```mermaid
+flowchart TD
+  C([Clic cellule occupée]) --> Mgr[BiofiltreManager.HandleCellClicked]
+  Mgr --> Try[TryOpenHarvestPanel coords]
+  Try --> Find[FindInteractorAt worldCenter]
+  Find --> TH[PlantHarvestInteractor.TryHarvest]
+
+  TH --> Mat{IsMature — stade vs PlantDefinition.HarvestStage}
+  Mat -->|non| Log[Log + return]
+  Mat -->|oui| Res[ResolveDefinition / ResolveItem]
+  Res --> Pan{HarvestPanelUI assigné ?}
+  Pan -->|oui| Open[HarvestPanelUI.Open]
+  Pan -->|non| App[ApplyHarvest direct]
+
+  Btn([Bouton Récolter]) --> OH[HarvestPanelUI.OnHarvestClicked]
+  OH --> CH[PlantHarvestInteractor.ConfirmHarvest]
+  CH --> App
+  App --> TryAdd[PlayerInventory.TryAdd]
+  TryAdd --> Succ{Success / Partial ?}
+  Succ -->|oui| OK[OnHarvestSuccess]
+  OK --> Free[GridManager.FreeCells]
+  OK --> Vis[BiofiltreCell.SetVisualState false]
+  OK --> Des[Destroy plante]
+  Succ -->|Full| FB[InventoryFeedbackUI.ShowInventoryFull]
+```
+
+### UML classes — vue simplifiée (référence)
+
+```mermaid
+classDiagram
+  direction TB
+  class BiofiltreManager {
+    +HandleCellClicked()
+    +CanPlace()
+    +PlantSeed()
+    +PlantSeedAt()
+    -TryOpenHarvestPanel()
+    -FindInteractorAt()
+  }
+  class BiofiltreGridVisualizer {
+    +GenerateGrid()
+    +GetCell()
+    +OnCellClicked
+  }
+  class BiofiltreCell {
+    +OnPointerClick()
+    +Initialize()
+    +SetVisualState()
+  }
+  class SeedSelectionUI {
+    +Open()
+    +Close()
+    +IsPreviewActive
+    -BuildSlots()
+    -HandleSeedSelected()
+  }
+  class PlantPlacementPreview {
+    +Begin()
+    +Update()
+    -ConfirmPlacement()
+  }
+  class PlantHarvestInteractor {
+    +TryHarvest()
+    +ConfirmHarvest()
+    +Initialise()
+  }
+
+  BiofiltreManager --> BiofiltreGridVisualizer
+  BiofiltreManager --> SeedSelectionUI
+  BiofiltreManager --> PlantPlacementPreview : configure scène
+  SeedSelectionUI --> PlantPlacementPreview
+  PlantPlacementPreview --> BiofiltreManager
+  BiofiltreGridVisualizer --> BiofiltreCell : crée N
+  BiofiltreManager ..> PlantHarvestInteractor : après Instantiate
+```
+
+---
+
 ## Vue synthèse (Mermaid)
 
 ```mermaid
@@ -87,7 +324,7 @@ flowchart TB
 
 | Élément | Détail |
 |---------|--------|
-| Déclencheur | `PlantHarvestInteractor` — `OnMouseDown` (ancien Input Manager) ; requiert `Collider2D` |
+| Déclencheur | Clic sur **cellule occupée** : `BiofiltreManager` → `TryOpenHarvestPanel` → `PlantHarvestInteractor.TryHarvest` (le `Collider2D` sert au prefab plante ; le chemin principal grille ne passe pas par un clic direct sur la plante) |
 | Éligibilité | `PlantGrow.CurrentStage == HarvestStage` (via `PlantDefinitionHolder`) |
 | Item | `harvestItemId` sur `PlantDefinition` ou override sur le composant |
 | Ajout | `PlayerInventory.TryAdd` → `InventoryResult` |

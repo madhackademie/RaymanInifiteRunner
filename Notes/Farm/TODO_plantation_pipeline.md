@@ -50,6 +50,12 @@ Implémentation réelle : **`BiofiltreManager`** (`CanPlace`, `PlantSeedAt`, `Oc
 
 ---
 
+## Étape 4 — Récolte & inventaire (câblage en cours)
+
+Après pose et croissance : clic sur cellule occupée / plante mature → panel **`HarvestPanelUI`** → confirmation → **`PlayerInventory.TryAdd`**. **Priorité prochaine session** : finaliser le câblage scène (refs, `ItemDatabase`, feedback plein) — voir **`Notes/Todo_project.md`** (case *Inventaire récolte — finaliser et câbler*) et le **Zoom D** dans `SYSTEMES_carte_mentale.md`.
+
+---
+
 ## Hors scope prototype actuel
 
 - **Rotation** des cultures : volontairement non prioritaire (un footprint fixe par plante).
@@ -71,3 +77,5 @@ Implémentation réelle : **`BiofiltreManager`** (`CanPlace`, `PlantSeedAt`, `Oc
 | `Assets/Scripts/UI/SeedSelectionUI.cs` | Panneau choix de graine |
 | `Assets/Scripts/UI/SeedSlotUI.cs` | Slot une graine dans la liste |
 | `Assets/Scripts/Farm/GridLinesRenderer.cs` | Lignes de grille (optionnel) |
+| `Assets/Scripts/Farm/PlantHarvestInteractor.cs` | Récolte mature → inventaire / panel |
+| `Assets/Scripts/UI/Inventory/HarvestPanelUI.cs` | UI confirmation récolte |

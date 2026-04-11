@@ -435,3 +435,29 @@
 - `Assets/Scripts/Data/PlantDefinition.cs`
 - `Notes/Farm/SYSTEMES_carte_mentale.md`
 - `Notes/Todo_project.md`
+
+## 2026-04-11
+### Contexte
+- Machine : **PC bureau** / PC portable (selon session)
+- Unity : 6000.x (Unity 6)
+- Branche : selon `git status` (fichiers ferme / inventaire / scène souvent encore non commités)
+
+### Ce qu’on a fait
+- [x] **Fin de session — notes & suivi** : priorité **inventaire récolte** consignée dans `Notes/Todo_project.md` (case *Inventaire récolte — finaliser et câbler*) ; rappel pipeline plantation **étape 4** dans `Notes/Farm/TODO_plantation_pipeline.md` (récolte ↔ inventaire).
+- [~] **Travail en cours (code / scène)** : poursuite du flux **récolte avec panel** — scripts typiquement `HarvestPanelUI.cs`, `PlantHarvestInteractor.cs`, évolutions `BiofiltreManager.cs`, scène `FirstLvl.unity` (refs Inspector / prefabs à valider en jeu).
+
+### Problèmes rencontrés / pistes
+- **Câblage** : le flux Zoom D (carte mentale) reste à **valider bout-en-bout en scène** : ouverture du panel sur plante mature, bouton *Récolter*, `PlayerInventory.TryAdd`, UI inventaire, `InventoryFeedbackUI` si plein — sans se fier uniquement au schéma doc.
+- **Design inchangé** : double récolte / `maxHarvestCount` / deux items (feuilles vs graines) — toujours ouverts (cf. entrée 2026-04-09).
+
+### Prochaines actions (priorité)
+1. **Finaliser et câbler le système d’inventaire récolte** en conditions réelles (laitue, `FirstLvl` ou scène de test) : assignations SerializeField, `ItemDatabase` / `ItemDefinition`, `PlayerInventory`, `HarvestPanelUI`, `PlantHarvestInteractor` + pont `BiofiltreManager` / grille occupée.
+2. Ensuite : verrou récolte + spec deux récoltes si on touche au cycle plante.
+
+### Liens utiles
+- `Assets/Scripts/UI/Inventory/HarvestPanelUI.cs`
+- `Assets/Scripts/Farm/PlantHarvestInteractor.cs`
+- `Assets/Scripts/Farm/BiofiltreManager.cs`
+- `Assets/Scenes/FirstLvl.unity`
+- `Notes/Todo_project.md`
+- `Notes/Farm/TODO_plantation_pipeline.md`

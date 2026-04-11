@@ -13,6 +13,9 @@ public class BiofiltreManager : MonoBehaviour
     [Tooltip("The seed selection panel prefab or scene reference.")]
     [SerializeField] private SeedSelectionUI seedSelectionUI;
 
+    [Tooltip("Panel de récolte ouvert quand le joueur clique sur une plante mature.")]
+    [SerializeField] private HarvestPanelUI harvestPanelUI;
+
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
 
@@ -40,19 +43,95 @@ public class BiofiltreManager : MonoBehaviour
         if (seedSelectionUI != null && seedSelectionUI.IsPreviewActive)
             return;
 
-        if (!gridManager.IsCellFree(cell.GridCoordinates))
+        if (gridManager.IsCellFree(cell.GridCoordinates))
         {
-            Debug.Log($"[BiofiltreManager] Cell {cell.GridCoordinates} is occupied — ignoring click.");
+            // Cellule libre → sélection de graine
+            if (seedSelectionUI == null)
+            {
+                Debug.LogWarning("[BiofiltreManager] No SeedSelectionUI assigned.", this);
+                return;
+            }
+            seedSelectionUI.Open(cell, this);
+        }
+        else
+        {
+            // Cellule occupée → tenter la récolte
+            TryOpenHarvestPanel(cell.GridCoordinates);
+        }
+    }
+
+    /// <summary>
+    /// Cherche le PlantHarvestInteractor sur la plante occupant la cellule cliquée
+    /// et délègue l'ouverture du panneau de récolte.
+    /// </summary>
+    private void TryOpenHarvestPanel(Vector2Int coords)
+    {
+        // On cherche la plante dans le container des plantes par position de cellule
+        Vector2 worldCenter = gridManager.GridToWorldCenter(coords);
+
+        PlantHarvestInteractor interactor = FindInteractorAt(worldCenter);
+
+        if (interactor == null)
+        {
+            Debug.Log($"[BiofiltreManager] Aucun PlantHarvestInteractor trouvé à la cellule {coords}.");
             return;
         }
 
-        if (seedSelectionUI == null)
+        interactor.TryHarvest();
+    }
+
+    /// <summary>
+    /// Cherche le <see cref="PlantHarvestInteractor"/> le plus proche du centre monde donné
+    /// parmi les enfants du container de plantes.
+    /// </summary>
+    private PlantHarvestInteractor FindInteractorAt(Vector2 worldCenter)
+    {
+        const float SearchRadius = 0.1f;
+
+        PlantHarvestInteractor closest  = null;
+        float                  minDist  = float.MaxValue;
+
+        foreach (Transform child in visualizer.PlantsContainer)
         {
-            Debug.LogWarning("[BiofiltreManager] No SeedSelectionUI assigned.", this);
-            return;
+            float dist = Vector2.Distance(child.position, worldCenter);
+
+            if (dist < SearchRadius && dist < minDist)
+            {
+                if (child.TryGetComponent(out PlantHarvestInteractor interactor))
+                {
+                    closest = interactor;
+                    minDist = dist;
+                }
+            }
         }
 
-        seedSelectionUI.Open(cell, this);
+        // Fallback : on cherche par footprint (plantes multi-cellules)
+        if (closest == null)
+        {
+            foreach (Transform child in visualizer.PlantsContainer)
+            {
+                if (!child.TryGetComponent(out PlantHarvestInteractor interactor))
+                    continue;
+
+                if (!child.TryGetComponent(out PlantDefinitionHolder holder) || holder.Definition == null)
+                    continue;
+
+                Vector2Int anchor = gridManager.WorldToGrid(child.position);
+                foreach (Vector2Int cell in holder.Definition.GetOccupiedCells(anchor))
+                {
+                    if (cell == gridManager.WorldToGrid(worldCenter))
+                    {
+                        closest = interactor;
+                        break;
+                    }
+                }
+
+                if (closest != null)
+                    break;
+            }
+        }
+
+        return closest;
     }
 
     // ── Footprint query (called by SeedSelectionUI) ───────────────────────────
@@ -118,6 +197,14 @@ public class BiofiltreManager : MonoBehaviour
         // Provide PlantDefinition to optional harvest interactor
         if (instance.TryGetComponent(out PlantDefinitionHolder holder))
             holder.Initialise(plantDefinition);
+
+        // Fournir le contexte grille et le panel de récolte à l'interacteur
+        if (instance.TryGetComponent(out PlantHarvestInteractor harvestInteractor))
+        {
+            Vector2Int[] cells = System.Linq.Enumerable.ToArray(plantDefinition.GetOccupiedCells(anchor));
+            harvestInteractor.Initialise(gridManager, visualizer, cells);
+            harvestInteractor.InjectHarvestPanel(harvestPanelUI);
+        }
 
         // Mark cells occupied in GridData
         gridManager.OccupyCells(plantDefinition.GetOccupiedCells(anchor));
