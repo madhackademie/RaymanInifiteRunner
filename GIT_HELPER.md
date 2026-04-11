@@ -17,7 +17,8 @@ git fetch
 Si tu vois “Your branch is behind …” → il y a des changements à récupérer.
 Alternative directe (voir les commits manquants) :
 ```bash
-git fetchgit log --oneline HEAD..origin/main
+git fetch
+git log --oneline HEAD..origin/main
 ```
 2) Mettre à jour ton dossier avec ces changements
 ```bash
@@ -78,3 +79,70 @@ git pull
 git stash pop
 ```
 Puis tu résous les conflits si besoin, et tu continues (add/commit/push).
+
+## --3-- Branche par feature + fusion dans `main` (recommandé)
+
+Objectif : **une branche Git par fonctionnalité** (ex. récolte, inventaire, UI menu). Tant que la feature n’est pas validée en jeu / tests, les commits restent sur la branche ; une fois OK, tu **fusionnes** dans `main` (idéalement après revue rapide).
+
+### Avant de coder une nouvelle feature
+
+1. Sauvegarder tout dans l’éditeur (**Save All**).
+2. Depuis la racine du repo :
+```bash
+git status
+git fetch
+git checkout main
+git pull
+```
+3. Créer une branche décrite clairement (préfixe `feature/` conseillé) :
+```bash
+git checkout -b feature/nom-court-explicite
+```
+Exemples : `feature/harvest-inventory`, `feature/mature-seeds-harvest`, `fix/grid-occupancy`.
+
+### Pendant le développement
+
+- Commits **petits et fréquents** avec un message clair (`feat: …`, `fix: …`, `chore: …` si tu adoptes ce style).
+- Première poussée de la branche vers GitHub :
+```bash
+git push -u origin feature/nom-court-explicite
+```
+- Poursuite : `git add …`, `git commit -m "…"`, `git push`.
+
+### Quand la feature est terminée et testée
+
+**Option A — Pull Request (recommandé si tu travailles seul avec historique lisible)**  
+Sur GitHub : ouvrir une PR `feature/…` → `main`, vérifier le diff, merger (bouton *Merge*). En local ensuite :
+```bash
+git checkout main
+git pull
+```
+Tu peux supprimer la branche distante depuis l’interface GitHub ; en local : `git branch -d feature/nom-court-explicite`.
+
+**Option B — Fusion en local puis push**
+```bash
+git checkout main
+git pull
+git merge feature/nom-court-explicite
+```
+En cas de conflits : résoudre les fichiers marqués, `git add`, `git commit` (Git complète le message de merge). Puis :
+```bash
+git push
+git branch -d feature/nom-court-explicite
+```
+
+### Rappels
+
+- Si `main` a avancé **pendant** que tu es sur ta branche, mets à jour ta base avant de merger :
+```bash
+git checkout feature/nom-court-explicite
+git fetch
+git merge main
+```
+(résoudre les conflits si besoin, tester, puis `git push`).
+
+- Retard pris (comme pour récolte / inventaire sans branche dédiée) : à partir de maintenant, enchaîner les **prochaines grosses features** sur une branche `feature/…` ; les changements déjà sur `main` restent l’historique actuel.
+
+### Liens
+
+- Début / fin de session : sections **--1--** et **--2--** ci-dessus ; ouverture de session : `WORKFLOW_PROTOCOL.md`.

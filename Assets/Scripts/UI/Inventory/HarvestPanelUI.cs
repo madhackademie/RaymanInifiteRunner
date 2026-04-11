@@ -115,18 +115,16 @@ public class HarvestPanelUI : MonoBehaviour
             timerLabel.text = "—";
         }
 
-        // Stades récoltables
-        bool isMature   = stage == PlantGrow.GrowthStage.Mature;
-        bool isSeedling = stage == PlantGrow.GrowthStage.Seedling;
-        bool isHarvestable = isMature || isSeedling;
+        // Stade récoltable → config issue de la PlantDefinition
+        HarvestStageConfig? harvestConfig = currentDefinition?.GetHarvestConfig(stage);
+        bool isHarvestable = harvestConfig.HasValue;
 
         // Label quantité
-        if (isHarvestable && currentDefinition != null)
+        if (isHarvestable)
         {
-            int min = currentDefinition.harvestAmountMin;
-            int max = currentDefinition.harvestAmountMax;
-            string unit = isSeedling ? "graine" : "récolte";
-            yieldLabel.text = min == max ? $"x{min} {unit}" : $"x{min}–{max} {unit}";
+            int min = harvestConfig.Value.harvestAmountMin;
+            int max = harvestConfig.Value.harvestAmountMax;
+            yieldLabel.text = min == max ? $"x{min}" : $"x{min}–{max}";
             yieldLabel.gameObject.SetActive(true);
         }
         else

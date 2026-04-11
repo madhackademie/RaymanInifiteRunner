@@ -18,3 +18,6 @@ prochaines étapes (checklist)
 
 ## --4--
 add github commande commit/push : cf @GIT_HELPER.md [git helper](GIT_HELPER.md)
+
+## --5--
+**Nouvelle feature (recommandé)** : créer une branche dédiée avant un gros bloc de code — voir **`GIT_HELPER.md`** section **--3--** (*Branche par feature + fusion dans main*). Évite d’empiler récolte, inventaire, etc. directement sur `main` sans filet de merge / PR.

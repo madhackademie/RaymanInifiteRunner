@@ -75,7 +75,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         ConfirmHarvest();
     }
 
-    // ── Logique de récolte ────────────────────────────────────────────────────
+    /// <summary>
     /// Ouvre le popup d'info pour cette plante, peu importe son stade.
     /// Le panel gère lui-même la visibilité du bouton de récolte.
     /// </summary>
@@ -89,39 +89,43 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        // Fallback direct : on n'applique la récolte que si le stade le permet
-        if (!IsHarvestable())
+        // Fallback direct sans panel
+        HarvestStageConfig? config = GetCurrentHarvestConfig();
+        if (!config.HasValue)
         {
-            Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' n'est pas récoltable.");
+            Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' n'est pas récoltable à ce stade.");
             return;
         }
 
-        ItemDefinition item = ResolveItem(definition);
+        ItemDefinition item = ResolveItem(config.Value);
         if (item != null)
-            ApplyHarvest(item, definition);
+            ApplyHarvest(item, config.Value);
     }
 
     /// <summary>
     /// Appelé par HarvestPanelUI quand le joueur confirme la récolte.
-    /// Fonctionne pour les stades Mature et Seedling.
+    /// Résout la config du stade courant et applique la récolte si le stade est récoltable.
     /// </summary>
     public void ConfirmHarvest()
     {
-        if (!IsHarvestable())
+        HarvestStageConfig? config = GetCurrentHarvestConfig();
+
+        if (!config.HasValue)
+        {
+            Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' n'est pas récoltable à ce stade ({plantGrow.CurrentStage}).");
             return;
+        }
 
-        PlantDefinition definition = ResolveDefinition();
-        ItemDefinition  item       = ResolveItem(definition);
-
+        ItemDefinition item = ResolveItem(config.Value);
         if (item != null)
-            ApplyHarvest(item, definition);
+            ApplyHarvest(item, config.Value);
     }
 
     // ── Application ───────────────────────────────────────────────────────────
 
-    private void ApplyHarvest(ItemDefinition item, PlantDefinition definition)
+    private void ApplyHarvest(ItemDefinition item, HarvestStageConfig config)
     {
-        int amount = ResolveHarvestAmount(definition);
+        int amount = Random.Range(config.harvestAmountMin, config.harvestAmountMax + 1);
         InventoryResult result = playerInventory.TryAdd(item, amount);
 
         switch (result)
@@ -186,20 +190,16 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    private bool IsHarvestable()
+    /// <summary>
+    /// Retourne la config de récolte du stade courant, ou null si la plante n'est pas récoltable maintenant.
+    /// </summary>
+    public HarvestStageConfig? GetCurrentHarvestConfig()
     {
-        PlantGrow.GrowthStage stage = plantGrow.CurrentStage;
-        return stage == PlantGrow.GrowthStage.Mature || stage == PlantGrow.GrowthStage.Seedling;
+        PlantDefinition definition = ResolveDefinition();
+        return definition?.GetHarvestConfig(plantGrow.CurrentStage);
     }
 
-    private bool IsMature()
-    {
-        PlantDefinition def = ResolveDefinition();
-        if (def != null)
-            return plantGrow.CurrentStage == def.HarvestStage;
-
-        return plantGrow.CurrentStage == PlantGrow.GrowthStage.Mature;
-    }
+    private bool IsHarvestable() => GetCurrentHarvestConfig().HasValue;
 
     private PlantDefinition ResolveDefinition()
     {
@@ -212,7 +212,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         return cachedDefinition;
     }
 
-    private ItemDefinition ResolveItem(PlantDefinition definition)
+    private ItemDefinition ResolveItem(HarvestStageConfig config)
     {
         if (playerInventory == null)
         {
@@ -228,11 +228,11 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
         string itemId = !string.IsNullOrEmpty(harvestItemIdOverride)
             ? harvestItemIdOverride
-            : definition?.harvestItemId;
+            : config.harvestItemId;
 
         if (string.IsNullOrEmpty(itemId))
         {
-            Debug.LogWarning($"[PlantHarvestInteractor] Aucun harvestItemId configuré sur '{gameObject.name}'.", this);
+            Debug.LogWarning($"[PlantHarvestInteractor] Aucun harvestItemId configuré pour le stade '{config.stage}' sur '{gameObject.name}'.", this);
             return null;
         }
 
@@ -242,13 +242,5 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
             Debug.LogWarning($"[PlantHarvestInteractor] ItemId '{itemId}' introuvable dans l'ItemDatabase.", this);
 
         return item;
-    }
-
-    private static int ResolveHarvestAmount(PlantDefinition definition)
-    {
-        if (definition == null)
-            return 1;
-
-        return Random.Range(definition.harvestAmountMin, definition.harvestAmountMax + 1);
     }
 }

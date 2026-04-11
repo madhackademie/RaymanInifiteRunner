@@ -25,21 +25,31 @@ public class PlantDefinition : ScriptableObject
              "Fruiting: … Growing → Flowering → Mature (récolte) → Seedling")]
     [SerializeField] private PlantGrowthPattern growthPattern = PlantGrowthPattern.Leafy;
 
-    [Tooltip("Stade auquel la plante devient récoltable. " +
-             "Mature par défaut pour les deux profils ; à surcharger si le design le nécessite.")]
-    [SerializeField] private PlantGrow.GrowthStage harvestStage = PlantGrow.GrowthStage.Mature;
-
     /// <summary>Profil de progression utilisé par PlantGrow pour ordonner la séquence de croissance.</summary>
     public PlantGrowthPattern GrowthPattern => growthPattern;
 
-    /// <summary>Stade auquel la plante peut être récoltée.</summary>
-    public PlantGrow.GrowthStage HarvestStage => harvestStage;
-
     [Header("Harvest")]
-    public string harvestItemId;
-    public int harvestAmountMin = 1;
-    public int harvestAmountMax = 1;
+    [Tooltip("Stades récoltables de cette plante. Chaque entrée définit le stade, l'item obtenu et les quantités min/max.\n" +
+             "Exemple laitue : Mature (feuilles) + Seedling (graines).")]
+    public HarvestStageConfig[] harvestStages = Array.Empty<HarvestStageConfig>();
+
     public int maxHarvestCount = 1;
+
+    /// <summary>
+    /// Retourne la config de récolte pour le stade donné, ou null si ce stade n'est pas récoltable.
+    /// </summary>
+    public HarvestStageConfig? GetHarvestConfig(PlantGrow.GrowthStage stage)
+    {
+        foreach (HarvestStageConfig config in harvestStages)
+        {
+            if (config.stage == stage)
+                return config;
+        }
+        return null;
+    }
+
+    /// <summary>Retourne true si le stade donné est déclaré comme récoltable dans cette définition.</summary>
+    public bool IsHarvestableStage(PlantGrow.GrowthStage stage) => GetHarvestConfig(stage).HasValue;
 
     [Header("Stage Sprites (2D)")]
     [Tooltip("Slot Graine — identique pour les deux profils.")]
@@ -101,6 +111,19 @@ public class PlantDefinition : ScriptableObject
         }
     }
 #endif
+}
+
+[Serializable]
+public struct HarvestStageConfig
+{
+    [Tooltip("Stade de croissance auquel cette récolte est disponible.")]
+    public PlantGrow.GrowthStage stage;
+
+    [Tooltip("Id de l'item récolté à ce stade (doit exister dans l'ItemDatabase).")]
+    public string harvestItemId;
+
+    [Min(1)] public int harvestAmountMin;
+    [Min(1)] public int harvestAmountMax;
 }
 
 [Serializable]

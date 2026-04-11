@@ -499,3 +499,35 @@
 - `Notes/Codebase_etat_reference.md` — état de référence post-audit
 - `Notes/Farm/SYSTEMES_carte_mentale.md` — flux mis à jour (Zoom D)
 - Dossier scripts : `Assets/Scripts/`
+
+## 2026-04-12 — complément (plan prochaine session — Bezi / récolte)
+
+### Contexte
+- Demande utilisateur : consigner pour la **prochaine session** le suivi du travail **Bezi** sur la récolte **mature / graines**, la **création des SO et définitions**, et une passe de **compréhension** du système.
+
+### Prochaines actions (priorité)
+1. **Câblage** : reprendre le flux **récolte mature vs graines** (UI + interactor + scène) tel que avancé avec **Bezi** ; valider refs Inspector et prefabs (`FirstLvl` ou scène de test).
+2. **Données** : créer ou compléter **`ItemDefinition`** (items distincts si besoin), entrées **`ItemDatabase`**, **`PlantDefinition`** cohérents avec les stades **Mature** et **Seedling**.
+3. **Compréhension** : une session dédiée à **lire et tracer** le flux complet (grille occupée → `HarvestPanelUI` → `ConfirmHarvest` → `TryAdd`) — s’appuyer sur `Notes/Farm/SYSTEMES_carte_mentale.md` et `Notes/Codebase_etat_reference.md`.
+
+### Liens utiles
+- **`Notes/Todo_project.md`** — section *Prochaine session*, première case **Récolte Mature / Graines (Bezi)**.
+- Scripts : `HarvestPanelUI.cs`, `PlantHarvestInteractor.cs`, `PlantDefinition.cs`, `PlantGrow.cs`, `ItemDatabase.cs` / `ItemDefinition.cs`.
+
+## 2026-04-12 — complément (workflow Git — branche par feature)
+
+### Contexte
+- Souhait utilisateur : pour les prochaines features, **demander / suivre un protocole** « une branche par feature », merge une fois que tout fonctionne — idéalement **avant** les gros chantiers (ex. récolte / inventaire) ; à appliquer désormais systématiquement.
+
+### Ce qu’on a fait
+- [x] **Protocole écrit** : nouvelle section **`GIT_HELPER.md` — --3--** (*Branche par feature + fusion dans main*) : `checkout -b feature/…`, push, merge via PR ou `git merge`, rappel `merge main` dans la branche si besoin ; correction typo `git fetch` / `git log` dans la section --1--.
+- [x] **Todos** : entrée **Git — branche par feature + merge** dans **`Notes/Todo_project.md`** (*Prochaine session*) ; case **Workflow Git** mise à jour dans *Workflow / Organisation*.
+- [x] **Session** : **`WORKFLOW_PROTOCOL.md` — --5--** renvoie vers le helper pour démarrer une feature sur branche.
+
+### Décisions
+- Référence unique des commandes : **`GIT_HELPER.md`** ; le journal ne duplique pas la procédure complète.
+
+### Liens utiles
+- `GIT_HELPER.md` (sections --1-- à --3--)
+- `WORKFLOW_PROTOCOL.md` (--4--, --5--)
+- `Notes/Todo_project.md`
