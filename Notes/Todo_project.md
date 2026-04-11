@@ -1,6 +1,6 @@
 # Todo projet — hub global
 
-Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, `Notes/Farm/SYSTEMES_carte_mentale.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`, etc.
+Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, `Notes/Farm/SYSTEMES_carte_mentale.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`, etc. **État code / assets (snapshot)** : `Notes/Codebase_etat_reference.md` ; journal chronologique : `PROJECT_LOG.md` (racine).
 
 ---
 

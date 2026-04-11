@@ -166,28 +166,27 @@ flowchart TD
 ```mermaid
 flowchart TD
   C([Clic cellule occupée]) --> Mgr[BiofiltreManager.HandleCellClicked]
-  Mgr --> Try[TryOpenHarvestPanel coords]
-  Try --> Find[FindInteractorAt worldCenter]
-  Find --> TH[PlantHarvestInteractor.TryHarvest]
+  Mgr --> Pop[TryOpenPlantPopup coords]
+  Pop --> Get[GridManager.GetPlantAt]
+  Get --> Open[HarvestPanelUI.Open interactor plantGrow definition]
 
-  TH --> Mat{IsMature — stade vs PlantDefinition.HarvestStage}
-  Mat -->|non| Log[Log + return]
-  Mat -->|oui| Res[ResolveDefinition / ResolveItem]
-  Res --> Pan{HarvestPanelUI assigné ?}
-  Pan -->|oui| Open[HarvestPanelUI.Open]
-  Pan -->|non| App[ApplyHarvest direct]
-
+  Open --> UI[Panel: infos tout stade bouton Récolter si Mature ou Seedling]
   Btn([Bouton Récolter]) --> OH[HarvestPanelUI.OnHarvestClicked]
   OH --> CH[PlantHarvestInteractor.ConfirmHarvest]
-  CH --> App
+  CH --> App[ApplyHarvest]
   App --> TryAdd[PlayerInventory.TryAdd]
   TryAdd --> Succ{Success / Partial ?}
   Succ -->|oui| OK[OnHarvestSuccess]
-  OK --> Free[GridManager.FreeCells]
+  OK --> Free[GridManager.FreeCells + UnregisterPlant]
   OK --> Vis[BiofiltreCell.SetVisualState false]
   OK --> Des[Destroy plante]
   Succ -->|Full| FB[InventoryFeedbackUI.ShowInventoryFull]
+
+  Ptr([Clic direct plante IPointerClickHandler]) --> CH2[PlantHarvestInteractor.OnPointerClick]
+  CH2 --> CH
 ```
+
+**Note (code 2026-04)** : `TryOpenHarvestPanel` / `FindInteractorAt` existent encore dans `BiofiltreManager` mais **ne sont pas** utilisés par `HandleCellClicked` ; le chemin grille passe par **`TryOpenPlantPopup`** + registre de plante. Voir `Notes/Codebase_etat_reference.md`.
 
 ### UML classes — vue simplifiée (référence)
 
@@ -199,8 +198,7 @@ classDiagram
     +CanPlace()
     +PlantSeed()
     +PlantSeedAt()
-    -TryOpenHarvestPanel()
-    -FindInteractorAt()
+    -TryOpenPlantPopup()
   }
   class BiofiltreGridVisualizer {
     +GenerateGrid()
@@ -324,12 +322,14 @@ flowchart TB
 
 | Élément | Détail |
 |---------|--------|
-| Déclencheur | Clic sur **cellule occupée** : `BiofiltreManager` → `TryOpenHarvestPanel` → `PlantHarvestInteractor.TryHarvest` (le `Collider2D` sert au prefab plante ; le chemin principal grille ne passe pas par un clic direct sur la plante) |
-| Éligibilité | `PlantGrow.CurrentStage == HarvestStage` (via `PlantDefinitionHolder`) |
-| Item | `harvestItemId` sur `PlantDefinition` ou override sur le composant |
-| Ajout | `PlayerInventory.TryAdd` → `InventoryResult` |
-| Feedback | `InventoryFeedbackUI` si plein |
-| **Manque actuel** | `OnHarvestSuccess` ne change pas le stade / ne consomme pas `maxHarvestCount` → **double récolte** possible ; pas de second `itemId` dédié aux graines (`Seedling`) |
+| Déclencheur (grille) | Clic **cellule occupée** → `BiofiltreManager.TryOpenPlantPopup` → `GridManager.GetPlantAt` → **`HarvestPanelUI.Open`** (interactor + `PlantGrow` + `PlantDefinition`). |
+| Déclencheur (plante) | **`PlantHarvestInteractor`** (`IPointerClickHandler`) : clic sur le collider 2D de la plante → **`ConfirmHarvest`** direct si récoltable (caméra avec **Physics2DRaycaster** + EventSystem). |
+| Éligibilité (récolte) | **`IsHarvestable()`** : stade **Mature** ou **Seedling** (le panel n’active le bouton *Récolter* que dans ces cas). Le champ `PlantDefinition.HarvestStage` reste la référence data (souvent `Mature`). |
+| Item | `harvestItemId` sur `PlantDefinition` ou override sur le composant ; résolution via **`ItemDatabase`**. |
+| Ajout | **`PlayerInventory.TryAdd(ItemDefinition, int)`** → **`InventoryResult`** (inclut **Partial**). |
+| Feedback | `InventoryFeedbackUI` si inventaire plein. |
+| Après succès | **`OnHarvestSuccess`** : libère les cases, désenregistre la plante, **Destroy** — pas de seconde récolte sur la même instance. |
+| **Pistes design** | **Mature** et **Seedling** partagent encore le **même** `harvestItemId` ; **`maxHarvestCount`** non utilisé pour des récoltes répétées sur pied ; comportement **`Partial`** + destruction de la plante à trancher (perte de la quantité non stockée). |
 
 ---
 

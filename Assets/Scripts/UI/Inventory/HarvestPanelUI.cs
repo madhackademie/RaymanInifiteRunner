@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Panel de récolte : affiché quand le joueur clique sur une plante mature.
-/// Montre l'icône et le nom de la plante, puis applique la récolte au clic sur "Récolter".
+/// Popup affiché quand le joueur clique sur une plante dans la grille.
+/// Affiche le sprite du stade courant, un timer, et des boutons conditionnels
+/// selon le stade (récolter si Mature, graines si Seedling, arracher dans les deux cas).
 /// </summary>
 public class HarvestPanelUI : MonoBehaviour
 {
@@ -14,56 +15,170 @@ public class HarvestPanelUI : MonoBehaviour
     [Header("Visuals")]
     [SerializeField] private Image plantIcon;
     [SerializeField] private TextMeshProUGUI plantNameLabel;
-    [SerializeField] private TextMeshProUGUI harvestAmountLabel;
+    [SerializeField] private TextMeshProUGUI stageLabel;
+    [SerializeField] private TextMeshProUGUI timerLabel;
+    [SerializeField] private TextMeshProUGUI yieldLabel;
 
     [Header("Boutons")]
     [SerializeField] private Button harvestButton;
-    [SerializeField] private Button cancelButton;
+    [SerializeField] private Button uprootButton;
+    [SerializeField] private Button closeButton;
 
     private PlantHarvestInteractor currentTarget;
+    private PlantGrow currentPlantGrow;
+    private PlantDefinition currentDefinition;
+    private bool isOpen;
+
+    // Noms lisibles des stades
+    private static readonly System.Collections.Generic.Dictionary<PlantGrow.GrowthStage, string> StageNames =
+        new()
+        {
+            { PlantGrow.GrowthStage.Graine,    "Graine"      },
+            { PlantGrow.GrowthStage.Starting,  "Germination" },
+            { PlantGrow.GrowthStage.Baby,      "Plantule"    },
+            { PlantGrow.GrowthStage.Growing,   "Croissance"  },
+            { PlantGrow.GrowthStage.Mature,    "Mature"      },
+            { PlantGrow.GrowthStage.Flowering, "Floraison"   },
+            { PlantGrow.GrowthStage.Seedling,  "Graines"     },
+        };
 
     private void Awake()
     {
         harvestButton.onClick.AddListener(OnHarvestClicked);
-        cancelButton.onClick.AddListener(Close);
+        uprootButton.onClick.AddListener(OnUprootClicked);
+        closeButton.onClick.AddListener(Close);
         panel.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (!isOpen || currentPlantGrow == null)
+            return;
+
+        RefreshDynamic();
     }
 
     // ── API publique ──────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Ouvre le panneau pour la plante ciblée.
+    /// Ouvre le popup pour la plante ciblée, peu importe son stade.
     /// </summary>
-    public void Open(PlantHarvestInteractor interactor, PlantDefinition definition, int harvestAmount)
+    public void Open(PlantHarvestInteractor interactor, PlantGrow plantGrow, PlantDefinition definition)
     {
-        currentTarget = interactor;
+        currentTarget     = interactor;
+        currentPlantGrow  = plantGrow;
+        currentDefinition = definition;
 
-        plantIcon.sprite         = definition.spriteMature;
-        plantIcon.enabled        = definition.spriteMature != null;
-        plantNameLabel.text      = definition.displayName;
-        harvestAmountLabel.text  = $"x{harvestAmount}";
+        plantNameLabel.text = definition != null ? definition.displayName : interactor.gameObject.name;
+
+        RefreshDynamic();
 
         panel.SetActive(true);
+        isOpen = true;
     }
 
-    /// <summary>Ferme le panneau sans récolter.</summary>
+    /// <summary>Ferme le popup.</summary>
     public void Close()
     {
+        isOpen = false;
         panel.SetActive(false);
-        currentTarget = null;
+        currentTarget     = null;
+        currentPlantGrow  = null;
+        currentDefinition = null;
+    }
+
+    // ── Rafraîchissement ──────────────────────────────────────────────────────
+
+    /// <summary>Met à jour les éléments qui changent chaque frame (timer, stade, boutons).</summary>
+    private void RefreshDynamic()
+    {
+        PlantGrow.GrowthStage stage = currentPlantGrow.CurrentStage;
+
+        // Sprite du stade courant
+        Sprite stageSprite = GetSpriteForStage(stage);
+        plantIcon.sprite  = stageSprite;
+        plantIcon.enabled = stageSprite != null;
+
+        // Nom du stade
+        stageLabel.text = StageNames.TryGetValue(stage, out string name) ? name : stage.ToString();
+
+        // Timer
+        float progress = currentPlantGrow.StageProgress;
+        float duration = currentDefinition != null ? currentDefinition.GetDuration(stage) : 0f;
+        if (duration > 0f)
+        {
+            float remaining = duration * (1f - progress);
+            timerLabel.text = FormatTime(remaining);
+        }
+        else
+        {
+            timerLabel.text = "—";
+        }
+
+        // Stades récoltables
+        bool isMature   = stage == PlantGrow.GrowthStage.Mature;
+        bool isSeedling = stage == PlantGrow.GrowthStage.Seedling;
+        bool isHarvestable = isMature || isSeedling;
+
+        // Label quantité
+        if (isHarvestable && currentDefinition != null)
+        {
+            int min = currentDefinition.harvestAmountMin;
+            int max = currentDefinition.harvestAmountMax;
+            string unit = isSeedling ? "graine" : "récolte";
+            yieldLabel.text = min == max ? $"x{min} {unit}" : $"x{min}–{max} {unit}";
+            yieldLabel.gameObject.SetActive(true);
+        }
+        else
+        {
+            yieldLabel.gameObject.SetActive(false);
+        }
+
+        // Bouton récolter : visible et interactable uniquement si récoltable
+        harvestButton.gameObject.SetActive(isHarvestable);
+        harvestButton.interactable = isHarvestable;
     }
 
     // ── Handlers ──────────────────────────────────────────────────────────────
 
     private void OnHarvestClicked()
     {
-        if (currentTarget == null)
-        {
-            Close();
-            return;
-        }
-
+        if (currentTarget == null) { Close(); return; }
         currentTarget.ConfirmHarvest();
         Close();
+    }
+
+    private void OnUprootClicked()
+    {
+        if (currentTarget == null) { Close(); return; }
+        currentTarget.Uproot();
+        Close();
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private Sprite GetSpriteForStage(PlantGrow.GrowthStage stage)
+    {
+        if (currentDefinition == null)
+            return null;
+
+        return stage switch
+        {
+            PlantGrow.GrowthStage.Graine    => currentDefinition.spriteGraine,
+            PlantGrow.GrowthStage.Starting  => currentDefinition.spriteStarting,
+            PlantGrow.GrowthStage.Baby      => currentDefinition.spriteBaby,
+            PlantGrow.GrowthStage.Growing   => currentDefinition.spriteGrowing,
+            PlantGrow.GrowthStage.Mature    => currentDefinition.spriteMature,
+            PlantGrow.GrowthStage.Flowering => currentDefinition.spriteFlowering,
+            PlantGrow.GrowthStage.Seedling  => currentDefinition.spriteSeedling,
+            _                               => null
+        };
+    }
+
+    private static string FormatTime(float seconds)
+    {
+        int m = Mathf.FloorToInt(seconds / 60f);
+        int s = Mathf.FloorToInt(seconds % 60f);
+        return m > 0 ? $"{m}m {s:D2}s" : $"{s}s";
     }
 }

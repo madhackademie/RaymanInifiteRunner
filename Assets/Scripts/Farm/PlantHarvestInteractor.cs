@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Attached to a plant GameObject. On click, vérifie la maturité, résout l'item
@@ -7,7 +8,7 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(PlantGrow))]
 [RequireComponent(typeof(Collider2D))]
-public class PlantHarvestInteractor : MonoBehaviour
+public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 {
     [Header("Dependencies")]
     [SerializeField] private ItemDatabase itemDatabase;
@@ -52,42 +53,63 @@ public class PlantHarvestInteractor : MonoBehaviour
         harvestPanelUI ??= panel;
     }
 
-    // ── Logique de récolte ────────────────────────────────────────────────────
+    /// <summary>
+    /// Injecte l'ItemDatabase et le PlayerInventory depuis BiofiltreManager.
+    /// Appelé après instantiation si les références ne sont pas déjà assignées dans le prefab.
+    /// </summary>
+    public void InjectInventory(ItemDatabase database, PlayerInventory inventory)
+    {
+        itemDatabase    ??= database;
+        playerInventory ??= inventory;
+    }
+
+    // ── IPointerClickHandler ──────────────────────────────────────────────────
 
     /// <summary>
-    /// Vérifie la maturité et ouvre le HarvestPanel si disponible,
-    /// ou applique directement la récolte sinon.
+    /// Triggered by the EventSystem when the player clicks the plant in the scene.
+    /// Requires a Physics2DRaycaster on the camera.
+    /// Récolte directement si le stade le permet, sans ouvrir de panel intermédiaire.
+    /// </summary>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ConfirmHarvest();
+    }
+
+    // ── Logique de récolte ────────────────────────────────────────────────────
+    /// Ouvre le popup d'info pour cette plante, peu importe son stade.
+    /// Le panel gère lui-même la visibilité du bouton de récolte.
     /// </summary>
     public void TryHarvest()
     {
-        if (!IsMature())
-        {
-            Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' n'est pas encore mature.");
-            return;
-        }
-
         PlantDefinition definition = ResolveDefinition();
-        ItemDefinition  item       = ResolveItem(definition);
 
-        if (item == null)
-            return;
-
-        if (harvestPanelUI != null && definition != null)
+        if (harvestPanelUI != null)
         {
-            int amount = ResolveHarvestAmount(definition);
-            harvestPanelUI.Open(this, definition, amount);
+            harvestPanelUI.Open(this, plantGrow, definition);
             return;
         }
 
-        // Fallback direct sans panel
-        ApplyHarvest(item, definition);
+        // Fallback direct : on n'applique la récolte que si le stade le permet
+        if (!IsHarvestable())
+        {
+            Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' n'est pas récoltable.");
+            return;
+        }
+
+        ItemDefinition item = ResolveItem(definition);
+        if (item != null)
+            ApplyHarvest(item, definition);
     }
 
     /// <summary>
     /// Appelé par HarvestPanelUI quand le joueur confirme la récolte.
+    /// Fonctionne pour les stades Mature et Seedling.
     /// </summary>
     public void ConfirmHarvest()
     {
+        if (!IsHarvestable())
+            return;
+
         PlantDefinition definition = ResolveDefinition();
         ItemDefinition  item       = ResolveItem(definition);
 
@@ -121,11 +143,35 @@ public class PlantHarvestInteractor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Arrache la plante sans récolter : libère les cellules et la détruit.
+    /// Appelé par HarvestPanelUI via le bouton "Arracher".
+    /// </summary>
+    public void Uproot()
+    {
+        if (gridManager != null && occupiedCells != null)
+        {
+            gridManager.FreeCells(occupiedCells);
+            gridManager.UnregisterPlant(occupiedCells);
+        }
+
+        if (visualizer != null && occupiedCells != null)
+        {
+            foreach (Vector2Int coords in occupiedCells)
+                visualizer.GetCell(coords)?.SetVisualState(false);
+        }
+
+        Destroy(gameObject);
+    }
+
     private void OnHarvestSuccess()
     {
-        // Libérer les cellules dans la grille
+        // Libérer les cellules dans la grille + désenregistrer la plante
         if (gridManager != null && occupiedCells != null)
+        {
             gridManager.FreeCells(occupiedCells);
+            gridManager.UnregisterPlant(occupiedCells);
+        }
 
         // Remettre les cellules visuelles à l'état vide
         if (visualizer != null && occupiedCells != null)
@@ -139,6 +185,12 @@ public class PlantHarvestInteractor : MonoBehaviour
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private bool IsHarvestable()
+    {
+        PlantGrow.GrowthStage stage = plantGrow.CurrentStage;
+        return stage == PlantGrow.GrowthStage.Mature || stage == PlantGrow.GrowthStage.Seedling;
+    }
 
     private bool IsMature()
     {

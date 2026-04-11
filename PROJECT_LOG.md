@@ -461,3 +461,41 @@
 - `Assets/Scenes/FirstLvl.unity`
 - `Notes/Todo_project.md`
 - `Notes/Farm/TODO_plantation_pipeline.md`
+
+## 2026-04-12
+### Contexte
+- Machine : **PC bureau** / PC portable (selon session)
+- Unity : Unity 6 (6000.x)
+- Branche : selon l’état Git local
+
+### Ce qu’on a fait
+- [x] **Audit code + assets (assistant)** : parcours de `Assets/Scripts/`, prefabs farm/UI principaux et scènes listées ci-dessous ; rédaction de **`Notes/Codebase_etat_reference.md`** (inventaire des scripts, flux réels, prefabs, points d’attention).
+- [x] **Alignement doc** : mise à jour du **Zoom D** et du tableau « Récolte ↔ inventaire » dans **`Notes/Farm/SYSTEMES_carte_mentale.md`** pour refléter le chemin **`TryOpenPlantPopup`** / registre `GridManager.GetPlantAt` (remplace l’ancien schéma centré sur `TryOpenHarvestPanel`, aujourd’hui non appelé dans `HandleCellClicked`).
+- [x] **Journal** : cette entrée dans **`PROJECT_LOG.md`**.
+
+### État constaté (code au moment de l’audit)
+- **Grille / biofiltre** : `BiofiltreManager` — cellule libre → `SeedSelectionUI` ; cellule occupée → **`TryOpenPlantPopup`** → `HarvestPanelUI.Open` avec lookup **`gridManager.GetPlantAt(coords)`** (pas de recherche spatiale sur le clic grille).
+- **Récolte** : `PlantHarvestInteractor` — `IPointerClickHandler` sur la plante (**`OnPointerClick` → `ConfirmHarvest()`** direct si récoltable, utile avec **Physics2DRaycaster** sur la caméra) ; **`TryHarvest()`** ouvre le panel ou applique la récolte en fallback ; **`IsHarvestable()`** = stades **Mature** ou **Seedling** ; succès **Success** ou **Partial** → **`OnHarvestSuccess`** (libère grille + `Destroy`).
+- **UI récolte** : `HarvestPanelUI` — popup à tout stade, bouton récolte si Mature/Seedling, bouton arracher (`Uproot`), rafraîchissement timer/stade en `Update` tant que le panel est ouvert.
+- **Inventaire** : `PlayerInventory.TryAdd(ItemDefinition, int)` → `InventoryResult` (dont **Partial**) ; UI `InventoryUI` / `InventorySlotUI`, feedback `InventoryFeedbackUI`.
+- **Données plante** : `PlantDefinition` — `PlantGrowthPattern` Leafy/Fruiting, `HarvestStage`, harvest min/max, `maxHarvestCount` (champ présent ; logique multi-récolte sans destruction à affiner si besoin).
+- **Méthodes orphelines** : `BiofiltreManager.TryOpenHarvestPanel` / `FindInteractorAt` existent mais **ne sont pas invoquées** par le flux actuel du clic cellule — conservées pour référence ou suppression future.
+
+### Prefabs / scènes repérés (non exhaustif hors packages)
+- `Assets/Prefabs/World/Biofiltre.prefab`, `Assets/Prefabs/World/Plantes/LaitueObj.prefab`
+- `Assets/Prefabs/Ui/InventoryPanel.prefab`, `Assets/Prefabs/Ui/InventorySlotUI.prefab`, `Assets/Prefabs/Ui/SeedSlotUI.prefab`
+- `Assets/Scenes/FirstLvl.unity`, `Assets/Scenes/SampleScene.unity`, `Assets/SampleScene.unity` (doublon éventuel déjà noté dans les entrées précédentes)
+
+### Problèmes rencontrés / pistes
+- **Design** : Mature et Seedling utilisent le **même** `harvestItemId` tant qu’on n’ajoute pas un second item ou une règle par stade ; **`Partial`** déclenche quand même la destruction de la plante (perte de la récolte restante côté monde).
+- **Dette** : trancher le sort de `TryOpenHarvestPanel` / `FindInteractorAt` (usage ou retrait) pour éviter la confusion avec la doc.
+
+### Prochaines actions (priorité)
+1. Jeu de tests manuel **`FirstLvl`** : clic cellule occupée → panel → récolte / inventaire plein / arrachage ; optionnel clic direct sur sprite plante (raycast 2D).
+2. Poursuivre les cases **`Notes/Todo_project.md`** (inventaire récolte, spec deux récoltes, etc.).
+3. Mettre à jour **`Notes/Codebase_etat_reference.md`** après tout refactor majeur (noms de méthodes, suppression du code mort).
+
+### Liens utiles
+- `Notes/Codebase_etat_reference.md` — état de référence post-audit
+- `Notes/Farm/SYSTEMES_carte_mentale.md` — flux mis à jour (Zoom D)
+- Dossier scripts : `Assets/Scripts/`

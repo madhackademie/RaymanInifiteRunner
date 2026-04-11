@@ -16,6 +16,12 @@ public class BiofiltreManager : MonoBehaviour
     [Tooltip("Panel de récolte ouvert quand le joueur clique sur une plante mature.")]
     [SerializeField] private HarvestPanelUI harvestPanelUI;
 
+    [Header("Harvest")]
+    [Tooltip("Base de données d'items pour résoudre les récoltes. Injectée dans chaque PlantHarvestInteractor.")]
+    [SerializeField] private ItemDatabase itemDatabase;
+    [Tooltip("Inventaire du joueur qui reçoit les items récoltés. Injecté dans chaque PlantHarvestInteractor.")]
+    [SerializeField] private PlayerInventory playerInventory;
+
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
 
@@ -55,9 +61,42 @@ public class BiofiltreManager : MonoBehaviour
         }
         else
         {
-            // Cellule occupée → tenter la récolte
-            TryOpenHarvestPanel(cell.GridCoordinates);
+            // Cellule occupée → ouvrir le popup d'info plante
+            TryOpenPlantPopup(cell.GridCoordinates);
         }
+    }
+
+    /// <summary>
+    /// Ouvre le popup d'info pour la plante occupant la cellule cliquée.
+    /// Lookup O(1) via le registre de GridManager — aucune recherche spatiale.
+    /// </summary>
+    private void TryOpenPlantPopup(Vector2Int coords)
+    {
+        GameObject plantObj = gridManager.GetPlantAt(coords);
+
+        if (plantObj == null)
+        {
+            Debug.Log($"[BiofiltreManager] Aucune plante enregistrée à la cellule {coords}.");
+            return;
+        }
+
+        if (harvestPanelUI == null)
+        {
+            Debug.LogWarning("[BiofiltreManager] HarvestPanelUI non assigné.", this);
+            return;
+        }
+
+        PlantGrow plantGrow = plantObj.GetComponent<PlantGrow>();
+        PlantDefinitionHolder holder = plantObj.GetComponent<PlantDefinitionHolder>();
+        PlantHarvestInteractor interactor = plantObj.GetComponent<PlantHarvestInteractor>();
+
+        if (plantGrow == null)
+        {
+            Debug.LogWarning($"[BiofiltreManager] PlantGrow manquant sur '{plantObj.name}'.", this);
+            return;
+        }
+
+        harvestPanelUI.Open(interactor, plantGrow, holder != null ? holder.Definition : null);
     }
 
     /// <summary>
@@ -204,10 +243,13 @@ public class BiofiltreManager : MonoBehaviour
             Vector2Int[] cells = System.Linq.Enumerable.ToArray(plantDefinition.GetOccupiedCells(anchor));
             harvestInteractor.Initialise(gridManager, visualizer, cells);
             harvestInteractor.InjectHarvestPanel(harvestPanelUI);
+            harvestInteractor.InjectInventory(itemDatabase, playerInventory);
         }
 
-        // Mark cells occupied in GridData
-        gridManager.OccupyCells(plantDefinition.GetOccupiedCells(anchor));
+        // Mark cells occupied in GridData + plant registry
+        Vector2Int[] footprintCells = System.Linq.Enumerable.ToArray(plantDefinition.GetOccupiedCells(anchor));
+        gridManager.OccupyCells(footprintCells);
+        gridManager.RegisterPlant(footprintCells, instance);
 
         // Update visual states of affected cells
         foreach (Vector2Int coords in plantDefinition.GetOccupiedCells(anchor))

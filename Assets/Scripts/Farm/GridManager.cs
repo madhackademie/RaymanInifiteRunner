@@ -34,6 +34,9 @@ public class GridManager : MonoBehaviour
 
     public GridData Grid { get; private set; }
 
+    // Maps any occupied cell to the root GameObject of the plant that occupies it.
+    private readonly Dictionary<Vector2Int, GameObject> _plantByCell = new();
+
     private int _columns;
     private int _rows;
     private Vector2 _cellSizeWorld;
@@ -164,6 +167,35 @@ public class GridManager : MonoBehaviour
     public void FreeCells(IEnumerable<Vector2Int> cells)
     {
         if (Grid != null) Grid.SetFree(cells);
+    }
+
+    // ── Plant registry ────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Registers a plant GameObject against all cells of its footprint.
+    /// Called by BiofiltreManager right after instantiation.
+    /// </summary>
+    public void RegisterPlant(IEnumerable<Vector2Int> cells, GameObject plant)
+    {
+        foreach (Vector2Int cell in cells)
+            _plantByCell[cell] = plant;
+    }
+
+    /// <summary>
+    /// Returns the plant GameObject occupying the given cell, or null if none.
+    /// O(1) lookup — no spatial search.
+    /// </summary>
+    public GameObject GetPlantAt(Vector2Int cell) =>
+        _plantByCell.TryGetValue(cell, out GameObject plant) ? plant : null;
+
+    /// <summary>
+    /// Removes the plant registry entries for the given cells.
+    /// Call this when a plant is harvested or destroyed.
+    /// </summary>
+    public void UnregisterPlant(IEnumerable<Vector2Int> cells)
+    {
+        foreach (Vector2Int cell in cells)
+            _plantByCell.Remove(cell);
     }
 
 #if UNITY_EDITOR
