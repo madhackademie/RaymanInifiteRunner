@@ -4,7 +4,7 @@ using UnityEngine;
 /// Design-time configuration for a farm grid.
 /// Defines its dimensions, cell size, and world origin (top-left corner).
 /// </summary>
-[CreateAssetMenu(menuName = "Game/Grid/Grid Config", fileName = "GridConfig")]
+[CreateAssetMenu(menuName = "Game/Data/Ferme/Grille (GridConfig)", fileName = "GridConfig")]
 public class GridConfig : ScriptableObject
 {
     [Header("Dimensions")]

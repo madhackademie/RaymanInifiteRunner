@@ -531,3 +531,28 @@
 - `GIT_HELPER.md` (sections --1-- à --3--)
 - `WORKFLOW_PROTOCOL.md` (--4--, --5--)
 - `Notes/Todo_project.md`
+
+## 2026-04-12 — fin de session (données récolte + organisation assets + doc)
+
+### Contexte
+- Session utilisateur + assistant (Cursor) : clarification **récolte ↔ inventaire**, rangement des ScriptableObjects, doc de référence pour les prochaines plantes.
+
+### Ce qu’on a fait
+- [x] **Distinction SO** : explication *PlantDefinition* (ferme) vs *ItemDefinition* (inventaire) ; règle **`harvestItemId` = `itemId`** (pas le nom du fichier ni le `displayName`).
+- [x] **Dossiers assets** : `Assets/Data/Inventaire/` (ex. `LaitueMature.asset` — item) et `Assets/Data/Ferme/` (ex. `Laitue.asset` — plante) ; déplacement des `.asset` depuis `Assets/Scripts/Data/`.
+- [x] **Menus Create** : chemins regroupés sous `Game/Data/Inventaire/...` et `Game/Data/Ferme/...` (`ItemDefinition`, `ItemDatabase`, `PlantDefinition`, `GridConfig` dans `GridConfig.cs`).
+- [x] **Laitue** : configuration du stade **Mature** dans `harvestStages` avec **`harvestItemId` = `laitue_mature`** (aligné sur l’`ItemDefinition` présent dans le projet).
+- [x] **Documentation** : création de **`Docs/PLANTES_ET_INVENTAIRE.md`** (checklist nouvelle plante, ItemDatabase, flux runtime, liens scripts).
+
+### Problèmes / rappels
+- Tout **ItemDefinition** utilisé en récolte doit être **référencé dans `ItemDatabase`** et l’`itemId` doit matcher **exactement** le `harvestItemId` (casse, underscores).
+
+### Prochaines actions (priorité — **inchangée** prochaine session)
+1. **Câblage récolte / inventaire en scène** : `BiofiltreManager` (`itemDatabase`, `playerInventory`, `harvestPanelUI`), `HarvestPanelUI`, `InventoryUI`, prefabs ; test **`FirstLvl`** (ou scène dédiée) : cellule occupée → panel → récolte → slots à jour, cas inventaire plein.
+2. Ensuite : verrou récolte / double récolte (Mature vs Seedling) selon `Notes/Todo_project.md`.
+
+### Liens utiles
+- `Docs/PLANTES_ET_INVENTAIRE.md`
+- `Assets/Data/Inventaire/`, `Assets/Data/Ferme/`
+- `Notes/Todo_project.md` — section *Prochaine session*
+- `Notes/Farm/TODO_plantation_pipeline.md` — étape 4

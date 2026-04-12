@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// ScriptableObject describing a single item type in the game.
 /// </summary>
-[CreateAssetMenu(menuName = "Game/Inventory/Item Definition", fileName = "ItemDefinition")]
+[CreateAssetMenu(menuName = "Game/Data/Inventaire/Item (définition)", fileName = "Item_")]
 public class ItemDefinition : ScriptableObject
 {
     [Header("Identity")]

@@ -52,7 +52,9 @@ Implémentation réelle : **`BiofiltreManager`** (`CanPlace`, `PlantSeedAt`, `Oc
 
 ## Étape 4 — Récolte & inventaire (câblage en cours)
 
-Après pose et croissance : clic sur cellule occupée / plante mature → panel **`HarvestPanelUI`** → confirmation → **`PlayerInventory.TryAdd`**. **Priorité prochaine session** : (1) câblage **récolte mature / graines** (travail **Bezi**) + **SO** (`PlantDefinition`, `ItemDefinition`, `ItemDatabase`) et définitions alignées stades **Mature** / **Seedling** ; (2) une passe **lecture du flux** pour comprendre l’ensemble — voir **`Notes/Todo_project.md`** (*Prochaine session*, cases **Récolte Mature / Graines (Bezi)** et *Inventaire récolte*), **`PROJECT_LOG.md`** (entrée complément 2026-04-12), **Zoom D** dans `SYSTEMES_carte_mentale.md`.
+Après pose et croissance : clic sur cellule occupée / plante mature → panel **`HarvestPanelUI`** → confirmation → **`PlayerInventory.TryAdd`**.
+
+**Priorité prochaine session (2026-04-12, inchangée)** : **câblage scène + Inspector** du flux récolte → inventaire (pas seulement les SO). Données d’exemple et règle **`harvestItemId` = `itemId`** : **`Docs/PLANTES_ET_INVENTAIRE.md`** ; journal : **`PROJECT_LOG.md`** (*2026-04-12 — fin de session*) ; TODO hub : **`Notes/Todo_project.md`** (*Prochaine session*). Carte flux : **Zoom D** dans `SYSTEMES_carte_mentale.md`. Ensuite : mature/graines, verrou double récolte — `Notes/Todo_project.md`.
 
 ---
 

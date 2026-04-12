@@ -7,13 +7,18 @@ using UnityEngine;
 /// Leafy   : Growing → Mature (récolte) → Flowering → Seedling  (laitue, épinard…)
 /// Fruiting: Growing → Flowering → Mature (récolte) → Seedling  (tomate, poivron…)
 /// </summary>
+/// <remarks>
+/// Le pattern de croissance détermine le type de plante.
+/// - Leafy : plante qui produit des feuilles.
+/// - Fruiting : plante qui produit des fruits.
+/// </remarks>
 public enum PlantGrowthPattern
 {
     Leafy    = 0, // valeur par défaut — préserve le comportement des assets existants
     Fruiting = 1,
 }
 
-[CreateAssetMenu(menuName = "Game/Plants/Plant Definition", fileName = "PlantDefinition")]
+[CreateAssetMenu(menuName = "Game/Data/Ferme/Plante (définition)", fileName = "Plante_")]
 public class PlantDefinition : ScriptableObject
 {
     [Header("Identity")]

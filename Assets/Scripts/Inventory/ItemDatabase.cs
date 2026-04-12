@@ -5,7 +5,7 @@ using UnityEngine;
 /// ScriptableObject acting as a registry for all ItemDefinitions in the game.
 /// Assign all items in the Inspector; query them at runtime via GetById.
 /// </summary>
-[CreateAssetMenu(menuName = "Game/Inventory/Item Database", fileName = "ItemDatabase")]
+[CreateAssetMenu(menuName = "Game/Data/Inventaire/Base d'items (ItemDatabase)", fileName = "ItemDatabase")]
 public class ItemDatabase : ScriptableObject
 {
     [SerializeField] private List<ItemDefinition> items = new();
