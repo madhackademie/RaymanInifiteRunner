@@ -34,8 +34,9 @@ public class PlantDefinition : ScriptableObject
     public PlantGrowthPattern GrowthPattern => growthPattern;
 
     [Header("Harvest")]
-    [Tooltip("Stades récoltables de cette plante. Chaque entrée définit le stade, l'item obtenu et les quantités min/max.\n" +
-             "Exemple laitue : Mature (feuilles) + Seedling (graines).")]
+    [Tooltip("Une entrée par stade où le joueur peut récolter. À un instant T, seul le stade courant (PlantGrow) est actif : " +
+             "ex. récolter tôt à Mature ou attendre Seedling pour un autre item — pas deux récoltes d'affilée sur la même plante.\n" +
+             "Chaque entrée : stage, harvestItemId, quantités min/max.")]
     public HarvestStageConfig[] harvestStages = Array.Empty<HarvestStageConfig>();
 
     public int maxHarvestCount = 1;

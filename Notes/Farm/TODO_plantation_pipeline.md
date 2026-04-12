@@ -54,7 +54,7 @@ Implémentation réelle : **`BiofiltreManager`** (`CanPlace`, `PlantSeedAt`, `Oc
 
 Après pose et croissance : clic sur cellule occupée / plante mature → panel **`HarvestPanelUI`** → confirmation → **`PlayerInventory.TryAdd`**.
 
-**Priorité prochaine session (2026-04-12, inchangée)** : **câblage scène + Inspector** du flux récolte → inventaire (pas seulement les SO). Données d’exemple et règle **`harvestItemId` = `itemId`** : **`Docs/PLANTES_ET_INVENTAIRE.md`** ; journal : **`PROJECT_LOG.md`** (*2026-04-12 — fin de session*) ; TODO hub : **`Notes/Todo_project.md`** (*Prochaine session*). Carte flux : **Zoom D** dans `SYSTEMES_carte_mentale.md`. Ensuite : mature/graines, verrou double récolte — `Notes/Todo_project.md`.
+**Priorité prochaine session (2026-04-12, inchangée)** : **câblage scène + Inspector** du flux récolte → inventaire (pas seulement les SO). Données d’exemple et règle **`harvestItemId` = `itemId`** : **`Docs/PLANTES_ET_INVENTAIRE.md`** ; journal : **`PROJECT_LOG.md`** (*2026-04-12 — fin de session*) ; TODO hub : **`Notes/Todo_project.md`** (*Prochaine session*). Carte flux : **Zoom D** dans `SYSTEMES_carte_mentale.md`. **Design** : une récolte réussie → destruction plante (pas de cycle feuille + graine) — `ASSISTANT_CONTEXT.md`.
 
 ---
 

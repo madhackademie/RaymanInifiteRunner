@@ -3,6 +3,12 @@
 Document de référence pour configurer une nouvelle culture et la lier à l’inventaire.  
 **Emplacement :** `Docs/PLANTES_ET_INVENTAIRE.md` (à citer ou ouvrir lors des questions sur les plantes / items / récolte).
 
+### Décision design — ce jeu
+
+- **Une récolte par plante** : après ajout à l’inventaire (**Success** ou **Partial**), la plante est **détruite** et les cellules sont libérées (`PlantHarvestInteractor.OnHarvestSuccess`).
+- **Plusieurs lignes dans `harvestStages`** : ce sont des **fenêtres de récolte alternatives**, pas deux récoltes successives. Le joueur ne voit **qu’une** offre à la fois : celle qui correspond au **stade courant** (`HarvestPanelUI` + `GetHarvestConfig(CurrentStage)`). Exemple : récolter à **Mature** (item A) **ou** laisser pousser jusqu’au **dernier stade récoltable** (ex. **Seedling**, item B) — s’il récolte au premier, la plante disparaît et il n’atteindra jamais le second.
+- **Pas** de enchaînement « première récolte feuilles, *puis* deuxième récolte graines » sur **la même** instance sans la détruire entre les deux (ce n’est pas le modèle retenu).
+
 ---
 
 ## 1. Rôles des ScriptableObjects
@@ -68,10 +74,11 @@ Les **scripts** restent sous `Assets/Scripts/`.
 1. Créer un **`ItemDefinition`** (ou réutiliser un item existant) ; choisir un **`itemId`** stable (ex. `tomate_mure`).
 2. Ajouter cet item dans **`ItemDatabase`**.
 3. Créer ou dupliquer une **`PlantDefinition`** ; remplir stades, sprites, footprint, etc.
-4. Dans **`harvestStages`**, pour chaque stade récoltable :
-   - **`stage`** = stade `PlantGrow` concerné (ex. **Mature**, **Seedling** pour graines…).
-   - **`harvestItemId`** = **exactement** le `itemId` du `ItemDefinition`.
+4. Dans **`harvestStages`**, une ligne par stade où une récolte est possible (souvent **deux** si récolte précoce vs récolte au dernier stade, ex. **Mature** et **Seedling**) :
+   - **`stage`** = stade `PlantGrow` **à ce moment-là** ; à l’écran, une seule config est active = celle du **stade courant**.
+   - **`harvestItemId`** = **exactement** le `itemId` du `ItemDefinition` pour cette fenêtre.
    - **`harvestAmountMin` / `harvestAmountMax`** = quantité aléatoire incluse entre min et max.
+   - Prévoir un **`ItemDefinition`** (et entrée **`ItemDatabase`**) pour **chaque** ligne si les items diffèrent.
 5. Vérifier que le prefab plante a **`PlantHarvestInteractor`**, **`PlantDefinitionHolder`**, **`PlantGrow`**, **`Collider2D`**, et que **`BiofiltreManager`** référence le bon **`ItemDatabase`** et **`PlayerInventory`**.
 
 ---
@@ -79,7 +86,8 @@ Les **scripts** restent sous `Assets/Scripts/`.
 ## 7. Flux runtime (rappel)
 
 1. Clic cellule occupée → `BiofiltreManager` ouvre **`HarvestPanelUI`** avec la plante ciblée.  
-2. Confirmation récolte → **`PlantHarvestInteractor`** lit la config du stade courant, résout l’item avec **`itemDatabase.GetById(harvestItemId)`**, puis **`playerInventory.TryAdd(item, quantité)`**.
+2. Confirmation récolte → **`PlantHarvestInteractor`** lit la config du stade courant, résout l’item avec **`itemDatabase.GetById(harvestItemId)`**, puis **`playerInventory.TryAdd(item, quantité)`**.  
+3. Si l’ajout est **Success** ou **Partial** → la plante est **détruite** et la grille est libérée.
 
 ---
 
