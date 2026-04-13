@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Manages the player's inventory. Exposes add/remove operations and fires
-/// OnInventoryChanged whenever the state changes.
+/// Manages the player's inventory. Persists across scene loads via DontDestroyOnLoad.
+/// Exposes add/remove operations and fires OnInventoryChanged whenever the state changes.
 /// </summary>
 public class PlayerInventory : MonoBehaviour
 {
+    /// <summary>Singleton instance. Available from any scene after first load.</summary>
+    public static PlayerInventory Instance { get; private set; }
+
     [SerializeField] private int slotCount = 20;
 
     private readonly List<InventorySlot> slots = new();
@@ -20,6 +23,15 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         InitialiseSlots();
     }
 

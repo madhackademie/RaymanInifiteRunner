@@ -53,7 +53,7 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 ## Inventaire (résumé API)
 
-- **`PlayerInventory`** : slots en liste, `TryAdd(ItemDefinition, int)`, `TryRemove`, `Count`, `HasSpaceFor`, événement `OnInventoryChanged`.
+- **`PlayerInventory`** : slots en liste, `TryAdd(ItemDefinition, int)`, `TryRemove`, `Count`, `HasSpaceFor`, événement `OnInventoryChanged` ; accès singleton **`Instance`** (initialisation dans `Awake`). Les consommateurs (ex. **`BiofiltreManager`**) peuvent résoudre la référence sans `[SerializeField]` — voir ordre d’exécution : `Notes/Farm/PlayerInventory_Instance_et_ordre_Awake.md`.
 - **`InventoryResult`** : `Success`, `Partial`, `Full`, `InvalidItem`.
 - **`ItemDatabase`** (SO) : `GetById(string)`.
 - **UI** : `InventoryUI` / `InventorySlotUI`, `InventoryFeedbackUI` (ex. inventaire plein).

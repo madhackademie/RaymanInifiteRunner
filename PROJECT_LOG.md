@@ -556,3 +556,54 @@
 - `Assets/Data/Inventaire/`, `Assets/Data/Ferme/`
 - `Notes/Todo_project.md` — section *Prochaine session*
 - `Notes/Farm/TODO_plantation_pipeline.md` — étape 4
+
+## 2026-04-13 — fin de session (pédagogie C#, IDE, architecture inventaire / cloud)
+
+### Contexte
+- Session **questions / concepts** (pas de refactor code majeur) : compréhension de `GridData`, navigation IDE, feuille de route **prototype → Unity Gaming Services** (Cloud Save + Economy), vocabulaire produit (**MVP / PMV**).
+
+### Ce qu’on a fait
+- [x] **Clarifications C# / `GridData`** : type `byte`, tableau `new byte[columns, rows]` (une valeur par cellule, init à 0 par le runtime) ; méthodes **expression-bodied** (`=>` équivalent à un `return` court) ; chaîne **`AreAllFree`** : `BiofiltreManager` → `GridManager.AreAllCellsFree` → `GridData.AreAllFree`.
+- [x] **IDE Cursor** : pourquoi l’extension **C# Microsoft** n’apparaît souvent **pas** dans le marketplace Cursor ; intérêt des extensions **C# « free/libre »** compatibles + rappel **Regenerate project files** (Unity) pour `.csproj`.
+- [x] **Note projet** : `Notes/Farm/PlayerInventory_Instance_et_ordre_Awake.md` — `PlayerInventory` via **`Instance`** (plus de drag & drop Inspector pour ce lien) ; risque d’ordre d’**`Awake`** entre GameObjects → **Script Execution Order** si besoin (`PlayerInventory` avant `BiofiltreManager`).
+- [x] **Architecture (discussion)** : chemin **prototype local** puis **Cloud Save** (snapshot IDs + qty), puis **Economy** ; le **singleton** client peut rester comme **vue / cache** même avec serveur autoritaire ; introduction **injection de dépendances** vs `Instance`.
+
+### Fiches / liens ajoutés ou mis à jour cette session
+- `Notes/Learning/CSharp_bases_et_Cursor_Unity.md` (nouvelle fiche récap pédagogique + IDE)
+- `Notes/Learning/README_learning.md` — index mis à jour
+- `Notes/Codebase_etat_reference.md` — rappel singleton + note Farm
+- `Notes/Todo_project.md` — pointage doc session + backlog cloud optionnel
+
+### Prochaines actions (priorité — **inchangée** côté gameplay)
+1. **Câblage récolte / inventaire en scène** (`FirstLvl` ou test dédié) — toujours la priorité #1 (voir `Notes/Todo_project.md`).
+2. Si warning **singleton null** au démarrage : vérifier **Script Execution Order** (voir note Farm ci-dessus).
+3. Après validation prototype : esquisse technique **Auth → Cloud Save → Economy** (sans bloquer le MVP local).
+
+### Liens utiles
+- `Notes/Farm/PlayerInventory_Instance_et_ordre_Awake.md`
+- `Notes/Learning/CSharp_bases_et_Cursor_Unity.md`
+- `Notes/Todo_project.md`
+
+## 2026-04-13 — complément (priorités : scènes Inventaire / Market)
+
+### Contexte
+- L’auteur considère le **noyau inventaire + flux récolte** comme **terminé** pour l’instant.
+- **Prochaine session** : scène **Inventaire**, scène **Market**, **boutons UI** présents sur **tous les stages** ; décisions encore ouvertes : **superposition** des scènes / couches UI, **synchrone vs asynchrone** pour le chargement.
+
+### Ce qu’on a fait
+- [x] **Note technique** : `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md` — modes `Single` / **Additive**, `LoadScene` vs **`LoadSceneAsync`**, `allowSceneActivation`, **HUD / coque persistante**, `EventSystem` unique, tableau comparatif réactivité, pièges (`DontDestroyOnLoad`, `timeScale`), checklist décisions projet.
+- [x] **Hub TODO** : `Notes/Todo_project.md` — *Prochaine session* réorientée (scènes Inventaire / Market + HUD) ; cases inventaire / flux récolte minimal marquées **[x]**.
+- [x] **`ASSISTANT_CONTEXT.md`** : priorités alignées sur la navigation scènes + lien vers le guide.
+
+### Prochaines actions (priorité)
+1. Trancher **UI prefab** vs **scènes `.unity`** pour Inventaire / Market ; implémenter **prefab HUD** (ou Bootstrap) partagé entre stages.
+2. Configurer **Build Settings** + scripts `SceneManager` (ou service dédié) selon le modèle retenu dans le guide.
+3. Playtest **réactivité** au clic (pas de hitch : préchargement ou `SetActive` sur UI déjà chargée).
+
+### Liens utiles
+- `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
+- `Notes/Todo_project.md`
+- `Notes/Ui/Todo_ui.md` — à croiser pour stack panneaux / options
+
+### Décision / rappel Git
+- **Obligatoire** : la prochaine implémentation **scènes / HUD / UI Inventaire–Market** doit démarrer sur une **branche `feature/…`** (pas sur `main`) ; fork GitHub = même logique sur branche du fork. Documenté dans **`GIT_HELPER.md` --3--**, **`WORKFLOW_PROTOCOL.md`**, **`Notes/Todo_project.md`**, en-tête du **guide UI scènes**.

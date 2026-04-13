@@ -19,16 +19,19 @@ public class BiofiltreManager : MonoBehaviour
     [Header("Harvest")]
     [Tooltip("Base de données d'items pour résoudre les récoltes. Injectée dans chaque PlantHarvestInteractor.")]
     [SerializeField] private ItemDatabase itemDatabase;
-    [Tooltip("Inventaire du joueur qui reçoit les items récoltés. Injecté dans chaque PlantHarvestInteractor.")]
-    [SerializeField] private PlayerInventory playerInventory;
 
+    private PlayerInventory playerInventory;
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
 
     private void Awake()
     {
-        visualizer   = GetComponent<BiofiltreGridVisualizer>();
-        gridManager  = GetComponent<GridManager>();
+        visualizer      = GetComponent<BiofiltreGridVisualizer>();
+        gridManager     = GetComponent<GridManager>();
+        playerInventory = PlayerInventory.Instance;
+
+        if (playerInventory == null)
+            Debug.LogWarning("[BiofiltreManager] PlayerInventory.Instance est null — le GameManager est-il présent dans la scène ?", this);
     }
 
     private void OnEnable()

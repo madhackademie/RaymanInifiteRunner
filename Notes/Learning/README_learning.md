@@ -4,6 +4,7 @@ Ce dossier contient des notes pedagogiques pour comprendre les concepts techniqu
 
 ## Index
 
+- `CSharp_bases_et_Cursor_Unity.md` : rappels `byte` / tableaux 2D, syntaxe `=>`, chaîne `AreAllFree`, extensions C# dans Cursor + Unity (`.csproj`).
 - `Event_Listener_Unity_CSharp.md` : comprendre les evenements (`event`) et les listeners en C# / Unity, avec exemples concrets.
 - `Plant_Architecture_Unity_SO_MB.md` : architecture plante generique (ScriptableObject + MonoBehaviour) + squelette de code pret a coller.
 

@@ -6,10 +6,13 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-04-12 — priorité inchangée** : la prochaine session reste centrée sur le **même objectif** que celle d’aujourd’hui — **câblage récolte / inventaire en scène** (test jeu réel). Les données laitue + règle `harvestItemId` ↔ `itemId` sont posées ; voir **`Docs/PLANTES_ET_INVENTAIRE.md`** et **`PROJECT_LOG.md`** (entrée *fin de session* du 2026-04-12).
+> **2026-04-13 (complément)** : l’**inventaire gameplay** (logique + flux récolte ↔ `PlayerInventory`) est considéré **bouclé** par l’auteur. **Prochaine priorité** : **scènes / navigation** — scène **Inventaire**, scène **Market**, **boutons UI** accessibles depuis **tous les stages** ; décisions de conception (superposition vs plein écran, sync/async) → voir **`Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`**.
+>
+> **Impératif Git — avant toute implémentation de cette feature** : créer une **branche dédiée** depuis `main` à jour (équivalent « fork de travail » : pas de gros chantier directement sur `main`). Nom suggéré : `feature/scenes-navigation-ui` (ou variante une fois le choix **scènes vs UI multiple** figé). Procédure : **`GIT_HELPER.md` — section --3--**.
 
-- [ ] **Câblage récolte / inventaire (priorité #1)** : boucler le flux **scène + Inspector** — `BiofiltreManager` (`itemDatabase`, `playerInventory`, `harvestPanelUI`), `HarvestPanelUI`, `PlantHarvestInteractor` / prefab plante, `PlayerInventory`, `ItemDatabase` (inclure les `ItemDefinition` utilisés), `InventoryUI` + slots, `InventoryFeedbackUI` si besoin. Scène **`FirstLvl`** (ou test dédié). DoD : cellule occupée → panel → **Récolter** → `TryAdd`, **puis destruction de la plante** (comportement actuel), UI inventaire à jour, cas **inventaire plein**. Schéma : Zoom D dans `Notes/Farm/SYSTEMES_carte_mentale.md`.
-- [ ] **Git — branche par feature + merge** : à partir des prochaines features, suivre le protocole **`GIT_HELPER.md` section --3--** (créer `feature/…` depuis `main` à jour, pousser, tester, puis **merge** dans `main` une fois validé — PR GitHub ou `git merge` local). Ajuster le helper si la branche par défaut n’est pas `main`.
+- [ ] **Scènes Inventaire + Market + HUD global (priorité #1)** : définir le modèle (voir guide UI) — **coque persistante** + prefabs panneaux **ou** scènes dédiées en **mode Additive** (`Inventory` / `Market`) ; boutons **Inventaire** et **Market** présents sur **chaque stage** (réutiliser un **prefab HUD** ou scène Bootstrap). DoD : clic → ouverture **perçue comme instantanée**, pas de double `EventSystem`, `PlayerInventory` / données toujours joignables ; **Build Settings** à jour pour les nouvelles scènes si chargement par nom/index.
+- [x] **Câblage récolte / inventaire (scène + Inspector)** : flux **cellule occupée → panel → Récolter → `TryAdd`** + destruction plante, UI slots, cas inventaire plein — validé côté auteur (voir `Notes/Farm/SYSTEMES_carte_mentale.md` Zoom D).
+- [ ] **Git — branche par feature + merge** : pour **cette** feature (scènes / HUD / UI multi-stage), la branche est **obligatoire** avant le premier commit du chantier ; ensuite suivre **`GIT_HELPER.md` section --3--** (`feature/…` depuis `main` à jour, push, tests, merge dans `main` — PR ou `git merge` local). Si le workflow passe par un **fork GitHub**, enchaîner de la même façon depuis la branche `main` (ou `default`) du fork à jour.
 - [ ] **Lecture / compréhension du flux** *(optionnelle mais utile après câblage)* : parcourir grille → `HarvestPanelUI` → `ConfirmHarvest` → `TryAdd` — `Notes/Farm/SYSTEMES_carte_mentale.md` (Zoom D), `Notes/Codebase_etat_reference.md`.
 - ~~[ ] **Récolte — double cycle feuille + graine / verrou multi-récolte**~~ **Hors scope pour ce jeu** (décision 2026) : une récolte réussie = `Destroy` — voir `ASSISTANT_CONTEXT.md`. Pas de TODO actif ; rouvrir seulement si le design change plus tard.
 - [ ] **Documentation systèmes** : lire / compléter la **carte des flux** (`Notes/Farm/SYSTEMES_carte_mentale.md`) : plantation (grille, `BiofiltreManager`, `PlantDefinition`), croissance (`PlantGrow`), récolte ↔ inventaire ; ajuster le schéma si de nouveaux points d’entrée apparaissent.
@@ -23,9 +26,9 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prototype (phase actuelle)
 
-- [~] **Inventaire récolte (spécification)** : une première implémentation existe (`PlayerInventory.TryAdd`, piles, `InventoryResult` y compris partiel) ; finaliser la **spec joueur** (tout-ou-rien vs partiel accepté en gameplay) après tests en scène.
+- [x] **Inventaire récolte (noyau)** : `PlayerInventory`, `TryAdd` / piles, flux récolte — bouclé pour la phase actuelle ; spec **Partial** / messages joueur à affiner seulement si besoin en playtest.
 - [~] **State machine culture** : stades visuels posés (`Seedling`, `BabyLeaf`, `Growing`, `Mature`, `Bolting`) ; finaliser transitions gameplay + règles de récolte.
-- [ ] **Flux récolte minimal jouable** : clic sur objet mature -> tentative d’ajout inventaire -> succès = récolte/transition d’état, échec = popup inventaire plein et objet reste mature.
+- [x] **Flux récolte minimal jouable** : validé (grille / panel / `TryAdd` / destruction) — raffinement UX optionnel.
 - [ ] **Timer gameplay** : revoir `Assets/Scripts/Core/Timer.cs` (scalabilité, `unscaledDeltaTime`, persistance/reprise offline via timestamp UTC).
 - [ ] **Scènes Unity** : supprimer le doublon éventuel `Assets/SampleScene.unity` vs `Assets/Scenes/SampleScene.unity` et garder une seule scène de démarrage.
 - [ ] **Menu principal** : terminer le panel Options (langue, audio, etc.) en s’alignant sur `Notes/Ui/Todo_ui.md`.
@@ -62,6 +65,7 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Polish — après validation du prototype
 
+- [ ] **[OPTIONNEL] Unity Gaming Services — inventaire** : après **MVP local** validé, enchaîner **Authentication → Cloud Save** (snapshot `{ itemId, quantity }`) puis **Economy** si besoin ; garder une couche client (singleton ou `IInventory…`) comme **vue** — décisions discutées session **2026-04-13**, voir **`PROJECT_LOG.md`**.
 - [ ] **[OPTIONNEL] Workflow graphique + IA** : définir et mettre en place (ou intégrer au pipeline) un flux de production visuelle pour la phase polish — génération / itération d’assets avec [Adobe Firefly — AI pour le développement de jeux](https://www.adobe.com/products/firefly/discover/ai-for-game-developers.html), **uniquement** si la direction art retenue en a besoin après validation prototype/performance mobile (documentation et bonnes pratiques licence / usage à valider avant production commerciale).
 
 - [ ] **[SUPPER_POLISH] graphique animation** création d'une animation d'abeille qui rode autour des plantes en fleurs avant passage fruits/graines

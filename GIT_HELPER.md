@@ -84,6 +84,13 @@ Puis tu résous les conflits si besoin, et tu continues (add/commit/push).
 
 Objectif : **une branche Git par fonctionnalité** (ex. récolte, inventaire, UI menu). Tant que la feature n’est pas validée en jeu / tests, les commits restent sur la branche ; une fois OK, tu **fusionnes** dans `main` (idéalement après revue rapide).
 
+### Impératif — feature « scènes / navigation / UI multi-stage » (projet RaymanInfiniteRunner)
+
+Pour le chantier **système de scènes** (Inventaire, Market, HUD sur tous les stages, Additive vs panneaux, etc.) : **ne pas développer sur `main`**. Créer **obligatoirement** une branche dédiée **avant** le premier commit de ce bloc (ex. `feature/scenes-navigation-ui` — renommer si le design retient surtout des **panneaux UI** plutôt que des `.unity` séparés).
+
+- **Branche locale** : `git checkout -b feature/…` depuis `main` à jour (voir ci-dessous) — c’est l’équivalent pratique d’un « fork de travail » sur le même dépôt.
+- **Fork GitHub** (si ton équipe travaille ainsi) : même règle — la feature vit sur une **branche** de ton fork, pas directement sur `main` du fork, jusqu’à merge / PR vers le dépôt principal.
+
 ### Avant de coder une nouvelle feature
 
 1. Sauvegarder tout dans l’éditeur (**Save All**).
@@ -98,7 +105,7 @@ git pull
 ```bash
 git checkout -b feature/nom-court-explicite
 ```
-Exemples : `feature/harvest-inventory`, `feature/mature-seeds-harvest`, `fix/grid-occupancy`.
+Exemples : `feature/harvest-inventory`, `feature/scenes-navigation-ui`, `feature/mature-seeds-harvest`, `fix/grid-occupancy`.
 
 ### Pendant le développement
 

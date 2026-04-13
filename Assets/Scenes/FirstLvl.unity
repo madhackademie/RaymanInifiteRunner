@@ -886,9 +886,17 @@ PrefabInstance:
       value: Biofiltre
       objectReference: {fileID: 0}
     - target: {fileID: 8494675260759893494, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 0cdfbba7d963c334ca688e5f0519ef63, type: 2}
+    - target: {fileID: 8494675260759893494, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
       propertyPath: harvestPanelUI
       value: 
       objectReference: {fileID: 2051876231}
+    - target: {fileID: 8494675260759893494, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: playerInventory
+      value: 
+      objectReference: {fileID: 706094011}
     - target: {fileID: 8494675260759893494, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
       propertyPath: seedSelectionUI
       value: 

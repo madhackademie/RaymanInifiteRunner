@@ -20,4 +20,4 @@ prochaines étapes (checklist)
 add github commande commit/push : cf @GIT_HELPER.md [git helper](GIT_HELPER.md)
 
 ## --5--
-**Nouvelle feature (recommandé)** : créer une branche dédiée avant un gros bloc de code — voir **`GIT_HELPER.md`** section **--3--** (*Branche par feature + fusion dans main*). Évite d’empiler récolte, inventaire, etc. directement sur `main` sans filet de merge / PR.
+**Nouvelle feature** : créer une branche dédiée avant un gros bloc de code — voir **`GIT_HELPER.md`** section **--3--** (*Branche par feature + fusion dans main*). **Obligatoire** pour la prochaine feature **scènes / HUD / UI Inventaire–Market** (branche type `feature/scenes-navigation-ui`) : pas d’implémentation de ce système directement sur `main` ; un fork GitHub, si utilisé, suit la même logique (branche sur le fork, puis PR).

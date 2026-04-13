@@ -1,5 +1,7 @@
 # TODO UI — backlog
 
+**Navigation scènes / Inventaire / Market (HUD global, Additive, sync-async)** : `GUIDE_scenes_navigation_Unity_inventaire_market.md`.
+
 ## LanguageManager / TextMeshPro (transféré depuis `Decision_ui.md`)
 
 ### Décisions à respecter (rappel)
