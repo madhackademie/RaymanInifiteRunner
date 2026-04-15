@@ -607,3 +607,26 @@
 
 ### Décision / rappel Git
 - **Obligatoire** : la prochaine implémentation **scènes / HUD / UI Inventaire–Market** doit démarrer sur une **branche `feature/…`** (pas sur `main`) ; fork GitHub = même logique sur branche du fork. Documenté dans **`GIT_HELPER.md` --3--**, **`WORKFLOW_PROTOCOL.md`**, **`Notes/Todo_project.md`**, en-tête du **guide UI scènes**.
+
+## 2026-04-15 — session (scène prototype inventaire + plan polish/perf)
+
+### Contexte
+- Démarrage effectif du chantier **navigation Inventaire/Market**.
+- Objectif immédiat : poser la base avec une **scène prototype Inventaire** et préparer les décisions techniques de chargement.
+
+### Ce qu’on a fait
+- [x] **Session cadrée** autour de la feature scènes/navigation : la **scène prototype Inventaire** est actée comme point d’entrée du chantier.
+- [x] **Todos mis à jour** dans `Notes/Todo_project.md` pour refléter :
+  - création de la base prototype Inventaire (fait),
+  - tâche de décision/perf sur le mode de chargement (**persistant vs sync vs async/additive**),
+  - tâches de **polish UI Inventaire** (visuel + technique).
+
+### Prochaines actions (priorité)
+1. Finaliser la scène prototype Inventaire (structure Canvas, panel racine, boutons retour/navigation).
+2. Trancher le mode de chargement le plus performant (test rapide : temps d’ouverture perçu, stabilité EventSystem, mémoire).
+3. Lancer la passe polish UI Inventaire (lisibilité, feedback interaction, cohérence visuelle) après validation du flux.
+
+### Liens utiles
+- `Notes/Todo_project.md`
+- `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
+- `GIT_HELPER.md`

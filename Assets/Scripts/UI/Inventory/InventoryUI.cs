@@ -15,20 +15,38 @@ public class InventoryUI : MonoBehaviour
 
     private void Start()
     {
-        if (playerInventory == null)
-        {
-            Debug.LogWarning("[InventoryUI] No PlayerInventory assigned.", this);
-            return;
-        }
-
-        BuildSlots();
-        playerInventory.OnInventoryChanged += Refresh;
+        // If playerInventory was set via Inspector (e.g. in the game scene), initialise immediately.
+        if (playerInventory != null)
+            Initialise();
     }
 
     private void OnDestroy()
     {
         if (playerInventory != null)
             playerInventory.OnInventoryChanged -= Refresh;
+    }
+
+    /// <summary>
+    /// Injects a <see cref="PlayerInventory"/> at runtime (e.g. from <see cref="InventorySceneController"/>
+    /// when the inventory is opened as an additive scene and the singleton lives in DontDestroyOnLoad).
+    /// </summary>
+    public void Bind(PlayerInventory inventory)
+    {
+        if (inventory == null)
+            return;
+
+        // Unsubscribe from any previous inventory.
+        if (playerInventory != null)
+            playerInventory.OnInventoryChanged -= Refresh;
+
+        playerInventory = inventory;
+        Initialise();
+    }
+
+    private void Initialise()
+    {
+        BuildSlots();
+        playerInventory.OnInventoryChanged += Refresh;
     }
 
     // ── Slot management ───────────────────────────────────────────────────────
