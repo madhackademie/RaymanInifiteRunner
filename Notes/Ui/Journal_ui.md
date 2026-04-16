@@ -31,11 +31,16 @@ Règle de fonctionnement :
 
 ### 5) UI globale partagée entre toutes les scènes
 - Direction retenue : charger une UI shell globale persistante pour toutes les scènes de jeu.
-- Cette UI globale doit pouvoir précharger en additif les scènes UI fréquentes (`Inventaire`, plus tard `Market`, `Settings`, etc.).
-- L’expérience cible est un boot potentiellement plus long, puis une navigation quasi instantanée entre écrans.
-- Le modèle préféré est : préchargement additif au démarrage, puis affichage/masquage via `SetActive` sur les roots UI déjà chargés.
-- Un seul `EventSystem` doit piloter l’ensemble des scènes UI additives.
-- Un prompt simple et court doit être conservé dans les notes pour pouvoir déléguer facilement ce chantier à Bezi.
+- **Implémenté (2026-04-16)** : scène **`Bootstrap.unity`** (index 0) + **`GameBootstrap`** charge additivement **`NavigationHUD`** puis **`FirstLvl`** avec **`LoadingScreen`** ; **`UIManager`** vit dans le shell avec listes **prioritaires** / **secondaires** d’écrans en **prefabs** (instanciation + `SetActive`), plus **`EnsureShellLoaded()`** pour les entrées sans Bootstrap.
+- Variante « scènes UI `.unity` en additif » : encore possible pour certains écrans ; l’inventaire gameplay peut transiter entièrement par prefab + `ScreenId.Inventory` — vérifier la dépréciation de **`Inventaire.unity`** au build si plus utilisée.
+- L’expérience cible reste : boot un peu plus lourd, navigation quasi instantanée entre panneaux préchargés.
+- Un seul `EventSystem` dans le shell ; pas de second `EventSystem` dans les scènes chargées par-dessus.
+- Un prompt simple et court reste dans **`Todo_ui.md`** / **`ARCHI_hud_ui_manager_additive.md`** (utile Bezi / rappel).
+
+### 6) Hub multi-scènes « Carte » + retour depuis le niveau
+- **Décision de suite** : ajouter une **scène intermédiaire `Carte`** servant de **hub de navigation** vers les différentes scènes / modes, avec le **HUD persistant** actif dans la configuration voulue (barre complète pour choisir les destinations, ou règle explicite par écran).
+- **Comportement attendu** : depuis **`FirstLvl`**, le bouton **croix** (mode `ShowExitOnly`) doit **renvoyer vers `Carte`**, pas seulement fermer un panneau UI.
+- Le détail technique (unload du niveau, `LoadSceneMode.Single` sur `Carte` en gardant le shell, etc.) est laissé à la prochaine implémentation — à documenter dans **`ARCHI_hud_ui_manager_additive.md`** une fois le flux choisi.
 
 ---
 
@@ -102,14 +107,21 @@ Règle de fonctionnement :
 2. [ ] Mettre en place la règle “seul top reçoit les clics”.
 
 ### B bis) UI globale multi-scènes
-1. [ ] Créer une UI globale partagée entre toutes les scènes de jeu.
-2. [ ] Utiliser `NavigationHUD.unity` comme scène shell UI additive, ou confirmer un shell équivalent.
-3. [ ] Créer un `UIManager` global chargé de précharger les scènes UI additives au boot.
-4. [ ] Précharger les UI fréquentes (`Inventaire`, futur `Market`, `Settings`) et garder leurs roots en `SetActive(false)` tant qu’elles sont fermées.
-5. [ ] Garantir une navigation instantanée après le chargement initial.
-6. [ ] Garantir l’unicité du `EventSystem`, des `Canvas` globaux et des points d’entrée UI persistants.
-7. [ ] Déplacer la logique de navigation de scènes UI hors de `NavigationHUD` vers le manager global.
-8. [ ] Prévoir un écran/flux de boot assumant le coût de chargement initial des assets UI et données globales.
+1. [x] Créer une UI globale partagée entre toutes les scènes de jeu (shell + prefabs via `UIManager`).
+2. [x] Utiliser `NavigationHUD.unity` comme scène shell UI additive (chargée depuis `Bootstrap` ou `EnsureShellLoaded`).
+3. [x] Créer un `UIManager` global avec préchargement des **prefabs** prioritaires (équivalent fonctionnel au préchargement de scènes UI).
+4. [~] Précharger les UI fréquentes : inventaire via prefab + `ScreenId.Inventory` ; ajouter `Market`, `Settings`, etc. quand existants.
+5. [x] Navigation instantanée post-boot via `SetActive` sur les instances prefab.
+6. [x] Un seul `EventSystem` dans le shell ; `NavigationHUD` + `UIManager` en `DontDestroyOnLoad` sur leurs racines respectives.
+7. [x] Orchestration inventaire / masquage global déléguée à `UIManager` depuis `NavigationHUD` (plus de chargement scène inventaire dans le HUD pour ce flux).
+8. [x] Boot `Bootstrap.unity` + `LoadingScreen` pour absorber le coût initial.
+
+### B ter) Hub **Carte** + flux retour niveau (prochaine implémentation)
+1. [ ] Créer la scène **`Carte`** et l’intégrer au **Build Settings** + ordre de flux (après Bootstrap / avec shell déjà chargé).
+2. [ ] Sur le hub : navigation vers les scènes / modes voulus ; **HUD persistant** visible et cohérent (tabs, etc.).
+3. [ ] Depuis **`FirstLvl`** : clic **croix** → transition vers **`Carte`** (définir unload `FirstLvl` vs stack additive).
+4. [ ] Mettre à jour `GameBootstrap` si le premier écran « monde » n’est plus `FirstLvl` mais **`Carte`** (shell puis Carte, puis niveaux à la demande).
+5. [ ] Nettoyer ou documenter **`Inventaire.unity`** si le build ne doit plus l’utiliser.
 
 ### C) Localization TextMeshPro
 1. [ ] Définir une convention de keys stables pour les textes UI (ex. `BTN_PLAY`, `TITLE_FARM`).
@@ -136,4 +148,6 @@ Date | Changement
 :---|:---
 2026-04-16 | Décision ajoutée : viser une UI globale persistante multi-scènes avec préchargement additif des écrans UI fréquents et navigation instantanée post-boot.
 2026-04-16 | Ajout d'un prompt simple à copier dans Bezi pour lancer le chantier `UIManager` global / shell UI additive.
+2026-04-16 (fin) | Implémenté : `Bootstrap.unity` + `GameBootstrap` + `LoadingScreen`, `UIManager` (listes prioritaire/secondaire, prefabs), `ScreenId`, shell dans le build ; priorité suivante : scène hub **`Carte`**, croix **`FirstLvl` → Carte**.
+2026-04-16+ | TODO ajouté : **tests** scène de load (`Bootstrap` / `LoadingScreen`) ; **création + affinage** illustration **poisson/arbre** pour l’écran de chargement (réf. de travail « chatgptouille ») puis branchement sur `LoadingScreen`.
 

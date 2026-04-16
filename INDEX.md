@@ -35,7 +35,9 @@ Légende :
 | Fichier | Statut | Priorité | Synthèse |
 |---|---|---|---|
 | `Notes/Ui/Journal_ui.md` | Actif | P2 | Note UI fusionnée (décisions, architecture stack, localisation, inbox, tâches, questions ouvertes). |
-| `Notes/Ui/Todo_ui.md` | Actif | P2 | Backlog UI exécutable, centré actuellement sur `LanguageManager` et la localisation TMP. |
+| `Notes/Ui/ARCHI_hud_ui_manager_additive.md` | Actif | P1 | Shell `NavigationHUD` + `UIManager`, état implémenté 2026-04-16, hub **`Carte`** §10. |
+| `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md` | Actif | P2 | Options A–D navigation scènes / UI additive, sync-async, pièges `EventSystem`. |
+| `Notes/Ui/Todo_ui.md` | Actif | P1 | Backlog UI : priorité **hub Carte** + retour croix depuis `FirstLvl` ; rappel bootstrap/`UIManager` ; `LanguageManager` / TMP. |
 | `Notes/Ui/Decision_ui.md` | Actif | P3 | Spéc UI proto -> polish (objectifs, architecture panneaux, animations, contrat d'orchestration). |
 | `Notes/Ui/Spec_ui.md` | Vide | P3 | Fichier placeholder pour future spécification UI dédiée. |
 

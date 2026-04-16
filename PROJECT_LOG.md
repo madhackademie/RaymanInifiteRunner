@@ -660,3 +660,31 @@
 - `Notes/Ui/Todo_ui.md`
 - `Notes/Ui/Journal_ui.md`
 - `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
+
+## 2026-04-16 — fin de session (Bootstrap + `UIManager` + priorité hub **Carte**)
+
+### Contexte
+- Poursuite du chantier **shell UI / navigation multi-scènes** ; alignement des notes sur le **code réellement présent** dans le dépôt.
+
+### Ce qu’on a fait (état code à date)
+- [x] **Scène `Bootstrap.unity`** en entrée Build Settings (index 0) avec **`GameBootstrap`** (`Assets/Scripts/Core/GameBootstrap.cs`) : barre de progression via **`LoadingScreen`**, chargement additif **`NavigationHUD`** puis **`FirstLvl`**, fade-out à la fin.
+- [x] **`UIManager`** (`Assets/Scripts/Systems/UIManager.cs`) : singleton `DontDestroyOnLoad`, listes **prioritaires** / **secondaires** (`ScreenEntry` + prefabs), `PreloadPriorityScreens()` au `Start`, API `ShowScreen` / `HideScreen` / `HideAllGlobalUI`, `EnsureShellLoaded()` pour chargement additif du shell si besoin.
+- [x] **`ScreenId`** avec au minimum `Inventory` pour les ids d’écrans.
+- [x] **`NavigationHUD`** : modes `ShowNavBar` / `ShowExitOnly` / `Hide`, callbacks délégués à **`UIManager`** (inventaire via prefab, plus de logique de chargement de scène inventaire dans le HUD pour ce flux).
+- [x] **`NavigationHUD.unity`** référencée dans **Editor Build Settings** (avec `Bootstrap`, `FirstLvl`, `Inventaire`).
+
+### Décisions / cadrage prochaine session
+- Introduire une **scène intermédiaire « Carte »** (hub) pour naviguer vers les **multi-scènes** de jeu / features, avec le **HUD persistant** dans le mode d’affichage adapté (barre complète ou règles par contexte — à trancher en implémentation).
+- Comportement attendu : depuis **`FirstLvl`**, un clic sur la **croix** (exit) doit **ramener à la scène `Carte`** (pas seulement masquer l’inventaire / `ShowExitOnly` local).
+- Documenter le flux exact (unload `FirstLvl` vs stack additive) lors de l’implémentation pour éviter doubles `EventSystem` / fuites de scènes.
+
+### Prochaines actions (priorité immédiate)
+1. Créer la scène **`Carte`** (ou nom figé dans Build Settings), la placer dans le flux après Bootstrap : ex. **Bootstrap → shell + Carte** (ou **Bootstrap → shell → Carte** selon ordre choisi), puis chargement des niveaux depuis ce hub.
+2. Implémenter la navigation **FirstLvl → Carte** sur **`NavigationHUD.OnExitClicked`** (ou service dédié `SceneFlow` / méthode sur `UIManager`) : `LoadScene` / `UnloadSceneAsync` cohérent avec le HUD déjà en `DontDestroyOnLoad`.
+3. Vérifier la cohabitation avec **`Inventaire.unity`** (legacy ou scène encore au build) : soit retirer du build si tout passe par prefab + `UIManager`, soit documenter le double chemin jusqu’à migration complète.
+
+### Liens utiles
+- `Notes/Ui/Todo_ui.md` — bloc **Priorité session suivante**
+- `Notes/Ui/Journal_ui.md` — décision hub Carte + croix
+- `Notes/Ui/ARCHI_hud_ui_manager_additive.md` — état au 2026-04-16
+- `Notes/Todo_project.md` — hub **Prochaine session**

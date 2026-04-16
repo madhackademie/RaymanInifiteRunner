@@ -1,4 +1,4 @@
-# État de référence — scripts & assets (audit 2026-04-12)
+# État de référence — scripts & assets (audit 2026-04-12, complément UI 2026-04-16)
 
 Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **mettre à jour** après refactors importants.
 
@@ -8,7 +8,8 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 | Dossier | Rôle principal |
 |---------|----------------|
-| `Core/` | `Timer.cs` — minuteur Countdown / Stopwatch, `UnityEvent` tick / completed. |
+| `Core/` | `Timer.cs` ; **`GameBootstrap.cs`** — entrée `Bootstrap.unity`, charge additif `NavigationHUD` puis `FirstLvl` + `LoadingScreen`. |
+| `Systems/` | **`UIManager`** (singleton `DontDestroyOnLoad`, écrans prefab prioritaires/secondaires) ; **`ScreenId`** (constantes d’ids). |
 | `Data/` | `PlantDefinition`, `GridConfig`, `GridData` — données grille et plantes (SO + runtime). |
 | `Farm/` | Biofiltre, grille, placement, croissance, récolte (`BiofiltreManager`, `GridManager`, `PlantGrow`, `PlantHarvestInteractor`, …). |
 | `Inventory/` | `PlayerInventory`, `ItemDefinition`, `ItemDatabase`, `InventorySlot`, `InventoryResult`. |
@@ -16,20 +17,21 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 **Liste des classes publiques** (fichiers `.cs` sous `Assets/Scripts/`) :
 
-- `Core` : `Timer`
+- `Core` : `Timer`, `GameBootstrap`
+- `Systems` : `UIManager`, `ScreenEntry` (même fichier que `UIManager`), `ScreenId`
 - `Data` : `GridConfig`, `GridData`, `PlantDefinition` (+ `PlantGrowthPattern` dans le même fichier)
 - `Farm` : `BiofiltreCell`, `BiofiltreGridVisualizer`, `BiofiltreManager`, `GridLinesRenderer`, `GridManager`, `PlantDefinitionHolder`, `PlantGrow`, `PlantHarvestInteractor`, `PlantPlacementPreview`
 - `Inventory` : `InventoryResult`, `InventorySlot`, `ItemDatabase`, `ItemDefinition`, `PlayerInventory`
-- `UI` : `MainMenuUI`, `SeedSelectionUI` (+ `SeedEntry`), `SeedSlotUI`
-- `UI/Inventory` : `HarvestPanelUI`, `InventoryFeedbackUI`, `InventorySlotUI`, `InventoryUI`
+- `UI` : `MainMenuUI`, `SeedSelectionUI` (+ `SeedEntry`), `SeedSlotUI`, `NavigationHUD`, `LoadingScreen`
+- `UI/Inventory` : `HarvestPanelUI`, `InventoryFeedbackUI`, `InventorySlotUI`, `InventoryUI`, `InventorySceneController`
 
 ---
 
 ## Flux gameplay documentés (code actuel)
 
 ### Menu → niveau
-- `MainMenuUI` sur la scène menu (`SampleScene` sous `Assets/Scenes/` ou doublon racine — voir Build Settings).
-- Chargement de `FirstLvl` au clic Start (historique dans `PROJECT_LOG.md`).
+- **Boot actuel** : première scène **`Bootstrap.unity`** → `GameBootstrap` charge **`NavigationHUD`** puis **`FirstLvl`** (voir `EditorBuildSettings`).
+- Peut coexister avec **`MainMenuUI`** / `SampleScene` selon le flux menu — à réaligner si le hub **`Carte`** devient l’écran après bootstrap (voir `Notes/Ui/Todo_ui.md`).
 
 ### Plantation (cellule libre)
 1. `BiofiltreCell` (clic) → événement `BiofiltreGridVisualizer.OnCellClicked`.

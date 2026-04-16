@@ -2,17 +2,50 @@
 
 **Navigation scènes / Inventaire / Market (HUD global, Additive, sync-async)** : `GUIDE_scenes_navigation_Unity_inventaire_market.md`.
 
-**Prochain chantier prioritaire — HUD / UI Manager additive** : `ARCHI_hud_ui_manager_additive.md`.
+**Architecture shell + `UIManager` (référence)** : `ARCHI_hud_ui_manager_additive.md`.
 
-## HUD / UI Manager additive
+---
 
-### Décision de travail recommandée
-- `NavigationHUD.unity` devient la scène shell UI globale.
-- Créer un `UIManager` dans `Assets/Scripts/Systems`.
-- Précharger `Inventaire` en additif, puis afficher/masquer son root avec `SetActive`.
-- Laisser `NavigationHUD` comme vue HUD et déplacer l'orchestration de navigation dans le manager global.
+## Priorité session suivante (2026-04-16)
 
-### Prompt simple pour Bezi
+### Scène hub **`Carte`** + HUD persistant + retour depuis **`FirstLvl`**
+
+Objectif : une **scène intermédiaire** sert de **hub multi-scènes** (navigation vers les modes / niveaux), avec le **HUD persistant** (`NavigationHUD` + `UIManager` déjà en `DontDestroyOnLoad`) dans le **mode d’affichage voulu** sur ce hub (ex. barre complète `ShowNavBar()` pour choisir les destinations).
+
+Comportement explicite à implémenter :
+
+- Depuis **`FirstLvl`**, en mode **`ShowExitOnly()`**, un clic sur la **croix** doit **retourner à la scène `Carte`** (pas seulement `HideAllGlobalUI` + rester sur `FirstLvl`).
+- Choisir et documenter le flux technique : **unload** de `FirstLvl` puis `LoadScene("Carte", Single)` en conservant le shell, **ou** autre combinaison sans **double `EventSystem`**.
+
+Tâches détaillées :
+
+- [ ] Créer **`Carte.unity`** (nom exact à aligner sur `SceneManager`) + l’ajouter au **Build Settings**.
+- [ ] Contenu minimal du hub : UI ou boutons pour ouvrir **`FirstLvl`** et les autres scènes prévues ; appeler le HUD approprié au `OnEnable` du hub.
+- [ ] Adapter **`GameBootstrap`** : si le flux cible est *Bootstrap → shell → **Carte*** (puis niveaux à la demande), remplacer le chargement direct de `FirstLvl` par **`Carte`** après le shell (ou charger `FirstLvl` seulement depuis un bouton du hub — **à trancher** avec le game design).
+- [ ] Brancher **`NavigationHUD.OnExitClicked()`** (ou couche dédiée `SceneFlow` / `GameFlow`) pour la transition **`FirstLvl` → `Carte`** + fermeture des panneaux UI globaux si besoin.
+- [ ] Revue **`Inventaire.unity`** : encore dans le build ; confirmer si obsolete (tout passe par prefab `ScreenId.Inventory`) puis retirer du build ou garder pour tests jusqu’à migration.
+
+---
+
+## Bootstrap & **LoadingScreen** — tests + visuel
+
+- [ ] **Tests scène de chargement** : playtest **Editor** + idéalement **build dev** de **`Bootstrap.unity`** — vérifier barre de progression (`AsyncOperation` 0.9), ordre **NavigationHUD** → **FirstLvl**, absence de **double `EventSystem`**, fade-out **`LoadingScreen.Hide()`**, pas de frame « flash » UI avant la fin du chargement.
+- [ ] **Image poisson / arbre (loading)** : **création** puis **affinage** d’une illustration **poisson + arbre** pour l’écran de chargement (référence de travail / ton : itérations type **« chatgptouille »** — génération + retouches jusqu’à un rendu acceptable) ; importer dans Unity (`Sprite` / `Texture2D` + alpha si besoin) et **câbler** sur **`LoadingScreen`** (Image / `RawImage` selon le setup actuel).
+
+---
+
+## État implémenté (rappel — ne pas re-planifier en doublon)
+
+- [x] **`Bootstrap.unity`** en entrée + **`GameBootstrap`** + **`LoadingScreen`** (progression, chargement additif `NavigationHUD` puis `FirstLvl`).
+- [x] **`UIManager`** (`Assets/Scripts/Systems/UIManager.cs`) : listes **prioritaires** / **secondaires**, prefabs, `ShowScreen` / `HideScreen` / `HideAllGlobalUI`, `EnsureShellLoaded()`.
+- [x] **`ScreenId`** + au minimum écran **Inventory** en prefab.
+- [x] **`NavigationHUD.unity`** dans le build ; shell + un seul **`EventSystem`**.
+
+---
+
+## HUD / UI Manager — historique & prompt Bezi
+
+Le prompt ci-dessous décrit encore le modèle « préchargement de **scènes** UI » ; le code actuel privilégie des **prefabs** sous `UIManager` (même intention UX : instantané après boot). Adapter le prompt si tu redélègues à un outil externe.
 
 ```text
 Créer une UI globale persistante partagée entre toutes les scènes du projet Unity.
@@ -21,17 +54,7 @@ Créer un `UIManager` global qui précharge les scènes UI fréquentes en additi
 Garder un seul `EventSystem`, laisser `NavigationHUD` comme vue HUD, et déplacer la logique de navigation globale dans le `UIManager`.
 ```
 
-### Tâches
-- [ ] Ajouter `NavigationHUD.unity` au build settings si cette scène devient une dépendance runtime.
-- [ ] Définir le bootstrap de chargement initial : menu -> shell UI -> `FirstLvl`.
-- [ ] Créer `UIManager` avec une API simple de type `ShowScreen`, `HideScreen`, `ShowGameplayHUD`.
-- [ ] Débrancher la logique de chargement de scènes directement depuis `NavigationHUD`.
-- [ ] Précharger `Inventaire` une seule fois et identifier son root UI principal.
-- [ ] Remplacer l'ouverture/fermeture fréquente de l'inventaire par `SetActive(true/false)`.
-- [ ] Garantir un unique `EventSystem` entre scènes additives.
-- [ ] Vérifier que `InventoryUI.Bind(PlayerInventory.Instance)` fonctionne encore avec un écran préchargé puis masqué.
-- [ ] Préparer le même pattern pour `Market` afin d'éviter un second refactor plus tard.
-- [ ] Réutiliser le prompt Bezi ci-dessus pour lancer l'implémentation du shell UI global.
+---
 
 ## LanguageManager / TextMeshPro (transféré depuis `Decision_ui.md`)
 

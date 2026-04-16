@@ -70,6 +70,9 @@ public class InventoryUI : MonoBehaviour
     /// <summary>Repopulates all slot UIs from the current inventory state.</summary>
     public void Refresh()
     {
+        if (playerInventory == null)
+            return;
+
         IReadOnlyList<InventorySlot> slots = playerInventory.Slots;
 
         for (int i = 0; i < spawnedSlots.Count; i++)
