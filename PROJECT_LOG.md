@@ -630,3 +630,33 @@
 - `Notes/Todo_project.md`
 - `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
 - `GIT_HELPER.md`
+
+## 2026-04-16 — orientation UI globale multi-scènes
+
+### Contexte
+- Le prochain chantier prioritaire côté interface est désormais la mise en place d'une **UI globale** partagée entre toutes les scènes.
+- Le besoin UX visé est assumé : **chargement initial plus lourd**, puis **navigation quasi instantanée** entre écrans/scènes UI.
+
+### Ce qu’on a fait
+- [x] Parcours du projet et repérage des briques déjà en place : `NavigationHUD`, `InventorySceneController`, `PlayerInventory`, scène `NavigationHUD.unity`, scène `Inventaire.unity`.
+- [x] Ajout d'une note d'architecture dédiée : `Notes/Ui/ARCHI_hud_ui_manager_additive.md`.
+- [x] Mise à jour du backlog UI dans `Notes/Ui/Todo_ui.md`.
+- [x] Mise à jour du journal UI dans `Notes/Ui/Journal_ui.md`.
+
+### Décisions
+- Utiliser une **UI shell persistante** commune à toutes les scènes de jeu.
+- Précharger en **additif** les scènes UI fréquentes (`Inventaire`, puis `Market`, `Settings`, etc.) au démarrage ou pendant le boot.
+- Favoriser ensuite une navigation instantanée via **`SetActive(true/false)`** sur les roots UI déjà chargés, plutôt qu’un `LoadScene` / `UnloadSceneAsync` à chaque clic.
+- Centraliser l’orchestration dans un futur **`UIManager` global** plutôt que dans `NavigationHUD` seul.
+
+### Prochaines actions (priorité)
+1. Créer la base technique de l’UI globale partagée entre toutes les scènes.
+2. Définir le bootstrap de chargement : menu / boot -> shell UI -> `FirstLvl`.
+3. Créer un `UIManager` global chargé du préchargement additif et de l’affichage/masquage des roots UI.
+4. Précharger `Inventaire` comme premier écran UI global et valider la navigation instantanée en jeu.
+
+### Liens utiles
+- `Notes/Ui/ARCHI_hud_ui_manager_additive.md`
+- `Notes/Ui/Todo_ui.md`
+- `Notes/Ui/Journal_ui.md`
+- `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`

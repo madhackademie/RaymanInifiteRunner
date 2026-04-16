@@ -2,6 +2,37 @@
 
 **Navigation scènes / Inventaire / Market (HUD global, Additive, sync-async)** : `GUIDE_scenes_navigation_Unity_inventaire_market.md`.
 
+**Prochain chantier prioritaire — HUD / UI Manager additive** : `ARCHI_hud_ui_manager_additive.md`.
+
+## HUD / UI Manager additive
+
+### Décision de travail recommandée
+- `NavigationHUD.unity` devient la scène shell UI globale.
+- Créer un `UIManager` dans `Assets/Scripts/Systems`.
+- Précharger `Inventaire` en additif, puis afficher/masquer son root avec `SetActive`.
+- Laisser `NavigationHUD` comme vue HUD et déplacer l'orchestration de navigation dans le manager global.
+
+### Prompt simple pour Bezi
+
+```text
+Créer une UI globale persistante partagée entre toutes les scènes du projet Unity.
+Utiliser `NavigationHUD.unity` comme scène shell UI additive.
+Créer un `UIManager` global qui précharge les scènes UI fréquentes en additif au démarrage, en particulier `Inventaire`, puis affiche/masque leurs roots avec `SetActive` pour rendre la navigation quasi instantanée.
+Garder un seul `EventSystem`, laisser `NavigationHUD` comme vue HUD, et déplacer la logique de navigation globale dans le `UIManager`.
+```
+
+### Tâches
+- [ ] Ajouter `NavigationHUD.unity` au build settings si cette scène devient une dépendance runtime.
+- [ ] Définir le bootstrap de chargement initial : menu -> shell UI -> `FirstLvl`.
+- [ ] Créer `UIManager` avec une API simple de type `ShowScreen`, `HideScreen`, `ShowGameplayHUD`.
+- [ ] Débrancher la logique de chargement de scènes directement depuis `NavigationHUD`.
+- [ ] Précharger `Inventaire` une seule fois et identifier son root UI principal.
+- [ ] Remplacer l'ouverture/fermeture fréquente de l'inventaire par `SetActive(true/false)`.
+- [ ] Garantir un unique `EventSystem` entre scènes additives.
+- [ ] Vérifier que `InventoryUI.Bind(PlayerInventory.Instance)` fonctionne encore avec un écran préchargé puis masqué.
+- [ ] Préparer le même pattern pour `Market` afin d'éviter un second refactor plus tard.
+- [ ] Réutiliser le prompt Bezi ci-dessus pour lancer l'implémentation du shell UI global.
+
 ## LanguageManager / TextMeshPro (transféré depuis `Decision_ui.md`)
 
 ### Décisions à respecter (rappel)

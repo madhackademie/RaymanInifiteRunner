@@ -29,6 +29,14 @@ Règle de fonctionnement :
 - Le TextMeshPro affiché doit être piloté par une logique centrale (language manager + mapping key -> string).
 - Idéalement : utiliser des “keys” stables côté UI pour faciliter le passage du prototype au manager final.
 
+### 5) UI globale partagée entre toutes les scènes
+- Direction retenue : charger une UI shell globale persistante pour toutes les scènes de jeu.
+- Cette UI globale doit pouvoir précharger en additif les scènes UI fréquentes (`Inventaire`, plus tard `Market`, `Settings`, etc.).
+- L’expérience cible est un boot potentiellement plus long, puis une navigation quasi instantanée entre écrans.
+- Le modèle préféré est : préchargement additif au démarrage, puis affichage/masquage via `SetActive` sur les roots UI déjà chargés.
+- Un seul `EventSystem` doit piloter l’ensemble des scènes UI additives.
+- Un prompt simple et court doit être conservé dans les notes pour pouvoir déléguer facilement ce chantier à Bezi.
+
 ---
 
 ## Architecture UI cible (haut niveau)
@@ -93,6 +101,16 @@ Règle de fonctionnement :
 1. [ ] Implémenter `UIManager` qui supporte `push overlay` et `pop overlay`.
 2. [ ] Mettre en place la règle “seul top reçoit les clics”.
 
+### B bis) UI globale multi-scènes
+1. [ ] Créer une UI globale partagée entre toutes les scènes de jeu.
+2. [ ] Utiliser `NavigationHUD.unity` comme scène shell UI additive, ou confirmer un shell équivalent.
+3. [ ] Créer un `UIManager` global chargé de précharger les scènes UI additives au boot.
+4. [ ] Précharger les UI fréquentes (`Inventaire`, futur `Market`, `Settings`) et garder leurs roots en `SetActive(false)` tant qu’elles sont fermées.
+5. [ ] Garantir une navigation instantanée après le chargement initial.
+6. [ ] Garantir l’unicité du `EventSystem`, des `Canvas` globaux et des points d’entrée UI persistants.
+7. [ ] Déplacer la logique de navigation de scènes UI hors de `NavigationHUD` vers le manager global.
+8. [ ] Prévoir un écran/flux de boot assumant le coût de chargement initial des assets UI et données globales.
+
 ### C) Localization TextMeshPro
 1. [ ] Définir une convention de keys stables pour les textes UI (ex. `BTN_PLAY`, `TITLE_FARM`).
 2. [ ] Implémenter un mécanisme temporaire (prototype) qui met à jour les TMP quand `language` change.
@@ -116,5 +134,6 @@ Règle de fonctionnement :
 
 Date | Changement
 :---|:---
-TODO | (à remplir)
+2026-04-16 | Décision ajoutée : viser une UI globale persistante multi-scènes avec préchargement additif des écrans UI fréquents et navigation instantanée post-boot.
+2026-04-16 | Ajout d'un prompt simple à copier dans Bezi pour lancer le chantier `UIManager` global / shell UI additive.
 
