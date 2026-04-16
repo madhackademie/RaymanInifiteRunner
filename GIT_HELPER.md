@@ -2,6 +2,42 @@
 
 Je vais essayer d'organiser et mettre ici le workflow et les commandes basiques de github (80/20)
 
+## --0-- Checklist rapide (branche + synchro)
+
+Utilise cette séquence au début de chaque session ou après un switch de branche :
+
+```bash
+git branch --show-current
+git fetch --all
+git status
+git branch -vv
+```
+
+Interprétation rapide :
+- `git branch --show-current` : confirme la branche active.
+- `git status` : te dit si tu es en avance / en retard / à jour.
+- `git branch -vv` : vérifie le tracking (`origin/...`) de la branche courante.
+
+Si la branche suit bien le remote (`[origin/nom-branche]`) :
+
+```bash
+git pull
+```
+
+Si `git pull` répond "There is no tracking information for the current branch" :
+
+```bash
+git branch --set-upstream-to=origin/nom-branche
+git pull
+```
+
+Exemple concret :
+
+```bash
+git branch --set-upstream-to=origin/feature/scene-inventaire
+git pull
+```
+
 
 ## --1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
 

@@ -27,6 +27,9 @@ public class InventorySceneController : MonoBehaviour
         // referenced in the Inspector across scenes.
         if (inventoryUI != null && PlayerInventory.Instance != null)
             inventoryUI.Bind(PlayerInventory.Instance);
+
+        // Show the full nav bar when the inventory scene is active.
+        NavigationHUD.ShowNavBar();
     }
 
     private void OnDestroy()
