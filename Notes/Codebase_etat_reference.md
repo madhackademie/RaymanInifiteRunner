@@ -31,6 +31,7 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 ### Menu → niveau
 - **Boot actuel** : première scène **`Bootstrap.unity`** → `GameBootstrap` charge **`NavigationHUD`** puis **`FirstLvl`** (voir `EditorBuildSettings`).
+- **`LoadingScreen`** : barre + pourcentage + fade (`Hide`) ; **illustration décorative** à intégrer côté Canvas / sprite — voir **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
 - Peut coexister avec **`MainMenuUI`** / `SampleScene` selon le flux menu — à réaligner si le hub **`Carte`** devient l’écran après bootstrap (voir `Notes/Ui/Todo_ui.md`).
 
 ### Plantation (cellule libre)

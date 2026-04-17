@@ -37,7 +37,8 @@ Légende :
 | `Notes/Ui/Journal_ui.md` | Actif | P2 | Note UI fusionnée (décisions, architecture stack, localisation, inbox, tâches, questions ouvertes). |
 | `Notes/Ui/ARCHI_hud_ui_manager_additive.md` | Actif | P1 | Shell `NavigationHUD` + `UIManager`, état implémenté 2026-04-16, hub **`Carte`** §10. |
 | `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md` | Actif | P2 | Options A–D navigation scènes / UI additive, sync-async, pièges `EventSystem`. |
-| `Notes/Ui/Todo_ui.md` | Actif | P1 | Backlog UI : priorité **hub Carte** + retour croix depuis `FirstLvl` ; rappel bootstrap/`UIManager` ; `LanguageManager` / TMP. |
+| `Notes/Ui/LOADINGSCREEN_image_workflow.md` | Actif | P1 | Illustration + import sprite + intégration Canvas **`Bootstrap`** / fade `LoadingScreen`. |
+| `Notes/Ui/Todo_ui.md` | Actif | P1 | Backlog UI : focus **LoadingScreen** (session auteur) ; **hub Carte** + retour croix depuis `FirstLvl` ; bootstrap/`UIManager` ; `LanguageManager` / TMP. |
 | `Notes/Ui/Decision_ui.md` | Actif | P3 | Spéc UI proto -> polish (objectifs, architecture panneaux, animations, contrat d'orchestration). |
 | `Notes/Ui/Spec_ui.md` | Vide | P3 | Fichier placeholder pour future spécification UI dédiée. |
 

@@ -2,7 +2,7 @@
 
 ## État au 2026-04-16 (implémenté dans le dépôt)
 
-- **`Bootstrap.unity`** : première scène du **Build Settings** ; contient **`GameBootstrap`** + **`LoadingScreen`**.
+- **`Bootstrap.unity`** : première scène du **Build Settings** ; contient **`GameBootstrap`** + **`LoadingScreen`**. *2026-04-17* : intégration illustration load — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
 - **`GameBootstrap`** (`Assets/Scripts/Core/GameBootstrap.cs`) : charge en **additif** **`NavigationHUD`** puis **`FirstLvl`**, avec barre de progression sur l’`AsyncOperation`, puis masque le loading.
 - **`NavigationHUD.unity`** : **dans le build** ; scène shell avec **`NavigationHUD`** + **`UIManager`** + **`EventSystem`** unique (à vérifier dans l’asset scène).
 - **`UIManager`** (`Assets/Scripts/Systems/UIManager.cs`) : singleton **`DontDestroyOnLoad`**, registre d’écrans par **`screenId`**, listes **prioritaires** / **secondaires** de **`ScreenEntry`** (prefab → `Instantiate` sous `screenRoot`, puis **`SetActive`**). API : `PreloadPriorityScreens`, `PreloadScreenLazy`, `ShowScreen`, `HideScreen`, `HideAllGlobalUI`, `EnsureShellLoaded()` (charge le shell en additif si `Instance` absent).

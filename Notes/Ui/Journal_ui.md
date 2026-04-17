@@ -150,4 +150,5 @@ Date | Changement
 2026-04-16 | Ajout d'un prompt simple à copier dans Bezi pour lancer le chantier `UIManager` global / shell UI additive.
 2026-04-16 (fin) | Implémenté : `Bootstrap.unity` + `GameBootstrap` + `LoadingScreen`, `UIManager` (listes prioritaire/secondaire, prefabs), `ScreenId`, shell dans le build ; priorité suivante : scène hub **`Carte`**, croix **`FirstLvl` → Carte**.
 2026-04-16+ | TODO ajouté : **tests** scène de load (`Bootstrap` / `LoadingScreen`) ; **création + affinage** illustration **poisson/arbre** pour l’écran de chargement (réf. de travail « chatgptouille ») puis branchement sur `LoadingScreen`.
+2026-04-17 | Branche navigation / UI **créée** : retrait des rappels « créer la branche avant le chantier » dans **`Notes/Todo_project.md`** ; **prochaine session auteur** = visuel **`LoadingScreen`** ; nouveau guide **`Notes/Ui/LOADINGSCREEN_image_workflow.md`** ; journal **`PROJECT_LOG.md`**.
 

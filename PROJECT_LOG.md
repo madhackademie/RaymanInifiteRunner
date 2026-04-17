@@ -688,3 +688,31 @@
 - `Notes/Ui/Journal_ui.md` — décision hub Carte + croix
 - `Notes/Ui/ARCHI_hud_ui_manager_additive.md` — état au 2026-04-16
 - `Notes/Todo_project.md` — hub **Prochaine session**
+
+## 2026-04-17 — notes (branche navigation + focus LoadingScreen)
+
+### Contexte
+- Session **documentation / backlog** : l’auteur confirme que la **branche** de travail pour le chantier navigation / UI est **créée** ; la **prochaine session de travail** est centrée sur la **création et l’intégration d’une image** pour l’écran de chargement (`LoadingScreen` / scène **`Bootstrap`**).
+
+### Ce qu’on a fait
+- [x] **Todos** : suppression du bloc *« Impératif Git — créer une branche avant… »* et de la case **Git — branche par feature** liée à ce chantier dans **`Notes/Todo_project.md`** ; réordonnancement : tâche **illustration + intégration LoadingScreen** en tête, **tests QA** load écran séparés après l’art ; hub **`Carte`** conservé comme suite chantier.
+- [x] **Guide** : création de **`Notes/Ui/LOADINGSCREEN_image_workflow.md`** (chemins `LoadingScreen.cs`, `GameBootstrap.cs`, `Assets/Scenes/Bootstrap.unity`, import sprite UI, intégration hiérarchie sans C# obligatoire, QA).
+- [x] **`Notes/Ui/Todo_ui.md`** : section *Priorité session suivante* — sous-section explicite **focus auteur LoadingScreen** + lien vers le guide ; hub Carte renommé en *suite chantier*.
+- [x] **`ASSISTANT_CONTEXT.md`** : branche notée comme créée ; priorités réordonnées (LoadingScreen puis navigation).
+- [x] **`WORKFLOW_PROTOCOL.md` (--5--)** et en-tête **`Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`** : formulation **générique** branche + merge (plus de ciblage « obligatoire prochaine feature scènes »).
+- [x] **`Notes/Ui/Journal_ui.md`** : ligne de journal 2026-04-17.
+
+### Décisions
+- La **procédure** « une branche par gros chantier » reste documentée dans **`GIT_HELPER.md` — --3--** ; seuls les rappels **bloquants / checklist** « à faire avant de commencer » pour la branche déjà créée sont retirés des hubs **Todo** / protocole court.
+
+### Prochaines actions (priorité)
+1. **Auteur** : produire l’illustration et l’intégrer selon **`Notes/Ui/LOADINGSCREEN_image_workflow.md`** puis valider en **Play Mode** et **build dev**.
+2. **Suite projet** : hub **`Carte`** + **`FirstLvl` → Carte`** (inchangé fonctionnellement, voir entrée 2026-04-16 fin).
+3. Trancher / documenter le **mode de chargement UI** final quand le cycle navigation sera repris (`Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`).
+
+### Liens utiles
+- `Notes/Ui/LOADINGSCREEN_image_workflow.md`
+- `Assets/Scripts/UI/LoadingScreen.cs`
+- `Assets/Scripts/Core/GameBootstrap.cs`
+- `Assets/Scenes/Bootstrap.unity`
+- `Notes/Todo_project.md` — *Prochaine session*

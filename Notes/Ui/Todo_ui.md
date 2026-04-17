@@ -6,9 +6,17 @@
 
 ---
 
-## Priorité session suivante (2026-04-16)
+## Priorité session suivante
 
-### Scène hub **`Carte`** + HUD persistant + retour depuis **`FirstLvl`**
+### Focus auteur — **illustration LoadingScreen** (2026-04-17)
+
+- **Objectif** : image finale (référence projet : **poisson + arbre**) + import Unity + placement dans **`Assets/Scenes/Bootstrap.unity`** sans régression barre / fade.
+- **Guide** : **`Notes/Ui/LOADINGSCREEN_image_workflow.md`** (hiérarchie Canvas, import sprite, QA).
+- Après intégration : cocher la case QA dans **`Notes/Todo_project.md`** (*Tests écran de chargement*).
+
+---
+
+### Hub **`Carte`** + HUD persistant + retour depuis **`FirstLvl`** (suite chantier)
 
 Objectif : une **scène intermédiaire** sert de **hub multi-scènes** (navigation vers les modes / niveaux), avec le **HUD persistant** (`NavigationHUD` + `UIManager` déjà en `DontDestroyOnLoad`) dans le **mode d’affichage voulu** sur ce hub (ex. barre complète `ShowNavBar()` pour choisir les destinations).
 

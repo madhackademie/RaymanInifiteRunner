@@ -1,6 +1,6 @@
 # Unity — scènes, navigation, Inventaire / Market (réactivité UI)
 
-**Git (impératif projet)** : avant d’implémenter ce système, créer une **branche dédiée** depuis `main` à jour (ex. `feature/scenes-navigation-ui`) — voir **`GIT_HELPER.md` section --3--**. Ne pas pousser ce chantier directement sur `main` ; en workflow **fork** GitHub, appliquer la même règle sur une branche du fork.
+**Git** : pour un chantier de cette taille, travailler sur une **branche dédiée** et fusionner dans `main` une fois validé — **`GIT_HELPER.md` section --3--**. *(Branche navigation / UI multi-stage créée côté auteur le 2026-04-17.)*
 
 ---
 

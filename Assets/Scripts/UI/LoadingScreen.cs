@@ -19,6 +19,22 @@ public class LoadingScreen : MonoBehaviour
     [Header("Fade")]
     [SerializeField] private CanvasGroup canvasGroup;
 
+    private void Awake()
+    {
+        SetProgress(0f);
+    }
+
+    // Garantit que la barre est à 0 dans l'éditeur avant le Play mode.
+    private void OnValidate()
+    {
+        if (fillImage != null)
+        {
+            Vector2 anchorMax = fillImage.rectTransform.anchorMax;
+            anchorMax.x = 0f;
+            fillImage.rectTransform.anchorMax = anchorMax;
+        }
+    }
+
     // ── Public API ────────────────────────────────────────────────────────────
 
     /// <summary>
@@ -29,8 +45,13 @@ public class LoadingScreen : MonoBehaviour
     {
         value = Mathf.Clamp01(value);
 
+        // Contrôle la largeur du fill via anchorMax.x (0 = vide, 1 = plein).
         if (fillImage != null)
-            fillImage.fillAmount = value;
+        {
+            Vector2 anchorMax = fillImage.rectTransform.anchorMax;
+            anchorMax.x = value;
+            fillImage.rectTransform.anchorMax = anchorMax;
+        }
 
         if (percentageText != null)
             percentageText.text = $"{Mathf.RoundToInt(value * 100)} %";
