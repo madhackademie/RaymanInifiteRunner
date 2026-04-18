@@ -6,12 +6,16 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prochaine session (priorité immédiate)
 
+> **2026-04-18 (fin de session)** : **prochaine session** — **contrôle et réparation** de la **navigation entre les scènes** ; **contrôle** des **items ajoutés** à l’inventaire (données + UI après `TryAdd`). Détail : entrée **`PROJECT_LOG.md`** du **2026-04-18**.
+>
 > **2026-04-16 (fin de session)** : le **bootstrap** et le **shell UI** sont en place (`Bootstrap.unity` → `NavigationHUD` additif → `FirstLvl`, `GameBootstrap`, `LoadingScreen`, `UIManager` avec prefabs prioritaires/secondaires, `ScreenId`). **2026-04-17** : branche de travail **navigation / UI** créée par l’auteur — plus de rappel « créer la branche » dans la checklist ci-dessous ; merge dans `main` selon **`GIT_HELPER.md` — --3--** quand la feature sera prête.
 >
 > **Prochaine session (focus auteur)** : **illustration + intégration** sur l’écran de chargement (**poisson + arbre** ou variante validée) — guide pas à pas **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**, détail **`Notes/Ui/Todo_ui.md`** (*Bootstrap & LoadingScreen*).
 >
 > **Suite chantier navigation** : scène hub **`Carte`** ; depuis **`FirstLvl`**, la **croix** doit ramener à **`Carte`**. Détail : **`Notes/Ui/Todo_ui.md`** (*Priorité session suivante — hub Carte*), **`Notes/Ui/Journal_ui.md`**, **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`**.
 
+- [ ] **Navigation scènes — audit + réparation (priorité session suivante)** : repasser tous les chemins (Bootstrap → `NavigationHUD` / shell → `FirstLvl` → UI inventaire / retours) ; corriger les bugs (ordre de chargement, scènes orphelines, **double `EventSystem`**, références **Build Settings**). Réfs : `GameBootstrap`, `UIManager`, `NavigationHUD`, `Notes/Ui/ARCHI_hud_ui_manager_additive.md`, `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`.
+- [ ] **Inventaire — contrôle des items ajoutés (priorité session suivante)** : après récolte ou tout `TryAdd`, vérifier **`itemId`**, quantités, piles, cas **plein**, et **refresh UI** ; cohérence avec **`ItemDefinition`** / **`ItemDatabase`**. Réfs : `PlayerInventory`, UI inventaire, `Notes/Farm/SYSTEMES_carte_mentale.md` (Zoom D).
 - [ ] **Illustration + intégration LoadingScreen (priorité session auteur)** : créer l’image, importer (sprite UI, alpha), placer dans **`Bootstrap.unity`** ; QA play + build — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
 - [ ] **Hub `Carte` + retour croix depuis `FirstLvl`** : créer la scène **`Carte`**, l’ajouter au **Build Settings**, définir le flux *Bootstrap → shell → Carte → niveaux* (ou équivalent), implémenter la navigation **FirstLvl → Carte** sur le bouton exit du HUD sans casser l’unicité **`EventSystem`**. DoD : depuis le niveau, la croix ramène bien à **`Carte`** avec HUD cohérent ; documenter unload/load dans **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`**.
 - [ ] **Tests écran de chargement (QA)** : après intégration visuelle, reprendre la checklist **`Notes/Ui/Todo_ui.md`** (*Bootstrap & LoadingScreen* — barre, `AsyncOperation` 0.9, fade, pas de double `EventSystem`).

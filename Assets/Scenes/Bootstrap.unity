@@ -706,7 +706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameBootstrap
   loadingScreen: {fileID: 1046283579}
-  minimumDisplaySeconds: 15
+  minimumDisplaySeconds: 0
 --- !u!4 &1565248596
 Transform:
   m_ObjectHideFlags: 0

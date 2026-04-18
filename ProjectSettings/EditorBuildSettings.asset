@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/NavigationHUD.unity
     guid: 9fe7b88c83fe3424f92c9c7f67c86384
   - enabled: 1
+    path: Assets/Scenes/HomeScene.unity
+    guid: bfa9080049615fa45ae2aa6f12463a5a
+  - enabled: 1
     path: Assets/Scenes/FirstLvl.unity
     guid: 4066a1c76d456914097fe10a8db29aeb
   - enabled: 1

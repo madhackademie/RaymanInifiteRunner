@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,14 @@ public class NavigationHUD : MonoBehaviour
 
     /// <summary>Singleton instance. Available from any scene after first load.</summary>
     public static NavigationHUD Instance { get; private set; }
+
+    // ── Events ────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Déclenché quand le bouton de sortie est pressé en mode exit-only.
+    /// Abonnez-vous depuis le contrôleur de la scène active pour gérer le retour.
+    /// </summary>
+    public event Action OnExitToHomeRequested;
 
     // ── Inspector references ──────────────────────────────────────────────────
 
@@ -113,11 +122,22 @@ public class NavigationHUD : MonoBehaviour
         RefreshTabVisuals(Tab.Inventaire);
     }
 
-    /// <summary>Ferme tous les écrans et repasse en mode exit-only (gameplay).</summary>
+    /// <summary>
+    /// Ferme tous les écrans et repasse en mode exit-only (gameplay),
+    /// ou notifie la scène active pour un retour Home si on est déjà en mode exit-only.
+    /// </summary>
     public void OnExitClicked()
     {
-        UIManager.Instance?.HideAllGlobalUI();
-        ShowExitOnly();
+        if (exitButtonContainer.activeSelf)
+        {
+            // Mode exit-only actif → délègue le retour à la scène courante.
+            OnExitToHomeRequested?.Invoke();
+        }
+        else
+        {
+            UIManager.Instance?.HideAllGlobalUI();
+            ShowExitOnly();
+        }
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

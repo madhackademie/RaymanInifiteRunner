@@ -716,3 +716,26 @@
 - `Assets/Scripts/Core/GameBootstrap.cs`
 - `Assets/Scenes/Bootstrap.unity`
 - `Notes/Todo_project.md` — *Prochaine session*
+
+## 2026-04-18 — fin de session (journal + cadrage prochaine session)
+
+### Contexte
+- Fin de session : mise à jour de la **documentation** et du **journal** pour figer l’état mental et les priorités.
+
+### Ce qu’on a fait
+- [x] **`PROJECT_LOG.md`** : entrée de **fin de session** avec la **prochaine session** explicitement cadrée (voir ci-dessous).
+- [x] **`Notes/Todo_project.md`** : ajout des priorités **navigation scènes** (audit + correctifs) et **inventaire / items** (vérification données + UI après ajouts).
+
+### Prochaine session (priorité — auteur)
+1. **Navigation entre scènes** : **contrôle** complet des flux (Bootstrap → shell / HUD → niveaux → écrans UI), identification des **régressions** (chargement, ordre des scènes, retours, `DontDestroyOnLoad`), puis **réparation** ; vérifier **Editor Build Settings**, absence de **double `EventSystem`**, et cohérence avec **`GameBootstrap`**, **`UIManager`**, **`NavigationHUD`**.
+2. **Items ajoutés à l’inventaire** : **contrôle** côté gameplay — après récolte ou tout autre `TryAdd`, vérifier **`itemId`**, quantités, piles, état **inventaire plein**, et **rafraîchissement UI** ; alignement avec **`ItemDefinition`** / **`ItemDatabase`** si besoin.
+
+### Liens utiles
+- `Notes/Todo_project.md` — *Prochaine session*
+- `Notes/Ui/ARCHI_hud_ui_manager_additive.md`
+- `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
+- `Assets/Scripts/Core/GameBootstrap.cs`
+- `Assets/Scripts/Systems/UIManager.cs`
+- `Assets/Scripts/UI/NavigationHUD.cs`
+- `Assets/Scripts/Inventory/PlayerInventory.cs`
+- `Notes/Farm/SYSTEMES_carte_mentale.md` (Zoom D — récolte ↔ inventaire)
