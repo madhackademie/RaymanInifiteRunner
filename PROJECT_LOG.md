@@ -739,3 +739,30 @@
 - `Assets/Scripts/UI/NavigationHUD.cs`
 - `Assets/Scripts/Inventory/PlayerInventory.cs`
 - `Notes/Farm/SYSTEMES_carte_mentale.md` (Zoom D — récolte ↔ inventaire)
+
+## 2026-04-19 — fin de session (parcours projet + backlog persistance / temps)
+
+### Contexte
+- Fin de session : mise à jour des **notes** après **parcours du dépôt** ; ajout de **TODOs** sur la navigation **additive + unload async**, la **persistance de la grille**, et le **temps de croissance** hors scène / hors ligne.
+
+### Ce qu’on a fait (constat code + documentation)
+- [x] **Parcours** des briques **navigation multi-scènes** : **`SceneNavigator`** (`LoadSceneAsync` en **additif** puis **`UnloadSceneAsync`** sur la scène de contenu précédente, `Awaitable`, garde-fous `IsTransitioning` / scène identique), constantes **`SceneId`** (`HomeScene`, `Inventaire`, `FirstLvl`, `Map`, …), **`GameBootstrap`** (chargement **`NavigationHUD`** puis **`HomeScene`**, appel **`SetInitialScene`**), **`NavigationHUD`** (onglets → `GoTo`, **`OnExitToHomeRequested`** en mode exit-only), **`FirstLvlController`** (retour **`HomeScene`**), **`MapSceneController`** sur **`HomeScene`** (hub + **`MapProgressionData`**).
+- [x] **Documentation** : cette entrée ; hub **`Notes/Todo_project.md`** ; **`Notes/Ui/Todo_ui.md`** ; **`ASSISTANT_CONTEXT.md`** ; **`Notes/Codebase_etat_reference.md`** ; **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`** ; ajustement **`Notes/Ui/Journal_ui.md`** (hub **`HomeScene`** vs ancienne formulation **`Carte`** seule).
+
+### Problèmes / pistes
+- La pile **scène de contenu unique + shell persistant** reste à **valider en playtest** (ordre load/unload, activation, transitions concurrentes, cohabitation **`UIManager`** / panneaux globaux).
+- **Grille / farm** : aujourd’hui surtout **runtime en scène** — pas de sauvegarde systématique de l’occupation ni des timers de croissance à la fermeture.
+
+### Prochaines actions (priorité)
+1. **Navigation inter-scène / UI** : **debug** et **amélioration** du flux **additif + `UnloadSceneAsync`** (tous les chemins, Build Settings, pas de double **`EventSystem`**) — voir **`Notes/Todo_project.md`** et **`Notes/Ui/Todo_ui.md`**.
+2. **Persistance grille** : faire persister l’**état de la grille** à la **fermeture de scène** et à la **fermeture du jeu** (piste **`ScriptableObject`** + évolution save fichier / JSON) — croiser `GridData`, `GridManager`, `BiofiltreManager`.
+3. **Croissance hors scène / hors ligne** : recalcul du **temps restant** / des **stades** via **timestamps UTC** à la reprise ; **cloud** (ex. UGS Cloud Save) noté comme **piste future** si besoin multi-appareil.
+
+### Liens utiles
+- `Assets/Scripts/Systems/SceneNavigator.cs`
+- `Assets/Scripts/Core/GameBootstrap.cs`
+- `Assets/Scripts/UI/NavigationHUD.cs`
+- `Assets/Scripts/UI/FirstLvlController.cs`
+- `Assets/Scripts/UI/Map/MapSceneController.cs`
+- `Assets/Scripts/Systems/ScreenId.cs` (`SceneId`)
+- `Notes/Todo_project.md`

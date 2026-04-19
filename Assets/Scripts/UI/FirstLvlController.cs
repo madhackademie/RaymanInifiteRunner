@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Contrôleur de la scène FirstLvl.
-/// Active le bouton de sortie du NavigationHUD et gère le retour vers HomeScene.
+/// Active le bouton de sortie du NavigationHUD et gère le retour vers HomeScene via SceneNavigator.
 /// </summary>
 public class FirstLvlController : MonoBehaviour
 {
@@ -14,7 +13,6 @@ public class FirstLvlController : MonoBehaviour
 
         NavigationHUD.ShowExitOnly();
 
-        // Abonne la croix au retour Home.
         if (NavigationHUD.Instance != null)
             NavigationHUD.Instance.OnExitToHomeRequested += ReturnToHome;
     }
@@ -27,21 +25,11 @@ public class FirstLvlController : MonoBehaviour
 
     // ── Navigation ────────────────────────────────────────────────────────────
 
-    /// <summary>Décharge FirstLvl et charge HomeScene en additif.</summary>
+    /// <summary>Retourne en HomeScene via SceneNavigator (décharge FirstLvl, charge HomeScene).</summary>
     private async void ReturnToHome()
     {
         NavigationHUD.Hide();
-
-        AsyncOperation load = SceneManager.LoadSceneAsync(SceneId.HomeScene, LoadSceneMode.Additive);
-        if (load == null)
-        {
-            Debug.LogError("[FirstLvlController] Impossible de charger HomeScene. Vérifie les Build Settings.");
-            return;
-        }
-
-        while (!load.isDone)
-            await Awaitable.NextFrameAsync();
-
-        await SceneManager.UnloadSceneAsync(SceneId.FirstLvl);
+        await SceneNavigator.Instance.GoTo(SceneId.HomeScene);
+        NavigationHUD.ShowNavBar();
     }
 }

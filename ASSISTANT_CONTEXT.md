@@ -1,10 +1,10 @@
 ## Assistant Context — RaymanInifiteRunner
 
 ### Etat actuel (compact)
-- Projet Unity 6000.3.x avec base menu + premier niveau + scripts initiaux (`MainMenuUI`, `Timer`).
-- Workflow notes en place: `PROJECT_LOG.md` (chronologique), `Notes/Todo_project.md` (hub TODO), `Notes/Learning/` (fiches pédagogiques).
-- Pipeline art recentré sur une approche **2D SpriteRenderer** pour accélérer le prototypage mobile.
-- Données plante / inventaire : `PlantDefinition` laitue avec **`harvestStages`** (ex. Mature → `harvestItemId` **`laitue_mature`**), item dans **`Assets/Data/Inventaire/`**, plante dans **`Assets/Data/Ferme/`**. Doc créateur : **`Docs/PLANTES_ET_INVENTAIRE.md`**.
+- Projet Unity 6000.3.x : **boot** `Bootstrap.unity` → **`GameBootstrap`** charge additivement le shell **`NavigationHUD`** puis la scène de contenu **`HomeScene`** ; transitions de contenu via **`SceneNavigator`** (**additif** + **`UnloadSceneAsync`**) et constantes **`SceneId`** ; gameplay ferme dans **`FirstLvl`** avec **`FirstLvlController`** (retour hub).
+- Workflow notes : `PROJECT_LOG.md`, `Notes/Todo_project.md`, `Notes/Learning/`.
+- Pipeline art : **2D SpriteRenderer** (prototype mobile).
+- Données plante / inventaire : `PlantDefinition` + **`harvestStages`** / **`laitue_mature`**, assets sous **`Assets/Data/`**. Doc : **`Docs/PLANTES_ET_INVENTAIRE.md`**.
 
 ### Décisions techniques actées
 - Workflow Git: commencer les sessions par `git fetch` + `git status -sb`; penser `Save All` avant commit.
@@ -16,16 +16,19 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **LoadingScreen — visuel** : illustration (ex. poisson + arbre), import sprite UI, intégration scène **`Bootstrap`** — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**, `Notes/Ui/Todo_ui.md`.
-2. **Scènes Inventaire + Market + HUD sur tous les stages** : hub **`Carte`**, retour croix **`FirstLvl` → Carte**, prefabs / `UIManager` — **`Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`**, `Notes/Todo_project.md` (*Prochaine session*).
-3. **Inventaire gameplay** : noyau récolte ↔ `PlayerInventory` considéré **bouclé** ; affinements UX (Partial, messages) seulement si besoin en playtest.
-4. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; données plante/item : **`Docs/PLANTES_ET_INVENTAIRE.md`**.
-5. Continuer nettoyage/scoping assets prototype et vérifier les références Unity après purge 3D.
+1. **Navigation inter-scène / UI** : **debug** et **durcissement** du flux **`SceneNavigator`** (additif + unload async), tests complets (Build Settings, double **`EventSystem`**, retours depuis **`FirstLvl`**) — **`Notes/Todo_project.md`**, **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`**.
+2. **Persistance grille** : état des cellules / cultures à la **fermeture de scène** et à la **quitt** (piste **`ScriptableObject`** + save ultérieure) — **`Notes/Todo_project.md`**.
+3. **Croissance plantes hors scène / hors ligne** : recalcul via **UTC** à la reprise ; **cloud** (ex. UGS) en évolution possible — croiser **`Timer`**, spec temps GDD, **`Notes/Todo_project.md`**.
+4. **LoadingScreen — visuel** : illustration + intégration **`Bootstrap`** — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
+5. **Inventaire gameplay** : noyau récolte ↔ `PlayerInventory` **bouclé** ; polish UX si playtest.
+6. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
+7. Nettoyage assets prototype / références Unity.
 
 ### Références clés
+- `Assets/Scripts/Systems/SceneNavigator.cs` — transitions contenu additif + unload async
 - `Notes/Ui/LOADINGSCREEN_image_workflow.md` — art + intégration écran de chargement
 - `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md` — navigation scènes, sync/async, HUD global
-- `PROJECT_LOG.md` (dernière entrée **2026-04-17** — notes LoadingScreen + branche navigation)
+- `PROJECT_LOG.md` (dernière entrée **2026-04-19** — persistance grille + temps hors scène)
 - `Docs/PLANTES_ET_INVENTAIRE.md` — `harvestItemId` / `itemId`, checklist nouvelle plante
 - `Notes/Todo_project.md`
 - `Notes/Farm/SYSTEMES_carte_mentale.md`

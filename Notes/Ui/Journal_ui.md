@@ -31,16 +31,16 @@ Règle de fonctionnement :
 
 ### 5) UI globale partagée entre toutes les scènes
 - Direction retenue : charger une UI shell globale persistante pour toutes les scènes de jeu.
-- **Implémenté (2026-04-16)** : scène **`Bootstrap.unity`** (index 0) + **`GameBootstrap`** charge additivement **`NavigationHUD`** puis **`FirstLvl`** avec **`LoadingScreen`** ; **`UIManager`** vit dans le shell avec listes **prioritaires** / **secondaires** d’écrans en **prefabs** (instanciation + `SetActive`), plus **`EnsureShellLoaded()`** pour les entrées sans Bootstrap.
+- **Implémenté** : scène **`Bootstrap.unity`** (index 0) + **`GameBootstrap`** charge additivement **`NavigationHUD`** puis **`HomeScene`** (mise à jour **2026-04-19** ; avant : **`FirstLvl`** direct) avec **`LoadingScreen`** ; **`UIManager`** + **`SceneNavigator`** dans le shell ; écrans **prefabs** + **`EnsureShellLoaded()`**.
 - Variante « scènes UI `.unity` en additif » : encore possible pour certains écrans ; l’inventaire gameplay peut transiter entièrement par prefab + `ScreenId.Inventory` — vérifier la dépréciation de **`Inventaire.unity`** au build si plus utilisée.
 - L’expérience cible reste : boot un peu plus lourd, navigation quasi instantanée entre panneaux préchargés.
 - Un seul `EventSystem` dans le shell ; pas de second `EventSystem` dans les scènes chargées par-dessus.
 - Un prompt simple et court reste dans **`Todo_ui.md`** / **`ARCHI_hud_ui_manager_additive.md`** (utile Bezi / rappel).
 
-### 6) Hub multi-scènes « Carte » + retour depuis le niveau
-- **Décision de suite** : ajouter une **scène intermédiaire `Carte`** servant de **hub de navigation** vers les différentes scènes / modes, avec le **HUD persistant** actif dans la configuration voulue (barre complète pour choisir les destinations, ou règle explicite par écran).
-- **Comportement attendu** : depuis **`FirstLvl`**, le bouton **croix** (mode `ShowExitOnly`) doit **renvoyer vers `Carte`**, pas seulement fermer un panneau UI.
-- Le détail technique (unload du niveau, `LoadSceneMode.Single` sur `Carte` en gardant le shell, etc.) est laissé à la prochaine implémentation — à documenter dans **`ARCHI_hud_ui_manager_additive.md`** une fois le flux choisi.
+### 6) Hub multi-scènes — **`HomeScene`** (ex-« Carte ») + retour depuis le niveau
+- **Implémenté (2026-04-19)** : le hub d’accueil est la scène **`HomeScene`** (`MapSceneController`, progression **`MapProgressionData`**) ; le bootstrap charge **`NavigationHUD`** puis **`HomeScene`** ; les transitions de **scène de contenu** passent par **`SceneNavigator`** (additif + **`UnloadSceneAsync`**). La scène **`Map`** reste prévue dans **`SceneId`** pour une carte monde distincte si besoin.
+- **Comportement gameplay** : depuis **`FirstLvl`**, la **croix** déclenche **`OnExitToHomeRequested`** → **`FirstLvlController`** → **`GoTo(HomeScene)`** (plus seulement masquer l’UI globale).
+- **Suite** : **debug** des flux async, persistance ferme, recalcul temps de croissance hors scène — **`Notes/Todo_project.md`**, **`ARCHI_hud_ui_manager_additive.md`**.
 
 ---
 

@@ -4,26 +4,24 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Barre de navigation persistante du shell UI.
-/// Gère deux modes d'affichage : barre de navigation complète ou bouton de sortie seul.
-/// La navigation entre écrans est entièrement déléguée à UIManager.
+/// Gère deux modes : nav bar complète ou bouton de sortie seul.
+/// Les transitions de scènes sont déléguées à SceneNavigator.
 /// </summary>
 public class NavigationHUD : MonoBehaviour
 {
-
     // ── Singleton ─────────────────────────────────────────────────────────────
 
-    /// <summary>Singleton instance. Available from any scene after first load.</summary>
     public static NavigationHUD Instance { get; private set; }
 
     // ── Events ────────────────────────────────────────────────────────────────
 
     /// <summary>
     /// Déclenché quand le bouton de sortie est pressé en mode exit-only.
-    /// Abonnez-vous depuis le contrôleur de la scène active pour gérer le retour.
+    /// Abonnez-vous depuis le contrôleur de la scène de gameplay active.
     /// </summary>
     public event Action OnExitToHomeRequested;
 
-    // ── Inspector references ──────────────────────────────────────────────────
+    // ── Inspector ─────────────────────────────────────────────────────────────
 
     [Header("Mode Containers")]
     [SerializeField] private GameObject navBarContainer;
@@ -33,7 +31,7 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private Button tabAventuresButton;
     [SerializeField] private Button tabInventaireButton;
 
-    [Header("Tab Icons (teintées selon sélection)")]
+    [Header("Tab Icons")]
     [SerializeField] private Image tabAventuresIcon;
     [SerializeField] private Image tabInventaireIcon;
 
@@ -41,7 +39,7 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private Button exitButton;
 
     [Header("Couleurs de tab")]
-    [SerializeField] private Color colorActive   = new Color(1f,   0.78f, 0.2f,  1f);
+    [SerializeField] private Color colorActive   = new Color(1f,    0.78f, 0.2f,  1f);
     [SerializeField] private Color colorInactive = new Color(0.55f, 0.55f, 0.55f, 1f);
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -69,12 +67,9 @@ public class NavigationHUD : MonoBehaviour
         exitButton.onClick.RemoveListener(OnExitClicked);
     }
 
-    // ── Public display API ────────────────────────────────────────────────────
+    // ── Display API ───────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Shows the full navigation bar.
-    /// Call this from feature scenes: Inventaire, Marché, Talents, etc.
-    /// </summary>
+    /// <summary>Affiche la barre de navigation complète.</summary>
     public static void ShowNavBar()
     {
         if (Instance == null) return;
@@ -83,10 +78,7 @@ public class NavigationHUD : MonoBehaviour
         Instance.RefreshTabVisuals();
     }
 
-    /// <summary>
-    /// Shows only the small exit button (red cross).
-    /// Call this from full-screen scenes: FirstLvl gameplay, etc.
-    /// </summary>
+    /// <summary>Affiche uniquement le bouton de sortie (croix). Pour les scènes gameplay.</summary>
     public static void ShowExitOnly()
     {
         if (Instance == null) return;
@@ -94,10 +86,7 @@ public class NavigationHUD : MonoBehaviour
         Instance.exitButtonContainer.SetActive(true);
     }
 
-    /// <summary>
-    /// Hides the HUD entirely.
-    /// Call this from cinematics, splash screens, loading screens, etc.
-    /// </summary>
+    /// <summary>Masque le HUD entièrement. Pour les cinématiques et l'écran de chargement.</summary>
     public static void Hide()
     {
         if (Instance == null) return;
@@ -107,47 +96,41 @@ public class NavigationHUD : MonoBehaviour
 
     // ── Tab callbacks ─────────────────────────────────────────────────────────
 
-    /// <summary>Retour au gameplay : masque tous les écrans, passe en mode exit-only.</summary>
-    public void OnTabAventuresClicked()
+    /// <summary>Navigue vers HomeScene via SceneNavigator.</summary>
+    public async void OnTabAventuresClicked()
     {
-        UIManager.Instance?.HideAllGlobalUI();
-        ShowExitOnly();
+        if (SceneNavigator.Instance == null) return;
+        ShowNavBar();
+        await SceneNavigator.Instance.GoTo(SceneId.HomeScene);
+        RefreshTabVisuals(Tab.Aventures);
     }
 
-    /// <summary>Ouvre l'inventaire via UIManager et affiche la nav bar complète.</summary>
-    public void OnTabInventaireClicked()
+    /// <summary>Navigue vers la scène Inventaire via SceneNavigator.</summary>
+    public async void OnTabInventaireClicked()
     {
-        UIManager.Instance?.ShowScreen(ScreenId.Inventory);
+        if (SceneNavigator.Instance == null) return;
         ShowNavBar();
+        await SceneNavigator.Instance.GoTo(SceneId.Inventaire);
         RefreshTabVisuals(Tab.Inventaire);
     }
 
     /// <summary>
-    /// Ferme tous les écrans et repasse en mode exit-only (gameplay),
-    /// ou notifie la scène active pour un retour Home si on est déjà en mode exit-only.
+    /// En mode exit-only : notifie la scène gameplay pour qu'elle gère le retour.
+    /// En mode nav bar : sans effet (les tabs gèrent la navigation).
     /// </summary>
     public void OnExitClicked()
     {
         if (exitButtonContainer.activeSelf)
-        {
-            // Mode exit-only actif → délègue le retour à la scène courante.
             OnExitToHomeRequested?.Invoke();
-        }
-        else
-        {
-            UIManager.Instance?.HideAllGlobalUI();
-            ShowExitOnly();
-        }
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    /// <summary>Déduit le tab actif depuis UIManager et met à jour les icônes.</summary>
     private void RefreshTabVisuals()
     {
-        bool inventoryVisible = UIManager.Instance != null &&
-                                UIManager.Instance.IsScreenVisible(ScreenId.Inventory);
-        RefreshTabVisuals(inventoryVisible ? Tab.Inventaire : Tab.Aventures);
+        bool onInventaire = SceneNavigator.Instance != null &&
+                            SceneNavigator.Instance.CurrentScene == SceneId.Inventaire;
+        RefreshTabVisuals(onInventaire ? Tab.Inventaire : Tab.Aventures);
     }
 
     private void RefreshTabVisuals(Tab active)
@@ -162,7 +145,7 @@ public class NavigationHUD : MonoBehaviour
             icon.color = isActive ? colorActive : colorInactive;
     }
 
-    // ── Tab enum ──────────────────────────────────────────────────────────────
+    // ── Enums ─────────────────────────────────────────────────────────────────
 
     private enum Tab { Aventures, Inventaire }
 }

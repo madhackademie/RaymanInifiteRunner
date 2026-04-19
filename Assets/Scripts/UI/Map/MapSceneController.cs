@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Contrôleur de l'écran d'accueil (HomeScene).
@@ -24,10 +23,6 @@ public class MapSceneController : MonoBehaviour
 
     [Tooltip("Parent vertical sous lequel les boutons sont instanciés (avec VerticalLayoutGroup).")]
     [SerializeField] private RectTransform nodesContainer;
-
-    [Header("Loading")]
-    [Tooltip("Référence optionnelle à un LoadingScreen local à la scène Hub.")]
-    [SerializeField] private LoadingScreen loadingScreen;
 
     // ── Runtime ───────────────────────────────────────────────────────────────
 
@@ -102,39 +97,13 @@ public class MapSceneController : MonoBehaviour
 
     private async void HandleNodeSelected(MapNodeData data)
     {
-        if (loadingScreen != null)
-            loadingScreen.SetProgress(0f);
-
-        // Charge la scène cible en additif pour préserver la scène shell NavigationHUD.
-        AsyncOperation op = SceneManager.LoadSceneAsync(data.targetSceneName, LoadSceneMode.Additive);
-
-        if (op == null)
+        if (SceneNavigator.Instance == null)
         {
-            Debug.LogError($"[MapSceneController] Impossible de charger '{data.targetSceneName}'. Vérifie les Build Settings.");
+            Debug.LogError("[MapSceneController] SceneNavigator introuvable.");
             return;
         }
 
-        op.allowSceneActivation = false;
-
-        while (op.progress < 0.9f)
-        {
-            if (loadingScreen != null)
-                loadingScreen.SetProgress(op.progress / 0.9f);
-            await Awaitable.NextFrameAsync();
-        }
-
-        if (loadingScreen != null)
-        {
-            loadingScreen.SetProgress(1f);
-            await loadingScreen.Hide();
-        }
-
-        op.allowSceneActivation = true;
-
-        // Attend que la scène soit bien activée avant de décharger HomeScene.
-        while (!op.isDone)
-            await Awaitable.NextFrameAsync();
-
-        await SceneManager.UnloadSceneAsync(SceneId.HomeScene);
+        NavigationHUD.Hide();
+        await SceneNavigator.Instance.GoTo(data.targetSceneName);
     }
 }

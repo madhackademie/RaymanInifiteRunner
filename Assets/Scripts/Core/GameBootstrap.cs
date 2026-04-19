@@ -28,12 +28,13 @@ public class GameBootstrap : MonoBehaviour
 
             float startTime = Time.realtimeSinceStartup;
 
-            // 1. Shell UI : NavigationHUD + UIManager (0 % → 50 %)
+            // 1. Shell UI : NavigationHUD + UIManager + SceneNavigator (0 % → 50 %)
             await LoadWithProgress(SceneId.NavigationHUD, 0f, 0.5f);
             NavigationHUD.Hide();
 
-            // 2. Écran d'accueil (50 % → 100 %)
+            // 2. Scène de contenu initiale : HomeScene (50 % → 100 %)
             await LoadWithProgress(SceneId.HomeScene, 0.5f, 1f);
+            SceneNavigator.Instance?.SetInitialScene(SceneId.HomeScene);
 
             // 3. Temps d'affichage minimum garanti.
             float elapsed = Time.realtimeSinceStartup - startTime;

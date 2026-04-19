@@ -8,6 +8,14 @@
 
 ## Priorité session suivante
 
+### Debug / amélioration — **navigation additive + unload async** (2026-04-19)
+
+- [ ] Repasser tous les chemins **`SceneNavigator.GoTo`** (chargement additif → **`UnloadSceneAsync`** sur la scène de contenu précédente) : scène inexistante, double clic, transition déjà en cours, cohérence **`CurrentScene`** avec **`SetInitialScene`** après bootstrap.
+- [ ] Vérifier l’interaction **HUD** (`NavigationHUD` modes, onglets **`HomeScene`** / **`Inventaire`**, **`OnExitToHomeRequested`** + **`FirstLvlController`**) et **`MapSceneController`** (chargement depuis le hub, unload **`HomeScene`** si applicable).
+- [ ] Playtest **Build Settings** + absence de **double `EventSystem`** ; après stabilisation, mettre à jour **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`** (séquence réelle et pièges async).
+
+---
+
 ### Focus auteur — **illustration LoadingScreen** (2026-04-17)
 
 - **Objectif** : image finale (référence projet : **poisson + arbre**) + import Unity + placement dans **`Assets/Scenes/Bootstrap.unity`** sans régression barre / fade.
@@ -16,22 +24,15 @@
 
 ---
 
-### Hub **`Carte`** + HUD persistant + retour depuis **`FirstLvl`** (suite chantier)
+### Hub **`HomeScene`** + HUD persistant + retour depuis **`FirstLvl`** (suite chantier)
 
-Objectif : une **scène intermédiaire** sert de **hub multi-scènes** (navigation vers les modes / niveaux), avec le **HUD persistant** (`NavigationHUD` + `UIManager` déjà en `DontDestroyOnLoad`) dans le **mode d’affichage voulu** sur ce hub (ex. barre complète `ShowNavBar()` pour choisir les destinations).
+**État (2026-04-19)** : le hub d’accueil est la scène **`HomeScene`** (`MapSceneController`, `SceneId.HomeScene`) ; **`GameBootstrap`** charge **`NavigationHUD`** puis **`HomeScene`** ; les onglets HUD utilisent **`SceneNavigator.GoTo`** vers **`HomeScene`** / **`Inventaire`**. Le retour depuis le gameplay passe par **`OnExitToHomeRequested`** + **`FirstLvlController`** → **`GoTo(HomeScene)`**.
 
-Comportement explicite à implémenter :
+Tâches restantes / alignement doc :
 
-- Depuis **`FirstLvl`**, en mode **`ShowExitOnly()`**, un clic sur la **croix** doit **retourner à la scène `Carte`** (pas seulement `HideAllGlobalUI` + rester sur `FirstLvl`).
-- Choisir et documenter le flux technique : **unload** de `FirstLvl` puis `LoadScene("Carte", Single)` en conservant le shell, **ou** autre combinaison sans **double `EventSystem`**.
-
-Tâches détaillées :
-
-- [ ] Créer **`Carte.unity`** (nom exact à aligner sur `SceneManager`) + l’ajouter au **Build Settings**.
-- [ ] Contenu minimal du hub : UI ou boutons pour ouvrir **`FirstLvl`** et les autres scènes prévues ; appeler le HUD approprié au `OnEnable` du hub.
-- [ ] Adapter **`GameBootstrap`** : si le flux cible est *Bootstrap → shell → **Carte*** (puis niveaux à la demande), remplacer le chargement direct de `FirstLvl` par **`Carte`** après le shell (ou charger `FirstLvl` seulement depuis un bouton du hub — **à trancher** avec le game design).
-- [ ] Brancher **`NavigationHUD.OnExitClicked()`** (ou couche dédiée `SceneFlow` / `GameFlow`) pour la transition **`FirstLvl` → `Carte`** + fermeture des panneaux UI globaux si besoin.
-- [ ] Revue **`Inventaire.unity`** : encore dans le build ; confirmer si obsolete (tout passe par prefab `ScreenId.Inventory`) puis retirer du build ou garder pour tests jusqu’à migration.
+- [ ] Finaliser le flux **hub → `FirstLvl`** / autres nœuds ( **`MapNodeData`** ) et l’**unload** de **`HomeScene`** quand pertinent (`MapSceneController` — à valider en jeu).
+- [ ] Harmoniser la doc ancienne « **`Carte`** » avec **`HomeScene`** / future **`Map`** dans **`ARCHI_hud_ui_manager_additive.md`** et guides.
+- [ ] Revue **`Inventaire.unity`** : au **Build Settings** si encore utilisée comme scène de contenu ; cohabitation avec prefab **`ScreenId.Inventory`** via **`UIManager`**.
 
 ---
 
@@ -44,7 +45,8 @@ Tâches détaillées :
 
 ## État implémenté (rappel — ne pas re-planifier en doublon)
 
-- [x] **`Bootstrap.unity`** en entrée + **`GameBootstrap`** + **`LoadingScreen`** (progression, chargement additif `NavigationHUD` puis `FirstLvl`).
+- [x] **`Bootstrap.unity`** en entrée + **`GameBootstrap`** + **`LoadingScreen`** (progression, chargement additif **`NavigationHUD`** puis **`HomeScene`** — plus **`FirstLvl`** direct au boot).
+- [x] **`SceneNavigator`** + **`SceneId`** : transition de **scène de contenu** unique (additif + unload async de la précédente), shell non déchargé.
 - [x] **`UIManager`** (`Assets/Scripts/Systems/UIManager.cs`) : listes **prioritaires** / **secondaires**, prefabs, `ShowScreen` / `HideScreen` / `HideAllGlobalUI`, `EnsureShellLoaded()`.
 - [x] **`ScreenId`** + au minimum écran **Inventory** en prefab.
 - [x] **`NavigationHUD.unity`** dans le build ; shell + un seul **`EventSystem`**.

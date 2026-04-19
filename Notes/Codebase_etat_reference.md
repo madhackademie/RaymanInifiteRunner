@@ -1,4 +1,4 @@
-# État de référence — scripts & assets (audit 2026-04-12, complément UI 2026-04-16)
+# État de référence — scripts & assets (audit 2026-04-12, complément navigation 2026-04-19)
 
 Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **mettre à jour** après refactors importants.
 
@@ -8,8 +8,8 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 | Dossier | Rôle principal |
 |---------|----------------|
-| `Core/` | `Timer.cs` ; **`GameBootstrap.cs`** — entrée `Bootstrap.unity`, charge additif `NavigationHUD` puis `FirstLvl` + `LoadingScreen`. |
-| `Systems/` | **`UIManager`** (singleton `DontDestroyOnLoad`, écrans prefab prioritaires/secondaires) ; **`ScreenId`** (constantes d’ids). |
+| `Core/` | `Timer.cs` ; **`GameBootstrap.cs`** — entrée `Bootstrap.unity`, charge additif **`NavigationHUD`** puis **`HomeScene`** + `LoadingScreen` ; enregistre la scène courante sur **`SceneNavigator`**. |
+| `Systems/` | **`UIManager`**, **`SceneNavigator`** (singleton `DontDestroyOnLoad`, `GoTo` additif + `UnloadSceneAsync`) ; **`ScreenId`** / **`SceneId`** (`ScreenId.cs`). |
 | `Data/` | `PlantDefinition`, `GridConfig`, `GridData` — données grille et plantes (SO + runtime). |
 | `Farm/` | Biofiltre, grille, placement, croissance, récolte (`BiofiltreManager`, `GridManager`, `PlantGrow`, `PlantHarvestInteractor`, …). |
 | `Inventory/` | `PlayerInventory`, `ItemDefinition`, `ItemDatabase`, `InventorySlot`, `InventoryResult`. |
@@ -18,11 +18,11 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 **Liste des classes publiques** (fichiers `.cs` sous `Assets/Scripts/`) :
 
 - `Core` : `Timer`, `GameBootstrap`
-- `Systems` : `UIManager`, `ScreenEntry` (même fichier que `UIManager`), `ScreenId`
+- `Systems` : `UIManager`, `ScreenEntry` (même fichier que `UIManager`), `ScreenId`, `SceneId`, `SceneNavigator`
 - `Data` : `GridConfig`, `GridData`, `PlantDefinition` (+ `PlantGrowthPattern` dans le même fichier)
 - `Farm` : `BiofiltreCell`, `BiofiltreGridVisualizer`, `BiofiltreManager`, `GridLinesRenderer`, `GridManager`, `PlantDefinitionHolder`, `PlantGrow`, `PlantHarvestInteractor`, `PlantPlacementPreview`
 - `Inventory` : `InventoryResult`, `InventorySlot`, `ItemDatabase`, `ItemDefinition`, `PlayerInventory`
-- `UI` : `MainMenuUI`, `SeedSelectionUI` (+ `SeedEntry`), `SeedSlotUI`, `NavigationHUD`, `LoadingScreen`
+- `UI` : `MainMenuUI`, `SeedSelectionUI` (+ `SeedEntry`), `SeedSlotUI`, `NavigationHUD`, `LoadingScreen`, `FirstLvlController`, `MapSceneController` (dossier `UI/Map/`), `MapNodeButton`, …
 - `UI/Inventory` : `HarvestPanelUI`, `InventoryFeedbackUI`, `InventorySlotUI`, `InventoryUI`, `InventorySceneController`
 
 ---
@@ -30,9 +30,10 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 ## Flux gameplay documentés (code actuel)
 
 ### Menu → niveau
-- **Boot actuel** : première scène **`Bootstrap.unity`** → `GameBootstrap` charge **`NavigationHUD`** puis **`FirstLvl`** (voir `EditorBuildSettings`).
-- **`LoadingScreen`** : barre + pourcentage + fade (`Hide`) ; **illustration décorative** à intégrer côté Canvas / sprite — voir **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
-- Peut coexister avec **`MainMenuUI`** / `SampleScene` selon le flux menu — à réaligner si le hub **`Carte`** devient l’écran après bootstrap (voir `Notes/Ui/Todo_ui.md`).
+- **Boot actuel** : **`Bootstrap.unity`** → `GameBootstrap` charge additivement **`NavigationHUD`** (shell + `UIManager` + **`SceneNavigator`**) puis **`HomeScene`** ; **`SceneNavigator.SetInitialScene(HomeScene)`** — voir `EditorBuildSettings`.
+- Depuis **`HomeScene`**, le hub (**`MapSceneController`**) lance les scènes de jeu (ex. **`FirstLvl`**) selon les **`MapNodeData`** ; retour gameplay : **`NavigationHUD.OnExitToHomeRequested`** + **`FirstLvlController`** → **`SceneNavigator.GoTo(HomeScene)`** (unload **`FirstLvl`**).
+- **`LoadingScreen`** : barre + pourcentage + fade ; art — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
+- **`MainMenuUI`** / `SampleScene` : flux legacy possible (`LoadScene("FirstLvl")`) — à réaligner si tout passe par **`Bootstrap`**.
 
 ### Plantation (cellule libre)
 1. `BiofiltreCell` (clic) → événement `BiofiltreGridVisualizer.OnCellClicked`.
@@ -83,7 +84,8 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 | `Assets/Prefabs/Ui/InventoryPanel.prefab` | UI inventaire. |
 | `Assets/Prefabs/Ui/InventorySlotUI.prefab` | Slot ligne inventaire. |
 | `Assets/Prefabs/Ui/SeedSlotUI.prefab` | Ligne liste graines. |
-| `Assets/Scenes/FirstLvl.unity` | Niveau ferme / biofiltre (câblage à valider en jeu). |
+| `Assets/Scenes/FirstLvl.unity` | Niveau ferme / biofiltre. |
+| `Assets/Scenes/HomeScene.unity` | Hub d’accueil / **`MapSceneController`**. |
 | `Assets/Scenes/SampleScene.unity` | Menu / tests (cf. Build Settings). |
 
 ---
