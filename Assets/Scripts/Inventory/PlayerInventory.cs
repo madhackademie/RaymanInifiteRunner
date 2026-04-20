@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Manages the player's inventory. Persists across scene loads via DontDestroyOnLoad.
+/// Manages the player's inventory. Lives in the NavigationHUD scene which is never unloaded.
 /// Exposes add/remove operations and fires OnInventoryChanged whenever the state changes.
+/// Automatically saves to disk on every mutation and loads on first Awake.
 /// </summary>
 public class PlayerInventory : MonoBehaviour
 {
-    /// <summary>Singleton instance. Available from any scene after first load.</summary>
+    /// <summary>Singleton instance. Resolved from the NavigationHUD scene, always available.</summary>
     public static PlayerInventory Instance { get; private set; }
 
     [SerializeField] private int slotCount = 20;
+
+    [Tooltip("Database used to resolve item IDs during save/load.")]
+    [SerializeField] private ItemDatabase itemDatabase;
 
     private readonly List<InventorySlot> slots = new();
 
@@ -25,15 +29,17 @@ public class PlayerInventory : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
+            Debug.LogWarning("[PlayerInventory] Instance dupliquée détectée — une seule doit exister dans NavigationHUD.", this);
             Destroy(gameObject);
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
-
         InitialiseSlots();
+        LoadFromDisk();
     }
+
+    private void OnApplicationQuit() => SaveToDisk();
 
     // ── Initialisation ────────────────────────────────────────────────────────
 
@@ -42,6 +48,35 @@ public class PlayerInventory : MonoBehaviour
         slots.Clear();
         for (int i = 0; i < slotCount; i++)
             slots.Add(new InventorySlot());
+    }
+
+    // ── Persistence ───────────────────────────────────────────────────────────
+
+    /// <summary>Persists the current inventory state to disk.</summary>
+    public void SaveToDisk()
+    {
+        InventorySaveService.Save(slots);
+    }
+
+    /// <summary>Restores the inventory state from disk. Replaces all current slot data.</summary>
+    public void LoadFromDisk()
+    {
+        if (itemDatabase == null)
+        {
+            Debug.LogWarning("[PlayerInventory] itemDatabase non assigné — sauvegarde désactivée.");
+            return;
+        }
+
+        if (InventorySaveService.TryLoad(itemDatabase, slots, out int count))
+            Debug.Log($"[PlayerInventory] {count} slot(s) restauré(s) depuis la sauvegarde.");
+    }
+
+    /// <summary>Clears all slots and deletes the save file from disk.</summary>
+    public void ResetAndDeleteSave()
+    {
+        InitialiseSlots();
+        InventorySaveService.Delete();
+        OnInventoryChanged?.Invoke();
     }
 
     // ── Public API ────────────────────────────────────────────────────────────
@@ -97,7 +132,10 @@ public class PlayerInventory : MonoBehaviour
         bool anythingAdded = remaining < quantity;
 
         if (anythingAdded)
+        {
             OnInventoryChanged?.Invoke();
+            SaveToDisk();
+        }
 
         if (remaining >= quantity)
             return InventoryResult.Full;
@@ -138,7 +176,10 @@ public class PlayerInventory : MonoBehaviour
         bool anythingRemoved = remaining < quantity;
 
         if (anythingRemoved)
+        {
             OnInventoryChanged?.Invoke();
+            SaveToDisk();
+        }
 
         if (remaining >= quantity)
             return InventoryResult.Full;

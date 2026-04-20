@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 /// <summary>
 /// Attached to a plant GameObject. On click, vérifie la maturité, résout l'item
-/// via ItemDatabase et ajoute la récolte au PlayerInventory.
+/// via ItemDatabase et ajoute la récolte au PlayerInventory singleton.
 /// Délègue l'affichage du panneau à <see cref="HarvestPanelUI"/>.
 /// </summary>
 [RequireComponent(typeof(PlantGrow))]
@@ -12,7 +12,6 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 {
     [Header("Dependencies")]
     [SerializeField] private ItemDatabase itemDatabase;
-    [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private InventoryFeedbackUI feedbackUI;
     [SerializeField] private HarvestPanelUI harvestPanelUI;
 
@@ -54,13 +53,12 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// Injecte l'ItemDatabase et le PlayerInventory depuis BiofiltreManager.
-    /// Appelé après instantiation si les références ne sont pas déjà assignées dans le prefab.
+    /// Injecte l'ItemDatabase depuis BiofiltreManager.
+    /// Appelé après instantiation si la référence n'est pas déjà assignée dans le prefab.
     /// </summary>
-    public void InjectInventory(ItemDatabase database, PlayerInventory inventory)
+    public void InjectInventory(ItemDatabase database)
     {
-        itemDatabase    ??= database;
-        playerInventory ??= inventory;
+        itemDatabase ??= database;
     }
 
     // ── IPointerClickHandler ──────────────────────────────────────────────────
@@ -125,8 +123,16 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
     private void ApplyHarvest(ItemDefinition item, HarvestStageConfig config)
     {
+        PlayerInventory inventory = PlayerInventory.Instance;
+
+        if (inventory == null)
+        {
+            Debug.LogWarning("[PlantHarvestInteractor] PlayerInventory.Instance introuvable — récolte annulée.", this);
+            return;
+        }
+
         int amount = Random.Range(config.harvestAmountMin, config.harvestAmountMax + 1);
-        InventoryResult result = playerInventory.TryAdd(item, amount);
+        InventoryResult result = inventory.TryAdd(item, amount);
 
         switch (result)
         {
@@ -214,12 +220,6 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
     private ItemDefinition ResolveItem(HarvestStageConfig config)
     {
-        if (playerInventory == null)
-        {
-            Debug.LogWarning("[PlantHarvestInteractor] Aucun PlayerInventory assigné.", this);
-            return null;
-        }
-
         if (itemDatabase == null)
         {
             Debug.LogWarning("[PlantHarvestInteractor] Aucun ItemDatabase assigné.", this);

@@ -40,7 +40,6 @@ public class SceneNavigator : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     // ── Public API ────────────────────────────────────────────────────────────
@@ -52,10 +51,7 @@ public class SceneNavigator : MonoBehaviour
     public async Awaitable GoTo(string sceneName)
     {
         if (IsTransitioning)
-        {
-            Debug.LogWarning($"[SceneNavigator] Transition déjà en cours, GoTo('{sceneName}') ignoré.");
             return;
-        }
 
         if (CurrentScene == sceneName)
             return;

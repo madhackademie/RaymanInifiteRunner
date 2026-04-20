@@ -766,3 +766,28 @@
 - `Assets/Scripts/UI/Map/MapSceneController.cs`
 - `Assets/Scripts/Systems/ScreenId.cs` (`SceneId`)
 - `Notes/Todo_project.md`
+
+## 2026-04-20 — fin de session matin (PC portable)
+
+### Contexte
+- Clôture session du matin sur portable.
+- Recentrage backlog sur le chantier inventaire multi-scènes.
+
+### Ce qui est en cours
+- [~] **Séparation inventaire / gameplay** : isolation progressive de l’inventaire hors logique de gameplay de `FirstLvl`, avec cible d’extension à **tous les niveaux** (architecture partagée).
+- [~] **Inventaire persistant JSON** : mise en place d’une persistance locale via fichier JSON pour conserver l’état inventaire entre scènes et sessions.
+
+### Problèmes / interruption
+- La tâche inventaire a été **interrompue côté BezyIA** avant finalisation du flux dans la scène dédiée inventaire.
+- Après interruption, la session Unity a été fermée ; reprise à faire en s’appuyant en priorité sur le thread de travail.
+
+### TODO immédiat (prochaine reprise)
+1. **Inventaire scène dédiée** : remettre l’inventaire en état fonctionnel dans sa scène dédiée (validation UI + data chargées depuis JSON).
+2. **Continuité architecture** : poursuivre la séparation inventaire/gameplay pour `FirstLvl` puis généraliser aux autres niveaux.
+3. **Reprise BezyIA** : relancer exactement avec ce prompt :
+   - `"encore une fois il y a eu une coupure peux tu reprendre toutefois j'ai du fermer la session unity entre temps donc je ne sais pas si tu va retrouver toutes les traces necessaires. il te faudra te fier au thread."`
+
+### Liens utiles
+- `Notes/Todo_project.md` — bloc *Prochaine session (priorité immédiate)*
+- `ASSISTANT_CONTEXT.md` — snapshot de reprise
+- `Assets/Scripts/UI/NavigationHUD.cs`

@@ -20,18 +20,13 @@ public class BiofiltreManager : MonoBehaviour
     [Tooltip("Base de données d'items pour résoudre les récoltes. Injectée dans chaque PlantHarvestInteractor.")]
     [SerializeField] private ItemDatabase itemDatabase;
 
-    private PlayerInventory playerInventory;
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
 
     private void Awake()
     {
-        visualizer      = GetComponent<BiofiltreGridVisualizer>();
-        gridManager     = GetComponent<GridManager>();
-        playerInventory = PlayerInventory.Instance;
-
-        if (playerInventory == null)
-            Debug.LogWarning("[BiofiltreManager] PlayerInventory.Instance est null — le GameManager est-il présent dans la scène ?", this);
+        visualizer  = GetComponent<BiofiltreGridVisualizer>();
+        gridManager = GetComponent<GridManager>();
     }
 
     private void OnEnable()
@@ -246,7 +241,7 @@ public class BiofiltreManager : MonoBehaviour
             Vector2Int[] cells = System.Linq.Enumerable.ToArray(plantDefinition.GetOccupiedCells(anchor));
             harvestInteractor.Initialise(gridManager, visualizer, cells);
             harvestInteractor.InjectHarvestPanel(harvestPanelUI);
-            harvestInteractor.InjectInventory(itemDatabase, playerInventory);
+            harvestInteractor.InjectInventory(itemDatabase);
         }
 
         // Mark cells occupied in GridData + plant registry

@@ -53,7 +53,6 @@ public class NavigationHUD : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         tabAventuresButton.onClick.AddListener(OnTabAventuresClicked);
         tabInventaireButton.onClick.AddListener(OnTabInventaireClicked);
@@ -99,19 +98,23 @@ public class NavigationHUD : MonoBehaviour
     /// <summary>Navigue vers HomeScene via SceneNavigator.</summary>
     public async void OnTabAventuresClicked()
     {
-        if (SceneNavigator.Instance == null) return;
+        if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
+        SetTabsInteractable(false);
         ShowNavBar();
         await SceneNavigator.Instance.GoTo(SceneId.HomeScene);
         RefreshTabVisuals(Tab.Aventures);
+        SetTabsInteractable(true);
     }
 
     /// <summary>Navigue vers la scène Inventaire via SceneNavigator.</summary>
     public async void OnTabInventaireClicked()
     {
-        if (SceneNavigator.Instance == null) return;
+        if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
+        SetTabsInteractable(false);
         ShowNavBar();
         await SceneNavigator.Instance.GoTo(SceneId.Inventaire);
         RefreshTabVisuals(Tab.Inventaire);
+        SetTabsInteractable(true);
     }
 
     /// <summary>
@@ -125,6 +128,12 @@ public class NavigationHUD : MonoBehaviour
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private void SetTabsInteractable(bool interactable)
+    {
+        tabAventuresButton.interactable  = interactable;
+        tabInventaireButton.interactable = interactable;
+    }
 
     private void RefreshTabVisuals()
     {
