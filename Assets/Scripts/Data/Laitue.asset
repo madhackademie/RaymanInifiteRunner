@@ -40,16 +40,16 @@ MonoBehaviour:
   spriteWorldOffset: {x: 0.175, y: -0.525}
   stageDurations:
   - stage: 0
-    durationSeconds: 5
+    durationSeconds: 1
   - stage: 1
-    durationSeconds: 5
+    durationSeconds: 1
   - stage: 2
-    durationSeconds: 5
+    durationSeconds: 1
   - stage: 3
-    durationSeconds: 5
+    durationSeconds: 1
   - stage: 4
-    durationSeconds: 5
+    durationSeconds: 1
   - stage: 5
-    durationSeconds: 5
+    durationSeconds: 1
   - stage: 6
-    durationSeconds: 5
+    durationSeconds: 1

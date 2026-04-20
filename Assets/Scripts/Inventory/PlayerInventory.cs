@@ -7,6 +7,7 @@ using UnityEngine;
 /// Exposes add/remove operations and fires OnInventoryChanged whenever the state changes.
 /// Automatically saves to disk on every mutation and loads on first Awake.
 /// </summary>
+[DefaultExecutionOrder(-100)]
 public class PlayerInventory : MonoBehaviour
 {
     /// <summary>Singleton instance. Resolved from the NavigationHUD scene, always available.</summary>

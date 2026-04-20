@@ -21,17 +21,32 @@ public class InventorySceneController : MonoBehaviour
 
     private void Start()
     {
-        // Injection du singleton PlayerInventory dans InventoryUI.
-        // Ce Start() est appelé une seule fois à l'instanciation du prefab par UIManager.
-        if (inventoryUI != null && PlayerInventory.Instance != null)
-            inventoryUI.Bind(PlayerInventory.Instance);
+        // Start() est appelé après tous les Awake() — PlayerInventory.Instance est garanti prêt ici.
+        // C'est le seul endroit qui déclenche le bind initial et BuildSlots.
+        Debug.Log($"[InventorySceneController] Start — PlayerInventory.Instance = {(PlayerInventory.Instance != null ? "OK" : "NULL")}, inventoryUI = {(inventoryUI != null ? "OK" : "NULL")}");
+        TryBindInventory();
     }
 
     private void OnEnable()
     {
-        // Rafraîchit l'affichage à chaque ré-activation de l'écran.
-        inventoryUI?.Refresh();
+        Debug.Log($"[InventorySceneController] OnEnable — IsBound={inventoryUI?.IsBound}");
+        // Si déjà bindé (ré-activation sans rechargement), un simple Refresh suffit.
+        // Le bind initial est géré dans Start().
+        if (inventoryUI != null && inventoryUI.IsBound)
+            inventoryUI.Refresh();
         NavigationHUD.ShowNavBar();
+    }
+
+    private void TryBindInventory()
+    {
+        if (inventoryUI == null || PlayerInventory.Instance == null)
+        {
+            Debug.LogWarning($"[InventorySceneController] TryBindInventory échoué — inventoryUI={inventoryUI != null}, Instance={PlayerInventory.Instance != null}");
+            return;
+        }
+
+        Debug.Log($"[InventorySceneController] Bind OK — slots count: {PlayerInventory.Instance.Slots.Count}");
+        inventoryUI.Bind(PlayerInventory.Instance);
     }
 
     private void OnDestroy()

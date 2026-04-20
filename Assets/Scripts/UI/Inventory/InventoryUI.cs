@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manages the inventory panel: spawns InventorySlotUI instances and keeps them
@@ -13,12 +14,8 @@ public class InventoryUI : MonoBehaviour
 
     private readonly List<InventorySlotUI> spawnedSlots = new();
 
-    private void Start()
-    {
-        // If playerInventory was set via Inspector (e.g. in the game scene), initialise immediately.
-        if (playerInventory != null)
-            Initialise();
-    }
+    /// <summary>True une fois que Bind() a été appelé avec un inventaire valide.</summary>
+    public bool IsBound => playerInventory != null;
 
     private void OnDestroy()
     {
@@ -27,16 +24,14 @@ public class InventoryUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Injects a <see cref="PlayerInventory"/> at runtime (e.g. from <see cref="InventorySceneController"/>
-    /// when the inventory is opened as an additive scene and the singleton lives in DontDestroyOnLoad).
+    /// Injecte un <see cref="PlayerInventory"/> et construit les slots.
     /// </summary>
     public void Bind(PlayerInventory inventory)
     {
         if (inventory == null)
             return;
 
-        // Unsubscribe from any previous inventory.
-        if (playerInventory != null)
+        if (playerInventory != null && playerInventory != inventory)
             playerInventory.OnInventoryChanged -= Refresh;
 
         playerInventory = inventory;
@@ -45,8 +40,9 @@ public class InventoryUI : MonoBehaviour
 
     private void Initialise()
     {
-        BuildSlots();
+        playerInventory.OnInventoryChanged -= Refresh;
         playerInventory.OnInventoryChanged += Refresh;
+        BuildSlots();
     }
 
     // ── Slot management ───────────────────────────────────────────────────────
@@ -61,8 +57,24 @@ public class InventoryUI : MonoBehaviour
         foreach (InventorySlot _ in playerInventory.Slots)
         {
             InventorySlotUI slotUI = Instantiate(slotPrefab, slotsContainer);
+
+            // Si le prefab a un Canvas wrapper comme racine (Canvas (Environment)),
+            // on extrait le slot, on retire immédiatement le wrapper du container
+            // pour que le GridLayoutGroup ne le compte pas, puis on le détruit.
+            if (slotUI.transform.parent != slotsContainer)
+            {
+                Transform wrapper = slotUI.transform.parent;
+                slotUI.transform.SetParent(slotsContainer, false);
+                wrapper.SetParent(null);
+                Destroy(wrapper.gameObject);
+            }
+
             spawnedSlots.Add(slotUI);
         }
+
+        // Force le calcul du layout avant Refresh pour que les slots soient
+        // correctement positionnés dans le viewport dès le premier frame.
+        LayoutRebuilder.ForceRebuildLayoutImmediate(slotsContainer as RectTransform);
 
         Refresh();
     }

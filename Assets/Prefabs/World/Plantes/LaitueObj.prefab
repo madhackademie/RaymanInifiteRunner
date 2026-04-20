@@ -181,7 +181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantHarvestInteractor
   itemDatabase: {fileID: 0}
-  playerInventory: {fileID: 0}
-  feedbackUI: {fileID: 0}
+  feedbackUI: {fileID: 8979504109091075090, guid: de1d044d669e1b04fa6f1896c76f6368, type: 3}
   harvestPanelUI: {fileID: 0}
   harvestItemIdOverride: 
