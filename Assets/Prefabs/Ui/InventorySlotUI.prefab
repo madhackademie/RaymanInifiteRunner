@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6035720609414908912}
   - component: {fileID: 9126170360095841932}
   - component: {fileID: 4882144160622489148}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InventorySlotUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 2838578141044575619}
   - component: {fileID: 670773722172720984}
   - component: {fileID: 8691187900144393565}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: EmptyOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 7136204272487560937}
   - component: {fileID: 2838716094357298813}
   - component: {fileID: 4785908582427576677}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 331595522869996616}
   - component: {fileID: 2232358196354446797}
   - component: {fileID: 7921711203560970055}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: QuantityLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

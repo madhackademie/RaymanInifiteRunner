@@ -48,36 +48,69 @@ public class InventoryUI : MonoBehaviour
     // ── Slot management ───────────────────────────────────────────────────────
 
     private void BuildSlots()
+{
+    foreach (InventorySlotUI slot in spawnedSlots)
+        Destroy(slot.gameObject);
+
+    spawnedSlots.Clear();
+
+    foreach (InventorySlot _ in playerInventory.Slots)
     {
-        foreach (InventorySlotUI slot in spawnedSlots)
-            Destroy(slot.gameObject);
+        InventorySlotUI slotUI = Instantiate(slotPrefab, slotsContainer);
 
-        spawnedSlots.Clear();
-
-        foreach (InventorySlot _ in playerInventory.Slots)
+        // Le prefab a un Canvas (Environment) à la racine — on extrait InventorySlotUI
+        // directement sous SlotsContainer pour que GridLayoutGroup le positionne correctement.
+        if (slotUI.transform.parent != slotsContainer)
         {
-            InventorySlotUI slotUI = Instantiate(slotPrefab, slotsContainer);
-
-            // Si le prefab a un Canvas wrapper comme racine (Canvas (Environment)),
-            // on extrait le slot, on retire immédiatement le wrapper du container
-            // pour que le GridLayoutGroup ne le compte pas, puis on le détruit.
-            if (slotUI.transform.parent != slotsContainer)
-            {
-                Transform wrapper = slotUI.transform.parent;
-                slotUI.transform.SetParent(slotsContainer, false);
-                wrapper.SetParent(null);
-                Destroy(wrapper.gameObject);
-            }
-
-            spawnedSlots.Add(slotUI);
+            Transform wrapper = slotUI.transform.parent;
+            slotUI.transform.SetParent(slotsContainer, false);
+            wrapper.SetParent(null);
+            Destroy(wrapper.gameObject);
         }
 
-        // Force le calcul du layout avant Refresh pour que les slots soient
-        // correctement positionnés dans le viewport dès le premier frame.
-        LayoutRebuilder.ForceRebuildLayoutImmediate(slotsContainer as RectTransform);
-
-        Refresh();
+        spawnedSlots.Add(slotUI);
     }
+
+    Canvas.ForceUpdateCanvases();
+
+    RectTransform ct = slotsContainer as RectTransform;
+        Debug.Log($"[InventoryUI] BuildSlots — Content.childCount={slotsContainer.childCount}, Content.rect={ct?.rect}");
+        if (slotsContainer.childCount > 0)
+        {
+            RectTransform first = slotsContainer.GetChild(0) as RectTransform;
+            Debug.Log($"[InventoryUI] Slot[0] — anchoredPos={first?.anchoredPosition}, sizeDelta={first?.sizeDelta}, active={first?.gameObject.activeSelf}");
+        }
+        Debug.Log($"[InventoryUI] BuildSlots — END");
+
+    Refresh();
+}
+
+    
+    // private void BuildSlots()
+    // {
+    //     foreach (InventorySlotUI slot in spawnedSlots)
+    //         Destroy(slot.gameObject);
+
+    //     spawnedSlots.Clear();
+
+    //     foreach (InventorySlot _ in playerInventory.Slots)
+    //     {
+    //        // Instancie uniquement le sous-arbre InventorySlotUI (sans le Canvas wrapper).
+    //         InventorySlotUI slotUI = Instantiate(slotPrefab.gameObject, slotsContainer)
+    //             .GetComponent<InventorySlotUI>();
+
+    //         spawnedSlots.Add(slotUI);
+    //     }
+
+    //     // Force canvas + layout pour s'assurer que les slots sont positionnés
+    //     // et rendus correctement dès le premier frame.
+    //     Canvas.ForceUpdateCanvases();
+
+        
+
+    //     Refresh();
+
+    // }
 
     /// <summary>Repopulates all slot UIs from the current inventory state.</summary>
     public void Refresh()
@@ -86,6 +119,11 @@ public class InventoryUI : MonoBehaviour
             return;
 
         IReadOnlyList<InventorySlot> slots = playerInventory.Slots;
+
+        int nonEmpty = 0;
+        foreach (InventorySlot s in slots)
+            if (!s.IsEmpty) nonEmpty++;
+        Debug.Log($"[InventoryUI] Refresh — spawnedSlots={spawnedSlots.Count}, non-empty={nonEmpty}");
 
         for (int i = 0; i < spawnedSlots.Count; i++)
         {

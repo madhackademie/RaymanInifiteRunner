@@ -15,6 +15,9 @@ public class InventorySlotUI : MonoBehaviour
     public void Refresh(InventorySlot slot)
     {
         bool isEmpty = slot == null || slot.IsEmpty;
+        
+        if (!isEmpty)
+            Debug.Log($"[InventorySlotUI] '{slot.Item.DisplayName}' x{slot.Quantity} — icon={(slot.Item.Icon != null ? slot.Item.Icon.name : "NULL")}");
 
         if (emptyOverlay != null)
             emptyOverlay.SetActive(isEmpty);
