@@ -4,11 +4,20 @@
 
 **Architecture shell + `UIManager` (référence)** : `ARCHI_hud_ui_manager_additive.md`.
 
+**Audit Bezi + refactor navigation (cible ~2026-05-01)** : `TODO_Bezi_audit_scene_ui_refactor.md` (checklist ; aligner les notes qui citent encore `GoTo` / `UnloadSceneAsync` si le projet est passé à `SceneNavigator.ShowScene`).
+
 ---
 
 ## Priorité session suivante
 
+### Session cible ~2026-05-01 — audit Bezi (Scene/UI) + clean refactor
+
+- [ ] Lancer l’audit **Bezi** sur le flux réel : **`GameBootstrap`**, **`SceneNavigator.ShowScene`**, **`NavigationHUD`**, **`MapSceneController`**, **`FirstLvlController`**, **`UIManager`** — voir **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**.
+- [ ] Après audit : **nettoyer** le code orphelin signalé (ex. chemins morts côté **`BiofiltreManager`**), **mettre à jour les commentaires** des scripts touchés, **réécrire les sections obsolètes** de `ARCHI_hud_ui_manager_additive.md` / `Journal_ui.md` / ce fichier (notamment si **`GoTo` / `UnloadSceneAsync`** ne correspondent plus au code).
+
 ### Debug / amélioration — **navigation additive + unload async** (2026-04-19)
+
+> **Note 2026-04-21** : le code peut avoir migré vers **`ShowScene`** (racines actives/inactives) sans **`GoTo`**. Vérifier dans `SceneNavigator.cs` avant d’exécuter cette checklist telle quelle ; fusionner avec la section *audit Bezi* si une seule passe suffit.
 
 - [ ] Repasser tous les chemins **`SceneNavigator.GoTo`** (chargement additif → **`UnloadSceneAsync`** sur la scène de contenu précédente) : scène inexistante, double clic, transition déjà en cours, cohérence **`CurrentScene`** avec **`SetInitialScene`** après bootstrap.
 - [ ] Vérifier l’interaction **HUD** (`NavigationHUD` modes, onglets **`HomeScene`** / **`Inventaire`**, **`OnExitToHomeRequested`** + **`FirstLvlController`**) et **`MapSceneController`** (chargement depuis le hub, unload **`HomeScene`** si applicable).

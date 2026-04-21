@@ -517,9 +517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   screenRoot: {fileID: 1711491974}
-  priorityScreens:
-  - screenId: Inventory
-    prefab: {fileID: 1869133800346866792, guid: 708ce705174ca7e49abd03249fe05704, type: 3}
+  priorityScreens: []
   secondaryScreens: []
 --- !u!1 &877250849
 GameObject:
@@ -1655,6 +1653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27e3ac38219da5438f8b698082e151f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneNavigator
+  lazyScenes:
+  - FirstLvl
 --- !u!21 &2130192468
 Material:
   serializedVersion: 8

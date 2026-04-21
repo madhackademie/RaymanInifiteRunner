@@ -95,24 +95,24 @@ public class NavigationHUD : MonoBehaviour
 
     // ── Tab callbacks ─────────────────────────────────────────────────────────
 
-    /// <summary>Navigue vers HomeScene via SceneNavigator.</summary>
+    /// <summary>Affiche HomeScene via SceneNavigator.</summary>
     public async void OnTabAventuresClicked()
     {
         if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
         SetTabsInteractable(false);
         ShowNavBar();
-        await SceneNavigator.Instance.GoTo(SceneId.HomeScene);
+        await SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
         RefreshTabVisuals(Tab.Aventures);
         SetTabsInteractable(true);
     }
 
-    /// <summary>Navigue vers la scène Inventaire via SceneNavigator.</summary>
+    /// <summary>Affiche la scène Inventaire via SceneNavigator.</summary>
     public async void OnTabInventaireClicked()
     {
         if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
         SetTabsInteractable(false);
         ShowNavBar();
-        await SceneNavigator.Instance.GoTo(SceneId.Inventaire);
+        await SceneNavigator.Instance.ShowScene(SceneId.Inventaire);
         RefreshTabVisuals(Tab.Inventaire);
         SetTabsInteractable(true);
     }

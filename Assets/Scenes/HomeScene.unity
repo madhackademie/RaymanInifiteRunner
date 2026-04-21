@@ -486,7 +486,6 @@ MonoBehaviour:
   progressionData: {fileID: 11400000, guid: e052d5afae6bc804a9744797095c5b71, type: 2}
   nodeButtonPrefab: {fileID: 28822347628730111, guid: 78084c0e6e4895143be6e2dd39436682, type: 3}
   nodesContainer: {fileID: 516341683}
-  loadingScreen: {fileID: 0}
 --- !u!1 &871424865
 GameObject:
   m_ObjectHideFlags: 0

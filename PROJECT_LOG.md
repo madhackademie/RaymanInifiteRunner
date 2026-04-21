@@ -791,3 +791,30 @@
 - `Notes/Todo_project.md` — bloc *Prochaine session (priorité immédiate)*
 - `ASSISTANT_CONTEXT.md` — snapshot de reprise
 - `Assets/Scripts/UI/NavigationHUD.cs`
+
+## 2026-04-21 — notes doc + correctif retour gameplay + cible audit Bezi
+
+### Contexte
+- Demande : parcourir le projet, compléter les notes utiles, mettre à jour le journal, planifier **~10 jours** une session **audit Bezi** sur la nouvelle gestion **Scene / UI**, puis **clean/refactor** ; repérer **code orphelin** et **rajeunir les commentaires** selon le code actuel.
+
+### Ce qu’on a fait
+- [x] **Note dédiée** : `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md` (checklist audit Bezi, refactor, alignement doc / commentaires, code mort).
+- [x] **Hub TODO** : `Notes/Todo_project.md` et `Notes/Ui/Todo_ui.md` — bloc *Session cible ~2026-05-01* avec renvoi vers la note ci-dessus.
+- [x] **Index doc** : `INDEX.md` — entrée pour la nouvelle note UI.
+- [x] **`Notes/Codebase_etat_reference.md`** : alignement sur le flux **`SceneNavigator.ShowScene`** (visibilité par `SetActive` sur racines + lazy optionnel) et boot **`GameBootstrap`** (eager **`Inventaire`** + note de dérive doc vs ancien **`GoTo` / Unload**).
+- [x] **`ASSISTANT_CONTEXT.md`** : priorité ajoutée pour l’audit / refactor navigation UI.
+- [x] **Code** — **`FirstLvlController`** : souscription manquante à **`OnExitToHomeRequested`** dans `Start` (le `OnDestroy` désabonnait sans jamais s’abonner — la croix ne pouvait pas déclencher le retour hub).
+- [x] **Code** — **`BiofiltreManager`** : commentaires XML sur **`TryOpenHarvestPanel`** / **`FindInteractorAt`** (hors flux clic grille actuel ; candidats suppression au nettoyage).
+- [x] **Code** — **`GameBootstrap`** : résumé XML du boot (shell + `HomeScene` + `Inventaire` eager, masquage racines inventaire).
+- [x] **Style** — **`MapSceneController`** : indentation du bloc `OnEnable`.
+
+### Prochaines actions (priorité — ~2026-05-01)
+1. **Audit Bezi** : navigation **`ShowScene`**, liste lazy, cohabitation scène **`Inventaire`** / prefab **`UIManager`**, **`EventSystem`** — détail **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**.
+2. **Refactor** : trancher **`TryOpenHarvestPanel`** / **`FindInteractorAt`** ; harmoniser **`ARCHI_hud_ui_manager_additive.md`**, **`Journal_ui.md`**, **`Todo_ui.md`**, guide scènes avec le code (plus de **`UnloadSceneAsync`** par clic si obsolète).
+3. Poursuivre l’inventaire des **scripts réservés scène** vs **morts** (ex. usages de **`InventorySceneController`**).
+
+### Liens utiles
+- `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`
+- `Assets/Scripts/UI/FirstLvlController.cs`
+- `Assets/Scripts/Systems/SceneNavigator.cs`
+- `Assets/Scripts/Core/GameBootstrap.cs`

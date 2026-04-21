@@ -98,8 +98,9 @@ public class BiofiltreManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Cherche le PlantHarvestInteractor sur la plante occupant la cellule cliquée
-    /// et délègue l'ouverture du panneau de récolte.
+    /// Variante historique : recherche spatiale d'un <see cref="PlantHarvestInteractor"/> puis <see cref="PlantHarvestInteractor.TryHarvest"/>.
+    /// Le flux actuel du clic grille passe par <see cref="TryOpenPlantPopup"/> (lookup par coordonnées via la grille).
+    /// Conserver uniquement si un scénario futur réutilise cette recherche ; sinon candidat à suppression lors du nettoyage.
     /// </summary>
     private void TryOpenHarvestPanel(Vector2Int coords)
     {
@@ -118,8 +119,7 @@ public class BiofiltreManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Cherche le <see cref="PlantHarvestInteractor"/> le plus proche du centre monde donné
-    /// parmi les enfants du container de plantes.
+    /// Utilisé uniquement par <see cref="TryOpenHarvestPanel"/> (non branché sur le clic grille actuel).
     /// </summary>
     private PlantHarvestInteractor FindInteractorAt(Vector2 worldCenter)
     {

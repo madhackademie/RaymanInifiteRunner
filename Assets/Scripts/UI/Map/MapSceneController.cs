@@ -31,14 +31,20 @@ public class MapSceneController : MonoBehaviour
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
-    private async void Start()
+    private void Start()
     {
-        await UIManager.EnsureShellLoaded();
-        NavigationHUD.ShowNavBar();
-
         SortNodes();
         EnsureProgressionDefaults();
         BuildButtons();
+    }
+
+    private void OnEnable()
+    {
+        // Start() n'a pas encore tourné au premier OnEnable — les boutons n'existent pas encore.
+        if (sortedNodes == null) return;
+
+        NavigationHUD.ShowNavBar();
+        RefreshButtons();
     }
 
     // ── Public API ────────────────────────────────────────────────────────────
@@ -104,6 +110,6 @@ public class MapSceneController : MonoBehaviour
         }
 
         NavigationHUD.Hide();
-        await SceneNavigator.Instance.GoTo(data.targetSceneName);
+        await SceneNavigator.Instance.ShowScene(data.targetSceneName);
     }
 }

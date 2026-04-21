@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Contrôleur du panneau inventaire. Vit sur le prefab InventoryPanel.
-/// L'ouverture/fermeture est déléguée à UIManager — aucun chargement de scène.
+/// Contrôleur du panneau inventaire.
+/// La scène Inventaire reste chargée en permanence — son Canvas est affiché/masqué
+/// par SceneNavigator via SetActive sur les racines.
+/// OnEnable gère le bind et le refresh à chaque ré-activation.
 /// </summary>
 public class InventorySceneController : MonoBehaviour
 {
@@ -19,34 +21,19 @@ public class InventorySceneController : MonoBehaviour
             closeButton.onClick.AddListener(Close);
     }
 
-    private void Start()
-    {
-        // Start() est appelé après tous les Awake() — PlayerInventory.Instance est garanti prêt ici.
-        // C'est le seul endroit qui déclenche le bind initial et BuildSlots.
-        Debug.Log($"[InventorySceneController] Start — PlayerInventory.Instance = {(PlayerInventory.Instance != null ? "OK" : "NULL")}, inventoryUI = {(inventoryUI != null ? "OK" : "NULL")}");
-        TryBindInventory();
-    }
-
     private void OnEnable()
     {
-        Debug.Log($"[InventorySceneController] OnEnable — IsBound={inventoryUI?.IsBound}");
-        // Si déjà bindé (ré-activation sans rechargement), un simple Refresh suffit.
-        // Le bind initial est géré dans Start().
-        if (inventoryUI != null && inventoryUI.IsBound)
-            inventoryUI.Refresh();
-        NavigationHUD.ShowNavBar();
-    }
-
-    private void TryBindInventory()
-    {
-        if (inventoryUI == null || PlayerInventory.Instance == null)
-        {
-            Debug.LogWarning($"[InventorySceneController] TryBindInventory échoué — inventoryUI={inventoryUI != null}, Instance={PlayerInventory.Instance != null}");
+        // OnEnable est appelé à chaque SetActive(true) sur la racine de la scène.
+        // On bind si ce n'est pas encore fait, sinon on rafraîchit simplement.
+        if (inventoryUI == null)
             return;
-        }
 
-        Debug.Log($"[InventorySceneController] Bind OK — slots count: {PlayerInventory.Instance.Slots.Count}");
-        inventoryUI.Bind(PlayerInventory.Instance);
+        if (!inventoryUI.IsBound)
+            TryBindInventory();
+        else
+            inventoryUI.Refresh();
+
+        NavigationHUD.ShowNavBar();
     }
 
     private void OnDestroy()
@@ -55,20 +42,33 @@ public class InventorySceneController : MonoBehaviour
             closeButton.onClick.RemoveListener(Close);
     }
 
+    // ── Private ───────────────────────────────────────────────────────────────
+
+    private void TryBindInventory()
+    {
+        if (PlayerInventory.Instance == null)
+        {
+            Debug.LogWarning("[InventorySceneController] PlayerInventory.Instance introuvable.");
+            return;
+        }
+
+        inventoryUI.Bind(PlayerInventory.Instance);
+    }
+
     // ── Public API ────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Ouvre le panneau inventaire via UIManager.
+    /// Affiche la scène inventaire via SceneNavigator.
     /// Peut être appelé depuis n'importe quelle scène.
     /// </summary>
     public static void Open()
     {
-        UIManager.Instance?.ShowScreen(ScreenId.Inventory);
+        SceneNavigator.Instance?.ShowScene(SceneId.Inventaire);
     }
 
-    /// <summary>Ferme le panneau inventaire via UIManager.</summary>
+    /// <summary>Retourne à HomeScene via SceneNavigator.</summary>
     public void Close()
     {
-        UIManager.Instance?.HideScreen(ScreenId.Inventory);
+        SceneNavigator.Instance?.ShowScene(SceneId.HomeScene);
     }
 }

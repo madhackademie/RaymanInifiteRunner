@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Configuration sérialisable d'un écran UI géré par UIManager.
@@ -30,10 +29,16 @@ public class ScreenEntry
 /// Gère deux listes d'écrans :
 ///   - Prioritaires : préchargés au démarrage, affichés/masqués via SetActive.
 ///   - Secondaires  : chargés à la première demande puis conservés en mémoire.
+///
+/// Note d'usage:
+/// Cette architecture "scene shell + écrans activés/désactivés" permet aussi
+/// d'ajouter des overlays flottants non liés à une scène de gameplay précise:
+///   - Popups de confirmation
+///   - Notifications / toasts
+///   - Fenêtres modales
 /// </summary>
 public class UIManager : MonoBehaviour
 {
-    private const string ShellSceneName = "NavigationHUD";
 
     // ── Singleton ─────────────────────────────────────────────────────────────
 
@@ -75,20 +80,6 @@ public class UIManager : MonoBehaviour
         PreloadPriorityScreens();
     }
 
-    // ── Boot API ──────────────────────────────────────────────────────────────
-
-    /// <summary>
-    /// Charge la scène shell NavigationHUD en additif si elle n'est pas encore présente.
-    /// À appeler depuis Awake() des scènes de gameplay. Utiliser await pour garantir
-    /// que UIManager.Instance est disponible avant tout appel à ShowScreen.
-    /// </summary>
-    public static async Awaitable EnsureShellLoaded()
-    {
-        if (Instance != null)
-            return;
-
-        await SceneManager.LoadSceneAsync(ShellSceneName, LoadSceneMode.Additive);
-    }
 
     // ── Preload API ───────────────────────────────────────────────────────────
 

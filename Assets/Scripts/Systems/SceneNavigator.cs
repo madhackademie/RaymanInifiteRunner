@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Gère les transitions entre scènes de contenu (Layer 0).
-/// Le shell NavigationHUD n'est jamais déchargé.
-/// Une seule scène de contenu est active à la fois.
+/// Gère la visibilité des scènes de contenu via SetActive sur leurs racines.
+/// Les scènes "eager" sont toutes chargées au démarrage par GameBootstrap.
+/// Les scènes "lazy" sont chargées à la première demande puis conservées en mémoire.
+/// Le shell NavigationHUD n'est jamais touché.
 /// </summary>
 public class SceneNavigator : MonoBehaviour
 {
@@ -15,19 +17,30 @@ public class SceneNavigator : MonoBehaviour
 
     // ── Events ────────────────────────────────────────────────────────────────
 
-    /// <summary>Déclenché juste avant le chargement d'une nouvelle scène.</summary>
-    public event Action<string> OnBeforeSceneLoad;
+    /// <summary>Déclenché juste avant l'affichage d'une nouvelle scène.</summary>
+    public event Action<string> OnBeforeSceneShown;
 
-    /// <summary>Déclenché une fois la nouvelle scène active et l'ancienne déchargée.</summary>
-    public event Action<string> OnAfterSceneLoad;
+    /// <summary>Déclenché une fois la nouvelle scène visible et l'ancienne masquée.</summary>
+    public event Action<string> OnAfterSceneShown;
 
     // ── State ─────────────────────────────────────────────────────────────────
 
-    /// <summary>Nom de la scène de contenu actuellement chargée.</summary>
+    /// <summary>Nom de la scène de contenu actuellement visible.</summary>
     public string CurrentScene { get; private set; }
 
     /// <summary>True si une transition est en cours.</summary>
     public bool IsTransitioning { get; private set; }
+
+    // ── Scènes lazy — chargées à la première demande ──────────────────────────
+
+    /// <summary>
+    /// Noms des scènes qui doivent être lazy-loadées (ex : niveaux lourds).
+    /// À peupler depuis l'Inspector ou via RegisterLazyScene().
+    /// </summary>
+    [SerializeField] private List<string> lazyScenes = new();
+
+    private readonly HashSet<string> lazySceneNames = new();
+    private readonly HashSet<string> loadedLazyScenes = new();
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
@@ -40,65 +53,94 @@ public class SceneNavigator : MonoBehaviour
         }
 
         Instance = this;
+
+        foreach (string sceneName in lazyScenes)
+            lazySceneNames.Add(sceneName);
     }
 
     // ── Public API ────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Charge une scène de contenu en Additive et décharge la précédente.
+    /// Affiche une scène de contenu et masque la précédente.
+    /// Si la scène est lazy et pas encore chargée, elle est chargée en additif d'abord.
     /// Sans effet si la scène demandée est déjà active ou si une transition est en cours.
     /// </summary>
-    public async Awaitable GoTo(string sceneName)
+    public async Awaitable ShowScene(string sceneName)
     {
-        if (IsTransitioning)
-            return;
-
-        if (CurrentScene == sceneName)
+        if (IsTransitioning || CurrentScene == sceneName)
             return;
 
         IsTransitioning = true;
-        OnBeforeSceneLoad?.Invoke(sceneName);
+        OnBeforeSceneShown?.Invoke(sceneName);
 
-        string previousScene = CurrentScene;
+        // 1. Lazy load si nécessaire.
+        if (lazySceneNames.Contains(sceneName) && !loadedLazyScenes.Contains(sceneName))
+            await LoadSceneAdditive(sceneName);
 
-        // 1. Charge la nouvelle scène.
-        AsyncOperation load = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        // 2. Masquer la scène précédente.
+        if (!string.IsNullOrEmpty(CurrentScene))
+            SetSceneRootsActive(CurrentScene, false);
 
-        if (load == null)
-        {
-            Debug.LogError($"[SceneNavigator] Impossible de charger '{sceneName}'. Vérifie les Build Settings.");
-            IsTransitioning = false;
-            return;
-        }
-
-        while (!load.isDone)
-            await Awaitable.NextFrameAsync();
-
+        // 3. Afficher la nouvelle scène.
+        SetSceneRootsActive(sceneName, true);
         CurrentScene = sceneName;
 
-        // 2. Décharge l'ancienne scène uniquement si elle est encore en mémoire.
-        if (!string.IsNullOrEmpty(previousScene))
-        {
-            Scene previous = SceneManager.GetSceneByName(previousScene);
-            if (previous.IsValid() && previous.isLoaded)
-            {
-                AsyncOperation unload = SceneManager.UnloadSceneAsync(previous);
-                if (unload != null)
-                    while (!unload.isDone)
-                        await Awaitable.NextFrameAsync();
-            }
-        }
-
         IsTransitioning = false;
-        OnAfterSceneLoad?.Invoke(sceneName);
+        OnAfterSceneShown?.Invoke(sceneName);
     }
 
     /// <summary>
-    /// Indique à SceneNavigator quelle scène est déjà chargée (ex: HomeScene chargée par Bootstrap).
-    /// À appeler une seule fois depuis GameBootstrap après le chargement initial.
+    /// Enregistre une scène comme lazy (sera chargée à la première demande).
+    /// Utile pour les scènes ajoutées dynamiquement sans passer par l'Inspector.
+    /// </summary>
+    public void RegisterLazyScene(string sceneName)
+    {
+        lazySceneNames.Add(sceneName);
+    }
+
+    /// <summary>
+    /// Indique à SceneNavigator quelle scène est déjà visible au démarrage.
+    /// À appeler depuis GameBootstrap après le chargement initial.
     /// </summary>
     public void SetInitialScene(string sceneName)
     {
         CurrentScene = sceneName;
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    /// <summary>Active ou désactive tous les GameObjects racines d'une scène.</summary>
+    private static void SetSceneRootsActive(string sceneName, bool active)
+    {
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+
+        if (!scene.IsValid() || !scene.isLoaded)
+        {
+            Debug.LogWarning($"[SceneNavigator] Scène '{sceneName}' introuvable ou non chargée.");
+            return;
+        }
+
+        foreach (GameObject root in scene.GetRootGameObjects())
+            root.SetActive(active);
+    }
+
+    /// <summary>Charge une scène en additif et attend qu'elle soit prête.</summary>
+    private async Awaitable LoadSceneAdditive(string sceneName)
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
+        if (op == null)
+        {
+            Debug.LogError($"[SceneNavigator] Impossible de charger '{sceneName}'. Vérifie les Build Settings.");
+            return;
+        }
+
+        while (!op.isDone)
+            await Awaitable.NextFrameAsync();
+
+        loadedLazyScenes.Add(sceneName);
+
+        // On masque immédiatement — ShowScene s'occupe de l'affichage ensuite.
+        SetSceneRootsActive(sceneName, false);
     }
 }

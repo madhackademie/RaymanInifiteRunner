@@ -39,6 +39,7 @@ Légende :
 | `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md` | Actif | P2 | Options A–D navigation scènes / UI additive, sync-async, pièges `EventSystem`. |
 | `Notes/Ui/LOADINGSCREEN_image_workflow.md` | Actif | P1 | Illustration + import sprite + intégration Canvas **`Bootstrap`** / fade `LoadingScreen`. |
 | `Notes/Ui/Todo_ui.md` | Actif | P1 | Backlog UI : focus **LoadingScreen** (session auteur) ; **hub Carte** + retour croix depuis `FirstLvl` ; bootstrap/`UIManager` ; `LanguageManager` / TMP. |
+| `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md` | Actif | P1 | Cible ~2026-05-01 : audit **Bezi** navigation Scene/UI + clean/refactor + alignement doc (`ShowScene` vs notes `GoTo`/unload). |
 | `Notes/Ui/Decision_ui.md` | Actif | P3 | Spéc UI proto -> polish (objectifs, architecture panneaux, animations, contrat d'orchestration). |
 | `Notes/Ui/Spec_ui.md` | Vide | P3 | Fichier placeholder pour future spécification UI dédiée. |
 

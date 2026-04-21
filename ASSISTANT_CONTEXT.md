@@ -1,7 +1,7 @@
 ## Assistant Context — RaymanInifiteRunner
 
 ### Etat actuel (compact)
-- Projet Unity 6000.3.x : **boot** `Bootstrap.unity` → **`GameBootstrap`** charge additivement le shell **`NavigationHUD`** puis la scène de contenu **`HomeScene`** ; transitions de contenu via **`SceneNavigator`** (**additif** + **`UnloadSceneAsync`**) et constantes **`SceneId`** ; gameplay ferme dans **`FirstLvl`** avec **`FirstLvlController`** (retour hub).
+- Projet Unity 6000.3.x : **boot** `Bootstrap.unity` → **`GameBootstrap`** charge additivement le shell **`NavigationHUD`**, **`HomeScene`**, puis **`Inventaire`** (eager, racines masquées jusqu’à navigation) ; visibilité des scènes de contenu via **`SceneNavigator.ShowScene`** (`SetActive` sur racines + lazy-load optionnel pour scènes listées) ; constantes **`SceneId`** ; gameplay ferme dans **`FirstLvl`** avec **`FirstLvlController`** (retour hub sur **`OnExitToHomeRequested`**).
 - Session 2026-04-20 matin (portable) : séparation en cours de l’inventaire hors gameplay `FirstLvl` (objectif multi-levels) + mise en place d’un inventaire persistant JSON ; reprise incomplète après interruption côté BezyIA.
 - Workflow notes : `PROJECT_LOG.md`, `Notes/Todo_project.md`, `Notes/Learning/`.
 - Pipeline art : **2D SpriteRenderer** (prototype mobile).
@@ -19,22 +19,23 @@
 ### Priorités en cours
 1. **Inventaire (priorité immédiate)** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée, et sécuriser le flux de reprise après interruption BezyIA.
 2. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
-3. **Navigation inter-scène / UI** : **debug** et **durcissement** du flux **`SceneNavigator`** (additif + unload async), tests complets (Build Settings, double **`EventSystem`**, retours depuis **`FirstLvl`**) — **`Notes/Todo_project.md`**, **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`**.
-4. **Persistance grille** : état des cellules / cultures à la **fermeture de scène** et à la **quitt** (piste **`ScriptableObject`** + save ultérieure) — **`Notes/Todo_project.md`**.
-5. **Croissance plantes hors scène / hors ligne** : recalcul via **UTC** à la reprise ; **cloud** (ex. UGS) en évolution possible — croiser **`Timer`**, spec temps GDD, **`Notes/Todo_project.md`**.
-6. **LoadingScreen — visuel** : illustration + intégration **`Bootstrap`** — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
-7. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
-8. Nettoyage assets prototype / références Unity.
+3. **~2026-05-01 — Audit Bezi + refactor navigation Scene/UI** : terminer l’audit sur le flux réel (`ShowScene`, boot eager, `UIManager`) ; **clean/refactor** ; supprimer ou documenter le code mort ; **réaligner** `ARCHI` / `Journal_ui` / `Todo_ui` / guide scènes (certaines notes citent encore `GoTo` / `UnloadSceneAsync`) — **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**, **`PROJECT_LOG.md`** (2026-04-21).
+4. **Navigation inter-scène / UI** : playtests et durcissement (Build Settings, double **`EventSystem`**, tous chemins hub ↔ inventaire ↔ niveau) — croiser **`Notes/Todo_project.md`**, **`Notes/Ui/Todo_ui.md`**.
+5. **Persistance grille** : état des cellules / cultures à la **fermeture de scène** et à la **quitt** (piste **`ScriptableObject`** + save ultérieure) — **`Notes/Todo_project.md`**.
+6. **Croissance plantes hors scène / hors ligne** : recalcul via **UTC** à la reprise ; **cloud** (ex. UGS) en évolution possible — croiser **`Timer`**, spec temps GDD, **`Notes/Todo_project.md`**.
+7. **LoadingScreen — visuel** : illustration + intégration **`Bootstrap`** — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
+8. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
+9. Nettoyage assets prototype / références Unity.
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :
   - `"encore une fois il y a eu une coupure peux tu reprendre toutefois j'ai du fermer la session unity entre temps donc je ne sais pas si tu va retrouver toutes les traces necessaires. il te faudra te fier au thread."`
 
 ### Références clés
-- `Assets/Scripts/Systems/SceneNavigator.cs` — transitions contenu additif + unload async
+- `Assets/Scripts/Systems/SceneNavigator.cs` — visibilité des scènes de contenu (`ShowScene`, lazy optionnel)
 - `Notes/Ui/LOADINGSCREEN_image_workflow.md` — art + intégration écran de chargement
 - `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md` — navigation scènes, sync/async, HUD global
-- `PROJECT_LOG.md` (dernière entrée **2026-04-19** — persistance grille + temps hors scène)
+- `PROJECT_LOG.md` (dernière entrée **2026-04-21** — audit Bezi planifié + correctif `FirstLvlController`)
 - `Docs/PLANTES_ET_INVENTAIRE.md` — `harvestItemId` / `itemId`, checklist nouvelle plante
 - `Notes/Todo_project.md`
 - `Notes/Farm/SYSTEMES_carte_mentale.md`

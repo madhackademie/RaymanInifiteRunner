@@ -46,6 +46,7 @@ Le `UIManager` ne porte pas la logique métier de chaque écran. Il orchestre :
 - l'activation/désactivation des roots UI déjà instanciés (`SetActive`),
 - la navigation entre écrans globaux (par `screenId`),
 - (optionnel futur) le mode d'affichage du HUD selon la scène active — aujourd’hui partiellement piloté par **`NavigationHUD`** + appels statiques.
+- (optionnel futur) des overlays flottants transverses (popups de confirmation, notifications/toasts, fenêtres modales), sans dépendre d'une scène de contenu précise.
 
 Responsabilités présentes ou prévues :
 

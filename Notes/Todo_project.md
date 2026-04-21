@@ -4,6 +4,16 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ---
 
+## Session cible ~2026-05-01 (environ +10 jours) — audit Bezi Scene/UI + clean
+
+> **Navigation actuelle (code)** : `SceneNavigator.ShowScene` (visibilité par `SetActive` sur les racines ; lazy-load additif pour scènes listées) ; boot `GameBootstrap` charge aussi **`Inventaire`** en eager. Plusieurs notes historiques parlent encore de **`GoTo` / `UnloadSceneAsync`** — à réaligner après l’audit.
+
+- [ ] **Bezi — audit code** : nouvelle approche **scènes de contenu + shell UI** (`NavigationHUD`, `GameBootstrap`, `SceneNavigator`, `UIManager`, onglets / hub / retour gameplay). Checklist : **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**.
+- [ ] **Refactor / clean** : retirer ou brancher le code mort (ex. **`BiofiltreManager.TryOpenHarvestPanel`** / **`FindInteractorAt`**), parcourir les scripts pour **commentaires** à jour, décider du sort des classes **uniquement référencées par une scène** (ex. `InventorySceneController`).
+- [ ] **Doc** : mettre à jour **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`**, **`Notes/Ui/Journal_ui.md`**, **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`** pour refléter **`ShowScene`** + boot eager ; journal **`PROJECT_LOG.md`**.
+
+---
+
 ## Prochaine session (priorité immédiate)
 
 > **2026-04-20 (fin de session matin, portable)** : **inventaire** — séparation en cours entre logique inventaire et gameplay (`FirstLvl` puis tous les niveaux) ; **persistance** — inventaire persistant en **JSON** ; **blocage** — inventaire pas encore fonctionnel dans sa scène dédiée (tâche interrompue côté BezyIA). **Prompt de reprise BezyIA** : `"encore une fois il y a eu une coupure peux tu reprendre toutefois j'ai du fermer la session unity entre temps donc je ne sais pas si tu va retrouver toutes les traces necessaires. il te faudra te fier au thread."` Détail : **`PROJECT_LOG.md`** du **2026-04-20**.

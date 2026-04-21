@@ -1,4 +1,4 @@
-# État de référence — scripts & assets (audit 2026-04-12, complément navigation 2026-04-19)
+# État de référence — scripts & assets (audit 2026-04-12, navigation 2026-04-19, alignement 2026-04-21)
 
 Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **mettre à jour** après refactors importants.
 
@@ -8,8 +8,8 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 | Dossier | Rôle principal |
 |---------|----------------|
-| `Core/` | `Timer.cs` ; **`GameBootstrap.cs`** — entrée `Bootstrap.unity`, charge additif **`NavigationHUD`** puis **`HomeScene`** + `LoadingScreen` ; enregistre la scène courante sur **`SceneNavigator`**. |
-| `Systems/` | **`UIManager`**, **`SceneNavigator`** (singleton `DontDestroyOnLoad`, `GoTo` additif + `UnloadSceneAsync`) ; **`ScreenId`** / **`SceneId`** (`ScreenId.cs`). |
+| `Core/` | `Timer.cs` ; **`GameBootstrap.cs`** — entrée `Bootstrap.unity`, charge additif **`NavigationHUD`**, **`HomeScene`**, puis **`Inventaire`** (eager) ; masque les racines de **`Inventaire`** jusqu’au premier `ShowScene` ; `LoadingScreen` + **`SceneNavigator.SetInitialScene(HomeScene)`**. |
+| `Systems/` | **`UIManager`** (prefabs sous shell, `ShowScreen` / `HideScreen`) ; **`SceneNavigator`** (`ShowScene` = `SetActive` sur racines de scène, lazy-load additif optionnel pour scènes listées) ; **`ScreenId`** / **`SceneId`**. |
 | `Data/` | `PlantDefinition`, `GridConfig`, `GridData` — données grille et plantes (SO + runtime). |
 | `Farm/` | Biofiltre, grille, placement, croissance, récolte (`BiofiltreManager`, `GridManager`, `PlantGrow`, `PlantHarvestInteractor`, …). |
 | `Inventory/` | `PlayerInventory`, `ItemDefinition`, `ItemDatabase`, `InventorySlot`, `InventoryResult`. |
@@ -29,11 +29,13 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 ## Flux gameplay documentés (code actuel)
 
-### Menu → niveau
-- **Boot actuel** : **`Bootstrap.unity`** → `GameBootstrap` charge additivement **`NavigationHUD`** (shell + `UIManager` + **`SceneNavigator`**) puis **`HomeScene`** ; **`SceneNavigator.SetInitialScene(HomeScene)`** — voir `EditorBuildSettings`.
-- Depuis **`HomeScene`**, le hub (**`MapSceneController`**) lance les scènes de jeu (ex. **`FirstLvl`**) selon les **`MapNodeData`** ; retour gameplay : **`NavigationHUD.OnExitToHomeRequested`** + **`FirstLvlController`** → **`SceneNavigator.GoTo(HomeScene)`** (unload **`FirstLvl`**).
+### Menu → niveau (navigation contenu par visibilité)
+- **Boot** : **`Bootstrap.unity`** → `GameBootstrap` charge additivement **`NavigationHUD`**, **`HomeScene`**, **`Inventaire`** ; HUD shell masqué pendant le chargement ; racines **`Inventaire`** désactivées ; **`SceneNavigator.SetInitialScene(HomeScene)`** — voir **Build Settings**.
+- **Changement de « scène » visible** : **`SceneNavigator.ShowScene(nom)`** — désactive les racines de la scène de contenu courante, active celles de la cible ; si la cible est **lazy** (liste Inspector sur `SceneNavigator`), chargement additif **une fois** puis masquage jusqu’à affichage.
+- Depuis **`HomeScene`**, **`MapSceneController`** appelle **`ShowScene(targetSceneName)`** (ex. **`FirstLvl`**) ; retour : **`FirstLvlController`** sur **`OnExitToHomeRequested`** → **`ShowScene(HomeScene)`** + **`NavigationHUD.ShowNavBar()`**.
+- **Onglets HUD** : **`NavigationHUD`** → **`ShowScene(HomeScene)`** / **`ShowScene(Inventaire)`** (scène contenu **ou** chemin parallèle prefab `UIManager` selon câblage — à documenter au build).
 - **`LoadingScreen`** : barre + pourcentage + fade ; art — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
-- **`MainMenuUI`** / `SampleScene` : flux legacy possible (`LoadScene("FirstLvl")`) — à réaligner si tout passe par **`Bootstrap`**.
+- **`MainMenuUI`** / `SampleScene` : flux legacy possible — à réaligner si tout passe par **`Bootstrap`**.
 
 ### Plantation (cellule libre)
 1. `BiofiltreCell` (clic) → événement `BiofiltreGridVisualizer.OnCellClicked`.
@@ -96,6 +98,7 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 2. **`InventoryResult.Partial`** : la plante est retirée comme en **succès complet** (`OnHarvestSuccess`) — à trancher côté gameplay (perte vs conservation sur pied).
 3. **`maxHarvestCount`** : présent sur `PlantDefinition`, pas exploité pour des récoltes répétées **sans** destruction dans `PlantHarvestInteractor`.
 4. **`HarvestPanelUI.Update`** : rafraîchissement continu du timer tant que le panel est ouvert — acceptable prototype ; à revoir si plusieurs panneaux ou perf mobile.
+5. **Doc historique** : plusieurs notes (`ARCHI_hud_ui_manager_additive.md`, `Todo_ui.md`, entrées **`PROJECT_LOG`**) décrivent encore **`GoTo` + `UnloadSceneAsync`** par transition — le code actuel privilégie **`ShowScene` + `SetActive` sur racines** ; à harmoniser lors de l’audit Bezi / refactor (voir **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**).
 
 ---
 

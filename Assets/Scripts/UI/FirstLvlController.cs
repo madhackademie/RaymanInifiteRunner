@@ -6,13 +6,9 @@ using UnityEngine;
 /// </summary>
 public class FirstLvlController : MonoBehaviour
 {
-    private async void Start()
+    private void Start()
     {
-        // Garantit que le shell est chargé même si la scène est ouverte directement depuis l'éditeur.
-        await UIManager.EnsureShellLoaded();
-
         NavigationHUD.ShowExitOnly();
-
         if (NavigationHUD.Instance != null)
             NavigationHUD.Instance.OnExitToHomeRequested += ReturnToHome;
     }
@@ -25,11 +21,11 @@ public class FirstLvlController : MonoBehaviour
 
     // ── Navigation ────────────────────────────────────────────────────────────
 
-    /// <summary>Retourne en HomeScene via SceneNavigator (décharge FirstLvl, charge HomeScene).</summary>
+    /// <summary>Retourne en HomeScene via SceneNavigator (masque FirstLvl, affiche HomeScene).</summary>
     private async void ReturnToHome()
     {
         NavigationHUD.Hide();
-        await SceneNavigator.Instance.GoTo(SceneId.HomeScene);
+        await SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
         NavigationHUD.ShowNavBar();
     }
 }

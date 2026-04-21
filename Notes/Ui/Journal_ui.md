@@ -36,6 +36,7 @@ Règle de fonctionnement :
 - L’expérience cible reste : boot un peu plus lourd, navigation quasi instantanée entre panneaux préchargés.
 - Un seul `EventSystem` dans le shell ; pas de second `EventSystem` dans les scènes chargées par-dessus.
 - Un prompt simple et court reste dans **`Todo_ui.md`** / **`ARCHI_hud_ui_manager_additive.md`** (utile Bezi / rappel).
+- La même architecture pourra aussi héberger des UI flottantes globales (popups de confirmation, notifications/toasts, fenêtres modales) via le `UIManager`, sans coupler ces éléments à une scène métier.
 
 ### 6) Hub multi-scènes — **`HomeScene`** (ex-« Carte ») + retour depuis le niveau
 - **Implémenté (2026-04-19)** : le hub d’accueil est la scène **`HomeScene`** (`MapSceneController`, progression **`MapProgressionData`**) ; le bootstrap charge **`NavigationHUD`** puis **`HomeScene`** ; les transitions de **scène de contenu** passent par **`SceneNavigator`** (additif + **`UnloadSceneAsync`**). La scène **`Map`** reste prévue dans **`SceneId`** pour une carte monde distincte si besoin.
@@ -146,6 +147,7 @@ Règle de fonctionnement :
 
 Date | Changement
 :---|:---
+2026-04-21 | Plan **~2026-05-01** : audit **Bezi** + clean/refactor navigation (**`SceneNavigator.ShowScene`**, boot eager `GameBootstrap`, alignement doc vs anciennes mentions `GoTo`/`Unload`) — note **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`** ; snapshot **`Notes/Codebase_etat_reference.md`** mis à jour.
 2026-04-16 | Décision ajoutée : viser une UI globale persistante multi-scènes avec préchargement additif des écrans UI fréquents et navigation instantanée post-boot.
 2026-04-16 | Ajout d'un prompt simple à copier dans Bezi pour lancer le chantier `UIManager` global / shell UI additive.
 2026-04-16 (fin) | Implémenté : `Bootstrap.unity` + `GameBootstrap` + `LoadingScreen`, `UIManager` (listes prioritaire/secondaire, prefabs), `ScreenId`, shell dans le build ; priorité suivante : scène hub **`Carte`**, croix **`FirstLvl` → Carte**.
