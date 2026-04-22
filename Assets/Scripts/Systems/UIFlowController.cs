@@ -1,11 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
-/// Contrôleur UI central persistant entre scènes.
-/// Gère les états Menu / Loading / Gameplay et masque les canvases selon le contexte.
+/// Contrôleur UI global persistant.
+/// Construit un canvas unique puis y migre les canvases de scène.
 /// </summary>
 public sealed class UIFlowController : MonoBehaviour
 {
@@ -18,7 +20,11 @@ public sealed class UIFlowController : MonoBehaviour
 
     private const string DefaultMenuSceneName = "SampleScene";
     private const string DefaultGameplaySceneName = "FirstLvl";
-    private const int LoadingSortingOrder = 1000;
+    private const string OverlayCanvasName = "UIRootCanvas";
+    private const string MenuLayerName = "MenuLayer";
+    private const string GameplayLayerName = "GameplayLayer";
+    private const string LoadingLayerName = "LoadingLayer";
+    private const int GlobalCanvasSortingOrder = 1000;
     private static readonly Color LoadingOverlayColor = new(0f, 0f, 0f, 0.65f);
 
     [SerializeField] private string menuSceneName = DefaultMenuSceneName;
@@ -26,8 +32,12 @@ public sealed class UIFlowController : MonoBehaviour
 
     private static UIFlowController instance;
 
-    private Canvas loadingCanvas;
+    private readonly List<GameObject> importedSceneUiRoots = new();
     private Coroutine loadingRoutine;
+    private Canvas globalCanvas;
+    private RectTransform menuLayer;
+    private RectTransform gameplayLayer;
+    private GameObject loadingPanel;
     private UIFlowState currentState;
 
     public static bool TryGet(out UIFlowController controller)
@@ -62,7 +72,9 @@ public sealed class UIFlowController : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-        BuildLoadingOverlay();
+
+        BuildGlobalCanvas();
+        EnsureEventSystem();
     }
 
     private void OnEnable()
@@ -72,6 +84,7 @@ public sealed class UIFlowController : MonoBehaviour
 
     private void Start()
     {
+        ImportSceneUI(SceneManager.GetActiveScene());
         SetState(ResolveState(SceneManager.GetActiveScene().name));
     }
 
@@ -104,9 +117,9 @@ public sealed class UIFlowController : MonoBehaviour
     private IEnumerator LoadSceneRoutine(string sceneName)
     {
         SetState(UIFlowState.Loading);
-
-        // Laisse un frame au canvas de loading pour s'afficher avant le chargement.
         yield return null;
+
+        ClearImportedSceneUi();
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         if (asyncLoad == null)
@@ -125,105 +138,208 @@ public sealed class UIFlowController : MonoBehaviour
 
     private void HandleSceneLoaded(Scene scene, LoadSceneMode _)
     {
+        EnsureEventSystem();
+        ImportSceneUI(scene);
         SetState(ResolveState(scene.name));
     }
 
     private UIFlowState ResolveState(string sceneName)
     {
-        if (sceneName == menuSceneName)
-            return UIFlowState.Menu;
-
-        return UIFlowState.Gameplay;
+        return sceneName == menuSceneName ? UIFlowState.Menu : UIFlowState.Gameplay;
     }
 
     private void SetState(UIFlowState newState)
     {
         currentState = newState;
-        SetLoadingVisible(currentState == UIFlowState.Loading);
-        ApplySceneCanvasVisibility();
+
+        bool isLoading = currentState == UIFlowState.Loading;
+        bool isMenu = currentState == UIFlowState.Menu;
+        bool isGameplay = currentState == UIFlowState.Gameplay;
+
+        menuLayer.gameObject.SetActive(isMenu);
+        gameplayLayer.gameObject.SetActive(isGameplay);
+        loadingPanel.SetActive(isLoading);
     }
 
-    private void SetLoadingVisible(bool isVisible)
+    private void ImportSceneUI(Scene scene)
     {
-        if (loadingCanvas != null)
-            loadingCanvas.gameObject.SetActive(isVisible);
+        if (!scene.IsValid() || !scene.isLoaded)
+            return;
+
+        GameObject[] roots = scene.GetRootGameObjects();
+        for (int i = 0; i < roots.Length; i++)
+            ImportCanvasesFromRoot(roots[i]);
     }
 
-    private void ApplySceneCanvasVisibility()
+    private void ImportCanvasesFromRoot(GameObject root)
     {
-        Canvas[] canvases = FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        bool hasMenuCanvasInScene = false;
-
+        Canvas[] canvases = root.GetComponentsInChildren<Canvas>(true);
         for (int i = 0; i < canvases.Length; i++)
         {
             Canvas canvas = canvases[i];
-            if (canvas == null || IsPersistentLoadingCanvas(canvas))
+            if (canvas == null || canvas == globalCanvas || canvas.renderMode == RenderMode.WorldSpace || IsNestedCanvas(canvas))
                 continue;
 
-            if (canvas.GetComponentInChildren<MainMenuUI>(true) != null)
-                hasMenuCanvasInScene = true;
-        }
+            GameObject canvasRoot = canvas.gameObject;
+            if (importedSceneUiRoots.Contains(canvasRoot))
+                continue;
 
+            bool isMenuUi = canvas.GetComponentInChildren<MainMenuUI>(true) != null;
+            RectTransform targetLayer = isMenuUi ? menuLayer : gameplayLayer;
+
+            canvasRoot.transform.SetParent(targetLayer, false);
+            StripCanvasComponentsInHierarchy(canvasRoot.transform);
+            StretchToParent(canvasRoot);
+
+            importedSceneUiRoots.Add(canvasRoot);
+        }
+    }
+
+    private static bool IsNestedCanvas(Canvas canvas)
+    {
+        Transform parent = canvas.transform.parent;
+        return parent != null && parent.GetComponentInParent<Canvas>() != null;
+    }
+
+    private static void StripCanvasComponentsInHierarchy(Transform root)
+    {
+        Canvas[] canvases = root.GetComponentsInChildren<Canvas>(true);
         for (int i = 0; i < canvases.Length; i++)
         {
             Canvas canvas = canvases[i];
-            if (canvas == null || IsPersistentLoadingCanvas(canvas))
-                continue;
+            if (canvas != null && canvas.renderMode != RenderMode.WorldSpace)
+                Destroy(canvas);
+        }
 
-            bool isMenuCanvas = canvas.GetComponentInChildren<MainMenuUI>(true) != null;
-            bool shouldBeActive = ShouldCanvasBeVisible(hasMenuCanvasInScene, isMenuCanvas);
+        CanvasScaler[] scalers = root.GetComponentsInChildren<CanvasScaler>(true);
+        for (int i = 0; i < scalers.Length; i++)
+        {
+            CanvasScaler scaler = scalers[i];
+            Canvas parentCanvas = scaler != null ? scaler.GetComponent<Canvas>() : null;
+            if (scaler != null && (parentCanvas == null || parentCanvas.renderMode != RenderMode.WorldSpace))
+                Destroy(scaler);
+        }
 
-            if (canvas.gameObject.activeSelf != shouldBeActive)
-                canvas.gameObject.SetActive(shouldBeActive);
+        GraphicRaycaster[] raycasters = root.GetComponentsInChildren<GraphicRaycaster>(true);
+        for (int i = 0; i < raycasters.Length; i++)
+        {
+            GraphicRaycaster raycaster = raycasters[i];
+            Canvas parentCanvas = raycaster != null ? raycaster.GetComponent<Canvas>() : null;
+            if (raycaster != null && (parentCanvas == null || parentCanvas.renderMode != RenderMode.WorldSpace))
+                Destroy(raycaster);
         }
     }
 
-    private bool ShouldCanvasBeVisible(bool hasMenuCanvasInScene, bool isMenuCanvas)
+    private static void StretchToParent(GameObject root)
     {
-        if (currentState == UIFlowState.Loading)
-            return false;
+        RectTransform rect = root.GetComponent<RectTransform>();
+        if (rect == null)
+            return;
 
-        if (!hasMenuCanvasInScene)
-            return true;
-
-        if (currentState == UIFlowState.Menu)
-            return isMenuCanvas;
-
-        return !isMenuCanvas;
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        rect.localScale = Vector3.one;
     }
 
-    private bool IsPersistentLoadingCanvas(Canvas canvas)
+    private void ClearImportedSceneUi()
     {
-        return loadingCanvas != null && canvas == loadingCanvas;
+        for (int i = 0; i < importedSceneUiRoots.Count; i++)
+        {
+            GameObject uiRoot = importedSceneUiRoots[i];
+            if (uiRoot != null)
+                Destroy(uiRoot);
+        }
+
+        importedSceneUiRoots.Clear();
     }
 
-    private void BuildLoadingOverlay()
+    private void BuildGlobalCanvas()
     {
-        GameObject overlayRoot = new("UILoadingOverlay");
-        overlayRoot.transform.SetParent(transform, false);
+        GameObject canvasRoot = new(OverlayCanvasName);
+        canvasRoot.transform.SetParent(transform, false);
 
-        loadingCanvas = overlayRoot.AddComponent<Canvas>();
-        loadingCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        loadingCanvas.sortingOrder = LoadingSortingOrder;
+        globalCanvas = canvasRoot.AddComponent<Canvas>();
+        globalCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        globalCanvas.sortingOrder = GlobalCanvasSortingOrder;
 
-        overlayRoot.AddComponent<GraphicRaycaster>();
+        canvasRoot.AddComponent<GraphicRaycaster>();
 
-        CanvasScaler scaler = overlayRoot.AddComponent<CanvasScaler>();
+        CanvasScaler scaler = canvasRoot.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920f, 1080f);
 
-        GameObject panel = new("Background");
-        panel.transform.SetParent(overlayRoot.transform, false);
+        menuLayer = CreateLayer(MenuLayerName, canvasRoot.transform);
+        gameplayLayer = CreateLayer(GameplayLayerName, canvasRoot.transform);
+        RectTransform loadingLayer = CreateLayer(LoadingLayerName, canvasRoot.transform);
 
-        RectTransform panelRect = panel.AddComponent<RectTransform>();
-        panelRect.anchorMin = Vector2.zero;
-        panelRect.anchorMax = Vector2.one;
-        panelRect.offsetMin = Vector2.zero;
-        panelRect.offsetMax = Vector2.zero;
+        loadingPanel = CreateLoadingPanel(loadingLayer);
+        loadingPanel.SetActive(false);
+    }
+
+    private static RectTransform CreateLayer(string layerName, Transform parent)
+    {
+        GameObject layer = new(layerName);
+        layer.transform.SetParent(parent, false);
+
+        RectTransform rect = layer.AddComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        return rect;
+    }
+
+    private static GameObject CreateLoadingPanel(Transform parent)
+    {
+        GameObject panel = new("LoadingOverlay");
+        panel.transform.SetParent(parent, false);
+
+        RectTransform rect = panel.AddComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
 
         Image panelImage = panel.AddComponent<Image>();
         panelImage.color = LoadingOverlayColor;
+        return panel;
+    }
 
-        SetLoadingVisible(false);
+    private static void EnsureEventSystem()
+    {
+        EventSystem[] systems = FindObjectsByType<EventSystem>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (systems.Length == 0)
+        {
+            GameObject root = new("UIEventSystem");
+            root.AddComponent<EventSystem>();
+            root.AddComponent<StandaloneInputModule>();
+            DontDestroyOnLoad(root);
+            return;
+        }
+
+        EventSystem primary = systems[0];
+        for (int i = 1; i < systems.Length; i++)
+        {
+            if (systems[i] != null && systems[i].gameObject.scene.name == "DontDestroyOnLoad")
+            {
+                primary = systems[i];
+                break;
+            }
+        }
+
+        for (int i = 0; i < systems.Length; i++)
+        {
+            EventSystem candidate = systems[i];
+            if (candidate != null && candidate != primary)
+                Destroy(candidate.gameObject);
+        }
+
+        if (primary.GetComponent<BaseInputModule>() == null)
+            primary.gameObject.AddComponent<StandaloneInputModule>();
+
+        if (primary.gameObject.scene.name != "DontDestroyOnLoad")
+            DontDestroyOnLoad(primary.gameObject);
     }
 }
