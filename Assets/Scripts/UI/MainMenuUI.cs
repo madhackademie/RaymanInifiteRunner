@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Controls the main menu UI with Start and Options buttons.
@@ -22,9 +21,14 @@ public class MainMenuUI : MonoBehaviour
     /// <summary>Loads the game scene.</summary>
     public void OnStartClicked()
     {
-        SceneManager.LoadScene("FirstLvl");
-        Debug.Log("Start clicked — load game scene here.");
-        // SceneManager.LoadScene("GameScene");
+        if (UIFlowController.TryGet(out UIFlowController uiFlow))
+        {
+            uiFlow.LoadGameplay();
+            return;
+        }
+
+        Debug.LogWarning("[MainMenuUI] UIFlowController introuvable, chargement direct de la scène.");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("FirstLvl");
     }
 
     /// <summary>Toggles the options panel visibility.</summary>
