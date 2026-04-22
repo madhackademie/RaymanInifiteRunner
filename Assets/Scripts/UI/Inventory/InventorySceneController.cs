@@ -71,6 +71,12 @@ public class InventorySceneController : MonoBehaviour
     /// <summary>Retourne à HomeScene via SceneNavigator.</summary>
     public void Close()
     {
+        if (UIManager.Instance != null && UIManager.Instance.IsScreenVisible(ScreenId.Inventory))
+        {
+            UIManager.Instance.HideScreen(ScreenId.Inventory);
+            return;
+        }
+
         if (SceneNavigator.Instance == null)
             return;
 

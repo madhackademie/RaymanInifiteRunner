@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// Configuration sérialisable d'un écran UI géré par UIManager.
@@ -57,6 +59,12 @@ public class UIManager : MonoBehaviour
     [Header("Écrans secondaires — lazy load à la première demande")]
     [SerializeField] private List<ScreenEntry> secondaryScreens = new();
 
+    [Header("Écrans dérivés de scènes (migration progressive)")]
+    [Tooltip("Active la création d'un écran Inventory global depuis la scène Inventaire.")]
+    [SerializeField] private bool enableInventorySceneScreen = true;
+    [SerializeField] private string inventorySourceSceneName = SceneId.Inventaire;
+    [SerializeField] private string inventorySourceRootName = "InventoryCanvas";
+
     // ── Runtime ───────────────────────────────────────────────────────────────
 
     private readonly Dictionary<string, ScreenEntry> registry = new();
@@ -79,12 +87,14 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         PreloadPriorityScreens();
+        TryRegisterInventoryScreenFromScene();
     }
 
     private void OnEnable()
     {
         SceneNavigator.OnNavigatorAvailable += BindNavigator;
         SceneNavigator.OnNavigatorUnavailable += UnbindNavigator;
+        SceneManager.sceneLoaded += HandleUnitySceneLoaded;
 
         if (SceneNavigator.Instance != null)
             BindNavigator(SceneNavigator.Instance);
@@ -94,6 +104,7 @@ public class UIManager : MonoBehaviour
     {
         SceneNavigator.OnNavigatorAvailable -= BindNavigator;
         SceneNavigator.OnNavigatorUnavailable -= UnbindNavigator;
+        SceneManager.sceneLoaded -= HandleUnitySceneLoaded;
         UnbindNavigator();
     }
 
@@ -127,11 +138,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ShowScreen(string screenId)
     {
-        if (!TryGetEntry(screenId, out ScreenEntry entry))
-            return;
-
-        EnsureInstantiated(entry);
-        entry.instance.SetActive(true);
+        TryShowScreen(screenId);
     }
 
     /// <summary>
@@ -139,10 +146,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void HideScreen(string screenId)
     {
-        if (!TryGetEntry(screenId, out ScreenEntry entry) || !entry.IsLoaded)
-            return;
-
-        entry.instance.SetActive(false);
+        TryHideScreen(screenId);
     }
 
     /// <summary>Masque tous les écrans gérés par UIManager sans les détruire.</summary>
@@ -164,6 +168,33 @@ public class UIManager : MonoBehaviour
     /// <summary>Retourne true si l'écran a déjà été instancié.</summary>
     public bool IsScreenLoaded(string screenId)
         => TryGetEntry(screenId, out ScreenEntry entry) && entry.IsLoaded;
+
+    /// <summary>Retourne true si l'identifiant d'écran existe dans le registre.</summary>
+    public bool HasScreen(string screenId) => registry.ContainsKey(screenId);
+
+    /// <summary>Affiche un écran si disponible, retourne true en cas de succès.</summary>
+    public bool TryShowScreen(string screenId)
+    {
+        if (!TryGetEntry(screenId, out ScreenEntry entry))
+            return false;
+
+        EnsureInstantiated(entry);
+        if (entry.instance == null)
+            return false;
+
+        entry.instance.SetActive(true);
+        return true;
+    }
+
+    /// <summary>Masque un écran si disponible, retourne true en cas de succès.</summary>
+    public bool TryHideScreen(string screenId)
+    {
+        if (!TryGetEntry(screenId, out ScreenEntry entry) || !entry.IsLoaded)
+            return false;
+
+        entry.instance.SetActive(false);
+        return true;
+    }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -230,6 +261,8 @@ public class UIManager : MonoBehaviour
         boundNavigator = navigator;
         boundNavigator.OnTransitionStateChanged -= HandleTransitionStateChanged;
         boundNavigator.OnTransitionStateChanged += HandleTransitionStateChanged;
+        boundNavigator.OnAfterSceneShown -= HandleSceneShown;
+        boundNavigator.OnAfterSceneShown += HandleSceneShown;
     }
 
     private void UnbindNavigator()
@@ -238,6 +271,7 @@ public class UIManager : MonoBehaviour
             return;
 
         boundNavigator.OnTransitionStateChanged -= HandleTransitionStateChanged;
+        boundNavigator.OnAfterSceneShown -= HandleSceneShown;
         boundNavigator = null;
     }
 
@@ -245,5 +279,92 @@ public class UIManager : MonoBehaviour
     {
         if (isTransitioning)
             HideAllGlobalUI();
+    }
+
+    private void HandleSceneShown(string sceneName)
+    {
+        if (sceneName != inventorySourceSceneName)
+            return;
+
+        TryRegisterInventoryScreenFromScene();
+    }
+
+    private void HandleUnitySceneLoaded(Scene scene, LoadSceneMode _)
+    {
+        if (scene.name != inventorySourceSceneName)
+            return;
+
+        TryRegisterInventoryScreenFromScene();
+    }
+
+    /// <summary>
+    /// Migration progressive: transforme le canvas "Inventaire" d'une scène additive
+    /// en écran global UIManager sous le shell UI persistant.
+    /// </summary>
+    private void TryRegisterInventoryScreenFromScene()
+    {
+        if (!enableInventorySceneScreen || HasScreen(ScreenId.Inventory))
+            return;
+
+        Scene sourceScene = SceneManager.GetSceneByName(inventorySourceSceneName);
+        if (!sourceScene.IsValid() || !sourceScene.isLoaded)
+            return;
+
+        GameObject sourceRoot = null;
+        foreach (GameObject root in sourceScene.GetRootGameObjects())
+        {
+            if (root.name == inventorySourceRootName)
+            {
+                sourceRoot = root;
+                break;
+            }
+        }
+
+        if (sourceRoot == null)
+        {
+            Debug.LogWarning($"[UIManager] Root '{inventorySourceRootName}' introuvable dans la scène '{inventorySourceSceneName}'.");
+            return;
+        }
+
+        GameObject instance = Instantiate(sourceRoot, screenRoot);
+        instance.name = $"{ScreenId.Inventory}Screen";
+        instance.SetActive(false);
+
+        StripCanvasShell(instance);
+        StretchToParent(instance.transform as RectTransform);
+
+        registry[ScreenId.Inventory] = new ScreenEntry
+        {
+            screenId = ScreenId.Inventory,
+            prefab = null,
+            instance = instance
+        };
+    }
+
+    private static void StripCanvasShell(GameObject root)
+    {
+        Canvas canvas = root.GetComponent<Canvas>();
+        if (canvas != null)
+            Destroy(canvas);
+
+        CanvasScaler scaler = root.GetComponent<CanvasScaler>();
+        if (scaler != null)
+            Destroy(scaler);
+
+        GraphicRaycaster raycaster = root.GetComponent<GraphicRaycaster>();
+        if (raycaster != null)
+            Destroy(raycaster);
+    }
+
+    private static void StretchToParent(RectTransform rect)
+    {
+        if (rect == null)
+            return;
+
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        rect.localScale = Vector3.one;
     }
 }

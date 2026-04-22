@@ -35,7 +35,7 @@ public class GameBootstrap : MonoBehaviour
             // 2. Scène de contenu principale (25 % → 60 %)
             await LoadWithProgress(SceneId.HomeScene, 0.25f, 0.6f);
 
-            // 3. Scènes eager légères — chargées cachées dès le boot (60 % → 100 %)
+            // 3. Scène template UI inventaire — chargée tôt pour migration vers UIManager.
             await LoadWithProgress(SceneId.Inventaire, 0.6f, 1f);
             SetSceneRootsActive(SceneId.Inventaire, false);
 

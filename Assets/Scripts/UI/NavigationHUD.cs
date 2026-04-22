@@ -118,6 +118,9 @@ public class NavigationHUD : MonoBehaviour
     {
         if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
         SetTabsInteractable(false);
+        if (UIManager.Instance != null)
+            UIManager.Instance.HideScreen(ScreenId.Inventory);
+
         await SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
         RefreshTabVisuals(Tab.Aventures);
         SetTabsInteractable(true);
@@ -128,6 +131,14 @@ public class NavigationHUD : MonoBehaviour
     {
         if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
         SetTabsInteractable(false);
+        if (UIManager.Instance != null && UIManager.Instance.HasScreen(ScreenId.Inventory))
+        {
+            UIManager.Instance.ShowScreen(ScreenId.Inventory);
+            RefreshTabVisuals(Tab.Inventaire);
+            SetTabsInteractable(true);
+            return;
+        }
+
         await SceneNavigator.Instance.ShowScene(SceneId.Inventaire);
         RefreshTabVisuals(Tab.Inventaire);
         SetTabsInteractable(true);
@@ -201,6 +212,8 @@ public class NavigationHUD : MonoBehaviour
         if (sceneName == SceneId.HomeScene || sceneName == SceneId.Inventaire)
         {
             ApplyMode(HudMode.Navigation);
+            if (sceneName == SceneId.HomeScene && UIManager.Instance != null)
+                UIManager.Instance.HideScreen(ScreenId.Inventory);
             return;
         }
 
