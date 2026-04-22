@@ -818,3 +818,52 @@
 - `Assets/Scripts/UI/FirstLvlController.cs`
 - `Assets/Scripts/Systems/SceneNavigator.cs`
 - `Assets/Scripts/Core/GameBootstrap.cs`
+
+## 2026-04-22 — architecture Scene/UI réactive + note de rule Bezi
+
+### Contexte
+- Reprise du chantier navigation/UI sur base `feature/scene-inventaire`, avec objectif : architecture plus **réactive**, **propre** et **performante**.
+- Consolidation documentaire demandée : produire une note exploitable comme future **rule Bezi IA**.
+
+### Ce qu’on a fait
+- [x] **Refactor navigation réactive** (`SceneNavigator`) :
+  - événements de disponibilité (`OnNavigatorAvailable` / `OnNavigatorUnavailable`);
+  - événement d’état de transition (`OnTransitionStateChanged(bool)`);
+  - sérialisation des requêtes `ShowScene` (gestion des demandes concurrentes via `pendingSceneName`);
+  - fallback robuste de chargement (`EnsureSceneLoaded`) + helper `IsSceneLoaded`.
+- [x] **HUD piloté par état** (`NavigationHUD`) :
+  - bind/unbind dynamique au navigator;
+  - mode HUD dérivé de la scène active et de l’état de transition (`Hidden`, `Navigation`, `ExitOnly`);
+  - suppression de plusieurs appels impératifs redondants.
+- [x] **UI globale** (`UIManager`) :
+  - écoute des transitions et masquage global au début d’un changement de scène;
+  - API utilitaires (`HasScreen`, `TryShowScreen`, `TryHideScreen`).
+- [x] **Suppression du prototype conflictuel** : retrait de `UIFlowController` (single-canvas agressif), incompatible avec l’architecture additive shell + scènes de contenu.
+- [x] **Unification navigation** : `MainMenuUI` passe par `SceneNavigator` (plus de `LoadScene` direct côté scripts gameplay).
+- [x] **Étape de centralisation inventaire** :
+  - onglet Inventaire du HUD ouvre en priorité un écran global `ScreenId.Inventory` géré par `UIManager`;
+  - fallback vers `SceneNavigator.ShowScene(SceneId.Inventaire)` si écran global indisponible;
+  - migration progressive depuis la scène `Inventaire` (clone de `InventoryCanvas` sous `ScreenRoot`).
+- [x] **Documentation** :
+  - nouvelle note : `Notes/Ui/RULE_DRAFT_bezi_scene_ui_runtime.md` (fonctionnement runtime Scene/UI + conventions + anti-patterns + checklist PR) ;
+  - index mis à jour (`INDEX.md`) ;
+  - backlog TODO enrichi avec point “session de ce soir” sur la suppression de la dépendance runtime à la scène `Inventaire`.
+
+### Décisions
+- Conserver le modèle **shell persistant + scènes additives** (adapté Unity 6, simple à debugger, coûts maîtrisés).
+- Centraliser la logique d’état (navigator + UI manager), sans forcer un canvas unique monolithique.
+- Faire la migration de l’inventaire en **progressif** pour limiter le risque de régression.
+
+### Session de ce soir — TODO ciblé
+1. Finaliser la migration inventaire : **supprimer la dépendance runtime** à `Inventaire.unity` (garder template/prefab source).
+2. Vérifier les références UI (close button, binding inventaire, slot prefab sans wrapper canvas).
+3. Valider en Play Mode les transitions Home ↔ Inventaire ↔ FirstLvl avec overlay UI global.
+
+### Liens utiles
+- `Assets/Scripts/Systems/SceneNavigator.cs`
+- `Assets/Scripts/Systems/UIManager.cs`
+- `Assets/Scripts/UI/NavigationHUD.cs`
+- `Assets/Scripts/UI/Inventory/InventorySceneController.cs`
+- `Assets/Scripts/UI/MainMenuUI.cs`
+- `Notes/Ui/RULE_DRAFT_bezi_scene_ui_runtime.md`
+- `Notes/Todo_project.md`

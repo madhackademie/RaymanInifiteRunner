@@ -40,6 +40,7 @@ Légende :
 | `Notes/Ui/LOADINGSCREEN_image_workflow.md` | Actif | P1 | Illustration + import sprite + intégration Canvas **`Bootstrap`** / fade `LoadingScreen`. |
 | `Notes/Ui/Todo_ui.md` | Actif | P1 | Backlog UI : focus **LoadingScreen** (session auteur) ; **hub Carte** + retour croix depuis `FirstLvl` ; bootstrap/`UIManager` ; `LanguageManager` / TMP. |
 | `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md` | Actif | P1 | Cible ~2026-05-01 : audit **Bezi** navigation Scene/UI + clean/refactor + alignement doc (`ShowScene` vs notes `GoTo`/unload). |
+| `Notes/Ui/RULE_DRAFT_bezi_scene_ui_runtime.md` | Actif | P1 | Brouillon de rule Bezi IA : architecture runtime Scene/UI cible (SceneNavigator + UIManager + NavigationHUD), invariants, do/don't, checklist d’implémentation. |
 | `Notes/Ui/Decision_ui.md` | Actif | P3 | Spéc UI proto -> polish (objectifs, architecture panneaux, animations, contrat d'orchestration). |
 | `Notes/Ui/Spec_ui.md` | Vide | P3 | Fichier placeholder pour future spécification UI dédiée. |
 
