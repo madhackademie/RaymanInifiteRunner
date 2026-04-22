@@ -867,3 +867,14 @@
 - `Assets/Scripts/UI/MainMenuUI.cs`
 - `Notes/Ui/RULE_DRAFT_bezi_scene_ui_runtime.md`
 - `Notes/Todo_project.md`
+
+### TODO prioritaire — prochaine session (soir ou autre)
+1. **Git hygiene / livraison** :
+   - fermer le **PR obsolète** #1 (branche source déjà supprimée) ;
+   - vérifier qu'il ne reste qu'un seul flux actif (PR #2 vers `feature/scene-inventaire`).
+2. **Nettoyage branches** :
+   - valider la liste des branches locales/distantes encore utiles ;
+   - supprimer les branches de travail périmées après confirmation de merge.
+3. **Stratégie de fusion finale** :
+   - une fois tests validés, fusionner proprement vers la branche inventaire cible ;
+   - planifier ensuite le nettoyage de `main` (PR cleanup dédié plutôt qu'un mix de branches concurrentes).
