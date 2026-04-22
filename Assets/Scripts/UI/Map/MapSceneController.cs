@@ -43,7 +43,6 @@ public class MapSceneController : MonoBehaviour
         // Start() n'a pas encore tourné au premier OnEnable — les boutons n'existent pas encore.
         if (sortedNodes == null) return;
 
-        NavigationHUD.ShowNavBar();
         RefreshButtons();
     }
 
@@ -109,7 +108,6 @@ public class MapSceneController : MonoBehaviour
             return;
         }
 
-        NavigationHUD.Hide();
         await SceneNavigator.Instance.ShowScene(data.targetSceneName);
     }
 }

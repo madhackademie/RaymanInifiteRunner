@@ -19,16 +19,15 @@ public class MainMenuUI : MonoBehaviour
     }
 
     /// <summary>Loads the game scene.</summary>
-    public void OnStartClicked()
+    public async void OnStartClicked()
     {
-        if (UIFlowController.TryGet(out UIFlowController uiFlow))
+        if (SceneNavigator.Instance == null)
         {
-            uiFlow.LoadGameplay();
+            Debug.LogWarning("[MainMenuUI] SceneNavigator introuvable.");
             return;
         }
 
-        Debug.LogWarning("[MainMenuUI] UIFlowController introuvable, chargement direct de la scène.");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("FirstLvl");
+        await SceneNavigator.Instance.ShowScene(SceneId.FirstLvl);
     }
 
     /// <summary>Toggles the options panel visibility.</summary>

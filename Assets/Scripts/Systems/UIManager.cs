@@ -60,6 +60,7 @@ public class UIManager : MonoBehaviour
     // ── Runtime ───────────────────────────────────────────────────────────────
 
     private readonly Dictionary<string, ScreenEntry> registry = new();
+    private SceneNavigator boundNavigator;
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
@@ -78,6 +79,22 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         PreloadPriorityScreens();
+    }
+
+    private void OnEnable()
+    {
+        SceneNavigator.OnNavigatorAvailable += BindNavigator;
+        SceneNavigator.OnNavigatorUnavailable += UnbindNavigator;
+
+        if (SceneNavigator.Instance != null)
+            BindNavigator(SceneNavigator.Instance);
+    }
+
+    private void OnDisable()
+    {
+        SceneNavigator.OnNavigatorAvailable -= BindNavigator;
+        SceneNavigator.OnNavigatorUnavailable -= UnbindNavigator;
+        UnbindNavigator();
     }
 
 
@@ -200,5 +217,33 @@ public class UIManager : MonoBehaviour
 
         Debug.LogWarning($"[UIManager] Écran inconnu : '{screenId}'. Vérifier ScreenId et l'Inspector.", this);
         return false;
+    }
+
+    private void BindNavigator(SceneNavigator navigator)
+    {
+        if (navigator == null)
+            return;
+
+        if (boundNavigator != null && boundNavigator != navigator)
+            UnbindNavigator();
+
+        boundNavigator = navigator;
+        boundNavigator.OnTransitionStateChanged -= HandleTransitionStateChanged;
+        boundNavigator.OnTransitionStateChanged += HandleTransitionStateChanged;
+    }
+
+    private void UnbindNavigator()
+    {
+        if (boundNavigator == null)
+            return;
+
+        boundNavigator.OnTransitionStateChanged -= HandleTransitionStateChanged;
+        boundNavigator = null;
+    }
+
+    private void HandleTransitionStateChanged(bool isTransitioning)
+    {
+        if (isTransitioning)
+            HideAllGlobalUI();
     }
 }

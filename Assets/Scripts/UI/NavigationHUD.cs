@@ -9,6 +9,13 @@ using UnityEngine.UI;
 /// </summary>
 public class NavigationHUD : MonoBehaviour
 {
+    private enum HudMode
+    {
+        Hidden,
+        Navigation,
+        ExitOnly
+    }
+
     // ── Singleton ─────────────────────────────────────────────────────────────
 
     public static NavigationHUD Instance { get; private set; }
@@ -42,6 +49,8 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private Color colorActive   = new Color(1f,    0.78f, 0.2f,  1f);
     [SerializeField] private Color colorInactive = new Color(0.55f, 0.55f, 0.55f, 1f);
 
+    private HudMode currentMode = HudMode.Hidden;
+
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
     private void Awake()
@@ -57,10 +66,23 @@ public class NavigationHUD : MonoBehaviour
         tabAventuresButton.onClick.AddListener(OnTabAventuresClicked);
         tabInventaireButton.onClick.AddListener(OnTabInventaireClicked);
         exitButton.onClick.AddListener(OnExitClicked);
+
+        if (SceneNavigator.Instance != null)
+            BindNavigator(SceneNavigator.Instance);
+    }
+
+    private void OnEnable()
+    {
+        SceneNavigator.OnNavigatorAvailable += BindNavigator;
+        SceneNavigator.OnNavigatorUnavailable += UnbindNavigator;
     }
 
     private void OnDestroy()
     {
+        SceneNavigator.OnNavigatorAvailable -= BindNavigator;
+        SceneNavigator.OnNavigatorUnavailable -= UnbindNavigator;
+        UnbindNavigator();
+
         tabAventuresButton.onClick.RemoveListener(OnTabAventuresClicked);
         tabInventaireButton.onClick.RemoveListener(OnTabInventaireClicked);
         exitButton.onClick.RemoveListener(OnExitClicked);
@@ -72,25 +94,21 @@ public class NavigationHUD : MonoBehaviour
     public static void ShowNavBar()
     {
         if (Instance == null) return;
-        Instance.navBarContainer.SetActive(true);
-        Instance.exitButtonContainer.SetActive(false);
-        Instance.RefreshTabVisuals();
+        Instance.ApplyMode(HudMode.Navigation);
     }
 
     /// <summary>Affiche uniquement le bouton de sortie (croix). Pour les scènes gameplay.</summary>
     public static void ShowExitOnly()
     {
         if (Instance == null) return;
-        Instance.navBarContainer.SetActive(false);
-        Instance.exitButtonContainer.SetActive(true);
+        Instance.ApplyMode(HudMode.ExitOnly);
     }
 
     /// <summary>Masque le HUD entièrement. Pour les cinématiques et l'écran de chargement.</summary>
     public static void Hide()
     {
         if (Instance == null) return;
-        Instance.navBarContainer.SetActive(false);
-        Instance.exitButtonContainer.SetActive(false);
+        Instance.ApplyMode(HudMode.Hidden);
     }
 
     // ── Tab callbacks ─────────────────────────────────────────────────────────
@@ -100,7 +118,6 @@ public class NavigationHUD : MonoBehaviour
     {
         if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
         SetTabsInteractable(false);
-        ShowNavBar();
         await SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
         RefreshTabVisuals(Tab.Aventures);
         SetTabsInteractable(true);
@@ -111,7 +128,6 @@ public class NavigationHUD : MonoBehaviour
     {
         if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
         SetTabsInteractable(false);
-        ShowNavBar();
         await SceneNavigator.Instance.ShowScene(SceneId.Inventaire);
         RefreshTabVisuals(Tab.Inventaire);
         SetTabsInteractable(true);
@@ -133,6 +149,75 @@ public class NavigationHUD : MonoBehaviour
     {
         tabAventuresButton.interactable  = interactable;
         tabInventaireButton.interactable = interactable;
+    }
+
+    private SceneNavigator boundNavigator;
+
+    private void BindNavigator(SceneNavigator navigator)
+    {
+        if (navigator == null)
+            return;
+
+        if (boundNavigator != null && boundNavigator != navigator)
+            UnbindNavigator();
+
+        boundNavigator = navigator;
+        boundNavigator.OnAfterSceneShown -= HandleSceneShown;
+        boundNavigator.OnAfterSceneShown += HandleSceneShown;
+
+        boundNavigator.OnTransitionStateChanged -= HandleTransitionChanged;
+        boundNavigator.OnTransitionStateChanged += HandleTransitionChanged;
+
+        if (navigator.IsTransitioning)
+            ApplyMode(HudMode.Hidden);
+        else
+            HandleSceneShown(navigator.CurrentScene);
+    }
+
+    private void UnbindNavigator()
+    {
+        if (boundNavigator == null)
+            return;
+
+        boundNavigator.OnAfterSceneShown -= HandleSceneShown;
+        boundNavigator.OnTransitionStateChanged -= HandleTransitionChanged;
+        boundNavigator = null;
+    }
+
+    private void HandleTransitionChanged(bool isTransitioning)
+    {
+        if (isTransitioning)
+            ApplyMode(HudMode.Hidden);
+    }
+
+    private void HandleSceneShown(string sceneName)
+    {
+        if (string.IsNullOrWhiteSpace(sceneName))
+        {
+            ApplyMode(HudMode.Hidden);
+            return;
+        }
+
+        if (sceneName == SceneId.HomeScene || sceneName == SceneId.Inventaire)
+        {
+            ApplyMode(HudMode.Navigation);
+            return;
+        }
+
+        ApplyMode(HudMode.ExitOnly);
+    }
+
+    private void ApplyMode(HudMode mode)
+    {
+        if (currentMode == mode)
+            return;
+
+        currentMode = mode;
+        navBarContainer.SetActive(mode == HudMode.Navigation);
+        exitButtonContainer.SetActive(mode == HudMode.ExitOnly);
+
+        if (mode == HudMode.Navigation)
+            RefreshTabVisuals();
     }
 
     private void RefreshTabVisuals()

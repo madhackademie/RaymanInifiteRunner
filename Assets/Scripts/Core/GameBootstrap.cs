@@ -31,7 +31,6 @@ public class GameBootstrap : MonoBehaviour
 
             // 1. Shell persistant (0 % → 25 %)
             await LoadWithProgress(SceneId.NavigationHUD, 0f, 0.25f);
-            NavigationHUD.Hide();
 
             // 2. Scène de contenu principale (25 % → 60 %)
             await LoadWithProgress(SceneId.HomeScene, 0.25f, 0.6f);

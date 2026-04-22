@@ -33,7 +33,6 @@ public class InventorySceneController : MonoBehaviour
         else
             inventoryUI.Refresh();
 
-        NavigationHUD.ShowNavBar();
     }
 
     private void OnDestroy()
@@ -63,12 +62,18 @@ public class InventorySceneController : MonoBehaviour
     /// </summary>
     public static void Open()
     {
-        SceneNavigator.Instance?.ShowScene(SceneId.Inventaire);
+        if (SceneNavigator.Instance == null)
+            return;
+
+        _ = SceneNavigator.Instance.ShowScene(SceneId.Inventaire);
     }
 
     /// <summary>Retourne à HomeScene via SceneNavigator.</summary>
     public void Close()
     {
-        SceneNavigator.Instance?.ShowScene(SceneId.HomeScene);
+        if (SceneNavigator.Instance == null)
+            return;
+
+        _ = SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
     }
 }
