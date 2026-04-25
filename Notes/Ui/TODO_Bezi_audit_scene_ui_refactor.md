@@ -16,7 +16,7 @@ Clôturer l’audit **Bezi** sur la **nouvelle approche** de gestion des scènes
 ## Clean / refactor (après audit)
 
 - [ ] Supprimer ou **brancher** le code mort identifié (ex. **`BiofiltreManager.TryOpenHarvestPanel`** / **`FindInteractorAt`** — non utilisés par le clic grille ; décision : suppression vs réutilisation documentée).
-- [ ] Passer en revue les scripts UI / navigation pour **commentaires XML** et en-têtes de fichier à jour (éviter les références à **`GoTo` / `UnloadSceneAsync`** si le projet est passé à **`ShowScene`**).
+- [ ] Passer en revue les scripts UI / navigation pour **commentaires XML** et en-têtes de fichier à jour (alignés sur **`ShowScene`** et le flux runtime actuel).
 - [ ] Harmoniser les notes **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`**, **`Notes/Ui/Journal_ui.md`**, **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`** avec le comportement **réel** du code (voir aussi **`Notes/Codebase_etat_reference.md`**).
 - [ ] Inventaire des **classes peu ou pas référencées** dans les scripts (ex. recherche d’usage de `InventorySceneController` hors scène) ; supprimer ou documenter « réservé scène Unity ».
 

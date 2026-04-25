@@ -6,7 +6,7 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Session cible ~2026-05-01 (environ +10 jours) — audit Bezi Scene/UI + clean
 
-> **Navigation actuelle (code)** : `SceneNavigator.ShowScene` (visibilité par `SetActive` sur les racines ; lazy-load additif pour scènes listées) ; boot `GameBootstrap` charge aussi **`Inventaire`** en eager. Plusieurs notes historiques parlent encore de **`GoTo` / `UnloadSceneAsync`** — à réaligner après l’audit.
+> **Navigation actuelle (code)** : `SceneNavigator.ShowScene` (visibilité par `SetActive` sur les racines ; lazy-load additif pour scènes listées) ; boot `GameBootstrap` charge aussi **`Inventaire`** en eager.
 
 - [ ] **Bezi — audit code** : nouvelle approche **scènes de contenu + shell UI** (`NavigationHUD`, `GameBootstrap`, `SceneNavigator`, `UIManager`, onglets / hub / retour gameplay). Checklist : **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**.
 - [ ] **Refactor / clean** : retirer ou brancher le code mort (ex. **`BiofiltreManager.TryOpenHarvestPanel`** / **`FindInteractorAt`**), parcourir les scripts pour **commentaires** à jour, décider du sort des classes **uniquement référencées par une scène** (ex. `InventorySceneController`).
@@ -16,9 +16,11 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prochaine session (priorité immédiate)
 
+- [ ] **Git — commit en attente** : faire un commit des changements locaux avant la prochaine grosse modif (notes UI + `UIManager.cs`), puis push sur `main`.
+
 > **2026-04-20 (fin de session matin, portable)** : **inventaire** — séparation en cours entre logique inventaire et gameplay (`FirstLvl` puis tous les niveaux) ; **persistance** — inventaire persistant en **JSON** ; **blocage** — inventaire pas encore fonctionnel dans sa scène dédiée (tâche interrompue côté BezyIA). **Prompt de reprise BezyIA** : `"encore une fois il y a eu une coupure peux tu reprendre toutefois j'ai du fermer la session unity entre temps donc je ne sais pas si tu va retrouver toutes les traces necessaires. il te faudra te fier au thread."` Détail : **`PROJECT_LOG.md`** du **2026-04-20**.
 >
-> **2026-04-19 (fin de session)** : **navigation** — **debug** et **amélioration** du flux **scènes additives + `UnloadSceneAsync`** (`SceneNavigator`, HUD, retours gameplay) ; **persistance** — faire survivre l’**état de la grille** à la fermeture de scène / du jeu (**ScriptableObject** + stratégie save) ; **temps** — **recalcul** croissance plantes **hors scène** / **hors ligne** (UTC / `lastUtc` → delta ; **cloud** plus tard si besoin). Détail : **`PROJECT_LOG.md`** du **2026-04-19**.
+> **2026-04-19 (fin de session)** : **navigation** — **debug** et **amélioration** du flux runtime `ShowScene` (`SceneNavigator`, HUD, retours gameplay) ; **persistance** — faire survivre l’**état de la grille** à la fermeture de scène / du jeu (**ScriptableObject** + stratégie save) ; **temps** — **recalcul** croissance plantes **hors scène** / **hors ligne** (UTC / `lastUtc` → delta ; **cloud** plus tard si besoin). Détail : **`PROJECT_LOG.md`** du **2026-04-19**.
 >
 > **2026-04-18 (fin de session)** : **contrôle** navigation + inventaire après `TryAdd`. Détail : **`PROJECT_LOG.md`** du **2026-04-18**.
 >
@@ -26,9 +28,9 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 >
 > **Prochaine session (focus auteur)** : **illustration + intégration** sur l’écran de chargement (**poisson + arbre** ou variante validée) — guide pas à pas **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**, détail **`Notes/Ui/Todo_ui.md`** (*Bootstrap & LoadingScreen*).
 >
-> **Suite chantier navigation** : scène hub **`Carte`** ; depuis **`FirstLvl`**, la **croix** doit ramener à **`Carte`**. Détail : **`Notes/Ui/Todo_ui.md`** (*Priorité session suivante — hub Carte*), **`Notes/Ui/Journal_ui.md`**, **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`**.
+> **Suite chantier navigation** : hub **`HomeScene`** ; depuis **`FirstLvl`**, la **croix** doit ramener à **`HomeScene`**. Détail : **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/Journal_ui.md`**, **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`**.
 
-- [ ] **Navigation scènes — debug + amélioration (additif + unload async)** : repasser tous les chemins (`Bootstrap` → shell **`NavigationHUD`** → **`HomeScene`** / **`Inventaire`** / **`FirstLvl`**, `SceneNavigator.GoTo`, unload) ; corriger régressions (ordre load/unload, transitions concurrentes, scènes orphelines, **double `EventSystem`**, **Build Settings**). Réfs : **`SceneNavigator`**, `GameBootstrap`, `NavigationHUD`, `FirstLvlController`, `MapSceneController`, `Notes/Ui/ARCHI_hud_ui_manager_additive.md`.
+- [ ] **Navigation scènes — debug + amélioration (`ShowScene`)** : repasser tous les chemins (`Bootstrap` → shell **`NavigationHUD`** → **`HomeScene`** / **`Inventaire`** / **`FirstLvl`**, `SceneNavigator.ShowScene`) ; corriger régressions (ordre d’activation des racines, transitions concurrentes, scènes orphelines, **double `EventSystem`**, **Build Settings**). Réfs : **`SceneNavigator`**, `GameBootstrap`, `NavigationHUD`, `FirstLvlController`, `MapSceneController`, `Notes/Ui/ARCHI_hud_ui_manager_additive.md`.
 - [ ] **Inventaire — séparation gameplay + persistance JSON (priorité immédiate)** : découpler l’inventaire de la logique gameplay de `FirstLvl` pour une architecture réutilisable sur tous les niveaux ; finaliser la persistance JSON (save/load) et rétablir un fonctionnement complet dans la scène inventaire dédiée après interruption BezyIA.
 - [ ] **Session de ce soir — runtime UI** : retirer la dépendance runtime à la scène `Inventaire` (conserver éventuellement la scène comme template éditorial), puis valider que l’onglet Inventaire repose uniquement sur `UIManager` (`ScreenId.Inventory`) + fallback contrôlé.
 - [ ] **Session de ce soir — Git hygiene (priorité)** : finaliser le ménage des branches/PR après validation fonctionnelle (fermer PR obsolètes, fusionner la branche retenue dans la branche inventaire cible, supprimer les branches techniques devenues inutiles, vérifier `main` propre et documenter la stratégie de branches finale).
@@ -36,7 +38,7 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 - [ ] **Croissance plantes hors scène / hors ligne** : à la reprise, **recalculer** temps restant ou stade à partir d’**horodatages UTC** (principe `lastUtc` → `delta`, plafond offline si GDD) ; les plantes « en cours » doivent progresser même si la scène n’est pas chargée. **Évolution** : autorité / sync **cloud** (ex. **Unity Gaming Services — Cloud Save**) — voir aussi case Timer dans *Prototype*.
 - [ ] **Inventaire — contrôle des items ajoutés (priorité session suivante)** : après récolte ou tout `TryAdd`, vérifier **`itemId`**, quantités, piles, cas **plein**, et **refresh UI** ; cohérence avec **`ItemDefinition`** / **`ItemDatabase`**. Réfs : `PlayerInventory`, UI inventaire, `Notes/Farm/SYSTEMES_carte_mentale.md` (Zoom D).
 - [ ] **Illustration + intégration LoadingScreen (priorité session auteur)** : créer l’image, importer (sprite UI, alpha), placer dans **`Bootstrap.unity`** ; QA play + build — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
-- [~] **Hub accueil + retour depuis gameplay** : le hub **`HomeScene`** (`MapSceneController`) remplace en pratique l’ancienne cible **`Carte`** seule ; la scène **`Map`** reste dans **`SceneId`** pour extension. Finaliser le flux **croix / exit** (`OnExitToHomeRequested` → **`FirstLvlController`**) et la doc **`ARCHI`** ; trancher le sort de la dénomination **Carte** vs **HomeScene** dans les guides.
+- [~] **Hub accueil + retour depuis gameplay** : le hub **`HomeScene`** (`MapSceneController`) est la cible courante ; la scène **`Map`** reste dans **`SceneId`** pour extension. Finaliser le flux **croix / exit** (`OnExitToHomeRequested` → **`FirstLvlController`**) et la doc **`ARCHI`**.
 - [ ] **Tests écran de chargement (QA)** : après intégration visuelle, reprendre la checklist **`Notes/Ui/Todo_ui.md`** (*Bootstrap & LoadingScreen* — barre, `AsyncOperation` 0.9, fade, pas de double `EventSystem`).
 - [~] **Scènes Inventaire + Market + HUD global** : le **HUD / `UIManager`** est amorcé (prefabs + shell) ; poursuivre avec **Market** et clarifier le sort de **`Inventaire.unity`** au build si tout est migré en prefab.
 - [x] **Session du jour — base navigation inventaire** : création d’une **scène prototype Inventaire** pour lancer le chantier navigation/UI.

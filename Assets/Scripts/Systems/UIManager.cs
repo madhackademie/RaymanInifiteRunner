@@ -343,17 +343,23 @@ public class UIManager : MonoBehaviour
 
     private static void StripCanvasShell(GameObject root)
     {
-        Canvas canvas = root.GetComponent<Canvas>();
-        if (canvas != null)
-            Destroy(canvas);
-
+        // En runtime, retirer Canvas/CanvasScaler/GraphicRaycaster avec Destroy()
+        // peut provoquer des erreurs de dépendances Unity sur le même frame.
+        // On neutralise donc la "shell" sans supprimer les composants.
         CanvasScaler scaler = root.GetComponent<CanvasScaler>();
         if (scaler != null)
-            Destroy(scaler);
+            scaler.enabled = false;
 
         GraphicRaycaster raycaster = root.GetComponent<GraphicRaycaster>();
         if (raycaster != null)
-            Destroy(raycaster);
+            raycaster.enabled = false;
+
+        Canvas canvas = root.GetComponent<Canvas>();
+        if (canvas != null)
+        {
+            canvas.overrideSorting = false;
+            canvas.sortingOrder = 0;
+        }
     }
 
     private static void StretchToParent(RectTransform rect)

@@ -4,7 +4,8 @@
 
 ---
 
-Objectif : choisir un modèle de **navigation entre scènes** (et/ou couches UI) qui garde une sensation **quasi instantanée** pour le joueur, tout en restant maintenable pour un **bouton Inventaire** et un **bouton Market** présents **dans tous les “stages”** (niveaux / modes).
+Objectif : documenter les modèles de **navigation entre scènes** (et/ou couches UI) et conserver un guide de décision.  
+**État runtime actuel (2026-04-24)** : la base active utilise `SceneNavigator.ShowScene` + shell `NavigationHUD` + hub `HomeScene`, avec cohabitation possible inventaire scène/prefab en transition.
 
 ---
 
@@ -78,13 +79,13 @@ Objectif : choisir un modèle de **navigation entre scènes** (et/ou couches UI)
 
 ---
 
-## 6. Décisions encore ouvertes (projet)
+## 6. Décisions encore ouvertes (reste à trancher)
 
-- [ ] **Inventaire / Market** : vraies **scènes** `.unity` ou **écrans UI** (prefabs) ?
+- [ ] **Inventaire / Market** : finaliser la cible unique runtime (**prefabs UIManager** recommandés) ou maintenir un double chemin scène/prefab documenté.
 - [ ] **Superposition** : gameplay visible en fond (blur / assombrissement) ou écran opaque ?
 - [ ] **Chargement** : préchargement au boot vs **à la demande** async la première fois seulement ?
 
-Une fois tranché, mettre à jour **`Notes/Farm/SYSTEMES_carte_mentale.md`** ou un schéma UI dans **`Notes/Ui/Spec_ui.md`** avec le flux : *clic bouton → quelle scène / quel panneau → quelles données (`PlayerInventory`, futur Economy)*.
+Une fois tranché, mettre à jour **`Notes/Farm/SYSTEMES_carte_mentale.md`** ou un schéma UI dans **`Notes/Ui/Spec_ui.md`** avec le flux : *clic bouton → quel panneau global / quelle scène de contenu → quelles données (`PlayerInventory`, futur Economy)*.
 
 ---
 

@@ -1,14 +1,14 @@
 # Architecture cible — HUD / UI Manager en scène additive
 
-## État au 2026-04-19 (implémenté dans le dépôt)
+## État au 2026-04-24 (implémenté dans le dépôt)
 
 - **`Bootstrap.unity`** : première scène du **Build Settings** ; **`GameBootstrap`** + **`LoadingScreen`**. Illustration load — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
 - **`GameBootstrap`** : charge en **additif** **`NavigationHUD`**, puis **`HomeScene`** (plus **`FirstLvl`** direct au boot) ; barre **`allowSceneActivation`** sur l’`AsyncOperation` ; **`SceneNavigator.Instance.SetInitialScene(HomeScene)`**.
-- **`SceneNavigator`** (`Assets/Scripts/Systems/SceneNavigator.cs`) : singleton **`DontDestroyOnLoad`** ; **`GoTo(sceneName)`** = **`LoadSceneAsync(..., Additive)`** puis **`UnloadSceneAsync(previous)`** (une seule scène de **contenu** à la fois ; le shell n’est pas déchargé). Événements **`OnBeforeSceneLoad`** / **`OnAfterSceneLoad`**.
+- **`SceneNavigator`** (`Assets/Scripts/Systems/SceneNavigator.cs`) : singleton **`DontDestroyOnLoad`** ; **`ShowScene(sceneName)`** pilote la visibilité des scènes de contenu via activation/désactivation des racines (`SetActive`) ; chargement additif **lazy** optionnel pour les scènes listées. Événements runtime disponibles pour l’état du navigator / transitions.
 - **`SceneId`** (dans `ScreenId.cs`) : noms de scènes (`HomeScene`, `Inventaire`, `FirstLvl`, `Map`, …).
 - **`NavigationHUD.unity`** : scène shell — **`NavigationHUD`**, **`UIManager`**, **`SceneNavigator`**, **`EventSystem`** (unicité à maintenir).
 - **`UIManager`** : prefabs globaux (`ShowScreen` / `HideScreen` / …) — inchangé dans le principe.
-- **`NavigationHUD`** : onglets appellent **`SceneNavigator.GoTo`** (**`HomeScene`**, **`Inventaire`**) ; en **`ShowExitOnly`**, **`OnExitClicked`** déclenche **`OnExitToHomeRequested`** (implémenté côté **`FirstLvlController`** → retour hub).
+- **`NavigationHUD`** : onglets appellent le navigator (`HomeScene`, `Inventaire`) ; en **`ShowExitOnly`**, **`OnExitClicked`** déclenche **`OnExitToHomeRequested`** (implémenté côté **`FirstLvlController`** → retour hub).
 - **`HomeScene`** + **`MapSceneController`** : hub d’entrées (`MapNodeData`) vers les scènes de jeu ; progression **`MapProgressionData`**.
 - **`PlayerInventory`** : **`DontDestroyOnLoad`**.
 - **`Inventaire.unity`** : peut coexister comme **scène de contenu** (onglet HUD) en parallèle du prefab inventaire **`UIManager`** — clarifier le double chemin si besoin.
@@ -19,9 +19,10 @@
 - **Persistance** : grille / cultures non sauvegardées automatiquement à la fermeture — voir **`Notes/Todo_project.md`** (ScriptableObject + save).
 - **Temps de croissance** : logique encore centrée scène — recalcul **hors scène / offline** à spécifier (UTC) ; cloud ultérieur.
 
-## Constat historique (avant Bootstrap — archivé)
+## Constat historique (archivé)
 
-- Ancien flux possible : `MainMenuUI` → `LoadScene("FirstLvl")` sans shell ; `InventorySceneController` + navigation additive partielle vers **`Inventaire.unity`**.
+- Ancien flux documenté : transitions orientées `GoTo`/`UnloadSceneAsync` et cible `Carte`.
+- Référence actuelle : `ShowScene` + hub `HomeScene`. Conserver ce bloc uniquement comme mémoire de migration.
 
 ## Direction recommandée
 
@@ -82,7 +83,7 @@ Pourquoi :
 
 - vue HUD (modes d’affichage),
 - pour l’inventaire : délégation à **`UIManager`** (plus de chargement scène inventaire dans ce flux),
-- **navigation monde** : déléguée à **`SceneNavigator`** ; le hub cible est **`HomeScene`** (l’ancienne cible **`Carte`** dans les notes = rôle d’accueil, aujourd’hui **`HomeScene`** / future **`Map`**).
+- **navigation monde** : déléguée à **`SceneNavigator`** ; le hub cible est **`HomeScene`**.
 
 ### `InventorySceneController`
 
@@ -96,7 +97,7 @@ Pourquoi :
 3. chargement additif **`HomeScene`** ; `SceneNavigator.SetInitialScene(HomeScene)`
 4. `MapSceneController` (Start) : `UIManager.EnsureShellLoaded()`, `NavigationHUD.ShowNavBar()`
 5. `UIManager` → `PreloadPriorityScreens()` (prefabs, dont inventaire)
-6. Le joueur lance **`FirstLvl`** (ou autre) depuis le hub → **`SceneNavigator.GoTo`** remplace la scène de **contenu** précédente par unload async
+6. Le joueur lance **`FirstLvl`** (ou autre) depuis le hub → **`SceneNavigator.ShowScene`** bascule la scène de contenu visible (activation/désactivation des racines).
 
 ## 6. Points d'attention
 
@@ -145,4 +146,4 @@ Garder un seul `EventSystem`, laisser `NavigationHUD` comme vue HUD, et déplace
 1. **`HomeScene`** sert de **hub** après bootstrap ; enrichir les **`MapNodeData`** / déverrouillages (`MapProgressionData`).
 2. Retour **`FirstLvl` → `HomeScene`** : **`OnExitToHomeRequested`** + **`FirstLvlController`** (déjà orienté **`SceneNavigator`**) — valider en jeu tous les cas (inventaire ouvert, transitions async).
 3. **`Map.unity`** : à brancher quand la carte monde sera distincte de l’écran d’accueil.
-4. Mettre à jour **`Notes/Ui/Todo_ui.md`** après chaque changement de flux d’unload/load.
+4. Mettre à jour **`Notes/Ui/Todo_ui.md`** après chaque changement de flux de navigation scène/UI.

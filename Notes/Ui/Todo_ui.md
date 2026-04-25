@@ -4,7 +4,7 @@
 
 **Architecture shell + `UIManager` (référence)** : `ARCHI_hud_ui_manager_additive.md`.
 
-**Audit Bezi + refactor navigation (cible ~2026-05-01)** : `TODO_Bezi_audit_scene_ui_refactor.md` (checklist ; aligner les notes qui citent encore `GoTo` / `UnloadSceneAsync` si le projet est passé à `SceneNavigator.ShowScene`).
+**Audit Bezi + refactor navigation (cible ~2026-05-01)** : `TODO_Bezi_audit_scene_ui_refactor.md` (checklist ; aligner les notes restantes sur `SceneNavigator.ShowScene` + hub `HomeScene`).
 
 ---
 
@@ -13,13 +13,11 @@
 ### Session cible ~2026-05-01 — audit Bezi (Scene/UI) + clean refactor
 
 - [ ] Lancer l’audit **Bezi** sur le flux réel : **`GameBootstrap`**, **`SceneNavigator.ShowScene`**, **`NavigationHUD`**, **`MapSceneController`**, **`FirstLvlController`**, **`UIManager`** — voir **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**.
-- [ ] Après audit : **nettoyer** le code orphelin signalé (ex. chemins morts côté **`BiofiltreManager`**), **mettre à jour les commentaires** des scripts touchés, **réécrire les sections obsolètes** de `ARCHI_hud_ui_manager_additive.md` / `Journal_ui.md` / ce fichier (notamment si **`GoTo` / `UnloadSceneAsync`** ne correspondent plus au code).
+- [ ] Après audit : **nettoyer** le code orphelin signalé (ex. chemins morts côté **`BiofiltreManager`**), **mettre à jour les commentaires** des scripts touchés, **réécrire les sections obsolètes** de `ARCHI_hud_ui_manager_additive.md` / `Journal_ui.md` / ce fichier.
 
-### Debug / amélioration — **navigation additive + unload async** (2026-04-19)
+### Debug / amélioration — **navigation runtime `ShowScene`** (mise à jour 2026-04-24)
 
-> **Note 2026-04-21** : le code peut avoir migré vers **`ShowScene`** (racines actives/inactives) sans **`GoTo`**. Vérifier dans `SceneNavigator.cs` avant d’exécuter cette checklist telle quelle ; fusionner avec la section *audit Bezi* si une seule passe suffit.
-
-- [ ] Repasser tous les chemins **`SceneNavigator.GoTo`** (chargement additif → **`UnloadSceneAsync`** sur la scène de contenu précédente) : scène inexistante, double clic, transition déjà en cours, cohérence **`CurrentScene`** avec **`SetInitialScene`** après bootstrap.
+- [ ] Repasser tous les chemins **`SceneNavigator.ShowScene`** : scène inexistante, double clic, transition déjà en cours, cohérence **`CurrentScene`** avec **`SetInitialScene`** après bootstrap.
 - [ ] Vérifier l’interaction **HUD** (`NavigationHUD` modes, onglets **`HomeScene`** / **`Inventaire`**, **`OnExitToHomeRequested`** + **`FirstLvlController`**) et **`MapSceneController`** (chargement depuis le hub, unload **`HomeScene`** si applicable).
 - [ ] Playtest **Build Settings** + absence de **double `EventSystem`** ; après stabilisation, mettre à jour **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`** (séquence réelle et pièges async).
 
@@ -35,12 +33,12 @@
 
 ### Hub **`HomeScene`** + HUD persistant + retour depuis **`FirstLvl`** (suite chantier)
 
-**État (2026-04-19)** : le hub d’accueil est la scène **`HomeScene`** (`MapSceneController`, `SceneId.HomeScene`) ; **`GameBootstrap`** charge **`NavigationHUD`** puis **`HomeScene`** ; les onglets HUD utilisent **`SceneNavigator.GoTo`** vers **`HomeScene`** / **`Inventaire`**. Le retour depuis le gameplay passe par **`OnExitToHomeRequested`** + **`FirstLvlController`** → **`GoTo(HomeScene)`**.
+**État (2026-04-24)** : le hub d’accueil est la scène **`HomeScene`** (`MapSceneController`, `SceneId.HomeScene`) ; **`GameBootstrap`** charge **`NavigationHUD`** puis **`HomeScene`** ; les onglets HUD utilisent le navigator via **`ShowScene`**. Le retour depuis le gameplay passe par **`OnExitToHomeRequested`** + **`FirstLvlController`** vers **`HomeScene`**.
 
 Tâches restantes / alignement doc :
 
 - [ ] Finaliser le flux **hub → `FirstLvl`** / autres nœuds ( **`MapNodeData`** ) et l’**unload** de **`HomeScene`** quand pertinent (`MapSceneController` — à valider en jeu).
-- [ ] Harmoniser la doc ancienne « **`Carte`** » avec **`HomeScene`** / future **`Map`** dans **`ARCHI_hud_ui_manager_additive.md`** et guides.
+- [ ] Harmoniser la doc ancienne « **`Carte`** » avec **`HomeScene`** / future **`Map`** dans **`ARCHI_hud_ui_manager_additive.md`** et guides (reste à faire sur les notes historiques).
 - [ ] Revue **`Inventaire.unity`** : au **Build Settings** si encore utilisée comme scène de contenu ; cohabitation avec prefab **`ScreenId.Inventory`** via **`UIManager`**.
 
 ---

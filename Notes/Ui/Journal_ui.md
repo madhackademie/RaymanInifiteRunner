@@ -38,9 +38,9 @@ Règle de fonctionnement :
 - Un prompt simple et court reste dans **`Todo_ui.md`** / **`ARCHI_hud_ui_manager_additive.md`** (utile Bezi / rappel).
 - La même architecture pourra aussi héberger des UI flottantes globales (popups de confirmation, notifications/toasts, fenêtres modales) via le `UIManager`, sans coupler ces éléments à une scène métier.
 
-### 6) Hub multi-scènes — **`HomeScene`** (ex-« Carte ») + retour depuis le niveau
-- **Implémenté (2026-04-19)** : le hub d’accueil est la scène **`HomeScene`** (`MapSceneController`, progression **`MapProgressionData`**) ; le bootstrap charge **`NavigationHUD`** puis **`HomeScene`** ; les transitions de **scène de contenu** passent par **`SceneNavigator`** (additif + **`UnloadSceneAsync`**). La scène **`Map`** reste prévue dans **`SceneId`** pour une carte monde distincte si besoin.
-- **Comportement gameplay** : depuis **`FirstLvl`**, la **croix** déclenche **`OnExitToHomeRequested`** → **`FirstLvlController`** → **`GoTo(HomeScene)`** (plus seulement masquer l’UI globale).
+### 6) Hub multi-scènes — **`HomeScene`** + retour depuis le niveau
+- **Implémenté (2026-04-24)** : le hub d’accueil est la scène **`HomeScene`** (`MapSceneController`, progression **`MapProgressionData`**) ; le bootstrap charge **`NavigationHUD`** puis **`HomeScene`** ; les transitions de **scène de contenu** passent par **`SceneNavigator.ShowScene`** (visibilité des racines + lazy-load optionnel).
+- **Comportement gameplay** : depuis **`FirstLvl`**, la **croix** déclenche **`OnExitToHomeRequested`** → **`FirstLvlController`** → retour vers **`HomeScene`** (plus seulement masquer l’UI globale).
 - **Suite** : **debug** des flux async, persistance ferme, recalcul temps de croissance hors scène — **`Notes/Todo_project.md`**, **`ARCHI_hud_ui_manager_additive.md`**.
 
 ---
@@ -117,12 +117,10 @@ Règle de fonctionnement :
 7. [x] Orchestration inventaire / masquage global déléguée à `UIManager` depuis `NavigationHUD` (plus de chargement scène inventaire dans le HUD pour ce flux).
 8. [x] Boot `Bootstrap.unity` + `LoadingScreen` pour absorber le coût initial.
 
-### B ter) Hub **Carte** + flux retour niveau (prochaine implémentation)
-1. [ ] Créer la scène **`Carte`** et l’intégrer au **Build Settings** + ordre de flux (après Bootstrap / avec shell déjà chargé).
-2. [ ] Sur le hub : navigation vers les scènes / modes voulus ; **HUD persistant** visible et cohérent (tabs, etc.).
-3. [ ] Depuis **`FirstLvl`** : clic **croix** → transition vers **`Carte`** (définir unload `FirstLvl` vs stack additive).
-4. [ ] Mettre à jour `GameBootstrap` si le premier écran « monde » n’est plus `FirstLvl` mais **`Carte`** (shell puis Carte, puis niveaux à la demande).
-5. [ ] Nettoyer ou documenter **`Inventaire.unity`** si le build ne doit plus l’utiliser.
+### B ter) Hub **`HomeScene`** + flux retour niveau (suivi courant)
+1. [ ] Sur le hub : navigation vers les scènes / modes voulus ; **HUD persistant** visible et cohérent (tabs, etc.).
+2. [ ] Depuis **`FirstLvl`** : valider tous les cas de retour vers **`HomeScene`** (inventaire ouvert, transitions en cours, input spam).
+3. [ ] Nettoyer ou documenter **`Inventaire.unity`** si le build ne doit plus l’utiliser.
 
 ### C) Localization TextMeshPro
 1. [ ] Définir une convention de keys stables pour les textes UI (ex. `BTN_PLAY`, `TITLE_FARM`).
@@ -147,10 +145,10 @@ Règle de fonctionnement :
 
 Date | Changement
 :---|:---
-2026-04-21 | Plan **~2026-05-01** : audit **Bezi** + clean/refactor navigation (**`SceneNavigator.ShowScene`**, boot eager `GameBootstrap`, alignement doc vs anciennes mentions `GoTo`/`Unload`) — note **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`** ; snapshot **`Notes/Codebase_etat_reference.md`** mis à jour.
+2026-04-21 | Plan **~2026-05-01** : audit **Bezi** + clean/refactor navigation (**`SceneNavigator.ShowScene`**, boot eager `GameBootstrap`) — note **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`** ; snapshot **`Notes/Codebase_etat_reference.md`** mis à jour.
 2026-04-16 | Décision ajoutée : viser une UI globale persistante multi-scènes avec préchargement additif des écrans UI fréquents et navigation instantanée post-boot.
 2026-04-16 | Ajout d'un prompt simple à copier dans Bezi pour lancer le chantier `UIManager` global / shell UI additive.
-2026-04-16 (fin) | Implémenté : `Bootstrap.unity` + `GameBootstrap` + `LoadingScreen`, `UIManager` (listes prioritaire/secondaire, prefabs), `ScreenId`, shell dans le build ; priorité suivante : scène hub **`Carte`**, croix **`FirstLvl` → Carte**.
+2026-04-16 (fin) | Implémenté : `Bootstrap.unity` + `GameBootstrap` + `LoadingScreen`, `UIManager` (listes prioritaire/secondaire, prefabs), `ScreenId`, shell dans le build ; priorité suivante : stabilisation du hub **`HomeScene`** et du retour gameplay.
 2026-04-16+ | TODO ajouté : **tests** scène de load (`Bootstrap` / `LoadingScreen`) ; **création + affinage** illustration **poisson/arbre** pour l’écran de chargement (réf. de travail « chatgptouille ») puis branchement sur `LoadingScreen`.
 2026-04-17 | Branche navigation / UI **créée** : retrait des rappels « créer la branche avant le chantier » dans **`Notes/Todo_project.md`** ; **prochaine session auteur** = visuel **`LoadingScreen`** ; nouveau guide **`Notes/Ui/LOADINGSCREEN_image_workflow.md`** ; journal **`PROJECT_LOG.md`**.
 
