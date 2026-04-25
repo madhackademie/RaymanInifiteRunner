@@ -49,7 +49,9 @@ public class InventorySlotUI : MonoBehaviour
         if (quantityLabel == null)
             return;
 
-        quantityLabel.enabled = quantity > 1;
-        quantityLabel.text    = quantity > 1 ? quantity.ToString() : string.Empty;
+        bool hasQuantity = quantity > 0;
+        quantityLabel.enabled = hasQuantity;
+        quantityLabel.color = Color.white;
+        quantityLabel.text = hasQuantity ? quantity.ToString() : string.Empty;
     }
 }

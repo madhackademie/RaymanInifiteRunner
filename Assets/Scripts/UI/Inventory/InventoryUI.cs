@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manages the inventory panel: spawns InventorySlotUI instances and keeps them
@@ -10,9 +11,11 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private InventorySlotUI slotPrefab;
     [SerializeField] private Transform slotsContainer;
+    [SerializeField] private ScrollRect scrollRect;
 
     private readonly List<InventorySlotUI> spawnedSlots = new();
     private bool hasWarnedAboutNestedSlotPrefab;
+    private bool hasWarnedAboutLegacyViewportMask;
 
     /// <summary>True une fois que Bind() a été appelé avec un inventaire valide.</summary>
     public bool IsBound => playerInventory != null;
@@ -42,10 +45,33 @@ public class InventoryUI : MonoBehaviour
     {
         playerInventory.OnInventoryChanged -= Refresh;
         playerInventory.OnInventoryChanged += Refresh;
+        EnsureViewportMaskCompatibility();
         BuildSlots();
     }
 
     // ── Slot management ───────────────────────────────────────────────────────
+
+    private void EnsureViewportMaskCompatibility()
+    {
+        Transform viewportTransform = scrollRect != null ? scrollRect.viewport : slotsContainer != null ? slotsContainer.parent : null;
+        if (viewportTransform == null)
+            return;
+
+        if (viewportTransform.GetComponent<RectMask2D>() == null)
+            viewportTransform.gameObject.AddComponent<RectMask2D>();
+
+        Mask legacyMask = viewportTransform.GetComponent<Mask>();
+        if (legacyMask != null && legacyMask.enabled)
+        {
+            legacyMask.enabled = false;
+
+            if (!hasWarnedAboutLegacyViewportMask)
+            {
+                Debug.LogWarning("[InventoryUI] Viewport Mask legacy detecte. Remplace par RectMask2D pour eviter la disparition des elements Maskable dans le ScrollRect.");
+                hasWarnedAboutLegacyViewportMask = true;
+            }
+        }
+    }
 
     private void BuildSlots()
     {
