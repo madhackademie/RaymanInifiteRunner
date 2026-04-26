@@ -274,7 +274,7 @@ MonoBehaviour:
   panel: {fileID: 8380639586146016083}
   closeButton: {fileID: 2614649085195052761}
   availableSeeds:
-  - plantDefinition: {fileID: 11400000, guid: ce1548acdf0b3f1428645592b091c10e, type: 2}
+  - plantDefinition: {fileID: 11400000, guid: 8bc33cbc19362c94b8bc576596d09598, type: 2}
     plantPrefab: {fileID: 5334991705577000362, guid: f9cf68cae8a584047a1f6f020fe36b7b, type: 3}
   slotPrefab: {fileID: 3193033868856493191, guid: 808973f8579d27f40a6a14a710ea9020, type: 3}
   slotsContainer: {fileID: 5104912140768271513}
