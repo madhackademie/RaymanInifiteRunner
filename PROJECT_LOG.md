@@ -906,6 +906,7 @@
 ### Problèmes rencontrés / pistes
 - Le fallback inventaire runtime fonctionne pour prototype, mais nécessite un **polish UI** ultérieur (style, hiérarchie visuelle, animations).
 - La doc contient encore des traces historiques "Inventaire scène dédiée" / anciens flux ; une passe de nettoyage global est souhaitable.
+- **SO Plante (état actuel)** : deux `PlantDefinition` / SO liés à la laitue coexistent dans le runtime. Supprimer l'un des deux provoque une régression/casse du gameplay de plantation (seed UI / refs prefab-scène). Tant que la migration de références n'est pas traitée proprement, **ne supprimer aucun des deux**.
 
 ### Prochaines actions (priorité)
 1. **Tester et affiner** la persistance gameplay JSON (pose, récolte, arrachage, relance jeu, progression offline).

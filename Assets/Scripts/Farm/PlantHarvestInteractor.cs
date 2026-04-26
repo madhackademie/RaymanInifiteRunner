@@ -141,7 +141,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        int amount = Random.Range(config.harvestAmountMin, config.harvestAmountMax + 1);
+        int amount = UnityEngine.Random.Range(config.harvestAmountMin, config.harvestAmountMax + 1);
         InventoryResult result = inventory.TryAdd(item, amount);
 
         switch (result)
