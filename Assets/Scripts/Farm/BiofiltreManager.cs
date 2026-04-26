@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// Bridges the biofiltre grid and the planting UI.
@@ -20,8 +22,13 @@ public class BiofiltreManager : MonoBehaviour
     [Tooltip("Base de données d'items pour résoudre les récoltes. Injectée dans chaque PlantHarvestInteractor.")]
     [SerializeField] private ItemDatabase itemDatabase;
 
+    [Header("Persistence Prototype")]
+    [Tooltip("Active la sauvegarde JSON locale des plantes posees sur la grille.")]
+    [SerializeField] private bool enablePrototypePersistence = true;
+
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
+    private bool hasLoadedFromSave;
 
     private void Awake()
     {
@@ -37,6 +44,20 @@ public class BiofiltreManager : MonoBehaviour
     private void OnDisable()
     {
         visualizer.OnCellClicked -= HandleCellClicked;
+    }
+
+    private void Start()
+    {
+        // S'assure que les cellules existent avant restauration.
+        visualizer.GenerateGrid();
+        // Recharge la ferme depuis JSON si disponible.
+        TryLoadFarmState();
+    }
+
+    private void OnApplicationQuit()
+    {
+        // Filet de securite de fin de session.
+        SaveFarmState();
     }
 
     // ── Cell click ────────────────────────────────────────────────────────────
@@ -200,6 +221,11 @@ public class BiofiltreManager : MonoBehaviour
     /// </summary>
     public void PlantSeedAt(Vector2Int anchor, PlantDefinition plantDefinition, GameObject plantPrefab)
     {
+        PlantSeedAt(anchor, plantDefinition, plantPrefab, saveAfterPlacement: true);
+    }
+
+    private void PlantSeedAt(Vector2Int anchor, PlantDefinition plantDefinition, GameObject plantPrefab, bool saveAfterPlacement)
+    {
         if (plantDefinition == null || plantPrefab == null)
         {
             Debug.LogWarning("[BiofiltreManager] PlantSeedAt called with null definition or prefab.", this);
@@ -235,6 +261,11 @@ public class BiofiltreManager : MonoBehaviour
         if (instance.TryGetComponent(out PlantDefinitionHolder holder))
             holder.Initialise(plantDefinition);
 
+        if (instance.TryGetComponent(out PlantPersistenceMarker marker))
+            marker.Initialise(plantDefinition.plantId, anchor);
+        else
+            instance.AddComponent<PlantPersistenceMarker>().Initialise(plantDefinition.plantId, anchor);
+
         // Fournir le contexte grille et le panel de récolte à l'interacteur
         if (instance.TryGetComponent(out PlantHarvestInteractor harvestInteractor))
         {
@@ -242,6 +273,7 @@ public class BiofiltreManager : MonoBehaviour
             harvestInteractor.Initialise(gridManager, visualizer, cells);
             harvestInteractor.InjectHarvestPanel(harvestPanelUI);
             harvestInteractor.InjectInventory(itemDatabase);
+            harvestInteractor.SetOnPlantRemoved(SaveFarmState);
         }
 
         // Mark cells occupied in GridData + plant registry
@@ -257,5 +289,103 @@ public class BiofiltreManager : MonoBehaviour
         }
 
         Debug.Log($"[BiofiltreManager] Planted '{plantDefinition.displayName}' at {anchor}.");
+
+        if (saveAfterPlacement)
+            SaveFarmState();
+    }
+
+    private void TryLoadFarmState()
+    {
+        if (!enablePrototypePersistence || hasLoadedFromSave)
+            return;
+
+        hasLoadedFromSave = true;
+
+        if (!FarmSaveService.TryLoad(out FarmSaveService.FarmSaveData saveData) || saveData.plants == null)
+            return;
+
+        // Nettoyage complet puis reconstruction depuis le JSON.
+        // Important: on repart d'un etat vide pour eviter des doublons runtime.
+        foreach (Transform child in visualizer.PlantsContainer)
+            Destroy(child.gameObject);
+
+        gridManager.ResetRuntimeState();
+        visualizer.RefreshAllCellStates();
+
+        DateTime nowUtc = DateTime.UtcNow;
+        DateTime savedUtc = nowUtc;
+        if (!string.IsNullOrEmpty(saveData.lastSavedUtc) && DateTime.TryParse(saveData.lastSavedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime parsedUtc))
+            savedUtc = parsedUtc;
+
+        float offlineDelta = Mathf.Max(0f, (float)(nowUtc - savedUtc).TotalSeconds);
+
+        foreach (FarmPlantRecord record in saveData.plants)
+        {
+            if (record == null || string.IsNullOrEmpty(record.plantId))
+                continue;
+
+            PlantDefinition definition = ResolvePlantDefinition(record.plantId);
+            if (definition == null)
+                continue;
+
+            if (!seedSelectionUI.TryGetPlantPrefab(definition, out GameObject prefab))
+                continue;
+
+            Vector2Int anchor = new(record.anchorX, record.anchorY);
+            // Re-instancie la plante comme une pose normale, mais sans resauvegarder
+            // pendant la reconstruction.
+            PlantSeedAt(anchor, definition, prefab, saveAfterPlacement: false);
+
+            GameObject plantObj = gridManager.GetPlantAt(anchor);
+            if (plantObj == null || !plantObj.TryGetComponent(out PlantGrow grow))
+                continue;
+
+            // Rejoue l'etat de croissance sauvegarde.
+            grow.SetStageWithElapsed(record.currentStage, record.stageElapsedSeconds);
+            // Puis applique la progression hors ligne depuis le dernier save UTC.
+            grow.AdvanceBySeconds(offlineDelta);
+        }
+    }
+
+    private void SaveFarmState()
+    {
+        if (!enablePrototypePersistence || visualizer == null || visualizer.PlantsContainer == null)
+            return;
+
+        // Snapshot runtime des plantes actuellement presentes.
+        List<FarmPlantRecord> records = new();
+
+        foreach (Transform child in visualizer.PlantsContainer)
+        {
+            if (!child.TryGetComponent(out PlantPersistenceMarker marker))
+                continue;
+
+            if (!child.TryGetComponent(out PlantGrow grow))
+                continue;
+
+            if (string.IsNullOrEmpty(marker.PlantId))
+                continue;
+
+            records.Add(new FarmPlantRecord
+            {
+                plantId = marker.PlantId,
+                anchorX = marker.Anchor.x,
+                anchorY = marker.Anchor.y,
+                currentStage = grow.CurrentStage,
+                stageElapsedSeconds = grow.CurrentStageElapsedSeconds
+            });
+        }
+
+        FarmSaveService.Save(records);
+    }
+
+    private PlantDefinition ResolvePlantDefinition(string plantId)
+    {
+        if (string.IsNullOrEmpty(plantId) || seedSelectionUI == null)
+            return null;
+
+        return seedSelectionUI.TryGetPlantDefinitionById(plantId, out PlantDefinition definition)
+            ? definition
+            : null;
     }
 }

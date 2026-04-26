@@ -1,4 +1,4 @@
-# État de référence — scripts & assets (audit 2026-04-12, navigation 2026-04-19, alignement 2026-04-21)
+# État de référence — scripts & assets (audit 2026-04-12, navigation 2026-04-19, alignement 2026-04-21, update 2026-04-26)
 
 Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **mettre à jour** après refactors importants.
 
@@ -8,10 +8,10 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 | Dossier | Rôle principal |
 |---------|----------------|
-| `Core/` | `Timer.cs` ; **`GameBootstrap.cs`** — entrée `Bootstrap.unity`, charge additif **`NavigationHUD`**, **`HomeScene`**, puis **`Inventaire`** (eager) ; masque les racines de **`Inventaire`** jusqu’au premier `ShowScene` ; `LoadingScreen` + **`SceneNavigator.SetInitialScene(HomeScene)`**. |
+| `Core/` | `Timer.cs` ; **`GameBootstrap.cs`** — entrée `Bootstrap.unity`, charge additif **`NavigationHUD`** puis **`HomeScene`** ; `LoadingScreen` + **`SceneNavigator.SetInitialScene(HomeScene)`**. |
 | `Systems/` | **`UIManager`** (prefabs sous shell, `ShowScreen` / `HideScreen`) ; **`SceneNavigator`** (`ShowScene` = `SetActive` sur racines de scène, lazy-load additif optionnel pour scènes listées) ; **`ScreenId`** / **`SceneId`**. |
 | `Data/` | `PlantDefinition`, `GridConfig`, `GridData` — données grille et plantes (SO + runtime). |
-| `Farm/` | Biofiltre, grille, placement, croissance, récolte (`BiofiltreManager`, `GridManager`, `PlantGrow`, `PlantHarvestInteractor`, …). |
+| `Farm/` | Biofiltre, grille, placement, croissance, récolte (`BiofiltreManager`, `GridManager`, `PlantGrow`, `PlantHarvestInteractor`, …) + persistance JSON prototype (`FarmSaveService`, `PlantPersistenceMarker`). |
 | `Inventory/` | `PlayerInventory`, `ItemDefinition`, `ItemDatabase`, `InventorySlot`, `InventoryResult`. |
 | `UI/` | Menu, graines, preview ; sous-dossier `UI/Inventory/` pour inventaire + récolte. |
 
@@ -30,10 +30,10 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 ## Flux gameplay documentés (code actuel)
 
 ### Menu → niveau (navigation contenu par visibilité)
-- **Boot** : **`Bootstrap.unity`** → `GameBootstrap` charge additivement **`NavigationHUD`**, **`HomeScene`**, **`Inventaire`** ; HUD shell masqué pendant le chargement ; racines **`Inventaire`** désactivées ; **`SceneNavigator.SetInitialScene(HomeScene)`** — voir **Build Settings**.
+- **Boot** : **`Bootstrap.unity`** → `GameBootstrap` charge additivement **`NavigationHUD`** puis **`HomeScene`** ; HUD shell masqué pendant le chargement ; **`SceneNavigator.SetInitialScene(HomeScene)`** — voir **Build Settings**.
 - **Changement de « scène » visible** : **`SceneNavigator.ShowScene(nom)`** — désactive les racines de la scène de contenu courante, active celles de la cible ; si la cible est **lazy** (liste Inspector sur `SceneNavigator`), chargement additif **une fois** puis masquage jusqu’à affichage.
 - Depuis **`HomeScene`**, **`MapSceneController`** appelle **`ShowScene(targetSceneName)`** (ex. **`FirstLvl`**) ; retour : **`FirstLvlController`** sur **`OnExitToHomeRequested`** → **`ShowScene(HomeScene)`** + **`NavigationHUD.ShowNavBar()`**.
-- **Onglets HUD** : **`NavigationHUD`** → **`ShowScene(HomeScene)`** / **`ShowScene(Inventaire)`** (scène contenu **ou** chemin parallèle prefab `UIManager` selon câblage — à documenter au build).
+- **Onglets HUD** : **`NavigationHUD`** → **`ShowScene(HomeScene)`** ; l’inventaire runtime passe par **`UIManager.ShowScreen(ScreenId.Inventory)`** (plus de dépendance scène `Inventaire`).
 - **`LoadingScreen`** : barre + pourcentage + fade ; art — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
 - **`MainMenuUI`** / `SampleScene` : flux legacy possible — à réaligner si tout passe par **`Bootstrap`**.
 

@@ -519,6 +519,9 @@ MonoBehaviour:
   screenRoot: {fileID: 1711491974}
   priorityScreens: []
   secondaryScreens: []
+  autoCreateInventoryScreen: 1
+  runtimeInventorySlotPrefab: {fileID: 4882144160622489148, guid: f7260c5284a06ca498e379228e4ec7ef, type: 3}
+  runtimeInventoryColumns: 5
 --- !u!1 &877250849
 GameObject:
   m_ObjectHideFlags: 0

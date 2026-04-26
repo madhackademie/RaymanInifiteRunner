@@ -878,3 +878,44 @@
 3. **Stratégie de fusion finale** :
    - une fois tests validés, fusionner proprement vers la branche inventaire cible ;
    - planifier ensuite le nettoyage de `main` (PR cleanup dédié plutôt qu'un mix de branches concurrentes).
+
+## 2026-04-26 — session inventaire runtime + persistance gameplay JSON (prototype)
+
+### Contexte
+- Session orientée **validation prototype** : retirer la dépendance runtime à `Inventaire.unity`, stabiliser un inventaire global utilisable, puis poser une première persistance gameplay locale.
+
+### Ce qu’on a fait
+- [x] **Règle projet ajoutée** : nouvelle règle always-apply `scene_ui_runtime.mdc` pour verrouiller navigation `SceneNavigator`, HUD/UIManager, transitions, anti-patterns.
+- [x] **Inventaire runtime** :
+  - suppression de la dépendance à la scène `Assets/Scenes/Inventaire.unity` (retirée du build puis supprimée du repo) ;
+  - `NavigationHUD` passe en ouverture inventaire via `UIManager` uniquement ;
+  - `GameBootstrap` ne précharge plus `Inventaire` ;
+  - fallback inventaire runtime créé (`RuntimeInventoryScreen`) puis aligné sur une **grille de slots** avec `InventorySlotUI` (proche du comportement précédent).
+- [x] **Stabilisation runtime inventaire** :
+  - correction `NullReferenceException` sur construction du panel runtime ;
+  - correction font Unity 6 (`LegacyRuntime.ttf`).
+- [x] **Roadmap/notes cloud** :
+  - création `Notes/Ui/SPEC_services_inventory_market_cloud.md` (services `IInventoryService`/`IMarketService`, UI vue-only, états async, cache/retry, serveur autoritaire) ;
+  - ajout explicite du prérequis **découplage gameplay -> inventaire** avant (ou tout début de) l’implémentation cloud.
+- [x] **Persistance gameplay prototype (ferme)** :
+  - ajout `FarmSaveService` (`farm_state.json`) ;
+  - ajout `PlantPersistenceMarker` ;
+  - autosave sur pose/récolte/arrachage + save à la fermeture ;
+  - load/rebuild au démarrage du biofiltre + reprise offline simple (`lastSavedUtc` -> delta) via `PlantGrow.AdvanceBySeconds`.
+
+### Problèmes rencontrés / pistes
+- Le fallback inventaire runtime fonctionne pour prototype, mais nécessite un **polish UI** ultérieur (style, hiérarchie visuelle, animations).
+- La doc contient encore des traces historiques "Inventaire scène dédiée" / anciens flux ; une passe de nettoyage global est souhaitable.
+
+### Prochaines actions (priorité)
+1. **Tester et affiner** la persistance gameplay JSON (pose, récolte, arrachage, relance jeu, progression offline).
+2. Faire un **audit global de documentation projet** (cohérence code vs notes, nettoyage historique obsolète, consolidation des guides).
+3. Poursuivre refactor/clean des scripts orphelins et commentaires (suite audit Bezi + doc globale).
+
+### Liens utiles
+- `Assets/Scripts/Farm/FarmSaveService.cs`
+- `Assets/Scripts/Farm/PlantPersistenceMarker.cs`
+- `Assets/Scripts/Farm/BiofiltreManager.cs`
+- `Assets/Scripts/UI/Inventory/RuntimeInventoryScreen.cs`
+- `Notes/Ui/SPEC_services_inventory_market_cloud.md`
+- `Notes/Todo_project.md`

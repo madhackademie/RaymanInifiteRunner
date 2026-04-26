@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 /// <summary>
 /// Configuration sérialisable d'un écran UI géré par UIManager.
@@ -58,12 +56,13 @@ public class UIManager : MonoBehaviour
 
     [Header("Écrans secondaires — lazy load à la première demande")]
     [SerializeField] private List<ScreenEntry> secondaryScreens = new();
-
-    [Header("Écrans dérivés de scènes (migration progressive)")]
-    [Tooltip("Active la création d'un écran Inventory global depuis la scène Inventaire.")]
-    [SerializeField] private bool enableInventorySceneScreen = true;
-    [SerializeField] private string inventorySourceSceneName = SceneId.Inventaire;
-    [SerializeField] private string inventorySourceRootName = "InventoryCanvas";
+    
+    [Header("Fallback runtime")]
+    [Tooltip("Crée un écran inventaire runtime minimal si aucun écran Inventory n'est configuré dans les listes.")]
+    [SerializeField] private bool autoCreateInventoryScreen = true;
+    [Tooltip("Prefab visuel d'un slot inventaire pour le fallback runtime.")]
+    [SerializeField] private InventorySlotUI runtimeInventorySlotPrefab;
+    [SerializeField] private int runtimeInventoryColumns = 5;
 
     // ── Runtime ───────────────────────────────────────────────────────────────
 
@@ -87,14 +86,13 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         PreloadPriorityScreens();
-        TryRegisterInventoryScreenFromScene();
+        EnsureInventoryScreenAvailable();
     }
 
     private void OnEnable()
     {
         SceneNavigator.OnNavigatorAvailable += BindNavigator;
         SceneNavigator.OnNavigatorUnavailable += UnbindNavigator;
-        SceneManager.sceneLoaded += HandleUnitySceneLoaded;
 
         if (SceneNavigator.Instance != null)
             BindNavigator(SceneNavigator.Instance);
@@ -104,7 +102,6 @@ public class UIManager : MonoBehaviour
     {
         SceneNavigator.OnNavigatorAvailable -= BindNavigator;
         SceneNavigator.OnNavigatorUnavailable -= UnbindNavigator;
-        SceneManager.sceneLoaded -= HandleUnitySceneLoaded;
         UnbindNavigator();
     }
 
@@ -281,96 +278,33 @@ public class UIManager : MonoBehaviour
             HideAllGlobalUI();
     }
 
-    private void HandleSceneShown(string sceneName)
+    private void HandleSceneShown(string _)
     {
-        if (sceneName != inventorySourceSceneName)
-            return;
-
-        TryRegisterInventoryScreenFromScene();
+        // No-op: conservé pour garder le hook navigator et permettre des extensions futures.
     }
 
-    private void HandleUnitySceneLoaded(Scene scene, LoadSceneMode _)
+    private void EnsureInventoryScreenAvailable()
     {
-        if (scene.name != inventorySourceSceneName)
+        if (HasScreen(ScreenId.Inventory) || !autoCreateInventoryScreen || screenRoot == null)
             return;
 
-        TryRegisterInventoryScreenFromScene();
-    }
+        GameObject root = new($"{ScreenId.Inventory}Screen", typeof(RectTransform));
+        RectTransform rect = root.GetComponent<RectTransform>();
+        rect.SetParent(screenRoot, false);
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
 
-    /// <summary>
-    /// Migration progressive: transforme le canvas "Inventaire" d'une scène additive
-    /// en écran global UIManager sous le shell UI persistant.
-    /// </summary>
-    private void TryRegisterInventoryScreenFromScene()
-    {
-        if (!enableInventorySceneScreen || HasScreen(ScreenId.Inventory))
-            return;
-
-        Scene sourceScene = SceneManager.GetSceneByName(inventorySourceSceneName);
-        if (!sourceScene.IsValid() || !sourceScene.isLoaded)
-            return;
-
-        GameObject sourceRoot = null;
-        foreach (GameObject root in sourceScene.GetRootGameObjects())
-        {
-            if (root.name == inventorySourceRootName)
-            {
-                sourceRoot = root;
-                break;
-            }
-        }
-
-        if (sourceRoot == null)
-        {
-            Debug.LogWarning($"[UIManager] Root '{inventorySourceRootName}' introuvable dans la scène '{inventorySourceSceneName}'.");
-            return;
-        }
-
-        GameObject instance = Instantiate(sourceRoot, screenRoot);
-        instance.name = $"{ScreenId.Inventory}Screen";
-        instance.SetActive(false);
-
-        StripCanvasShell(instance);
-        StretchToParent(instance.transform as RectTransform);
+        RuntimeInventoryScreen runtimeScreen = root.AddComponent<RuntimeInventoryScreen>();
+        runtimeScreen.Initialize(PlayerInventory.Instance, runtimeInventorySlotPrefab, runtimeInventoryColumns);
+        root.SetActive(false);
 
         registry[ScreenId.Inventory] = new ScreenEntry
         {
             screenId = ScreenId.Inventory,
             prefab = null,
-            instance = instance
+            instance = root
         };
-    }
-
-    private static void StripCanvasShell(GameObject root)
-    {
-        // En runtime, retirer Canvas/CanvasScaler/GraphicRaycaster avec Destroy()
-        // peut provoquer des erreurs de dépendances Unity sur le même frame.
-        // On neutralise donc la "shell" sans supprimer les composants.
-        CanvasScaler scaler = root.GetComponent<CanvasScaler>();
-        if (scaler != null)
-            scaler.enabled = false;
-
-        GraphicRaycaster raycaster = root.GetComponent<GraphicRaycaster>();
-        if (raycaster != null)
-            raycaster.enabled = false;
-
-        Canvas canvas = root.GetComponent<Canvas>();
-        if (canvas != null)
-        {
-            canvas.overrideSorting = false;
-            canvas.sortingOrder = 0;
-        }
-    }
-
-    private static void StretchToParent(RectTransform rect)
-    {
-        if (rect == null)
-            return;
-
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-        rect.localScale = Vector3.one;
     }
 }

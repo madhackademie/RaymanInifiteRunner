@@ -145,6 +145,8 @@ Règle de fonctionnement :
 
 Date | Changement
 :---|:---
+2026-04-26 | Runtime inventaire : suppression de la dépendance à `Inventaire.unity` (build + scène), onglet inventaire via `UIManager`, fallback `RuntimeInventoryScreen` puis grille `InventorySlotUI` ; session validée pour prototype, polish prévu plus tard.
+2026-04-26 | Persistance gameplay prototype : JSON ferme (`FarmSaveService`), marker plante, autosave pose/récolte/arrache + recharge au démarrage avec reprise offline simple (`UTC delta`) ; à playtester/affiner.
 2026-04-21 | Plan **~2026-05-01** : audit **Bezi** + clean/refactor navigation (**`SceneNavigator.ShowScene`**, boot eager `GameBootstrap`) — note **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`** ; snapshot **`Notes/Codebase_etat_reference.md`** mis à jour.
 2026-04-16 | Décision ajoutée : viser une UI globale persistante multi-scènes avec préchargement additif des écrans UI fréquents et navigation instantanée post-boot.
 2026-04-16 | Ajout d'un prompt simple à copier dans Bezi pour lancer le chantier `UIManager` global / shell UI additive.

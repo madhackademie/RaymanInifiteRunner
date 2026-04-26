@@ -1426,6 +1426,7 @@ MonoBehaviour:
   playerInventory: {fileID: 0}
   slotPrefab: {fileID: 4882144160622489148, guid: f7260c5284a06ca498e379228e4ec7ef, type: 3}
   slotsContainer: {fileID: 1963455316}
+  scrollRect: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

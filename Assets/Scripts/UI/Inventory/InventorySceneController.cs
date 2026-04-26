@@ -2,10 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Contrôleur du panneau inventaire.
-/// La scène Inventaire reste chargée en permanence — son Canvas est affiché/masqué
-/// par SceneNavigator via SetActive sur les racines.
-/// OnEnable gère le bind et le refresh à chaque ré-activation.
+/// Contrôleur legacy du panneau inventaire.
+/// Conserve le bind/refresh pour les anciennes instances de panel,
+/// mais l'ouverture/fermeture runtime passe désormais par UIManager.
 /// </summary>
 public class InventorySceneController : MonoBehaviour
 {
@@ -56,16 +55,11 @@ public class InventorySceneController : MonoBehaviour
 
     // ── Public API ────────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Affiche la scène inventaire via SceneNavigator.
-    /// Peut être appelé depuis n'importe quelle scène.
-    /// </summary>
+    /// <summary>Affiche l'écran inventaire global via UIManager.</summary>
     public static void Open()
     {
-        if (SceneNavigator.Instance == null)
-            return;
-
-        _ = SceneNavigator.Instance.ShowScene(SceneId.Inventaire);
+        if (UIManager.Instance != null)
+            UIManager.Instance.ShowScreen(ScreenId.Inventory);
     }
 
     /// <summary>Retourne à HomeScene via SceneNavigator.</summary>
@@ -77,9 +71,6 @@ public class InventorySceneController : MonoBehaviour
             return;
         }
 
-        if (SceneNavigator.Instance == null)
-            return;
-
-        _ = SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
+        _ = SceneNavigator.Instance?.ShowScene(SceneId.HomeScene);
     }
 }

@@ -115,6 +115,48 @@ public class SeedSelectionUI : MonoBehaviour
             manager
         );
     }
+
+    /// <summary>
+    /// Resolve un prefab a partir d'un PlantDefinition.
+    /// </summary>
+    public bool TryGetPlantPrefab(PlantDefinition definition, out GameObject prefab)
+    {
+        prefab = null;
+        if (definition == null)
+            return false;
+
+        foreach (SeedEntry entry in availableSeeds)
+        {
+            if (entry.plantDefinition == definition && entry.plantPrefab != null)
+            {
+                prefab = entry.plantPrefab;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Resolve une PlantDefinition par plantId.
+    /// </summary>
+    public bool TryGetPlantDefinitionById(string plantId, out PlantDefinition definition)
+    {
+        definition = null;
+        if (string.IsNullOrEmpty(plantId))
+            return false;
+
+        foreach (SeedEntry entry in availableSeeds)
+        {
+            if (entry.plantDefinition != null && entry.plantDefinition.plantId == plantId)
+            {
+                definition = entry.plantDefinition;
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 /// <summary>Associates a <see cref="PlantDefinition"/> with the world prefab to instantiate.</summary>

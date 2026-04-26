@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+---
+Scene/UI runtime rules (Unity 6):
+
+- Always navigate through `SceneNavigator.ShowScene(sceneName)` for UI/gameplay transitions.
+- Avoid direct `SceneManager.LoadScene(...)` in UI or gameplay scripts (bootstrap-only exceptions must be documented).
+- Treat `SceneNavigator` as the runtime source of truth (`CurrentScene`, `IsTransitioning`).
+- Drive `NavigationHUD` from navigator state/events, not from scattered scene-specific manual toggles.
+- Use `UIManager` for global overlays/panels and hide non-critical global UI during scene transitions.
+- Keep additive content-scene architecture and prefer root activation/deactivation over full reloads.
+- Respect `IsTransitioning` to prevent concurrent transitions and double-click race conditions.
+- Prefer shell UI plus targeted screens instead of a monolithic canvas when it hurts rebuild performance.
+
+Anti-patterns to avoid:
+- Direct scene loads from UI button scripts.
+- Multiple competing navigation state sources.
+- Long-term runtime dependency on template-only UI scenes (for example an inventory template scene).

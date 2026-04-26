@@ -121,6 +121,28 @@ public class BiofiltreGridVisualizer : MonoBehaviour
         return cells[coords.x, coords.y];
     }
 
+    /// <summary>
+    /// Aligne tous les visuels de cellules avec l'etat d'occupation runtime de la grille.
+    /// </summary>
+    public void RefreshAllCellStates()
+    {
+        if (cells == null || gridManager == null)
+            return;
+
+        int columns = gridManager.Columns;
+        int rows = gridManager.Rows;
+        for (int col = 0; col < columns; col++)
+        {
+            for (int row = 0; row < rows; row++)
+            {
+                Vector2Int coords = new(col, row);
+                BiofiltreCell cell = cells[col, row];
+                if (cell != null)
+                    cell.SetVisualState(!gridManager.IsCellFree(coords));
+            }
+        }
+    }
+
     private void HandleCellClicked(BiofiltreCell cell)
     {
         OnCellClicked?.Invoke(cell);

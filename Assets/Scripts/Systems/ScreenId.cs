@@ -28,5 +28,4 @@ public static class SceneId
     public const string Map           = "Map";
 
     public const string FirstLvl      = "FirstLvl";
-    public const string Inventaire    = "Inventaire";
 }

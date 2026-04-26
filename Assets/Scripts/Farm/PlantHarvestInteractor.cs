@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 /// <summary>
 /// Attached to a plant GameObject. On click, vérifie la maturité, résout l'item
@@ -26,6 +27,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     private GridManager gridManager;
     private BiofiltreGridVisualizer visualizer;
     private Vector2Int[] occupiedCells;
+    private Action onPlantRemoved;
 
     private void Awake()
     {
@@ -59,6 +61,14 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     public void InjectInventory(ItemDatabase database)
     {
         itemDatabase ??= database;
+    }
+
+    /// <summary>
+    /// Callback notifiee apres suppression de la plante (recolte/arrache).
+    /// </summary>
+    public void SetOnPlantRemoved(Action callback)
+    {
+        onPlantRemoved = callback;
     }
 
     // ── IPointerClickHandler ──────────────────────────────────────────────────
@@ -171,6 +181,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
                 visualizer.GetCell(coords)?.SetVisualState(false);
         }
 
+        onPlantRemoved?.Invoke();
         Destroy(gameObject);
     }
 
@@ -191,6 +202,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         }
 
         // Supprimer la plante de la scène
+        onPlantRemoved?.Invoke();
         Destroy(gameObject);
     }
 

@@ -126,21 +126,20 @@ public class NavigationHUD : MonoBehaviour
         SetTabsInteractable(true);
     }
 
-    /// <summary>Affiche la scène Inventaire via SceneNavigator.</summary>
-    public async void OnTabInventaireClicked()
+    /// <summary>Affiche l'écran inventaire global via UIManager.</summary>
+    public void OnTabInventaireClicked()
     {
         if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
         SetTabsInteractable(false);
-        if (UIManager.Instance != null && UIManager.Instance.HasScreen(ScreenId.Inventory))
+
+        if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Inventory))
         {
-            UIManager.Instance.ShowScreen(ScreenId.Inventory);
             RefreshTabVisuals(Tab.Inventaire);
             SetTabsInteractable(true);
             return;
         }
 
-        await SceneNavigator.Instance.ShowScene(SceneId.Inventaire);
-        RefreshTabVisuals(Tab.Inventaire);
+        Debug.LogWarning("[NavigationHUD] Ecran Inventory introuvable dans UIManager.");
         SetTabsInteractable(true);
     }
 
@@ -209,10 +208,10 @@ public class NavigationHUD : MonoBehaviour
             return;
         }
 
-        if (sceneName == SceneId.HomeScene || sceneName == SceneId.Inventaire)
+        if (sceneName == SceneId.HomeScene)
         {
             ApplyMode(HudMode.Navigation);
-            if (sceneName == SceneId.HomeScene && UIManager.Instance != null)
+            if (UIManager.Instance != null)
                 UIManager.Instance.HideScreen(ScreenId.Inventory);
             return;
         }
@@ -235,8 +234,8 @@ public class NavigationHUD : MonoBehaviour
 
     private void RefreshTabVisuals()
     {
-        bool onInventaire = SceneNavigator.Instance != null &&
-                            SceneNavigator.Instance.CurrentScene == SceneId.Inventaire;
+        bool onInventaire = UIManager.Instance != null &&
+                            UIManager.Instance.IsScreenVisible(ScreenId.Inventory);
         RefreshTabVisuals(onInventaire ? Tab.Inventaire : Tab.Aventures);
     }
 

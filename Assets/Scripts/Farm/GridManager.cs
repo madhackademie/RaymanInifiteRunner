@@ -198,6 +198,15 @@ public class GridManager : MonoBehaviour
             _plantByCell.Remove(cell);
     }
 
+    /// <summary>
+    /// Remise a zero runtime de la grille (occupation + registre plantes).
+    /// </summary>
+    public void ResetRuntimeState()
+    {
+        Grid?.Clear();
+        _plantByCell.Clear();
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

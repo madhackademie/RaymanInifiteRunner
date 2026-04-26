@@ -1,3 +1,64 @@
+# Playbook collaboration — Bezy.ai + Cursor (Codex)
+
+Objectif: utiliser les deux assistants comme un **binome complementaire** pour avancer vite sans casser l'architecture.
+
+---
+
+## Difference fondamentale
+
+- **Bezy.ai**: excellent pour l'iteration rapide dans Unity (scene, prefab, inspector, UI visuelle, wiring runtime).
+- **Cursor/Codex**: excellent pour architecture, refactor, fiabilite, documentation, roadmap, quality gate.
+
+Regle simple:
+- **Visuel / scene / prefab / branchements inspector** -> Bezy en premier.
+- **Structure / dette technique / persistance / cloud / clean code** -> Codex en premier.
+
+---
+
+## Repartition conseillee (projet actuel)
+
+### Bezy.ai (execution terrain)
+- mise en place d'ecrans, panels, prefabs
+- branchements Unity (SerializeField, references, hierarchie)
+- iteration gameplay rapide (playtest immediate)
+- polish visuel de base
+
+### Codex (consolidation)
+- design des services (`IInventoryService`, `IMarketService`)
+- separation des responsabilites (UI/vue vs logique vs data)
+- refactor propre + suppression code mort
+- persistance JSON/cloud-ready + garde-fous
+- mise a jour des logs/todos/docs + check coherence globale
+
+---
+
+## Workflow optimal (4 etapes)
+
+1. **Cadrage (Codex)**  
+   - definir plan court + criteres de succes + risques.
+2. **Implementation rapide (Bezy)**  
+   - produire la version fonctionnelle dans Unity.
+3. **Passe qualite (Codex)**  
+   - clean/refactor, commentaires, doc, TODO, verification de coherence.
+4. **Validation auteur**  
+   - playtest, feedback, boucle suivante.
+
+---
+
+## Quand passer de l'un a l'autre
+
+- Si tu vois des soucis de lisibilite, couplage fort, duplication, regressions:
+  - basculer vers **Codex**.
+- Si tu dois surtout manipuler scene/prefab/inspector rapidement:
+  - basculer vers **Bezy**.
+
+---
+
+## Objectif de fin de sprint
+
+- Prototype jouable valide rapidement (grace a Bezy).
+- Base technique durable et documentee (grace a Codex).
+
 # Bezi — note de référence (projet)
 
 Source principale : [Welcome — docs.bezi.com](https://docs.bezi.com/get-started/welcome)

@@ -4,9 +4,8 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Point d'entrée unique du jeu. Vit dans la scène Bootstrap (index 0 en Build Settings).
 /// Charge additivement le shell <c>NavigationHUD</c>, la scène de contenu <c>HomeScene</c>,
-/// puis la scène <c>Inventaire</c> (chargée tôt pour éviter un hitch au premier onglet).
-/// Masque le HUD pendant le boot, désactive les racines de la scène inventaire jusqu'à navigation,
-/// et délègue la scène visible initiale à <see cref="SceneNavigator.SetInitialScene"/>.
+/// Masque le HUD pendant le boot et délègue la scène visible initiale
+/// à <see cref="SceneNavigator.SetInitialScene"/>.
 /// </summary>
 [DefaultExecutionOrder(-1000)]
 public class GameBootstrap : MonoBehaviour
@@ -32,23 +31,19 @@ public class GameBootstrap : MonoBehaviour
             // 1. Shell persistant (0 % → 25 %)
             await LoadWithProgress(SceneId.NavigationHUD, 0f, 0.25f);
 
-            // 2. Scène de contenu principale (25 % → 60 %)
-            await LoadWithProgress(SceneId.HomeScene, 0.25f, 0.6f);
+            // 2. Scène de contenu principale (25 % → 100 %)
+            await LoadWithProgress(SceneId.HomeScene, 0.25f, 1f);
 
-            // 3. Scène template UI inventaire — chargée tôt pour migration vers UIManager.
-            await LoadWithProgress(SceneId.Inventaire, 0.6f, 1f);
-            SetSceneRootsActive(SceneId.Inventaire, false);
-
-            // 4. Déclare HomeScene comme scène visible initiale.
+            // 3. Déclare HomeScene comme scène visible initiale.
             SceneNavigator.Instance?.SetInitialScene(SceneId.HomeScene);
 
-            // 5. Temps d'affichage minimum.
+            // 4. Temps d'affichage minimum.
             float elapsed = Time.realtimeSinceStartup - startTime;
             float remaining = minimumDisplaySeconds - elapsed;
             if (remaining > 0f)
                 await Awaitable.WaitForSecondsAsync(remaining);
 
-            // 6. Fade-out de l'écran de chargement.
+            // 5. Fade-out de l'écran de chargement.
             await loadingScreen.Hide();
         }
         catch (System.Exception e)
@@ -89,16 +84,4 @@ public class GameBootstrap : MonoBehaviour
             await Awaitable.NextFrameAsync();
     }
 
-    /// <summary>Active ou désactive tous les GameObjects racines d'une scène chargée.</summary>
-    private static void SetSceneRootsActive(string sceneName, bool active)
-    {
-        UnityEngine.SceneManagement.Scene scene =
-            SceneManager.GetSceneByName(sceneName);
-
-        if (!scene.IsValid() || !scene.isLoaded)
-            return;
-
-        foreach (GameObject root in scene.GetRootGameObjects())
-            root.SetActive(active);
-    }
 }

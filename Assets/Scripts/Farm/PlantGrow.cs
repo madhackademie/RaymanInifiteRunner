@@ -102,6 +102,50 @@ public class PlantGrow : MonoBehaviour
         ? Mathf.Clamp01(stageTimer / currentStageDuration)
         : 1f;
 
+    /// <summary>Temps ecoule (secondes) dans le stade courant.</summary>
+    public float CurrentStageElapsedSeconds => stageTimer;
+
+    /// <summary>Force un stade et un temps ecoule dans ce stade.</summary>
+    public void SetStageWithElapsed(GrowthStage stage, float elapsedSeconds)
+    {
+        SetStage(stage);
+        stageTimer = Mathf.Clamp(elapsedSeconds, 0f, currentStageDuration);
+    }
+
+    /// <summary>
+    /// Fait avancer la plante d'une duree donnee en secondes (reprise hors ligne).
+    /// </summary>
+    public void AdvanceBySeconds(float deltaSeconds)
+    {
+        if (deltaSeconds <= 0f)
+            return;
+
+        float remaining = deltaSeconds;
+        int safety = 0;
+
+        while (remaining > 0f && safety < 64)
+        {
+            safety++;
+
+            if (currentStageDuration <= 0f)
+                break;
+
+            float toEnd = currentStageDuration - stageTimer;
+            if (remaining < toEnd)
+            {
+                stageTimer += remaining;
+                remaining = 0f;
+                break;
+            }
+
+            remaining -= toEnd;
+            AdvanceToNextStage();
+
+            if (StageProgress >= 1f && currentStageDuration > 0f)
+                break;
+        }
+    }
+
     private void AdvanceToNextStage()
     {
         GrowthStage[] order = ActiveStageOrder;
