@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 public class LettuceAssetReferencesTests
 {
-    private const string ActiveLettuceAssetPath = "Assets/Scripts/Data/Laitue.asset";
-    private const string MigratedLettuceAssetPath = "Assets/Data/Ferme/Laitue.asset";
+    private const string ActiveLettuceAssetPath = "Assets/Data/Ferme/Laitue.asset";
+    private const string LegacyLettuceAssetPath = "Assets/Scripts/Data/Laitue.asset";
     private const string LettucePrefabPath = "Assets/Prefabs/World/Plantes/LaitueObj.prefab";
     private const string SeedSelectionPrefabPath = "Assets/Prefabs/Ui/SeedSelectionUI.prefab";
     private const string LettucePlantId = "lettuce";
@@ -103,16 +103,12 @@ public class LettuceAssetReferencesTests
     }
 
     [Test]
-    public void MigratedLettuceAsset_Diagnostic_HasNoDirectDependents()
+    public void LegacyLettuceAsset_HasBeenRemoved()
     {
-        PlantDefinition migrated = AssetDatabase.LoadAssetAtPath<PlantDefinition>(MigratedLettuceAssetPath);
-        Assert.That(migrated, Is.Not.Null, $"Asset introuvable: {MigratedLettuceAssetPath}");
-
-        string[] dependentAssets = FindDependents(MigratedLettuceAssetPath);
         Assert.That(
-            dependentAssets,
-            Is.Empty,
-            "Des assets dépendent encore de la version migrée de Laitue:\n" + string.Join("\n", dependentAssets)
+            AssetDatabase.LoadAssetAtPath<PlantDefinition>(LegacyLettuceAssetPath),
+            Is.Null,
+            $"L'asset legacy doit être supprimé: {LegacyLettuceAssetPath}"
         );
     }
 
