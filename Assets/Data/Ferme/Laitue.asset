@@ -14,9 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlantDefinition
   plantId: lettuce
   displayName: Laitue
-  harvestItemId: lettuce_item
-  harvestAmountMin: 1
-  harvestAmountMax: 3
+  growthPattern: 0
+  harvestStages:
+  - stage: 4
+    harvestItemId: laitue_mature
+    harvestAmountMin: 1
+    harvestAmountMax: 3
+  - stage: 6
+    harvestItemId: laitue_mature
+    harvestAmountMin: 5
+    harvestAmountMax: 15
   maxHarvestCount: 1
   spriteGraine: {fileID: 8997401980803306944, guid: de09412c8bb7a8b449a75c0217588b17, type: 3}
   spriteStarting: {fileID: -7563757053863171705, guid: da396c48ed420804c8c39bf1cd2a0fb5, type: 3}
