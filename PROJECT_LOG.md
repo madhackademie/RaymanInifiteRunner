@@ -920,3 +920,32 @@
 - `Assets/Scripts/UI/Inventory/RuntimeInventoryScreen.cs`
 - `Notes/Ui/SPEC_services_inventory_market_cloud.md`
 - `Notes/Todo_project.md`
+
+## 2026-04-27 — données laitue (un seul SO) + nettoyage tests + suivi Git / croissance
+
+### Contexte
+- Travail sur la branche de test / agent (références laitue, prefabs, `PlantDefinition`) et alignement avec **`main`**.
+- Objectif produit : une **seule** définition plante laitue sous **`Assets/Data/Ferme/Laitue.asset`** (plus de doublon type ancien chemin sous `Scripts/Data`).
+
+### Ce qu’on a fait
+- [x] **Laitue** : consolidation des références — **un seul** `PlantDefinition` laitue dans **`Data/Ferme`** ; prefabs / UI (`SeedSelection`, prefab monde) pointent vers ce fichier ; items inventaire distincts (ex. graine / mature) restent des **`ItemDefinition`** séparés, ce qui est normal.
+- [x] **Tests EditMode** : retrait du dossier **`Assets/Tests/`** et de l’assembly associé (`Farm.EditModeTests`) pour ne garder que le code **gameplay** exploitable en éditeur / build ; retrait de l’assembly runtime **`Rayman.Game`** (les scripts sous `Assets/Scripts` repassent dans l’assembly par défaut).
+- [x] **Packages** : suppression de la dépendance directe **`com.unity.test-framework`** dans `Packages/manifest.json` (re-sync Unity au prochain lancement).
+
+### Problèmes restants / à traiter (gameplay)
+- **Stades / durées** : après changement des **durées** ou des règles de stade dans `PlantDefinition`, le **state affiché ou la progression** peut ne pas se recaler comme attendu (timers déjà démarrés, sérialisation partielle, ou absence de re-init au reload asset).
+- **Persistance** : l’**état de croissance** (stade, timers, **temps déjà écoulé** sur le cycle) n’est pas garanti **permanent** tant que la chaîne save/load ne sérialise pas explicitement ces champs et ne les réapplique pas au réveil / changement de scène (croiser `FarmSaveService`, `PlantPersistenceMarker`, `PlantGrow`).
+- **Git / livraison** : décider si on intègre le travail de la branche de test dans **`main`** via **PR** (recommandé) ou en **remplaçant** `main` par la branche (plus brutal) — action suivante : voir **`Notes/Todo_project.md`**.
+
+### Prochaines actions (priorité)
+1. **Git** : ouvrir une **PR** `cursor/test-laitue-references-9dc0` (ou branche équivalente) → **`main`**, ou documenter explicitement l’option « reset main » si tu la choisis volontairement.
+2. **Croissance** : audit `PlantGrow` + save — **sérialiser** stade + temps écoulé (ou timestamps UTC) et **réappliquer** les durées du SO au chargement ; vérifier le cas « SO modifié en cours de partie ».
+3. **Playtest** : scénario pose → quitter jeu / recharger scène → vérifier **stade** et **temps déjà consommé** sur chaque plante persistée.
+
+### Liens utiles
+- `Assets/Data/Ferme/Laitue.asset`
+- `Assets/Scripts/Farm/PlantGrow.cs`
+- `Assets/Scripts/Farm/FarmSaveService.cs`
+- `Assets/Scripts/Farm/PlantPersistenceMarker.cs`
+- `Notes/Todo_project.md`
+- `GIT_HELPER.md` (--3-- branche + merge)
