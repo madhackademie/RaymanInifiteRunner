@@ -7,6 +7,11 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class PlantGrow : MonoBehaviour
 {
+    /// <summary>
+    /// Ordre d’index C# : <b>0 = Graine</b>, 1 = Starting, 2 = Baby, … — la progression ne « commence pas à 1 » dans le code,
+    /// sauf si le prefab avait <see cref="initialStage"/> réglé sur Starting (ancien défaut) ou si un autre script force un stade.
+    /// À la pose, <see cref="BiofiltreManager"/> appelle <see cref="SetStage"/>(Graine) juste après l’instanciation.
+    /// </summary>
     public enum GrowthStage { Graine, Starting, Baby, Growing, Mature, Flowering, Seedling }
 
     private static readonly GrowthStage[] StageOrderLeafy =
@@ -48,6 +53,12 @@ public class PlantGrow : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Initialisation du stade ici (et pas dans Start) : sinon, après Instantiate,
+        // Unity appelle Start sur PlantGrow *après* le Start de BiofiltreManager, ce qui
+        // réapplique initialStage et écrase SetStage(Graine) / SetStageWithElapsed (save JSON).
+        if (plantDefinition != null)
+            SetStage(initialStage);
     }
 
     private void OnValidate()
@@ -60,11 +71,6 @@ public class PlantGrow : MonoBehaviour
 
         // Only update the sprite preview — skip timer logic in editor
         spriteRenderer.sprite = GetSpriteForStage(initialStage);
-    }
-
-    private void Start()
-    {
-        SetStage(initialStage);
     }
 
     private void Update()
@@ -92,6 +98,26 @@ public class PlantGrow : MonoBehaviour
 
         stageTimer = 0f;
         currentStageDuration = plantDefinition.GetDuration(stage);
+        WarnIfStageHasZeroDurationButNotTerminal(stage);
+    }
+
+    /// <summary>
+    /// Une durée 0 = pas d'avance auto (Update ignore). OK pour le dernier stade ; sinon la plante semble "gelée".
+    /// </summary>
+    private void WarnIfStageHasZeroDurationButNotTerminal(GrowthStage stage)
+    {
+        if (currentStageDuration > 0f || plantDefinition == null)
+            return;
+
+        GrowthStage[] order = ActiveStageOrder;
+        int idx = System.Array.IndexOf(order, stage);
+        if (idx >= 0 && idx < order.Length - 1)
+        {
+            Debug.LogWarning(
+                $"[PlantGrow] '{gameObject.name}' : durée 0s pour le stade {stage} dans '{plantDefinition.name}'. " +
+                "La croissance automatique est bloquée sur ce stade — vérifie PlantDefinition.stageDurations dans l'Inspector.",
+                plantDefinition);
+        }
     }
 
     /// <summary>Returns the current growth stage.</summary>

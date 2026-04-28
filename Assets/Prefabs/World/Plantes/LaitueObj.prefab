@@ -107,8 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f820a01d39b0d0b4d963a2d1503e320c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantGrow
-  plantDefinition: {fileID: 11400000, guid: ce1548acdf0b3f1428645592b091c10e, type: 2}
-  initialStage: 1
+  plantDefinition: {fileID: 11400000, guid: 8bc33cbc19362c94b8bc576596d09598, type: 2}
+  initialStage: 0
 --- !u!61 &8492542989369587664
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc2dd619df53514499e22041dee10e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantDefinitionHolder
-  definition: {fileID: 11400000, guid: ce1548acdf0b3f1428645592b091c10e, type: 2}
+  definition: {fileID: 11400000, guid: 8bc33cbc19362c94b8bc576596d09598, type: 2}
 --- !u!114 &615750847586506196
 MonoBehaviour:
   m_ObjectHideFlags: 0
