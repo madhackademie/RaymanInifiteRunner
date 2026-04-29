@@ -2,6 +2,25 @@
 
 Je vais essayer d'organiser et mettre ici le workflow et les commandes basiques de github (80/20)
 
+## --0-- Workflow express : creer une branche feature, switch, publier
+
+Rappel anti-confusion :
+- `origin` = le depot distant (GitHub/GitLab), donc "ou" pousser.
+- `main` = le nom de la branche principale, donc "quelle" branche.
+
+Sequence recommandee :
+
+```bash
+git switch main
+git pull origin main
+git switch -c feature/shop
+git push -u origin feature/shop
+```
+
+Ensuite, sur cette branche :
+- `git push` suffit (tracking deja configure par `-u`).
+- `git pull` suffit aussi.
+
 ## --0-- Checklist rapide (branche + synchro)
 
 Utilise cette séquence au début de chaque session ou après un switch de branche :
@@ -38,6 +57,34 @@ git branch --set-upstream-to=origin/feature/scene-inventaire
 git pull
 ```
 
+## --0B-- Mettre tous les appareils au meme niveau (vue des branches distantes)
+
+Probleme classique : un appareil affiche encore des branches distantes supprimees, un autre non.
+Cause : les references distantes locales ne sont pas rafraichies pareil sur chaque machine.
+
+Workflow de rafraichissement (a lancer sur chaque appareil) :
+
+```bash
+git fetch --all --prune
+git branch -vv
+git branch -r
+```
+
+Interpretation :
+- `git fetch --all --prune` : met a jour les infos des remotes et retire les refs distantes supprimees.
+- `git branch -vv` : montre le tracking de chaque branche locale (et indique `gone` si la branche distante n'existe plus).
+- `git branch -r` : liste les branches distantes actuellement connues localement.
+
+Quand tu vois `gone` dans `git branch -vv` :
+- la branche locale existe encore ;
+- sa branche distante a ete supprimee ;
+- tu peux continuer localement, supprimer la branche locale, ou la republier (`git push -u origin nom-branche`).
+
+Routine conseillee pour eviter les ecarts entre appareils :
+- en debut de session : `git fetch --all --prune`
+- apres suppression/merge d'une branche sur GitHub : `git fetch --all --prune`
+- avant de chercher une branche "manquante" : verifier avec `git branch -r`
+
 
 ## --1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
 
@@ -66,6 +113,47 @@ Vérifie :
 git status
 ```
 Si tu as des fichiers modifiés, il faudra commit ou stash avant de pull (sinon conflits/erreurs possibles).
+
+## --1B-- Switch de branche propre (sans casser le travail en cours)
+
+### Cas 1 : aucun changement local
+
+```bash
+git status
+git switch main
+git pull
+```
+
+### Cas 2 : tu as des changements locaux non commits
+
+Option recommandee (stash temporaire) :
+
+```bash
+git status
+git stash push -m "wip avant switch"
+git switch main
+git pull
+git switch ta-branche
+git stash pop
+```
+
+### Cas 3 : tu veux recuperer `main` sans garder un `main` local divergent
+
+Attention : cette methode ecrase les differences locales de `main`.
+
+```bash
+git switch main
+git fetch origin
+git reset --hard origin/main
+```
+
+Verification rapide apres switch :
+
+```bash
+git branch --show-current
+git status
+git branch -vv
+```
 
 ## --2--Protocole “fin de session” pour push proprement (PowerShell)
 Dans le dossier du projet :

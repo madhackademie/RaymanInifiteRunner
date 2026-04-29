@@ -1,4 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// Manages a plant's growth state and updates its sprite based on PlantDefinition.
@@ -69,9 +72,22 @@ public class PlantGrow : MonoBehaviour
         if (spriteRenderer == null || plantDefinition == null)
             return;
 
-        // Only update the sprite preview — skip timer logic in editor
+        // Delay sprite preview update to avoid SendMessage warning during OnValidate.
+#if UNITY_EDITOR
+        EditorApplication.delayCall -= ApplyEditorPreviewSpriteSafely;
+        EditorApplication.delayCall += ApplyEditorPreviewSpriteSafely;
+#endif
+    }
+
+#if UNITY_EDITOR
+    private void ApplyEditorPreviewSpriteSafely()
+    {
+        if (this == null || spriteRenderer == null || plantDefinition == null)
+            return;
+
         spriteRenderer.sprite = GetSpriteForStage(initialStage);
     }
+#endif
 
     private void Update()
     {
