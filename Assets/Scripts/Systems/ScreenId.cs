@@ -5,6 +5,7 @@
 public static class ScreenId
 {
     public const string Inventory = "Inventory";
+    public const string Shop = "Shop";
 
     // Futurs écrans :
     // public const string Market   = "Market";

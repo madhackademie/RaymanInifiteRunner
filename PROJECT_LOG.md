@@ -949,3 +949,31 @@
 - `Assets/Scripts/Farm/PlantPersistenceMarker.cs`
 - `Notes/Todo_project.md`
 - `GIT_HELPER.md` (--3-- branche + merge)
+
+## 2026-04-29 — base Shop clone inventaire + points de liaison
+
+### Contexte
+- Démarrage de la feature **Shop/Magasin** sur la branche de travail dédiée.
+- Objectif session : poser une base fonctionnelle rapide en réutilisant la logique inventaire existante.
+
+### Ce qu’on a fait
+- [x] **Base Shop runtime** : création d'un écran `Shop` calqué sur l'inventaire (grille de slots, `slotsContainer`, refresh sur `PlayerInventory.OnInventoryChanged`).
+- [x] **Navigation HUD** : ajout du support onglet Shop dans `NavigationHUD` (ouverture/fermeture via `UIManager`, coexistence avec l'onglet Inventaire).
+- [x] **UIManager / ScreenId** : ajout de `ScreenId.Shop` + fallback runtime `RuntimeShopScreen` similaire à `RuntimeInventoryScreen`.
+- [x] **Règle UX conservée** : la barre de navigation persistante reste affichée dans le shell, conformément au flux Scene/UI en place.
+
+### Points d'attention identifiés
+- Certaines **références Inspector sont encore vides** selon les scènes/prefabs (notamment liaison bouton/icône Shop et potentiels prefabs UI dédiés).
+- Pas de **prefab Shop final** prêt à brancher ; la base actuelle repose sur le runtime fallback.
+
+### Prochaines actions (priorité)
+1. Créer la ressource **Argent** (item dédié) et définir sa place dans le flux Inventaire + Shop.
+2. Faire une passe de **linkage Inspector** (SerializeField non assignés / références nulles) sur les éléments UI liés au Shop.
+3. Produire/valider un **prefab Shop** (ou demander support Bezi.ia pour accélérer la production UI), puis remplacer progressivement le fallback runtime.
+
+### Liens utiles
+- `Assets/Scripts/Systems/ScreenId.cs`
+- `Assets/Scripts/Systems/UIManager.cs`
+- `Assets/Scripts/UI/NavigationHUD.cs`
+- `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs`
+- `Notes/Todo_project.md`

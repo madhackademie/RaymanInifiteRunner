@@ -37,10 +37,12 @@ public class NavigationHUD : MonoBehaviour
     [Header("Nav Bar Buttons")]
     [SerializeField] private Button tabAventuresButton;
     [SerializeField] private Button tabInventaireButton;
+    [SerializeField] private Button tabShopButton;
 
     [Header("Tab Icons")]
     [SerializeField] private Image tabAventuresIcon;
     [SerializeField] private Image tabInventaireIcon;
+    [SerializeField] private Image tabShopIcon;
 
     [Header("Exit Button")]
     [SerializeField] private Button exitButton;
@@ -63,9 +65,14 @@ public class NavigationHUD : MonoBehaviour
 
         Instance = this;
 
-        tabAventuresButton.onClick.AddListener(OnTabAventuresClicked);
-        tabInventaireButton.onClick.AddListener(OnTabInventaireClicked);
-        exitButton.onClick.AddListener(OnExitClicked);
+        if (tabAventuresButton != null)
+            tabAventuresButton.onClick.AddListener(OnTabAventuresClicked);
+        if (tabInventaireButton != null)
+            tabInventaireButton.onClick.AddListener(OnTabInventaireClicked);
+        if (tabShopButton != null)
+            tabShopButton.onClick.AddListener(OnTabShopClicked);
+        if (exitButton != null)
+            exitButton.onClick.AddListener(OnExitClicked);
 
         if (SceneNavigator.Instance != null)
             BindNavigator(SceneNavigator.Instance);
@@ -83,9 +90,14 @@ public class NavigationHUD : MonoBehaviour
         SceneNavigator.OnNavigatorUnavailable -= UnbindNavigator;
         UnbindNavigator();
 
-        tabAventuresButton.onClick.RemoveListener(OnTabAventuresClicked);
-        tabInventaireButton.onClick.RemoveListener(OnTabInventaireClicked);
-        exitButton.onClick.RemoveListener(OnExitClicked);
+        if (tabAventuresButton != null)
+            tabAventuresButton.onClick.RemoveListener(OnTabAventuresClicked);
+        if (tabInventaireButton != null)
+            tabInventaireButton.onClick.RemoveListener(OnTabInventaireClicked);
+        if (tabShopButton != null)
+            tabShopButton.onClick.RemoveListener(OnTabShopClicked);
+        if (exitButton != null)
+            exitButton.onClick.RemoveListener(OnExitClicked);
     }
 
     // ── Display API ───────────────────────────────────────────────────────────
@@ -118,8 +130,7 @@ public class NavigationHUD : MonoBehaviour
     {
         if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
         SetTabsInteractable(false);
-        if (UIManager.Instance != null)
-            UIManager.Instance.HideScreen(ScreenId.Inventory);
+        HideGlobalPanels();
 
         await SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
         RefreshTabVisuals(Tab.Aventures);
@@ -134,12 +145,31 @@ public class NavigationHUD : MonoBehaviour
 
         if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Inventory))
         {
+            UIManager.Instance.HideScreen(ScreenId.Shop);
             RefreshTabVisuals(Tab.Inventaire);
             SetTabsInteractable(true);
             return;
         }
 
         Debug.LogWarning("[NavigationHUD] Ecran Inventory introuvable dans UIManager.");
+        SetTabsInteractable(true);
+    }
+
+    /// <summary>Affiche l'écran shop global via UIManager.</summary>
+    public void OnTabShopClicked()
+    {
+        if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
+        SetTabsInteractable(false);
+
+        if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Shop))
+        {
+            UIManager.Instance.HideScreen(ScreenId.Inventory);
+            RefreshTabVisuals(Tab.Shop);
+            SetTabsInteractable(true);
+            return;
+        }
+
+        Debug.LogWarning("[NavigationHUD] Ecran Shop introuvable dans UIManager.");
         SetTabsInteractable(true);
     }
 
@@ -157,8 +187,12 @@ public class NavigationHUD : MonoBehaviour
 
     private void SetTabsInteractable(bool interactable)
     {
-        tabAventuresButton.interactable  = interactable;
-        tabInventaireButton.interactable = interactable;
+        if (tabAventuresButton != null)
+            tabAventuresButton.interactable = interactable;
+        if (tabInventaireButton != null)
+            tabInventaireButton.interactable = interactable;
+        if (tabShopButton != null)
+            tabShopButton.interactable = interactable;
     }
 
     private SceneNavigator boundNavigator;
@@ -211,8 +245,7 @@ public class NavigationHUD : MonoBehaviour
         if (sceneName == SceneId.HomeScene)
         {
             ApplyMode(HudMode.Navigation);
-            if (UIManager.Instance != null)
-                UIManager.Instance.HideScreen(ScreenId.Inventory);
+            HideGlobalPanels();
             return;
         }
 
@@ -236,6 +269,15 @@ public class NavigationHUD : MonoBehaviour
     {
         bool onInventaire = UIManager.Instance != null &&
                             UIManager.Instance.IsScreenVisible(ScreenId.Inventory);
+        bool onShop = UIManager.Instance != null &&
+                      UIManager.Instance.IsScreenVisible(ScreenId.Shop);
+
+        if (onShop)
+        {
+            RefreshTabVisuals(Tab.Shop);
+            return;
+        }
+
         RefreshTabVisuals(onInventaire ? Tab.Inventaire : Tab.Aventures);
     }
 
@@ -243,6 +285,7 @@ public class NavigationHUD : MonoBehaviour
     {
         SetIconColor(tabAventuresIcon,  active == Tab.Aventures);
         SetIconColor(tabInventaireIcon, active == Tab.Inventaire);
+        SetIconColor(tabShopIcon, active == Tab.Shop);
     }
 
     private void SetIconColor(Image icon, bool isActive)
@@ -253,5 +296,14 @@ public class NavigationHUD : MonoBehaviour
 
     // ── Enums ─────────────────────────────────────────────────────────────────
 
-    private enum Tab { Aventures, Inventaire }
+    private void HideGlobalPanels()
+    {
+        if (UIManager.Instance == null)
+            return;
+
+        UIManager.Instance.HideScreen(ScreenId.Inventory);
+        UIManager.Instance.HideScreen(ScreenId.Shop);
+    }
+
+    private enum Tab { Aventures, Inventaire, Shop }
 }

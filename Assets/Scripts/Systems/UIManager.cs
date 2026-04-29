@@ -63,6 +63,11 @@ public class UIManager : MonoBehaviour
     [Tooltip("Prefab visuel d'un slot inventaire pour le fallback runtime.")]
     [SerializeField] private InventorySlotUI runtimeInventorySlotPrefab;
     [SerializeField] private int runtimeInventoryColumns = 5;
+    [Tooltip("Crée un écran shop runtime minimal si aucun écran Shop n'est configuré dans les listes.")]
+    [SerializeField] private bool autoCreateShopScreen = true;
+    [Tooltip("Prefab visuel d'un slot shop pour le fallback runtime. Si non défini, utilise le prefab inventaire.")]
+    [SerializeField] private InventorySlotUI runtimeShopSlotPrefab;
+    [SerializeField] private int runtimeShopColumns = 5;
 
     // ── Runtime ───────────────────────────────────────────────────────────────
 
@@ -87,6 +92,7 @@ public class UIManager : MonoBehaviour
     {
         PreloadPriorityScreens();
         EnsureInventoryScreenAvailable();
+        EnsureShopScreenAvailable();
     }
 
     private void OnEnable()
@@ -303,6 +309,32 @@ public class UIManager : MonoBehaviour
         registry[ScreenId.Inventory] = new ScreenEntry
         {
             screenId = ScreenId.Inventory,
+            prefab = null,
+            instance = root
+        };
+    }
+
+    private void EnsureShopScreenAvailable()
+    {
+        if (HasScreen(ScreenId.Shop) || !autoCreateShopScreen || screenRoot == null)
+            return;
+
+        GameObject root = new($"{ScreenId.Shop}Screen", typeof(RectTransform));
+        RectTransform rect = root.GetComponent<RectTransform>();
+        rect.SetParent(screenRoot, false);
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        RuntimeShopScreen runtimeScreen = root.AddComponent<RuntimeShopScreen>();
+        InventorySlotUI slotPrefab = runtimeShopSlotPrefab != null ? runtimeShopSlotPrefab : runtimeInventorySlotPrefab;
+        runtimeScreen.Initialize(PlayerInventory.Instance, slotPrefab, runtimeShopColumns);
+        root.SetActive(false);
+
+        registry[ScreenId.Shop] = new ScreenEntry
+        {
+            screenId = ScreenId.Shop,
             prefab = null,
             instance = root
         };
