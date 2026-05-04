@@ -18,6 +18,9 @@ public class PlayerInventory : MonoBehaviour
     [Tooltip("Database used to resolve item IDs during save/load.")]
     [SerializeField] private ItemDatabase itemDatabase;
 
+    /// <summary>Résolution des définitions d’items (shop prototype JSON, sauvegarde, etc.).</summary>
+    public ItemDatabase ItemDatabase => itemDatabase;
+
     private readonly List<InventorySlot> slots = new();
 
     /// <summary>Fired after any successful mutation of the inventory.</summary>
@@ -73,6 +76,7 @@ public class PlayerInventory : MonoBehaviour
     }
 
     /// <summary>Clears all slots and deletes the save file from disk.</summary>
+    [ContextMenu("Inventaire — Reset + supprimer inventory.json")]
     public void ResetAndDeleteSave()
     {
         InitialiseSlots();

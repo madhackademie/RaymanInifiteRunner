@@ -1,68 +1,124 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Ecran shop runtime autonome. Pour l'instant, il clone l'affichage inventaire
-/// afin de partager la logique de slots avant l'ajout des features d'achat/vente.
+/// Écran shop prototype : grille identique à l’inventaire (<see cref="InventorySlotUI"/> + grille).
+/// Le catalogue est simulé par JSON (<see cref="MarketCatalogPrototype"/>), sans achat réel pour l’instant.
+/// Fond / tri : <see cref="HudModalBackdrop"/> + <see cref="UIManager"/> (comme l’inventaire HUD).
 /// </summary>
 public class RuntimeShopScreen : MonoBehaviour
 {
-    private const float HeaderHeight = 64f;
-    private const float FooterHeight = 56f;
-    private const int FontSize = 24;
+    private const float HeaderHeight = 72f;
+    private const float FooterHeight = 80f;
+    private const int FontSize = 28;
     private const int SmallFontSize = 18;
-    private const float SlotSize = 80f;
-    private const float SlotSpacing = 10f;
+    private const float SlotSize = 112f;
+    private const float SlotSpacing = 14f;
+    private const int PriceSummaryMaxChars = 160;
 
-    private PlayerInventory playerInventory;
+    private ItemDatabase itemDatabase;
     private InventorySlotUI slotPrefab;
     private int columnCount = 5;
     private RectTransform slotsContainer;
     private readonly List<InventorySlotUI> slotViews = new();
     private Text fallbackListText;
     private Text stateLabel;
+    private Image rootBackdropImage;
+    private Image contentBackdropImage;
 
-    public void Initialize(PlayerInventory inventory, InventorySlotUI slotPrefabOverride, int columns)
+    private bool initialized;
+
+    /// <summary>Injection depuis <see cref="UIManager"/> : préférez appeler avant activation du GameObject.</summary>
+    public void Initialize(ItemDatabase database, InventorySlotUI slotPrefabOverride, int columns)
     {
-        playerInventory = inventory;
+        itemDatabase = database;
         slotPrefab = slotPrefabOverride;
         columnCount = Mathf.Max(1, columns);
         BuildIfNeeded();
-        TryBindInventory();
+        initialized = true;
         Refresh();
     }
 
     private void Awake()
     {
         BuildIfNeeded();
-        TryBindInventory();
     }
 
     private void OnEnable()
     {
-        TryBindInventory();
-        Refresh();
+        if (initialized)
+            Refresh();
     }
 
-    private void OnDestroy()
+    public void Refresh()
     {
-        if (playerInventory != null)
-            playerInventory.OnInventoryChanged -= Refresh;
-    }
-
-    private void TryBindInventory()
-    {
-        PlayerInventory candidate = playerInventory != null ? playerInventory : PlayerInventory.Instance;
-        if (candidate == null)
+        if (slotsContainer == null)
             return;
 
-        if (playerInventory != null && playerInventory != candidate)
-            playerInventory.OnInventoryChanged -= Refresh;
+        if (!initialized)
+            return;
 
-        playerInventory = candidate;
-        playerInventory.OnInventoryChanged -= Refresh;
-        playerInventory.OnInventoryChanged += Refresh;
+        ApplyLayoutAndBackdrop();
+
+        if (itemDatabase == null)
+        {
+            TryResolveDatabaseFromPlayer();
+            if (itemDatabase == null)
+            {
+                SetFooterLines(
+                    "Erreur : ItemDatabase indisponible",
+                    "Assignez ItemDatabase sur PlayerInventory (NavigationHUD).");
+                ShowFallbackText("ItemDatabase manquant — impossible de résoudre le JSON marché.");
+                ClearSlotViews();
+                return;
+            }
+        }
+
+        if (!MarketCatalogPrototype.TryLoad(itemDatabase, out List<MarketCatalogPrototype.ListingRow> listings, out string loadError))
+        {
+            SetFooterLines("Erreur catalogue JSON", loadError ?? string.Empty);
+            ShowFallbackText(loadError ?? string.Empty);
+            ClearSlotViews();
+            return;
+        }
+
+        if (fallbackListText != null)
+            fallbackListText.gameObject.SetActive(false);
+
+        if (slotPrefab == null)
+        {
+            ShowFallbackText(BuildCatalogFallbackText(listings));
+            SetFooterLines(
+                $"Prototype JSON — {listings.Count} offre(s) (vue texte)",
+                BuildPriceSummaryLine(listings));
+            ClearSlotViews();
+            return;
+        }
+
+        EnsureSlotViews(listings.Count);
+
+        for (int i = 0; i < slotViews.Count; i++)
+        {
+            MarketCatalogPrototype.ListingRow row = listings[i];
+            slotViews[i].Refresh(row.Slot);
+        }
+
+        SetFooterLines(
+            $"Market (prototype JSON) — {listings.Count} offre(s)",
+            BuildPriceSummaryLine(listings));
+    }
+
+    private void TryResolveDatabaseFromPlayer()
+    {
+        if (PlayerInventory.Instance != null)
+            itemDatabase = PlayerInventory.Instance.ItemDatabase;
+    }
+
+    private void ClearSlotViews()
+    {
+        EnsureSlotViews(0);
     }
 
     private void BuildIfNeeded()
@@ -87,7 +143,10 @@ public class RuntimeShopScreen : MonoBehaviour
             return;
         }
 
-        background.color = new Color(0f, 0f, 0f, 0.78f);
+        HudModalBackdrop.ApplyRootBackground(background);
+        rootBackdropImage = background;
+
+        HudModalBackdrop.EnsureModalCanvas(gameObject);
 
         CreateHeader(root);
         CreateContent(root);
@@ -99,7 +158,7 @@ public class RuntimeShopScreen : MonoBehaviour
         RectTransform header = CreatePanel("Header", root, new Color(0.1f, 0.1f, 0.1f, 0.95f));
         SetAnchors(header, 0f, 1f, 1f, 1f, 0f, -HeaderHeight, 0f, 0f);
 
-        Text title = CreateText("Title", header, "Shop");
+        Text title = CreateText("Title", header, "Market (prototype)");
         title.alignment = TextAnchor.MiddleLeft;
         title.fontSize = FontSize;
         title.rectTransform.offsetMin = new Vector2(24f, 0f);
@@ -112,7 +171,9 @@ public class RuntimeShopScreen : MonoBehaviour
 
     private void CreateContent(RectTransform root)
     {
-        RectTransform content = CreatePanel("Content", root, new Color(0f, 0f, 0f, 0.15f));
+        RectTransform content = CreatePanel("Content", root, HudModalBackdrop.ContentPanelColor);
+        contentBackdropImage = content.GetComponent<Image>();
+        HudModalBackdrop.ApplyContentPanel(contentBackdropImage);
         SetAnchors(content, 0f, 1f, 0f, 1f, 16f, FooterHeight + 12f, -16f, -HeaderHeight - 12f);
 
         ScrollRect scrollRect = content.gameObject.AddComponent<ScrollRect>();
@@ -133,10 +194,7 @@ public class RuntimeShopScreen : MonoBehaviour
         slotsContainer.sizeDelta = Vector2.zero;
 
         GridLayoutGroup gridLayout = grid.GetComponent<GridLayoutGroup>();
-        gridLayout.cellSize = new Vector2(SlotSize, SlotSize);
-        gridLayout.spacing = new Vector2(SlotSpacing, SlotSpacing);
-        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        gridLayout.constraintCount = columnCount;
+        ApplyGridLayout(gridLayout);
         gridLayout.startCorner = GridLayoutGroup.Corner.UpperLeft;
         gridLayout.startAxis = GridLayoutGroup.Axis.Horizontal;
         gridLayout.childAlignment = TextAnchor.UpperLeft;
@@ -161,45 +219,38 @@ public class RuntimeShopScreen : MonoBehaviour
         RectTransform footer = CreatePanel("Footer", root, new Color(0.1f, 0.1f, 0.1f, 0.85f));
         SetAnchors(footer, 0f, 1f, 0f, 0f, 0f, 0f, 0f, FooterHeight);
 
-        stateLabel = CreateText("State", footer, "Ready");
+        stateLabel = CreateText("State", footer, string.Empty);
+        stateLabel.verticalOverflow = VerticalWrapMode.Overflow;
         stateLabel.alignment = TextAnchor.MiddleLeft;
         stateLabel.fontSize = SmallFontSize;
         stateLabel.rectTransform.offsetMin = new Vector2(24f, 0f);
         stateLabel.rectTransform.offsetMax = new Vector2(-24f, 0f);
     }
 
-    public void Refresh()
+    private void ApplyLayoutAndBackdrop()
     {
+        if (rootBackdropImage != null)
+            HudModalBackdrop.ApplyRootBackground(rootBackdropImage);
+
+        if (contentBackdropImage != null)
+            HudModalBackdrop.ApplyContentPanel(contentBackdropImage);
+
         if (slotsContainer == null)
             return;
 
-        if (playerInventory == null)
-        {
-            SetState("Error: PlayerInventory indisponible");
-            ShowFallbackText("Inventaire indisponible (service non initialise).");
+        GridLayoutGroup grid = slotsContainer.GetComponent<GridLayoutGroup>();
+        ApplyGridLayout(grid);
+    }
+
+    private void ApplyGridLayout(GridLayoutGroup gridLayout)
+    {
+        if (gridLayout == null)
             return;
-        }
 
-        IReadOnlyList<InventorySlot> slots = playerInventory.Slots;
-        if (slotPrefab == null)
-        {
-            ShowFallbackText(BuildFallbackContent(slots));
-            SetState("Ready (fallback texte)");
-            return;
-        }
-
-        if (fallbackListText != null)
-            fallbackListText.gameObject.SetActive(false);
-
-        EnsureSlotViews(slots.Count);
-
-        for (int i = 0; i < slotViews.Count; i++)
-        {
-            InventorySlot slotData = i < slots.Count ? slots[i] : null;
-            slotViews[i].Refresh(slotData);
-        }
-
-        SetState("Ready");
+        gridLayout.cellSize = new Vector2(SlotSize, SlotSize);
+        gridLayout.spacing = new Vector2(SlotSpacing, SlotSpacing);
+        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        gridLayout.constraintCount = columnCount;
     }
 
     private void EnsureSlotViews(int count)
@@ -229,32 +280,67 @@ public class RuntimeShopScreen : MonoBehaviour
         fallbackListText.text = content;
     }
 
-    private static string BuildFallbackContent(IReadOnlyList<InventorySlot> slots)
+    private static string BuildCatalogFallbackText(IReadOnlyList<MarketCatalogPrototype.ListingRow> listings)
     {
-        bool hasItems = false;
-        System.Text.StringBuilder sb = new();
+        if (listings == null || listings.Count == 0)
+            return "Catalogue vide (vérifiez le JSON ou les itemId dans ItemDatabase).";
 
-        for (int i = 0; i < slots.Count; i++)
+        var sb = new StringBuilder();
+        for (int i = 0; i < listings.Count; i++)
         {
-            InventorySlot slot = slots[i];
-            if (slot == null || slot.IsEmpty || slot.Item == null)
+            MarketCatalogPrototype.ListingRow row = listings[i];
+            if (row.Slot == null || row.Slot.IsEmpty || row.Slot.Item == null)
                 continue;
 
-            hasItems = true;
             sb.Append("- ");
-            sb.Append(slot.Item.DisplayName);
+            sb.Append(row.Slot.Item.DisplayName);
             sb.Append(" x");
-            sb.Append(slot.Quantity);
+            sb.Append(row.Slot.Quantity);
+            sb.Append(" @ ");
+            sb.Append(row.UnitPrice);
             sb.AppendLine();
         }
 
-        return hasItems ? sb.ToString() : "Inventaire vide";
+        return sb.Length > 0 ? sb.ToString() : "Catalogue vide.";
     }
 
-    private void SetState(string status)
+    private static string BuildPriceSummaryLine(IReadOnlyList<MarketCatalogPrototype.ListingRow> listings)
     {
-        if (stateLabel != null)
-            stateLabel.text = status;
+        if (listings == null || listings.Count == 0)
+            return string.Empty;
+
+        var sb = new StringBuilder();
+        for (int i = 0; i < listings.Count; i++)
+        {
+            MarketCatalogPrototype.ListingRow row = listings[i];
+            if (row.Slot == null || row.Slot.IsEmpty || row.Slot.Item == null)
+                continue;
+
+            if (sb.Length > 0)
+                sb.Append(" | ");
+
+            sb.Append(row.Slot.Item.DisplayName);
+            sb.Append(" ×");
+            sb.Append(row.Slot.Quantity);
+            sb.Append(" @");
+            sb.Append(row.UnitPrice);
+
+            if (sb.Length >= PriceSummaryMaxChars)
+            {
+                sb.Append(" …");
+                break;
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    private void SetFooterLines(string lineA, string lineB)
+    {
+        if (stateLabel == null)
+            return;
+
+        stateLabel.text = string.IsNullOrEmpty(lineB) ? lineA : $"{lineA}\n{lineB}";
     }
 
     private void HideScreen()
@@ -268,7 +354,10 @@ public class RuntimeShopScreen : MonoBehaviour
         GameObject go = new(name, typeof(RectTransform), typeof(Image));
         RectTransform rect = go.GetComponent<RectTransform>();
         rect.SetParent(parent, false);
-        go.GetComponent<Image>().color = color;
+        Image img = go.GetComponent<Image>();
+        HudModalBackdrop.SetupSolidFillImage(img);
+        img.color = color;
+        img.raycastTarget = true;
         return rect;
     }
 
@@ -284,7 +373,7 @@ public class RuntimeShopScreen : MonoBehaviour
         text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         text.color = Color.white;
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
-        text.verticalOverflow = VerticalWrapMode.Overflow;
+        text.verticalOverflow = VerticalWrapMode.Truncate;
         return text;
     }
 
@@ -293,7 +382,9 @@ public class RuntimeShopScreen : MonoBehaviour
         GameObject buttonGo = new(name, typeof(RectTransform), typeof(Image), typeof(Button));
         RectTransform rect = buttonGo.GetComponent<RectTransform>();
         rect.SetParent(parent, false);
-        buttonGo.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 1f);
+        Image buttonImage = buttonGo.GetComponent<Image>();
+        HudModalBackdrop.SetupSolidFillImage(buttonImage);
+        buttonImage.color = new Color(0.2f, 0.2f, 0.2f, 1f);
 
         Text text = CreateText("Label", rect, label);
         text.alignment = TextAnchor.MiddleCenter;

@@ -10,6 +10,16 @@
 
 ## Priorité session suivante
 
+### Shop — mécanique achat (prochaine session / suite catalogue JSON)
+
+Référence produit + technique : **`Notes/Ui/DOC_feature_shop.md`** (§3 flux achat, §2 état actuel). Dépendance : ressource **Argent** (`ItemDefinition` + `ItemDatabase`, voir `Notes/Todo_project.md`).
+
+- [ ] Clic sur une **offre catalogue** → ouvrir une **modal détail** : grande image item, **prix unitaire**, **description** optionnelle (données ou TMP plus tard).
+- [ ] Contrôles **quantité** : boutons **+** / **−** (min 1, max selon stock listing / règle) ; bouton **Payer** dont le texte reflète le **total** `prix_unitaire × quantité` (recalcul à chaque changement).
+- [ ] Au clic **Payer** : **popup de confirmation** avant toute transaction.
+- [ ] Après confirmation : si **solde Argent suffisant** → débit monnaie + **`PlayerInventory.TryAdd`** (quantité achetée) + fermeture / refresh ; si **insuffisant** → message **manque de fonds** (pas de débit, pas d’ajout).
+- [ ] **[Polish]** Champ saisie **quantité au clavier** (TMP InputField ou équivalent).
+
 ### Session cible ~2026-05-01 — audit Bezi (Scene/UI) + clean refactor
 
 - [ ] Lancer l’audit **Bezi** sur le flux réel : **`GameBootstrap`**, **`SceneNavigator.ShowScene`**, **`NavigationHUD`**, **`MapSceneController`**, **`FirstLvlController`**, **`UIManager`** — voir **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**.

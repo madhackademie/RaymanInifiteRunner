@@ -2,7 +2,7 @@
 
 Document de référence pour le **magasin (Shop)** : état du code, intention produit, et distinction claire avec l’**inventaire joueur**.
 
-**Branche / historique** : travail initial journalisé dans `PROJECT_LOG.md` (2026-04-29). Checklist opérationnelle : `Notes/Todo_project.md` (section Shop).
+**Branche / historique** : travail initial journalisé dans `PROJECT_LOG.md` (2026-04-29) ; évolution catalogue JSON notée en **2026-05-04**. Checklist opérationnelle : `Notes/Todo_project.md` (section Shop) et `Notes/Ui/Todo_ui.md` (flux achat).
 
 ---
 
@@ -34,57 +34,82 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 | `ScreenId.Shop` | Identifiant d’écran pour `UIManager`. |
 | `NavigationHUD` | Onglet **Shop** : ouvre l’écran via `UIManager.TryShowScreen(ScreenId.Shop)`, coexistence avec Inventaire. |
 | `UIManager` | Enregistre l’écran Shop ; peut **auto-créer** un fallback `RuntimeShopScreen` si aucun prefab Shop n’est configuré (`autoCreateShopScreen`). |
-| `RuntimeShopScreen` | UI **runtime minimale** : grille de slots, header « Shop », fermeture. |
+| `RuntimeShopScreen` | UI **runtime minimale** : modal (`HudModalBackdrop`), grille scrollable, slots issus du **catalogue** (voir §2.2). |
+| `MarketCatalogPrototype` | Charge **`Resources/Market/market_catalog.json`** (`JsonUtility`), résout chaque ligne contre `ItemDatabase`, produit des `ListingRow` (`InventorySlot` + `UnitPrice`). |
+| `Assets/Resources/Market/market_catalog.json` | Données prototype : `listings[]` avec `itemId`, `price`, `quantity` par offre. |
 
-### 2.2 « Linkage » inventaire **aujourd’hui** — uniquement affichage
+### 2.2 Affichage catalogue (sans achat)
 
-Le shop **ne** branche **pas** encore un flux « achat → inventaire ».
+- Les cellules de la grille utilisent **`InventorySlotUI.Refresh(InventorySlot)`** avec un slot **synthétique** par ligne du JSON (item + quantité affichée comme en inventaire), **pas** une copie des slots du sac du joueur.
+- **`PlayerInventory`** n’est utilisé que pour **résoudre** `ItemDatabase` si aucune base n’a été injectée à l’`Initialize` (`TryResolveDatabaseFromPlayer`).
+- **Aucun** clic sur une offre, **aucune** déduction de monnaie, **aucun** `TryAdd` depuis le shop : le prototype s’arrête à l’**affichage** + résumé des prix dans le pied de panneau.
 
-`RuntimeShopScreen` fait ceci **uniquement** :
+### 2.3 Préfab / Inspector
 
-1. **Référence** `PlayerInventory` (`Instance` ou injecté à l’`Initialize`).
-2. **Lecture** de `playerInventory.Slots` pour **afficher** les mêmes données que l’inventaire (icônes / quantités via `InventorySlotUI.Refresh`).
-3. **Abonnement** à `PlayerInventory.OnInventoryChanged` pour **rafraîchir l’affichage** quand l’inventaire change.
-
-Donc le lien actuel avec l’inventaire est **cosmétique et de prototype** : réutilisation du **prefab de slot inventaire** et des **mêmes slots joueur** pour avoir rapidement une grille à l’écran. **Ce n’est pas** la liaison métier « déposer les achats dans l’inventaire » — cette partie **n’existe pas encore** dans l’écran Shop.
-
-En résumé : **clone / miroir de l’affichage inventaire** + même événement de refresh ; **pas** de catalogue shop, **pas** de monnaie, **pas** d’appel d’API d’ajout d’item depuis le shop.
+- Un prefab **`ShopScreen`** peut exister dans le projet ; le flux documenté ici reste aligné sur le **fallback runtime** tant que le prefab n’est pas la source unique de vérité en jeu.
+- Voir `Notes/Todo_project.md` : linkage Inspector, prefab dédié, ressource **Argent** (première monnaie).
 
 ---
 
-## 3. Cible technique (à revoir / à implémenter)
+## 3. Flux achat dédié (prochaine session — spec produit)
 
-Les points ci-dessous sont les **écarts** par rapport à l’intention §1.
+Objectif : **mécanique d’achat** isolée (UI + logique), en s’appuyant sur la même voie d’entrée inventaire que la récolte (`PlayerInventory.TryAdd` ou équivalent unique).
+
+1. **Clic sur une offre** (slot catalogue) → ouverture d’une **fenêtre détail** avec :
+   - **Image** de l’item (icône `ItemDefinition` ou équivalent) ;
+   - **Prix unitaire** ;
+   - **Description** de l’item (optionnelle — champ données ou texte localisé plus tard).
+2. **Contrôles quantité** :
+   - Boutons **+** / **−** (minimum 1, plafond selon stock vendeur / règle métier) ;
+   - Bouton **Payer** (libellé dynamique, voir point 3) ;
+   - **Polish ultérieur** : saisie de quantité au **clavier** (champ TMP / input).
+3. **Prix total** : recalcul continu **`total = prix_unitaire × quantité`** ; le bouton de paiement (ou un libellé associé) **affiche** ce total (ex. « Payer 15 »).
+4. **Confirmation** : au clic sur Payer, ouvrir un **popup de confirmation** (« Confirmer l’achat ? »).
+5. **Après confirmation** :
+   - Si **fonds suffisants** : débiter la monnaie (cf. paragraphe **Monnaie** ci-dessus), **`TryAdd`** l’item acheté, fermer les modales / rafraîchir le catalogue si besoin ;
+   - Si **fonds insuffisants** : message clair **manque de fonds** (sans débit ni ajout inventaire).
+
+**Monnaie** : introduire la **première ressource primaire « Argent »** (item dédié type `money` ou compteur dédié — à trancher en implémentation, mais **une seule** notion de solde pour les prix du JSON). Elle doit être référencée dans `ItemDatabase` si on suit le modèle « item stackable » comme les autres ressources.
+
+---
+
+## 4. Cible technique (écarts restants par rapport au §1 et au §3)
+
+Les points ci-dessous complètent le **§3** (flux achat) et l’intention **§1**.
 
 1. **Données d’écran**  
-   - Introduire une source de vérité **Shop** (liste d’offres : `ItemDefinition` + prix, stock vendeur optionnel, etc.), **distincte** de `PlayerInventory.Slots` pour le **catalogue** et les interactions d’achat — tout en pouvant **réutiliser** les mêmes **composants UI** (slots) que le sac pour l’affichage des offres.
+   - Le prototype JSON couvre déjà une **liste d’offres** ; à faire : **interactions** (clic → détail → achat), éventuellement **service** ou classe dédiée pour ne pas alourdir `RuntimeShopScreen` au-delà du prototype.
 
 2. **Lien inventaire (seul lien obligatoire côté possession)**  
-   - Sur **validation d’achat** (ou loot scripté), appeler la **même couche** que la récolte / le gameplay pour **ajouter** l’item au `PlayerInventory` (une seule voie d’entrée pour « le joueur reçoit un item »).
+   - Sur **validation d’achat** confirmée, appeler la **même couche** que la récolte pour **ajouter** l’item (`PlayerInventory.TryAdd`, etc.).
 
 3. **UI**  
-   - Remplacer ou compléter le fallback : **prefab Shop** dédié, champs Inspector renseignés (`NavigationHUD`, prefabs slots shop si différents des slots inventaire).
+   - **Modal détail** + **popup confirmation** (nouveaux prefabs ou extension du runtime) ; prefab Shop plein jeu quand le visuel sera figé.
 
 4. **Monnaie**  
-   - Item ou compteur **Argent** (voir todo projet) pour prix et solde **sans** confondre avec les slots « sac ».
+   - **Argent** comme première ressource : solde consultable, débit atomique avec l’achat (éviter double clic / race avec `IsTransitioning`-style si pertinent).
 
 5. **Layout vs données**  
-   - **Découpler** les données affichées (offres shop ≠ slots possédés) tout en gardant si besoin la **même famille** de prefabs / scripts slot. Prévoir l’**évolution du layout** si le design exige des **tailles de cellules variables** (voir §1 « Cellules de taille variable »).
+   - Le catalogue est déjà **découplé** des slots joueur côté données ; prévoir l’**évolution du layout** (cellules de tailles variables, §1) après le MVP achat.
 
 ---
 
-## 4. Fichiers utiles (code)
+## 5. Fichiers utiles (code)
 
-- `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs` — fallback shop + binding lecture `PlayerInventory`.
+- `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs` — fallback shop, grille catalogue, `HudModalBackdrop`.
+- `Assets/Scripts/Market/MarketCatalogPrototype.cs` — chargement / résolution JSON.
+- `Assets/Resources/Market/market_catalog.json` — données offres prototype.
 - `Assets/Scripts/Systems/UIManager.cs` — `EnsureShopScreenAvailable`, prefabs runtime shop.
 - `Assets/Scripts/UI/NavigationHUD.cs` — onglet Shop.
 - `Assets/Scripts/Systems/ScreenId.cs` — constante `Shop`.
+- `Assets/Scripts/UI/HudModalBackdrop.cs` — cohérence visuelle avec l’inventaire runtime.
 
 Pour le flux « donner un item au joueur », réutiliser les chemins déjà utilisés ailleurs (récolte, quêtes, etc.) — **à pointer précisément** lors de l’implémentation (ex. service inventaire, `PlayerInventory.TryAdd`, selon ce qui existe dans le projet au moment du dev).
 
 ---
 
-## 5. Synthèse
+## 6. Synthèse
 
-**Aujourd’hui** : le Shop est un **shell UI** qui **montre l’inventaire joueur** comme l’écran inventaire — utile pour valider navigation + **même architecture slots** que le sac.  
-**Demain** : **catalogue** (données shop) + **achat** → inventaire uniquement pour **déposer les achats** ; **conserver** l’alignement UI avec le sac (slots / grammaire commune) ; **adapter le layout** (au-delà d’une grille `GridLayoutGroup` uniforme) si une **mise en avant** impose des **cellules de tailles différentes**.
+**Aujourd’hui** : le Shop est un **écran modal** qui affiche un **catalogue JSON** (`market_catalog.json`) en **slots** réutilisant `InventorySlotUI`, avec résolution des items via `ItemDatabase` ; **pas d’achat**, **pas de monnaie** en jeu.  
+**Prochaine étape** : **Argent** + **flux §3** (détail quantité, total sur le bouton, confirmation, succès / manque de fonds) puis **`TryAdd`** pour les items achetés.  
+**Ensuite** : prefab Shop final, polish saisie clavier, layouts hétérogènes si besoin produit.

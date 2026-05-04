@@ -48,8 +48,9 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private Button exitButton;
 
     [Header("Couleurs de tab")]
-    [SerializeField] private Color colorActive   = new Color(1f,    0.78f, 0.2f,  1f);
-    [SerializeField] private Color colorInactive = new Color(0.55f, 0.55f, 0.55f, 1f);
+    [SerializeField] private Color colorActive      = new Color(1f,    0.78f, 0.2f,  1f);
+    [SerializeField] private Color colorActiveShop  = new Color(0.2f,  0.6f,  1f,   1f);
+    [SerializeField] private Color colorInactive    = new Color(0.55f, 0.55f, 0.55f, 1f);
 
     private HudMode currentMode = HudMode.Hidden;
 
@@ -283,15 +284,15 @@ public class NavigationHUD : MonoBehaviour
 
     private void RefreshTabVisuals(Tab active)
     {
-        SetIconColor(tabAventuresIcon,  active == Tab.Aventures);
-        SetIconColor(tabInventaireIcon, active == Tab.Inventaire);
-        SetIconColor(tabShopIcon, active == Tab.Shop);
+        SetIconColor(tabAventuresIcon,  active == Tab.Aventures,  colorActive);
+        SetIconColor(tabInventaireIcon, active == Tab.Inventaire, colorActive);
+        SetIconColor(tabShopIcon,       active == Tab.Shop,       colorActiveShop);
     }
 
-    private void SetIconColor(Image icon, bool isActive)
+    private void SetIconColor(Image icon, bool isActive, Color activeColor)
     {
         if (icon != null)
-            icon.color = isActive ? colorActive : colorInactive;
+            icon.color = isActive ? activeColor : colorInactive;
     }
 
     // ── Enums ─────────────────────────────────────────────────────────────────

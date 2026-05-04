@@ -39,6 +39,8 @@ public class ScreenEntry
 /// </summary>
 public class UIManager : MonoBehaviour
 {
+    /// <summary>Hauteur réservée en bas de l'écran pour la nav bar du HUD (en unités canvas).</summary>
+    private const float NavBarHeight = 120f;
 
     // ── Singleton ─────────────────────────────────────────────────────────────
 
@@ -50,6 +52,23 @@ public class UIManager : MonoBehaviour
     [Header("Shell — parent des écrans instanciés")]
     [Tooltip("Transform enfant du Canvas shell sous lequel tous les écrans sont instanciés.")]
     [SerializeField] private Transform screenRoot;
+
+    [Header("Modales HUD (Shop, Inventaire, …)")]
+    [Tooltip("Optionnel — sinon Resources/Shop/shop_backdrop. N’affecte pas FirstLvl (scène gameplay séparée).")]
+    [SerializeField] private Sprite hudModalBackdropSprite;
+
+    [SerializeField] private Color hudModalBackdropTint = Color.white;
+
+    [Tooltip("Tri au-dessus du canvas HUD (souvent 50) et de la Home (0).")]
+    [SerializeField] private int hudModalCanvasSortingOrder = 400;
+
+    /// <summary>Sprite de fond des panneaux plein écran UIManager (prioritaire sur Resources).</summary>
+    public Sprite HudModalBackdropSprite => hudModalBackdropSprite;
+
+    /// <summary>Teinte du sprite de fond quand une texture est utilisée.</summary>
+    public Color HudModalBackdropTint => hudModalBackdropTint;
+
+    public int HudModalCanvasSortingOrder => hudModalCanvasSortingOrder;
 
     [Header("Écrans prioritaires — préchargés au démarrage")]
     [SerializeField] private List<ScreenEntry> priorityScreens = new();
@@ -186,6 +205,8 @@ public class UIManager : MonoBehaviour
             return false;
 
         entry.instance.SetActive(true);
+        // Dernier enfant de screenRoot = dessiné au-dessus des autres écrans (Shop / Inventaire).
+        entry.instance.transform.SetAsLastSibling();
         return true;
     }
 
@@ -242,6 +263,46 @@ public class UIManager : MonoBehaviour
 
         entry.instance = Instantiate(entry.prefab, screenRoot);
         entry.instance.SetActive(false);
+
+        // Réserve la hauteur de la nav bar en bas pour que les boutons HUD restent accessibles.
+        if (entry.instance.TryGetComponent<RectTransform>(out RectTransform rect))
+        {
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = new Vector2(rect.offsetMin.x, NavBarHeight);
+            rect.offsetMax = new Vector2(rect.offsetMax.x, 0f);
+        }
+
+        WireScreenAfterInstantiate(entry);
+    }
+
+    /// <summary>
+    /// Branche les écrans dont la logique attend une injection après instanciation du prefab.
+    /// </summary>
+    private void WireScreenAfterInstantiate(ScreenEntry entry)
+    {
+        if (entry.instance == null)
+            return;
+
+        if (entry.screenId == ScreenId.Shop)
+        {
+            RuntimeShopScreen shop = entry.instance.GetComponentInChildren<RuntimeShopScreen>(true);
+            if (shop != null)
+            {
+                InventorySlotUI slotPrefab = runtimeShopSlotPrefab != null ? runtimeShopSlotPrefab : runtimeInventorySlotPrefab;
+                ItemDatabase shopDb = PlayerInventory.Instance != null ? PlayerInventory.Instance.ItemDatabase : null;
+                shop.Initialize(shopDb, slotPrefab, runtimeShopColumns);
+            }
+
+            return;
+        }
+
+        if (entry.screenId == ScreenId.Inventory)
+        {
+            RuntimeInventoryScreen inventory = entry.instance.GetComponentInChildren<RuntimeInventoryScreen>(true);
+            if (inventory != null)
+                inventory.Initialize(PlayerInventory.Instance, runtimeInventorySlotPrefab, runtimeInventoryColumns);
+        }
     }
 
     private bool TryGetEntry(string screenId, out ScreenEntry entry)
@@ -299,12 +360,13 @@ public class UIManager : MonoBehaviour
         rect.SetParent(screenRoot, false);
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
+        rect.offsetMin = new Vector2(0f, NavBarHeight);
         rect.offsetMax = Vector2.zero;
+
+        root.SetActive(false);
 
         RuntimeInventoryScreen runtimeScreen = root.AddComponent<RuntimeInventoryScreen>();
         runtimeScreen.Initialize(PlayerInventory.Instance, runtimeInventorySlotPrefab, runtimeInventoryColumns);
-        root.SetActive(false);
 
         registry[ScreenId.Inventory] = new ScreenEntry
         {
@@ -324,13 +386,16 @@ public class UIManager : MonoBehaviour
         rect.SetParent(screenRoot, false);
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
+        rect.offsetMin = new Vector2(0f, NavBarHeight);
         rect.offsetMax = Vector2.zero;
+
+        // Évite OnEnable avant Initialize (références encore nulles).
+        root.SetActive(false);
 
         RuntimeShopScreen runtimeScreen = root.AddComponent<RuntimeShopScreen>();
         InventorySlotUI slotPrefab = runtimeShopSlotPrefab != null ? runtimeShopSlotPrefab : runtimeInventorySlotPrefab;
-        runtimeScreen.Initialize(PlayerInventory.Instance, slotPrefab, runtimeShopColumns);
-        root.SetActive(false);
+        ItemDatabase shopDb = PlayerInventory.Instance != null ? PlayerInventory.Instance.ItemDatabase : null;
+        runtimeScreen.Initialize(shopDb, slotPrefab, runtimeShopColumns);
 
         registry[ScreenId.Shop] = new ScreenEntry
         {

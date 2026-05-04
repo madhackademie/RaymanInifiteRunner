@@ -977,3 +977,26 @@
 - `Assets/Scripts/UI/NavigationHUD.cs`
 - `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs`
 - `Notes/Todo_project.md`
+
+## 2026-05-04 — doc Shop + backlog flux achat (argent)
+
+### Contexte
+- Demande : aligner la **documentation** sur la **gestion du shop** (état code + intention), mettre à jour **`PROJECT_LOG.md`**, et consigner en **todo prochaine session** la **mécanique d’achat** (UI détail, quantité, confirmation, monnaie, inventaire).
+
+### Ce qu’on a fait
+- [x] **`Notes/Ui/DOC_feature_shop.md`** : état réel (**catalogue JSON** `MarketCatalogPrototype` + `Resources/Market/market_catalog.json`, slots = offres, pas miroir inventaire) ; **spec flux achat** (clic → fenêtre image/prix/description optionnelle → +/−/payer, total `prix × quantité` sur le bouton, popup confirmation, succès `TryAdd` + débit / échec manque de fonds) ; polish **saisie quantité clavier** noté ; **Argent** comme première ressource monétaire.
+- [x] **`Notes/Todo_project.md`** : case doc shop cochée ; nouvelle tâche **Shop — flux achat dédié** (référence croisée doc + `Todo_ui.md`).
+- [x] **`Notes/Ui/Todo_ui.md`** : bloc **Shop — mécanique achat** avec checklist alignée sur la spec.
+- [x] **`PROJECT_LOG.md`** : cette entrée.
+
+### Prochaines actions (priorité — shop / économie)
+1. **Argent** : `ItemDefinition` + entrée `ItemDatabase` (ou modèle solde retenu) et affichage solde dans le shop / HUD si pertinent.
+2. **Implémenter le flux §3** de `DOC_feature_shop.md` : modal détail, quantité, libellé bouton avec total, confirmation, branchement `TryAdd` + messages fonds insuffisants.
+3. Poursuivre linkage Inspector + prefab Shop dédié quand le flux métier est stable.
+
+### Liens utiles
+- `Notes/Ui/DOC_feature_shop.md`
+- `Assets/Scripts/Market/MarketCatalogPrototype.cs`
+- `Assets/Resources/Market/market_catalog.json`
+- `Notes/Todo_project.md` — *Prochaine session*
+- `Notes/Ui/Todo_ui.md` — *Shop — mécanique achat*

@@ -5,15 +5,16 @@ using UnityEngine.UI;
 /// <summary>
 /// Ecran inventaire runtime autonome utilisé par UIManager quand aucun prefab
 /// d'inventaire global n'est encore configuré.
+/// Fond / tri : <see cref="HudModalBackdrop"/> (identique au Shop HUD — pas FirstLvl).
 /// </summary>
 public class RuntimeInventoryScreen : MonoBehaviour
 {
-    private const float HeaderHeight = 64f;
-    private const float FooterHeight = 56f;
-    private const int FontSize = 24;
+    private const float HeaderHeight = 72f;
+    private const float FooterHeight = 64f;
+    private const int FontSize = 26;
     private const int SmallFontSize = 18;
-    private const float SlotSize = 80f;
-    private const float SlotSpacing = 10f;
+    private const float SlotSize = 100f;
+    private const float SlotSpacing = 12f;
 
     private PlayerInventory playerInventory;
     private InventorySlotUI slotPrefab;
@@ -22,6 +23,10 @@ public class RuntimeInventoryScreen : MonoBehaviour
     private readonly List<InventorySlotUI> slotViews = new();
     private Text fallbackListText;
     private Text stateLabel;
+    private Image rootBackdropImage;
+    private Image contentBackdropImage;
+
+    private bool initialized;
 
     /// <summary>
     /// Initialisation explicite depuis UIManager (injection des dependances runtime).
@@ -33,19 +38,20 @@ public class RuntimeInventoryScreen : MonoBehaviour
         columnCount = Mathf.Max(1, columns);
         BuildIfNeeded();
         TryBindInventory();
+        initialized = true;
         Refresh();
     }
 
     private void Awake()
     {
         BuildIfNeeded();
-        TryBindInventory();
     }
 
     private void OnEnable()
     {
         TryBindInventory();
-        Refresh();
+        if (initialized)
+            Refresh();
     }
 
     private void OnDestroy()
@@ -77,7 +83,6 @@ public class RuntimeInventoryScreen : MonoBehaviour
         if (root == null)
             return;
 
-        // En runtime, on garantit les composants UI minimaux du root.
         if (GetComponent<CanvasRenderer>() == null)
             gameObject.AddComponent<CanvasRenderer>();
 
@@ -91,7 +96,10 @@ public class RuntimeInventoryScreen : MonoBehaviour
             return;
         }
 
-        background.color = new Color(0f, 0f, 0f, 0.78f);
+        HudModalBackdrop.ApplyRootBackground(background);
+        rootBackdropImage = background;
+
+        HudModalBackdrop.EnsureModalCanvas(gameObject);
 
         CreateHeader(root);
         CreateContent(root);
@@ -116,7 +124,9 @@ public class RuntimeInventoryScreen : MonoBehaviour
 
     private void CreateContent(RectTransform root)
     {
-        RectTransform content = CreatePanel("Content", root, new Color(0f, 0f, 0f, 0.15f));
+        RectTransform content = CreatePanel("Content", root, HudModalBackdrop.ContentPanelColor);
+        contentBackdropImage = content.GetComponent<Image>();
+        HudModalBackdrop.ApplyContentPanel(contentBackdropImage);
         SetAnchors(content, 0f, 1f, 0f, 1f, 16f, FooterHeight + 12f, -16f, -HeaderHeight - 12f);
 
         ScrollRect scrollRect = content.gameObject.AddComponent<ScrollRect>();
@@ -127,7 +137,6 @@ public class RuntimeInventoryScreen : MonoBehaviour
         SetAnchors(viewport, 0f, 1f, 0f, 1f, 0f, 0f, 0f, 0f);
         viewport.gameObject.AddComponent<RectMask2D>();
 
-        // Grille de slots similaire a l'ancien inventaire.
         GameObject grid = new("SlotsGrid", typeof(RectTransform), typeof(GridLayoutGroup), typeof(ContentSizeFitter));
         slotsContainer = grid.GetComponent<RectTransform>();
         slotsContainer.SetParent(viewport, false);
@@ -153,7 +162,6 @@ public class RuntimeInventoryScreen : MonoBehaviour
         scrollRect.viewport = viewport;
         scrollRect.content = slotsContainer;
 
-        // Fallback texte: utile si le prefab InventorySlotUI n'est pas assigne.
         fallbackListText = CreateText("FallbackList", content, string.Empty);
         fallbackListText.alignment = TextAnchor.UpperLeft;
         fallbackListText.fontSize = SmallFontSize;
@@ -168,16 +176,42 @@ public class RuntimeInventoryScreen : MonoBehaviour
         SetAnchors(footer, 0f, 1f, 0f, 0f, 0f, 0f, 0f, FooterHeight);
 
         stateLabel = CreateText("State", footer, "Ready");
+        stateLabel.verticalOverflow = VerticalWrapMode.Overflow;
         stateLabel.alignment = TextAnchor.MiddleLeft;
         stateLabel.fontSize = SmallFontSize;
         stateLabel.rectTransform.offsetMin = new Vector2(24f, 0f);
         stateLabel.rectTransform.offsetMax = new Vector2(-24f, 0f);
     }
 
+    private void ApplyLayoutAndBackdrop()
+    {
+        if (rootBackdropImage != null)
+            HudModalBackdrop.ApplyRootBackground(rootBackdropImage);
+
+        if (contentBackdropImage != null)
+            HudModalBackdrop.ApplyContentPanel(contentBackdropImage);
+
+        if (slotsContainer == null)
+            return;
+
+        GridLayoutGroup grid = slotsContainer.GetComponent<GridLayoutGroup>();
+        if (grid != null)
+        {
+            grid.cellSize = new Vector2(SlotSize, SlotSize);
+            grid.spacing = new Vector2(SlotSpacing, SlotSpacing);
+            grid.constraintCount = columnCount;
+        }
+    }
+
     public void Refresh()
     {
         if (slotsContainer == null)
             return;
+
+        if (!initialized)
+            return;
+
+        ApplyLayoutAndBackdrop();
 
         if (playerInventory == null)
         {
@@ -208,9 +242,6 @@ public class RuntimeInventoryScreen : MonoBehaviour
         SetState("Ready");
     }
 
-    /// <summary>
-    /// Ajuste le nombre d'instances UI a la taille actuelle de l'inventaire.
-    /// </summary>
     private void EnsureSlotViews(int count)
     {
         while (slotViews.Count < count)
@@ -277,7 +308,10 @@ public class RuntimeInventoryScreen : MonoBehaviour
         GameObject go = new(name, typeof(RectTransform), typeof(Image));
         RectTransform rect = go.GetComponent<RectTransform>();
         rect.SetParent(parent, false);
-        go.GetComponent<Image>().color = color;
+        Image img = go.GetComponent<Image>();
+        HudModalBackdrop.SetupSolidFillImage(img);
+        img.color = color;
+        img.raycastTarget = true;
         return rect;
     }
 
@@ -302,7 +336,9 @@ public class RuntimeInventoryScreen : MonoBehaviour
         GameObject buttonGo = new(name, typeof(RectTransform), typeof(Image), typeof(Button));
         RectTransform rect = buttonGo.GetComponent<RectTransform>();
         rect.SetParent(parent, false);
-        buttonGo.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 1f);
+        Image buttonImage = buttonGo.GetComponent<Image>();
+        HudModalBackdrop.SetupSolidFillImage(buttonImage);
+        buttonImage.color = new Color(0.2f, 0.2f, 0.2f, 1f);
 
         Text text = CreateText("Label", rect, label);
         text.alignment = TextAnchor.MiddleCenter;
