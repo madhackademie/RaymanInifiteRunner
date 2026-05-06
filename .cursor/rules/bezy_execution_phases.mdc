@@ -1,0 +1,29 @@
+---
+description: Prompting and phased task execution for Bezy to avoid timeouts
+alwaysApply: true
+---
+When delegating work to Bezy (or similar UI-building agent), always provide:
+
+1) A concise prompt with explicit output files.
+2) A subdivided task list with small sequential phases.
+3) A strict "wait for success before next phase" instruction.
+
+Mandatory pattern for heavy prefab/UI generation:
+
+- Phase 1: Create prefab shell and full GameObject hierarchy only.
+- Phase 2: Add components (Image, Button, TMP_Text, Layout, etc.) only.
+- Phase 3: Wire references/events/SerializeField bindings only.
+
+Execution constraints:
+
+- Never request all phases in one single build call.
+- Keep each phase minimal and independently verifiable.
+- Require a completion confirmation after each phase.
+- If a phase fails or times out, retry that phase with smaller sub-steps.
+- Provide a final checklist of created/updated files and missing manual links.
+
+Prompt style requirements:
+
+- Include exact script paths and prefab path.
+- Explicitly say "do not rescan whole project".
+- Explicitly say "reuse existing scripts unless asked otherwise".

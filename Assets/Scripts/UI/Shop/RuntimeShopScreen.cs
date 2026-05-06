@@ -30,15 +30,40 @@ public class RuntimeShopScreen : MonoBehaviour
 
     private bool initialized;
 
+    [Header("Popup achat item (optionnel)")]
+    [Tooltip("Si non assigné ici, utilise la référence injectée par UIManager ou un enfant ShopItemPopupController.")]
+    [SerializeField] private ShopItemPopupController shopItemPopupPrefabOverride;
+
+    private ShopItemPopupController shopItemPopupPrefabInjected;
+    private ShopItemPopupController shopItemPopupInstance;
+    private bool shopPurchaseHandlerWired;
+
+    /// <summary>Catalogue affiché (dernier Refresh). Sert au clic sur les slots.</summary>
+    private List<MarketCatalogPrototype.ListingRow> lastListings;
+
     /// <summary>Injection depuis <see cref="UIManager"/> : préférez appeler avant activation du GameObject.</summary>
-    public void Initialize(ItemDatabase database, InventorySlotUI slotPrefabOverride, int columns)
+    public void Initialize(
+        ItemDatabase database,
+        InventorySlotUI slotPrefabOverride,
+        int columns,
+        ShopItemPopupController itemPopupPrefab = null)
     {
         itemDatabase = database;
         slotPrefab = slotPrefabOverride;
         columnCount = Mathf.Max(1, columns);
+        shopItemPopupPrefabInjected = itemPopupPrefab;
         BuildIfNeeded();
         initialized = true;
         Refresh();
+    }
+
+    private void OnDestroy()
+    {
+        if (shopItemPopupInstance != null && shopPurchaseHandlerWired)
+        {
+            shopItemPopupInstance.PurchaseRequested -= HandleShopPurchaseRequested;
+            shopPurchaseHandlerWired = false;
+        }
     }
 
     private void Awake()
@@ -78,6 +103,7 @@ public class RuntimeShopScreen : MonoBehaviour
 
         if (!MarketCatalogPrototype.TryLoad(itemDatabase, out List<MarketCatalogPrototype.ListingRow> listings, out string loadError))
         {
+            lastListings = null;
             SetFooterLines("Erreur catalogue JSON", loadError ?? string.Empty);
             ShowFallbackText(loadError ?? string.Empty);
             ClearSlotViews();
@@ -89,6 +115,7 @@ public class RuntimeShopScreen : MonoBehaviour
 
         if (slotPrefab == null)
         {
+            lastListings = null;
             ShowFallbackText(BuildCatalogFallbackText(listings));
             SetFooterLines(
                 $"Prototype JSON — {listings.Count} offre(s) (vue texte)",
@@ -97,12 +124,16 @@ public class RuntimeShopScreen : MonoBehaviour
             return;
         }
 
+        lastListings = listings;
+
         EnsureSlotViews(listings.Count);
 
         for (int i = 0; i < slotViews.Count; i++)
         {
             MarketCatalogPrototype.ListingRow row = listings[i];
             slotViews[i].Refresh(row.Slot);
+            int capturedIndex = i;
+            slotViews[i].SetClickHandler(() => OnShopSlotClicked(capturedIndex));
         }
 
         SetFooterLines(
@@ -118,7 +149,93 @@ public class RuntimeShopScreen : MonoBehaviour
 
     private void ClearSlotViews()
     {
+        lastListings = null;
         EnsureSlotViews(0);
+    }
+
+    private void OnShopSlotClicked(int index)
+    {
+        if (lastListings == null || index < 0 || index >= lastListings.Count)
+            return;
+
+        MarketCatalogPrototype.ListingRow row = lastListings[index];
+        if (row.Slot == null || row.Slot.IsEmpty || row.Slot.Item == null)
+            return;
+
+        ShopItemPopupController popup = ResolveShopItemPopup();
+        if (popup == null)
+        {
+            Debug.LogWarning(
+                "[RuntimeShopScreen] ShopItemPopup introuvable. Assignez ShopItemPopupController sur UIManager " +
+                "(champ dédié) ou placez la popup en enfant de l'écran shop, ou sur ce composant (override).");
+            return;
+        }
+
+        EnsureShopPurchaseWired(popup);
+
+        ItemDefinition item = row.Slot.Item;
+        var data = new ShopItemPopupData(
+            item.ItemId,
+            item.DisplayName,
+            string.Empty,
+            string.Empty,
+            item.Icon,
+            row.UnitPrice,
+            1,
+            Mathf.Max(1, item.MaxStack));
+
+        popup.transform.SetAsLastSibling();
+        popup.Open(data);
+    }
+
+    private ShopItemPopupController ResolveShopItemPopup()
+    {
+        if (shopItemPopupInstance != null)
+            return shopItemPopupInstance;
+
+        shopItemPopupInstance = GetComponentInChildren<ShopItemPopupController>(true);
+        if (shopItemPopupInstance != null)
+            return shopItemPopupInstance;
+
+        ShopItemPopupController prefab = shopItemPopupPrefabInjected != null
+            ? shopItemPopupPrefabInjected
+            : shopItemPopupPrefabOverride;
+
+        if (prefab == null)
+            return null;
+
+        shopItemPopupInstance = Instantiate(prefab, transform);
+        shopItemPopupInstance.gameObject.name = "ShopItemPopup";
+
+        if (shopItemPopupInstance.TryGetComponent<RectTransform>(out RectTransform popupRect))
+        {
+            popupRect.anchorMin = Vector2.zero;
+            popupRect.anchorMax = Vector2.one;
+            popupRect.offsetMin = Vector2.zero;
+            popupRect.offsetMax = Vector2.zero;
+        }
+
+        shopItemPopupInstance.gameObject.SetActive(false);
+        return shopItemPopupInstance;
+    }
+
+    private void EnsureShopPurchaseWired(ShopItemPopupController popup)
+    {
+        if (popup == null || shopPurchaseHandlerWired)
+            return;
+
+        popup.PurchaseRequested += HandleShopPurchaseRequested;
+        shopPurchaseHandlerWired = true;
+    }
+
+    private void HandleShopPurchaseRequested(ShopItemPopupData data, int quantity, int totalPrice)
+    {
+        Debug.Log(
+            $"[RuntimeShopScreen] Achat demandé (prototype) : {data.DisplayName} x{quantity} = {totalPrice} — " +
+            "brancher wallet / inventaire ici.");
+
+        if (shopItemPopupInstance != null)
+            shopItemPopupInstance.Close();
     }
 
     private void BuildIfNeeded()

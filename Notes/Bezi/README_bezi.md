@@ -93,6 +93,29 @@ Outil de dev jeu intégré à **Unity** : indexation **en temps réel** du proje
 **Mauvais exemple :**  
 *« Fix errors »* (trop vague)
 
+### Limitation d'execution Bezy (prefabs lourds)
+
+Quand un script de construction est trop volumineux (trop d'objets/composants/wiring en une passe), Bezy peut timeout et s'interrompre.
+
+Regle projet:
+- Toujours donner des **fichiers de sortie explicites** (chemins exacts a creer/modifier).
+- Toujours demander une execution en **phases sequentielles**, avec confirmation entre phases.
+- Toujours preciser "ne pas rescanner tout le projet" et "reutiliser les scripts existants".
+
+Pattern obligatoire pour UI/prefab complexe:
+- **Phase 1 - Structure**: prefab vide + hierarchie GameObjects uniquement.
+- **Phase 2 - Composants**: Image, Button, TMP_Text, LayoutGroup, etc.
+- **Phase 3 - Wiring**: affectation des SerializeField + evenements.
+
+Si echec/timeout:
+- Rejouer la phase en sous-etapes plus petites (sans fusionner les 3 phases).
+
+Exemple de sorties explicites:
+- `Assets/Prefabs/UI/ShopItemPopup.prefab` (creer/modifier)
+- `Assets/Scripts/UI/Shop/ShopItemPopupView.cs` (reutiliser)
+- `Assets/Scripts/UI/Shop/ShopItemPopupController.cs` (reutiliser)
+- `Assets/Scripts/UI/Shop/ShopItemPopupData.cs` (reutiliser)
+
 ### Qualité du prompt
 
 - Qualité prompt = qualité réponse : être **explicite** et inclure **tout le contexte utile**.
@@ -119,6 +142,23 @@ Doc : [Using Threads](https://docs.bezi.com/fundamentals/threads)
 - **Bezi** : contexte Unity en direct, bon pour générer / ajuster dans l’éditeur avec `@` sur les objets.
 - **Cursor** : bon pour architecture, gros refactors, fichiers Markdown du repo (`Notes/`, `PROJECT_LOG.md`, etc.).
 - Cette note sert de **référence rapide** sans remplacer la doc officielle.
+
+---
+
+## Convention data - Item Shop
+
+Pour ce projet, un "item shop" est compose de:
+- **Base item**: `ItemDefinition` (identite, nom, icone, stack, etc.)
+- **Couche shop**: donnees necessaires a la vente (prix unitaire, min/max quantite, regles d'achat)
+
+Concretement:
+- La popup UI reste en `MonoBehaviour` (`ShopItemPopupView` / `ShopItemPopupController`).
+- Les donnees affichees/achetees sont projetees dans un modele popup (`ShopItemPopupData`).
+- Le refactor cible pourra introduire une definition shop dediee (ex: `ShopOfferDefinition`) qui reference `ItemDefinition` + champs shop.
+
+Objectif:
+- Eviter de coupler la logique UI/achat au modele d'inventaire brut.
+- Permettre plusieurs offres shop pour un meme `ItemDefinition` sans casser l'existant.
 
 ---
 

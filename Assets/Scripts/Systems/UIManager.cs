@@ -87,6 +87,8 @@ public class UIManager : MonoBehaviour
     [Tooltip("Prefab visuel d'un slot shop pour le fallback runtime. Si non défini, utilise le prefab inventaire.")]
     [SerializeField] private InventorySlotUI runtimeShopSlotPrefab;
     [SerializeField] private int runtimeShopColumns = 5;
+    [Tooltip("Popup détail / achat (optionnel). Instanciée sous l'écran shop au premier clic sur une offre.")]
+    [SerializeField] private ShopItemPopupController shopItemPopupPrefab;
 
     // ── Runtime ───────────────────────────────────────────────────────────────
 
@@ -291,7 +293,7 @@ public class UIManager : MonoBehaviour
             {
                 InventorySlotUI slotPrefab = runtimeShopSlotPrefab != null ? runtimeShopSlotPrefab : runtimeInventorySlotPrefab;
                 ItemDatabase shopDb = PlayerInventory.Instance != null ? PlayerInventory.Instance.ItemDatabase : null;
-                shop.Initialize(shopDb, slotPrefab, runtimeShopColumns);
+                shop.Initialize(shopDb, slotPrefab, runtimeShopColumns, shopItemPopupPrefab);
             }
 
             return;
@@ -395,7 +397,7 @@ public class UIManager : MonoBehaviour
         RuntimeShopScreen runtimeScreen = root.AddComponent<RuntimeShopScreen>();
         InventorySlotUI slotPrefab = runtimeShopSlotPrefab != null ? runtimeShopSlotPrefab : runtimeInventorySlotPrefab;
         ItemDatabase shopDb = PlayerInventory.Instance != null ? PlayerInventory.Instance.ItemDatabase : null;
-        runtimeScreen.Initialize(shopDb, slotPrefab, runtimeShopColumns);
+        runtimeScreen.Initialize(shopDb, slotPrefab, runtimeShopColumns, shopItemPopupPrefab);
 
         registry[ScreenId.Shop] = new ScreenEntry
         {
