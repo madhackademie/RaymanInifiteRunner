@@ -16,6 +16,11 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
 
     private Action clickAction;
 
+    private void Awake()
+    {
+        EnsureRaycastTargetOnRoot();
+    }
+
     /// <summary>Dernier slot affiché (référence partagée avec le modèle appelant).</summary>
     public InventorySlot BoundSlot { get; private set; }
 
@@ -82,5 +87,21 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
         quantityLabel.enabled = hasQuantity;
         quantityLabel.color = Color.white;
         quantityLabel.text = hasQuantity ? quantity.ToString() : string.Empty;
+    }
+
+    /// <summary>
+    /// Garantit un Graphic raycastable sur la racine pour recevoir IPointerClickHandler,
+    /// meme si le prefab n'a pas d'Image de fond configuree.
+    /// </summary>
+    private void EnsureRaycastTargetOnRoot()
+    {
+        Graphic rootGraphic = GetComponent<Graphic>();
+        if (rootGraphic == null)
+            rootGraphic = gameObject.AddComponent<Image>();
+
+        rootGraphic.raycastTarget = true;
+
+        if (rootGraphic is Image image)
+            image.color = new Color(1f, 1f, 1f, 0f);
     }
 }

@@ -1000,3 +1000,29 @@
 - `Assets/Resources/Market/market_catalog.json`
 - `Notes/Todo_project.md` — *Prochaine session*
 - `Notes/Ui/Todo_ui.md` — *Shop — mécanique achat*
+
+## 2026-05-07 — fin de session (shop popup + inventaire + priorite monnaie)
+
+### Contexte
+- Session de stabilisation du shop runtime: interaction clic item, popup d'achat, liaison donnees ScriptableObject.
+- Demande de cloture: preparer clairement la prochaine session avec une priorite unique.
+
+### Ce qu’on a fait
+- [x] Shop popup: correction du flux de clic (slots cliquables + ouverture popup resolue).
+- [x] Donnees shop: ajout des SO `ShopItemDefinition` / `ShopCatalogDefinition` et branchement dans `RuntimeShopScreen` (fallback JSON conserve).
+- [x] Catalogue: retrait de `LaitueMature` du catalogue principal, conservation de l'asset renomme en `SellItem_LaitueMature`.
+- [x] Achat -> inventaire: branchement du flux shop sur `PlayerInventory.TryAdd(...)` (meme comportement que recolte), avec gestion `Success/Partial/Full`.
+
+### Prochaine session (priorite immediate)
+1. **Monnaie inventaire + deduction achat**: creer la ressource monnaie (item + database + solde UI) et deduire le montant lors de l'achat shop avant `TryAdd`.
+2. Bloquer l'achat si fonds insuffisants avec feedback utilisateur explicite.
+
+### Suivi memoire de session
+- [x] Ajout d'une regle always-apply: `.cursor/rules/session_planning_memory.mdc`.
+- Objectif: quand l'utilisateur demande "quelle est la tache du jour/prochaine fois", ressortir en priorite la tache monnaie/deduction shop.
+
+### Liens utiles
+- `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs`
+- `Assets/Scripts/Shop/ShopItemDefinition.cs`
+- `Assets/Scripts/Shop/ShopCatalogDefinition.cs`
+- `Notes/Todo_project.md`

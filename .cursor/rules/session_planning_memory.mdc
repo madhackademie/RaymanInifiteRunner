@@ -1,0 +1,18 @@
+---
+description: Garder la tache prioritaire de prochaine session visible
+alwaysApply: true
+---
+
+# Suivi de session (memoire projet)
+
+- A chaque demande de type "quelle est la tache du jour / prochaine fois", commencer par lire:
+  - `Notes/Todo_project.md` (section "Prochaine session (priorite immediate)")
+  - `PROJECT_LOG.md` (derniere entree datee)
+- Repondre avec la priorite la plus recente et concrete, pas avec une tache generique.
+- Si une tache "prochaine session" est donnee par l'utilisateur en fin de session:
+  1. l'ajouter dans `Notes/Todo_project.md`,
+  2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
+  3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
+- Pour ce projet, la priorite shop actuelle a conserver est:
+  - creer la ressource monnaie dans l'inventaire,
+  - deduire ce montant lors de l'achat shop.

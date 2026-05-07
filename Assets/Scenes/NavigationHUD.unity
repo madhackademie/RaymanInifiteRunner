@@ -520,6 +520,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   screenRoot: {fileID: 1711491974}
+  hudModalBackdropSprite: {fileID: 0}
+  hudModalBackdropTint: {r: 1, g: 1, b: 1, a: 1}
+  hudModalCanvasSortingOrder: 400
   priorityScreens: []
   secondaryScreens:
   - screenId: Shop
@@ -530,6 +533,7 @@ MonoBehaviour:
   autoCreateShopScreen: 0
   runtimeShopSlotPrefab: {fileID: 4882144160622489148, guid: f7260c5284a06ca498e379228e4ec7ef, type: 3}
   runtimeShopColumns: 5
+  shopItemPopupPrefab: {fileID: 0}
 --- !u!1 &877250849
 GameObject:
   m_ObjectHideFlags: 0

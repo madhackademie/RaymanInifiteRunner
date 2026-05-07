@@ -48,3 +48,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9adf8f0de0481e91bc9f08534f6ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RuntimeShopScreen
+  shopItemPopupPrefabOverride: {fileID: 5858578306874055066, guid: 67c4733d4537b9c40b7e1ebdae85b0aa, type: 3}
+  shopCatalogDefinition: {fileID: 11400000, guid: da9613e2b7e7e6049ae6219d208109c9, type: 2}

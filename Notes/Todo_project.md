@@ -16,6 +16,7 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prochaine session (priorité immédiate)
 
+- [ ] **Shop — monnaie inventaire + deduction achat (NOUVELLE PRIORITE)** : creer la ressource monnaie dans l'inventaire (item dedie + entree `ItemDatabase` + affichage du solde), puis deduire ce montant lors d'un achat shop avant validation `TryAdd`; si fonds insuffisants, bloquer l'achat avec feedback utilisateur.
 - [ ] **Shop — créer la ressource Argent (priorité)** : ajouter un item monnaie (ex. `money`) dans les données inventaire (`ItemDefinition` + `ItemDatabase`) et préparer son usage dans le Shop (affichage/solde + coûts d'achat/vente à brancher ensuite).
 - [ ] **Shop — flux achat dédié (mécanique)** : clic sur une offre → fenêtre détail (image, prix unitaire, description optionnelle) → contrôles **+** / **−** / **Payer** avec libellé **`prix × quantité`** ; **popup de confirmation** ; si fonds OK → débit + `TryAdd` inventaire, sinon message **manque de fonds**. Polish ultérieur : saisie quantité au clavier. Spec : **`Notes/Ui/DOC_feature_shop.md`** §3 ; checklist UI : **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*).
 - [ ] **Shop — linkage Inspector / références vides** : passer les scènes/prefabs UI concernés pour corriger les champs `SerializeField` non assignés (bouton/icône onglet Shop, refs écrans/panels, prefabs slots) et noter explicitement chaque liaison manquante.

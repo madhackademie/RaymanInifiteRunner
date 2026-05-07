@@ -70,7 +70,7 @@ public sealed class ShopItemPopupView : MonoBehaviour
     public void SetTotalPrice(int totalPrice)
     {
         if (confirmButtonText != null)
-            confirmButtonText.text = $"Acheter {Mathf.Max(0, totalPrice)}";
+            confirmButtonText.text = $"Acheter {Mathf.Max(0, totalPrice)} €";
     }
 
     public void SetConfirmButtonLabel(string label)

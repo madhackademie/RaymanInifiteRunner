@@ -33,6 +33,11 @@ public class RuntimeShopScreen : MonoBehaviour
     [Header("Popup achat item (optionnel)")]
     [Tooltip("Si non assigné ici, utilise la référence injectée par UIManager ou un enfant ShopItemPopupController.")]
     [SerializeField] private ShopItemPopupController shopItemPopupPrefabOverride;
+    [Tooltip("Optionnel: feedback texte (ex: inventaire plein) reutilise par le flux shop.")]
+    [SerializeField] private InventoryFeedbackUI feedbackUI;
+    [Header("Source de donnees shop")]
+    [Tooltip("Si assigne, ce catalogue ScriptableObject est utilise en priorite. Sinon fallback JSON prototype.")]
+    [SerializeField] private ShopCatalogDefinition shopCatalogDefinition;
 
     private ShopItemPopupController shopItemPopupPrefabInjected;
     private ShopItemPopupController shopItemPopupInstance;
@@ -40,6 +45,8 @@ public class RuntimeShopScreen : MonoBehaviour
 
     /// <summary>Catalogue affiché (dernier Refresh). Sert au clic sur les slots.</summary>
     private List<MarketCatalogPrototype.ListingRow> lastListings;
+    /// <summary>Definition SO associee a chaque ligne affichee (meme index que lastListings).</summary>
+    private List<ShopItemDefinition> lastShopDefinitions;
 
     /// <summary>Injection depuis <see cref="UIManager"/> : préférez appeler avant activation du GameObject.</summary>
     public void Initialize(
@@ -101,9 +108,11 @@ public class RuntimeShopScreen : MonoBehaviour
             }
         }
 
-        if (!MarketCatalogPrototype.TryLoad(itemDatabase, out List<MarketCatalogPrototype.ListingRow> listings, out string loadError))
+        List<MarketCatalogPrototype.ListingRow> listings;
+        if (!TryResolveListings(out listings, out string loadError))
         {
             lastListings = null;
+            lastShopDefinitions = null;
             SetFooterLines("Erreur catalogue JSON", loadError ?? string.Empty);
             ShowFallbackText(loadError ?? string.Empty);
             ClearSlotViews();
@@ -116,6 +125,7 @@ public class RuntimeShopScreen : MonoBehaviour
         if (slotPrefab == null)
         {
             lastListings = null;
+            lastShopDefinitions = null;
             ShowFallbackText(BuildCatalogFallbackText(listings));
             SetFooterLines(
                 $"Prototype JSON — {listings.Count} offre(s) (vue texte)",
@@ -141,6 +151,55 @@ public class RuntimeShopScreen : MonoBehaviour
             BuildPriceSummaryLine(listings));
     }
 
+    private bool TryResolveListings(out List<MarketCatalogPrototype.ListingRow> listings, out string errorMessage)
+    {
+        if (shopCatalogDefinition != null)
+            return TryBuildListingsFromScriptableObject(out listings, out errorMessage);
+
+        bool ok = MarketCatalogPrototype.TryLoad(itemDatabase, out listings, out errorMessage);
+        if (ok)
+            lastShopDefinitions = null;
+
+        return ok;
+    }
+
+    private bool TryBuildListingsFromScriptableObject(
+        out List<MarketCatalogPrototype.ListingRow> listings,
+        out string errorMessage)
+    {
+        listings = new List<MarketCatalogPrototype.ListingRow>();
+        lastShopDefinitions = new List<ShopItemDefinition>();
+        errorMessage = null;
+
+        if (shopCatalogDefinition.Items == null || shopCatalogDefinition.Items.Count == 0)
+            return true;
+
+        for (int i = 0; i < shopCatalogDefinition.Items.Count; i++)
+        {
+            ShopItemDefinition entry = shopCatalogDefinition.Items[i];
+            if (entry == null)
+            {
+                Debug.LogWarning("[RuntimeShopScreen] ShopCatalogDefinition: entree null ignoree.");
+                continue;
+            }
+
+            ItemDefinition item = entry.ItemDefinition;
+            if (item == null)
+            {
+                Debug.LogWarning("[RuntimeShopScreen] ShopCatalogDefinition: ItemDefinition manquant, entree ignoree.");
+                continue;
+            }
+
+            var slot = new InventorySlot();
+            slot.Set(item, entry.ListingQuantity);
+
+            listings.Add(new MarketCatalogPrototype.ListingRow(slot, entry.UnitPrice));
+            lastShopDefinitions.Add(entry);
+        }
+
+        return true;
+    }
+
     private void TryResolveDatabaseFromPlayer()
     {
         if (PlayerInventory.Instance != null)
@@ -150,6 +209,7 @@ public class RuntimeShopScreen : MonoBehaviour
     private void ClearSlotViews()
     {
         lastListings = null;
+        lastShopDefinitions = null;
         EnsureSlotViews(0);
     }
 
@@ -174,18 +234,39 @@ public class RuntimeShopScreen : MonoBehaviour
         EnsureShopPurchaseWired(popup);
 
         ItemDefinition item = row.Slot.Item;
+        ShopItemDefinition shopDefinition = GetShopDefinitionByIndex(index);
+        int maxPurchasableInListing = Mathf.Max(1, row.Slot.Quantity);
+        int minQuantity = shopDefinition != null ? shopDefinition.MinPurchaseQuantity : 1;
+        int maxQuantity = shopDefinition != null
+            ? Mathf.Min(shopDefinition.MaxPurchaseQuantity, maxPurchasableInListing)
+            : Mathf.Min(Mathf.Max(1, item.MaxStack), maxPurchasableInListing);
+        maxQuantity = Mathf.Max(minQuantity, maxQuantity);
+
         var data = new ShopItemPopupData(
             item.ItemId,
             item.DisplayName,
-            string.Empty,
-            string.Empty,
+            shopDefinition != null ? shopDefinition.RarityLabel : string.Empty,
+            shopDefinition != null ? shopDefinition.Description : string.Empty,
             item.Icon,
-            row.UnitPrice,
-            1,
-            Mathf.Max(1, item.MaxStack));
+            shopDefinition != null ? shopDefinition.UnitPrice : row.UnitPrice,
+            minQuantity,
+            maxQuantity);
+
+        // La popup peut avoir ete instanciee inactive lors du resolve.
+        // Il faut activer le GameObject parent avant Open(), sinon la vue reste invisible.
+        if (!popup.gameObject.activeSelf)
+            popup.gameObject.SetActive(true);
 
         popup.transform.SetAsLastSibling();
         popup.Open(data);
+    }
+
+    private ShopItemDefinition GetShopDefinitionByIndex(int index)
+    {
+        if (lastShopDefinitions == null || index < 0 || index >= lastShopDefinitions.Count)
+            return null;
+
+        return lastShopDefinitions[index];
     }
 
     private ShopItemPopupController ResolveShopItemPopup()
@@ -230,12 +311,62 @@ public class RuntimeShopScreen : MonoBehaviour
 
     private void HandleShopPurchaseRequested(ShopItemPopupData data, int quantity, int totalPrice)
     {
-        Debug.Log(
-            $"[RuntimeShopScreen] Achat demandé (prototype) : {data.DisplayName} x{quantity} = {totalPrice} — " +
-            "brancher wallet / inventaire ici.");
+        if (data == null)
+            return;
 
-        if (shopItemPopupInstance != null)
-            shopItemPopupInstance.Close();
+        PlayerInventory inventory = PlayerInventory.Instance;
+        if (inventory == null)
+        {
+            Debug.LogWarning("[RuntimeShopScreen] PlayerInventory.Instance introuvable — achat annulé.");
+            return;
+        }
+
+        if (itemDatabase == null)
+            TryResolveDatabaseFromPlayer();
+
+        if (itemDatabase == null)
+        {
+            Debug.LogWarning("[RuntimeShopScreen] ItemDatabase indisponible — achat annulé.");
+            return;
+        }
+
+        ItemDefinition item = itemDatabase.GetById(data.ItemId);
+        if (item == null)
+        {
+            Debug.LogWarning($"[RuntimeShopScreen] itemId shop introuvable dans ItemDatabase: '{data.ItemId}'.");
+            return;
+        }
+
+        InventoryResult result = inventory.TryAdd(item, Mathf.Max(1, quantity));
+        switch (result)
+        {
+            case InventoryResult.Success:
+            case InventoryResult.Partial:
+                Debug.Log(
+                    $"[RuntimeShopScreen] Achat ajouté à l'inventaire: {item.DisplayName} x{quantity} " +
+                    $"(prix total {totalPrice}) — résultat {result}.");
+                if (shopItemPopupInstance != null)
+                    shopItemPopupInstance.Close();
+                break;
+
+            case InventoryResult.Full:
+                Debug.Log($"[RuntimeShopScreen] Inventaire plein — achat impossible pour '{item.DisplayName}'.");
+                ResolveFeedbackUI()?.ShowInventoryFull();
+                break;
+
+            case InventoryResult.InvalidItem:
+                Debug.LogWarning("[RuntimeShopScreen] Achat annulé: item invalide.");
+                break;
+        }
+    }
+
+    private InventoryFeedbackUI ResolveFeedbackUI()
+    {
+        if (feedbackUI != null)
+            return feedbackUI;
+
+        feedbackUI = GetComponentInChildren<InventoryFeedbackUI>(true);
+        return feedbackUI;
     }
 
     private void BuildIfNeeded()
