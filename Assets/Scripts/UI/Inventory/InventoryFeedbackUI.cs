@@ -11,6 +11,7 @@ public class InventoryFeedbackUI : MonoBehaviour
     [SerializeField] private float displayDuration = 2f;
 
     private const string InventoryFullMessage = "Inventaire plein !";
+    private const string InsufficientFundsMessage = "Fonds insuffisants !";
 
     private Coroutine hideCoroutine;
 
@@ -18,6 +19,12 @@ public class InventoryFeedbackUI : MonoBehaviour
     public void ShowInventoryFull()
     {
         ShowMessage(InventoryFullMessage);
+    }
+
+    /// <summary>Message lorsque le solde monnaie est insuffisant pour un achat.</summary>
+    public void ShowInsufficientFunds()
+    {
+        ShowMessage(InsufficientFundsMessage);
     }
 
     /// <summary>Shows a custom message for the configured duration.</summary>

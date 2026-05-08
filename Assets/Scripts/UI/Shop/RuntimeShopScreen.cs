@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Écran shop prototype : grille identique à l’inventaire (<see cref="InventorySlotUI"/> + grille).
-/// Le catalogue est simulé par JSON (<see cref="MarketCatalogPrototype"/>), sans achat réel pour l’instant.
+/// Catalogue JSON (<see cref="MarketCatalogPrototype"/>) ou <see cref="ShopCatalogDefinition"/> ; achat avec débit monnaie (<see cref="InventoryCurrencyAccount"/>).
 /// Fond / tri : <see cref="HudModalBackdrop"/> + <see cref="UIManager"/> (comme l’inventaire HUD).
 /// </summary>
 public class RuntimeShopScreen : MonoBehaviour
@@ -42,6 +42,7 @@ public class RuntimeShopScreen : MonoBehaviour
     private ShopItemPopupController shopItemPopupPrefabInjected;
     private ShopItemPopupController shopItemPopupInstance;
     private bool shopPurchaseHandlerWired;
+    private bool inventoryEventsSubscribed;
 
     /// <summary>Catalogue affiché (dernier Refresh). Sert au clic sur les slots.</summary>
     private List<MarketCatalogPrototype.ListingRow> lastListings;
@@ -61,11 +62,14 @@ public class RuntimeShopScreen : MonoBehaviour
         shopItemPopupPrefabInjected = itemPopupPrefab;
         BuildIfNeeded();
         initialized = true;
+        SubscribeInventoryEvents();
         Refresh();
     }
 
     private void OnDestroy()
     {
+        UnsubscribeInventoryEvents();
+
         if (shopItemPopupInstance != null && shopPurchaseHandlerWired)
         {
             shopItemPopupInstance.PurchaseRequested -= HandleShopPurchaseRequested;
@@ -80,12 +84,17 @@ public class RuntimeShopScreen : MonoBehaviour
 
     private void OnEnable()
     {
+        SubscribeInventoryEvents();
         if (initialized)
             Refresh();
     }
 
+    private void OnDisable() => UnsubscribeInventoryEvents();
+
     public void Refresh()
     {
+        SubscribeInventoryEvents();
+
         if (slotsContainer == null)
             return;
 
@@ -337,27 +346,85 @@ public class RuntimeShopScreen : MonoBehaviour
             return;
         }
 
-        InventoryResult result = inventory.TryAdd(item, Mathf.Max(1, quantity));
-        switch (result)
+        int qty = Mathf.Max(1, quantity);
+        ItemDefinition currency = itemDatabase.PrimaryCurrency;
+
+        if (totalPrice > 0 && currency == null)
         {
-            case InventoryResult.Success:
-            case InventoryResult.Partial:
-                Debug.Log(
-                    $"[RuntimeShopScreen] Achat ajouté à l'inventaire: {item.DisplayName} x{quantity} " +
-                    $"(prix total {totalPrice}) — résultat {result}.");
-                if (shopItemPopupInstance != null)
-                    shopItemPopupInstance.Close();
-                break;
-
-            case InventoryResult.Full:
-                Debug.Log($"[RuntimeShopScreen] Inventaire plein — achat impossible pour '{item.DisplayName}'.");
-                ResolveFeedbackUI()?.ShowInventoryFull();
-                break;
-
-            case InventoryResult.InvalidItem:
-                Debug.LogWarning("[RuntimeShopScreen] Achat annulé: item invalide.");
-                break;
+            Debug.LogWarning("[RuntimeShopScreen] ItemDatabase.PrimaryCurrency non assigné — impossible de payer.");
+            ResolveFeedbackUI()?.ShowMessage("Monnaie non configurée.");
+            return;
         }
+
+        if (totalPrice > 0 && !InventoryCurrencyAccount.HasSufficientFunds(inventory, currency, totalPrice))
+        {
+            ResolveFeedbackUI()?.ShowInsufficientFunds();
+            return;
+        }
+
+        if (!inventory.CanFitQuantity(item, qty))
+        {
+            ResolveFeedbackUI()?.ShowInventoryFull();
+            return;
+        }
+
+        if (!InventoryCurrencyAccount.TryPurchase(inventory, currency, totalPrice, item, qty, out InventoryResult addResult)
+            || addResult != InventoryResult.Success)
+        {
+            Debug.LogWarning($"[RuntimeShopScreen] Échec achat inattendu ({addResult}).");
+            return;
+        }
+
+        Debug.Log(
+            $"[RuntimeShopScreen] Achat : {item.DisplayName} x{qty} pour {totalPrice} (monnaie débitée).");
+
+        if (shopItemPopupInstance != null)
+            shopItemPopupInstance.Close();
+
+        Refresh();
+    }
+
+    private void SubscribeInventoryEvents()
+    {
+        if (inventoryEventsSubscribed || PlayerInventory.Instance == null)
+            return;
+
+        PlayerInventory.Instance.OnInventoryChanged += HandlePlayerInventoryChanged;
+        inventoryEventsSubscribed = true;
+    }
+
+    private void UnsubscribeInventoryEvents()
+    {
+        if (!inventoryEventsSubscribed)
+            return;
+
+        if (PlayerInventory.Instance != null)
+            PlayerInventory.Instance.OnInventoryChanged -= HandlePlayerInventoryChanged;
+
+        inventoryEventsSubscribed = false;
+    }
+
+    private void HandlePlayerInventoryChanged()
+    {
+        if (initialized)
+            Refresh();
+    }
+
+    private string BuildCurrencyBalanceLine()
+    {
+        if (itemDatabase == null)
+            TryResolveDatabaseFromPlayer();
+
+        ItemDefinition currency = itemDatabase != null ? itemDatabase.PrimaryCurrency : null;
+        if (currency == null)
+            return null;
+
+        PlayerInventory inv = PlayerInventory.Instance;
+        if (inv == null)
+            return $"{currency.DisplayName} : —";
+
+        int balance = InventoryCurrencyAccount.GetBalance(inv, currency);
+        return $"{currency.DisplayName} : {balance}";
     }
 
     private InventoryFeedbackUI ResolveFeedbackUI()
@@ -588,7 +655,9 @@ public class RuntimeShopScreen : MonoBehaviour
         if (stateLabel == null)
             return;
 
-        stateLabel.text = string.IsNullOrEmpty(lineB) ? lineA : $"{lineA}\n{lineB}";
+        string balanceLine = BuildCurrencyBalanceLine();
+        string core = string.IsNullOrEmpty(lineB) ? lineA : $"{lineA}\n{lineB}";
+        stateLabel.text = string.IsNullOrEmpty(balanceLine) ? core : $"{balanceLine}\n{core}";
     }
 
     private void HideScreen()

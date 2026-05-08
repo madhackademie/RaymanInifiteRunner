@@ -1,5 +1,20 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-08
+### Contexte
+- Session post-intégration inventaire / shop / wallet ; décision auteur : **pas de script Python** pour générer ou maintenir les prefabs UI inventaire.
+
+### Ce qu’on a fait
+- [x] Document **`Notes/Ui/NOTE_inventory_wallet_upgrade.md`** : problématique **double source de vérité** (scène `Inventaire.unity` vs écran réel via **`UIManager` + `ScreenId.Inventory`** / **`RuntimeInventoryScreen`**), piège **Canvas/sorting**, pourquoi l’extraction YAML hors Unity est fragile et non upgradable par le flux Unity normal.
+- [x] **`Notes/Todo_project.md`** : entrée **Prochaine session** pour reprendre inventaire + wallet **sans bidouille externe**, lien vers la note ci-dessus.
+- [x] Suppression du script **`Tools/extract_inventory_prefab.py`** (workflow rejeté).
+
+### Prochaines actions (priorité)
+1. Reprendre une passe « inventaire + wallet » avec prefab édité dans Unity uniquement et une seule source de vérité (`UIManager`).
+2. Continuer la stabilisation shop / monnaie selon les todos déjà listés dans `Todo_project.md`.
+
+---
+
 ## 2026-03-19
 ### Contexte
 - Machine: PC bureau/ **PC portable**

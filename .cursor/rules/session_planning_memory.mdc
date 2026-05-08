@@ -5,14 +5,20 @@ alwaysApply: true
 
 # Suivi de session (memoire projet)
 
+- Cette regle est conservee pour memoire courte.
+- Pour le protocole complet de gestion de projet, appliquer en priorite:
+  - `.cursor/rules/project_management_session_protocol.mdc`
 - A chaque demande de type "quelle est la tache du jour / prochaine fois", commencer par lire:
+  - `WORKFLOW_PROTOCOL.md`
+  - `ASSISTANT_CONTEXT.md`
   - `Notes/Todo_project.md` (section "Prochaine session (priorite immediate)")
   - `PROJECT_LOG.md` (derniere entree datee)
-- Repondre avec la priorite la plus recente et concrete, pas avec une tache generique.
+- Repondre avec la priorite la plus recente et concrete, jamais une tache generique.
 - Si une tache "prochaine session" est donnee par l'utilisateur en fin de session:
   1. l'ajouter dans `Notes/Todo_project.md`,
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
-- Pour ce projet, la priorite shop actuelle a conserver est:
+- Priorite courante connue (a revalider via docs a chaque session):
   - creer la ressource monnaie dans l'inventaire,
-  - deduire ce montant lors de l'achat shop.
+  - deduire ce montant lors de l'achat shop,
+  - bloquer l'achat si fonds insuffisants avec feedback.

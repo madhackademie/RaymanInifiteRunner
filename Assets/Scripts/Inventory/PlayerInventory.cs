@@ -18,10 +18,17 @@ public class PlayerInventory : MonoBehaviour
     [Tooltip("Database used to resolve item IDs during save/load.")]
     [SerializeField] private ItemDatabase itemDatabase;
 
+    [Header("Économie")]
+    [Tooltip("Montant crédité une seule fois par profil (première sauvegarde ou ancienne sans ce flag), puis persisté comme les autres items.")]
+    [SerializeField] [Min(0)] private int startingCurrencyAmount = 100;
+
     /// <summary>Résolution des définitions d’items (shop prototype JSON, sauvegarde, etc.).</summary>
     public ItemDatabase ItemDatabase => itemDatabase;
 
     private readonly List<InventorySlot> slots = new();
+
+    /// <summary>Si la réserve de départ monnaie a déjà été appliquée pour ce fichier de sauvegarde.</summary>
+    private bool startingCurrencyApplied;
 
     /// <summary>Fired after any successful mutation of the inventory.</summary>
     public event Action OnInventoryChanged;
@@ -59,7 +66,7 @@ public class PlayerInventory : MonoBehaviour
     /// <summary>Persists the current inventory state to disk.</summary>
     public void SaveToDisk()
     {
-        InventorySaveService.Save(slots);
+        InventorySaveService.Save(slots, startingCurrencyApplied);
     }
 
     /// <summary>Restores the inventory state from disk. Replaces all current slot data.</summary>
@@ -71,8 +78,39 @@ public class PlayerInventory : MonoBehaviour
             return;
         }
 
-        if (InventorySaveService.TryLoad(itemDatabase, slots, out int count))
+        if (InventorySaveService.TryLoad(itemDatabase, slots, out int count, out bool grantFlagFromDisk))
+        {
+            startingCurrencyApplied = grantFlagFromDisk;
             Debug.Log($"[PlayerInventory] {count} slot(s) restauré(s) depuis la sauvegarde.");
+        }
+        else
+            startingCurrencyApplied = false;
+
+        ApplyStartingCurrencyGrantIfNeeded();
+    }
+
+    /// <summary>
+    /// Pack monnaie unique par profil : crédite <see cref="startingCurrencyAmount"/> une fois,
+    /// puis enregistre le tout dans <c>inventory.json</c> comme un item normal.
+    /// </summary>
+    private void ApplyStartingCurrencyGrantIfNeeded()
+    {
+        if (startingCurrencyApplied || itemDatabase == null)
+            return;
+
+        ItemDefinition currency = itemDatabase.PrimaryCurrency;
+        if (currency == null || startingCurrencyAmount <= 0)
+            return;
+
+        startingCurrencyApplied = true;
+        if (!InventoryCurrencyAccount.TryCredit(this, currency, startingCurrencyAmount))
+        {
+            startingCurrencyApplied = false;
+            Debug.LogWarning(
+                "[PlayerInventory] Réserve monnaie de départ impossible (inventaire plein ?). Réessayez après libération d’un slot.",
+                this);
+            return;
+        }
     }
 
     /// <summary>Clears all slots and deletes the save file from disk.</summary>
@@ -81,6 +119,8 @@ public class PlayerInventory : MonoBehaviour
     {
         InitialiseSlots();
         InventorySaveService.Delete();
+        startingCurrencyApplied = false;
+        ApplyStartingCurrencyGrantIfNeeded();
         OnInventoryChanged?.Invoke();
     }
 
@@ -221,6 +261,30 @@ public class PlayerInventory : MonoBehaviour
             if (slot.Item == item && !slot.IsFull)
                 return true;
         }
+        return false;
+    }
+
+    /// <summary>
+    /// Indique si au moins <paramref name="quantity"/> unités peuvent être ajoutées en réutilisant piles et slots vides.
+    /// </summary>
+    public bool CanFitQuantity(ItemDefinition item, int quantity)
+    {
+        if (item == null || quantity <= 0)
+            return true;
+
+        int remaining = quantity;
+
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.IsEmpty)
+                remaining -= Mathf.Min(item.MaxStack, remaining);
+            else if (slot.Item == item && !slot.IsFull)
+                remaining -= slot.RemainingSpace;
+
+            if (remaining <= 0)
+                return true;
+        }
+
         return false;
     }
 }

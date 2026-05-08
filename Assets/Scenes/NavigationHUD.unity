@@ -525,9 +525,11 @@ MonoBehaviour:
   hudModalCanvasSortingOrder: 400
   priorityScreens: []
   secondaryScreens:
+  - screenId: Inventory
+    prefab: {fileID: 1665172028, guid: f3e2d1c0b9a8877665544332211fedcb, type: 3}
   - screenId: Shop
     prefab: {fileID: 3554729373998104824, guid: ea9c5ff971f297d459d3ea6c6dffa175, type: 3}
-  autoCreateInventoryScreen: 1
+  autoCreateInventoryScreen: 0
   runtimeInventorySlotPrefab: {fileID: 4882144160622489148, guid: f7260c5284a06ca498e379228e4ec7ef, type: 3}
   runtimeInventoryColumns: 5
   autoCreateShopScreen: 0
@@ -584,6 +586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
   slotCount: 20
   itemDatabase: {fileID: 11400000, guid: 0cdfbba7d963c334ca688e5f0519ef63, type: 2}
+  startingCurrencyAmount: 100
 --- !u!1 &919069777
 GameObject:
   m_ObjectHideFlags: 0

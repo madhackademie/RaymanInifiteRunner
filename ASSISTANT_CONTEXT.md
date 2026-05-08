@@ -27,6 +27,17 @@
 8. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
 9. Nettoyage assets prototype / références Unity.
 
+### Rappel protocole gestion de projet (session)
+- Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
+  - `WORKFLOW_PROTOCOL.md`
+  - `ASSISTANT_CONTEXT.md`
+  - `PROJECT_LOG.md` (derniere entree)
+  - `Notes/Todo_project.md` (prochaine session / priorite immediate)
+- Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
+- Priorite immediate actuellement retenue (a revalider via docs a chaque session):
+  - monnaie inventaire shop + deduction achat,
+  - blocage achat si fonds insuffisants.
+
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :
   - `"encore une fois il y a eu une coupure peux tu reprendre toutefois j'ai du fermer la session unity entre temps donc je ne sais pas si tu va retrouver toutes les traces necessaires. il te faudra te fier au thread."`

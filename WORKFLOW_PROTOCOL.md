@@ -5,7 +5,12 @@ Mise a jour github commande : cf @GIT_HELPER.md [git helper](GIT_HELPER.md)
 
 ## --2--
 Faire lire a cursor le PROJECT_LOG [journal](PROJECT_LOG.md)
-commande “Bootstrap session : lis @WORKFLOW_PROTOCOL.md, @ASSISTANT_CONTEXT.md, @PROJECT_LOG.md”
+commande “Bootstrap session : lis @WORKFLOW_PROTOCOL.md, @ASSISTANT_CONTEXT.md, @PROJECT_LOG.md, @Notes/Todo_project.md”
+
+Pour toute demande de gestion de projet (tache du jour, priorite, prochaine session):
+- lire d'abord les 4 fichiers ci-dessus,
+- repondre uniquement avec la priorite la plus recente issue des docs,
+- ne jamais inventer une tache generique.
 
 ## --3--
 Fin de session : tu me dis “Mets à jour le journal”.

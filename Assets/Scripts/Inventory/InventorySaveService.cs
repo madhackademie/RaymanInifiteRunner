@@ -19,7 +19,10 @@ public static class InventorySaveService
     /// Serialises the given slots to JSON and writes them to disk.
     /// Only non-empty slots are persisted.
     /// </summary>
-    public static void Save(IReadOnlyList<InventorySlot> slots)
+    /// <param name="startingCurrencyApplied">
+    /// Si la réserve monnaie de départ unique a déjà été accordée pour ce profil (voir <see cref="PlayerInventory"/>).
+    /// </param>
+    public static void Save(IReadOnlyList<InventorySlot> slots, bool startingCurrencyApplied)
     {
         var records = new List<SlotRecord>(slots.Count);
 
@@ -37,7 +40,9 @@ public static class InventorySaveService
             });
         }
 
-        string json = JsonUtility.ToJson(new SaveData { slots = records }, prettyPrint: true);
+        string json = JsonUtility.ToJson(
+            new SaveData { slots = records, startingCurrencyApplied = startingCurrencyApplied },
+            prettyPrint: true);
 
         try
         {
@@ -53,9 +58,17 @@ public static class InventorySaveService
     /// Loads the save file from disk and restores slot data via <paramref name="database"/>.
     /// Returns false if no save file exists or an error occurs.
     /// </summary>
-    public static bool TryLoad(ItemDatabase database, IReadOnlyList<InventorySlot> slots, out int restoredCount)
+    /// <param name="startingCurrencyApplied">
+    /// Valeur lue dans la sauvegarde ; faux si absent (anciens fichiers) ou fichier inexistant.
+    /// </param>
+    public static bool TryLoad(
+        ItemDatabase database,
+        IReadOnlyList<InventorySlot> slots,
+        out int restoredCount,
+        out bool startingCurrencyApplied)
     {
         restoredCount = 0;
+        startingCurrencyApplied = false;
 
         if (!File.Exists(SaveFilePath))
             return false;
@@ -67,6 +80,8 @@ public static class InventorySaveService
 
             if (data?.slots == null)
                 return false;
+
+            startingCurrencyApplied = data.startingCurrencyApplied;
 
             foreach (SlotRecord record in data.slots)
             {
@@ -109,6 +124,9 @@ public static class InventorySaveService
     [Serializable]
     private class SaveData
     {
+        /// <summary>Défaut JsonUtility si absent du JSON (anciennes sauvegardes) : false.</summary>
+        public bool startingCurrencyApplied;
+
         public List<SlotRecord> slots;
     }
 

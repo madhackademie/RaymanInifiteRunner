@@ -10,10 +10,17 @@ public class ItemDatabase : ScriptableObject
 {
     [SerializeField] private List<ItemDefinition> items = new();
 
+    [Header("Économie")]
+    [Tooltip("Monnaie utilisée pour les prix du shop (débit avant TryAdd sur l’objet acheté).")]
+    [SerializeField] private ItemDefinition primaryCurrency;
+
     private Dictionary<string, ItemDefinition> lookupCache;
 
     /// <summary>Read-only list of all registered items.</summary>
     public IReadOnlyList<ItemDefinition> Items => items;
+
+    /// <summary>Monnaie principale (ex. euros), ou null si non configurée.</summary>
+    public ItemDefinition PrimaryCurrency => primaryCurrency;
 
     /// <summary>Returns the ItemDefinition matching the given id, or null if not found.</summary>
     public ItemDefinition GetById(string itemId)
@@ -50,5 +57,14 @@ public class ItemDatabase : ScriptableObject
     {
         // Invalidate cache when the list is changed in the Inspector.
         lookupCache = null;
+
+        if (primaryCurrency != null &&
+            primaryCurrency.InventoryBehavior != ItemInventoryBehavior.Currency)
+        {
+            Debug.LogWarning(
+                $"[ItemDatabase] « {primaryCurrency.name} » est défini comme monnaie mais " +
+                $"InventoryBehavior != Currency — vérifiez l’asset.",
+                this);
+        }
     }
 }

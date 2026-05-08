@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,7 @@ public class RuntimeInventoryScreen : MonoBehaviour
     private RectTransform slotsContainer;
     private readonly List<InventorySlotUI> slotViews = new();
     private Text fallbackListText;
-    private Text stateLabel;
+    private TextMeshProUGUI stateLabel;
     private Image rootBackdropImage;
     private Image contentBackdropImage;
 
@@ -40,11 +41,6 @@ public class RuntimeInventoryScreen : MonoBehaviour
         TryBindInventory();
         initialized = true;
         Refresh();
-    }
-
-    private void Awake()
-    {
-        BuildIfNeeded();
     }
 
     private void OnEnable()
@@ -111,14 +107,26 @@ public class RuntimeInventoryScreen : MonoBehaviour
         RectTransform header = CreatePanel("Header", root, new Color(0.1f, 0.1f, 0.1f, 0.95f));
         SetAnchors(header, 0f, 1f, 1f, 1f, 0f, -HeaderHeight, 0f, 0f);
 
-        Text title = CreateText("Title", header, "Inventaire");
-        title.alignment = TextAnchor.MiddleLeft;
+        HorizontalLayoutGroup headerLayout = header.gameObject.AddComponent<HorizontalLayoutGroup>();
+        headerLayout.padding = new RectOffset(16, 16, 0, 0);
+        headerLayout.spacing = 8f;
+        headerLayout.childAlignment = TextAnchor.MiddleLeft;
+        headerLayout.childControlWidth = false;
+        headerLayout.childControlHeight = false;
+        headerLayout.childForceExpandWidth = false;
+        headerLayout.childForceExpandHeight = false;
+
+        TextMeshProUGUI title = CreateTMPText("Title", header, "Inventaire");
+        title.alignment = TextAlignmentOptions.MidlineLeft;
         title.fontSize = FontSize;
-        title.rectTransform.offsetMin = new Vector2(24f, 0f);
-        title.rectTransform.offsetMax = new Vector2(-120f, 0f);
+        LayoutElement titleLayout = title.gameObject.AddComponent<LayoutElement>();
+        titleLayout.flexibleWidth = 1f;
+        titleLayout.preferredHeight = HeaderHeight;
 
         Button closeButton = CreateButton("CloseButton", header, "Fermer");
-        SetAnchors(closeButton.GetComponent<RectTransform>(), 1f, 1f, 0.5f, 0.5f, -104f, -20f, -16f, 20f);
+        LayoutElement closeLayout = closeButton.gameObject.AddComponent<LayoutElement>();
+        closeLayout.preferredWidth = 88f;
+        closeLayout.preferredHeight = 40f;
         closeButton.onClick.AddListener(HideScreen);
     }
 
@@ -175,9 +183,9 @@ public class RuntimeInventoryScreen : MonoBehaviour
         RectTransform footer = CreatePanel("Footer", root, new Color(0.1f, 0.1f, 0.1f, 0.85f));
         SetAnchors(footer, 0f, 1f, 0f, 0f, 0f, 0f, 0f, FooterHeight);
 
-        stateLabel = CreateText("State", footer, "Ready");
-        stateLabel.verticalOverflow = VerticalWrapMode.Overflow;
-        stateLabel.alignment = TextAnchor.MiddleLeft;
+        stateLabel = CreateTMPText("State", footer, "Ready");
+        stateLabel.verticalAlignment = VerticalAlignmentOptions.Middle;
+        stateLabel.alignment = TextAlignmentOptions.MidlineLeft;
         stateLabel.fontSize = SmallFontSize;
         stateLabel.rectTransform.offsetMin = new Vector2(24f, 0f);
         stateLabel.rectTransform.offsetMax = new Vector2(-24f, 0f);
@@ -315,6 +323,20 @@ public class RuntimeInventoryScreen : MonoBehaviour
         return rect;
     }
 
+    private static TextMeshProUGUI CreateTMPText(string name, Transform parent, string content)
+    {
+        GameObject go = new(name, typeof(RectTransform));
+        RectTransform rect = go.GetComponent<RectTransform>();
+        rect.SetParent(parent, false);
+        SetAnchors(rect, 0f, 1f, 0f, 1f, 0f, 0f, 0f, 0f);
+
+        TextMeshProUGUI text = go.AddComponent<TextMeshProUGUI>();
+        text.text = content;
+        text.color = Color.white;
+        text.enableWordWrapping = false;
+        return text;
+    }
+
     private static Text CreateText(string name, Transform parent, string content)
     {
         GameObject go = new(name, typeof(RectTransform), typeof(Text));
@@ -340,8 +362,8 @@ public class RuntimeInventoryScreen : MonoBehaviour
         HudModalBackdrop.SetupSolidFillImage(buttonImage);
         buttonImage.color = new Color(0.2f, 0.2f, 0.2f, 1f);
 
-        Text text = CreateText("Label", rect, label);
-        text.alignment = TextAnchor.MiddleCenter;
+        TextMeshProUGUI text = CreateTMPText("Label", rect, label);
+        text.alignment = TextAlignmentOptions.Center;
         text.fontSize = SmallFontSize;
         text.rectTransform.offsetMin = Vector2.zero;
         text.rectTransform.offsetMax = Vector2.zero;

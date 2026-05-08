@@ -36,11 +36,11 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
     /// <summary>Refreshes the slot visuals from the given data model.</summary>
     public void Refresh(InventorySlot slot)
     {
-        BoundSlot = slot;
-        bool isEmpty = slot == null || slot.IsEmpty;
-        
-        if (!isEmpty)
-            Debug.Log($"[InventorySlotUI] '{slot.Item.DisplayName}' x{slot.Quantity} — icon={(slot.Item.Icon != null ? slot.Item.Icon.name : "NULL")}");
+        // Currency items are displayed exclusively in the WalletWidget, not in inventory slots.
+        bool isEmpty = slot == null || slot.IsEmpty
+            || slot.Item.InventoryBehavior == ItemInventoryBehavior.Currency;
+
+        BoundSlot = isEmpty ? null : slot;
 
         if (emptyOverlay != null)
             emptyOverlay.SetActive(isEmpty);

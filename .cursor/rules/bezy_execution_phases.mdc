@@ -27,3 +27,14 @@ Prompt style requirements:
 - Include exact script paths and prefab path.
 - Explicitly say "do not rescan whole project".
 - Explicitly say "reuse existing scripts unless asked otherwise".
+
+Prompt size limit:
+
+- Hard cap : **3500 caractères** (espaces compris) pour le prompt complet envoyé a Bezy.
+- Compter en **caracteres**, pas en mots (limite plus serree, evite les timeouts cote Bezy).
+- Avant d'envoyer, mesurer la longueur (par exemple via VS Code "Selection : N chars" ou un compteur en ligne).
+- Si le prompt depasse 3500 caracteres :
+  - couper le contexte non essentiel (rappels generaux, exemples deja connus de l'agent),
+  - decouper en plusieurs prompts sequentiels (un par phase) plutot que tout fusionner,
+  - reduire les listes a puces aux items reellement requis pour la phase courante.
+- A verifier : si la limite reelle Bezy s'avere differente (mots vs caracteres ou seuil different), mettre a jour cette regle et `Notes/Bezi/README_bezi.md`.

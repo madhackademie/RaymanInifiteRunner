@@ -1,0 +1,45 @@
+---
+description: Protocole gestion de projet (lecture docs + tache + journal)
+alwaysApply: true
+---
+
+# Regle: gestion de projet (session)
+
+Quand la demande utilisateur concerne la gestion de projet (ex: "tache du jour", "prochaine tache", "priorite", "prochaine session", "ou en est-on", "quoi faire"), appliquer ce protocole avant de repondre.
+
+## 1) Ouverture docs obligatoire (ordre de lecture)
+
+Lire systematiquement:
+- `WORKFLOW_PROTOCOL.md`
+- `ASSISTANT_CONTEXT.md`
+- `PROJECT_LOG.md` (derniere entree datee)
+- `Notes/Todo_project.md` (section "Prochaine session" / "priorite immediate")
+
+Objectif: retrouver la priorite reelle de la session en cours, sans invention.
+
+## 2) Regle de reponse (anti-bruit)
+
+- Ne jamais inventer une "tache du jour".
+- Repondre avec la priorite la plus recente, concrete et actionnable, basee sur les documents.
+- Si plusieurs priorites existent, proposer un ordre clair (1, 2, 3) avec la priorite immediate en premier.
+- Si les sources se contredisent, le dire explicitement et demander validation.
+
+## 3) Enregistrement de tache (memoire de session)
+
+Si l'utilisateur donne/modifie une tache de prochaine session:
+1. mettre a jour `Notes/Todo_project.md`,
+2. ajouter la trace dans la nouvelle entree de `PROJECT_LOG.md`,
+3. confirmer a l'utilisateur que cette tache sera la reference lors de la prochaine demande "tache du jour".
+
+## 4) Fin de session
+
+Quand l'utilisateur indique la fin de session ou demande de journaliser:
+- proposer "Mets a jour le journal" si necessaire,
+- enregistrer objectifs, changements, decisions, problemes/solutions, prochaines etapes.
+
+## 5) Priorite courante connue (memoire active)
+
+Priorite immediate actuelle:
+- creer la ressource monnaie dans l'inventaire,
+- deduire le montant lors d'un achat shop,
+- bloquer l'achat si fonds insuffisants avec feedback utilisateur.

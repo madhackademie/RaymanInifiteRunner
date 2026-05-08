@@ -10,6 +10,9 @@ public class ItemDefinition : ScriptableObject
     [SerializeField] private string itemId;
     [SerializeField] private string displayName;
 
+    [Header("Comportement")]
+    [SerializeField] private ItemInventoryBehavior inventoryBehavior = ItemInventoryBehavior.Standard;
+
     [Header("Visuals")]
     [SerializeField] private Sprite icon;
 
@@ -21,6 +24,9 @@ public class ItemDefinition : ScriptableObject
 
     /// <summary>Human-readable name shown in the UI.</summary>
     public string DisplayName => displayName;
+
+    /// <summary>Rôle inventaire (standard ou monnaie).</summary>
+    public ItemInventoryBehavior InventoryBehavior => inventoryBehavior;
 
     /// <summary>Icon displayed in inventory slots.</summary>
     public Sprite Icon => icon;
