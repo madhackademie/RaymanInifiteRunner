@@ -1041,3 +1041,38 @@
 - `Assets/Scripts/Shop/ShopItemDefinition.cs`
 - `Assets/Scripts/Shop/ShopCatalogDefinition.cs`
 - `Notes/Todo_project.md`
+
+## 2026-05-09 — refactor UI runtime (shop editor-first) + wallet inventaire + hygiene Git
+
+### Contexte
+- Session orientee stabilisation UI runtime: clarifier la source de verite des ecrans, sortir de la generation d'ecran en code pour le shop, et securiser l'inventaire runtime.
+- Demande utilisateur: confirmer l'etat des branches, garder un seul flux distant coherent sur `feature/shop`.
+
+### Ce qu'on a fait
+- [x] **UIManager**: suppression du fallback de creation d'ecrans runtime en code (`EnsureInventoryScreenAvailable` / `EnsureShopScreenAvailable`).
+- [x] **Shop editor-first**: refonte de `RuntimeShopScreen` pour fonctionner sur un prefab configure dans l'editeur (bindings serializes), sans construction complete de la hierarchie UI en code.
+- [x] **Prefab Shop**: remplacement de `Assets/Prefabs/Ui/ShopScreen.prefab` par une version configuree pour le runtime.
+- [x] **Inventaire runtime / wallet**: ajout explicite d'une instance `WalletRowUI` dans `Assets/Prefabs/Ui/InventoryScreen.prefab` (section `ExpandedPanel`) pour garantir la presence cote prefab runtime.
+- [x] **Scene legacy**: suppression de `Assets/Scenes/Inventaire.unity` (et `.meta`) apres verification qu'elle n'etait plus utilisee par le HUD/runtime ni dans les Build Settings actifs.
+- [x] **Clarification architecture**: confirmation que le HUD ouvre l'inventaire via `UIManager.TryShowScreen(ScreenId.Inventory)` (prefab runtime), pas via chargement de scene inventaire.
+- [x] **Hygiene Git**:
+  - push des changements sur la branche distante historique `origin/feature/shop`;
+  - suppression de la branche distante parasite `origin/shop`;
+  - branche locale `shop` re-rattachee a `origin/feature/shop`.
+
+### Points d'attention
+- Le flux runtime inventaire depend maintenant du prefab `Assets/Prefabs/Ui/InventoryScreen.prefab` comme source de verite.
+- Si des ajustements visuels wallet/inventaire sont faits plus tard, les appliquer en priorite sur ce prefab runtime.
+
+### Prochaines actions (priorite)
+1. Playtest Unity complet en runtime (HUD -> Inventaire -> Shop -> retour) et verification console.
+2. Verifier le comportement visuel/UX du wallet (`ExpandedPanel`, lignes dynamiques, duplication eventuelle des rows) apres ouverture/fermeture repetee de l'inventaire.
+3. Poursuivre la priorite monnaie shop (debit, blocage fonds insuffisants, feedback UI) selon le backlog.
+
+### Liens utiles
+- `Assets/Scripts/Systems/UIManager.cs`
+- `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs`
+- `Assets/Prefabs/Ui/ShopScreen.prefab`
+- `Assets/Prefabs/Ui/InventoryScreen.prefab`
+- `Assets/Scripts/UI/NavigationHUD.cs`
+- `ProjectSettings/EditorBuildSettings.asset`
