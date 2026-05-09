@@ -4,52 +4,56 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Écran shop prototype : grille identique à l’inventaire (<see cref="InventorySlotUI"/> + grille).
-/// Catalogue JSON (<see cref="MarketCatalogPrototype"/>) ou <see cref="ShopCatalogDefinition"/> ; achat avec débit monnaie (<see cref="InventoryCurrencyAccount"/>).
-/// Fond / tri : <see cref="HudModalBackdrop"/> + <see cref="UIManager"/> (comme l’inventaire HUD).
+/// Controleur de l'ecran shop configure dans l'editeur.
+/// Le layout visuel doit etre prepare dans le prefab (pas de generation d'ecran en code).
 /// </summary>
 public class RuntimeShopScreen : MonoBehaviour
 {
-    private const float HeaderHeight = 72f;
-    private const float FooterHeight = 80f;
-    private const int FontSize = 28;
-    private const int SmallFontSize = 18;
-    private const float SlotSize = 112f;
-    private const float SlotSpacing = 14f;
     private const int PriceSummaryMaxChars = 160;
 
-    private ItemDatabase itemDatabase;
-    private InventorySlotUI slotPrefab;
-    private int columnCount = 5;
-    private RectTransform slotsContainer;
-    private readonly List<InventorySlotUI> slotViews = new();
-    private Text fallbackListText;
-    private Text stateLabel;
-    private Image rootBackdropImage;
-    private Image contentBackdropImage;
+    [Header("Bindings UI (prefab)")]
+    [SerializeField] private RectTransform slotsContainer;
+    [SerializeField] private GridLayoutGroup slotsGridLayout;
+    [SerializeField] private Button closeButton;
+    [SerializeField] private Text fallbackListText;
+    [SerializeField] private Text stateLabel;
+    [SerializeField] private Image rootBackdropImage;
+    [SerializeField] private Image contentBackdropImage;
 
-    private bool initialized;
+    [Header("Layout slots")]
+    [SerializeField] private Vector2 slotCellSize = new(112f, 112f);
+    [SerializeField] private Vector2 slotSpacing = new(14f, 14f);
 
     [Header("Popup achat item (optionnel)")]
-    [Tooltip("Si non assigné ici, utilise la référence injectée par UIManager ou un enfant ShopItemPopupController.")]
+    [Tooltip("Si non assigne ici, utilise la reference injectee par UIManager ou un enfant ShopItemPopupController.")]
     [SerializeField] private ShopItemPopupController shopItemPopupPrefabOverride;
+
     [Tooltip("Optionnel: feedback texte (ex: inventaire plein) reutilise par le flux shop.")]
     [SerializeField] private InventoryFeedbackUI feedbackUI;
+
     [Header("Source de donnees shop")]
     [Tooltip("Si assigne, ce catalogue ScriptableObject est utilise en priorite. Sinon fallback JSON prototype.")]
     [SerializeField] private ShopCatalogDefinition shopCatalogDefinition;
 
+    private ItemDatabase itemDatabase;
+    private InventorySlotUI slotPrefab;
+    private int columnCount = 5;
+    private readonly List<InventorySlotUI> slotViews = new();
+
+    private bool initialized;
+    private Button hookedCloseButton;
     private ShopItemPopupController shopItemPopupPrefabInjected;
     private ShopItemPopupController shopItemPopupInstance;
     private bool shopPurchaseHandlerWired;
     private bool inventoryEventsSubscribed;
 
-    /// <summary>Catalogue affiché (dernier Refresh). Sert au clic sur les slots.</summary>
+    /// <summary>Catalogue affiche (dernier Refresh). Sert au clic sur les slots.</summary>
     private List<MarketCatalogPrototype.ListingRow> lastListings;
+
     /// <summary>Definition SO associee a chaque ligne affichee (meme index que lastListings).</summary>
     private List<ShopItemDefinition> lastShopDefinitions;
 
-    /// <summary>Injection depuis <see cref="UIManager"/> : préférez appeler avant activation du GameObject.</summary>
+    /// <summary>Injection depuis <see cref="UIManager"/>.</summary>
     public void Initialize(
         ItemDatabase database,
         InventorySlotUI slotPrefabOverride,
@@ -60,15 +64,35 @@ public class RuntimeShopScreen : MonoBehaviour
         slotPrefab = slotPrefabOverride;
         columnCount = Mathf.Max(1, columns);
         shopItemPopupPrefabInjected = itemPopupPrefab;
-        BuildIfNeeded();
         initialized = true;
+
+        ResolveBindingsIfNeeded();
+        HookCloseButton();
         SubscribeInventoryEvents();
         Refresh();
     }
 
+    private void Awake()
+    {
+        ResolveBindingsIfNeeded();
+        HookCloseButton();
+    }
+
+    private void OnEnable()
+    {
+        ResolveBindingsIfNeeded();
+        HookCloseButton();
+        SubscribeInventoryEvents();
+        if (initialized)
+            Refresh();
+    }
+
+    private void OnDisable() => UnsubscribeInventoryEvents();
+
     private void OnDestroy()
     {
         UnsubscribeInventoryEvents();
+        UnhookCloseButton();
 
         if (shopItemPopupInstance != null && shopPurchaseHandlerWired)
         {
@@ -77,29 +101,21 @@ public class RuntimeShopScreen : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        BuildIfNeeded();
-    }
-
-    private void OnEnable()
-    {
-        SubscribeInventoryEvents();
-        if (initialized)
-            Refresh();
-    }
-
-    private void OnDisable() => UnsubscribeInventoryEvents();
-
     public void Refresh()
     {
         SubscribeInventoryEvents();
-
-        if (slotsContainer == null)
-            return;
+        ResolveBindingsIfNeeded();
 
         if (!initialized)
             return;
+
+        if (slotsContainer == null)
+        {
+            SetFooterLines(
+                "Erreur: slotsContainer non configure",
+                "Configure RuntimeShopScreen dans le prefab ShopScreen.");
+            return;
+        }
 
         ApplyLayoutAndBackdrop();
 
@@ -111,14 +127,13 @@ public class RuntimeShopScreen : MonoBehaviour
                 SetFooterLines(
                     "Erreur : ItemDatabase indisponible",
                     "Assignez ItemDatabase sur PlayerInventory (NavigationHUD).");
-                ShowFallbackText("ItemDatabase manquant — impossible de résoudre le JSON marché.");
+                ShowFallbackText("ItemDatabase manquant - impossible de resoudre le JSON marche.");
                 ClearSlotViews();
                 return;
             }
         }
 
-        List<MarketCatalogPrototype.ListingRow> listings;
-        if (!TryResolveListings(out listings, out string loadError))
+        if (!TryResolveListings(out List<MarketCatalogPrototype.ListingRow> listings, out string loadError))
         {
             lastListings = null;
             lastShopDefinitions = null;
@@ -137,14 +152,13 @@ public class RuntimeShopScreen : MonoBehaviour
             lastShopDefinitions = null;
             ShowFallbackText(BuildCatalogFallbackText(listings));
             SetFooterLines(
-                $"Prototype JSON — {listings.Count} offre(s) (vue texte)",
+                $"Prototype JSON - {listings.Count} offre(s) (vue texte)",
                 BuildPriceSummaryLine(listings));
             ClearSlotViews();
             return;
         }
 
         lastListings = listings;
-
         EnsureSlotViews(listings.Count);
 
         for (int i = 0; i < slotViews.Count; i++)
@@ -156,9 +170,11 @@ public class RuntimeShopScreen : MonoBehaviour
         }
 
         SetFooterLines(
-            $"Market (prototype JSON) — {listings.Count} offre(s)",
+            $"Market (prototype JSON) - {listings.Count} offre(s)",
             BuildPriceSummaryLine(listings));
     }
+
+    public void Close() => HideScreen();
 
     private bool TryResolveListings(out List<MarketCatalogPrototype.ListingRow> listings, out string errorMessage)
     {
@@ -235,8 +251,8 @@ public class RuntimeShopScreen : MonoBehaviour
         if (popup == null)
         {
             Debug.LogWarning(
-                "[RuntimeShopScreen] ShopItemPopup introuvable. Assignez ShopItemPopupController sur UIManager " +
-                "(champ dédié) ou placez la popup en enfant de l'écran shop, ou sur ce composant (override).");
+                "[RuntimeShopScreen] ShopItemPopup introuvable. Assignez ShopItemPopupController " +
+                "sur RuntimeShopScreen (override) ou en enfant du prefab ShopScreen.");
             return;
         }
 
@@ -261,8 +277,6 @@ public class RuntimeShopScreen : MonoBehaviour
             minQuantity,
             maxQuantity);
 
-        // La popup peut avoir ete instanciee inactive lors du resolve.
-        // Il faut activer le GameObject parent avant Open(), sinon la vue reste invisible.
         if (!popup.gameObject.activeSelf)
             popup.gameObject.SetActive(true);
 
@@ -326,7 +340,7 @@ public class RuntimeShopScreen : MonoBehaviour
         PlayerInventory inventory = PlayerInventory.Instance;
         if (inventory == null)
         {
-            Debug.LogWarning("[RuntimeShopScreen] PlayerInventory.Instance introuvable — achat annulé.");
+            Debug.LogWarning("[RuntimeShopScreen] PlayerInventory.Instance introuvable - achat annule.");
             return;
         }
 
@@ -335,7 +349,7 @@ public class RuntimeShopScreen : MonoBehaviour
 
         if (itemDatabase == null)
         {
-            Debug.LogWarning("[RuntimeShopScreen] ItemDatabase indisponible — achat annulé.");
+            Debug.LogWarning("[RuntimeShopScreen] ItemDatabase indisponible - achat annule.");
             return;
         }
 
@@ -351,8 +365,8 @@ public class RuntimeShopScreen : MonoBehaviour
 
         if (totalPrice > 0 && currency == null)
         {
-            Debug.LogWarning("[RuntimeShopScreen] ItemDatabase.PrimaryCurrency non assigné — impossible de payer.");
-            ResolveFeedbackUI()?.ShowMessage("Monnaie non configurée.");
+            Debug.LogWarning("[RuntimeShopScreen] ItemDatabase.PrimaryCurrency non assigne - impossible de payer.");
+            ResolveFeedbackUI()?.ShowMessage("Monnaie non configuree.");
             return;
         }
 
@@ -371,12 +385,11 @@ public class RuntimeShopScreen : MonoBehaviour
         if (!InventoryCurrencyAccount.TryPurchase(inventory, currency, totalPrice, item, qty, out InventoryResult addResult)
             || addResult != InventoryResult.Success)
         {
-            Debug.LogWarning($"[RuntimeShopScreen] Échec achat inattendu ({addResult}).");
+            Debug.LogWarning($"[RuntimeShopScreen] Echec achat inattendu ({addResult}).");
             return;
         }
 
-        Debug.Log(
-            $"[RuntimeShopScreen] Achat : {item.DisplayName} x{qty} pour {totalPrice} (monnaie débitée).");
+        Debug.Log($"[RuntimeShopScreen] Achat : {item.DisplayName} x{qty} pour {totalPrice} (monnaie debitee).");
 
         if (shopItemPopupInstance != null)
             shopItemPopupInstance.Close();
@@ -421,7 +434,7 @@ public class RuntimeShopScreen : MonoBehaviour
 
         PlayerInventory inv = PlayerInventory.Instance;
         if (inv == null)
-            return $"{currency.DisplayName} : —";
+            return $"{currency.DisplayName} : -";
 
         int balance = InventoryCurrencyAccount.GetBalance(inv, currency);
         return $"{currency.DisplayName} : {balance}";
@@ -436,110 +449,67 @@ public class RuntimeShopScreen : MonoBehaviour
         return feedbackUI;
     }
 
-    private void BuildIfNeeded()
+    private void ResolveBindingsIfNeeded()
     {
-        if (slotsContainer != null)
-            return;
+        if (slotsContainer == null && slotsGridLayout != null)
+            slotsContainer = slotsGridLayout.GetComponent<RectTransform>();
 
-        RectTransform root = GetComponent<RectTransform>();
-        if (root == null)
-            return;
-
-        if (GetComponent<CanvasRenderer>() == null)
-            gameObject.AddComponent<CanvasRenderer>();
-
-        Image background = GetComponent<Image>();
-        if (background == null)
-            background = gameObject.AddComponent<Image>();
-
-        if (background == null)
+        if (slotsContainer == null)
         {
-            Debug.LogError("[RuntimeShopScreen] Impossible d'ajouter Image sur l'ecran runtime shop.");
-            return;
+            GridLayoutGroup grid = GetComponentInChildren<GridLayoutGroup>(true);
+            if (grid != null)
+            {
+                slotsGridLayout = grid;
+                slotsContainer = grid.GetComponent<RectTransform>();
+            }
+        }
+        else if (slotsGridLayout == null)
+        {
+            slotsGridLayout = slotsContainer.GetComponent<GridLayoutGroup>();
         }
 
-        HudModalBackdrop.ApplyRootBackground(background);
-        rootBackdropImage = background;
+        if (closeButton == null)
+            closeButton = FindCloseButton();
 
-        HudModalBackdrop.EnsureModalCanvas(gameObject);
+        if (rootBackdropImage == null)
+            rootBackdropImage = GetComponent<Image>();
 
-        CreateHeader(root);
-        CreateContent(root);
-        CreateFooter(root);
+        if (contentBackdropImage == null && slotsContainer != null && slotsContainer.parent != null)
+            contentBackdropImage = slotsContainer.parent.GetComponent<Image>();
     }
 
-    private void CreateHeader(RectTransform root)
+    private Button FindCloseButton()
     {
-        RectTransform header = CreatePanel("Header", root, new Color(0.1f, 0.1f, 0.1f, 0.95f));
-        SetAnchors(header, 0f, 1f, 1f, 1f, 0f, -HeaderHeight, 0f, 0f);
+        Button[] buttons = GetComponentsInChildren<Button>(true);
+        if (buttons == null || buttons.Length == 0)
+            return null;
 
-        Text title = CreateText("Title", header, "Market (prototype)");
-        title.alignment = TextAnchor.MiddleLeft;
-        title.fontSize = FontSize;
-        title.rectTransform.offsetMin = new Vector2(24f, 0f);
-        title.rectTransform.offsetMax = new Vector2(-120f, 0f);
+        foreach (Button button in buttons)
+        {
+            if (button != null && button.gameObject.name.Contains("Close"))
+                return button;
+        }
 
-        Button closeButton = CreateButton("CloseButton", header, "Fermer");
-        SetAnchors(closeButton.GetComponent<RectTransform>(), 1f, 1f, 0.5f, 0.5f, -104f, -20f, -16f, 20f);
-        closeButton.onClick.AddListener(HideScreen);
+        return buttons[0];
     }
 
-    private void CreateContent(RectTransform root)
+    private void HookCloseButton()
     {
-        RectTransform content = CreatePanel("Content", root, HudModalBackdrop.ContentPanelColor);
-        contentBackdropImage = content.GetComponent<Image>();
-        HudModalBackdrop.ApplyContentPanel(contentBackdropImage);
-        SetAnchors(content, 0f, 1f, 0f, 1f, 16f, FooterHeight + 12f, -16f, -HeaderHeight - 12f);
+        if (closeButton == null || hookedCloseButton == closeButton)
+            return;
 
-        ScrollRect scrollRect = content.gameObject.AddComponent<ScrollRect>();
-        scrollRect.horizontal = false;
-        scrollRect.vertical = true;
-
-        RectTransform viewport = CreatePanel("Viewport", content, new Color(0f, 0f, 0f, 0f));
-        SetAnchors(viewport, 0f, 1f, 0f, 1f, 0f, 0f, 0f, 0f);
-        viewport.gameObject.AddComponent<RectMask2D>();
-
-        GameObject grid = new("SlotsGrid", typeof(RectTransform), typeof(GridLayoutGroup), typeof(ContentSizeFitter));
-        slotsContainer = grid.GetComponent<RectTransform>();
-        slotsContainer.SetParent(viewport, false);
-        slotsContainer.anchorMin = new Vector2(0f, 1f);
-        slotsContainer.anchorMax = new Vector2(0f, 1f);
-        slotsContainer.pivot = new Vector2(0f, 1f);
-        slotsContainer.anchoredPosition = Vector2.zero;
-        slotsContainer.sizeDelta = Vector2.zero;
-
-        GridLayoutGroup gridLayout = grid.GetComponent<GridLayoutGroup>();
-        ApplyGridLayout(gridLayout);
-        gridLayout.startCorner = GridLayoutGroup.Corner.UpperLeft;
-        gridLayout.startAxis = GridLayoutGroup.Axis.Horizontal;
-        gridLayout.childAlignment = TextAnchor.UpperLeft;
-
-        ContentSizeFitter fitter = grid.GetComponent<ContentSizeFitter>();
-        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-        scrollRect.viewport = viewport;
-        scrollRect.content = slotsContainer;
-
-        fallbackListText = CreateText("FallbackList", content, string.Empty);
-        fallbackListText.alignment = TextAnchor.UpperLeft;
-        fallbackListText.fontSize = SmallFontSize;
-        fallbackListText.rectTransform.offsetMin = new Vector2(16f, 16f);
-        fallbackListText.rectTransform.offsetMax = new Vector2(-16f, -16f);
-        fallbackListText.gameObject.SetActive(false);
+        UnhookCloseButton();
+        closeButton.onClick.AddListener(Close);
+        hookedCloseButton = closeButton;
     }
 
-    private void CreateFooter(RectTransform root)
+    private void UnhookCloseButton()
     {
-        RectTransform footer = CreatePanel("Footer", root, new Color(0.1f, 0.1f, 0.1f, 0.85f));
-        SetAnchors(footer, 0f, 1f, 0f, 0f, 0f, 0f, 0f, FooterHeight);
+        if (hookedCloseButton == null)
+            return;
 
-        stateLabel = CreateText("State", footer, string.Empty);
-        stateLabel.verticalOverflow = VerticalWrapMode.Overflow;
-        stateLabel.alignment = TextAnchor.MiddleLeft;
-        stateLabel.fontSize = SmallFontSize;
-        stateLabel.rectTransform.offsetMin = new Vector2(24f, 0f);
-        stateLabel.rectTransform.offsetMax = new Vector2(-24f, 0f);
+        hookedCloseButton.onClick.RemoveListener(Close);
+        hookedCloseButton = null;
     }
 
     private void ApplyLayoutAndBackdrop()
@@ -550,11 +520,8 @@ public class RuntimeShopScreen : MonoBehaviour
         if (contentBackdropImage != null)
             HudModalBackdrop.ApplyContentPanel(contentBackdropImage);
 
-        if (slotsContainer == null)
-            return;
-
-        GridLayoutGroup grid = slotsContainer.GetComponent<GridLayoutGroup>();
-        ApplyGridLayout(grid);
+        if (slotsGridLayout != null)
+            ApplyGridLayout(slotsGridLayout);
     }
 
     private void ApplyGridLayout(GridLayoutGroup gridLayout)
@@ -562,8 +529,8 @@ public class RuntimeShopScreen : MonoBehaviour
         if (gridLayout == null)
             return;
 
-        gridLayout.cellSize = new Vector2(SlotSize, SlotSize);
-        gridLayout.spacing = new Vector2(SlotSpacing, SlotSpacing);
+        gridLayout.cellSize = slotCellSize;
+        gridLayout.spacing = slotSpacing;
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = columnCount;
     }
@@ -598,7 +565,7 @@ public class RuntimeShopScreen : MonoBehaviour
     private static string BuildCatalogFallbackText(IReadOnlyList<MarketCatalogPrototype.ListingRow> listings)
     {
         if (listings == null || listings.Count == 0)
-            return "Catalogue vide (vérifiez le JSON ou les itemId dans ItemDatabase).";
+            return "Catalogue vide (verifiez le JSON ou les itemId dans ItemDatabase).";
 
         var sb = new StringBuilder();
         for (int i = 0; i < listings.Count; i++)
@@ -635,14 +602,14 @@ public class RuntimeShopScreen : MonoBehaviour
                 sb.Append(" | ");
 
             sb.Append(row.Slot.Item.DisplayName);
-            sb.Append(" ×");
+            sb.Append(" x");
             sb.Append(row.Slot.Quantity);
             sb.Append(" @");
             sb.Append(row.UnitPrice);
 
             if (sb.Length >= PriceSummaryMaxChars)
             {
-                sb.Append(" …");
+                sb.Append(" ...");
                 break;
             }
         }
@@ -664,68 +631,5 @@ public class RuntimeShopScreen : MonoBehaviour
     {
         if (UIManager.Instance != null)
             UIManager.Instance.HideScreen(ScreenId.Shop);
-    }
-
-    private static RectTransform CreatePanel(string name, Transform parent, Color color)
-    {
-        GameObject go = new(name, typeof(RectTransform), typeof(Image));
-        RectTransform rect = go.GetComponent<RectTransform>();
-        rect.SetParent(parent, false);
-        Image img = go.GetComponent<Image>();
-        HudModalBackdrop.SetupSolidFillImage(img);
-        img.color = color;
-        img.raycastTarget = true;
-        return rect;
-    }
-
-    private static Text CreateText(string name, Transform parent, string content)
-    {
-        GameObject go = new(name, typeof(RectTransform), typeof(Text));
-        RectTransform rect = go.GetComponent<RectTransform>();
-        rect.SetParent(parent, false);
-        SetAnchors(rect, 0f, 1f, 0f, 1f, 0f, 0f, 0f, 0f);
-
-        Text text = go.GetComponent<Text>();
-        text.text = content;
-        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        text.color = Color.white;
-        text.horizontalOverflow = HorizontalWrapMode.Wrap;
-        text.verticalOverflow = VerticalWrapMode.Truncate;
-        return text;
-    }
-
-    private static Button CreateButton(string name, Transform parent, string label)
-    {
-        GameObject buttonGo = new(name, typeof(RectTransform), typeof(Image), typeof(Button));
-        RectTransform rect = buttonGo.GetComponent<RectTransform>();
-        rect.SetParent(parent, false);
-        Image buttonImage = buttonGo.GetComponent<Image>();
-        HudModalBackdrop.SetupSolidFillImage(buttonImage);
-        buttonImage.color = new Color(0.2f, 0.2f, 0.2f, 1f);
-
-        Text text = CreateText("Label", rect, label);
-        text.alignment = TextAnchor.MiddleCenter;
-        text.fontSize = SmallFontSize;
-        text.rectTransform.offsetMin = Vector2.zero;
-        text.rectTransform.offsetMax = Vector2.zero;
-
-        return buttonGo.GetComponent<Button>();
-    }
-
-    private static void SetAnchors(
-        RectTransform rect,
-        float minX,
-        float maxX,
-        float minY,
-        float maxY,
-        float left,
-        float bottom,
-        float right,
-        float top)
-    {
-        rect.anchorMin = new Vector2(minX, minY);
-        rect.anchorMax = new Vector2(maxX, maxY);
-        rect.offsetMin = new Vector2(left, bottom);
-        rect.offsetMax = new Vector2(right, top);
     }
 }

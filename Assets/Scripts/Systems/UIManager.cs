@@ -76,18 +76,14 @@ public class UIManager : MonoBehaviour
     [Header("Écrans secondaires — lazy load à la première demande")]
     [SerializeField] private List<ScreenEntry> secondaryScreens = new();
     
-    [Header("Fallback runtime")]
-    [Tooltip("Crée un écran inventaire runtime minimal si aucun écran Inventory n'est configuré dans les listes.")]
-    [SerializeField] private bool autoCreateInventoryScreen = true;
-    [Tooltip("Prefab visuel d'un slot inventaire pour le fallback runtime.")]
+    [Header("Runtime bindings")]
+    [Tooltip("Prefab visuel d'un slot inventaire pour les ecrans Inventory configures dans l'editeur.")]
     [SerializeField] private InventorySlotUI runtimeInventorySlotPrefab;
     [SerializeField] private int runtimeInventoryColumns = 5;
-    [Tooltip("Crée un écran shop runtime minimal si aucun écran Shop n'est configuré dans les listes.")]
-    [SerializeField] private bool autoCreateShopScreen = true;
-    [Tooltip("Prefab visuel d'un slot shop pour le fallback runtime. Si non défini, utilise le prefab inventaire.")]
+    [Tooltip("Prefab visuel d'un slot shop. Si non defini, utilise le prefab inventaire.")]
     [SerializeField] private InventorySlotUI runtimeShopSlotPrefab;
     [SerializeField] private int runtimeShopColumns = 5;
-    [Tooltip("Popup détail / achat (optionnel). Instanciée sous l'écran shop au premier clic sur une offre.")]
+    [Tooltip("Popup detail / achat (optionnel). Instanciee sous l'ecran shop au premier clic sur une offre.")]
     [SerializeField] private ShopItemPopupController shopItemPopupPrefab;
 
     // ── Runtime ───────────────────────────────────────────────────────────────
@@ -112,8 +108,6 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         PreloadPriorityScreens();
-        EnsureInventoryScreenAvailable();
-        EnsureShopScreenAvailable();
     }
 
     private void OnEnable()
@@ -352,58 +346,4 @@ public class UIManager : MonoBehaviour
         // No-op: conservé pour garder le hook navigator et permettre des extensions futures.
     }
 
-    private void EnsureInventoryScreenAvailable()
-    {
-        if (HasScreen(ScreenId.Inventory) || !autoCreateInventoryScreen || screenRoot == null)
-            return;
-
-        GameObject root = new($"{ScreenId.Inventory}Screen", typeof(RectTransform));
-        RectTransform rect = root.GetComponent<RectTransform>();
-        rect.SetParent(screenRoot, false);
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = new Vector2(0f, NavBarHeight);
-        rect.offsetMax = Vector2.zero;
-
-        root.SetActive(false);
-
-        RuntimeInventoryScreen runtimeScreen = root.AddComponent<RuntimeInventoryScreen>();
-        runtimeScreen.Initialize(PlayerInventory.Instance, runtimeInventorySlotPrefab, runtimeInventoryColumns);
-
-        registry[ScreenId.Inventory] = new ScreenEntry
-        {
-            screenId = ScreenId.Inventory,
-            prefab = null,
-            instance = root
-        };
-    }
-
-    private void EnsureShopScreenAvailable()
-    {
-        if (HasScreen(ScreenId.Shop) || !autoCreateShopScreen || screenRoot == null)
-            return;
-
-        GameObject root = new($"{ScreenId.Shop}Screen", typeof(RectTransform));
-        RectTransform rect = root.GetComponent<RectTransform>();
-        rect.SetParent(screenRoot, false);
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = new Vector2(0f, NavBarHeight);
-        rect.offsetMax = Vector2.zero;
-
-        // Évite OnEnable avant Initialize (références encore nulles).
-        root.SetActive(false);
-
-        RuntimeShopScreen runtimeScreen = root.AddComponent<RuntimeShopScreen>();
-        InventorySlotUI slotPrefab = runtimeShopSlotPrefab != null ? runtimeShopSlotPrefab : runtimeInventorySlotPrefab;
-        ItemDatabase shopDb = PlayerInventory.Instance != null ? PlayerInventory.Instance.ItemDatabase : null;
-        runtimeScreen.Initialize(shopDb, slotPrefab, runtimeShopColumns, shopItemPopupPrefab);
-
-        registry[ScreenId.Shop] = new ScreenEntry
-        {
-            screenId = ScreenId.Shop,
-            prefab = null,
-            instance = root
-        };
-    }
 }
