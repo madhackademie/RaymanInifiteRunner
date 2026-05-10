@@ -141,7 +141,9 @@ public class NavigationHUD : MonoBehaviour
     /// <summary>Affiche l'écran inventaire global via UIManager.</summary>
     public void OnTabInventaireClicked()
     {
-        if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
+        if (IsSceneTransitionBlocking())
+            return;
+
         SetTabsInteractable(false);
 
         if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Inventory))
@@ -159,7 +161,9 @@ public class NavigationHUD : MonoBehaviour
     /// <summary>Affiche l'écran shop global via UIManager.</summary>
     public void OnTabShopClicked()
     {
-        if (SceneNavigator.Instance == null || SceneNavigator.Instance.IsTransitioning) return;
+        if (IsSceneTransitionBlocking())
+            return;
+
         SetTabsInteractable(false);
 
         if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Shop))
@@ -185,6 +189,15 @@ public class NavigationHUD : MonoBehaviour
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Bloque uniquement pendant une transition de scène si un SceneNavigator existe.
+    /// Les modales UIManager (inventaire / shop) restent utilisables sans navigateur.
+    /// </summary>
+    private static bool IsSceneTransitionBlocking()
+    {
+        return SceneNavigator.Instance != null && SceneNavigator.Instance.IsTransitioning;
+    }
 
     private void SetTabsInteractable(bool interactable)
     {

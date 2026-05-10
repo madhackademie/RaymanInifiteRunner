@@ -6,14 +6,14 @@ Document de référence pour **reprendre plus tard** le sujet : wallet dans l’
 
 ### 1. Deux « vérités » possibles pour l’UI inventaire
 
-- **Au clic sur l’onglet Inventaire du HUD**, le flux prévu est **`UIManager.TryShowScreen(ScreenId.Inventory)`** : l’écran affiché est une **instance sous `screenRoot`** (prefab enregistré dans `UIManager`, ou à défaut écran **procédural** `RuntimeInventoryScreen`).
+- **Au clic sur l’onglet Inventaire du HUD**, le flux prévu est **`UIManager.TryShowScreen(ScreenId.Inventory)`** : l’écran affiché est une **instance sous `screenRoot`** (prefab enregistré dans `UIManager`, ex. **`InventoryScreen`** + `InventoryUI`). L’ancien fallback procédural **`RuntimeInventoryScreen`** a été **retiré** du dépôt (2026-05).
 - La **scène `Inventaire.unity`** peut servir de **atelier / prototype** (layout Bezi, WalletBar, etc.), mais **elle n’est pas automatiquement** l’écran que le joueur voit tant qu’on ne **charge pas** cette scène additive ou qu’on n’en **exporte pas** le panneau vers un prefab branché sur `UIManager`.
 
 Sans alignement explicite (prefab ou navigation vers la scène), le wallet « bien ancré » dans **Inventaire.unity** **ne s’affiche pas** à la place où le joueur ouvre l’inventaire depuis le HUD.
 
-### 2. Pourquoi le fallback `RuntimeInventoryScreen` ne « porte » pas la maquette scène
+### 2. Ancien fallback `RuntimeInventoryScreen` (historique)
 
-`RuntimeInventoryScreen` **construit** une grille + header en **code** : c’est rapide pour un prototype, mais ce n’est **pas** la même hiérarchie que ta scène éditoriale (WalletBar, etc.). **Ajouter le wallet** proprement = soit **instancier un prefab** wallet dans ce script, soit **abandonner** ce fallback au profit d’un **prefab d’écran complet** fait dans l’éditeur.
+Ce script **construisait** une grille + header en **code** ; il ne reflétait pas la maquette éditoriale (WalletBar, etc.). **Décision** : **prefab d’écran complet** (`InventoryScreen` + `InventoryUI`) comme source de vérité ; le fallback a été **supprimé** du code — le wallet et le reste du layout se font **dans le prefab** sous `UIManager`.
 
 ### 3. Pourquoi un script Python (ou toute édition YAML en masse) est une fausse bonne idée
 

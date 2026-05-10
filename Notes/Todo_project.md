@@ -16,10 +16,21 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prochaine session (priorité immédiate)
 
-- [ ] **Inventaire + wallet — mise à niveau sans bidouille externe** : reprendre le chantier **wallet dans l’écran inventaire** avec une **seule source de vérité** (prefab `InventoryScreen` sous `UIManager` et `ScreenId.Inventory`, ou approche documentée équivalente). **Ne pas** régénérer l’UI via script Python / YAML hors Unity — workflow éditeur uniquement (voir **`Notes/Ui/NOTE_inventory_wallet_upgrade.md`** pour la problématique : double vérité scène template vs `UIManager`, fallback `RuntimeInventoryScreen`, piège Canvas/sorting). Script **`Tools/extract_inventory_prefab.py`** retiré du dépôt.
+### Priorités auteur — enregistrées 2026-05-10 (shop / wallet / UX)
+
+1. [ ] **Correction UI — expérience utilisateur** : passe d’amélioration sur les écrans concernés (shop, popups, lisibilité, flux clics).
+2. [ ] **Popup message « pas assez d’argent »** : feedback explicite quand le solde monnaie est insuffisant (au-delà d’un simple log si nécessaire) — croiser `InventoryFeedbackUI` / `ShopItemPopupController` / `RuntimeShopScreen`.
+3. [ ] **Saisie quantité à acheter** : champ nombre (PC clavier + mobile : `TMP_InputField` / clavier système, validation min/max).
+4. [ ] **Bouton Max** : quantité maximale = `min(règles métier inventaire/listing, floor(solde_monnaie / prix_unitaire))` (et plafonds `MaxPurchaseQuantity` / place dans le sac si déjà gérés côté code).
+
+Références : **`Notes/Ui/DOC_feature_shop.md`** §3, **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*), note **`Notes/Ui/SceneUiLoadManagement.md`** (navigation scène vs UI).
+
+---
+
+- [ ] **Inventaire + wallet — mise à niveau sans bidouille externe** : reprendre le chantier **wallet dans l’écran inventaire** avec une **seule source de vérité** (prefab `InventoryScreen` sous `UIManager` et `ScreenId.Inventory`, ou approche documentée équivalente). **Ne pas** régénérer l’UI via script Python / YAML hors Unity — workflow éditeur uniquement (voir **`Notes/Ui/NOTE_inventory_wallet_upgrade.md`** pour la problématique : double vérité scène template vs `UIManager`, ancien fallback `RuntimeInventoryScreen` **retiré du dépôt**, piège Canvas/sorting). Script **`Tools/extract_inventory_prefab.py`** retiré du dépôt.
 - [ ] **Shop — monnaie inventaire + deduction achat (NOUVELLE PRIORITE)** : creer la ressource monnaie dans l'inventaire (item dedie + entree `ItemDatabase` + affichage du solde), puis deduire ce montant lors d'un achat shop avant validation `TryAdd`; si fonds insuffisants, bloquer l'achat avec feedback utilisateur.
 - [ ] **Shop — créer la ressource Argent (priorité)** : ajouter un item monnaie (ex. `money`) dans les données inventaire (`ItemDefinition` + `ItemDatabase`) et préparer son usage dans le Shop (affichage/solde + coûts d'achat/vente à brancher ensuite).
-- [ ] **Shop — flux achat dédié (mécanique)** : clic sur une offre → fenêtre détail (image, prix unitaire, description optionnelle) → contrôles **+** / **−** / **Payer** avec libellé **`prix × quantité`** ; **popup de confirmation** ; si fonds OK → débit + `TryAdd` inventaire, sinon message **manque de fonds**. Polish ultérieur : saisie quantité au clavier. Spec : **`Notes/Ui/DOC_feature_shop.md`** §3 ; checklist UI : **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*).
+- [ ] **Shop — flux achat dédié (mécanique)** : clic sur une offre → fenêtre détail (image, prix unitaire, description optionnelle) → contrôles **+** / **−** / **Payer** avec libellé **`prix × quantité`** ; **popup de confirmation** ; si fonds OK → débit + `TryAdd` inventaire, sinon message **manque de fonds**. **Saisie quantité + bouton Max + popup insuffisant + passe UX** : voir bloc **2026-05-10** ci-dessus. Spec : **`Notes/Ui/DOC_feature_shop.md`** §3 ; checklist UI : **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*).
 - [ ] **Shop — linkage Inspector / références vides** : passer les scènes/prefabs UI concernés pour corriger les champs `SerializeField` non assignés (bouton/icône onglet Shop, refs écrans/panels, prefabs slots) et noter explicitement chaque liaison manquante.
 - [ ] **Shop — prefab manquant** : créer/valider un prefab Shop dédié (en remplacement progressif du fallback runtime) ; si besoin, demander un support de prod UI à **Bezi.ia** et documenter le rendu attendu (structure, slots, style, interactions minimales).
 - [x] **Doc Shop** (intention vs code actuel, catalogue JSON, spec flux achat) : `Notes/Ui/DOC_feature_shop.md` — mis à jour **2026-05-04** ; journal `PROJECT_LOG.md` aligné.

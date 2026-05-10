@@ -55,19 +55,22 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 
 Objectif : **mécanique d’achat** isolée (UI + logique), en s’appuyant sur la même voie d’entrée inventaire que la récolte (`PlayerInventory.TryAdd` ou équivalent unique).
 
+**Mise à jour 2026-05-10 (priorités auteur)** : (0) passe **UI/UX** sur shop et popups ; (1) **popup dédiée** ou message très visible « pas assez d’argent » ; (2) **saisie quantité** numérique (PC + mobile, `TMP_InputField` ou équivalent) en plus des **+** / **−** ; (3) bouton **Max** → `quantité = min(règles métier, floor(solde_monnaie / prix_unitaire))` (croiser `MaxPurchaseQuantity`, capacité sac, quantité listing).
+
 1. **Clic sur une offre** (slot catalogue) → ouverture d’une **fenêtre détail** avec :
    - **Image** de l’item (icône `ItemDefinition` ou équivalent) ;
    - **Prix unitaire** ;
    - **Description** de l’item (optionnelle — champ données ou texte localisé plus tard).
 2. **Contrôles quantité** :
    - Boutons **+** / **−** (minimum 1, plafond selon stock vendeur / règle métier) ;
-   - Bouton **Payer** (libellé dynamique, voir point 3) ;
-   - **Polish ultérieur** : saisie de quantité au **clavier** (champ TMP / input).
+   - **Saisie directe** (clavier PC, clavier virtuel mobile) avec clamp sur [min, max] ;
+   - Bouton **Max** : applique le maximum **achetable** compte tenu du **solde**, du **prix unitaire**, des plafonds (`MaxPurchaseQuantity`, stock listing, `CanFitQuantity`, etc.) ;
+   - Bouton **Payer** (libellé dynamique, voir point 3).
 3. **Prix total** : recalcul continu **`total = prix_unitaire × quantité`** ; le bouton de paiement (ou un libellé associé) **affiche** ce total (ex. « Payer 15 »).
 4. **Confirmation** : au clic sur Payer, ouvrir un **popup de confirmation** (« Confirmer l’achat ? »).
 5. **Après confirmation** :
    - Si **fonds suffisants** : débiter la monnaie (cf. paragraphe **Monnaie** ci-dessus), **`TryAdd`** l’item acheté, fermer les modales / rafraîchir le catalogue si besoin ;
-   - Si **fonds insuffisants** : message clair **manque de fonds** (sans débit ni ajout inventaire).
+   - Si **fonds insuffisants** : **popup ou panneau dédié** « pas assez d’argent » (sans débit ni ajout inventaire) — ne pas se limiter à un log console en prod.
 
 **Monnaie** : introduire la **première ressource primaire « Argent »** (item dédié type `money` ou compteur dédié — à trancher en implémentation, mais **une seule** notion de solde pour les prix du JSON). Elle doit être référencée dans `ItemDatabase` si on suit le modèle « item stackable » comme les autres ressources.
 
@@ -111,5 +114,5 @@ Pour le flux « donner un item au joueur », réutiliser les chemins déjà util
 ## 6. Synthèse
 
 **Aujourd’hui** : le Shop est un **écran modal** qui affiche un **catalogue JSON** (`market_catalog.json`) en **slots** réutilisant `InventorySlotUI`, avec résolution des items via `ItemDatabase` ; **pas d’achat**, **pas de monnaie** en jeu.  
-**Prochaine étape** : **Argent** + **flux §3** (détail quantité, total sur le bouton, confirmation, succès / manque de fonds) puis **`TryAdd`** pour les items achetés.  
-**Ensuite** : prefab Shop final, polish saisie clavier, layouts hétérogènes si besoin produit.
+**Prochaine étape** : **Argent** + **flux §3** (détail quantité incl. saisie + **Max**, total sur le bouton, confirmation, succès / **popup** manque de fonds, passe **UX**) puis **`TryAdd`** pour les items achetés.  
+**Ensuite** : prefab Shop final, layouts hétérogènes si besoin produit.

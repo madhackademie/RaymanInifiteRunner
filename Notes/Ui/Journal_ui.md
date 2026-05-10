@@ -8,6 +8,10 @@ Règle de fonctionnement :
 
 ---
 
+## Entrée 2026-05-10 — prochaine session shop
+
+Priorités enregistrées dans **`Notes/Todo_project.md`** : (1) passe UI/UX shop, (2) popup « pas assez d’argent », (3) saisie quantité PC + mobile, (4) bouton **Max** (`floor(solde/prix)` + bornes métier). Spec alignée : **`Notes/Ui/DOC_feature_shop.md`** §3, **`Notes/Ui/Todo_ui.md`**. Note navigation : **`Notes/Ui/SceneUiLoadManagement.md`**.
+
 ## Décisions actées
 
 ### 1) Animation UI

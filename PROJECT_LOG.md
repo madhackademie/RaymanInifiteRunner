@@ -1,5 +1,20 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-10
+### Contexte
+- Fin de session : nettoyage **`RuntimeInventoryScreen`** (suppression définitive du script + **`Library`** régénéré côté auteur pour resynchroniser l’import Unity). Doc navigation scène/UI : **`Notes/Ui/SceneUiLoadManagement.md`**.
+
+### Prochaine session (priorités enregistrées par l’auteur)
+1. Correction UI / amélioration expérience utilisateur (shop et flux associés).
+2. Popup message « pas assez d’argent » (fonds insuffisants).
+3. Saisie du nombre d’unités à acheter (input clavier PC + mobile).
+4. Bouton **Max** : quantité max dérivée du solde et du prix unitaire (`floor(solde / prix)`), bornée par les plafonds métier déjà en place.
+
+### Docs mises à jour (assistant)
+- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `Notes/Ui/Todo_ui.md`, `Notes/Ui/DOC_feature_shop.md` (alignement spec shop / wallet).
+
+---
+
 ## 2026-05-08
 ### Contexte
 - Session post-intégration inventaire / shop / wallet ; décision auteur : **pas de script Python** pour générer ou maintenir les prefabs UI inventaire.

@@ -49,6 +49,29 @@ public class InventoryUI : MonoBehaviour
         BuildSlots();
     }
 
+    /// <summary>
+    /// Applique slot prefab / colonnes depuis le shell (<see cref="UIManager"/>) puis reconstruit si déjà lié.
+    /// </summary>
+    public void ApplyShellSlotSettings(InventorySlotUI slotPrefabOverride, int columns)
+    {
+        if (slotPrefabOverride != null)
+            slotPrefab = slotPrefabOverride;
+
+        if (slotsContainer != null &&
+            slotsContainer.TryGetComponent(out GridLayoutGroup grid) &&
+            columns > 0)
+        {
+            grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            grid.constraintCount = columns;
+        }
+
+        if (playerInventory == null)
+            return;
+
+        EnsureViewportMaskCompatibility();
+        BuildSlots();
+    }
+
     // ── Slot management ───────────────────────────────────────────────────────
 
     private void EnsureViewportMaskCompatibility()

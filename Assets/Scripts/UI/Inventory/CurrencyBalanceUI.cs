@@ -66,8 +66,8 @@ public class CurrencyBalanceUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Runtime injection used by <see cref="RuntimeInventoryScreen"/> when building the header procedurally.
-    /// Must be called before the component's Start/OnEnable.
+    /// Injection runtime (tests ou prefab construit sans assignation complète dans l'inspecteur).
+    /// Préférer l'assignation dans le prefab quand c'est possible.
     /// </summary>
     public void SetReferences(ItemDefinition item, TextMeshProUGUI label, Image icon)
     {

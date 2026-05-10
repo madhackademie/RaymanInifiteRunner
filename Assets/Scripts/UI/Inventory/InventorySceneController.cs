@@ -62,7 +62,7 @@ public class InventorySceneController : MonoBehaviour
             UIManager.Instance.ShowScreen(ScreenId.Inventory);
     }
 
-    /// <summary>Retourne à HomeScene via SceneNavigator.</summary>
+    /// <summary>Ferme l'écran inventaire global ou retourne à Home si un navigateur de scène existe.</summary>
     public void Close()
     {
         if (UIManager.Instance != null && UIManager.Instance.IsScreenVisible(ScreenId.Inventory))
@@ -71,6 +71,7 @@ public class InventorySceneController : MonoBehaviour
             return;
         }
 
-        _ = SceneNavigator.Instance?.ShowScene(SceneId.HomeScene);
+        if (SceneNavigator.Instance != null)
+            _ = SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
     }
 }

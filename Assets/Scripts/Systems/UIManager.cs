@@ -36,6 +36,8 @@ public class ScreenEntry
 ///   - Popups de confirmation
 ///   - Notifications / toasts
 ///   - Fenêtres modales
+///
+/// Inventaire HUD : prefab + <see cref="InventoryUI"/> (pas de logique d’écran dans ce fichier).
 /// </summary>
 public class UIManager : MonoBehaviour
 {
@@ -295,9 +297,14 @@ public class UIManager : MonoBehaviour
 
         if (entry.screenId == ScreenId.Inventory)
         {
-            RuntimeInventoryScreen inventory = entry.instance.GetComponentInChildren<RuntimeInventoryScreen>(true);
-            if (inventory != null)
-                inventory.Initialize(PlayerInventory.Instance, runtimeInventorySlotPrefab, runtimeInventoryColumns);
+            InventoryUI inventoryUi = entry.instance.GetComponentInChildren<InventoryUI>(true);
+            if (inventoryUi == null)
+                return;
+
+            inventoryUi.ApplyShellSlotSettings(runtimeInventorySlotPrefab, runtimeInventoryColumns);
+
+            if (!inventoryUi.IsBound && PlayerInventory.Instance != null)
+                inventoryUi.Bind(PlayerInventory.Instance);
         }
     }
 

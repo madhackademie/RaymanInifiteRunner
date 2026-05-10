@@ -12,13 +12,15 @@
 
 ### Shop — mécanique achat (prochaine session / suite catalogue JSON)
 
-Référence produit + technique : **`Notes/Ui/DOC_feature_shop.md`** (§3 flux achat, §2 état actuel). Dépendance : ressource **Argent** (`ItemDefinition` + `ItemDatabase`, voir `Notes/Todo_project.md`).
+Référence produit + technique : **`Notes/Ui/DOC_feature_shop.md`** (§3 flux achat, §2 état actuel). Dépendance : ressource **Argent** (`ItemDefinition` + `ItemDatabase`, voir `Notes/Todo_project.md`). **Priorités auteur 2026-05-10** : UX globale, popup insuffisant, saisie quantité, bouton Max — voir aussi **`Notes/Todo_project.md`**.
 
+- [ ] **Passe UI/UX** : lisibilité, enchaînement modales / focus / retours visuels sur l’écran shop et la popup d’achat.
 - [ ] Clic sur une **offre catalogue** → ouvrir une **modal détail** : grande image item, **prix unitaire**, **description** optionnelle (données ou TMP plus tard).
 - [ ] Contrôles **quantité** : boutons **+** / **−** (min 1, max selon stock listing / règle) ; bouton **Payer** dont le texte reflète le **total** `prix_unitaire × quantité` (recalcul à chaque changement).
+- [ ] **Saisie quantité** : `TMP_InputField` (ou équivalent) — **clavier PC** + **mobile** (clavier numérique / validation locale), clamp sur [min, max] métier.
+- [ ] **Bouton Max** : applique `quantité = min(plafonds listing/inventaire, floor(solde_monnaie / prix_unitaire))` (cohérent avec `MaxPurchaseQuantity`, place dans le sac, etc.).
 - [ ] Au clic **Payer** : **popup de confirmation** avant toute transaction.
-- [ ] Après confirmation : si **solde Argent suffisant** → débit monnaie + **`PlayerInventory.TryAdd`** (quantité achetée) + fermeture / refresh ; si **insuffisant** → message **manque de fonds** (pas de débit, pas d’ajout).
-- [ ] **[Polish]** Champ saisie **quantité au clavier** (TMP InputField ou équivalent).
+- [ ] Après confirmation : si **solde Argent suffisant** → débit monnaie + **`PlayerInventory.TryAdd`** (quantité achetée) + fermeture / refresh ; si **insuffisant** → **popup ou message dédié « pas assez d’argent »** (pas de débit, pas d’ajout) — au-delà d’un simple `Debug.Log` si besoin.
 
 ### Session cible ~2026-05-01 — audit Bezi (Scene/UI) + clean refactor
 
