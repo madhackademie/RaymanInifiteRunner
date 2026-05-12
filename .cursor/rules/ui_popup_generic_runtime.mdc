@@ -1,0 +1,23 @@
+---
+alwaysApply: true
+---
+UI popup runtime rules (Unity 6):
+
+- Use the generic popup pipeline for runtime popups:
+  - `PopupId` for popup identifiers,
+  - `ScreenPopupBinding` for `screenId -> popupId -> prefab`,
+  - `ScreenPopupHost` for lazy instantiate/show/hide.
+- Treat popup bindings as the single source of truth.
+- Keep popup wiring explicit in `UIManager.runtimePopupBindings`.
+- For new popup features, add a dedicated popup id instead of hardcoded strings.
+- If a popup binding is missing, fail closed with a clear warning (no hidden fallback path).
+
+Architecture guidance:
+- Keep popup views/prefabs reusable and screen-agnostic when possible.
+- Keep gameplay/business logic in controllers/services, not in popup view classes.
+- Prefer one runtime popup path per use case to avoid duplicate behavior.
+
+Anti-patterns to avoid:
+- Direct popup instantiation in feature screens as a long-term runtime path.
+- Hidden legacy fallback flows that bypass the generic popup host.
+- Multiple concurrent popup sources for the same use case.
