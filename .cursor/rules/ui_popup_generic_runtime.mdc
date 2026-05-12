@@ -21,3 +21,17 @@ Anti-patterns to avoid:
 - Direct popup instantiation in feature screens as a long-term runtime path.
 - Hidden legacy fallback flows that bypass the generic popup host.
 - Multiple concurrent popup sources for the same use case.
+
+Migration checklist (required for each new popup):
+1. Add a new constant in `PopupId` (no magic string in feature code).
+2. Add or validate one explicit `ScreenPopupBinding` entry:
+   - `screenId` target,
+   - `popupId`,
+   - `popupPrefab`.
+3. Resolve/open the popup through `ScreenPopupHost` only.
+4. Remove or reject direct/fallback popup paths for the same use case.
+5. Verify runtime behavior:
+   - one user action => one popup instance shown,
+   - no duplicate popup from a second source,
+   - clear warning if binding is missing.
+6. Update UI documentation (`Notes/Ui/popup_generique.md`) and log the change in `PROJECT_LOG.md`.
