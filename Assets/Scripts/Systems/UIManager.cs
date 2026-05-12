@@ -85,8 +85,12 @@ public class UIManager : MonoBehaviour
     [Tooltip("Prefab visuel d'un slot shop. Si non defini, utilise le prefab inventaire.")]
     [SerializeField] private InventorySlotUI runtimeShopSlotPrefab;
     [SerializeField] private int runtimeShopColumns = 5;
-    [Tooltip("Popup detail / achat (optionnel). Instanciee sous l'ecran shop au premier clic sur une offre.")]
+    [Tooltip("Compatibilite legacy shop. Utilise si aucun binding PopupId.ShopItemPurchase n'est configure.")]
     [SerializeField] private ShopItemPopupController shopItemPopupPrefab;
+
+    [Header("Runtime popup bindings")]
+    [Tooltip("Catalogue ecran -> popup id -> prefab instancie a la demande dans ScreenPopupHost.")]
+    [SerializeField] private List<ScreenPopupBinding> runtimePopupBindings = new();
 
     // ── Runtime ───────────────────────────────────────────────────────────────
 
@@ -282,6 +286,8 @@ public class UIManager : MonoBehaviour
         if (entry.instance == null)
             return;
 
+        RegisterRuntimePopups(entry);
+
         if (entry.screenId == ScreenId.Shop)
         {
             RuntimeShopScreen shop = entry.instance.GetComponentInChildren<RuntimeShopScreen>(true);
@@ -289,7 +295,7 @@ public class UIManager : MonoBehaviour
             {
                 InventorySlotUI slotPrefab = runtimeShopSlotPrefab != null ? runtimeShopSlotPrefab : runtimeInventorySlotPrefab;
                 ItemDatabase shopDb = PlayerInventory.Instance != null ? PlayerInventory.Instance.ItemDatabase : null;
-                shop.Initialize(shopDb, slotPrefab, runtimeShopColumns, shopItemPopupPrefab);
+                shop.Initialize(shopDb, slotPrefab, runtimeShopColumns);
             }
 
             return;
@@ -306,6 +312,61 @@ public class UIManager : MonoBehaviour
             if (!inventoryUi.IsBound && PlayerInventory.Instance != null)
                 inventoryUi.Bind(PlayerInventory.Instance);
         }
+    }
+
+    private void RegisterRuntimePopups(ScreenEntry entry)
+    {
+        if (entry.instance == null)
+            return;
+
+        bool hasBinding = HasPopupBindingForScreen(entry.screenId);
+        ScreenPopupHost host = entry.instance.GetComponentInChildren<ScreenPopupHost>(true);
+
+        if (host == null && hasBinding)
+            host = entry.instance.AddComponent<ScreenPopupHost>();
+
+        if (host == null)
+            return;
+
+        foreach (ScreenPopupBinding binding in runtimePopupBindings)
+        {
+            if (binding == null || binding.screenId != entry.screenId || binding.popupPrefab == null)
+                continue;
+
+            host.RegisterRuntimePopup(binding.popupId, binding.popupPrefab);
+        }
+
+        RegisterLegacyShopPopup(entry.screenId, host);
+    }
+
+    private bool HasPopupBindingForScreen(string screenId)
+    {
+        foreach (ScreenPopupBinding binding in runtimePopupBindings)
+        {
+            if (binding != null && binding.screenId == screenId && binding.popupPrefab != null)
+                return true;
+        }
+
+        return screenId == ScreenId.Shop && shopItemPopupPrefab != null;
+    }
+
+    private void RegisterLegacyShopPopup(string screenId, ScreenPopupHost host)
+    {
+        if (screenId != ScreenId.Shop || host == null || shopItemPopupPrefab == null)
+            return;
+
+        foreach (ScreenPopupBinding binding in runtimePopupBindings)
+        {
+            if (binding != null &&
+                binding.screenId == ScreenId.Shop &&
+                binding.popupId == PopupId.ShopItemPurchase &&
+                binding.popupPrefab != null)
+            {
+                return;
+            }
+        }
+
+        host.RegisterRuntimePopup(PopupId.ShopItemPurchase, shopItemPopupPrefab.gameObject);
     }
 
     private bool TryGetEntry(string screenId, out ScreenEntry entry)

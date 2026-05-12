@@ -27,7 +27,10 @@ public class RuntimeShopScreen : MonoBehaviour
     [SerializeField] private Vector2 slotSpacing = new(14f, 14f);
 
     [Header("Popup achat item (optionnel)")]
-    [Tooltip("Si non assigne ici, utilise la reference injectee par UIManager ou un enfant ShopItemPopupController.")]
+    [Tooltip("Identifiant du popup a demander au ScreenPopupHost de l'ecran.")]
+    [SerializeField] private string shopItemPopupId = PopupId.ShopItemPurchase;
+
+    [Tooltip("Fallback local si aucun popup n'est fourni par ScreenPopupHost.")]
     [SerializeField] private ShopItemPopupController shopItemPopupPrefabOverride;
 
     [Tooltip("Popup generique pour les erreurs de ressources (fonds insuffisants, couts futurs, etc.).")]
@@ -47,8 +50,8 @@ public class RuntimeShopScreen : MonoBehaviour
 
     private bool initialized;
     private Button hookedCloseButton;
-    private ShopItemPopupController shopItemPopupPrefabInjected;
     private ShopItemPopupController shopItemPopupInstance;
+    private ScreenPopupHost screenPopupHost;
     private bool shopPurchaseHandlerWired;
     private bool inventoryEventsSubscribed;
 
@@ -62,13 +65,11 @@ public class RuntimeShopScreen : MonoBehaviour
     public void Initialize(
         ItemDatabase database,
         InventorySlotUI slotPrefabOverride,
-        int columns,
-        ShopItemPopupController itemPopupPrefab = null)
+        int columns)
     {
         itemDatabase = database;
         slotPrefab = slotPrefabOverride;
         columnCount = Mathf.Max(1, columns);
-        shopItemPopupPrefabInjected = itemPopupPrefab;
         initialized = true;
 
         ResolveBindingsIfNeeded();
@@ -302,30 +303,39 @@ public class RuntimeShopScreen : MonoBehaviour
         if (shopItemPopupInstance != null)
             return shopItemPopupInstance;
 
+        ScreenPopupHost popupHost = ResolvePopupHost();
+        if (popupHost != null &&
+            popupHost.HasPopup(shopItemPopupId) &&
+            popupHost.TryGetPopup(shopItemPopupId, out ShopItemPopupController popupFromHost))
+        {
+            shopItemPopupInstance = popupFromHost;
+            return shopItemPopupInstance;
+        }
+
         shopItemPopupInstance = GetComponentInChildren<ShopItemPopupController>(true);
         if (shopItemPopupInstance != null)
             return shopItemPopupInstance;
 
-        ShopItemPopupController prefab = shopItemPopupPrefabInjected != null
-            ? shopItemPopupPrefabInjected
-            : shopItemPopupPrefabOverride;
-
-        if (prefab == null)
+        if (shopItemPopupPrefabOverride == null)
             return null;
 
-        shopItemPopupInstance = Instantiate(prefab, transform);
+        shopItemPopupInstance = Instantiate(shopItemPopupPrefabOverride, transform);
         shopItemPopupInstance.gameObject.name = "ShopItemPopup";
-
-        if (shopItemPopupInstance.TryGetComponent<RectTransform>(out RectTransform popupRect))
-        {
-            popupRect.anchorMin = Vector2.zero;
-            popupRect.anchorMax = Vector2.one;
-            popupRect.offsetMin = Vector2.zero;
-            popupRect.offsetMax = Vector2.zero;
-        }
-
         shopItemPopupInstance.gameObject.SetActive(false);
         return shopItemPopupInstance;
+    }
+
+    private ScreenPopupHost ResolvePopupHost()
+    {
+        if (screenPopupHost != null)
+            return screenPopupHost;
+
+        screenPopupHost = GetComponentInParent<ScreenPopupHost>(true);
+        if (screenPopupHost != null)
+            return screenPopupHost;
+
+        screenPopupHost = GetComponentInChildren<ScreenPopupHost>(true);
+        return screenPopupHost;
     }
 
     private void EnsureShopPurchaseWired(ShopItemPopupController popup)
@@ -514,6 +524,9 @@ public class RuntimeShopScreen : MonoBehaviour
 
         if (contentBackdropImage == null && slotsContainer != null && slotsContainer.parent != null)
             contentBackdropImage = slotsContainer.parent.GetComponent<Image>();
+
+        if (screenPopupHost == null)
+            screenPopupHost = ResolvePopupHost();
     }
 
     private Button FindCloseButton()
