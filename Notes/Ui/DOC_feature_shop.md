@@ -2,7 +2,7 @@
 
 Document de référence pour le **magasin (Shop)** : état du code, intention produit, et distinction claire avec l’**inventaire joueur**.
 
-**Branche / historique** : travail initial journalisé dans `PROJECT_LOG.md` (2026-04-29) ; évolution catalogue JSON notée en **2026-05-04**. Checklist opérationnelle : `Notes/Todo_project.md` (section Shop) et `Notes/Ui/Todo_ui.md` (flux achat).
+**Branche / historique** : travail initial journalisé dans `PROJECT_LOG.md` (2026-04-29) ; évolution catalogue JSON notée en **2026-05-04** ; monnaie / débit achat et popup ressources insuffisantes confirmés en **2026-05-12**. Checklist opérationnelle : `Notes/Todo_project.md` (section Shop) et `Notes/Ui/Todo_ui.md` (flux achat).
 
 ---
 
@@ -19,7 +19,7 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 
 ### Cellules de taille variable (mise en avant produit)
 
-- Aujourd’hui, le fallback shop (comme l’inventaire runtime) utilise un **`GridLayoutGroup`** avec un **`cellSize` unique** : **toutes les cellules ont la même taille** dans cette grille.
+- Aujourd’hui, l’écran Shop runtime (comme l’inventaire runtime) utilise un **`GridLayoutGroup`** avec un **`cellSize` unique** : **toutes les cellules ont la même taille** dans cette grille.
 - Pour une **carte plus grande** et d’autres **plus petites** (promo, produit mis en avant), il faudra **compléter ou remplacer** ce layout : par exemple conteneur **vertical** + prefabs de hauteurs différentes, **`LayoutElement`** (preferred / min / flex) sur chaque ligne, **grille maison** (positions calculées), **span** sur plusieurs cellules, ou **UI Toolkit** selon la direction Unity du projet.  
   Ce n’est **pas** incompatible avec le choix « même architecture que le sac » : on garde des **widgets slot** cohérents ; c’est le **conteneur de layout** qui doit évoluer pour autoriser des tailles hétérogènes.
 
@@ -33,29 +33,31 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 |--------|------|
 | `ScreenId.Shop` | Identifiant d’écran pour `UIManager`. |
 | `NavigationHUD` | Onglet **Shop** : ouvre l’écran via `UIManager.TryShowScreen(ScreenId.Shop)`, coexistence avec Inventaire. |
-| `UIManager` | Enregistre l’écran Shop ; peut **auto-créer** un fallback `RuntimeShopScreen` si aucun prefab Shop n’est configuré (`autoCreateShopScreen`). |
-| `RuntimeShopScreen` | UI **runtime minimale** : modal (`HudModalBackdrop`), grille scrollable, slots issus du **catalogue** (voir §2.2). |
+| `UIManager` | Enregistre / instancie les prefabs d’écrans configurés dans l’éditeur ; le Shop doit venir du prefab runtime, pas d’une génération complète de fallback en code. |
+| `RuntimeShopScreen` | Écran Shop runtime branché sur prefab : modal, grille scrollable, slots issus du **catalogue**, popup détail / achat, transaction monnaie et feedback ressources insuffisantes. |
 | `MarketCatalogPrototype` | Charge **`Resources/Market/market_catalog.json`** (`JsonUtility`), résout chaque ligne contre `ItemDatabase`, produit des `ListingRow` (`InventorySlot` + `UnitPrice`). |
 | `Assets/Resources/Market/market_catalog.json` | Données prototype : `listings[]` avec `itemId`, `price`, `quantity` par offre. |
 
-### 2.2 Affichage catalogue (sans achat)
+### 2.2 Catalogue et achat de base
 
 - Les cellules de la grille utilisent **`InventorySlotUI.Refresh(InventorySlot)`** avec un slot **synthétique** par ligne du JSON (item + quantité affichée comme en inventaire), **pas** une copie des slots du sac du joueur.
 - **`PlayerInventory`** n’est utilisé que pour **résoudre** `ItemDatabase` si aucune base n’a été injectée à l’`Initialize` (`TryResolveDatabaseFromPlayer`).
-- **Aucun** clic sur une offre, **aucune** déduction de monnaie, **aucun** `TryAdd` depuis le shop : le prototype s’arrête à l’**affichage** + résumé des prix dans le pied de panneau.
+- Le clic sur une offre ouvre une popup détail / achat (`ShopItemPopupController`) avec quantité **+** / **−** et prix total dynamique.
+- L’achat passe par `InventoryCurrencyAccount.TryPurchase(...)` : vérification du solde `ItemDatabase.PrimaryCurrency`, débit monnaie, `PlayerInventory.TryAdd(...)`, puis remboursement si l’ajout échoue après débit.
+- Le manque de fonds est bloqué avant achat et remonte un popup générique via `ResourceFeedbackPopupUI.ShowInsufficientResources()` ; `InventoryFeedbackUI` reste en fallback texte si le prefab n’est pas branché.
 
 ### 2.3 Préfab / Inspector
 
-- Un prefab **`ShopScreen`** peut exister dans le projet ; le flux documenté ici reste aligné sur le **fallback runtime** tant que le prefab n’est pas la source unique de vérité en jeu.
-- Voir `Notes/Todo_project.md` : linkage Inspector, prefab dédié, ressource **Argent** (première monnaie).
+- Le prefab **`ShopScreen`** est la source à privilégier pour les bindings UI runtime.
+- Voir `Notes/Todo_project.md` : linkage Inspector, polish UX, saisie quantité, bouton **Max**.
 
 ---
 
-## 3. Flux achat dédié (prochaine session — spec produit)
+## 3. Flux achat dédié (état + reste à polir)
 
-Objectif : **mécanique d’achat** isolée (UI + logique), en s’appuyant sur la même voie d’entrée inventaire que la récolte (`PlayerInventory.TryAdd` ou équivalent unique).
+Base en place : **mécanique d’achat** isolée (UI + logique), en s’appuyant sur la même voie d’entrée inventaire que la récolte (`PlayerInventory.TryAdd` via `InventoryCurrencyAccount.TryPurchase`). Les points ci-dessous servent maintenant de référence pour le polish.
 
-**Mise à jour 2026-05-10 (priorités auteur)** : (0) passe **UI/UX** sur shop et popups ; (1) **popup dédiée** ou message très visible « pas assez d’argent » ; (2) **saisie quantité** numérique (PC + mobile, `TMP_InputField` ou équivalent) en plus des **+** / **−** ; (3) bouton **Max** → `quantité = min(règles métier, floor(solde_monnaie / prix_unitaire))` (croiser `MaxPurchaseQuantity`, capacité sac, quantité listing).
+**Mise à jour 2026-05-12** : le feedback « pas assez d’argent » utilise maintenant un popup générique `ResourceFeedbackPopupUI` avec le message réutilisable « Vous n'avez pas assez de ressources pour cette action. ». Restent en priorité : (0) passe **UI/UX** globale sur shop et popups ; (1) **saisie quantité** numérique (PC + mobile, `TMP_InputField` ou équivalent) en plus des **+** / **−** ; (2) bouton **Max** → `quantité = min(règles métier, floor(solde_monnaie / prix_unitaire))` (croiser `MaxPurchaseQuantity`, capacité sac, quantité listing) ; (3) popup de confirmation avant paiement.
 
 1. **Clic sur une offre** (slot catalogue) → ouverture d’une **fenêtre détail** avec :
    - **Image** de l’item (icône `ItemDefinition` ou équivalent) ;
@@ -67,12 +69,12 @@ Objectif : **mécanique d’achat** isolée (UI + logique), en s’appuyant sur 
    - Bouton **Max** : applique le maximum **achetable** compte tenu du **solde**, du **prix unitaire**, des plafonds (`MaxPurchaseQuantity`, stock listing, `CanFitQuantity`, etc.) ;
    - Bouton **Payer** (libellé dynamique, voir point 3).
 3. **Prix total** : recalcul continu **`total = prix_unitaire × quantité`** ; le bouton de paiement (ou un libellé associé) **affiche** ce total (ex. « Payer 15 »).
-4. **Confirmation** : au clic sur Payer, ouvrir un **popup de confirmation** (« Confirmer l’achat ? »).
-5. **Après confirmation** :
-   - Si **fonds suffisants** : débiter la monnaie (cf. paragraphe **Monnaie** ci-dessus), **`TryAdd`** l’item acheté, fermer les modales / rafraîchir le catalogue si besoin ;
-   - Si **fonds insuffisants** : **popup ou panneau dédié** « pas assez d’argent » (sans débit ni ajout inventaire) — ne pas se limiter à un log console en prod.
+4. **Confirmation** : au clic sur Payer, ouvrir un **popup de confirmation** (« Confirmer l’achat ? »). À ce stade, le flux existant achète directement depuis la popup item.
+5. **Transaction** :
+   - Si **fonds suffisants** : débit monnaie + **`TryAdd`** de l’item acheté via `InventoryCurrencyAccount.TryPurchase`, fermeture / refresh ;
+   - Si **fonds insuffisants** : popup générique ressources insuffisantes (sans débit ni ajout inventaire).
 
-**Monnaie** : introduire la **première ressource primaire « Argent »** (item dédié type `money` ou compteur dédié — à trancher en implémentation, mais **une seule** notion de solde pour les prix du JSON). Elle doit être référencée dans `ItemDatabase` si on suit le modèle « item stackable » comme les autres ressources.
+**Monnaie** : modèle implémenté avec une ressource de type `ItemInventoryBehavior.Currency`, exposée par `ItemDatabase.PrimaryCurrency` et manipulée via `InventoryCurrencyAccount`.
 
 ---
 
@@ -81,16 +83,16 @@ Objectif : **mécanique d’achat** isolée (UI + logique), en s’appuyant sur 
 Les points ci-dessous complètent le **§3** (flux achat) et l’intention **§1**.
 
 1. **Données d’écran**  
-   - Le prototype JSON couvre déjà une **liste d’offres** ; à faire : **interactions** (clic → détail → achat), éventuellement **service** ou classe dédiée pour ne pas alourdir `RuntimeShopScreen` au-delà du prototype.
+   - Le prototype JSON couvre déjà une **liste d’offres** ; à faire plus tard si le Shop grossit : service dédié pour ne pas alourdir `RuntimeShopScreen`.
 
 2. **Lien inventaire (seul lien obligatoire côté possession)**  
    - Sur **validation d’achat** confirmée, appeler la **même couche** que la récolte pour **ajouter** l’item (`PlayerInventory.TryAdd`, etc.).
 
 3. **UI**  
-   - **Modal détail** + **popup confirmation** (nouveaux prefabs ou extension du runtime) ; prefab Shop plein jeu quand le visuel sera figé.
+   - Modal détail et popup ressources insuffisantes en place ; restent la **confirmation**, la **saisie quantité**, le bouton **Max** et le polish visuel global.
 
 4. **Monnaie**  
-   - **Argent** comme première ressource : solde consultable, débit atomique avec l’achat (éviter double clic / race avec `IsTransitioning`-style si pertinent).
+   - Solde consultable, débit achat en place ; à durcir si besoin contre les doubles clics / transactions concurrentes.
 
 5. **Layout vs données**  
    - Le catalogue est déjà **découplé** des slots joueur côté données ; prévoir l’**évolution du layout** (cellules de tailles variables, §1) après le MVP achat.
@@ -99,10 +101,15 @@ Les points ci-dessous complètent le **§3** (flux achat) et l’intention **§1
 
 ## 5. Fichiers utiles (code)
 
-- `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs` — fallback shop, grille catalogue, `HudModalBackdrop`.
+- `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs` — écran Shop runtime, grille catalogue, `HudModalBackdrop`.
+- `Assets/Scripts/UI/Shop/ShopItemPopupController.cs` — popup détail, quantité, demande d’achat.
+- `Assets/Scripts/Inventory/InventoryCurrencyAccount.cs` — solde, crédit, débit et achat atomique.
+- `Assets/Scripts/Inventory/ItemDatabase.cs` — `PrimaryCurrency`.
+- `Assets/Scripts/UI/ResourceFeedbackPopupUI.cs` — popup générique de feedback ressources insuffisantes, réutilisable hors shop.
+- `Assets/Scripts/UI/Inventory/InventoryFeedbackUI.cs` — ancien feedback texte / fallback inventaire.
 - `Assets/Scripts/Market/MarketCatalogPrototype.cs` — chargement / résolution JSON.
 - `Assets/Resources/Market/market_catalog.json` — données offres prototype.
-- `Assets/Scripts/Systems/UIManager.cs` — `EnsureShopScreenAvailable`, prefabs runtime shop.
+- `Assets/Scripts/Systems/UIManager.cs` — prefabs runtime shop et bindings.
 - `Assets/Scripts/UI/NavigationHUD.cs` — onglet Shop.
 - `Assets/Scripts/Systems/ScreenId.cs` — constante `Shop`.
 - `Assets/Scripts/UI/HudModalBackdrop.cs` — cohérence visuelle avec l’inventaire runtime.
@@ -113,6 +120,6 @@ Pour le flux « donner un item au joueur », réutiliser les chemins déjà util
 
 ## 6. Synthèse
 
-**Aujourd’hui** : le Shop est un **écran modal** qui affiche un **catalogue JSON** (`market_catalog.json`) en **slots** réutilisant `InventorySlotUI`, avec résolution des items via `ItemDatabase` ; **pas d’achat**, **pas de monnaie** en jeu.  
-**Prochaine étape** : **Argent** + **flux §3** (détail quantité incl. saisie + **Max**, total sur le bouton, confirmation, succès / **popup** manque de fonds, passe **UX**) puis **`TryAdd`** pour les items achetés.  
+**Aujourd’hui** : le Shop affiche un **catalogue JSON** (`market_catalog.json`) en **slots**, ouvre une popup détail, gère quantité **+** / **−**, calcule le total, débite la monnaie, ajoute l’achat à l’inventaire via `TryPurchase` et affiche un popup générique si les ressources sont insuffisantes.  
+**Prochaine étape** : polish **UX**, vraie confirmation avant paiement, saisie quantité PC/mobile et bouton **Max**.  
 **Ensuite** : prefab Shop final, layouts hétérogènes si besoin produit.

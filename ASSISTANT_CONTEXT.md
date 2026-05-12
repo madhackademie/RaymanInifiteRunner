@@ -17,7 +17,7 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **Shop / wallet / UX (priorité session 2026-05-10)** : passe **UI/UX** ; **popup** fonds insuffisants ; **saisie quantité** (PC + mobile) ; bouton **Max** (`floor(solde / prix_unitaire)` + bornes métier) — voir **`Notes/Todo_project.md`** (bloc 2026-05-10), **`Notes/Ui/DOC_feature_shop.md`** §3, **`Notes/Ui/Todo_ui.md`**.
+1. **Shop / wallet / UX (priorité nettoyée 2026-05-12)** : monnaie inventaire + débit achat fonctionnels ; popup générique **ressources insuffisantes** en place (`ResourceFeedbackPopupUI`, prefab `ResourceFeedbackPopup`, branché dans `ShopScreen`). Priorité restante = passe **UI/UX**, **saisie quantité** (PC + mobile), bouton **Max** (`floor(solde / prix_unitaire)` + bornes métier), popup confirmation avant paiement — voir **`Notes/Todo_project.md`**, **`Notes/Ui/DOC_feature_shop.md`** §3, **`Notes/Ui/Todo_ui.md`**.
 2. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
 3. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
 4. **~2026-05-01 — Audit Bezi + refactor navigation Scene/UI** : terminer l’audit sur le flux réel (`ShowScene`, boot eager, `UIManager`) ; **clean/refactor** ; supprimer ou documenter le code mort ; **réaligner** `ARCHI` / `Journal_ui` / `Todo_ui` / guide scènes — **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**, **`PROJECT_LOG.md`** (2026-04-21).
@@ -35,11 +35,11 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-10** :
+- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-12** :
   - correction UI / UX shop,
-  - popup « pas assez d’argent »,
   - saisie quantité (PC + mobile),
-  - bouton Max (solde / prix unitaire, bornes métier).
+  - bouton Max (solde / prix unitaire, bornes métier),
+  - confirmation avant paiement.
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :

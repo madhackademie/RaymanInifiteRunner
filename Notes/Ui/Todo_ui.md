@@ -10,17 +10,18 @@
 
 ## Priorité session suivante
 
-### Shop — mécanique achat (prochaine session / suite catalogue JSON)
+### Shop — mécanique achat (polish restant)
 
-Référence produit + technique : **`Notes/Ui/DOC_feature_shop.md`** (§3 flux achat, §2 état actuel). Dépendance : ressource **Argent** (`ItemDefinition` + `ItemDatabase`, voir `Notes/Todo_project.md`). **Priorités auteur 2026-05-10** : UX globale, popup insuffisant, saisie quantité, bouton Max — voir aussi **`Notes/Todo_project.md`**.
+Référence produit + technique : **`Notes/Ui/DOC_feature_shop.md`** (§3 flux achat, §2 état actuel). La monnaie inventaire, le débit achat et le popup générique de ressources insuffisantes sont en place (`ItemDatabase.PrimaryCurrency`, `InventoryCurrencyAccount`, `TryPurchase`, `ResourceFeedbackPopupUI`). **Priorités restantes** : UX globale, confirmation, saisie quantité, bouton Max — voir aussi **`Notes/Todo_project.md`**.
 
 - [ ] **Passe UI/UX** : lisibilité, enchaînement modales / focus / retours visuels sur l’écran shop et la popup d’achat.
-- [ ] Clic sur une **offre catalogue** → ouvrir une **modal détail** : grande image item, **prix unitaire**, **description** optionnelle (données ou TMP plus tard).
-- [ ] Contrôles **quantité** : boutons **+** / **−** (min 1, max selon stock listing / règle) ; bouton **Payer** dont le texte reflète le **total** `prix_unitaire × quantité` (recalcul à chaque changement).
+- [x] Clic sur une **offre catalogue** → ouvrir une **modal détail** : grande image item, **prix unitaire**, **description** optionnelle (données ou TMP plus tard).
+- [x] Contrôles **quantité** : boutons **+** / **−** (min 1, max selon stock listing / règle) ; bouton **Payer** dont le texte reflète le **total** `prix_unitaire × quantité` (recalcul à chaque changement).
+- [x] **Feedback ressources insuffisantes** : popup générique `ResourceFeedbackPopupUI` branché dans `ShopScreen`, message réutilisable pour tout coût futur, sans débit ni ajout inventaire.
 - [ ] **Saisie quantité** : `TMP_InputField` (ou équivalent) — **clavier PC** + **mobile** (clavier numérique / validation locale), clamp sur [min, max] métier.
 - [ ] **Bouton Max** : applique `quantité = min(plafonds listing/inventaire, floor(solde_monnaie / prix_unitaire))` (cohérent avec `MaxPurchaseQuantity`, place dans le sac, etc.).
-- [ ] Au clic **Payer** : **popup de confirmation** avant toute transaction.
-- [ ] Après confirmation : si **solde Argent suffisant** → débit monnaie + **`PlayerInventory.TryAdd`** (quantité achetée) + fermeture / refresh ; si **insuffisant** → **popup ou message dédié « pas assez d’argent »** (pas de débit, pas d’ajout) — au-delà d’un simple `Debug.Log` si besoin.
+- [ ] Au clic **Payer** : **popup de confirmation** avant toute transaction (le flux actuel achète directement depuis la popup item).
+- [x] Transaction : si **solde Argent suffisant** → débit monnaie + **`PlayerInventory.TryAdd`** (quantité achetée) + fermeture / refresh ; si **insuffisant** → popup ressources insuffisantes (pas de débit, pas d’ajout).
 
 ### Session cible ~2026-05-01 — audit Bezi (Scene/UI) + clean refactor
 

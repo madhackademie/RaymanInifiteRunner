@@ -20,6 +20,7 @@ Légende :
 | Fichier | Statut | Priorité | Synthèse |
 |---|---|---|---|
 | `Notes/Todo_project.md` | Actif | P1 | Hub principal des TODOs (prototype, GDD, workflow, art, polish, backlog nettoyage). |
+| `Notes/Inbox_features.md` | A trier | P3 | Stock d'idées de features futures, sans priorité, sans todo et sans planification. |
 
 ## Notes Farm
 

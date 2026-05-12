@@ -1,6 +1,6 @@
 # Todo projet — hub global
 
-Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, `Notes/Farm/SYSTEMES_carte_mentale.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`, `Notes/Ui/SPEC_services_inventory_market_cloud.md`, etc. **État code / assets (snapshot)** : `Notes/Codebase_etat_reference.md` ; journal chronologique : `PROJECT_LOG.md` (racine).
+Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plant_footprint_prompt.md`, `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`, `Notes/Farm/TODO_plantation_pipeline.md`, `Notes/Farm/SYSTEMES_carte_mentale.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`, `Notes/Ui/SPEC_services_inventory_market_cloud.md`, etc. **État code / assets (snapshot)** : `Notes/Codebase_etat_reference.md` ; journal chronologique : `PROJECT_LOG.md` (racine). **Idées futures sans priorité** : `Notes/Inbox_features.md`.
 
 ---
 
@@ -16,24 +16,25 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prochaine session (priorité immédiate)
 
-### Priorités auteur — enregistrées 2026-05-10 (shop / wallet / UX)
+### Priorités auteur — nettoyées 2026-05-12 (shop / wallet / UX)
 
 1. [ ] **Correction UI — expérience utilisateur** : passe d’amélioration sur les écrans concernés (shop, popups, lisibilité, flux clics).
-2. [ ] **Popup message « pas assez d’argent »** : feedback explicite quand le solde monnaie est insuffisant (au-delà d’un simple log si nécessaire) — croiser `InventoryFeedbackUI` / `ShopItemPopupController` / `RuntimeShopScreen`.
+2. [x] **Feedback « pas assez d’argent » — popup générique** : `ResourceFeedbackPopupUI` affiche le message réutilisable « Vous n'avez pas assez de ressources pour cette action. » ; prefab `ResourceFeedbackPopup` lié à `ShopScreen`, avec correction du `RectTransform` (scale/ancres) après génération Bezi.
 3. [ ] **Saisie quantité à acheter** : champ nombre (PC clavier + mobile : `TMP_InputField` / clavier système, validation min/max).
 4. [ ] **Bouton Max** : quantité maximale = `min(règles métier inventaire/listing, floor(solde_monnaie / prix_unitaire))` (et plafonds `MaxPurchaseQuantity` / place dans le sac si déjà gérés côté code).
+5. [ ] **Confirmation avant paiement** : popup de confirmation avant de déclencher le débit monnaie / ajout inventaire.
 
 Références : **`Notes/Ui/DOC_feature_shop.md`** §3, **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*), note **`Notes/Ui/SceneUiLoadManagement.md`** (navigation scène vs UI).
 
 ---
 
 - [ ] **Inventaire + wallet — mise à niveau sans bidouille externe** : reprendre le chantier **wallet dans l’écran inventaire** avec une **seule source de vérité** (prefab `InventoryScreen` sous `UIManager` et `ScreenId.Inventory`, ou approche documentée équivalente). **Ne pas** régénérer l’UI via script Python / YAML hors Unity — workflow éditeur uniquement (voir **`Notes/Ui/NOTE_inventory_wallet_upgrade.md`** pour la problématique : double vérité scène template vs `UIManager`, ancien fallback `RuntimeInventoryScreen` **retiré du dépôt**, piège Canvas/sorting). Script **`Tools/extract_inventory_prefab.py`** retiré du dépôt.
-- [ ] **Shop — monnaie inventaire + deduction achat (NOUVELLE PRIORITE)** : creer la ressource monnaie dans l'inventaire (item dedie + entree `ItemDatabase` + affichage du solde), puis deduire ce montant lors d'un achat shop avant validation `TryAdd`; si fonds insuffisants, bloquer l'achat avec feedback utilisateur.
-- [ ] **Shop — créer la ressource Argent (priorité)** : ajouter un item monnaie (ex. `money`) dans les données inventaire (`ItemDefinition` + `ItemDatabase`) et préparer son usage dans le Shop (affichage/solde + coûts d'achat/vente à brancher ensuite).
-- [ ] **Shop — flux achat dédié (mécanique)** : clic sur une offre → fenêtre détail (image, prix unitaire, description optionnelle) → contrôles **+** / **−** / **Payer** avec libellé **`prix × quantité`** ; **popup de confirmation** ; si fonds OK → débit + `TryAdd` inventaire, sinon message **manque de fonds**. **Saisie quantité + bouton Max + popup insuffisant + passe UX** : voir bloc **2026-05-10** ci-dessus. Spec : **`Notes/Ui/DOC_feature_shop.md`** §3 ; checklist UI : **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*).
+- [x] **Shop — monnaie inventaire + déduction achat** : ressource monnaie / `ItemDatabase.PrimaryCurrency`, solde, débit achat avant `TryAdd`, blocage fonds insuffisants avec feedback de base.
+- [x] **Shop — créer la ressource Argent** : item monnaie et usage Shop préparés / branchés dans le flux actuel.
+- [~] **Shop — flux achat dédié (mécanique)** : clic sur une offre → fenêtre détail (image, prix unitaire, description optionnelle) → contrôles **+** / **−** / **Payer** avec libellé **`prix × quantité`** ; si fonds OK → débit + `TryAdd` inventaire, sinon popup générique **ressources insuffisantes**. Restent : **popup de confirmation**, **saisie quantité**, **bouton Max**, polish UX global. Spec : **`Notes/Ui/DOC_feature_shop.md`** §3 ; checklist UI : **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*).
 - [ ] **Shop — linkage Inspector / références vides** : passer les scènes/prefabs UI concernés pour corriger les champs `SerializeField` non assignés (bouton/icône onglet Shop, refs écrans/panels, prefabs slots) et noter explicitement chaque liaison manquante.
-- [ ] **Shop — prefab manquant** : créer/valider un prefab Shop dédié (en remplacement progressif du fallback runtime) ; si besoin, demander un support de prod UI à **Bezi.ia** et documenter le rendu attendu (structure, slots, style, interactions minimales).
-- [x] **Doc Shop** (intention vs code actuel, catalogue JSON, spec flux achat) : `Notes/Ui/DOC_feature_shop.md` — mis à jour **2026-05-04** ; journal `PROJECT_LOG.md` aligné.
+- [x] **Shop — prefab dédié** : `Assets/Prefabs/Ui/ShopScreen.prefab` existe et sert de base runtime ; poursuivre le polish visuel via la passe UI/UX.
+- [x] **Doc Shop** (intention vs code actuel, catalogue JSON, spec flux achat) : `Notes/Ui/DOC_feature_shop.md` — mis à jour **2026-05-04**, nettoyé **2026-05-12** ; journal `PROJECT_LOG.md` aligné.
 
 - [ ] **Git — intégration branche test → `main`** : ouvrir une **PR** depuis la branche de travail (ex. `cursor/test-laitue-references-9dc0`) vers **`main`**, revue rapide, merge ; **alternative** (à éviter sauf choix assumé) : **remplacer** `main` par la branche test (`reset` / force-push) — documenter la stratégie dans le message de merge ou dans `PROJECT_LOG.md`. Réf : `GIT_HELPER.md` (--3--).
 - [ ] **Ferme — stade / durées / temps écoulé** : corriger les cas où le **state** ne suit pas les **nouvelles durées** du `PlantDefinition` après édition ; garantir une **persistance réelle** du state (stade + **délai de vie déjà écoulé** / timer, pas seulement la pose) au reload et entre sessions — croiser `PlantGrow`, `FarmSaveService`, `PlantPersistenceMarker`. Journal : `PROJECT_LOG.md` (2026-04-27).

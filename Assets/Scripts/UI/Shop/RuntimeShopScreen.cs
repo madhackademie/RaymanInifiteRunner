@@ -10,6 +10,8 @@ using UnityEngine.UI;
 public class RuntimeShopScreen : MonoBehaviour
 {
     private const int PriceSummaryMaxChars = 160;
+    private const string CurrencyNotConfiguredMessage = "Monnaie non configuree.";
+    private const string InventoryFullMessage = "Inventaire plein !";
 
     [Header("Bindings UI (prefab)")]
     [SerializeField] private RectTransform slotsContainer;
@@ -28,7 +30,10 @@ public class RuntimeShopScreen : MonoBehaviour
     [Tooltip("Si non assigne ici, utilise la reference injectee par UIManager ou un enfant ShopItemPopupController.")]
     [SerializeField] private ShopItemPopupController shopItemPopupPrefabOverride;
 
-    [Tooltip("Optionnel: feedback texte (ex: inventaire plein) reutilise par le flux shop.")]
+    [Tooltip("Popup generique pour les erreurs de ressources (fonds insuffisants, couts futurs, etc.).")]
+    [SerializeField] private ResourceFeedbackPopupUI resourceFeedbackPopup;
+
+    [Tooltip("Ancien feedback texte (fallback si ResourceFeedbackPopupUI n'est pas encore branche).")]
     [SerializeField] private InventoryFeedbackUI feedbackUI;
 
     [Header("Source de donnees shop")]
@@ -366,19 +371,19 @@ public class RuntimeShopScreen : MonoBehaviour
         if (totalPrice > 0 && currency == null)
         {
             Debug.LogWarning("[RuntimeShopScreen] ItemDatabase.PrimaryCurrency non assigne - impossible de payer.");
-            ResolveFeedbackUI()?.ShowMessage("Monnaie non configuree.");
+            ShowFeedbackMessage(CurrencyNotConfiguredMessage);
             return;
         }
 
         if (totalPrice > 0 && !InventoryCurrencyAccount.HasSufficientFunds(inventory, currency, totalPrice))
         {
-            ResolveFeedbackUI()?.ShowInsufficientFunds();
+            ShowInsufficientResourcesFeedback();
             return;
         }
 
         if (!inventory.CanFitQuantity(item, qty))
         {
-            ResolveFeedbackUI()?.ShowInventoryFull();
+            ShowFeedbackMessage(InventoryFullMessage);
             return;
         }
 
@@ -447,6 +452,39 @@ public class RuntimeShopScreen : MonoBehaviour
 
         feedbackUI = GetComponentInChildren<InventoryFeedbackUI>(true);
         return feedbackUI;
+    }
+
+    private ResourceFeedbackPopupUI ResolveResourceFeedbackPopup()
+    {
+        if (resourceFeedbackPopup != null)
+            return resourceFeedbackPopup;
+
+        resourceFeedbackPopup = GetComponentInChildren<ResourceFeedbackPopupUI>(true);
+        return resourceFeedbackPopup;
+    }
+
+    private void ShowInsufficientResourcesFeedback()
+    {
+        ResourceFeedbackPopupUI popup = ResolveResourceFeedbackPopup();
+        if (popup != null)
+        {
+            popup.ShowInsufficientResources();
+            return;
+        }
+
+        ResolveFeedbackUI()?.ShowInsufficientResources();
+    }
+
+    private void ShowFeedbackMessage(string message)
+    {
+        ResourceFeedbackPopupUI popup = ResolveResourceFeedbackPopup();
+        if (popup != null)
+        {
+            popup.ShowMessage(message);
+            return;
+        }
+
+        ResolveFeedbackUI()?.ShowMessage(message);
     }
 
     private void ResolveBindingsIfNeeded()

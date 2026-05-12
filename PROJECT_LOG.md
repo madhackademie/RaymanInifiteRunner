@@ -1,5 +1,50 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-12 — shop popup ressources insuffisantes
+### Contexte
+- Demande auteur : transformer le feedback « pas assez d’argent » en popup générique réutilisable pour n’importe quelle ressource requise, puis vérifier le linkage Bezi après test sans affichage.
+
+### Ce qu’on a fait
+- [x] Code : ajout de `ResourceFeedbackPopupUI` (`ShowInsufficientResources`, `ShowMessage`, bouton OK, auto-hide configurable).
+- [x] Shop : `RuntimeShopScreen` utilise le popup générique pour le manque de ressources, avec fallback sur `InventoryFeedbackUI`.
+- [x] Compatibilité : `InventoryFeedbackUI.ShowInsufficientFunds()` redirige vers le message générique.
+- [x] Prefabs : `ResourceFeedbackPopup.prefab` créé par Bezi et lié dans `ShopScreen.prefab`.
+- [x] Correctif linkage : le popup était bien assigné, mais l’instance Bezi avait un `RectTransform` avec `localScale = 0` et des ancres écrasées ; correction dans `ShopScreen.prefab`.
+- [x] UX : `autoHideDelay` explique la disparition automatique ; mettre `0` pour garder le popup jusqu’au clic OK.
+
+### Prochaines actions (priorité shop)
+1. Saisie quantité PC/mobile.
+2. Bouton **Max** basé sur `floor(solde / prix_unitaire)` et les plafonds métier.
+3. Popup de confirmation avant paiement.
+4. Passe UI/UX globale shop et popups.
+
+### Liens utiles
+- `Assets/Scripts/UI/ResourceFeedbackPopupUI.cs`
+- `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs`
+- `Assets/Prefabs/Ui/ResourceFeedbackPopup.prefab`
+- `Assets/Prefabs/Ui/ShopScreen.prefab`
+- `Notes/Ui/DOC_feature_shop.md`
+- `Notes/Ui/Todo_ui.md`
+
+---
+
+## 2026-05-12
+### Contexte
+- Demande auteur : la monnaie inventaire et le débit achat fonctionnent déjà ; nettoyer les tâches / docs qui les présentent encore comme priorité.
+
+### Ce qu’on a fait
+- [x] `Notes/Todo_project.md` : monnaie / débit achat cochés ; priorité immédiate recentrée sur UX shop, saisie quantité, bouton Max et confirmation avant paiement.
+- [x] `Notes/Ui/Todo_ui.md` : checklist Shop mise à jour selon l’état réel (`PrimaryCurrency`, `InventoryCurrencyAccount`, `TryPurchase`, popup item + quantité +/-).
+- [x] `Notes/Ui/DOC_feature_shop.md` : retrait des mentions obsolètes « pas d’achat / pas de monnaie » ; ajout de l’état actuel du flux achat.
+- [x] `ASSISTANT_CONTEXT.md` et `Notes/Ui/Journal_ui.md` : priorité session nettoyée.
+
+### Prochaine session (priorité)
+1. Passe UI/UX Shop : lisibilité, enchaînement des modales et polish global.
+2. Ajouter la saisie quantité PC/mobile et le bouton **Max**.
+3. Ajouter une confirmation avant paiement si le flux de jeu la conserve.
+
+---
+
 ## 2026-05-10
 ### Contexte
 - Fin de session : nettoyage **`RuntimeInventoryScreen`** (suppression définitive du script + **`Library`** régénéré côté auteur pour resynchroniser l’import Unity). Doc navigation scène/UI : **`Notes/Ui/SceneUiLoadManagement.md`**.

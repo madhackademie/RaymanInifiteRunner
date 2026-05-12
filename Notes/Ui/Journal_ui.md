@@ -8,9 +8,9 @@ Règle de fonctionnement :
 
 ---
 
-## Entrée 2026-05-10 — prochaine session shop
+## Entrée 2026-05-10 / nettoyée 2026-05-12 — prochaine session shop
 
-Priorités enregistrées dans **`Notes/Todo_project.md`** : (1) passe UI/UX shop, (2) popup « pas assez d’argent », (3) saisie quantité PC + mobile, (4) bouton **Max** (`floor(solde/prix)` + bornes métier). Spec alignée : **`Notes/Ui/DOC_feature_shop.md`** §3, **`Notes/Ui/Todo_ui.md`**. Note navigation : **`Notes/Ui/SceneUiLoadManagement.md`**.
+Priorités enregistrées dans **`Notes/Todo_project.md`** : monnaie / débit achat déjà fonctionnels ; le feedback « pas assez d’argent » est maintenant un popup générique `ResourceFeedbackPopupUI` branché dans `ShopScreen` (message réutilisable : « Vous n'avez pas assez de ressources pour cette action. »). Suite = (1) passe UI/UX shop, (2) saisie quantité PC + mobile, (3) bouton **Max** (`floor(solde/prix)` + bornes métier), (4) confirmation avant paiement. Spec alignée : **`Notes/Ui/DOC_feature_shop.md`** §3, **`Notes/Ui/Todo_ui.md`**. Note navigation : **`Notes/Ui/SceneUiLoadManagement.md`**.
 
 ## Décisions actées
 
@@ -149,6 +149,7 @@ Priorités enregistrées dans **`Notes/Todo_project.md`** : (1) passe UI/UX shop
 
 Date | Changement
 :---|:---
+2026-05-12 | Shop : ajout du popup générique `ResourceFeedbackPopupUI`, branchement dans `RuntimeShopScreen` / `ShopScreen`, correction du linkage prefab Bezi (`RectTransform` scale/ancres) pour afficher le message ressources insuffisantes.
 2026-04-26 | Runtime inventaire : suppression de la dépendance à `Inventaire.unity` (build + scène), onglet inventaire via `UIManager`, fallback `RuntimeInventoryScreen` puis grille `InventorySlotUI` ; session validée pour prototype, polish prévu plus tard.
 2026-04-26 | Persistance gameplay prototype : JSON ferme (`FarmSaveService`), marker plante, autosave pose/récolte/arrache + recharge au démarrage avec reprise offline simple (`UTC delta`) ; à playtester/affiner.
 2026-04-21 | Plan **~2026-05-01** : audit **Bezi** + clean/refactor navigation (**`SceneNavigator.ShowScene`**, boot eager `GameBootstrap`) — note **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`** ; snapshot **`Notes/Codebase_etat_reference.md`** mis à jour.
