@@ -1,4 +1,4 @@
-# Feature Shop — documentation
+# UI / Popup generique — documentation
 
 Document de référence pour le **magasin (Shop)** : état du code, intention produit, et distinction claire avec l’**inventaire joueur**.
 

@@ -24,7 +24,7 @@ Prompt Cursor/Bezi conseillé (copier-coller) : `PROJECT_LOG.md` -> entrée **20
 
 ### Shop — mécanique achat (polish restant)
 
-Référence produit + technique : **`Notes/Ui/DOC_feature_shop.md`** (§3 flux achat, §2 état actuel). La monnaie inventaire, le débit achat et le popup générique de ressources insuffisantes sont en place (`ItemDatabase.PrimaryCurrency`, `InventoryCurrencyAccount`, `TryPurchase`, `ResourceFeedbackPopupUI`). **Priorités restantes** : UX globale, confirmation, saisie quantité, bouton Max — voir aussi **`Notes/Todo_project.md`**.
+Référence produit + technique : **`Notes/Ui/popup_generique.md`** (§3 flux achat, §2 état actuel). La monnaie inventaire, le débit achat et le popup générique de ressources insuffisantes sont en place (`ItemDatabase.PrimaryCurrency`, `InventoryCurrencyAccount`, `TryPurchase`, `ResourceFeedbackPopupUI`). **Priorités restantes** : UX globale, confirmation, saisie quantité, bouton Max — voir aussi **`Notes/Todo_project.md`**.
 
 - [ ] **Passe UI/UX** : lisibilité, enchaînement modales / focus / retours visuels sur l’écran shop et la popup d’achat.
 - [x] Clic sur une **offre catalogue** → ouvrir une **modal détail** : grande image item, **prix unitaire**, **description** optionnelle (données ou TMP plus tard).

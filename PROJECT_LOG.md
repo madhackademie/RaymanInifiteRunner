@@ -8,7 +8,7 @@
 - [x] Refactor popup : base générique en place (`ScreenPopupHost`, `ScreenPopupBinding`, `PopupId`).
 - [x] Mode strict activé : suppression des fallbacks legacy shop dans `UIManager` et `RuntimeShopScreen`.
 - [x] Règle runtime : **une seule source de vérité** pour la popup item shop = binding explicite `screenId + popupId + prefab`.
-- [x] Documentation mise à jour : `Notes/Ui/DOC_feature_shop.md` (section popup générique strict).
+- [x] Documentation mise à jour : `Notes/Ui/popup_generique.md` (section popup générique strict).
 
 ### Prochaines actions (priorité immédiate)
 1. **Playtest fonctionnel** du shop en mode strict (ouvrir shop, cliquer offre, vérifier ouverture/fermeture popup, achat, logs).
@@ -62,7 +62,7 @@ Actions attendues:
 - `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs`
 - `Assets/Prefabs/Ui/ResourceFeedbackPopup.prefab`
 - `Assets/Prefabs/Ui/ShopScreen.prefab`
-- `Notes/Ui/DOC_feature_shop.md`
+- `Notes/Ui/popup_generique.md`
 - `Notes/Ui/Todo_ui.md`
 
 ---
@@ -74,7 +74,7 @@ Actions attendues:
 ### Ce qu’on a fait
 - [x] `Notes/Todo_project.md` : monnaie / débit achat cochés ; priorité immédiate recentrée sur UX shop, saisie quantité, bouton Max et confirmation avant paiement.
 - [x] `Notes/Ui/Todo_ui.md` : checklist Shop mise à jour selon l’état réel (`PrimaryCurrency`, `InventoryCurrencyAccount`, `TryPurchase`, popup item + quantité +/-).
-- [x] `Notes/Ui/DOC_feature_shop.md` : retrait des mentions obsolètes « pas d’achat / pas de monnaie » ; ajout de l’état actuel du flux achat.
+- [x] `Notes/Ui/popup_generique.md` : retrait des mentions obsolètes « pas d’achat / pas de monnaie » ; ajout de l’état actuel du flux achat.
 - [x] `ASSISTANT_CONTEXT.md` et `Notes/Ui/Journal_ui.md` : priorité session nettoyée.
 
 ### Prochaine session (priorité)
@@ -95,7 +95,7 @@ Actions attendues:
 4. Bouton **Max** : quantité max dérivée du solde et du prix unitaire (`floor(solde / prix)`), bornée par les plafonds métier déjà en place.
 
 ### Docs mises à jour (assistant)
-- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `Notes/Ui/Todo_ui.md`, `Notes/Ui/DOC_feature_shop.md` (alignement spec shop / wallet).
+- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `Notes/Ui/Todo_ui.md`, `Notes/Ui/popup_generique.md` (alignement spec shop / wallet).
 
 ---
 
@@ -1098,18 +1098,18 @@ Actions attendues:
 - Demande : aligner la **documentation** sur la **gestion du shop** (état code + intention), mettre à jour **`PROJECT_LOG.md`**, et consigner en **todo prochaine session** la **mécanique d’achat** (UI détail, quantité, confirmation, monnaie, inventaire).
 
 ### Ce qu’on a fait
-- [x] **`Notes/Ui/DOC_feature_shop.md`** : état réel (**catalogue JSON** `MarketCatalogPrototype` + `Resources/Market/market_catalog.json`, slots = offres, pas miroir inventaire) ; **spec flux achat** (clic → fenêtre image/prix/description optionnelle → +/−/payer, total `prix × quantité` sur le bouton, popup confirmation, succès `TryAdd` + débit / échec manque de fonds) ; polish **saisie quantité clavier** noté ; **Argent** comme première ressource monétaire.
+- [x] **`Notes/Ui/popup_generique.md`** : état réel (**catalogue JSON** `MarketCatalogPrototype` + `Resources/Market/market_catalog.json`, slots = offres, pas miroir inventaire) ; **spec flux achat** (clic → fenêtre image/prix/description optionnelle → +/−/payer, total `prix × quantité` sur le bouton, popup confirmation, succès `TryAdd` + débit / échec manque de fonds) ; polish **saisie quantité clavier** noté ; **Argent** comme première ressource monétaire.
 - [x] **`Notes/Todo_project.md`** : case doc shop cochée ; nouvelle tâche **Shop — flux achat dédié** (référence croisée doc + `Todo_ui.md`).
 - [x] **`Notes/Ui/Todo_ui.md`** : bloc **Shop — mécanique achat** avec checklist alignée sur la spec.
 - [x] **`PROJECT_LOG.md`** : cette entrée.
 
 ### Prochaines actions (priorité — shop / économie)
 1. **Argent** : `ItemDefinition` + entrée `ItemDatabase` (ou modèle solde retenu) et affichage solde dans le shop / HUD si pertinent.
-2. **Implémenter le flux §3** de `DOC_feature_shop.md` : modal détail, quantité, libellé bouton avec total, confirmation, branchement `TryAdd` + messages fonds insuffisants.
+2. **Implémenter le flux §3** de `popup_generique.md` : modal détail, quantité, libellé bouton avec total, confirmation, branchement `TryAdd` + messages fonds insuffisants.
 3. Poursuivre linkage Inspector + prefab Shop dédié quand le flux métier est stable.
 
 ### Liens utiles
-- `Notes/Ui/DOC_feature_shop.md`
+- `Notes/Ui/popup_generique.md`
 - `Assets/Scripts/Market/MarketCatalogPrototype.cs`
 - `Assets/Resources/Market/market_catalog.json`
 - `Notes/Todo_project.md` — *Prochaine session*

@@ -10,7 +10,7 @@ Règle de fonctionnement :
 
 ## Entrée 2026-05-10 / nettoyée 2026-05-12 — prochaine session shop
 
-Priorités enregistrées dans **`Notes/Todo_project.md`** : monnaie / débit achat déjà fonctionnels ; le feedback « pas assez d’argent » est maintenant un popup générique `ResourceFeedbackPopupUI` branché dans `ShopScreen` (message réutilisable : « Vous n'avez pas assez de ressources pour cette action. »). Suite = (1) passe UI/UX shop, (2) saisie quantité PC + mobile, (3) bouton **Max** (`floor(solde/prix)` + bornes métier), (4) confirmation avant paiement. Spec alignée : **`Notes/Ui/DOC_feature_shop.md`** §3, **`Notes/Ui/Todo_ui.md`**. Note navigation : **`Notes/Ui/SceneUiLoadManagement.md`**.
+Priorités enregistrées dans **`Notes/Todo_project.md`** : monnaie / débit achat déjà fonctionnels ; le feedback « pas assez d’argent » est maintenant un popup générique `ResourceFeedbackPopupUI` branché dans `ShopScreen` (message réutilisable : « Vous n'avez pas assez de ressources pour cette action. »). Suite = (1) passe UI/UX shop, (2) saisie quantité PC + mobile, (3) bouton **Max** (`floor(solde/prix)` + bornes métier), (4) confirmation avant paiement. Spec alignée : **`Notes/Ui/popup_generique.md`** §3, **`Notes/Ui/Todo_ui.md`**. Note navigation : **`Notes/Ui/SceneUiLoadManagement.md`**.
 
 ## Décisions actées
 
