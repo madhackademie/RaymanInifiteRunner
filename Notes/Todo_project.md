@@ -16,6 +16,21 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prochaine session (priorité immédiate)
 
+### Popup Shop générique strict — test + binding Bezi (priorité #1)
+
+1. [ ] **Tester le flux shop en mode strict** (sans fallback) :
+   - ouvrir l’écran Shop,
+   - cliquer une offre,
+   - vérifier l’ouverture de la popup item,
+   - valider fermeture + achat + absence de doublon popup.
+2. [ ] **Faire configurer le binding par Cursor/Bezi** sur `UIManager.runtimePopupBindings` :
+   - `screenId = ScreenId.Shop`
+   - `popupId = PopupId.ShopItemPurchase`
+   - `popupPrefab = ShopItemPopupController`
+3. [ ] **Journaliser le résultat du test** (OK/KO + capture des points bloquants) dans `PROJECT_LOG.md`.
+
+Prompt recommandé : voir l’entrée **2026-05-12 — popups shop génériques (mode strict sans fallback)** dans `PROJECT_LOG.md`.
+
 ### Priorités auteur — nettoyées 2026-05-12 (shop / wallet / UX)
 
 1. [ ] **Correction UI — expérience utilisateur** : passe d’amélioration sur les écrans concernés (shop, popups, lisibilité, flux clics).

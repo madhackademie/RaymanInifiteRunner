@@ -1,5 +1,44 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-12 — popups shop génériques (mode strict sans fallback)
+### Contexte
+- Demande auteur : documenter clairement le passage au système popup générique et supprimer toute logique legacy qui peut créer des doublons/ambiguïtés.
+
+### Ce qu’on a fait
+- [x] Refactor popup : base générique en place (`ScreenPopupHost`, `ScreenPopupBinding`, `PopupId`).
+- [x] Mode strict activé : suppression des fallbacks legacy shop dans `UIManager` et `RuntimeShopScreen`.
+- [x] Règle runtime : **une seule source de vérité** pour la popup item shop = binding explicite `screenId + popupId + prefab`.
+- [x] Documentation mise à jour : `Notes/Ui/DOC_feature_shop.md` (section popup générique strict).
+
+### Prochaines actions (priorité immédiate)
+1. **Playtest fonctionnel** du shop en mode strict (ouvrir shop, cliquer offre, vérifier ouverture/fermeture popup, achat, logs).
+2. **Faire le binding via Bezi (piloté par Cursor)** dans la config runtime :
+   - `screenId = ScreenId.Shop`
+   - `popupId = PopupId.ShopItemPurchase`
+   - `popupPrefab = ShopItemPopupController`
+3. Rejouer un test anti-régression après binding (pas de doublon popup, pas de fallback implicite).
+
+### Prompt Cursor recommandé (pour Bezi.ai)
+```text
+Dans Unity/Bezi, configure le binding popup runtime du Shop en mode strict (sans fallback).
+Objectif: le clic sur une offre shop doit ouvrir le popup item uniquement via ScreenPopupHost + ScreenPopupBinding.
+
+Actions attendues:
+1) Ouvrir la configuration UIManager (runtimePopupBindings).
+2) Ajouter/valider une entrée:
+   - screenId = ScreenId.Shop
+   - popupId = PopupId.ShopItemPurchase
+   - popupPrefab = prefab contenant ShopItemPopupController
+3) Vérifier qu'il n'existe pas d'autre chemin de popup concurrent dans le ShopScreen.
+4) Lancer un test Play Mode:
+   - ouvrir Shop,
+   - cliquer une offre,
+   - confirmer qu'une seule popup s'ouvre et fonctionne.
+5) Reporter précisément les champs modifiés et le résultat du test.
+```
+
+---
+
 ## 2026-05-12 — shop popup ressources insuffisantes
 ### Contexte
 - Demande auteur : transformer le feedback « pas assez d’argent » en popup générique réutilisable pour n’importe quelle ressource requise, puis vérifier le linkage Bezi après test sans affichage.

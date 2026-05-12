@@ -51,6 +51,25 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 - Le prefab **`ShopScreen`** est la source à privilégier pour les bindings UI runtime.
 - Voir `Notes/Todo_project.md` : linkage Inspector, polish UX, saisie quantité, bouton **Max**.
 
+### 2.4 Popups Shop — mode générique strict (mise à jour 2026-05-12)
+
+- Le popup d’achat item du shop passe désormais par un **système générique** :
+  - `ScreenPopupHost` (instanciation lazy / show-hide par id popup),
+  - `ScreenPopupBinding` (mapping `screenId -> popupId -> prefab`),
+  - `PopupId.ShopItemPurchase` (id partagé côté code).
+- Le flux est en **mode strict** : **pas de fallback legacy** (pas d’auto-wire caché).
+- Conséquence volontaire : si le binding n’est pas configuré, le popup n’apparaît pas et un warning explicite est loggé.
+- Objectif : éviter les **doublons de source de vérité** et les comportements implicites difficiles à déboguer.
+
+#### Binding requis (obligatoire)
+
+Dans `UIManager.runtimePopupBindings`, ajouter une entrée :
+- `screenId = ScreenId.Shop`
+- `popupId = PopupId.ShopItemPurchase`
+- `popupPrefab = prefab ShopItemPopupController`
+
+Tant que cette entrée n’est pas en place dans la configuration runtime, le clic sur une offre shop ne doit pas ouvrir de popup item (comportement attendu en mode strict).
+
 ---
 
 ## 3. Flux achat dédié (état + reste à polir)
