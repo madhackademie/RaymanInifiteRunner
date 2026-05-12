@@ -30,9 +30,6 @@ public class RuntimeShopScreen : MonoBehaviour
     [Tooltip("Identifiant du popup a demander au ScreenPopupHost de l'ecran.")]
     [SerializeField] private string shopItemPopupId = PopupId.ShopItemPurchase;
 
-    [Tooltip("Fallback local si aucun popup n'est fourni par ScreenPopupHost.")]
-    [SerializeField] private ShopItemPopupController shopItemPopupPrefabOverride;
-
     [Tooltip("Popup generique pour les erreurs de ressources (fonds insuffisants, couts futurs, etc.).")]
     [SerializeField] private ResourceFeedbackPopupUI resourceFeedbackPopup;
 
@@ -257,8 +254,8 @@ public class RuntimeShopScreen : MonoBehaviour
         if (popup == null)
         {
             Debug.LogWarning(
-                "[RuntimeShopScreen] ShopItemPopup introuvable. Assignez ShopItemPopupController " +
-                "sur RuntimeShopScreen (override) ou en enfant du prefab ShopScreen.");
+                "[RuntimeShopScreen] ShopItemPopup introuvable. " +
+                "Configurez un ScreenPopupBinding avec ce screenId et PopupId.ShopItemPurchase.");
             return;
         }
 
@@ -312,17 +309,7 @@ public class RuntimeShopScreen : MonoBehaviour
             return shopItemPopupInstance;
         }
 
-        shopItemPopupInstance = GetComponentInChildren<ShopItemPopupController>(true);
-        if (shopItemPopupInstance != null)
-            return shopItemPopupInstance;
-
-        if (shopItemPopupPrefabOverride == null)
-            return null;
-
-        shopItemPopupInstance = Instantiate(shopItemPopupPrefabOverride, transform);
-        shopItemPopupInstance.gameObject.name = "ShopItemPopup";
-        shopItemPopupInstance.gameObject.SetActive(false);
-        return shopItemPopupInstance;
+        return null;
     }
 
     private ScreenPopupHost ResolvePopupHost()
