@@ -19,6 +19,7 @@
   - `popupPrefab = prefab ShopItemPopupController`
 - [ ] **Vérification anti-doublon** : un clic offre = une seule popup active, pas de seconde source concurrente.
 - [ ] **Traçabilité** : reporter les champs modifiés + résultat test dans `PROJECT_LOG.md`.
+- [ ] **Scan projet des anciens popups** : lister les flux popup encore hors système générique et ouvrir une sous-checklist de migration vers `PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`.
 
 Prompt Cursor/Bezi conseillé (copier-coller) : `PROJECT_LOG.md` -> entrée **2026-05-12 — popups shop génériques (mode strict sans fallback)**.
 

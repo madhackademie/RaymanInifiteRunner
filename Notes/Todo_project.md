@@ -28,6 +28,10 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
    - `popupId = PopupId.ShopItemPurchase`
    - `popupPrefab = ShopItemPopupController`
 3. [ ] **Journaliser le résultat du test** (OK/KO + capture des points bloquants) dans `PROJECT_LOG.md`.
+4. [ ] **Scan global popups legacy -> migration générique** :
+   - parcourir le projet pour repérer les popups encore instanciés/référencés en direct,
+   - planifier leur migration vers `PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`,
+   - supprimer les fallback/chemins doublons au fur et à mesure.
 
 Prompt recommandé : voir l’entrée **2026-05-12 — popups shop génériques (mode strict sans fallback)** dans `PROJECT_LOG.md`.
 
