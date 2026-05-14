@@ -16,46 +16,32 @@ Liens vers les TODOs thématiques : `Notes/Ui/Todo_ui.md`, `Notes/Farm/SPEC_plan
 
 ## Prochaine session (priorité immédiate)
 
-### Popup Shop générique strict — test + binding Bezi (priorité #1)
+### FirstLvl — popups génériques (graines + plante) + scan global (priorité #1)
 
-1. [ ] **Tester le flux shop en mode strict** (sans fallback) :
-   - ouvrir l’écran Shop,
-   - cliquer une offre,
-   - vérifier l’ouverture de la popup item,
-   - valider fermeture + achat + absence de doublon popup.
-2. [ ] **Faire configurer le binding par Cursor/Bezi** sur `UIManager.runtimePopupBindings` :
-   - `screenId = ScreenId.Shop`
-   - `popupId = PopupId.ShopItemPurchase`
-   - `popupPrefab = ShopItemPopupController`
-3. [ ] **Journaliser le résultat du test** (OK/KO + capture des points bloquants) dans `PROJECT_LOG.md`.
-4. [ ] **Scan global popups legacy -> migration générique** :
-   - parcourir le projet pour repérer les popups encore instanciés/référencés en direct,
-   - planifier leur migration vers `PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`,
-   - supprimer les fallback/chemins doublons au fur et à mesure.
+1. [ ] **Appliquer le système de popup générique dans `FirstLvl`** (même pipeline que HUD / shop : `PopupId`, `ScreenPopupBinding`, `ScreenPopupHost` ou équivalent cohérent avec `UIManager` / écran concerné) :
+   - **Sélection des graines** : apparition UI des graines sélectionnables via le pipeline générique (pas d’instanciation ad hoc dispersée).
+   - **Clic sur une plante** : popup **info / état** + actions **récolte** (ou équivalent `HarvestPanelUI` branché sur le host générique), aligné sur les règles `.cursor/rules/ui_popup_generic_runtime.mdc`.
+2. [ ] **Scanner le projet** pour les autres popups encore hors système générique (instanciation directe, strings magiques, doubles sources) ; liste courte dans `Notes/Ui/Todo_ui.md` ou `PROJECT_LOG.md` + plan de migration par priorité.
 
-Prompt recommandé : voir l’entrée **2026-05-12 — popups shop génériques (mode strict sans fallback)** dans `PROJECT_LOG.md`.
+Références : **`Notes/Ui/popup_generique.md`**, règle **`ui_popup_generic_runtime.mdc`**, code **`ScreenPopupHost`**, **`UIManager.RegisterRuntimePopups`**, scène **`FirstLvl`**, **`SeedSelectionUI`**, **`HarvestPanelUI`**, **`PlantHarvestInteractor`**.
 
-### Priorités auteur — nettoyées 2026-05-12 (shop / wallet / UX)
+### Shop — polish restant (référence)
 
-1. [ ] **Correction UI — expérience utilisateur** : passe d’amélioration sur les écrans concernés (shop, popups, lisibilité, flux clics).
-2. [x] **Feedback « pas assez d’argent » — popup générique** : `ResourceFeedbackPopupUI` affiche le message réutilisable « Vous n'avez pas assez de ressources pour cette action. » ; prefab `ResourceFeedbackPopup` lié à `ShopScreen`, avec correction du `RectTransform` (scale/ancres) après génération Bezi.
-3. [ ] **Saisie quantité à acheter** : champ nombre (PC clavier + mobile : `TMP_InputField` / clavier système, validation min/max).
-4. [ ] **Bouton Max** : quantité maximale = `min(règles métier inventaire/listing, floor(solde_monnaie / prix_unitaire))` (et plafonds `MaxPurchaseQuantity` / place dans le sac si déjà gérés côté code).
-5. [ ] **Confirmation avant paiement** : popup de confirmation avant de déclencher le débit monnaie / ajout inventaire.
+**Déjà livré sur `main` (2026-05)** : monnaie inventaire (`PrimaryCurrency`), débit achat + blocage fonds insuffisants, popup item shop via pipeline générique (`ScreenPopupHost` + `runtimePopupBindings` + `PopupId.ShopItemPurchase`), feedback ressources insuffisantes (`ResourceFeedbackPopupUI`).
 
-Références : **`Notes/Ui/popup_generique.md`** §3, **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*), note **`Notes/Ui/SceneUiLoadManagement.md`** (navigation scène vs UI).
+1. [ ] **Correction UI — expérience utilisateur** : passe d’amélioration sur shop / popups (lisibilité, flux clics).
+2. [ ] **Saisie quantité à acheter** : champ nombre (PC + mobile : `TMP_InputField`, validation min/max).
+3. [ ] **Bouton Max** : `min(règles métier inventaire/listing, floor(solde_monnaie / prix_unitaire))` (+ plafonds métier).
+4. [ ] **Confirmation avant paiement** : popup avant débit / `TryAdd`.
+
+Références : **`Notes/Ui/popup_generique.md`** §3, **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*), **`Notes/Ui/SceneUiLoadManagement.md`**.
 
 ---
 
 - [ ] **Inventaire + wallet — mise à niveau sans bidouille externe** : reprendre le chantier **wallet dans l’écran inventaire** avec une **seule source de vérité** (prefab `InventoryScreen` sous `UIManager` et `ScreenId.Inventory`, ou approche documentée équivalente). **Ne pas** régénérer l’UI via script Python / YAML hors Unity — workflow éditeur uniquement (voir **`Notes/Ui/NOTE_inventory_wallet_upgrade.md`** pour la problématique : double vérité scène template vs `UIManager`, ancien fallback `RuntimeInventoryScreen` **retiré du dépôt**, piège Canvas/sorting). Script **`Tools/extract_inventory_prefab.py`** retiré du dépôt.
-- [x] **Shop — monnaie inventaire + déduction achat** : ressource monnaie / `ItemDatabase.PrimaryCurrency`, solde, débit achat avant `TryAdd`, blocage fonds insuffisants avec feedback de base.
-- [x] **Shop — créer la ressource Argent** : item monnaie et usage Shop préparés / branchés dans le flux actuel.
-- [~] **Shop — flux achat dédié (mécanique)** : clic sur une offre → fenêtre détail (image, prix unitaire, description optionnelle) → contrôles **+** / **−** / **Payer** avec libellé **`prix × quantité`** ; si fonds OK → débit + `TryAdd` inventaire, sinon popup générique **ressources insuffisantes**. Restent : **popup de confirmation**, **saisie quantité**, **bouton Max**, polish UX global. Spec : **`Notes/Ui/popup_generique.md`** §3 ; checklist UI : **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*).
+- [~] **Shop — flux achat (suite)** : mécanique catalogue + popup item + transaction OK ; reste polish liste ci-dessus + linkage Inspector si besoin.
 - [ ] **Shop — linkage Inspector / références vides** : passer les scènes/prefabs UI concernés pour corriger les champs `SerializeField` non assignés (bouton/icône onglet Shop, refs écrans/panels, prefabs slots) et noter explicitement chaque liaison manquante.
-- [x] **Shop — prefab dédié** : `Assets/Prefabs/Ui/ShopScreen.prefab` existe et sert de base runtime ; poursuivre le polish visuel via la passe UI/UX.
-- [x] **Doc Shop** (intention vs code actuel, catalogue JSON, spec flux achat) : `Notes/Ui/popup_generique.md` — mis à jour **2026-05-04**, nettoyé **2026-05-12** ; journal `PROJECT_LOG.md` aligné.
-
-- [ ] **Git — intégration branche test → `main`** : ouvrir une **PR** depuis la branche de travail (ex. `cursor/test-laitue-references-9dc0`) vers **`main`**, revue rapide, merge ; **alternative** (à éviter sauf choix assumé) : **remplacer** `main` par la branche test (`reset` / force-push) — documenter la stratégie dans le message de merge ou dans `PROJECT_LOG.md`. Réf : `GIT_HELPER.md` (--3--).
+- [x] **Git — intégration `feature/shop` → `main`** : fast-forward + push `origin/main` (**2026-05-14**) ; poursuivre les PR/features depuis **`main`** comme base. Réf : `GIT_HELPER.md` (--3--).
 - [ ] **Ferme — stade / durées / temps écoulé** : corriger les cas où le **state** ne suit pas les **nouvelles durées** du `PlantDefinition` après édition ; garantir une **persistance réelle** du state (stade + **délai de vie déjà écoulé** / timer, pas seulement la pose) au reload et entre sessions — croiser `PlantGrow`, `FarmSaveService`, `PlantPersistenceMarker`. Journal : `PROJECT_LOG.md` (2026-04-27).
 - [ ] **Ferme — stade Graine visible puis premières feuilles** : en jeu, la plante doit **commencer au stade Graine** (sprite + logique), rester le temps défini dans **`PlantDefinition.stageDurations`** pour ce stade (entrée **stage = 0** dans le YAML / enum `GrowthStage.Graine`), puis **passer aux feuilles** (`Starting` = **1**, `Baby`…). Ce n’était pas un « index code à 1 » : l’**enum commence à 0** ; le souci venait surtout du **prefab** avec **`initialStage` = Starting (1)** + l’ancien `Start()` qui réappliquait ce champ après la pose. Vérifier encore : overrides dans la scène, durée **Graine** > 0 dans `Laitue.asset`, sprites SO (graine vs première feuille visuellement proches).
 - [ ] **Git — commit en attente** : faire un commit des changements locaux avant la prochaine grosse modif (notes UI + `UIManager.cs`), puis push sur `main`.

@@ -10,31 +10,26 @@
 
 ## Priorité session suivante
 
-### Shop — popup générique strict (priorité immédiate)
+### FirstLvl — popups génériques (priorité immédiate)
 
-- [ ] **Playtest mode strict** : vérifier que la popup item shop est résolue uniquement via le système générique (`ScreenPopupHost` + `ScreenPopupBinding`), sans fallback implicite.
-- [ ] **Binding runtime à faire dans `UIManager.runtimePopupBindings`** :
-  - `screenId = ScreenId.Shop`
-  - `popupId = PopupId.ShopItemPurchase`
-  - `popupPrefab = prefab ShopItemPopupController`
-- [ ] **Vérification anti-doublon** : un clic offre = une seule popup active, pas de seconde source concurrente.
-- [ ] **Traçabilité** : reporter les champs modifiés + résultat test dans `PROJECT_LOG.md`.
-- [ ] **Scan projet des anciens popups** : lister les flux popup encore hors système générique et ouvrir une sous-checklist de migration vers `PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`.
+- [ ] **Graines sélectionnables** : faire passer l’UI d’apparition / choix des graines par le **pipeline popup générique** (`PopupId` + binding + `ScreenPopupHost`, cohérent avec `UIManager` / règles runtime shell).
+- [ ] **Plante (clic)** : popup **état / info** + voie **récolte** (ex. aligner `HarvestPanelUI` + `PlantHarvestInteractor` sur le même pipeline ; pas de second chemin caché).
+- [ ] **Scan popups** : inventaire des autres popups encore **instanciés en direct** ou hors `ScreenPopupBinding` ; sous-checklist de migration (même méthode que le shop HUD).
 
-Prompt Cursor/Bezi conseillé (copier-coller) : `PROJECT_LOG.md` -> entrée **2026-05-12 — popups shop génériques (mode strict sans fallback)**.
+Références : **`Notes/Ui/popup_generique.md`**, **`PROJECT_LOG.md`** (entrée **2026-05-14**), règle **`.cursor/rules/ui_popup_generic_runtime.mdc`**.
 
 ### Shop — mécanique achat (polish restant)
 
-Référence produit + technique : **`Notes/Ui/popup_generique.md`** (§3 flux achat, §2 état actuel). La monnaie inventaire, le débit achat et le popup générique de ressources insuffisantes sont en place (`ItemDatabase.PrimaryCurrency`, `InventoryCurrencyAccount`, `TryPurchase`, `ResourceFeedbackPopupUI`). **Priorités restantes** : UX globale, confirmation, saisie quantité, bouton Max — voir aussi **`Notes/Todo_project.md`**.
+**Livré** : monnaie + débit + `TryPurchase`, modal détail offre, **+**/**−**, total sur **Payer**, transaction, feedback ressources insuffisantes, **popup item shop** via pipeline générique (`ScreenPopupHost` + `runtimePopupBindings`). Voir **`Notes/Ui/popup_generique.md`** §2–3.
 
 - [ ] **Passe UI/UX** : lisibilité, enchaînement modales / focus / retours visuels sur l’écran shop et la popup d’achat.
-- [x] Clic sur une **offre catalogue** → ouvrir une **modal détail** : grande image item, **prix unitaire**, **description** optionnelle (données ou TMP plus tard).
-- [x] Contrôles **quantité** : boutons **+** / **−** (min 1, max selon stock listing / règle) ; bouton **Payer** dont le texte reflète le **total** `prix_unitaire × quantité` (recalcul à chaque changement).
-- [x] **Feedback ressources insuffisantes** : popup générique `ResourceFeedbackPopupUI` branché dans `ShopScreen`, message réutilisable pour tout coût futur, sans débit ni ajout inventaire.
-- [ ] **Saisie quantité** : `TMP_InputField` (ou équivalent) — **clavier PC** + **mobile** (clavier numérique / validation locale), clamp sur [min, max] métier.
-- [ ] **Bouton Max** : applique `quantité = min(plafonds listing/inventaire, floor(solde_monnaie / prix_unitaire))` (cohérent avec `MaxPurchaseQuantity`, place dans le sac, etc.).
-- [ ] Au clic **Payer** : **popup de confirmation** avant toute transaction (le flux actuel achète directement depuis la popup item).
-- [x] Transaction : si **solde Argent suffisant** → débit monnaie + **`PlayerInventory.TryAdd`** (quantité achetée) + fermeture / refresh ; si **insuffisant** → popup ressources insuffisantes (pas de débit, pas d’ajout).
+- [x] Clic sur une **offre catalogue** → **modal détail** (image, prix unitaire, description optionnelle).
+- [x] Contrôles **quantité** **+**/**−** et libellé **Payer** avec total `prix_unitaire × quantité`.
+- [x] **Feedback ressources insuffisantes** (`ResourceFeedbackPopupUI`) + **popup item** générique shop.
+- [ ] **Saisie quantité** : `TMP_InputField` (PC + mobile), clamp [min, max] métier.
+- [ ] **Bouton Max** : `min(plafonds listing/inventaire, floor(solde_monnaie / prix_unitaire))` (cohérent avec règles existantes).
+- [ ] **Confirmation** avant paiement (aujourd’hui achat direct depuis la popup item).
+- [x] Transaction : solde OK → débit + `TryAdd` ; sinon message ressources insuffisantes.
 
 ### Session cible ~2026-05-01 — audit Bezi (Scene/UI) + clean refactor
 

@@ -19,6 +19,5 @@ alwaysApply: true
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
 - Priorite courante connue (a revalider via docs a chaque session):
-  - creer la ressource monnaie dans l'inventaire,
-  - deduire ce montant lors de l'achat shop,
-  - bloquer l'achat si fonds insuffisants avec feedback.
+  - FirstLvl: pipeline popup generique pour selection graines + popup plante (info / recolte),
+  - scan des autres popups a migrer vers PopupId + ScreenPopupBinding + ScreenPopupHost.

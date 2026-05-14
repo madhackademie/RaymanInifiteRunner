@@ -2,7 +2,7 @@
 
 Document de référence pour le **magasin (Shop)** : état du code, intention produit, et distinction claire avec l’**inventaire joueur**.
 
-**Branche / historique** : travail initial journalisé dans `PROJECT_LOG.md` (2026-04-29) ; évolution catalogue JSON notée en **2026-05-04** ; monnaie / débit achat et popup ressources insuffisantes confirmés en **2026-05-12**. Checklist opérationnelle : `Notes/Todo_project.md` (section Shop) et `Notes/Ui/Todo_ui.md` (flux achat).
+**Branche / historique** : journal `PROJECT_LOG.md` (2026-04-29 → 2026-05-12) ; **2026-05-14** : monnaie + popup shop générique + binding `NavigationHUD` considérés **stables sur `main`**. Checklist polish shop : `Notes/Todo_project.md` / `Notes/Ui/Todo_ui.md`.
 
 ---
 
@@ -51,24 +51,12 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 - Le prefab **`ShopScreen`** est la source à privilégier pour les bindings UI runtime.
 - Voir `Notes/Todo_project.md` : linkage Inspector, polish UX, saisie quantité, bouton **Max**.
 
-### 2.4 Popups Shop — mode générique strict (mise à jour 2026-05-12)
+### 2.4 Popups Shop — mode générique strict
 
-- Le popup d’achat item du shop passe désormais par un **système générique** :
-  - `ScreenPopupHost` (instanciation lazy / show-hide par id popup),
-  - `ScreenPopupBinding` (mapping `screenId -> popupId -> prefab`),
-  - `PopupId.ShopItemPurchase` (id partagé côté code).
-- Le flux est en **mode strict** : **pas de fallback legacy** (pas d’auto-wire caché).
-- Conséquence volontaire : si le binding n’est pas configuré, le popup n’apparaît pas et un warning explicite est loggé.
-- Objectif : éviter les **doublons de source de vérité** et les comportements implicites difficiles à déboguer.
+- Le popup d’achat item passe par **`ScreenPopupHost`** + **`ScreenPopupBinding`** + **`PopupId.ShopItemPurchase`** ; configuration dans **`UIManager.runtimePopupBindings`** (scène **`NavigationHUD`**, écran Shop).
+- **Mode strict** : pas de fallback legacy ; binding manquant → warning + pas d’ouverture (comportement attendu).
 
-#### Binding requis (obligatoire)
-
-Dans `UIManager.runtimePopupBindings`, ajouter une entrée :
-- `screenId = ScreenId.Shop`
-- `popupId = PopupId.ShopItemPurchase`
-- `popupPrefab = prefab ShopItemPopupController`
-
-Tant que cette entrée n’est pas en place dans la configuration runtime, le clic sur une offre shop ne doit pas ouvrir de popup item (comportement attendu en mode strict).
+*(Pour un nouvel écran : ajouter `PopupId`, une entrée de binding et résoudre via le host — voir `.cursor/rules/ui_popup_generic_runtime.mdc`.)*
 
 ---
 
@@ -76,7 +64,7 @@ Tant que cette entrée n’est pas en place dans la configuration runtime, le cl
 
 Base en place : **mécanique d’achat** isolée (UI + logique), en s’appuyant sur la même voie d’entrée inventaire que la récolte (`PlayerInventory.TryAdd` via `InventoryCurrencyAccount.TryPurchase`). Les points ci-dessous servent maintenant de référence pour le polish.
 
-**Mise à jour 2026-05-12** : le feedback « pas assez d’argent » utilise maintenant un popup générique `ResourceFeedbackPopupUI` avec le message réutilisable « Vous n'avez pas assez de ressources pour cette action. ». Restent en priorité : (0) passe **UI/UX** globale sur shop et popups ; (1) **saisie quantité** numérique (PC + mobile, `TMP_InputField` ou équivalent) en plus des **+** / **−** ; (2) bouton **Max** → `quantité = min(règles métier, floor(solde_monnaie / prix_unitaire))` (croiser `MaxPurchaseQuantity`, capacité sac, quantité listing) ; (3) popup de confirmation avant paiement.
+**Mise à jour 2026-05-14** : monnaie, débit, feedback ressources insuffisantes et **popup item shop générique** sont en place sur `main`. **Reste du polish flux §3** : passe **UI/UX**, **saisie quantité** (`TMP_InputField`), bouton **Max**, **confirmation** avant paiement.
 
 1. **Clic sur une offre** (slot catalogue) → ouverture d’une **fenêtre détail** avec :
    - **Image** de l’item (icône `ItemDefinition` ou équivalent) ;
@@ -108,10 +96,10 @@ Les points ci-dessous complètent le **§3** (flux achat) et l’intention **§1
    - Sur **validation d’achat** confirmée, appeler la **même couche** que la récolte pour **ajouter** l’item (`PlayerInventory.TryAdd`, etc.).
 
 3. **UI**  
-   - Modal détail et popup ressources insuffisantes en place ; restent la **confirmation**, la **saisie quantité**, le bouton **Max** et le polish visuel global.
+   - Modal détail, popup item générique shop, feedback ressources insuffisantes : **OK**. Restent **confirmation**, **saisie quantité**, **Max**, polish visuel.
 
 4. **Monnaie**  
-   - Solde consultable, débit achat en place ; à durcir si besoin contre les doubles clics / transactions concurrentes.
+   - **OK** sur `main` (solde, débit, `TryPurchase`). Optionnel plus tard : durcir doubles clics / transactions concurrentes.
 
 5. **Layout vs données**  
    - Le catalogue est déjà **découplé** des slots joueur côté données ; prévoir l’**évolution du layout** (cellules de tailles variables, §1) après le MVP achat.
@@ -139,6 +127,6 @@ Pour le flux « donner un item au joueur », réutiliser les chemins déjà util
 
 ## 6. Synthèse
 
-**Aujourd’hui** : le Shop affiche un **catalogue JSON** (`market_catalog.json`) en **slots**, ouvre une popup détail, gère quantité **+** / **−**, calcule le total, débite la monnaie, ajoute l’achat à l’inventaire via `TryPurchase` et affiche un popup générique si les ressources sont insuffisantes.  
-**Prochaine étape** : polish **UX**, vraie confirmation avant paiement, saisie quantité PC/mobile et bouton **Max**.  
-**Ensuite** : prefab Shop final, layouts hétérogènes si besoin produit.
+**Aujourd’hui (shop sur `main`)** : catalogue JSON en slots, modal détail, **+**/**−**, total, **popup item** via host générique, **TryPurchase** (débit + `TryAdd`), feedback ressources insuffisantes.  
+**Prochaine étape (shop)** : polish §3 — UI/UX, confirmation, saisie quantité, **Max**.  
+**Priorité produit globale** : étendre le **pipeline popups** à **`FirstLvl`** (graines + panneau plante) — `PROJECT_LOG.md` **2026-05-14**, `Notes/Todo_project.md`.

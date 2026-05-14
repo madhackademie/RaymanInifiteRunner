@@ -1,5 +1,22 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-14 — base `main` + priorité popups FirstLvl
+
+### Contexte
+- `feature/shop` fusionnée dans **`main`** (fast-forward) et poussée sur **`origin/main`** : la branche de référence pour la suite est **`main`**.
+
+### Prochaine session (priorité immédiate) — inchangée dans l’intention, recentrée sur FirstLvl
+1. **Appliquer le système de popup générique dans `FirstLvl`** pour :
+   - l’**apparition / sélection des graines** (UI sélectionnable branchée sur `PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`, sans instanciation dispersée) ;
+   - le **popup état plante** au clic (info + récolte), sur le même modèle que le shop HUD (`Notes/Ui/popup_generique.md`, règle `ui_popup_generic_runtime.mdc`).
+2. **Scanner le projet** pour les autres popups encore hors pipeline générique ; lister et migrer par priorités (pas de fallback concurrent).
+
+### Références code / assets
+- `FirstLvl` / `SeedSelectionUI` / `HarvestPanelUI` / `PlantHarvestInteractor` / `BiofiltreManager`
+- `UIManager.RegisterRuntimePopups`, `ScreenPopupHost`, `PopupId`
+
+---
+
 ## 2026-05-12 — popups shop génériques (mode strict sans fallback)
 ### Contexte
 - Demande auteur : documenter clairement le passage au système popup générique et supprimer toute logique legacy qui peut créer des doublons/ambiguïtés.
@@ -10,32 +27,13 @@
 - [x] Règle runtime : **une seule source de vérité** pour la popup item shop = binding explicite `screenId + popupId + prefab`.
 - [x] Documentation mise à jour : `Notes/Ui/popup_generique.md` (section popup générique strict).
 
-### Prochaines actions (priorité immédiate)
-1. **Playtest fonctionnel** du shop en mode strict (ouvrir shop, cliquer offre, vérifier ouverture/fermeture popup, achat, logs).
-2. **Faire le binding via Bezi (piloté par Cursor)** dans la config runtime :
-   - `screenId = ScreenId.Shop`
-   - `popupId = PopupId.ShopItemPurchase`
-   - `popupPrefab = ShopItemPopupController`
-3. Rejouer un test anti-régression après binding (pas de doublon popup, pas de fallback implicite).
+### État 2026-05-14 (clôture chantier « binding + playtest »)
+- Binding `runtimePopupBindings` (Shop + `PopupId.ShopItemPurchase`) présent sur `main` ; flux popup item shop validé côté auteur.
+- Les **prochaines actions** listées ci-dessous (2026-05-12) sont **archivées** ; ne plus les traiter comme TODO ouvert.
 
-### Prompt Cursor recommandé (pour Bezi.ai)
-```text
-Dans Unity/Bezi, configure le binding popup runtime du Shop en mode strict (sans fallback).
-Objectif: le clic sur une offre shop doit ouvrir le popup item uniquement via ScreenPopupHost + ScreenPopupBinding.
-
-Actions attendues:
-1) Ouvrir la configuration UIManager (runtimePopupBindings).
-2) Ajouter/valider une entrée:
-   - screenId = ScreenId.Shop
-   - popupId = PopupId.ShopItemPurchase
-   - popupPrefab = prefab contenant ShopItemPopupController
-3) Vérifier qu'il n'existe pas d'autre chemin de popup concurrent dans le ShopScreen.
-4) Lancer un test Play Mode:
-   - ouvrir Shop,
-   - cliquer une offre,
-   - confirmer qu'une seule popup s'ouvre et fonctionne.
-5) Reporter précisément les champs modifiés et le résultat du test.
-```
+### Prochaines actions (archivé 2026-05-12 — ne plus suivre)
+1. ~~Playtest + binding Bezi~~ → **fait** (voir entrée 2026-05-14 projet + `NavigationHUD.unity`).
+2. ~~Prompt Inspector binding~~ → remplacé par la config actuelle dans le dépôt.
 
 ---
 
@@ -51,11 +49,8 @@ Actions attendues:
 - [x] Correctif linkage : le popup était bien assigné, mais l’instance Bezi avait un `RectTransform` avec `localScale = 0` et des ancres écrasées ; correction dans `ShopScreen.prefab`.
 - [x] UX : `autoHideDelay` explique la disparition automatique ; mettre `0` pour garder le popup jusqu’au clic OK.
 
-### Prochaines actions (priorité shop)
-1. Saisie quantité PC/mobile.
-2. Bouton **Max** basé sur `floor(solde / prix_unitaire)` et les plafonds métier.
-3. Popup de confirmation avant paiement.
-4. Passe UI/UX globale shop et popups.
+### Suite (polish uniquement — pas un blocage monnaie / popup)
+Voir **`Notes/Ui/Todo_ui.md`** (*Shop — mécanique achat*) et **`Notes/Ui/popup_generique.md`** §3 : saisie quantité, **Max**, confirmation, passe UI/UX.
 
 ### Liens utiles
 - `Assets/Scripts/UI/ResourceFeedbackPopupUI.cs`

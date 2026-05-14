@@ -17,16 +17,17 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **Shop / wallet / UX (priorité nettoyée 2026-05-12)** : monnaie inventaire + débit achat fonctionnels ; popup générique **ressources insuffisantes** en place (`ResourceFeedbackPopupUI`, prefab `ResourceFeedbackPopup`, branché dans `ShopScreen`). Priorité restante = passe **UI/UX**, **saisie quantité** (PC + mobile), bouton **Max** (`floor(solde / prix_unitaire)` + bornes métier), popup confirmation avant paiement — voir **`Notes/Todo_project.md`**, **`Notes/Ui/popup_generique.md`** §3, **`Notes/Ui/Todo_ui.md`**.
-2. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
-3. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
-4. **~2026-05-01 — Audit Bezi + refactor navigation Scene/UI** : terminer l’audit sur le flux réel (`ShowScene`, boot eager, `UIManager`) ; **clean/refactor** ; supprimer ou documenter le code mort ; **réaligner** `ARCHI` / `Journal_ui` / `Todo_ui` / guide scènes — **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**, **`PROJECT_LOG.md`** (2026-04-21).
-5. **Navigation inter-scène / UI** : playtests et durcissement (Build Settings, double **`EventSystem`**, tous chemins hub ↔ inventaire ↔ niveau) — croiser **`Notes/Todo_project.md`**, **`Notes/Ui/Todo_ui.md`** ; réf. **`Notes/Ui/SceneUiLoadManagement.md`**.
-6. **Persistance grille** : état des cellules / cultures à la **fermeture de scène** et à la **quitt** (piste **`ScriptableObject`** + save ultérieure) — **`Notes/Todo_project.md`**.
-7. **Croissance plantes hors scène / hors ligne** : recalcul via **UTC** à la reprise ; **cloud** (ex. UGS) en évolution possible — croiser **`Timer`**, spec temps GDD, **`Notes/Todo_project.md`**.
-8. **LoadingScreen — visuel** : illustration + intégration **`Bootstrap`** — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
-9. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
-10. Nettoyage assets prototype / références Unity.
+1. **FirstLvl — popups génériques (priorité immédiate, 2026-05-14)** : appliquer le même pipeline que le HUD shop (`PopupId`, `ScreenPopupBinding`, `ScreenPopupHost` / `UIManager`) pour (a) l’**UI de sélection des graines** en `FirstLvl`, (b) le **popup plante** (info / état + récolte) au clic ; puis **scanner** les autres popups hors pipeline et les migrer. Voir **`PROJECT_LOG.md` (2026-05-14)**, **`Notes/Todo_project.md`**, **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/popup_generique.md`**.
+2. **Shop — polish uniquement** : UI/UX, saisie quantité, **Max**, confirmation avant paiement — **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/popup_generique.md`** §3 (monnaie + popup item + binding shop **déjà faits sur `main`**).
+3. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
+4. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
+5. **~2026-05-01 — Audit Bezi + refactor navigation Scene/UI** : terminer l’audit sur le flux réel (`ShowScene`, boot eager, `UIManager`) ; **clean/refactor** ; supprimer ou documenter le code mort ; **réaligner** `ARCHI` / `Journal_ui` / `Todo_ui` / guide scènes — **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**, **`PROJECT_LOG.md`** (2026-04-21).
+6. **Navigation inter-scène / UI** : playtests et durcissement (Build Settings, double **`EventSystem`**, tous chemins hub ↔ inventaire ↔ niveau) — croiser **`Notes/Todo_project.md`**, **`Notes/Ui/Todo_ui.md`** ; réf. **`Notes/Ui/SceneUiLoadManagement.md`**.
+7. **Persistance grille** : état des cellules / cultures à la **fermeture de scène** et à la **quitt** (piste **`ScriptableObject`** + save ultérieure) — **`Notes/Todo_project.md`**.
+8. **Croissance plantes hors scène / hors ligne** : recalcul via **UTC** à la reprise ; **cloud** (ex. UGS) en évolution possible — croiser **`Timer`**, spec temps GDD, **`Notes/Todo_project.md`**.
+9. **LoadingScreen — visuel** : illustration + intégration **`Bootstrap`** — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
+10. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
+11. Nettoyage assets prototype / références Unity.
 
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
@@ -35,11 +36,9 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-12** :
-  - correction UI / UX shop,
-  - saisie quantité (PC + mobile),
-  - bouton Max (solde / prix unitaire, bornes métier),
-  - confirmation avant paiement.
+- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-14** :
+  - **FirstLvl** : popups génériques pour **sélection graines** + **popup plante** (info / récolte) ; **scan** des autres popups à migrer.
+  - Puis (sans changer l’ordre métier shop) : polish shop **UI/UX**, **saisie quantité**, **Max**, **confirmation** — déjà hors « priorité immédiate » tant que FirstLvl n’est pas traité.
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :
@@ -49,7 +48,7 @@
 - `Assets/Scripts/Systems/SceneNavigator.cs` — visibilité des scènes de contenu (`ShowScene`, lazy optionnel)
 - `Notes/Ui/LOADINGSCREEN_image_workflow.md` — art + intégration écran de chargement
 - `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md` — navigation scènes, sync/async, HUD global
-- `PROJECT_LOG.md` (dernière entrée **2026-04-21** — audit Bezi planifié + correctif `FirstLvlController`)
+- `PROJECT_LOG.md` (dernière entrée **2026-05-14** — `main` + priorité popups FirstLvl)
 - `Docs/PLANTES_ET_INVENTAIRE.md` — `harvestItemId` / `itemId`, checklist nouvelle plante
 - `Notes/Todo_project.md`
 - `Notes/Farm/SYSTEMES_carte_mentale.md`

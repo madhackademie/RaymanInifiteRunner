@@ -8,9 +8,11 @@ Règle de fonctionnement :
 
 ---
 
-## Entrée 2026-05-10 / nettoyée 2026-05-12 — prochaine session shop
+## Entrée 2026-05-14 — shop : chantiers clos côté monnaie + popups
 
-Priorités enregistrées dans **`Notes/Todo_project.md`** : monnaie / débit achat déjà fonctionnels ; le feedback « pas assez d’argent » est maintenant un popup générique `ResourceFeedbackPopupUI` branché dans `ShopScreen` (message réutilisable : « Vous n'avez pas assez de ressources pour cette action. »). Suite = (1) passe UI/UX shop, (2) saisie quantité PC + mobile, (3) bouton **Max** (`floor(solde/prix)` + bornes métier), (4) confirmation avant paiement. Spec alignée : **`Notes/Ui/popup_generique.md`** §3, **`Notes/Ui/Todo_ui.md`**. Note navigation : **`Notes/Ui/SceneUiLoadManagement.md`**.
+**Livré sur `main`** : monnaie inventaire + débit achat, feedback ressources insuffisantes, **popup item shop** via `ScreenPopupHost` + `runtimePopupBindings` + `PopupId.ShopItemPurchase`. La suite shop documentée est uniquement du **polish** (UI/UX, saisie quantité, Max, confirmation) — **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/popup_generique.md`**. Priorité produit globale : **popups génériques dans `FirstLvl`** (graines + plante) — **`PROJECT_LOG.md` 2026-05-14**, **`Notes/Todo_project.md`**.
+
+## Entrée 2026-05-10 / nettoyée 2026-05-12 — archive
 
 ## Décisions actées
 
@@ -149,7 +151,8 @@ Priorités enregistrées dans **`Notes/Todo_project.md`** : monnaie / débit ach
 
 Date | Changement
 :---|:---
-2026-05-12 | Shop popup : passage au système générique strict (`ScreenPopupHost` + `ScreenPopupBinding` + `PopupId.ShopItemPurchase`) **sans fallback legacy** pour éviter les doublons implicites ; prochaine priorité : test runtime + binding Inspector via prompt Cursor/Bezi (voir `PROJECT_LOG.md`).
+2026-05-14 | Shop : binding `runtimePopupBindings` validé sur `main` ; chantiers **monnaie + popup item + feedback ressources** considérés clos — suite = polish (`Todo_ui`) + **FirstLvl** popups génériques (`PROJECT_LOG`).
+2026-05-12 | Shop popup : passage au système générique strict (`ScreenPopupHost` + `ScreenPopupBinding` + `PopupId.ShopItemPurchase`) **sans fallback legacy**.
 2026-05-12 | Shop : ajout du popup générique `ResourceFeedbackPopupUI`, branchement dans `RuntimeShopScreen` / `ShopScreen`, correction du linkage prefab Bezi (`RectTransform` scale/ancres) pour afficher le message ressources insuffisantes.
 2026-04-26 | Runtime inventaire : suppression de la dépendance à `Inventaire.unity` (build + scène), onglet inventaire via `UIManager`, fallback `RuntimeInventoryScreen` puis grille `InventorySlotUI` ; session validée pour prototype, polish prévu plus tard.
 2026-04-26 | Persistance gameplay prototype : JSON ferme (`FarmSaveService`), marker plante, autosave pose/récolte/arrache + recharge au démarrage avec reprise offline simple (`UTC delta`) ; à playtester/affiner.

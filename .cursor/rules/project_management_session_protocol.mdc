@@ -40,6 +40,5 @@ Quand l'utilisateur indique la fin de session ou demande de journaliser:
 ## 5) Priorite courante connue (memoire active)
 
 Priorite immediate actuelle:
-- creer la ressource monnaie dans l'inventaire,
-- deduire le montant lors d'un achat shop,
-- bloquer l'achat si fonds insuffisants avec feedback utilisateur.
+- FirstLvl: appliquer le systeme de popup generique pour l'UI des graines selectionnables et le popup etat plante (info / recolte) au clic,
+- scanner le projet pour les autres popups hors pipeline et planifier leur migration.
