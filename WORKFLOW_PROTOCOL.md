@@ -12,6 +12,10 @@ Pour toute demande de gestion de projet (tache du jour, priorite, prochaine sess
 - repondre uniquement avec la priorite la plus recente issue des docs,
 - ne jamais inventer une tache generique.
 
+Source de statut (anti-doublon):
+- `Notes/Todo_project.md` est la source unique des statuts `[ ]/[~]/[x]`.
+- Les autres notes servent de detail d'implementation et doivent pointer vers ce fichier.
+
 ## --3--
 Fin de session : tu me dis “Mets à jour le journal”.
 J’ajoute une entrée datée avec :

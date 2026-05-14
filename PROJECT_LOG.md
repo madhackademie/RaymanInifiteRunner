@@ -1,5 +1,22 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-14 — passe structure suivi projet/docs (safe rules)
+
+### Contexte
+- Demande auteur : améliorer la structuration du suivi de projet et de la documentation sans casser les éléments cités dans les rules.
+
+### Ce qu’on a fait
+- [x] **`Notes/Todo_project.md`** : ajout d’un bloc protocole anti-doublon et renommage explicite de la section en **`Prochaine session (priorité immédiate)`** pour rester compatible avec les règles de session.
+- [x] **`WORKFLOW_PROTOCOL.md`** : rappel explicite de la source unique de statut (`Notes/Todo_project.md`).
+- [x] **`ASSISTANT_CONTEXT.md`** : ajout d’un rappel “statut source unique” pour éviter les écarts entre notes.
+- [x] **`Notes/Ui/Journal_ui.md`** : conversion en journal de contexte (sans cases de statut), en conservant l’historique et les décisions.
+- [x] Vérification : dans `Notes/`, les statuts `[ ]/[~]/[x]` ne sont maintenant présents que dans `Notes/Todo_project.md`.
+
+### Décision
+- Le statut des tâches reste centralisé dans **un seul fichier** (`Notes/Todo_project.md`) ; les autres notes gardent uniquement le détail technique, les décisions et l’historique.
+
+---
+
 ## 2026-05-14 — nettoyage backlog (source unique)
 
 ### Contexte

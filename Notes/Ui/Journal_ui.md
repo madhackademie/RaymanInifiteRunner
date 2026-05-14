@@ -1,6 +1,10 @@
 # UI Journal (Stack + Localization)
 
-But: centraliser toutes les décisions, idées et futures tâches liées à l’UI (panneaux, animations, localisation TextMeshPro).
+But: centraliser les décisions, idées et historiques UI (panneaux, animations, localisation TextMeshPro).
+
+Statut officiel des tâches :
+- `Notes/Todo_project.md` (source unique des `[ ]/[~]/[x]`).
+- Ce journal conserve le contexte, les décisions et les pistes de travail (sans cases à cocher).
 
 Règle de fonctionnement :
 - Tu peux ajouter des idées en vrac dans `## Inbox (idées brutes)`
@@ -97,53 +101,53 @@ Règle de fonctionnement :
 
 ## Inbox (idées brutes)
 
-- [ ] (Vrac) …
-- [ ] (Vrac) …
+- (Vrac) …
+- (Vrac) …
 
 ---
 
-## Tâches (planifiées)
+## Pistes de travail (historique, sans statut)
 
 ### A) UI prototype (baseline)
-1. [ ] Créer 1 panneau “base” (ex. Menu/Farm) en prefab.
-2. [ ] Ajouter `Animator` + clips `Open`/`Close` (fade + slide).
-3. [ ] Ajouter un `UIPanel` composant qui expose `Open/Close` et gère l’activation/raycast.
+- Créer 1 panneau “base” (ex. Menu/Farm) en prefab.
+- Ajouter `Animator` + clips `Open`/`Close` (fade + slide).
+- Ajouter un `UIPanel` composant qui expose `Open/Close` et gère l’activation/raycast.
 
 ### B) Stack 2-3 layers
-1. [ ] Implémenter `UIManager` qui supporte `push overlay` et `pop overlay`.
-2. [ ] Mettre en place la règle “seul top reçoit les clics”.
+- Implémenter `UIManager` qui supporte `push overlay` et `pop overlay`.
+- Mettre en place la règle “seul top reçoit les clics”.
 
 ### B bis) UI globale multi-scènes
-1. [x] Créer une UI globale partagée entre toutes les scènes de jeu (shell + prefabs via `UIManager`).
-2. [x] Utiliser `NavigationHUD.unity` comme scène shell UI additive (chargée depuis `Bootstrap` ou `EnsureShellLoaded`).
-3. [x] Créer un `UIManager` global avec préchargement des **prefabs** prioritaires (équivalent fonctionnel au préchargement de scènes UI).
-4. [~] Précharger les UI fréquentes : inventaire via prefab + `ScreenId.Inventory` ; ajouter `Market`, `Settings`, etc. quand existants.
-5. [x] Navigation instantanée post-boot via `SetActive` sur les instances prefab.
-6. [x] Un seul `EventSystem` dans le shell ; `NavigationHUD` + `UIManager` en `DontDestroyOnLoad` sur leurs racines respectives.
-7. [x] Orchestration inventaire / masquage global déléguée à `UIManager` depuis `NavigationHUD` (plus de chargement scène inventaire dans le HUD pour ce flux).
-8. [x] Boot `Bootstrap.unity` + `LoadingScreen` pour absorber le coût initial.
+- Créer une UI globale partagée entre toutes les scènes de jeu (shell + prefabs via `UIManager`). *(implémenté)*
+- Utiliser `NavigationHUD.unity` comme scène shell UI additive (chargée depuis `Bootstrap` ou `EnsureShellLoaded`). *(implémenté)*
+- Créer un `UIManager` global avec préchargement des **prefabs** prioritaires. *(implémenté)*
+- Précharger les UI fréquentes : inventaire via prefab + `ScreenId.Inventory` ; ajouter `Market`, `Settings`, etc. quand existants. *(en progression historique)*
+- Navigation instantanée post-boot via `SetActive` sur les instances prefab. *(implémenté)*
+- EventSystem unique visé dans le shell ; `NavigationHUD` + `UIManager` sur racines persistantes. *(implémenté)*
+- Orchestration inventaire / masquage global déléguée à `UIManager`. *(implémenté)*
+- Boot `Bootstrap.unity` + `LoadingScreen` pour absorber le coût initial. *(implémenté)*
 
 ### B ter) Hub **`HomeScene`** + flux retour niveau (suivi courant)
-1. [ ] Sur le hub : navigation vers les scènes / modes voulus ; **HUD persistant** visible et cohérent (tabs, etc.).
-2. [ ] Depuis **`FirstLvl`** : valider tous les cas de retour vers **`HomeScene`** (inventaire ouvert, transitions en cours, input spam).
-3. [ ] Nettoyer ou documenter **`Inventaire.unity`** si le build ne doit plus l’utiliser.
+- Sur le hub : navigation vers les scènes / modes voulus ; **HUD persistant** visible et cohérent (tabs, etc.).
+- Depuis **`FirstLvl`** : valider tous les cas de retour vers **`HomeScene`** (inventaire ouvert, transitions en cours, input spam).
+- Nettoyer ou documenter **`Inventaire.unity`** si le build ne doit plus l’utiliser.
 
 ### C) Localization TextMeshPro
-1. [ ] Définir une convention de keys stables pour les textes UI (ex. `BTN_PLAY`, `TITLE_FARM`).
-2. [ ] Implémenter un mécanisme temporaire (prototype) qui met à jour les TMP quand `language` change.
-3. [ ] Préparer le passage au `LanguageManager` final (source de données + fallback).
+- Définir une convention de keys stables pour les textes UI (ex. `BTN_PLAY`, `TITLE_FARM`).
+- Implémenter un mécanisme temporaire (prototype) qui met à jour les TMP quand `language` change.
+- Préparer le passage au `LanguageManager` final (source de données + fallback).
 
 ### D) Préparation “séquences” (plus tard)
-1. [ ] Définir une API d’étapes (UI step, Camera step) pour synchroniser fade/slide + blend Cinemachine.
+- Définir une API d’étapes (UI step, Camera step) pour synchroniser fade/slide + blend Cinemachine.
 
 ---
 
 ## Questions ouvertes
 
-- [ ] Quels types de panneaux seront “modaux” (bloquent tout) vs “non-modaux” ?
-- [ ] Combien de textes à localiser au démarrage (10 ? 50 ? 200) ?
-- [ ] Faut-il un fallback EN ou fallback = langue du pays ?
-- [ ] Où stocker `language override` (PlayerPrefs, save file, autre) ?
+- Quels types de panneaux seront “modaux” (bloquent tout) vs “non-modaux” ?
+- Combien de textes à localiser au démarrage (10 ? 50 ? 200) ?
+- Faut-il un fallback EN ou fallback = langue du pays ?
+- Où stocker `language override` (PlayerPrefs, save file, autre) ?
 
 ---
 

@@ -16,7 +16,17 @@ Références de détail :
 
 ---
 
-## Priorité immédiate (session)
+## Protocole de mise à jour (anti-doublon)
+
+- Mettre à jour le statut uniquement dans ce fichier.
+- Dans les notes thématiques, documenter le **comment** (détails techniques), pas le **statut**.
+- Si une nouvelle priorité est décidée en session :
+  1. la placer dans `## Prochaine session (priorité immédiate)`,
+  2. la tracer dans `PROJECT_LOG.md`.
+
+---
+
+## Prochaine session (priorité immédiate)
 
 ### FirstLvl — pipeline popup générique
 - [ ] Migrer la popup **sélection des graines** vers le pipeline générique (`PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`).
