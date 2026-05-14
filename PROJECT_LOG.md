@@ -1,5 +1,20 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-14 — IDs stables + guide utilisateur suivi
+
+### Contexte
+- Demande auteur : ajouter des IDs de taches stables et une note explicative pour rester dans le cadre de suivi.
+
+### Ce qu’on a fait
+- [x] **`Notes/Todo_project.md`** : ajout d’une convention d’IDs (`P0-*`, `CT-*`, `BL-*`) et attribution d’un ID stable a chaque tache active/backlog.
+- [x] **Nouveau guide** : `Notes/GUIDE_suivi_projet.md` (mode d’emploi simple : source unique, routine debut/fin de session, anti-doublon, exemple concret).
+- [x] **`WORKFLOW_PROTOCOL.md`** : ajout du lien vers le guide utilisateur.
+
+### Decision
+- Le suivi quotidien doit s’appuyer sur les IDs de `Notes/Todo_project.md` pour eviter les ambiguities de priorisation.
+
+---
+
 ## 2026-05-14 — passe structure suivi projet/docs (safe rules)
 
 ### Contexte

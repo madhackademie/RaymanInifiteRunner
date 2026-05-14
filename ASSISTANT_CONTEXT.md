@@ -52,6 +52,7 @@
 - `PROJECT_LOG.md` (dernière entrée **2026-05-14** — `main` + priorité popups FirstLvl)
 - `Docs/PLANTES_ET_INVENTAIRE.md` — `harvestItemId` / `itemId`, checklist nouvelle plante
 - `Notes/Todo_project.md`
+- `Notes/GUIDE_suivi_projet.md` — mode d’emploi suivi (source unique + IDs)
 - `Notes/Farm/SYSTEMES_carte_mentale.md`
 - `Notes/Learning/CSharp_bases_et_Cursor_Unity.md` — rappels grille / `=>` / Cursor C#
 - `Notes/Learning/Event_Listener_Unity_CSharp.md`
