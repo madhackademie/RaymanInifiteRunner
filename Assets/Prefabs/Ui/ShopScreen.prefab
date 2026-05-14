@@ -347,7 +347,7 @@ MonoBehaviour:
   contentBackdropImage: {fileID: 3100000000000000002}
   slotCellSize: {x: 112, y: 112}
   slotSpacing: {x: 14, y: 14}
-  shopItemPopupPrefabOverride: {fileID: 5858578306874055066, guid: 67c4733d4537b9c40b7e1ebdae85b0aa, type: 3}
+  shopItemPopupId: shop.item.purchase
   resourceFeedbackPopup: {fileID: 6300031278499532774}
   feedbackUI: {fileID: 0}
   shopCatalogDefinition: {fileID: 11400000, guid: da9613e2b7e7e6049ae6219d208109c9, type: 2}
