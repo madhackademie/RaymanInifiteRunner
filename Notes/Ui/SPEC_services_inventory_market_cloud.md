@@ -2,6 +2,8 @@
 
 Objectif: définir les règles techniques obligatoires pour l'inventaire et le market, quel que soit le choix d'affichage (panel UI global ou scène dédiée).
 
+Statut officiel des tâches cloud : **`Notes/Todo_project.md`** (source unique).
+
 ---
 
 ## 1) Règles non négociables
@@ -80,13 +82,13 @@ Important: ce document reste valide dans les deux cas. La couche service ne dép
 
 ## 5) Checklist d'implémentation
 
-- [ ] **Découplage gameplay -> inventaire (prérequis cloud)** : les scripts gameplay ne doivent plus dépendre directement de `PlayerInventory.Instance`; passer par `IInventoryService` (ou un provider équivalent).
-- [ ] **Timing imposé** : ce découplage doit être fait **avant** de brancher la sync cloud en production, ou **au plus tard** dans la première étape de l'implémentation cloud (pas après).
-- [ ] Créer interfaces `IInventoryService` et `IMarketService`.
-- [ ] Interdire les appels réseau directs depuis les scripts UI.
-- [ ] Normaliser les états UI (`Loading/Ready/Error/Stale/Syncing`).
-- [ ] Ajouter cache local + stratégie retry.
-- [ ] Ajouter refresh manuel côté UI.
-- [ ] Faire valider buy/sell/consume/claim côté serveur autoritaire.
-- [ ] Journaliser les erreurs réseau/métier (logs exploitables debug).
+- Découpler gameplay -> inventaire (prérequis cloud) : ne plus dépendre directement de `PlayerInventory.Instance`; passer par `IInventoryService` (ou provider).
+- Imposer le timing : ce découplage doit être fait avant sync cloud prod, ou au plus tard au démarrage de l'implémentation cloud.
+- Créer les interfaces `IInventoryService` et `IMarketService`.
+- Interdire les appels réseau directs depuis les scripts UI.
+- Normaliser les états UI (`Loading/Ready/Error/Stale/Syncing`).
+- Ajouter cache local + stratégie retry.
+- Ajouter un refresh manuel côté UI.
+- Faire valider buy/sell/consume/claim côté serveur autoritaire.
+- Journaliser les erreurs réseau/métier avec des logs exploitables.
 

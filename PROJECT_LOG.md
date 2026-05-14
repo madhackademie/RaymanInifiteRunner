@@ -1,5 +1,27 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-14 — nettoyage backlog (source unique)
+
+### Contexte
+- Demande auteur : supprimer les doublons de tâches et centraliser le suivi sur une seule source.
+
+### Ce qu’on a fait
+- [x] **Source unique de statut** définie : `Notes/Todo_project.md` (seul fichier avec `[ ]/[~]/[x]`).
+- [x] **Déduplication** : `Notes/Todo_project.md` restructuré (priorité immédiate + backlog consolidé sans répétitions historiques).
+- [x] **Fichiers satellites convertis en vues de référence** (détails sans statut) :
+  - `Notes/Ui/Todo_ui.md`
+  - `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`
+  - `Notes/Ui/SPEC_services_inventory_market_cloud.md`
+  - `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
+  - `Notes/Bezi/README_bezi.md`
+- [x] Ajout explicite de liens vers la source unique dans ces fichiers.
+
+### Règle active
+- Le statut des tâches est maintenu uniquement dans `Notes/Todo_project.md`.
+- Les autres notes servent au contexte et aux checklists techniques détaillées.
+
+---
+
 ## 2026-05-14 — base `main` + priorité popups FirstLvl
 
 ### Contexte

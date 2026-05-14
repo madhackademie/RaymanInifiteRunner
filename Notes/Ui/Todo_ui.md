@@ -1,121 +1,70 @@
-# TODO UI — backlog
+# TODO UI — vue détaillée (sans statut)
 
-**Navigation scènes / Inventaire / Market (HUD global, Additive, sync-async)** : `GUIDE_scenes_navigation_Unity_inventaire_market.md`.
+Statut officiel des tâches : **`Notes/Todo_project.md`** (source unique).
 
-**Architecture shell + `UIManager` (référence)** : `ARCHI_hud_ui_manager_additive.md`.
-
-**Audit Bezi + refactor navigation (cible ~2026-05-01)** : `TODO_Bezi_audit_scene_ui_refactor.md` (checklist ; aligner les notes restantes sur `SceneNavigator.ShowScene` + hub `HomeScene`).
-
----
-
-## Priorité session suivante
-
-### FirstLvl — popups génériques (priorité immédiate)
-
-- [ ] **Graines sélectionnables** : faire passer l’UI d’apparition / choix des graines par le **pipeline popup générique** (`PopupId` + binding + `ScreenPopupHost`, cohérent avec `UIManager` / règles runtime shell).
-- [ ] **Plante (clic)** : popup **état / info** + voie **récolte** (ex. aligner `HarvestPanelUI` + `PlantHarvestInteractor` sur le même pipeline ; pas de second chemin caché).
-- [ ] **Scan popups** : inventaire des autres popups encore **instanciés en direct** ou hors `ScreenPopupBinding` ; sous-checklist de migration (même méthode que le shop HUD).
-
-Références : **`Notes/Ui/popup_generique.md`**, **`PROJECT_LOG.md`** (entrée **2026-05-14**), règle **`.cursor/rules/ui_popup_generic_runtime.mdc`**.
-
-### Shop — mécanique achat (polish restant)
-
-**Livré** : monnaie + débit + `TryPurchase`, modal détail offre, **+**/**−**, total sur **Payer**, transaction, feedback ressources insuffisantes, **popup item shop** via pipeline générique (`ScreenPopupHost` + `runtimePopupBindings`). Voir **`Notes/Ui/popup_generique.md`** §2–3.
-
-- [ ] **Passe UI/UX** : lisibilité, enchaînement modales / focus / retours visuels sur l’écran shop et la popup d’achat.
-- [x] Clic sur une **offre catalogue** → **modal détail** (image, prix unitaire, description optionnelle).
-- [x] Contrôles **quantité** **+**/**−** et libellé **Payer** avec total `prix_unitaire × quantité`.
-- [x] **Feedback ressources insuffisantes** (`ResourceFeedbackPopupUI`) + **popup item** générique shop.
-- [ ] **Saisie quantité** : `TMP_InputField` (PC + mobile), clamp [min, max] métier.
-- [ ] **Bouton Max** : `min(plafonds listing/inventaire, floor(solde_monnaie / prix_unitaire))` (cohérent avec règles existantes).
-- [ ] **Confirmation** avant paiement (aujourd’hui achat direct depuis la popup item).
-- [x] Transaction : solde OK → débit + `TryAdd` ; sinon message ressources insuffisantes.
-
-### Session cible ~2026-05-01 — audit Bezi (Scene/UI) + clean refactor
-
-- [ ] Lancer l’audit **Bezi** sur le flux réel : **`GameBootstrap`**, **`SceneNavigator.ShowScene`**, **`NavigationHUD`**, **`MapSceneController`**, **`FirstLvlController`**, **`UIManager`** — voir **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**.
-- [ ] Après audit : **nettoyer** le code orphelin signalé (ex. chemins morts côté **`BiofiltreManager`**), **mettre à jour les commentaires** des scripts touchés, **réécrire les sections obsolètes** de `ARCHI_hud_ui_manager_additive.md` / `Journal_ui.md` / ce fichier.
-
-### Debug / amélioration — **navigation runtime `ShowScene`** (mise à jour 2026-04-24)
-
-- [ ] Repasser tous les chemins **`SceneNavigator.ShowScene`** : scène inexistante, double clic, transition déjà en cours, cohérence **`CurrentScene`** avec **`SetInitialScene`** après bootstrap.
-- [ ] Vérifier l’interaction **HUD** (`NavigationHUD` modes, onglets **`HomeScene`** / **`Inventaire`**, **`OnExitToHomeRequested`** + **`FirstLvlController`**) et **`MapSceneController`** (chargement depuis le hub, unload **`HomeScene`** si applicable).
-- [ ] Playtest **Build Settings** + absence de **double `EventSystem`** ; après stabilisation, mettre à jour **`Notes/Ui/ARCHI_hud_ui_manager_additive.md`** (séquence réelle et pièges async).
+Règle :
+- ne pas cocher `[ ]/[~]/[x]` ici ;
+- cette note contient uniquement les détails d’implémentation UI et les liens utiles.
 
 ---
 
-### Focus auteur — **illustration LoadingScreen** (2026-04-17)
+## Références rapides
 
-- **Objectif** : image finale (référence projet : **poisson + arbre**) + import Unity + placement dans **`Assets/Scenes/Bootstrap.unity`** sans régression barre / fade.
-- **Guide** : **`Notes/Ui/LOADINGSCREEN_image_workflow.md`** (hiérarchie Canvas, import sprite, QA).
-- Après intégration : cocher la case QA dans **`Notes/Todo_project.md`** (*Tests écran de chargement*).
-
----
-
-### Hub **`HomeScene`** + HUD persistant + retour depuis **`FirstLvl`** (suite chantier)
-
-**État (2026-04-24)** : le hub d’accueil est la scène **`HomeScene`** (`MapSceneController`, `SceneId.HomeScene`) ; **`GameBootstrap`** charge **`NavigationHUD`** puis **`HomeScene`** ; les onglets HUD utilisent le navigator via **`ShowScene`**. Le retour depuis le gameplay passe par **`OnExitToHomeRequested`** + **`FirstLvlController`** vers **`HomeScene`**.
-
-Tâches restantes / alignement doc :
-
-- [ ] Finaliser le flux **hub → `FirstLvl`** / autres nœuds ( **`MapNodeData`** ) et l’**unload** de **`HomeScene`** quand pertinent (`MapSceneController` — à valider en jeu).
-- [ ] Harmoniser la doc ancienne « **`Carte`** » avec **`HomeScene`** / future **`Map`** dans **`ARCHI_hud_ui_manager_additive.md`** et guides (reste à faire sur les notes historiques).
-- [ ] Revue **`Inventaire.unity`** : au **Build Settings** si encore utilisée comme scène de contenu ; cohabitation avec prefab **`ScreenId.Inventory`** via **`UIManager`**.
+- Backlog global : `Notes/Todo_project.md`
+- Architecture shell/UI : `Notes/Ui/ARCHI_hud_ui_manager_additive.md`
+- Audit Scene/UI : `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`
+- Guide navigation scènes : `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
+- Pipeline popup générique : `Notes/Ui/popup_generique.md`
 
 ---
 
-## Bootstrap & **LoadingScreen** — tests + visuel
+## Détails d’exécution UI
 
-- [ ] **Tests scène de chargement** : playtest **Editor** + idéalement **build dev** de **`Bootstrap.unity`** — vérifier barre de progression (`AsyncOperation` 0.9), ordre **NavigationHUD** → **FirstLvl**, absence de **double `EventSystem`**, fade-out **`LoadingScreen.Hide()`**, pas de frame « flash » UI avant la fin du chargement.
-- [ ] **Image poisson / arbre (loading)** : **création** puis **affinage** d’une illustration **poisson + arbre** pour l’écran de chargement (référence de travail / ton : itérations type **« chatgptouille »** — génération + retouches jusqu’à un rendu acceptable) ; importer dans Unity (`Sprite` / `Texture2D` + alpha si besoin) et **câbler** sur **`LoadingScreen`** (Image / `RawImage` selon le setup actuel).
+### FirstLvl — popups génériques
+- Migrer l’UI de sélection de graines vers le pipeline popup générique (`PopupId` + binding + `ScreenPopupHost`).
+- Migrer la popup plante (état/info/récolte) vers le même pipeline, sans second chemin legacy.
+- Produire un inventaire des autres popups hors pipeline et proposer un ordre de migration.
 
----
+### Shop — polish UI restant
+- Faire une passe UX (focus, lisibilité, transitions modales).
+- Ajouter la saisie quantité (`TMP_InputField`) avec clamp métier.
+- Ajouter le bouton Max cohérent avec règles inventaire/solde.
+- Ajouter la confirmation avant paiement.
+- Vérifier/corriger les références Inspector encore vides.
 
-## État implémenté (rappel — ne pas re-planifier en doublon)
+### Navigation Scene/UI
+- Revalider tous les chemins `SceneNavigator.ShowScene` (transitions, hub `HomeScene`, retour gameplay).
+- Vérifier `NavigationHUD` + `MapSceneController` + `FirstLvlController` en playtest.
+- Contrôler l’unicité de `EventSystem` et l’état des Build Settings.
+- Aligner les docs historiques ("Carte") vers `HomeScene`/`Map` cible.
 
-- [x] **`Bootstrap.unity`** en entrée + **`GameBootstrap`** + **`LoadingScreen`** (progression, chargement additif **`NavigationHUD`** puis **`HomeScene`** — plus **`FirstLvl`** direct au boot).
-- [x] **`SceneNavigator`** + **`SceneId`** : transition de **scène de contenu** unique (additif + unload async de la précédente), shell non déchargé.
-- [x] **`UIManager`** (`Assets/Scripts/Systems/UIManager.cs`) : listes **prioritaires** / **secondaires**, prefabs, `ShowScreen` / `HideScreen` / `HideAllGlobalUI`, `EnsureShellLoaded()`.
-- [x] **`ScreenId`** + au minimum écran **Inventory** en prefab.
-- [x] **`NavigationHUD.unity`** dans le build ; shell + un seul **`EventSystem`**.
-
----
-
-## HUD / UI Manager — historique & prompt Bezi
-
-Le prompt ci-dessous décrit encore le modèle « préchargement de **scènes** UI » ; le code actuel privilégie des **prefabs** sous `UIManager` (même intention UX : instantané après boot). Adapter le prompt si tu redélègues à un outil externe.
-
-```text
-Créer une UI globale persistante partagée entre toutes les scènes du projet Unity.
-Utiliser `NavigationHUD.unity` comme scène shell UI additive.
-Créer un `UIManager` global qui précharge les scènes UI fréquentes en additif au démarrage, en particulier `Inventaire`, puis affiche/masque leurs roots avec `SetActive` pour rendre la navigation quasi instantanée.
-Garder un seul `EventSystem`, laisser `NavigationHUD` comme vue HUD, et déplacer la logique de navigation globale dans le `UIManager`.
-```
+### LoadingScreen
+- Intégrer l’illustration finale (poisson + arbre) dans `Bootstrap.unity`.
+- Exécuter la QA loading (progression, fade, ordre de chargement, pas de flash UI).
+- Réf workflow : `Notes/Ui/LOADINGSCREEN_image_workflow.md`.
 
 ---
 
-## LanguageManager / TextMeshPro (transféré depuis `Decision_ui.md`)
+## Localization TextMeshPro — plan
 
-### Décisions à respecter (rappel)
-- `country` ≠ `language` : pays pour market/pub ; langue choisie par le joueur (override).
-- Au boot : `language = defaultLanguageFromCountry(country)` sauf si override joueur déjà sauvegardé.
-- Changement d’option langue → `OnLanguageChanged` → mise à jour de tous les TMP localisés.
+Décisions rappel :
+- `country` et `language` sont distincts.
+- langue par défaut dérivée du pays, override joueur prioritaire.
+- changement de langue = refresh global des TMP localisés.
 
-### Tâches
-- [ ] Définir l’énum / identifiants `Language` et `Country` (ou strings normalisées) selon le besoin prototype.
-- [ ] Implémenter `defaultLanguageFromCountry(country)` (table de mapping).
-- [ ] Persister le choix joueur (`language` override) — au minimum PlayerPrefs en proto, save plus tard si besoin.
-- [ ] Créer un `LanguageManager` (singleton ou service injecté) avec :
-  - [ ] propriété `CurrentLanguage`
-  - [ ] événement `OnLanguageChanged(Language)`
-  - [ ] méthode `GetText(string key)` avec **fallback** (langue courante → EN → afficher la key brute si absent).
-- [ ] Créer un composant `LocalizedTMPText` sur les `TextMeshProUGUI` :
-  - [ ] champ `key` (string stable)
-  - [ ] abonnement à `OnLanguageChanged` + refresh au `OnEnable`.
-- [ ] Documenter la **convention de keys** (`BTN_PLAY`, `TITLE_FARM`, etc.) dans `Spec_ui.md` ou ici.
-- [ ] **Prototype** : table `language → key → string` (en dur ou ScriptableObject minimal).
-- [ ] **Final** : migrer vers ScriptableObject ou JSON (même schéma clé/valeur).
-- [ ] **DoD** : changer la langue dans les options met à jour **tous** les textes TMP localisés **sans** recréer la scène.
+Étapes techniques :
+- Définir `Language`/`Country` + mapping `defaultLanguageFromCountry`.
+- Persister l’override (PlayerPrefs en proto).
+- Implémenter `LanguageManager` (`CurrentLanguage`, `OnLanguageChanged`, `GetText` avec fallback).
+- Créer `LocalizedTMPText` (`key`, abonnement event, refresh au `OnEnable`).
+- Poser une convention stable de keys (`BTN_PLAY`, `TITLE_FARM`, ...).
+- Prévoir phase proto (table simple) puis phase finale (SO/JSON).
 
-### Hors scope immédiat (référence)
-- Intégration détection pays “réelle” (SDK / store) — peut rester mockée jusqu’au besoin market.
+---
+
+## État déjà implémenté (mémo)
+
+- `Bootstrap.unity` + `GameBootstrap` + `LoadingScreen`.
+- `SceneNavigator` + `SceneId` pour transitions de scènes de contenu.
+- `UIManager` global (show/hide écrans prefabs).
+- `NavigationHUD` shell et `EventSystem` unique visé.

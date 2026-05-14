@@ -164,7 +164,9 @@ Objectif:
 
 ## À compléter (projet)
 
-- [ ] Version Unity utilisée + packages critiques (Cinemachine, TMP, etc.)
-- [ ] Scène(s) de travail habituelle(s)
-- [ ] Conventions dossiers `Assets/_Project/...` (si figées)
-- [ ] Lien ou résumé **bezi.actions** quand la doc / usage est clarifié
+Statut officiel des items à faire : **`Notes/Todo_project.md`** (source unique).
+
+- Version Unity utilisée + packages critiques (Cinemachine, TMP, etc.).
+- Scène(s) de travail habituelle(s).
+- Conventions dossiers `Assets/_Project/...` (si figées).
+- Lien ou résumé **bezi.actions** quand la doc / usage est clarifié.
