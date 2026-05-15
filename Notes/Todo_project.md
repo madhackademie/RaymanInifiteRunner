@@ -35,13 +35,18 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-### FirstLvl — pipeline popup générique
-- [x] [P0-POP-001] Migrer la popup **sélection des graines** vers le pipeline générique (`PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`). **Fait** (2026-05-15) : entrée `PROJECT_LOG.md` + `Notes/Ui/popup_generique.md` §2.5.
-- [x] [P0-POP-002] Migrer la popup **plante (info/état + récolte)** vers le pipeline générique (sans chemin concurrent caché). **Fait** (2026-05-15) : `PopupId.FarmPlantHarvest`, binding + `TryShowPopup` / `HarvestPanelUI.Open`, voir `PROJECT_LOG.md`.
-- [x] [P0-POP-004] Migrer le popup shop **feedback ressources** (`ResourceFeedbackPopupUI`) vers le pipeline générique (`PopupId.ShopResourceFeedback`, binding `NavigationHUD`, prefab sans enfant dans `ShopScreen`). **Fait** (2026-05-15).
-- [x] [P0-POP-005] Ferme : feedback **inventaire plein** à la récolte via **`PopupId.FarmInventoryFeedback`** + **`ResourceFeedbackPopup`** (`PlantHarvestInteractor` + binding `NavigationHUD`). **Fait** (2026-05-15) — **test play non encore validé en session**.
-- [ ] [P0-POP-006] **Test play FirstLvl** : inventaire plein → tenter une récolte (`HarvestPanelUI` **Récolter** et, si pertinent, clic direct **`ConfirmHarvest`**) → vérifier affichage **`ResourceFeedbackPopup`** via **`FarmInventoryFeedback`** (texte, auto-hide, pas de doublon UI, pas de warning console binding/host).
-- [ ] [P0-POP-003] **Review / audit transversal popups** : liste des **`PopupId`** vs **`UIManager.runtimePopupBindings`** ; grep chemins résiduels (instanciation modale hors **`ScreenPopupHost`**, `Resources.Load`+popup, anciens fallbacks) ; **verdict écrit** dans `PROJECT_LOG.md` ou note UI : chantier pipeline générique **clos** ou **backlog** priorisé pour la session suivante.
+### Popups — clôture pipeline générique
+- [ ] [P0-POP-003] **Scanner le projet** : recenser toutes les modales / popups encore **hors** pipeline (`PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`) ; comparer à **`UIManager.runtimePopupBindings`** ; grep chemins résiduels (`Instantiate` modal, `InventoryFeedbackUI`, fallbacks, etc.) ; **verdict écrit** dans `PROJECT_LOG.md` : chantier **clos** ou **backlog** priorisé.
+
+### Ferme — harvest (branche dédiée)
+- [ ] [P0-HARV-001] **Mettre à niveau le popup récolte** (`HarvestPanelUI` / `FarmPlantHarvest`) vers le modèle **aligné shop** (prefab réel dans le binding, instance scène retirée si possible, host seul, pas de `FindFirstObjectByType` résiduel) — voir `Notes/Ui/popup_generique.md` §2.5 objectif « 100 % ». **Obligatoire** : créer une **nouvelle branche Git** avant tout code (cf. `GIT_HELPER.md` § branche par feature) ; ne pas faire ce chantier sur `main` en direct.
+
+### Popups — migrations déjà livrées (référence)
+- [x] [P0-POP-001] Graines (`FarmSeedSelection`). **Fait** (2026-05-15).
+- [x] [P0-POP-002] Plante / récolte (`FarmPlantHarvest`, instance scène). **Fait** (2026-05-15).
+- [x] [P0-POP-004] Shop feedback ressources (`ShopResourceFeedback`). **Fait** (2026-05-15).
+- [x] [P0-POP-005] Ferme inventaire plein (`FarmInventoryFeedback`). **Fait** (2026-05-15).
+- [x] [P0-POP-006] Test play inventaire plein → popup `ResourceFeedbackPopup`. **Fait** (2026-05-15, session auteur).
 
 ---
 
@@ -61,6 +66,7 @@ Convention d'IDs :
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).
 
 ### Ferme — croissance et persistance
+- [~] [CT-FARM-000] Popup récolte : voir **[P0-HARV-001]** (prochaine session, **branche dédiée**).
 - [ ] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).
 - [ ] [CT-FARM-002] Garantir la persistance du temps déjà écoulé (stade + timer) via `FarmSaveService` / `PlantPersistenceMarker`.
 - [ ] [CT-FARM-003] Revalider le démarrage visuel/logique au stade Graine puis transition vers feuilles.

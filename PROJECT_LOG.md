@@ -1,5 +1,23 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-15 — Prochaine session : scan popups + harvest sur branche
+
+### Contexte
+- Fin de session : commit des migrations popups (shop feedback, ferme inventaire plein, etc.) ; test play **inventaire plein** validé par l’auteur.
+
+### Prochaine session (priorité immédiate) — validée par l’auteur
+1. **[P0-POP-003]** Scanner le projet pour les popups / modales **non intégrés** au pipeline générique (`PopupId`, `ScreenPopupBinding`, `ScreenPopupHost`) ; produire un **verdict** (clos ou backlog).
+2. **[P0-HARV-001]** Mettre à niveau **harvest** (`HarvestPanelUI` / `FarmPlantHarvest`) vers le modèle strict (prefab binding, moins d’instance scène / fallbacks) — **uniquement sur une nouvelle branche Git** avant codage (`GIT_HELPER.md`).
+
+### Décision
+- Le chantier harvest est **séparé** du scan popups et **isolé** sur branche feature pour ne pas mélanger avec le lot déjà commité sur `main`.
+
+### Références
+- `Notes/Todo_project.md` § *Prochaine session*
+- `Notes/Ui/popup_generique.md` §2.5 (écart ferme vs shop strict)
+
+---
+
 ## 2026-05-14 — IDs stables + guide utilisateur suivi
 
 ### Contexte
@@ -89,9 +107,7 @@
 
 **Décisions / état** : migrations code + bindings **`NavigationHUD`** documentées dans les sous-sections ci-dessus et dans **`Notes/Ui/popup_generique.md`**.
 
-**Prochaines étapes (priorité prochaine session)** — voir aussi **`Notes/Todo_project.md`** §*Prochaine session* :
-1. **Test manuel** : `PopupId.FarmInventoryFeedback` — inventaire plein, récolte depuis **`HarvestPanelUI`** ou **`ConfirmHarvest`**, vérifier message **`ResourceFeedbackPopup`**, tri canvas, pas de warning binding.
-2. **Review transversale** : recenser tous les **`PopupId`**, valider chaque entrée **`runtimePopupBindings`**, grep chemins résiduels (instanciation directe de modales, popups hors host) ; **verdict** : clôturer le chantier P0 popups ou lister le backlog restant (ex. inventaire runtime).
+**Prochaines étapes** — remplacées par l’entrée journal **2026-05-15 — Prochaine session** ([P0-POP-003] scan popups, [P0-HARV-001] harvest sur branche dédiée).
 
 ---
 
