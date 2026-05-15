@@ -36,6 +36,7 @@ public class BiofiltreManager : MonoBehaviour
     private GridManager gridManager;
     private bool hasLoadedFromSave;
     private SeedSelectionUI cachedSeedSelectionUi;
+    private HarvestPanelUI cachedHarvestPanelUi;
     private bool suppressGridCellUiThisFrame;
 
     private void Awake()
@@ -63,6 +64,7 @@ public class BiofiltreManager : MonoBehaviour
 
         RegisterFarmPopupBindingsIfPossible();
         WarmUpSeedSelectionPopup();
+        WarmUpHarvestPanelPopup();
 
         TryLoadFarmState();
     }
@@ -167,8 +169,16 @@ public class BiofiltreManager : MonoBehaviour
             return false;
         }
 
+        ConfigureHarvestPanelInstance(panel);
         panel.Open(interactor, plantGrow, definition);
         return true;
+    }
+
+    /// <summary>Ferme le popup récolte (panneau + instance lazy host).</summary>
+    public void HideFarmPlantHarvestPopup()
+    {
+        if (TryResolveHarvestPanelUI(out HarvestPanelUI ui))
+            ui.Close();
     }
 
     // ── Footprint query (called by SeedSelectionUI) ───────────────────────────
@@ -379,6 +389,20 @@ public class BiofiltreManager : MonoBehaviour
         seedUi.gameObject.SetActive(false);
     }
 
+    private void WarmUpHarvestPanelPopup()
+    {
+        if (!TryResolveHarvestPanelUI(out HarvestPanelUI panel))
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] Impossible de précharger HarvestPanelUI. " +
+                $"Vérifiez binding ({ScreenId.FirstLvlFarm}, {PopupId.FarmPlantHarvest}).",
+                this);
+            return;
+        }
+
+        panel.gameObject.SetActive(false);
+    }
+
     private bool TryOpenFarmSeedSelection(BiofiltreCell cell)
     {
         ScreenPopupHost host = ResolveFarmPopupHost();
@@ -427,20 +451,47 @@ public class BiofiltreManager : MonoBehaviour
         cachedSeedSelectionUi = ui;
     }
 
+    private bool TryResolveHarvestPanelUI(out HarvestPanelUI ui)
+    {
+        if (cachedHarvestPanelUi != null)
+        {
+            ui = cachedHarvestPanelUi;
+            return true;
+        }
+
+        ScreenPopupHost host = ResolveFarmPopupHost();
+        if (host == null || !host.TryGetPopup(PopupId.FarmPlantHarvest, out ui))
+        {
+            ui = null;
+            return false;
+        }
+
+        ConfigureHarvestPanelInstance(ui);
+        return true;
+    }
+
+    private void ConfigureHarvestPanelInstance(HarvestPanelUI ui)
+    {
+        if (ui == null)
+            return;
+
+        ScreenPopupHost host = ResolveFarmPopupHost();
+        if (host != null)
+            ui.InjectFarmPopupHost(host);
+
+        cachedHarvestPanelUi = ui;
+    }
+
     private ScreenPopupHost ResolveFarmPopupHost()
     {
         if (farmPopupHost != null)
             return farmPopupHost;
 
-        farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
-        if (farmPopupHost == null)
-        {
-            Debug.LogWarning(
-                "[BiofiltreManager] ScreenPopupHost introuvable. Placez un ScreenPopupHost (ex. sur LevelController).",
-                this);
-        }
-
-        return farmPopupHost;
+        Debug.LogWarning(
+            "[BiofiltreManager] farmPopupHost non assigné. " +
+            "Liez le ScreenPopupHost du LevelController (FirstLvl) sur BiofiltreManager.",
+            this);
+        return null;
     }
 
     private void EnsureFarmPopupRoot(ScreenPopupHost host)

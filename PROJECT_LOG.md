@@ -1,5 +1,20 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-15 — [P0-HARV-001] Popup récolte mode strict
+
+### Changements
+- [x] **`BiofiltreManager.ResolveFarmPopupHost`** : plus de `FindFirstObjectByType` — `farmPopupHost` Inspector obligatoire (déjà câblé sur `FirstLvl` → `LevelController` / `ScreenPopupHost`).
+- [x] Cache + warmup **`HarvestPanelUI`** (lazy `FarmHarvestPanel.prefab`).
+- [x] **`HarvestPanelUI`** : `InjectFarmPopupHost` ; **`Close()`** appelle **`TryHidePopup(FarmPlantHarvest)`**.
+- [x] **`PlantHarvestInteractor`** : injection host sur le panel à l’ouverture.
+- [x] **`Notes/Ui/popup_generique.md`** §2.5 mis à jour (pipeline lazy, plus de live instance).
+
+### Test play (auteur)
+- [ ] Clic plante occupée → popup récolte ; Close / récolte / arrachage ; pas de warning host.
+- [ ] Inventaire plein à la récolte → `FarmInventoryFeedback`.
+
+---
+
 ## 2026-05-15 — [P0-POP-003] Scan popups — verdict
 
 ### Méthode

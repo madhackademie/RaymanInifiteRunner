@@ -195,6 +195,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         if (!host.TryShowPopup(PopupId.FarmPlantHarvest, out HarvestPanelUI panel))
             return false;
 
+        panel.InjectFarmPopupHost(host);
         panel.Open(this, plantGrow, ResolveDefinition());
         return true;
     }

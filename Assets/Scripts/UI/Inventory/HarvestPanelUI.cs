@@ -27,6 +27,7 @@ public class HarvestPanelUI : MonoBehaviour
     private PlantHarvestInteractor currentTarget;
     private PlantGrow currentPlantGrow;
     private PlantDefinition currentDefinition;
+    private ScreenPopupHost farmPopupHost;
     private bool isOpen;
 
     // Noms lisibles des stades
@@ -60,6 +61,13 @@ public class HarvestPanelUI : MonoBehaviour
 
     // ── API publique ──────────────────────────────────────────────────────────
 
+    /// <summary>Injecte l'hôte popup ferme (depuis <see cref="BiofiltreManager"/>).</summary>
+    public void InjectFarmPopupHost(ScreenPopupHost host)
+    {
+        if (host != null)
+            farmPopupHost = host;
+    }
+
     /// <summary>
     /// Ouvre le popup pour la plante ciblée, peu importe son stade.
     /// </summary>
@@ -77,7 +85,7 @@ public class HarvestPanelUI : MonoBehaviour
         isOpen = true;
     }
 
-    /// <summary>Ferme le popup.</summary>
+    /// <summary>Ferme le panneau et masque l'instance lazy via le host.</summary>
     public void Close()
     {
         isOpen = false;
@@ -85,6 +93,9 @@ public class HarvestPanelUI : MonoBehaviour
         currentTarget     = null;
         currentPlantGrow  = null;
         currentDefinition = null;
+
+        if (farmPopupHost != null)
+            farmPopupHost.TryHidePopup(PopupId.FarmPlantHarvest);
     }
 
     // ── Rafraîchissement ──────────────────────────────────────────────────────
