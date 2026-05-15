@@ -3,7 +3,7 @@
 Ce fichier est la **source de vérité unique** pour le statut des tâches du projet.
 
 Règle de suivi :
-- **Uniquement ici** on utilise `[ ]`, `[~]`, `[x]`.
+- **Uniquement ici** on utilise `[ ]`, `[~]`, `[x]` pour le statut des tâches (historique des closes : `PROJECT_LOG.md`).
 - Les autres fichiers (`Notes/Ui/Todo_ui.md`, `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`, `Notes/Ui/SPEC_services_inventory_market_cloud.md`, etc.) servent de **détail opérationnel** et doivent pointer vers cette page.
 
 Références de détail :
@@ -35,21 +35,14 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-### Popups — clôture pipeline générique
-- [x] [P0-POP-003] **Scanner le projet** : verdict **CLOS** — voir `PROJECT_LOG.md` entrée *2026-05-15 — [P0-POP-003] Scan popups — verdict* ; suite : **[P0-HARV-001]** + **BL-POP-DOC-001** (sync doc).
+### Shop — polish popup d’achat (branche dédiée)
+- [ ] [P0-SHOP-POP-001] Créer une **branche Git feature** puis **polish du popup d’achat** (`ShopItemPopup` / pipeline `PopupId.ShopItemPurchase`) — enchaîner les items **`Notes/Ui/Todo_ui.md`** (Shop) et **`Notes/Ui/popup_generique.md`** §3 : UI/UX (**CT-SHOP-002**), saisie quantité (**CT-SHOP-003**), bouton Max (**CT-SHOP-004**), confirmation avant paiement (**CT-SHOP-005**), refs Inspector (**CT-SHOP-006**). **Ne pas traiter sur `main` sans branche** (cf. `GIT_HELPER.md`).
+
+### Ferme — graines vs inventaire
+- [ ] [P0-FARM-SEED-INV-001] Vérifier que les **graines offertes à la plantation** (`SeedSelectionUI` / liste `SeedEntry`) sont **alignées avec le sac** (`PlayerInventory`) : affichage conditionnel des graines possédées, quantités, **consommation d’un item au plant** si le design l’exige, pas de plantation « gratuite » hors inventaire par erreur.
 
 ### Doc — popups
 - [~] [BL-POP-DOC-001] `popup_generique.md` §2.5 aligné (2026-05-15). Reste : `SYSTEMES_carte_mentale.md`, `Codebase_etat_reference.md`.
-
-### Ferme — harvest (branche dédiée)
-- [x] [P0-HARV-001] Popup récolte mode strict lazy — voir `PROJECT_LOG.md` entrée *2026-05-15 — [P0-HARV-001]*. **Playtest FirstLvl** à valider par l’auteur.
-
-### Popups — migrations déjà livrées (référence)
-- [x] [P0-POP-001] Graines (`FarmSeedSelection`). **Fait** (2026-05-15).
-- [x] [P0-POP-002] Plante / récolte (`FarmPlantHarvest`, instance scène). **Fait** (2026-05-15).
-- [x] [P0-POP-004] Shop feedback ressources (`ShopResourceFeedback`). **Fait** (2026-05-15).
-- [x] [P0-POP-005] Ferme inventaire plein (`FarmInventoryFeedback`). **Fait** (2026-05-15).
-- [x] [P0-POP-006] Test play inventaire plein → popup `ResourceFeedbackPopup`. **Fait** (2026-05-15, session auteur).
 
 ---
 
@@ -69,7 +62,6 @@ Convention d'IDs :
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).
 
 ### Ferme — croissance et persistance
-- [~] [CT-FARM-000] Popup récolte : voir **[P0-HARV-001]** (prochaine session, **branche dédiée**).
 - [ ] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).
 - [ ] [CT-FARM-002] Garantir la persistance du temps déjà écoulé (stade + timer) via `FarmSaveService` / `PlantPersistenceMarker`.
 - [ ] [CT-FARM-003] Revalider le démarrage visuel/logique au stade Graine puis transition vers feuilles.

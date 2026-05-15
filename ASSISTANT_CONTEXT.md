@@ -18,8 +18,8 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **Prochaine session (2026-05-15, validée auteur)** : **[P0-POP-003]** scanner le projet (popups hors pipeline générique, verdict écrit) ; puis **[P0-HARV-001]** mise à niveau harvest (**nouvelle branche Git obligatoire** avant code). Voir **`Notes/Todo_project.md`**, **`PROJECT_LOG.md`** (entrée 2026-05-15 *Prochaine session*).
-2. **Shop — polish uniquement** : UI/UX, saisie quantité, **Max**, confirmation avant paiement — **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/popup_generique.md`** §3 (monnaie + popup item + binding shop **déjà faits sur `main`**).
+1. **Prochaine session (validée auteur, fin session 2026-05-15)** : **[P0-SHOP-POP-001]** créer une **branche Git** puis **polish popup d’achat** shop (`ShopItemPopup`) — détail **`Notes/Todo_project.md`**, **`PROJECT_LOG.md`** (*Fin de session*). Ensuite **[P0-FARM-SEED-INV-001]** : **graines plantation ↔ inventaire** (`SeedSelectionUI` vs `PlayerInventory`).
+2. **Shop — polish** (contenu de P0-SHOP-POP-001) : UI/UX, saisie quantité, **Max**, confirmation — **`Notes/Ui/Todo_ui.md`**, **`popup_generique.md`** §3 (`CT-SHOP-002` … `CT-SHOP-006`).
 3. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
 4. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
 5. **~2026-05-01 — Audit Bezi + refactor navigation Scene/UI** : terminer l’audit sur le flux réel (`ShowScene`, boot eager, `UIManager`) ; **clean/refactor** ; supprimer ou documenter le code mort ; **réaligner** `ARCHI` / `Journal_ui` / `Todo_ui` / guide scènes — **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**, **`PROJECT_LOG.md`** (2026-04-21).
@@ -37,8 +37,8 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-15** :
-  - **[P0-POP-003]** scan popups non intégrés au pipeline ; **[P0-HARV-001]** harvest sur **branche dédiée** (pas sur `main` en direct).
+- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **fin session 2026-05-15** :
+  - **[P0-SHOP-POP-001]** branche + polish popup d'achat shop ; puis **[P0-FARM-SEED-INV-001]** graines plantation ↔ inventaire.
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :

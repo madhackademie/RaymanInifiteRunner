@@ -1,5 +1,20 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-15 — Fin de session — suites validées auteur
+
+### Contexte
+- Playtests pipeline popups / récolte : **OK** côté auteur.
+- Correctif Unity : **`CurrencyBalanceUI.cs.meta`** — GUID invalide (33 hex au lieu de 32) remplacé par un GUID valide.
+
+### Prochaine session (priorité immédiate) — enregistrée dans `Notes/Todo_project.md`
+1. **[P0-SHOP-POP-001]** — Créer une **branche Git** puis **polish du popup d’achat** shop (`ShopItemPopup` / `PopupId.ShopItemPurchase`), en suivant **`Notes/Ui/Todo_ui.md`** + **`popup_generique.md`** §3 (`CT-SHOP-002` … `CT-SHOP-006`).
+2. **[P0-FARM-SEED-INV-001]** — Vérifier le **lien graines plantation ↔ inventaire** (`SeedSelectionUI` / `SeedEntry` vs `PlayerInventory`) : disponibilité, cohérence des quantités, consommation au plant si prévu par le design.
+
+### Références
+- `Notes/Todo_project.md` § *Prochaine session (priorité immédiate)*
+
+---
+
 ## 2026-05-15 — [P0-HARV-001] Popup récolte mode strict
 
 ### Changements
@@ -10,8 +25,8 @@
 - [x] **`Notes/Ui/popup_generique.md`** §2.5 mis à jour (pipeline lazy, plus de live instance).
 
 ### Test play (auteur)
-- [ ] Clic plante occupée → popup récolte ; Close / récolte / arrachage ; pas de warning host.
-- [ ] Inventaire plein à la récolte → `FarmInventoryFeedback`.
+- [x] Clic plante occupée → popup récolte ; Close / récolte / arrachage ; pas de warning host.
+- [x] Inventaire plein à la récolte → `FarmInventoryFeedback`.
 
 ---
 
