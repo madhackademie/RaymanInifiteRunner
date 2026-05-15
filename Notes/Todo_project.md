@@ -36,7 +36,7 @@ Convention d'IDs :
 ## Prochaine session (priorité immédiate)
 
 ### FirstLvl — pipeline popup générique
-- [ ] [P0-POP-001] Migrer la popup **sélection des graines** vers le pipeline générique (`PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`).
+- [x] [P0-POP-001] Migrer la popup **sélection des graines** vers le pipeline générique (`PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`). **Fait** (2026-05-15) : entrée `PROJECT_LOG.md` + `Notes/Ui/popup_generique.md` §2.5.
 - [ ] [P0-POP-002] Migrer la popup **plante (info/état + récolte)** vers le pipeline générique (sans chemin concurrent caché).
 - [ ] [P0-POP-003] Scanner le projet pour les popups hors pipeline générique et produire un plan de migration priorisé.
 

@@ -12,8 +12,11 @@ using System.Collections.Generic;
 public class BiofiltreManager : MonoBehaviour
 {
     [Header("UI")]
-    [Tooltip("The seed selection panel prefab or scene reference.")]
+    [Tooltip("Instance scène SeedSelectionUI (catalogue graines + option live pour le pipeline popup).")]
     [SerializeField] private SeedSelectionUI seedSelectionUI;
+
+    [Tooltip("Hôte popups ferme (ScreenPopupHost, ex. sur LevelController dans FirstLvl).")]
+    [SerializeField] private ScreenPopupHost farmPopupHost;
 
     [Tooltip("Panel de récolte ouvert quand le joueur clique sur une plante mature.")]
     [SerializeField] private HarvestPanelUI harvestPanelUI;
@@ -50,6 +53,10 @@ public class BiofiltreManager : MonoBehaviour
     {
         // S'assure que les cellules existent avant restauration.
         visualizer.GenerateGrid();
+
+        RegisterFarmPopupBindingsIfPossible();
+        TryParentHarvestPanelUnderSeedRoot();
+
         // Recharge la ferme depuis JSON si disponible.
         TryLoadFarmState();
     }
@@ -70,13 +77,9 @@ public class BiofiltreManager : MonoBehaviour
 
         if (gridManager.IsCellFree(cell.GridCoordinates))
         {
-            // Cellule libre → sélection de graine
-            if (seedSelectionUI == null)
-            {
-                Debug.LogWarning("[BiofiltreManager] No SeedSelectionUI assigned.", this);
+            // Cellule libre → sélection de graine (pipeline générique)
+            if (!TryOpenFarmSeedSelection(cell))
                 return;
-            }
-            seedSelectionUI.Open(cell, this);
         }
         else
         {
@@ -377,6 +380,71 @@ public class BiofiltreManager : MonoBehaviour
         }
 
         FarmSaveService.Save(records);
+    }
+
+    private void RegisterFarmPopupBindingsIfPossible()
+    {
+        if (farmPopupHost == null)
+            farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
+
+        if (UIManager.Instance == null)
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] UIManager absent — impossible d'appliquer les bindings popups ferme.",
+                this);
+            return;
+        }
+
+        if (farmPopupHost == null)
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] ScreenPopupHost introuvable — bindings popups ferme non appliqués.",
+                this);
+            return;
+        }
+
+        UIManager.Instance.ApplyRuntimePopupBindingsToHost(
+            ScreenId.FirstLvlFarm,
+            farmPopupHost,
+            seedSelectionUI);
+    }
+
+    private void TryParentHarvestPanelUnderSeedRoot()
+    {
+        if (harvestPanelUI == null || seedSelectionUI == null)
+            return;
+
+        Transform seedRoot = seedSelectionUI.transform;
+        if (harvestPanelUI.transform.parent == seedRoot)
+            return;
+
+        harvestPanelUI.transform.SetParent(seedRoot, false);
+    }
+
+    private bool TryOpenFarmSeedSelection(BiofiltreCell cell)
+    {
+        if (farmPopupHost == null)
+            farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
+
+        if (farmPopupHost == null)
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] ScreenPopupHost introuvable. Placez un ScreenPopupHost (ex. sur LevelController).",
+                this);
+            return false;
+        }
+
+        if (!farmPopupHost.TryShowPopup(PopupId.FarmSeedSelection, out SeedSelectionUI ui))
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] Popup graines introuvable. Vérifiez UIManager.runtimePopupBindings " +
+                $"(screenId={ScreenId.FirstLvlFarm}, popupId={PopupId.FarmSeedSelection}).",
+                this);
+            return false;
+        }
+
+        ui.Open(cell, this);
+        return true;
     }
 
     private PlantDefinition ResolvePlantDefinition(string plantId)

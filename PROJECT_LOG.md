@@ -54,6 +54,20 @@
 
 ---
 
+## 2026-05-15 — FirstLvl : popup générique sélection de graine
+
+### Ce qu’on a fait
+- [x] **`PopupId.FarmSeedSelection`**, **`ScreenId.FirstLvlFarm`**, binding dans **`NavigationHUD.runtimePopupBindings`** (prefab `SeedSelectionUI`).
+- [x] **`ScreenPopupHost.RegisterRuntimePopupLiveInstance`** : instance scène enregistrée à la place du lazy prefab lorsque fournie.
+- [x] **`UIManager.ApplyRuntimePopupBindingsToHost`** : applique les bindings vers un host hors prefab écran UIManager (ferme FirstLvl).
+- [x] **`BiofiltreManager`** : ouverture graines via **`TryShowPopup`**, **`farmPopupHost`** sur **`LevelController`**, reparentage **`HarvestPanelUI`** sous la racine **`SeedSelectionUI`** au démarrage pour conserver le tri canvas.
+
+### Suite
+- [ ] Migrer **`HarvestPanelUI`** sur le même pipeline (`PopupId` dédié + binding + host).
+- [ ] Scan / migration des autres popups hors pipeline (feedback shop, etc.).
+
+---
+
 ## 2026-05-14 — base `main` + priorité popups FirstLvl
 
 ### Contexte

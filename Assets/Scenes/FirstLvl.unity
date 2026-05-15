@@ -250,6 +250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 189874613}
   - component: {fileID: 189874612}
+  - component: {fileID: 3011110001}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged
@@ -269,6 +270,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a332cdf9fd370a74e9de66170331a97f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FirstLvlController
+--- !u!114 &3011110001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189874611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2a9c7d4f5b64c10a3e98d2b7f1c6a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScreenPopupHost
+  defaultPopupRoot: {fileID: 0}
+  popupEntries: []
 --- !u!4 &189874613
 Transform:
   m_ObjectHideFlags: 0
@@ -818,6 +833,10 @@ PrefabInstance:
       propertyPath: seedSelectionUI
       value: 
       objectReference: {fileID: 360114971}
+    - target: {fileID: 8494675260759893494, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: farmPopupHost
+      value: 
+      objectReference: {fileID: 3011110001}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

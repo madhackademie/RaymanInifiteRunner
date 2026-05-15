@@ -346,6 +346,48 @@ public class UIManager : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Applique les <see cref="runtimePopupBindings"/> pour un <see cref="ScreenPopupHost"/>
+    /// hors prefab écran (ex. scène FirstLvl). Pour <see cref="PopupId.FarmSeedSelection"/>, une instance
+    /// scène peut remplacer l'instanciation lazy du prefab.
+    /// </summary>
+    public void ApplyRuntimePopupBindingsToHost(
+        string screenId,
+        ScreenPopupHost host,
+        SeedSelectionUI liveFarmSeedRoot = null)
+    {
+        if (host == null || string.IsNullOrEmpty(screenId))
+            return;
+
+        if (!HasPopupBindingForScreen(screenId))
+        {
+            Debug.LogWarning(
+                $"[UIManager] Aucun ScreenPopupBinding avec prefab pour screenId '{screenId}'. " +
+                "Ajoutez une entrée dans runtimePopupBindings (scène NavigationHUD).",
+                this);
+            return;
+        }
+
+        foreach (ScreenPopupBinding binding in runtimePopupBindings)
+        {
+            if (binding == null || binding.screenId != screenId)
+                continue;
+
+            if (binding.popupPrefab == null)
+            {
+                Debug.LogWarning(
+                    $"[UIManager] Binding popup '{binding.popupId}' sans prefab pour '{screenId}'.",
+                    this);
+                continue;
+            }
+
+            host.RegisterRuntimePopup(binding.popupId, binding.popupPrefab);
+
+            if (binding.popupId == PopupId.FarmSeedSelection && liveFarmSeedRoot != null)
+                host.RegisterRuntimePopupLiveInstance(binding.popupId, liveFarmSeedRoot.gameObject);
+        }
+    }
+
     private bool TryGetEntry(string screenId, out ScreenEntry entry)
     {
         if (registry.TryGetValue(screenId, out entry))

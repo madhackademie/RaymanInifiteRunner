@@ -5,4 +5,7 @@
 public static class PopupId
 {
     public const string ShopItemPurchase = "shop.item.purchase";
+
+    /// <summary>Choix de graine sur cellule libre (scène FirstLvl / ferme).</summary>
+    public const string FarmSeedSelection = "farm.seed.selection";
 }

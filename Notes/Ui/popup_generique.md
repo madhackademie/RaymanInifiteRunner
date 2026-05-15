@@ -56,6 +56,14 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 - Le popup d’achat item passe par **`ScreenPopupHost`** + **`ScreenPopupBinding`** + **`PopupId.ShopItemPurchase`** ; configuration dans **`UIManager.runtimePopupBindings`** (scène **`NavigationHUD`**, écran Shop).
 - **Mode strict** : pas de fallback legacy ; binding manquant → warning + pas d’ouverture (comportement attendu).
 
+### 2.5 Ferme FirstLvl — sélection de graine (binding + host)
+
+- **`ScreenId.FirstLvlFarm`** : clé logique pour les bindings **sans** prefab d’écran UIManager (scène gameplay séparée).
+- **`PopupId.FarmSeedSelection`** : identifiant du popup choix de graine.
+- **`UIManager.runtimePopupBindings`** (scène **`NavigationHUD`**) : entrée `screenId = FirstLvlFarm`, `popupId = farm.seed.selection`, `popupPrefab = SeedSelectionUI.prefab` (source de vérité catalogue + prefab de secours).
+- **`ScreenPopupHost`** sur **`LevelController`** dans **`FirstLvl`** : reçoit les bindings au **`Start`** de **`BiofiltreManager`** via **`UIManager.ApplyRuntimePopupBindingsToHost(..., liveFarmSeedRoot: SeedSelectionUI scène)`** — l’instance déjà posée dans la scène remplace l’instanciation lazy (évite de dupliquer les overrides Inspector / `PlantPlacementPreview`).
+- Ouverture au clic cellule libre : **`BiofiltreManager`** → **`farmPopupHost.TryShowPopup`** puis **`SeedSelectionUI.Open`**.
+
 *(Pour un nouvel écran : ajouter `PopupId`, une entrée de binding et résoudre via le host — voir `.cursor/rules/ui_popup_generic_runtime.mdc`.)*
 
 ---

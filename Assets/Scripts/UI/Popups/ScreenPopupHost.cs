@@ -15,6 +15,9 @@ public class ScreenPopupHost : MonoBehaviour
         public Transform parentOverride;
         public bool preloadOnAwake;
 
+        /// <summary>Instance scène déjà vivante (pas de Instantiate depuis prefab).</summary>
+        public bool useLiveInstance;
+
         [NonSerialized] public GameObject instance;
     }
 
@@ -40,6 +43,9 @@ public class ScreenPopupHost : MonoBehaviour
 
         if (popupRegistry.TryGetValue(popupId, out PopupEntry existing))
         {
+            if (existing.useLiveInstance && existing.instance != null)
+                return true;
+
             if (existing.instance != null && existing.popupPrefab != popupPrefab)
             {
                 Debug.LogWarning(
@@ -66,6 +72,53 @@ public class ScreenPopupHost : MonoBehaviour
 
         popupEntries.Add(entry);
         popupRegistry[popupId] = entry;
+        return true;
+    }
+
+    /// <summary>
+    /// Enregistre une instance déjà présente en scène (ex. UI ferme posée dans FirstLvl).
+    /// A la priorité sur un prefab du même identifiant si appelé avant toute instanciation.
+    /// </summary>
+    public bool RegisterRuntimePopupLiveInstance(string popupId, GameObject liveRoot, Transform parentOverride = null)
+    {
+        if (string.IsNullOrWhiteSpace(popupId) || liveRoot == null)
+            return false;
+
+        if (popupRegistry.TryGetValue(popupId, out PopupEntry existing))
+        {
+            if (existing.instance != null && existing.instance != liveRoot)
+            {
+                Debug.LogWarning(
+                    $"[ScreenPopupHost] Popup '{popupId}' deja enregistre avec une autre instance.",
+                    this);
+                return false;
+            }
+
+            if (existing.instance == liveRoot)
+                return true;
+
+            // Slot prefab sans instance : promouvoir l'instance scène (même identifiant).
+            existing.useLiveInstance = true;
+            existing.popupPrefab = null;
+            existing.instance = liveRoot;
+            if (parentOverride != null)
+                existing.parentOverride = parentOverride;
+
+            return true;
+        }
+
+        var entry = new PopupEntry
+        {
+            popupId = popupId,
+            popupPrefab = null,
+            parentOverride = parentOverride,
+            preloadOnAwake = false,
+            useLiveInstance = true,
+            instance = liveRoot
+        };
+
+        popupEntries.Add(entry);
+        popupRegistry.Add(popupId, entry);
         return true;
     }
 
@@ -166,6 +219,9 @@ public class ScreenPopupHost : MonoBehaviour
     private GameObject EnsureInstance(PopupEntry entry)
     {
         if (entry.instance != null)
+            return entry.instance;
+
+        if (entry.useLiveInstance)
             return entry.instance;
 
         if (entry.popupPrefab == null)
