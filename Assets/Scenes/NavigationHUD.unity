@@ -537,9 +537,18 @@ MonoBehaviour:
   - screenId: Shop
     popupId: shop.item.purchase
     popupPrefab: {fileID: 8190502661174207168, guid: 67c4733d4537b9c40b7e1ebdae85b0aa, type: 3}
+  - screenId: Shop
+    popupId: shop.resource.feedback
+    popupPrefab: {fileID: 8667043653346198443, guid: 72ca5fc0fce0fc74db56a4066de24fdb, type: 3}
   - screenId: FirstLvlFarm
     popupId: farm.seed.selection
     popupPrefab: {fileID: 1314203423932667239, guid: 483573e449ac17b4c8cce95e7729eb00, type: 3}
+  - screenId: FirstLvlFarm
+    popupId: farm.plant.harvest
+    popupPrefab: {fileID: 6970290879806310957, guid: a0561d2f41935514aba9d81923f4ff92, type: 3}
+  - screenId: FirstLvlFarm
+    popupId: farm.inventory.feedback
+    popupPrefab: {fileID: 8667043653346198443, guid: 72ca5fc0fce0fc74db56a4066de24fdb, type: 3}
 --- !u!1 &877250849
 GameObject:
   m_ObjectHideFlags: 0

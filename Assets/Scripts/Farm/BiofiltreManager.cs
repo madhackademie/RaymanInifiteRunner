@@ -102,12 +102,6 @@ public class BiofiltreManager : MonoBehaviour
             return;
         }
 
-        if (harvestPanelUI == null)
-        {
-            Debug.LogWarning("[BiofiltreManager] HarvestPanelUI non assigné.", this);
-            return;
-        }
-
         PlantGrow plantGrow = plantObj.GetComponent<PlantGrow>();
         PlantDefinitionHolder holder = plantObj.GetComponent<PlantDefinitionHolder>();
         PlantHarvestInteractor interactor = plantObj.GetComponent<PlantHarvestInteractor>();
@@ -118,7 +112,43 @@ public class BiofiltreManager : MonoBehaviour
             return;
         }
 
-        harvestPanelUI.Open(interactor, plantGrow, holder != null ? holder.Definition : null);
+        if (harvestPanelUI == null)
+        {
+            Debug.LogWarning("[BiofiltreManager] HarvestPanelUI non assigné — impossible d'ouvrir le popup récolte.", this);
+            return;
+        }
+
+        if (!TryOpenFarmPlantHarvestPopup(interactor, plantGrow, holder != null ? holder.Definition : null))
+            return;
+    }
+
+    private bool TryOpenFarmPlantHarvestPopup(
+        PlantHarvestInteractor interactor,
+        PlantGrow plantGrow,
+        PlantDefinition definition)
+    {
+        if (farmPopupHost == null)
+            farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
+
+        if (farmPopupHost == null)
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] ScreenPopupHost introuvable. Placez un ScreenPopupHost (ex. sur LevelController).",
+                this);
+            return false;
+        }
+
+        if (!farmPopupHost.TryShowPopup(PopupId.FarmPlantHarvest, out HarvestPanelUI panel))
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] Popup plante / récolte introuvable. Vérifiez UIManager.runtimePopupBindings " +
+                $"(screenId={ScreenId.FirstLvlFarm}, popupId={PopupId.FarmPlantHarvest}).",
+                this);
+            return false;
+        }
+
+        panel.Open(interactor, plantGrow, definition);
+        return true;
     }
 
     /// <summary>
@@ -276,6 +306,9 @@ public class BiofiltreManager : MonoBehaviour
             harvestInteractor.Initialise(gridManager, visualizer, cells);
             harvestInteractor.InjectHarvestPanel(harvestPanelUI);
             harvestInteractor.InjectInventory(itemDatabase);
+            if (farmPopupHost == null)
+                farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
+            harvestInteractor.InjectFarmPopupHost(farmPopupHost);
             harvestInteractor.SetOnPlantRemoved(SaveFarmState);
         }
 
@@ -406,7 +439,8 @@ public class BiofiltreManager : MonoBehaviour
         UIManager.Instance.ApplyRuntimePopupBindingsToHost(
             ScreenId.FirstLvlFarm,
             farmPopupHost,
-            seedSelectionUI);
+            seedSelectionUI,
+            harvestPanelUI);
     }
 
     private void TryParentHarvestPanelUnderSeedRoot()

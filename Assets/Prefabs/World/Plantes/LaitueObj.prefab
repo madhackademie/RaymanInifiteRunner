@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7563757053863171705, guid: da396c48ed420804c8c39bf1cd2a0fb5, type: 3}
+  m_Sprite: {fileID: 8997401980803306944, guid: de09412c8bb7a8b449a75c0217588b17, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -146,8 +146,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.60613215, y: 0.002351583}
-    oldSize: {x: 2.26, y: 4}
+    pivot: {x: 0.2621369, y: 0.003527467}
+    oldSize: {x: 2.05, y: 2.56}
     newSize: {x: 2.26, y: 4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -181,6 +181,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantHarvestInteractor
   itemDatabase: {fileID: 0}
-  feedbackUI: {fileID: 8979504109091075090, guid: de1d044d669e1b04fa6f1896c76f6368, type: 3}
   harvestPanelUI: {fileID: 0}
   harvestItemIdOverride: 

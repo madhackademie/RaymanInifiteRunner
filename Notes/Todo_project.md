@@ -37,8 +37,11 @@ Convention d'IDs :
 
 ### FirstLvl — pipeline popup générique
 - [x] [P0-POP-001] Migrer la popup **sélection des graines** vers le pipeline générique (`PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`). **Fait** (2026-05-15) : entrée `PROJECT_LOG.md` + `Notes/Ui/popup_generique.md` §2.5.
-- [ ] [P0-POP-002] Migrer la popup **plante (info/état + récolte)** vers le pipeline générique (sans chemin concurrent caché).
-- [ ] [P0-POP-003] Scanner le projet pour les popups hors pipeline générique et produire un plan de migration priorisé.
+- [x] [P0-POP-002] Migrer la popup **plante (info/état + récolte)** vers le pipeline générique (sans chemin concurrent caché). **Fait** (2026-05-15) : `PopupId.FarmPlantHarvest`, binding + `TryShowPopup` / `HarvestPanelUI.Open`, voir `PROJECT_LOG.md`.
+- [x] [P0-POP-004] Migrer le popup shop **feedback ressources** (`ResourceFeedbackPopupUI`) vers le pipeline générique (`PopupId.ShopResourceFeedback`, binding `NavigationHUD`, prefab sans enfant dans `ShopScreen`). **Fait** (2026-05-15).
+- [x] [P0-POP-005] Ferme : feedback **inventaire plein** à la récolte via **`PopupId.FarmInventoryFeedback`** + **`ResourceFeedbackPopup`** (`PlantHarvestInteractor` + binding `NavigationHUD`). **Fait** (2026-05-15) — **test play non encore validé en session**.
+- [ ] [P0-POP-006] **Test play FirstLvl** : inventaire plein → tenter une récolte (`HarvestPanelUI` **Récolter** et, si pertinent, clic direct **`ConfirmHarvest`**) → vérifier affichage **`ResourceFeedbackPopup`** via **`FarmInventoryFeedback`** (texte, auto-hide, pas de doublon UI, pas de warning console binding/host).
+- [ ] [P0-POP-003] **Review / audit transversal popups** : liste des **`PopupId`** vs **`UIManager.runtimePopupBindings`** ; grep chemins résiduels (instanciation modale hors **`ScreenPopupHost`**, `Resources.Load`+popup, anciens fallbacks) ; **verdict écrit** dans `PROJECT_LOG.md` ou note UI : chantier pipeline générique **clos** ou **backlog** priorisé pour la session suivante.
 
 ---
 

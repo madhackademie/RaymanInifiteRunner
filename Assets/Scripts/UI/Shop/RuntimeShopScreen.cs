@@ -30,11 +30,8 @@ public class RuntimeShopScreen : MonoBehaviour
     [Tooltip("Identifiant du popup a demander au ScreenPopupHost de l'ecran.")]
     [SerializeField] private string shopItemPopupId = PopupId.ShopItemPurchase;
 
-    [Tooltip("Popup generique pour les erreurs de ressources (fonds insuffisants, couts futurs, etc.).")]
-    [SerializeField] private ResourceFeedbackPopupUI resourceFeedbackPopup;
-
-    [Tooltip("Ancien feedback texte (fallback si ResourceFeedbackPopupUI n'est pas encore branche).")]
-    [SerializeField] private InventoryFeedbackUI feedbackUI;
+    [Tooltip("Identifiant du popup feedback ressources (monnaie, inventaire plein, etc.).")]
+    [SerializeField] private string shopResourceFeedbackPopupId = PopupId.ShopResourceFeedback;
 
     [Header("Source de donnees shop")]
     [Tooltip("Si assigne, ce catalogue ScriptableObject est utilise en priorite. Sinon fallback JSON prototype.")]
@@ -48,6 +45,7 @@ public class RuntimeShopScreen : MonoBehaviour
     private bool initialized;
     private Button hookedCloseButton;
     private ShopItemPopupController shopItemPopupInstance;
+    private ResourceFeedbackPopupUI resourceFeedbackPopupInstance;
     private ScreenPopupHost screenPopupHost;
     private bool shopPurchaseHandlerWired;
     private bool inventoryEventsSubscribed;
@@ -442,22 +440,21 @@ public class RuntimeShopScreen : MonoBehaviour
         return $"{currency.DisplayName} : {balance}";
     }
 
-    private InventoryFeedbackUI ResolveFeedbackUI()
-    {
-        if (feedbackUI != null)
-            return feedbackUI;
-
-        feedbackUI = GetComponentInChildren<InventoryFeedbackUI>(true);
-        return feedbackUI;
-    }
-
     private ResourceFeedbackPopupUI ResolveResourceFeedbackPopup()
     {
-        if (resourceFeedbackPopup != null)
-            return resourceFeedbackPopup;
+        if (resourceFeedbackPopupInstance != null)
+            return resourceFeedbackPopupInstance;
 
-        resourceFeedbackPopup = GetComponentInChildren<ResourceFeedbackPopupUI>(true);
-        return resourceFeedbackPopup;
+        ScreenPopupHost host = ResolvePopupHost();
+        if (host != null &&
+            host.HasPopup(shopResourceFeedbackPopupId) &&
+            host.TryGetPopup(shopResourceFeedbackPopupId, out ResourceFeedbackPopupUI fromHost))
+        {
+            resourceFeedbackPopupInstance = fromHost;
+            return resourceFeedbackPopupInstance;
+        }
+
+        return null;
     }
 
     private void ShowInsufficientResourcesFeedback()
@@ -469,7 +466,9 @@ public class RuntimeShopScreen : MonoBehaviour
             return;
         }
 
-        ResolveFeedbackUI()?.ShowInsufficientResources();
+        Debug.LogWarning(
+            "[RuntimeShopScreen] ResourceFeedbackPopup introuvable. " +
+            "Ajoutez un ScreenPopupBinding (Shop + PopupId.ShopResourceFeedback) sur UIManager.runtimePopupBindings (NavigationHUD).");
     }
 
     private void ShowFeedbackMessage(string message)
@@ -481,7 +480,9 @@ public class RuntimeShopScreen : MonoBehaviour
             return;
         }
 
-        ResolveFeedbackUI()?.ShowMessage(message);
+        Debug.LogWarning(
+            "[RuntimeShopScreen] ResourceFeedbackPopup introuvable - message non affiche: " + message +
+            ". Ajoutez un ScreenPopupBinding (Shop + PopupId.ShopResourceFeedback) sur UIManager.runtimePopupBindings (NavigationHUD).");
     }
 
     private void ResolveBindingsIfNeeded()

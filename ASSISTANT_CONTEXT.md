@@ -18,7 +18,7 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **FirstLvl — popups génériques (priorité immédiate, 2026-05-14)** : appliquer le même pipeline que le HUD shop (`PopupId`, `ScreenPopupBinding`, `ScreenPopupHost` / `UIManager`) pour (a) l’**UI de sélection des graines** en `FirstLvl`, (b) le **popup plante** (info / état + récolte) au clic ; puis **scanner** les autres popups hors pipeline et les migrer. Voir **`PROJECT_LOG.md` (2026-05-14)**, **`Notes/Todo_project.md`**, **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/popup_generique.md`**.
+1. **Popups génériques — clôture chantier (priorité immédiate, 2026-05-15)** : **test play** `PopupId.FarmInventoryFeedback` (inventaire plein à la récolte) ; **review transversale** de tous les `PopupId` + bindings + chemins résiduels ; verdict fin de tâche ou backlog — **`Notes/Todo_project.md`** ([P0-POP-006], [P0-POP-003]), **`PROJECT_LOG.md`** (2026-05-15, *Fin de session*), **`Notes/Ui/popup_generique.md`**.
 2. **Shop — polish uniquement** : UI/UX, saisie quantité, **Max**, confirmation avant paiement — **`Notes/Ui/Todo_ui.md`**, **`Notes/Ui/popup_generique.md`** §3 (monnaie + popup item + binding shop **déjà faits sur `main`**).
 3. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
 4. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
@@ -37,9 +37,8 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-14** :
-  - **FirstLvl** : popups génériques pour **sélection graines** + **popup plante** (info / récolte) ; **scan** des autres popups à migrer.
-  - Puis (sans changer l’ordre métier shop) : polish shop **UI/UX**, **saisie quantité**, **Max**, **confirmation** — déjà hors « priorité immédiate » tant que FirstLvl n’est pas traité.
+- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-15** :
+  - **Test play** `FarmInventoryFeedback` + **review transversale** des popups ([P0-POP-006], [P0-POP-003] dans **`Notes/Todo_project.md`**) pour conclure le chantier pipeline générique ou cadrer le backlog.
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :
@@ -49,7 +48,7 @@
 - `Assets/Scripts/Systems/SceneNavigator.cs` — visibilité des scènes de contenu (`ShowScene`, lazy optionnel)
 - `Notes/Ui/LOADINGSCREEN_image_workflow.md` — art + intégration écran de chargement
 - `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md` — navigation scènes, sync/async, HUD global
-- `PROJECT_LOG.md` (dernière entrée **2026-05-14** — `main` + priorité popups FirstLvl)
+- `PROJECT_LOG.md` (entrées **2026-05-15** — popups FirstLvl / shop / ferme + *Fin de session*)
 - `Docs/PLANTES_ET_INVENTAIRE.md` — `harvestItemId` / `itemId`, checklist nouvelle plante
 - `Notes/Todo_project.md`
 - `Notes/GUIDE_suivi_projet.md` — mode d’emploi suivi (source unique + IDs)

@@ -54,17 +54,44 @@
 
 ---
 
-## 2026-05-15 — FirstLvl : popup générique sélection de graine
+## 2026-05-15 — FirstLvl : popups génériques graines + plante / récolte
 
 ### Ce qu’on a fait
 - [x] **`PopupId.FarmSeedSelection`**, **`ScreenId.FirstLvlFarm`**, binding dans **`NavigationHUD.runtimePopupBindings`** (prefab `SeedSelectionUI`).
+- [x] **`PopupId.FarmPlantHarvest`**, binding **`farm.plant.harvest`** (même asset prefab que la ligne graines uniquement pour remplir le champ Inspector ; **instance scène** utilisée via `RegisterRuntimePopupLiveInstance` — voir `Notes/Ui/popup_generique.md` §2.5).
 - [x] **`ScreenPopupHost.RegisterRuntimePopupLiveInstance`** : instance scène enregistrée à la place du lazy prefab lorsque fournie.
-- [x] **`UIManager.ApplyRuntimePopupBindingsToHost`** : applique les bindings vers un host hors prefab écran UIManager (ferme FirstLvl).
-- [x] **`BiofiltreManager`** : ouverture graines via **`TryShowPopup`**, **`farmPopupHost`** sur **`LevelController`**, reparentage **`HarvestPanelUI`** sous la racine **`SeedSelectionUI`** au démarrage pour conserver le tri canvas.
+- [x] **`UIManager.ApplyRuntimePopupBindingsToHost`** : support **`HarvestPanelUI`** live ; branche **`FarmPlantHarvest`** sans instancier le prefab du binding lorsque l’instance scène est fournie.
+- [x] **`BiofiltreManager`** : ouverture graines via **`TryShowPopup`** + **`SeedSelectionUI.Open`** ; ouverture popup plante via **`TryShowPopup`** + **`HarvestPanelUI.Open`** ; reparentage **`HarvestPanelUI`** sous **`SeedSelectionUI`** au démarrage pour le tri canvas.
+- [x] **`PlantHarvestInteractor.TryHarvest`** : passe par le host **`TryShowPopup`** lorsque disponible (cohérence avec le pipeline).
 
 ### Suite
-- [ ] Migrer **`HarvestPanelUI`** sur le même pipeline (`PopupId` dédié + binding + host).
-- [ ] Scan / migration des autres popups hors pipeline (feedback shop, etc.).
+- [ ] [P0-POP-006] puis [P0-POP-003] : voir **`Notes/Todo_project.md`** *Prochaine session* (test `FarmInventoryFeedback` + review transversale popups).
+
+---
+
+### Ferme — inventaire plein à la récolte (`ResourceFeedbackPopupUI`)
+
+- [x] **`PopupId.FarmInventoryFeedback`** + binding **`FirstLvlFarm`** dans **`NavigationHUD.runtimePopupBindings`** (prefab **`ResourceFeedbackPopup`**, instance lazy sous le host ferme).
+- [x] **`PlantHarvestInteractor`** : **`ShowInventoryFullFeedback`** via **`ScreenPopupHost.TryGetPopup`** ; injection **`InjectFarmPopupHost`** depuis **`BiofiltreManager.PlantSeedAt`** (plus de **`InventoryFeedbackUI`** sur l’interacteur).
+- [x] **`LaitueObj.prefab`** : retrait de la référence **`feedbackUI`**.
+
+---
+
+### Shop — feedback ressources (`ResourceFeedbackPopupUI`)
+
+- [x] **`PopupId.ShopResourceFeedback`** + binding **`NavigationHUD.runtimePopupBindings`** (Shop + prefab `ResourceFeedbackPopup`).
+- [x] **`RuntimeShopScreen`** : résolution via **`ScreenPopupHost.TryGetPopup`** (cache) ; suppression fallback **`InventoryFeedbackUI`** / enfant embarqué.
+- [x] **`ShopScreen.prefab`** : retrait de l’instance nested **`ResourceFeedbackPopup`** (évite doublon avec instanciation host).
+
+### Fin de session — suivi (demande auteur, règle `project_management_session_protocol`)
+
+**Objectifs rappelés** : poursuivre la migration des popups vers **`PopupId`** + **`ScreenPopupBinding`** + **`ScreenPopupHost`** ; traiter le feedback inventaire plein ferme.
+
+**Décisions / état** : migrations code + bindings **`NavigationHUD`** documentées dans les sous-sections ci-dessus et dans **`Notes/Ui/popup_generique.md`**.
+
+**Prochaines étapes (priorité prochaine session)** — voir aussi **`Notes/Todo_project.md`** §*Prochaine session* :
+1. **Test manuel** : `PopupId.FarmInventoryFeedback` — inventaire plein, récolte depuis **`HarvestPanelUI`** ou **`ConfirmHarvest`**, vérifier message **`ResourceFeedbackPopup`**, tri canvas, pas de warning binding.
+2. **Review transversale** : recenser tous les **`PopupId`**, valider chaque entrée **`runtimePopupBindings`**, grep chemins résiduels (instanciation directe de modales, popups hors host) ; **verdict** : clôturer le chantier P0 popups ou lister le backlog restant (ex. inventaire runtime).
 
 ---
 

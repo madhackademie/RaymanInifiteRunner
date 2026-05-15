@@ -44,7 +44,7 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 - **`PlayerInventory`** n’est utilisé que pour **résoudre** `ItemDatabase` si aucune base n’a été injectée à l’`Initialize` (`TryResolveDatabaseFromPlayer`).
 - Le clic sur une offre ouvre une popup détail / achat (`ShopItemPopupController`) avec quantité **+** / **−** et prix total dynamique.
 - L’achat passe par `InventoryCurrencyAccount.TryPurchase(...)` : vérification du solde `ItemDatabase.PrimaryCurrency`, débit monnaie, `PlayerInventory.TryAdd(...)`, puis remboursement si l’ajout échoue après débit.
-- Le manque de fonds est bloqué avant achat et remonte un popup générique via `ResourceFeedbackPopupUI.ShowInsufficientResources()` ; `InventoryFeedbackUI` reste en fallback texte si le prefab n’est pas branché.
+- Le manque de fonds est bloqué avant achat et remonte le popup **`ResourceFeedbackPopupUI`** via **`ScreenPopupHost`** + **`PopupId.ShopResourceFeedback`** (binding **`UIManager.runtimePopupBindings`**, scène **`NavigationHUD`**) ; pas de fallback texte legacy côté shop.
 
 ### 2.3 Préfab / Inspector
 
@@ -54,15 +54,30 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 ### 2.4 Popups Shop — mode générique strict
 
 - Le popup d’achat item passe par **`ScreenPopupHost`** + **`ScreenPopupBinding`** + **`PopupId.ShopItemPurchase`** ; configuration dans **`UIManager.runtimePopupBindings`** (scène **`NavigationHUD`**, écran Shop).
+- Le popup **feedback ressources** (fonds insuffisants, monnaie non configurée, inventaire plein, etc.) passe par le même host + **`PopupId.ShopResourceFeedback`** + prefab **`ResourceFeedbackPopup`** (même liste de bindings ; pas d’instance embarquée dans **`ShopScreen`**).
 - **Mode strict** : pas de fallback legacy ; binding manquant → warning + pas d’ouverture (comportement attendu).
 
-### 2.5 Ferme FirstLvl — sélection de graine (binding + host)
+### 2.5 Ferme FirstLvl — sélection de graine + popup plante (binding + host)
 
 - **`ScreenId.FirstLvlFarm`** : clé logique pour les bindings **sans** prefab d’écran UIManager (scène gameplay séparée).
 - **`PopupId.FarmSeedSelection`** : identifiant du popup choix de graine.
-- **`UIManager.runtimePopupBindings`** (scène **`NavigationHUD`**) : entrée `screenId = FirstLvlFarm`, `popupId = farm.seed.selection`, `popupPrefab = SeedSelectionUI.prefab` (source de vérité catalogue + prefab de secours).
-- **`ScreenPopupHost`** sur **`LevelController`** dans **`FirstLvl`** : reçoit les bindings au **`Start`** de **`BiofiltreManager`** via **`UIManager.ApplyRuntimePopupBindingsToHost(..., liveFarmSeedRoot: SeedSelectionUI scène)`** — l’instance déjà posée dans la scène remplace l’instanciation lazy (évite de dupliquer les overrides Inspector / `PlantPlacementPreview`).
-- Ouverture au clic cellule libre : **`BiofiltreManager`** → **`farmPopupHost.TryShowPopup`** puis **`SeedSelectionUI.Open`**.
+- **`PopupId.FarmPlantHarvest`** : identifiant du popup **info plante / récolte / arrachage** (`HarvestPanelUI`).
+- **`PopupId.FarmInventoryFeedback`** : message court quand le sac ne peut pas absorber la récolte (prefab **`ResourceFeedbackPopup`**, lazy sous le host ferme).
+- **`UIManager.runtimePopupBindings`** (scène **`NavigationHUD`**) :
+  - `farm.seed.selection` → prefab **`SeedSelectionUI`** (catalogue + secours lazy) ;
+  - `farm.plant.harvest` → le champ **`popupPrefab`** pointe sur le **même asset** que la ligne graines **uniquement** pour satisfaire l’Inspector (non instancié pour cet id tant que l’instance scène est fournie) ; l’UI réelle est l’instance **`HarvestPanelUI`** posée dans **`FirstLvl`** ;
+  - `farm.inventory.feedback` → prefab **`ResourceFeedbackPopup`** (instanciation lazy par le host ; distinct du binding shop).
+- **`ScreenPopupHost`** sur **`LevelController`** dans **`FirstLvl`** : reçoit les bindings au **`Start`** de **`BiofiltreManager`** via **`UIManager.ApplyRuntimePopupBindingsToHost(..., liveFarmSeedRoot, liveFarmHarvestPanel)`** — les instances scène remplacent l’instanciation lazy pour graines et panneau récolte.
+- Ouverture : **`BiofiltreManager`** → **`farmPopupHost.TryShowPopup`** puis **`SeedSelectionUI.Open`** ou **`HarvestPanelUI.Open`** ; **`PlantHarvestInteractor.TryHarvest`** utilise le même host si présent ; **`InventoryResult.Full`** à la récolte → **`ResourceFeedbackPopupUI.ShowMessage`** via **`FarmInventoryFeedback`** (host injecté sur la plante à l’instanciation).
+
+#### Pourquoi ce n’est pas le pipeline « 100 % » comme le Shop (strict)
+
+- **Shop** : écran instancié par **`UIManager`** (`ScreenEntry`) + **`ScreenPopupHost`** sous cet écran ; le **`popupPrefab`** du binding est **toujours** la source d’instanciation lazy du popup item (mode strict documenté §2.4).
+- **Ferme FirstLvl** : la scène gameplay **n’est pas** un écran `UIManager` ; le **`ScreenPopupHost`** vit sur **`LevelController`**. Pour **graines** et **récolte**, on enregistre souvent une **instance scène déjà posée** via **`RegisterRuntimePopupLiveInstance`** : l’ouverture passe bien par **`PopupId`** + **`ScreenPopupHost.TryShowPopup`**, mais le **prefab listé dans `runtimePopupBindings`** peut être un **placeholder** (ex. même asset que les graines pour `farm.plant.harvest`) ou ne **pas** être celui qui est réellement affiché tant que la live instance est fournie.
+- **`HarvestPanelUI.Open(...)`** reste appelé **après** le host (comme une vue) : ce n’est pas « tout le comportement » encapsulé dans un prefab unique lazy-géré comme le shop item.
+- **Chemin secondaire** : **`PlantHarvestInteractor.TryHarvest`** peut résoudre le host via **`FindFirstObjectByType`** si besoin — ce n’est pas le même niveau de câblage statique que **`RuntimeShopScreen`** + host parent garanti.
+
+**Objectif de l’état actuel** : même **discipline** (identifiant stable, binding dans **`NavigationHUD`**, ouverture via host, pas d’instanciation dispersée ailleurs) sans exiger encore une **duplication UI** uniquement prefab pour la ferme. **Pour viser 100 % aligné shop** : prefab **`HarvestPanel`** (ou équivalent) **réel** dans le binding, instance scène retirée, **`harvestPanelUI`** résolu uniquement depuis l’instance créée par le host + cache pour **`InjectHarvestPanel`**.
 
 *(Pour un nouvel écran : ajouter `PopupId`, une entrée de binding et résoudre via le host — voir `.cursor/rules/ui_popup_generic_runtime.mdc`.)*
 
@@ -121,7 +136,7 @@ Les points ci-dessous complètent le **§3** (flux achat) et l’intention **§1
 - `Assets/Scripts/Inventory/InventoryCurrencyAccount.cs` — solde, crédit, débit et achat atomique.
 - `Assets/Scripts/Inventory/ItemDatabase.cs` — `PrimaryCurrency`.
 - `Assets/Scripts/UI/ResourceFeedbackPopupUI.cs` — popup générique de feedback ressources insuffisantes, réutilisable hors shop.
-- `Assets/Scripts/UI/Inventory/InventoryFeedbackUI.cs` — ancien feedback texte / fallback inventaire.
+- `Assets/Scripts/UI/Inventory/InventoryFeedbackUI.cs` — feedback texte sur l’écran inventaire runtime (`InventoryScreen`) ; plus utilisé sur **`PlantHarvestInteractor`** (ferme → **`PopupId.FarmInventoryFeedback`**).
 - `Assets/Scripts/Market/MarketCatalogPrototype.cs` — chargement / résolution JSON.
 - `Assets/Resources/Market/market_catalog.json` — données offres prototype.
 - `Assets/Scripts/Systems/UIManager.cs` — prefabs runtime shop et bindings.

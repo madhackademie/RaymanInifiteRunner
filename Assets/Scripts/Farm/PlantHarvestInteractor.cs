@@ -11,9 +11,10 @@ using System;
 [RequireComponent(typeof(Collider2D))]
 public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 {
+    private const string InventoryFullFeedbackMessage = "Inventaire plein !";
+
     [Header("Dependencies")]
     [SerializeField] private ItemDatabase itemDatabase;
-    [SerializeField] private InventoryFeedbackUI feedbackUI;
     [SerializeField] private HarvestPanelUI harvestPanelUI;
 
     [Header("Harvest")]
@@ -22,6 +23,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
     private PlantGrow plantGrow;
     private PlantDefinition cachedDefinition;
+    private ScreenPopupHost injectedFarmPopupHost;
 
     // Contexte grille — fourni par BiofiltreManager après instantiation.
     private GridManager gridManager;
@@ -64,6 +66,14 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
+    /// Hôte des popups ferme (même que <see cref="BiofiltreManager"/>). Évite un Find répété si injecté.
+    /// </summary>
+    public void InjectFarmPopupHost(ScreenPopupHost host)
+    {
+        injectedFarmPopupHost = host;
+    }
+
+    /// <summary>
     /// Callback notifiee apres suppression de la plante (recolte/arrache).
     /// </summary>
     public void SetOnPlantRemoved(Action callback)
@@ -90,6 +100,14 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     public void TryHarvest()
     {
         PlantDefinition definition = ResolveDefinition();
+
+        ScreenPopupHost popupHost = FindFirstObjectByType<ScreenPopupHost>();
+        if (popupHost != null &&
+            popupHost.TryShowPopup(PopupId.FarmPlantHarvest, out HarvestPanelUI hostPanel))
+        {
+            hostPanel.Open(this, plantGrow, definition);
+            return;
+        }
 
         if (harvestPanelUI != null)
         {
@@ -154,7 +172,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
             case InventoryResult.Full:
                 Debug.Log($"[PlantHarvestInteractor] Inventaire plein — '{item.DisplayName}' non ajouté.");
-                feedbackUI?.ShowInventoryFull();
+                ShowInventoryFullFeedback();
                 break;
 
             case InventoryResult.InvalidItem:
@@ -254,5 +272,26 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
             Debug.LogWarning($"[PlantHarvestInteractor] ItemId '{itemId}' introuvable dans l'ItemDatabase.", this);
 
         return item;
+    }
+
+    private void ShowInventoryFullFeedback()
+    {
+        ScreenPopupHost host = injectedFarmPopupHost;
+        if (host == null)
+            host = FindFirstObjectByType<ScreenPopupHost>();
+
+        if (host != null &&
+            host.HasPopup(PopupId.FarmInventoryFeedback) &&
+            host.TryGetPopup(PopupId.FarmInventoryFeedback, out ResourceFeedbackPopupUI popup))
+        {
+            popup.ShowMessage(InventoryFullFeedbackMessage);
+            return;
+        }
+
+        Debug.LogWarning(
+            "[PlantHarvestInteractor] Popup inventaire plein introuvable. " +
+            "Ajoutez un ScreenPopupBinding (FirstLvlFarm + PopupId.FarmInventoryFeedback + prefab ResourceFeedbackPopup) " +
+            "dans UIManager.runtimePopupBindings (NavigationHUD).",
+            this);
     }
 }
