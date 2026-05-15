@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 
@@ -11,15 +12,17 @@ using System.Collections.Generic;
 [RequireComponent(typeof(GridManager))]
 public class BiofiltreManager : MonoBehaviour
 {
-    [Header("UI")]
-    [Tooltip("Instance scène SeedSelectionUI (catalogue graines + option live pour le pipeline popup).")]
-    [SerializeField] private SeedSelectionUI seedSelectionUI;
+    private const int FarmPopupCanvasSortOrder = 10;
 
+    [Header("UI")]
     [Tooltip("Hôte popups ferme (ScreenPopupHost, ex. sur LevelController dans FirstLvl).")]
     [SerializeField] private ScreenPopupHost farmPopupHost;
 
-    [Tooltip("Panel de récolte ouvert quand le joueur clique sur une plante mature.")]
-    [SerializeField] private HarvestPanelUI harvestPanelUI;
+    [Tooltip("Parent RectTransform des popups lazy (optionnel — sinon FarmUICanvas créé sous le host).")]
+    [SerializeField] private RectTransform farmPopupRoot;
+
+    [Tooltip("Preview de placement injecté dans SeedSelectionUI à l'instanciation.")]
+    [SerializeField] private PlantPlacementPreview placementPreview;
 
     [Header("Harvest")]
     [Tooltip("Base de données d'items pour résoudre les récoltes. Injectée dans chaque PlantHarvestInteractor.")]
@@ -32,11 +35,16 @@ public class BiofiltreManager : MonoBehaviour
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
     private bool hasLoadedFromSave;
+    private SeedSelectionUI cachedSeedSelectionUi;
+    private bool suppressGridCellUiThisFrame;
 
     private void Awake()
     {
         visualizer  = GetComponent<BiofiltreGridVisualizer>();
         gridManager = GetComponent<GridManager>();
+
+        if (placementPreview == null)
+            placementPreview = GetComponent<PlantPlacementPreview>();
     }
 
     private void OnEnable()
@@ -51,47 +59,73 @@ public class BiofiltreManager : MonoBehaviour
 
     private void Start()
     {
-        // S'assure que les cellules existent avant restauration.
         visualizer.GenerateGrid();
 
         RegisterFarmPopupBindingsIfPossible();
-        TryParentHarvestPanelUnderSeedRoot();
+        WarmUpSeedSelectionPopup();
 
-        // Recharge la ferme depuis JSON si disponible.
         TryLoadFarmState();
     }
 
     private void OnApplicationQuit()
     {
-        // Filet de securite de fin de session.
         SaveFarmState();
+    }
+
+    private void LateUpdate()
+    {
+        suppressGridCellUiThisFrame = false;
     }
 
     // ── Cell click ────────────────────────────────────────────────────────────
 
-    private void HandleCellClicked(BiofiltreCell cell)
+    /// <summary>
+    /// Appelé par <see cref="PlantPlacementPreview"/> quand un clic souris est consommé
+    /// (placement, annulation) pour éviter que le même clic rouvre le popup graines.
+    /// </summary>
+    public void SuppressGridCellUiThisFrame()
     {
-        // A placement preview is already running — let it handle all clicks.
-        if (seedSelectionUI != null && seedSelectionUI.IsPreviewActive)
-            return;
-
-        if (gridManager.IsCellFree(cell.GridCoordinates))
-        {
-            // Cellule libre → sélection de graine (pipeline générique)
-            if (!TryOpenFarmSeedSelection(cell))
-                return;
-        }
-        else
-        {
-            // Cellule occupée → ouvrir le popup d'info plante
-            TryOpenPlantPopup(cell.GridCoordinates);
-        }
+        suppressGridCellUiThisFrame = true;
     }
 
-    /// <summary>
-    /// Ouvre le popup d'info pour la plante occupant la cellule cliquée.
-    /// Lookup O(1) via le registre de GridManager — aucune recherche spatiale.
-    /// </summary>
+    /// <summary>True tant que le fantôme de placement suit la souris.</summary>
+    public bool IsPlantPlacementPreviewActive =>
+        placementPreview != null && placementPreview.enabled;
+
+    private bool ShouldBlockGridCellUi =>
+        suppressGridCellUiThisFrame || IsPlantPlacementPreviewActive;
+
+    private void HandleCellClicked(BiofiltreCell cell)
+    {
+        if (ShouldBlockGridCellUi)
+        {
+            HideFarmSeedSelectionPopup();
+            return;
+        }
+
+        if (gridManager.IsCellFree(cell.GridCoordinates))
+            TryOpenFarmSeedSelection(cell);
+        else
+            TryOpenPlantPopup(cell.GridCoordinates);
+    }
+
+    /// <summary>Ferme le popup graines (panneau + instance lazy host).</summary>
+    public void HideFarmSeedSelectionPopup()
+    {
+        if (TryResolveSeedSelectionUI(out SeedSelectionUI ui))
+            ui.Close();
+
+        ScreenPopupHost host = ResolveFarmPopupHost();
+        if (host != null)
+            host.TryHidePopup(PopupId.FarmSeedSelection);
+    }
+
+    /// <summary>Cache le popup graines au démarrage du mode preview.</summary>
+    internal void OnPlacementPreviewStarted()
+    {
+        HideFarmSeedSelectionPopup();
+    }
+
     private void TryOpenPlantPopup(Vector2Int coords)
     {
         GameObject plantObj = gridManager.GetPlantAt(coords);
@@ -112,14 +146,7 @@ public class BiofiltreManager : MonoBehaviour
             return;
         }
 
-        if (harvestPanelUI == null)
-        {
-            Debug.LogWarning("[BiofiltreManager] HarvestPanelUI non assigné — impossible d'ouvrir le popup récolte.", this);
-            return;
-        }
-
-        if (!TryOpenFarmPlantHarvestPopup(interactor, plantGrow, holder != null ? holder.Definition : null))
-            return;
+        TryOpenFarmPlantHarvestPopup(interactor, plantGrow, holder != null ? holder.Definition : null);
     }
 
     private bool TryOpenFarmPlantHarvestPopup(
@@ -127,18 +154,11 @@ public class BiofiltreManager : MonoBehaviour
         PlantGrow plantGrow,
         PlantDefinition definition)
     {
-        if (farmPopupHost == null)
-            farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
-
-        if (farmPopupHost == null)
-        {
-            Debug.LogWarning(
-                "[BiofiltreManager] ScreenPopupHost introuvable. Placez un ScreenPopupHost (ex. sur LevelController).",
-                this);
+        ScreenPopupHost host = ResolveFarmPopupHost();
+        if (host == null)
             return false;
-        }
 
-        if (!farmPopupHost.TryShowPopup(PopupId.FarmPlantHarvest, out HarvestPanelUI panel))
+        if (!host.TryShowPopup(PopupId.FarmPlantHarvest, out HarvestPanelUI panel))
         {
             Debug.LogWarning(
                 "[BiofiltreManager] Popup plante / récolte introuvable. Vérifiez UIManager.runtimePopupBindings " +
@@ -151,107 +171,23 @@ public class BiofiltreManager : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// Variante historique : recherche spatiale d'un <see cref="PlantHarvestInteractor"/> puis <see cref="PlantHarvestInteractor.TryHarvest"/>.
-    /// Le flux actuel du clic grille passe par <see cref="TryOpenPlantPopup"/> (lookup par coordonnées via la grille).
-    /// Conserver uniquement si un scénario futur réutilise cette recherche ; sinon candidat à suppression lors du nettoyage.
-    /// </summary>
-    private void TryOpenHarvestPanel(Vector2Int coords)
-    {
-        // On cherche la plante dans le container des plantes par position de cellule
-        Vector2 worldCenter = gridManager.GridToWorldCenter(coords);
-
-        PlantHarvestInteractor interactor = FindInteractorAt(worldCenter);
-
-        if (interactor == null)
-        {
-            Debug.Log($"[BiofiltreManager] Aucun PlantHarvestInteractor trouvé à la cellule {coords}.");
-            return;
-        }
-
-        interactor.TryHarvest();
-    }
-
-    /// <summary>
-    /// Utilisé uniquement par <see cref="TryOpenHarvestPanel"/> (non branché sur le clic grille actuel).
-    /// </summary>
-    private PlantHarvestInteractor FindInteractorAt(Vector2 worldCenter)
-    {
-        const float SearchRadius = 0.1f;
-
-        PlantHarvestInteractor closest  = null;
-        float                  minDist  = float.MaxValue;
-
-        foreach (Transform child in visualizer.PlantsContainer)
-        {
-            float dist = Vector2.Distance(child.position, worldCenter);
-
-            if (dist < SearchRadius && dist < minDist)
-            {
-                if (child.TryGetComponent(out PlantHarvestInteractor interactor))
-                {
-                    closest = interactor;
-                    minDist = dist;
-                }
-            }
-        }
-
-        // Fallback : on cherche par footprint (plantes multi-cellules)
-        if (closest == null)
-        {
-            foreach (Transform child in visualizer.PlantsContainer)
-            {
-                if (!child.TryGetComponent(out PlantHarvestInteractor interactor))
-                    continue;
-
-                if (!child.TryGetComponent(out PlantDefinitionHolder holder) || holder.Definition == null)
-                    continue;
-
-                Vector2Int anchor = gridManager.WorldToGrid(child.position);
-                foreach (Vector2Int cell in holder.Definition.GetOccupiedCells(anchor))
-                {
-                    if (cell == gridManager.WorldToGrid(worldCenter))
-                    {
-                        closest = interactor;
-                        break;
-                    }
-                }
-
-                if (closest != null)
-                    break;
-            }
-        }
-
-        return closest;
-    }
-
     // ── Footprint query (called by SeedSelectionUI) ───────────────────────────
 
-    /// <summary>
-    /// Returns true if every cell of the plant's footprint is free at the given anchor.
-    /// Used by the UI to enable or disable seed slots before the player selects one.
-    /// </summary>
     public bool CanPlace(Vector2Int anchor, PlantDefinition plantDefinition)
     {
-        if (plantDefinition == null) return false;
+        if (plantDefinition == null)
+            return false;
+
         return gridManager.AreAllCellsFree(plantDefinition.GetOccupiedCells(anchor));
     }
 
     // ── Plant placement ───────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Plants the given definition on the target cell.
-    /// Called by <see cref="SeedSelectionUI"/> after the player selects a seed (legacy direct path).
-    /// </summary>
     public void PlantSeed(BiofiltreCell cell, PlantDefinition plantDefinition, GameObject plantPrefab)
     {
         PlantSeedAt(cell.GridCoordinates, plantDefinition, plantPrefab);
     }
 
-    /// <summary>
-    /// Plants the given definition at the specified grid anchor.
-    /// Called by <see cref="PlantPlacementPreview"/> after the player confirms placement.
-    /// </summary>
     public void PlantSeedAt(Vector2Int anchor, PlantDefinition plantDefinition, GameObject plantPrefab)
     {
         PlantSeedAt(anchor, plantDefinition, plantPrefab, saveAfterPlacement: true);
@@ -265,7 +201,6 @@ public class BiofiltreManager : MonoBehaviour
             return;
         }
 
-        // Verify the footprint is still free (multi-cell plants)
         foreach (Vector2Int occupied in plantDefinition.GetOccupiedCells(anchor))
         {
             if (!gridManager.IsCellFree(occupied))
@@ -275,7 +210,6 @@ public class BiofiltreManager : MonoBehaviour
             }
         }
 
-        // Instantiate under Plants container
         Vector2 worldCenter   = gridManager.GridToWorldCenter(anchor);
         Vector2 spawnPosition = worldCenter + plantDefinition.spriteWorldOffset;
         GameObject instance   = Instantiate(
@@ -286,11 +220,9 @@ public class BiofiltreManager : MonoBehaviour
         );
         instance.name = $"{plantDefinition.displayName}_{anchor}";
 
-        // Initialize PlantGrow to Graine stage
         if (instance.TryGetComponent(out PlantGrow plantGrow))
             plantGrow.SetStage(PlantGrow.GrowthStage.Graine);
 
-        // Provide PlantDefinition to optional harvest interactor
         if (instance.TryGetComponent(out PlantDefinitionHolder holder))
             holder.Initialise(plantDefinition);
 
@@ -299,25 +231,19 @@ public class BiofiltreManager : MonoBehaviour
         else
             instance.AddComponent<PlantPersistenceMarker>().Initialise(plantDefinition.plantId, anchor);
 
-        // Fournir le contexte grille et le panel de récolte à l'interacteur
         if (instance.TryGetComponent(out PlantHarvestInteractor harvestInteractor))
         {
             Vector2Int[] cells = System.Linq.Enumerable.ToArray(plantDefinition.GetOccupiedCells(anchor));
             harvestInteractor.Initialise(gridManager, visualizer, cells);
-            harvestInteractor.InjectHarvestPanel(harvestPanelUI);
             harvestInteractor.InjectInventory(itemDatabase);
-            if (farmPopupHost == null)
-                farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
-            harvestInteractor.InjectFarmPopupHost(farmPopupHost);
+            harvestInteractor.InjectFarmPopupHost(ResolveFarmPopupHost());
             harvestInteractor.SetOnPlantRemoved(SaveFarmState);
         }
 
-        // Mark cells occupied in GridData + plant registry
         Vector2Int[] footprintCells = System.Linq.Enumerable.ToArray(plantDefinition.GetOccupiedCells(anchor));
         gridManager.OccupyCells(footprintCells);
         gridManager.RegisterPlant(footprintCells, instance);
 
-        // Update visual states of affected cells
         foreach (Vector2Int coords in plantDefinition.GetOccupiedCells(anchor))
         {
             BiofiltreCell affectedCell = visualizer.GetCell(coords);
@@ -340,8 +266,14 @@ public class BiofiltreManager : MonoBehaviour
         if (!FarmSaveService.TryLoad(out FarmSaveService.FarmSaveData saveData) || saveData.plants == null)
             return;
 
-        // Nettoyage complet puis reconstruction depuis le JSON.
-        // Important: on repart d'un etat vide pour eviter des doublons runtime.
+        if (!TryResolveSeedSelectionUI(out SeedSelectionUI seedCatalog))
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] Catalogue graines indisponible — sauvegarde ferme non restaurée.",
+                this);
+            return;
+        }
+
         foreach (Transform child in visualizer.PlantsContainer)
             Destroy(child.gameObject);
 
@@ -350,8 +282,11 @@ public class BiofiltreManager : MonoBehaviour
 
         DateTime nowUtc = DateTime.UtcNow;
         DateTime savedUtc = nowUtc;
-        if (!string.IsNullOrEmpty(saveData.lastSavedUtc) && DateTime.TryParse(saveData.lastSavedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime parsedUtc))
+        if (!string.IsNullOrEmpty(saveData.lastSavedUtc) &&
+            DateTime.TryParse(saveData.lastSavedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime parsedUtc))
+        {
             savedUtc = parsedUtc;
+        }
 
         float offlineDelta = Mathf.Max(0f, (float)(nowUtc - savedUtc).TotalSeconds);
 
@@ -360,25 +295,20 @@ public class BiofiltreManager : MonoBehaviour
             if (record == null || string.IsNullOrEmpty(record.plantId))
                 continue;
 
-            PlantDefinition definition = ResolvePlantDefinition(record.plantId);
-            if (definition == null)
+            if (!seedCatalog.TryGetPlantDefinitionById(record.plantId, out PlantDefinition definition))
                 continue;
 
-            if (!seedSelectionUI.TryGetPlantPrefab(definition, out GameObject prefab))
+            if (!seedCatalog.TryGetPlantPrefab(definition, out GameObject prefab))
                 continue;
 
             Vector2Int anchor = new(record.anchorX, record.anchorY);
-            // Re-instancie la plante comme une pose normale, mais sans resauvegarder
-            // pendant la reconstruction.
             PlantSeedAt(anchor, definition, prefab, saveAfterPlacement: false);
 
             GameObject plantObj = gridManager.GetPlantAt(anchor);
             if (plantObj == null || !plantObj.TryGetComponent(out PlantGrow grow))
                 continue;
 
-            // Rejoue l'etat de croissance sauvegarde.
             grow.SetStageWithElapsed(record.currentStage, record.stageElapsedSeconds);
-            // Puis applique la progression hors ligne depuis le dernier save UTC.
             grow.AdvanceBySeconds(offlineDelta);
         }
     }
@@ -388,7 +318,6 @@ public class BiofiltreManager : MonoBehaviour
         if (!enablePrototypePersistence || visualizer == null || visualizer.PlantsContainer == null)
             return;
 
-        // Snapshot runtime des plantes actuellement presentes.
         List<FarmPlantRecord> records = new();
 
         foreach (Transform child in visualizer.PlantsContainer)
@@ -415,10 +344,13 @@ public class BiofiltreManager : MonoBehaviour
         FarmSaveService.Save(records);
     }
 
+    // ── Popup pipeline ────────────────────────────────────────────────────────
+
     private void RegisterFarmPopupBindingsIfPossible()
     {
-        if (farmPopupHost == null)
-            farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
+        ScreenPopupHost host = ResolveFarmPopupHost();
+        if (host == null)
+            return;
 
         if (UIManager.Instance == null)
         {
@@ -428,47 +360,32 @@ public class BiofiltreManager : MonoBehaviour
             return;
         }
 
-        if (farmPopupHost == null)
+        UIManager.Instance.ApplyRuntimePopupBindingsToHost(ScreenId.FirstLvlFarm, host);
+        EnsureFarmPopupRoot(host);
+        host.ConfigureDefaultPopupRoot(farmPopupRoot);
+    }
+
+    private void WarmUpSeedSelectionPopup()
+    {
+        if (!TryResolveSeedSelectionUI(out SeedSelectionUI seedUi))
         {
             Debug.LogWarning(
-                "[BiofiltreManager] ScreenPopupHost introuvable — bindings popups ferme non appliqués.",
+                "[BiofiltreManager] Impossible de précharger SeedSelectionUI. " +
+                $"Vérifiez binding ({ScreenId.FirstLvlFarm}, {PopupId.FarmSeedSelection}).",
                 this);
             return;
         }
 
-        UIManager.Instance.ApplyRuntimePopupBindingsToHost(
-            ScreenId.FirstLvlFarm,
-            farmPopupHost,
-            seedSelectionUI,
-            harvestPanelUI);
-    }
-
-    private void TryParentHarvestPanelUnderSeedRoot()
-    {
-        if (harvestPanelUI == null || seedSelectionUI == null)
-            return;
-
-        Transform seedRoot = seedSelectionUI.transform;
-        if (harvestPanelUI.transform.parent == seedRoot)
-            return;
-
-        harvestPanelUI.transform.SetParent(seedRoot, false);
+        seedUi.gameObject.SetActive(false);
     }
 
     private bool TryOpenFarmSeedSelection(BiofiltreCell cell)
     {
-        if (farmPopupHost == null)
-            farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
-
-        if (farmPopupHost == null)
-        {
-            Debug.LogWarning(
-                "[BiofiltreManager] ScreenPopupHost introuvable. Placez un ScreenPopupHost (ex. sur LevelController).",
-                this);
+        ScreenPopupHost host = ResolveFarmPopupHost();
+        if (host == null)
             return false;
-        }
 
-        if (!farmPopupHost.TryShowPopup(PopupId.FarmSeedSelection, out SeedSelectionUI ui))
+        if (!host.TryShowPopup(PopupId.FarmSeedSelection, out SeedSelectionUI ui))
         {
             Debug.LogWarning(
                 "[BiofiltreManager] Popup graines introuvable. Vérifiez UIManager.runtimePopupBindings " +
@@ -477,17 +394,88 @@ public class BiofiltreManager : MonoBehaviour
             return false;
         }
 
+        ConfigureSeedSelectionInstance(ui);
         ui.Open(cell, this);
         return true;
     }
 
-    private PlantDefinition ResolvePlantDefinition(string plantId)
+    private bool TryResolveSeedSelectionUI(out SeedSelectionUI ui)
     {
-        if (string.IsNullOrEmpty(plantId) || seedSelectionUI == null)
-            return null;
+        if (cachedSeedSelectionUi != null)
+        {
+            ui = cachedSeedSelectionUi;
+            return true;
+        }
 
-        return seedSelectionUI.TryGetPlantDefinitionById(plantId, out PlantDefinition definition)
-            ? definition
-            : null;
+        ScreenPopupHost host = ResolveFarmPopupHost();
+        if (host == null || !host.TryGetPopup(PopupId.FarmSeedSelection, out ui))
+        {
+            ui = null;
+            return false;
+        }
+
+        ConfigureSeedSelectionInstance(ui);
+        return true;
+    }
+
+    private void ConfigureSeedSelectionInstance(SeedSelectionUI ui)
+    {
+        if (ui == null)
+            return;
+
+        ui.InjectPlacementPreview(placementPreview);
+        cachedSeedSelectionUi = ui;
+    }
+
+    private ScreenPopupHost ResolveFarmPopupHost()
+    {
+        if (farmPopupHost != null)
+            return farmPopupHost;
+
+        farmPopupHost = FindFirstObjectByType<ScreenPopupHost>();
+        if (farmPopupHost == null)
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] ScreenPopupHost introuvable. Placez un ScreenPopupHost (ex. sur LevelController).",
+                this);
+        }
+
+        return farmPopupHost;
+    }
+
+    private void EnsureFarmPopupRoot(ScreenPopupHost host)
+    {
+        if (farmPopupRoot != null || host == null)
+            return;
+
+        Transform existing = host.transform.Find("FarmPopupRoot");
+        if (existing != null)
+        {
+            farmPopupRoot = existing as RectTransform;
+            return;
+        }
+
+        var canvasGo = new GameObject("FarmUICanvas");
+        canvasGo.transform.SetParent(host.transform, false);
+
+        Canvas canvas = canvasGo.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = FarmPopupCanvasSortOrder;
+
+        CanvasScaler scaler = canvasGo.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(800f, 600f);
+
+        canvasGo.AddComponent<GraphicRaycaster>();
+
+        var rootGo = new GameObject("FarmPopupRoot", typeof(RectTransform));
+        RectTransform rect = rootGo.GetComponent<RectTransform>();
+        rect.SetParent(canvasGo.transform, false);
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        farmPopupRoot = rect;
     }
 }

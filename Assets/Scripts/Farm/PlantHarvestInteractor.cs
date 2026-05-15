@@ -3,9 +3,7 @@ using UnityEngine.EventSystems;
 using System;
 
 /// <summary>
-/// Attached to a plant GameObject. On click, vérifie la maturité, résout l'item
-/// via ItemDatabase et ajoute la récolte au PlayerInventory singleton.
-/// Délègue l'affichage du panneau à <see cref="HarvestPanelUI"/>.
+/// Attached to a plant GameObject. On click, ouvre le popup récolte via <see cref="ScreenPopupHost"/>.
 /// </summary>
 [RequireComponent(typeof(PlantGrow))]
 [RequireComponent(typeof(Collider2D))]
@@ -15,7 +13,6 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
     [Header("Dependencies")]
     [SerializeField] private ItemDatabase itemDatabase;
-    [SerializeField] private HarvestPanelUI harvestPanelUI;
 
     [Header("Harvest")]
     [Tooltip("Surcharge le harvestItemId de la PlantDefinition si renseigné.")]
@@ -49,16 +46,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// Injecte le HarvestPanelUI depuis BiofiltreManager si non assigné dans le prefab.
-    /// </summary>
-    public void InjectHarvestPanel(HarvestPanelUI panel)
-    {
-        harvestPanelUI ??= panel;
-    }
-
-    /// <summary>
     /// Injecte l'ItemDatabase depuis BiofiltreManager.
-    /// Appelé après instantiation si la référence n'est pas déjà assignée dans le prefab.
     /// </summary>
     public void InjectInventory(ItemDatabase database)
     {
@@ -66,7 +54,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// Hôte des popups ferme (même que <see cref="BiofiltreManager"/>). Évite un Find répété si injecté.
+    /// Hôte des popups ferme (même que <see cref="BiofiltreManager"/>).
     /// </summary>
     public void InjectFarmPopupHost(ScreenPopupHost host)
     {
@@ -84,53 +72,29 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     // ── IPointerClickHandler ──────────────────────────────────────────────────
 
     /// <summary>
-    /// Triggered by the EventSystem when the player clicks the plant in the scene.
-    /// Requires a Physics2DRaycaster on the camera.
-    /// Récolte directement si le stade le permet, sans ouvrir de panel intermédiaire.
+    /// Ouvre le popup d'info plante (nécessite Physics2DRaycaster sur la caméra).
     /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
-        ConfirmHarvest();
+        TryHarvest();
     }
 
     /// <summary>
     /// Ouvre le popup d'info pour cette plante, peu importe son stade.
-    /// Le panel gère lui-même la visibilité du bouton de récolte.
     /// </summary>
     public void TryHarvest()
     {
-        PlantDefinition definition = ResolveDefinition();
-
-        ScreenPopupHost popupHost = FindFirstObjectByType<ScreenPopupHost>();
-        if (popupHost != null &&
-            popupHost.TryShowPopup(PopupId.FarmPlantHarvest, out HarvestPanelUI hostPanel))
+        if (!TryOpenHarvestPopup())
         {
-            hostPanel.Open(this, plantGrow, definition);
-            return;
+            Debug.LogWarning(
+                "[PlantHarvestInteractor] Popup récolte introuvable. " +
+                $"Vérifiez ScreenPopupHost + binding ({ScreenId.FirstLvlFarm}, {PopupId.FarmPlantHarvest}).",
+                this);
         }
-
-        if (harvestPanelUI != null)
-        {
-            harvestPanelUI.Open(this, plantGrow, definition);
-            return;
-        }
-
-        // Fallback direct sans panel
-        HarvestStageConfig? config = GetCurrentHarvestConfig();
-        if (!config.HasValue)
-        {
-            Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' n'est pas récoltable à ce stade.");
-            return;
-        }
-
-        ItemDefinition item = ResolveItem(config.Value);
-        if (item != null)
-            ApplyHarvest(item, config.Value);
     }
 
     /// <summary>
     /// Appelé par HarvestPanelUI quand le joueur confirme la récolte.
-    /// Résout la config du stade courant et applique la récolte si le stade est récoltable.
     /// </summary>
     public void ConfirmHarvest()
     {
@@ -182,8 +146,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// Arrache la plante sans récolter : libère les cellules et la détruit.
-    /// Appelé par HarvestPanelUI via le bouton "Arracher".
+    /// Arrache la plante sans récolter.
     /// </summary>
     public void Uproot()
     {
@@ -205,37 +168,54 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
     private void OnHarvestSuccess()
     {
-        // Libérer les cellules dans la grille + désenregistrer la plante
         if (gridManager != null && occupiedCells != null)
         {
             gridManager.FreeCells(occupiedCells);
             gridManager.UnregisterPlant(occupiedCells);
         }
 
-        // Remettre les cellules visuelles à l'état vide
         if (visualizer != null && occupiedCells != null)
         {
             foreach (Vector2Int coords in occupiedCells)
                 visualizer.GetCell(coords)?.SetVisualState(false);
         }
 
-        // Supprimer la plante de la scène
         onPlantRemoved?.Invoke();
         Destroy(gameObject);
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Retourne la config de récolte du stade courant, ou null si la plante n'est pas récoltable maintenant.
-    /// </summary>
+    private bool TryOpenHarvestPopup()
+    {
+        ScreenPopupHost host = ResolvePopupHost();
+        if (host == null)
+            return false;
+
+        if (!host.TryShowPopup(PopupId.FarmPlantHarvest, out HarvestPanelUI panel))
+            return false;
+
+        panel.Open(this, plantGrow, ResolveDefinition());
+        return true;
+    }
+
+    private ScreenPopupHost ResolvePopupHost()
+    {
+        if (injectedFarmPopupHost != null)
+            return injectedFarmPopupHost;
+
+        Debug.LogWarning(
+            "[PlantHarvestInteractor] ScreenPopupHost non injecté. " +
+            "Vérifiez BiofiltreManager / LevelController (FirstLvl).",
+            this);
+        return null;
+    }
+
     public HarvestStageConfig? GetCurrentHarvestConfig()
     {
         PlantDefinition definition = ResolveDefinition();
         return definition?.GetHarvestConfig(plantGrow.CurrentStage);
     }
-
-    private bool IsHarvestable() => GetCurrentHarvestConfig().HasValue;
 
     private PlantDefinition ResolveDefinition()
     {
@@ -276,12 +256,11 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
     private void ShowInventoryFullFeedback()
     {
-        ScreenPopupHost host = injectedFarmPopupHost;
+        ScreenPopupHost host = ResolvePopupHost();
         if (host == null)
-            host = FindFirstObjectByType<ScreenPopupHost>();
+            return;
 
-        if (host != null &&
-            host.HasPopup(PopupId.FarmInventoryFeedback) &&
+        if (host.HasPopup(PopupId.FarmInventoryFeedback) &&
             host.TryGetPopup(PopupId.FarmInventoryFeedback, out ResourceFeedbackPopupUI popup))
         {
             popup.ShowMessage(InventoryFullFeedbackMessage);

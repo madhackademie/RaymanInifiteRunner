@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 /// Tints green when the footprint is valid, red when invalid.
 /// Left-click confirms placement; right-click or Escape cancels.
 /// </summary>
+[DefaultExecutionOrder(-100)]
 public class PlantPlacementPreview : MonoBehaviour
 {
     private static readonly Color ColorValid   = new Color(0.3f, 1f, 0.4f, 0.6f);
@@ -44,6 +45,7 @@ public class PlantPlacementPreview : MonoBehaviour
         biofiltreManager = manager;
         mainCamera       = Camera.main;
 
+        biofiltreManager.OnPlacementPreviewStarted();
         SpawnGhost();
         enabled = true;
     }
@@ -62,14 +64,21 @@ public class PlantPlacementPreview : MonoBehaviour
 
         UpdateGhostPosition();
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        bool leftPressed  = Mouse.current.leftButton.wasPressedThisFrame;
+        bool rightPressed = Mouse.current.rightButton.wasPressedThisFrame;
+        bool escapePressed = Keyboard.current.escapeKey.wasPressedThisFrame;
+
+        if (leftPressed || rightPressed || escapePressed)
+            biofiltreManager.SuppressGridCellUiThisFrame();
+
+        if (leftPressed)
         {
             if (currentlyValid)
                 ConfirmPlacement();
             else
                 Cancel(); // left-click on invalid red position = deselect
         }
-        else if (Mouse.current.rightButton.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
+        else if (rightPressed || escapePressed)
         {
             Cancel();
         }

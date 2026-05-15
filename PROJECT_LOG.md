@@ -1,5 +1,54 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-15 — [P0-POP-003] Scan popups — verdict
+
+### Méthode
+- Inventaire des 5 constantes `PopupId` vs `UIManager.runtimePopupBindings` (`NavigationHUD.unity`).
+- Grep chemins résiduels : `Instantiate` modal, `InventoryFeedbackUI`, `RegisterRuntimePopupLiveInstance`, instances scène `HarvestPanel` / `SeedSelectionUI`, ouvertures UI hors `ScreenPopupHost`.
+
+### Tableau pipeline (état au scan)
+
+| `PopupId` | Binding `screenId` | Prefab binding | Ouverture runtime |
+|-----------|-------------------|----------------|-------------------|
+| `shop.item.purchase` | `Shop` | `ShopItemPopup.prefab` | `RuntimeShopScreen` → `ScreenPopupHost.TryGetPopup` + `ShopItemPopupController.Open` |
+| `shop.resource.feedback` | `Shop` | `ResourceFeedbackPopup.prefab` | `RuntimeShopScreen` → host |
+| `farm.seed.selection` | `FirstLvlFarm` | `SeedSelectionUI.prefab` | `BiofiltreManager` → `TryShowPopup` + `SeedSelectionUI.Open` (lazy) |
+| `farm.plant.harvest` | `FirstLvlFarm` | `FarmHarvestPanel.prefab` | `BiofiltreManager` / `PlantHarvestInteractor` → `TryShowPopup` + `HarvestPanelUI.Open` (lazy) |
+| `farm.inventory.feedback` | `FirstLvlFarm` | `ResourceFeedbackPopup.prefab` (partagé shop) | `PlantHarvestInteractor` → host lazy |
+
+Aucun `PopupId` déclaré sans binding. Aucune instance scène `HarvestPanel` / `SeedSelectionUI` dans `FirstLvl.unity` (host `ScreenPopupHost` sur `LevelController` uniquement).
+
+### Legacy retiré (confirmé absent du code Assets)
+- `InventoryFeedbackUI.cs`, prefab `InventoryFeedback.prefab`, objet `FeedbackMessage` dans `InventoryScreen.prefab`.
+- `ScreenPopupHost.RegisterRuntimePopupLiveInstance` (API supprimée).
+
+### Hors pipeline `PopupId` (accepté — UI inline / écrans, pas modales catalogue)
+
+| Élément | Type | Action recommandée |
+|---------|------|-------------------|
+| `MainMenuUI.optionsPanel` | Toggle panel scène menu | Backlog optionnel produit ; pas bloquant pipeline |
+| `WalletWidget` `expandedPanel` | Panneau wallet inventaire | Idem |
+| `LoadingScreen` | Écran transition | Hors scope popups gameplay |
+| Instanciation slots (`InventorySlotUI`, `SeedSlotUI`, shop slots) | Widgets liste | Normal — pas des popups |
+
+### Écarts « strict shop » restants (≠ hors pipeline)
+
+| Écart | Fichier | Backlog |
+|-------|---------|---------|
+| `FindFirstObjectByType<ScreenPopupHost>()` si `farmPopupHost` non assigné | `BiofiltreManager` | **[P0-HARV-001]** |
+| Host ferme doit être injecté sur plantes (`InjectFarmPopupHost`) | `PlantHarvestInteractor` | Déjà en place ; durcir si host null en playtest |
+| Docs obsolètes (`popup_generique.md` §2.5 live instance, `InventoryFeedbackUI` dans notes Farm) | Notes | **BL-POP-DOC-001** (sync doc) |
+
+### Verdict **[P0-POP-003]**
+**Chantier pipeline `PopupId` + `ScreenPopupBinding` + `ScreenPopupHost` : CLOS** pour le périmètre actuel (shop + ferme).  
+Il ne reste **aucune modale métier** identifiée à migrer vers un nouveau `PopupId`.
+
+**Suite priorisée :**
+1. **[P0-HARV-001]** — polish strict récolte / résolution host (branche dédiée).
+2. **BL-POP-DOC-001** — aligner `Notes/Ui/popup_generique.md` et cartes mentales Farm sur l’état lazy (sans `RegisterRuntimePopupLiveInstance`).
+
+---
+
 ## 2026-05-15 — Prochaine session : scan popups + harvest sur branche
 
 ### Contexte

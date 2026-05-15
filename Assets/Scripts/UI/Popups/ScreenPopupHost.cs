@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Host de popups pour un ecran UI : instanciation lazy de prefabs puis show/hide par identifiant.
@@ -15,15 +16,19 @@ public class ScreenPopupHost : MonoBehaviour
         public Transform parentOverride;
         public bool preloadOnAwake;
 
-        /// <summary>Instance scène déjà vivante (pas de Instantiate depuis prefab).</summary>
-        public bool useLiveInstance;
-
         [NonSerialized] public GameObject instance;
     }
 
     [Header("Popup roots")]
     [Tooltip("Parent par defaut pour les popups instancies. Si vide, utilise ce transform.")]
     [SerializeField] private Transform defaultPopupRoot;
+
+    /// <summary>Parent UI pour les popups lazy (ex. canvas SeedSelection en ferme).</summary>
+    public void ConfigureDefaultPopupRoot(Transform root)
+    {
+        if (root != null)
+            defaultPopupRoot = root;
+    }
 
     [Header("Popup prefabs")]
     [SerializeField] private List<PopupEntry> popupEntries = new();
@@ -43,9 +48,6 @@ public class ScreenPopupHost : MonoBehaviour
 
         if (popupRegistry.TryGetValue(popupId, out PopupEntry existing))
         {
-            if (existing.useLiveInstance && existing.instance != null)
-                return true;
-
             if (existing.instance != null && existing.popupPrefab != popupPrefab)
             {
                 Debug.LogWarning(
@@ -72,53 +74,6 @@ public class ScreenPopupHost : MonoBehaviour
 
         popupEntries.Add(entry);
         popupRegistry[popupId] = entry;
-        return true;
-    }
-
-    /// <summary>
-    /// Enregistre une instance déjà présente en scène (ex. UI ferme posée dans FirstLvl).
-    /// A la priorité sur un prefab du même identifiant si appelé avant toute instanciation.
-    /// </summary>
-    public bool RegisterRuntimePopupLiveInstance(string popupId, GameObject liveRoot, Transform parentOverride = null)
-    {
-        if (string.IsNullOrWhiteSpace(popupId) || liveRoot == null)
-            return false;
-
-        if (popupRegistry.TryGetValue(popupId, out PopupEntry existing))
-        {
-            if (existing.instance != null && existing.instance != liveRoot)
-            {
-                Debug.LogWarning(
-                    $"[ScreenPopupHost] Popup '{popupId}' deja enregistre avec une autre instance.",
-                    this);
-                return false;
-            }
-
-            if (existing.instance == liveRoot)
-                return true;
-
-            // Slot prefab sans instance : promouvoir l'instance scène (même identifiant).
-            existing.useLiveInstance = true;
-            existing.popupPrefab = null;
-            existing.instance = liveRoot;
-            if (parentOverride != null)
-                existing.parentOverride = parentOverride;
-
-            return true;
-        }
-
-        var entry = new PopupEntry
-        {
-            popupId = popupId,
-            popupPrefab = null,
-            parentOverride = parentOverride,
-            preloadOnAwake = false,
-            useLiveInstance = true,
-            instance = liveRoot
-        };
-
-        popupEntries.Add(entry);
-        popupRegistry.Add(popupId, entry);
         return true;
     }
 
@@ -221,9 +176,6 @@ public class ScreenPopupHost : MonoBehaviour
         if (entry.instance != null)
             return entry.instance;
 
-        if (entry.useLiveInstance)
-            return entry.instance;
-
         if (entry.popupPrefab == null)
         {
             Debug.LogWarning($"[ScreenPopupHost] Prefab manquant pour popup '{entry.popupId}'.", this);
@@ -232,8 +184,29 @@ public class ScreenPopupHost : MonoBehaviour
 
         entry.instance = Instantiate(entry.popupPrefab, ResolvePopupParent(entry));
         entry.instance.name = entry.popupPrefab.name;
+        EnsurePopupCanvasInput(entry.instance);
         entry.instance.SetActive(false);
         return entry.instance;
+    }
+
+    /// <summary>
+    /// Les popups UI lazy doivent avoir GraphicRaycaster sur leur Canvas (sinon clics ignores).
+    /// </summary>
+    private static void EnsurePopupCanvasInput(GameObject root)
+    {
+        if (root == null || root.GetComponent<Canvas>() == null)
+            return;
+
+        if (root.GetComponent<GraphicRaycaster>() == null)
+            root.AddComponent<GraphicRaycaster>();
+
+        if (root.GetComponent<CanvasScaler>() == null)
+        {
+            CanvasScaler scaler = root.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1080f, 1920f);
+            scaler.matchWidthOrHeight = 0.5f;
+        }
     }
 
     private Transform ResolvePopupParent(PopupEntry entry)

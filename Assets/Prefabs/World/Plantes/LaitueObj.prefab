@@ -181,5 +181,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantHarvestInteractor
   itemDatabase: {fileID: 0}
-  harvestPanelUI: {fileID: 0}
   harvestItemIdOverride: 

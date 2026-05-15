@@ -348,19 +348,9 @@ public class UIManager : MonoBehaviour
 
     /// <summary>
     /// Applique les <see cref="runtimePopupBindings"/> pour un <see cref="ScreenPopupHost"/>
-    /// hors prefab écran (ex. scène FirstLvl). Pour <see cref="PopupId.FarmSeedSelection"/> et
-    /// <see cref="PopupId.FarmPlantHarvest"/>, une instance scène peut remplacer l'instanciation lazy du prefab.
+    /// hors prefab écran (ex. scène FirstLvl). Mode strict : instanciation lazy depuis les prefabs.
     /// </summary>
-    /// <remarks>
-    /// <see cref="PopupId.FarmPlantHarvest"/> : l'entrée de binding doit exister (prefab non vide pour la validation
-    /// Inspector) ; si <paramref name="liveFarmHarvestPanel"/> est fourni, seul l'enregistrement d'instance scène
-    /// est effectue (le prefab du binding n'est pas instancie pour cet id).
-    /// </remarks>
-    public void ApplyRuntimePopupBindingsToHost(
-        string screenId,
-        ScreenPopupHost host,
-        SeedSelectionUI liveFarmSeedRoot = null,
-        HarvestPanelUI liveFarmHarvestPanel = null)
+    public void ApplyRuntimePopupBindingsToHost(string screenId, ScreenPopupHost host)
     {
         if (host == null || string.IsNullOrEmpty(screenId))
             return;
@@ -379,12 +369,6 @@ public class UIManager : MonoBehaviour
             if (binding == null || binding.screenId != screenId)
                 continue;
 
-            if (binding.popupId == PopupId.FarmPlantHarvest && liveFarmHarvestPanel != null)
-            {
-                host.RegisterRuntimePopupLiveInstance(binding.popupId, liveFarmHarvestPanel.gameObject);
-                continue;
-            }
-
             if (binding.popupPrefab == null)
             {
                 Debug.LogWarning(
@@ -394,9 +378,6 @@ public class UIManager : MonoBehaviour
             }
 
             host.RegisterRuntimePopup(binding.popupId, binding.popupPrefab);
-
-            if (binding.popupId == PopupId.FarmSeedSelection && liveFarmSeedRoot != null)
-                host.RegisterRuntimePopupLiveInstance(binding.popupId, liveFarmSeedRoot.gameObject);
         }
     }
 

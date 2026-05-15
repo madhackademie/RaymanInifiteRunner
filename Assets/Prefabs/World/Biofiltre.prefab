@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: 694416834059487525}
   - component: {fileID: 5171608283822144346}
   - component: {fileID: 8494675260759893494}
+  - component: {fileID: 8494675260759893495}
   m_Layer: 0
   m_Name: Biofiltre
   m_TagString: Untagged
@@ -149,5 +150,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99e798d08594724781f98310a8c617a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BiofiltreManager
-  seedSelectionUI: {fileID: 0}
   farmPopupHost: {fileID: 0}
+  farmPopupRoot: {fileID: 0}
+  placementPreview: {fileID: 8494675260759893495}
+  itemDatabase: {fileID: 0}
+  enablePrototypePersistence: 1
+--- !u!114 &8494675260759893495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776529302815179675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0477617d9ce997f47aa92742887a7d1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantPlacementPreview

@@ -32,6 +32,13 @@ public class SeedSelectionUI : MonoBehaviour
     /// <summary>True while a placement ghost is active and following the mouse.</summary>
     public bool IsPreviewActive => placementPreview != null && placementPreview.enabled;
 
+    /// <summary>Injecte le preview de placement depuis la scène (BiofiltreManager).</summary>
+    public void InjectPlacementPreview(PlantPlacementPreview preview)
+    {
+        if (preview != null)
+            placementPreview = preview;
+    }
+
     private readonly List<SeedSlotUI> spawnedSlots = new();
 
     private void Awake()

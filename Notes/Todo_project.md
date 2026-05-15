@@ -36,7 +36,10 @@ Convention d'IDs :
 ## Prochaine session (priorité immédiate)
 
 ### Popups — clôture pipeline générique
-- [ ] [P0-POP-003] **Scanner le projet** : recenser toutes les modales / popups encore **hors** pipeline (`PopupId` + `ScreenPopupBinding` + `ScreenPopupHost`) ; comparer à **`UIManager.runtimePopupBindings`** ; grep chemins résiduels (`Instantiate` modal, `InventoryFeedbackUI`, fallbacks, etc.) ; **verdict écrit** dans `PROJECT_LOG.md` : chantier **clos** ou **backlog** priorisé.
+- [x] [P0-POP-003] **Scanner le projet** : verdict **CLOS** — voir `PROJECT_LOG.md` entrée *2026-05-15 — [P0-POP-003] Scan popups — verdict* ; suite : **[P0-HARV-001]** + **BL-POP-DOC-001** (sync doc).
+
+### Doc — popups
+- [ ] [BL-POP-DOC-001] Aligner `Notes/Ui/popup_generique.md` §2.5 et notes Farm (`SYSTEMES_carte_mentale.md`, etc.) sur pipeline lazy actuel (plus de live instance / `InventoryFeedbackUI`).
 
 ### Ferme — harvest (branche dédiée)
 - [ ] [P0-HARV-001] **Mettre à niveau le popup récolte** (`HarvestPanelUI` / `FarmPlantHarvest`) vers le modèle **aligné shop** (prefab réel dans le binding, instance scène retirée si possible, host seul, pas de `FindFirstObjectByType` résiduel) — voir `Notes/Ui/popup_generique.md` §2.5 objectif « 100 % ». **Obligatoire** : créer une **nouvelle branche Git** avant tout code (cf. `GIT_HELPER.md` § branche par feature) ; ne pas faire ce chantier sur `main` en direct.
