@@ -22,6 +22,11 @@ public class PlayerInventory : MonoBehaviour
     [Tooltip("Montant crédité une seule fois par profil (première sauvegarde ou ancienne sans ce flag), puis persisté comme les autres items.")]
     [SerializeField] [Min(0)] private int startingCurrencyAmount = 100;
 
+    [Header("Pack graines départ")]
+    [Tooltip("Item consommé à la plantation (ex. laitue_seed). Crédité une fois par profil si startingSeedAmount > 0.")]
+    [SerializeField] private ItemDefinition startingSeedItem;
+    [SerializeField] [Min(0)] private int startingSeedAmount = 3;
+
     /// <summary>Résolution des définitions d’items (shop prototype JSON, sauvegarde, etc.).</summary>
     public ItemDatabase ItemDatabase => itemDatabase;
 
@@ -29,6 +34,8 @@ public class PlayerInventory : MonoBehaviour
 
     /// <summary>Si la réserve de départ monnaie a déjà été appliquée pour ce fichier de sauvegarde.</summary>
     private bool startingCurrencyApplied;
+
+    private bool startingSeedsApplied;
 
     /// <summary>Fired after any successful mutation of the inventory.</summary>
     public event Action OnInventoryChanged;
@@ -66,7 +73,7 @@ public class PlayerInventory : MonoBehaviour
     /// <summary>Persists the current inventory state to disk.</summary>
     public void SaveToDisk()
     {
-        InventorySaveService.Save(slots, startingCurrencyApplied);
+        InventorySaveService.Save(slots, startingCurrencyApplied, startingSeedsApplied);
     }
 
     /// <summary>Restores the inventory state from disk. Replaces all current slot data.</summary>
@@ -78,15 +85,25 @@ public class PlayerInventory : MonoBehaviour
             return;
         }
 
-        if (InventorySaveService.TryLoad(itemDatabase, slots, out int count, out bool grantFlagFromDisk))
+        if (InventorySaveService.TryLoad(
+                itemDatabase,
+                slots,
+                out int count,
+                out bool currencyFlagFromDisk,
+                out bool seedsFlagFromDisk))
         {
-            startingCurrencyApplied = grantFlagFromDisk;
+            startingCurrencyApplied = currencyFlagFromDisk;
+            startingSeedsApplied = seedsFlagFromDisk;
             Debug.Log($"[PlayerInventory] {count} slot(s) restauré(s) depuis la sauvegarde.");
         }
         else
+        {
             startingCurrencyApplied = false;
+            startingSeedsApplied = false;
+        }
 
         ApplyStartingCurrencyGrantIfNeeded();
+        ApplyStartingSeedsGrantIfNeeded();
     }
 
     /// <summary>
@@ -113,6 +130,34 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    private void ApplyStartingSeedsGrantIfNeeded()
+    {
+        if (startingSeedsApplied || itemDatabase == null)
+            return;
+
+        ItemDefinition seed = ResolveStartingSeedItem();
+        if (seed == null || startingSeedAmount <= 0)
+            return;
+
+        startingSeedsApplied = true;
+        InventoryResult result = TryAdd(seed, startingSeedAmount);
+        if (result == InventoryResult.Full)
+        {
+            startingSeedsApplied = false;
+            Debug.LogWarning(
+                "[PlayerInventory] Pack graines de départ impossible (inventaire plein ?).",
+                this);
+        }
+    }
+
+    private ItemDefinition ResolveStartingSeedItem()
+    {
+        if (startingSeedItem != null)
+            return startingSeedItem;
+
+        return itemDatabase != null ? itemDatabase.GetById("laitue_seed") : null;
+    }
+
     /// <summary>Clears all slots and deletes the save file from disk.</summary>
     [ContextMenu("Inventaire — Reset + supprimer inventory.json")]
     public void ResetAndDeleteSave()
@@ -120,7 +165,9 @@ public class PlayerInventory : MonoBehaviour
         InitialiseSlots();
         InventorySaveService.Delete();
         startingCurrencyApplied = false;
+        startingSeedsApplied = false;
         ApplyStartingCurrencyGrantIfNeeded();
+        ApplyStartingSeedsGrantIfNeeded();
         OnInventoryChanged?.Invoke();
     }
 

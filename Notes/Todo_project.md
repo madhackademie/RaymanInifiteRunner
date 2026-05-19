@@ -43,7 +43,7 @@ Convention d'IDs :
 > Mettre à jour ce bloc quand la branche feature change ou après merge dans `main`.
 
 ### Ferme — graines vs inventaire (branche `rework/selectionGraine`)
-- [ ] [P0-FARM-SEED-INV-001] Lier plantation ↔ inventaire : filtre + quantités UI, **consommation 1× graine à la confirmation** de placement, **bloquer** si stock 0 ; empty state → **shop** et/ou **pack graines départ** (décision §3). **Plan détaillé :** `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
+- [~] [P0-FARM-SEED-INV-001] Lier plantation ↔ inventaire : filtre + quantités UI, **consommation 1× graine à la confirmation** de placement, **bloquer** si stock 0 ; empty state → **shop** et/ou **pack graines départ** (décision §3). **Plan détaillé :** `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
 
 ### Doc — popups
 - [~] [BL-POP-DOC-001] `popup_generique.md` §2.5 aligné (2026-05-15). Reste : `SYSTEMES_carte_mentale.md`, `Codebase_etat_reference.md`.

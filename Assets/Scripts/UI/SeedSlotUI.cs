@@ -5,7 +5,6 @@ using TMPro;
 
 /// <summary>
 /// A single slot in the seed selection panel.
-/// Displays the seed icon and name, and fires <see cref="OnSlotClicked"/> when selected.
 /// </summary>
 public class SeedSlotUI : MonoBehaviour
 {
@@ -13,7 +12,6 @@ public class SeedSlotUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI seedNameLabel;
     [SerializeField] private Button button;
 
-    /// <summary>Fired when the player clicks this slot. Passes the bound seed entry.</summary>
     public event Action<SeedEntry> OnSlotClicked;
 
     private SeedEntry boundEntry;
@@ -23,11 +21,14 @@ public class SeedSlotUI : MonoBehaviour
         button.onClick.AddListener(HandleClick);
     }
 
-    /// <summary>Binds a <see cref="SeedEntry"/> to this slot and refreshes the display.</summary>
-    public void Bind(SeedEntry entry)
+    public void Bind(SeedEntry entry, int quantityInInventory)
     {
         boundEntry = entry;
-        seedNameLabel.text = entry.plantDefinition != null ? entry.plantDefinition.displayName : "—";
+
+        string displayName = entry.plantDefinition != null ? entry.plantDefinition.displayName : "—";
+        seedNameLabel.text = quantityInInventory > 0
+            ? $"{displayName} ×{quantityInInventory}"
+            : displayName;
 
         if (entry.plantDefinition != null && entry.plantDefinition.spriteGraine != null)
             seedIcon.sprite = entry.plantDefinition.spriteGraine;
@@ -37,22 +38,17 @@ public class SeedSlotUI : MonoBehaviour
         seedIcon.enabled = seedIcon.sprite != null;
     }
 
-    /// <summary>
-    /// Enables or disables the slot. A disabled slot is visually greyed out and cannot be clicked.
-    /// Call this after <see cref="Bind"/> to reflect footprint availability.
-    /// </summary>
     public void SetInteractable(bool interactable)
     {
         button.interactable = interactable;
 
-        // Dim icon and label when the footprint does not fit
         float alpha = interactable ? 1f : 0.35f;
-        Color iconColor  = seedIcon.color;
+        Color iconColor = seedIcon.color;
         Color labelColor = seedNameLabel.color;
-        iconColor.a  = alpha;
+        iconColor.a = alpha;
         labelColor.a = alpha;
-        seedIcon.color         = iconColor;
-        seedNameLabel.color    = labelColor;
+        seedIcon.color = iconColor;
+        seedNameLabel.color = labelColor;
     }
 
     private void HandleClick()

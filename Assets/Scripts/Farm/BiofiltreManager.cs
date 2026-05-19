@@ -195,20 +195,64 @@ public class BiofiltreManager : MonoBehaviour
 
     public void PlantSeed(BiofiltreCell cell, PlantDefinition plantDefinition, GameObject plantPrefab)
     {
-        PlantSeedAt(cell.GridCoordinates, plantDefinition, plantPrefab);
+        PlantSeedAtInternal(cell.GridCoordinates, plantDefinition, plantPrefab, saveAfterPlacement: true);
     }
 
     public void PlantSeedAt(Vector2Int anchor, PlantDefinition plantDefinition, GameObject plantPrefab)
     {
-        PlantSeedAt(anchor, plantDefinition, plantPrefab, saveAfterPlacement: true);
+        PlantSeedAtInternal(anchor, plantDefinition, plantPrefab, saveAfterPlacement: true);
     }
 
-    private void PlantSeedAt(Vector2Int anchor, PlantDefinition plantDefinition, GameObject plantPrefab, bool saveAfterPlacement)
+    /// <summary>
+    /// Plants at anchor after consuming one <paramref name="seedItem"/> from <see cref="PlayerInventory"/>.
+    /// </summary>
+    public bool TryPlantSeedAt(
+        Vector2Int anchor,
+        PlantDefinition plantDefinition,
+        GameObject plantPrefab,
+        ItemDefinition seedItem)
+    {
+        if (plantDefinition == null || plantPrefab == null)
+        {
+            Debug.LogWarning("[BiofiltreManager] TryPlantSeedAt: definition or prefab null.", this);
+            return false;
+        }
+
+        if (!CanPlace(anchor, plantDefinition))
+            return false;
+
+        if (seedItem != null)
+        {
+            PlayerInventory inventory = PlayerInventory.Instance;
+            if (inventory == null)
+            {
+                Debug.LogWarning("[BiofiltreManager] TryPlantSeedAt: PlayerInventory introuvable.", this);
+                return false;
+            }
+
+            if (inventory.TryRemove(seedItem, 1) != InventoryResult.Success)
+            {
+                Debug.Log("[BiofiltreManager] TryPlantSeedAt: stock graine insuffisant.", this);
+                return false;
+            }
+        }
+
+        if (PlantSeedAtInternal(anchor, plantDefinition, plantPrefab, saveAfterPlacement: true))
+            return true;
+
+        if (seedItem != null && PlayerInventory.Instance != null)
+            PlayerInventory.Instance.TryAdd(seedItem, 1);
+
+        return false;
+    }
+
+    /// <summary>Placement sans consommation (restauration sauvegarde ferme).</summary>
+    private bool PlantSeedAtInternal(Vector2Int anchor, PlantDefinition plantDefinition, GameObject plantPrefab, bool saveAfterPlacement)
     {
         if (plantDefinition == null || plantPrefab == null)
         {
             Debug.LogWarning("[BiofiltreManager] PlantSeedAt called with null definition or prefab.", this);
-            return;
+            return false;
         }
 
         foreach (Vector2Int occupied in plantDefinition.GetOccupiedCells(anchor))
@@ -216,7 +260,7 @@ public class BiofiltreManager : MonoBehaviour
             if (!gridManager.IsCellFree(occupied))
             {
                 Debug.Log($"[BiofiltreManager] Cannot plant — cell {occupied} is occupied.");
-                return;
+                return false;
             }
         }
 
@@ -264,6 +308,8 @@ public class BiofiltreManager : MonoBehaviour
 
         if (saveAfterPlacement)
             SaveFarmState();
+
+        return true;
     }
 
     private void TryLoadFarmState()
@@ -312,7 +358,7 @@ public class BiofiltreManager : MonoBehaviour
                 continue;
 
             Vector2Int anchor = new(record.anchorX, record.anchorY);
-            PlantSeedAt(anchor, definition, prefab, saveAfterPlacement: false);
+            PlantSeedAtInternal(anchor, definition, prefab, saveAfterPlacement: false);
 
             GameObject plantObj = gridManager.GetPlantAt(anchor);
             if (plantObj == null || !plantObj.TryGetComponent(out PlantGrow grow))
@@ -448,6 +494,7 @@ public class BiofiltreManager : MonoBehaviour
             return;
 
         ui.InjectPlacementPreview(placementPreview);
+        ui.InjectPlayerInventory(PlayerInventory.Instance);
         cachedSeedSelectionUi = ui;
     }
 

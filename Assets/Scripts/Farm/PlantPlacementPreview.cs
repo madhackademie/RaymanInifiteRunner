@@ -16,6 +16,7 @@ public class PlantPlacementPreview : MonoBehaviour
     private BiofiltreManager biofiltreManager;
     private PlantDefinition  plantDefinition;
     private GameObject       plantPrefab;
+    private ItemDefinition   seedItem;
     private BiofiltreCell    originCell;
 
     private GameObject       ghostInstance;
@@ -34,12 +35,14 @@ public class PlantPlacementPreview : MonoBehaviour
     public void Begin(
         PlantDefinition  definition,
         GameObject       prefab,
+        ItemDefinition   seed,
         BiofiltreCell    origin,
         GridManager      grid,
         BiofiltreManager manager)
     {
         plantDefinition  = definition;
         plantPrefab      = prefab;
+        seedItem         = seed;
         originCell       = origin;
         gridManager      = grid;
         biofiltreManager = manager;
@@ -166,9 +169,15 @@ public class PlantPlacementPreview : MonoBehaviour
 
     private void ConfirmPlacement()
     {
-        biofiltreManager.PlantSeedAt(currentCell, plantDefinition, plantPrefab);
-        // Do NOT cleanup — stay active so the player can chain placements immediately.
-        // The ghost is reused as-is; UpdateGhostPosition will recompute validity next frame.
+        if (!biofiltreManager.TryPlantSeedAt(currentCell, plantDefinition, plantPrefab, seedItem))
+        {
+            Cancel();
+            return;
+        }
+
+        PlayerInventory inventory = PlayerInventory.Instance;
+        if (seedItem == null || inventory == null || inventory.Count(seedItem) <= 0)
+            Cancel();
     }
 
     /// <summary>Cancels the preview and destroys the ghost without placing anything.</summary>
@@ -186,6 +195,7 @@ public class PlantPlacementPreview : MonoBehaviour
         ghostRenderer    = null;
         plantDefinition  = null;
         plantPrefab      = null;
+        seedItem         = null;
         gridManager      = null;
         biofiltreManager = null;
         originCell       = null;

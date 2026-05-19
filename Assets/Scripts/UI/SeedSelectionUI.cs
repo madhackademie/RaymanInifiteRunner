@@ -5,127 +5,241 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// Minimal seed selection panel.
-/// Opens when the player clicks an empty biofiltre cell, displays available seeds,
-/// and starts the <see cref="PlantPlacementPreview"/> on selection.
+/// Seed selection panel. Opens on empty biofiltre cell click; lists seeds owned in <see cref="PlayerInventory"/>.
 /// </summary>
 public class SeedSelectionUI : MonoBehaviour
 {
+    private const string DefaultEmptyMessage =
+        "Aucune graine dans l'inventaire. Ouvrez le Shop (barre du bas) pour en acheter.";
+
     [Header("Panel")]
     [SerializeField] private GameObject panel;
     [SerializeField] private Button closeButton;
 
     [Header("Seed slots")]
-    [Tooltip("List of seeds available for planting, with their matching world prefab.")]
+    [Tooltip("Seeds plantable when the player owns stock (seedItem required per entry).")]
     [SerializeField] private List<SeedEntry> availableSeeds = new();
     [SerializeField] private SeedSlotUI slotPrefab;
     [SerializeField] private Transform slotsContainer;
 
+    [Header("Empty inventory")]
+    [SerializeField] private GameObject emptyStatePanel;
+    [SerializeField] private TextMeshProUGUI emptyStateLabel;
+    [SerializeField] private Button openShopButton;
+
     [Header("Placement preview")]
-    [Tooltip("The PlantPlacementPreview component that handles ghost snapping and click-to-confirm.")]
     [SerializeField] private PlantPlacementPreview placementPreview;
 
-    private BiofiltreCell    targetCell;
+    private BiofiltreCell targetCell;
     private BiofiltreManager targetManager;
-    private GridManager      gridManager;
+    private GridManager gridManager;
+    private PlayerInventory playerInventory;
 
-    /// <summary>True while a placement ghost is active and following the mouse.</summary>
     public bool IsPreviewActive => placementPreview != null && placementPreview.enabled;
-
-    /// <summary>Injecte le preview de placement depuis la scène (BiofiltreManager).</summary>
-    public void InjectPlacementPreview(PlantPlacementPreview preview)
-    {
-        if (preview != null)
-            placementPreview = preview;
-    }
 
     private readonly List<SeedSlotUI> spawnedSlots = new();
 
     private void Awake()
     {
         closeButton.onClick.AddListener(Close);
+
+        if (openShopButton != null)
+            openShopButton.onClick.AddListener(HandleOpenShopClicked);
+
+        if (emptyStatePanel != null)
+            emptyStatePanel.SetActive(false);
+
         panel.SetActive(false);
     }
 
-    /// <summary>Opens the panel targeting a specific cell and manager.</summary>
+    private void OnDestroy()
+    {
+        UnsubscribeInventory();
+    }
+
+    public void InjectPlacementPreview(PlantPlacementPreview preview)
+    {
+        if (preview != null)
+            placementPreview = preview;
+    }
+
+    public void InjectPlayerInventory(PlayerInventory inventory)
+    {
+        UnsubscribeInventory();
+        playerInventory = inventory;
+        SubscribeInventory();
+    }
+
     public void Open(BiofiltreCell cell, BiofiltreManager manager)
     {
-        targetCell    = cell;
+        targetCell = cell;
         targetManager = manager;
-        gridManager   = manager.GetComponent<GridManager>();
+        gridManager = manager.GetComponent<GridManager>();
+
+        if (playerInventory == null)
+            playerInventory = PlayerInventory.Instance;
 
         BuildSlots();
         panel.SetActive(true);
     }
 
-    /// <summary>Closes and resets the panel.</summary>
     public void Close()
     {
         panel.SetActive(false);
-        targetCell    = null;
+        targetCell = null;
         targetManager = null;
-        gridManager   = null;
+        gridManager = null;
     }
 
-    // ── Slot building ─────────────────────────────────────────────────────────
+    private void SubscribeInventory()
+    {
+        if (playerInventory != null)
+            playerInventory.OnInventoryChanged += HandleInventoryChanged;
+    }
+
+    private void UnsubscribeInventory()
+    {
+        if (playerInventory != null)
+            playerInventory.OnInventoryChanged -= HandleInventoryChanged;
+    }
+
+    private void HandleInventoryChanged()
+    {
+        if (!panel.activeSelf)
+            return;
+
+        BuildSlots();
+    }
 
     private void BuildSlots()
     {
-        // Clear previous slots
+        ClearSpawnedSlots();
+
+        if (playerInventory == null)
+        {
+            ShowEmptyState(DefaultEmptyMessage);
+            return;
+        }
+
+        int visibleCount = 0;
+
+        foreach (SeedEntry entry in availableSeeds)
+        {
+            if (!IsEntryPlantable(entry, out int stock))
+                continue;
+
+            SeedSlotUI slot = Instantiate(slotPrefab, slotsContainer);
+            slot.Bind(entry, stock);
+
+            bool fits = targetManager != null &&
+                        targetCell != null &&
+                        targetManager.CanPlace(targetCell.GridCoordinates, entry.plantDefinition);
+            slot.SetInteractable(fits && stock > 0);
+
+            slot.OnSlotClicked += HandleSeedSelected;
+            spawnedSlots.Add(slot);
+            visibleCount++;
+        }
+
+        if (visibleCount == 0)
+            ShowEmptyState(DefaultEmptyMessage);
+        else
+            HideEmptyState();
+    }
+
+    private bool IsEntryPlantable(SeedEntry entry, out int stock)
+    {
+        stock = 0;
+
+        if (entry == null || entry.plantDefinition == null || entry.plantPrefab == null || entry.seedItem == null)
+            return false;
+
+        stock = playerInventory.Count(entry.seedItem);
+        return stock > 0;
+    }
+
+    private void ShowEmptyState(string message)
+    {
+        if (slotsContainer != null)
+            slotsContainer.gameObject.SetActive(false);
+
+        if (emptyStatePanel != null)
+        {
+            emptyStatePanel.SetActive(true);
+            if (emptyStateLabel != null)
+                emptyStateLabel.text = message;
+            return;
+        }
+
+        TextMeshProUGUI fallbackLabel = panel.GetComponentInChildren<TextMeshProUGUI>();
+        if (fallbackLabel != null)
+            fallbackLabel.text = message;
+    }
+
+    private void HideEmptyState()
+    {
+        if (slotsContainer != null)
+            slotsContainer.gameObject.SetActive(true);
+
+        if (emptyStatePanel != null)
+            emptyStatePanel.SetActive(false);
+    }
+
+    private void ClearSpawnedSlots()
+    {
         foreach (SeedSlotUI slot in spawnedSlots)
         {
             slot.OnSlotClicked -= HandleSeedSelected;
             Destroy(slot.gameObject);
         }
+
         spawnedSlots.Clear();
-
-        foreach (SeedEntry entry in availableSeeds)
-        {
-            if (entry.plantDefinition == null || entry.plantPrefab == null)
-                continue;
-
-            SeedSlotUI slot = Instantiate(slotPrefab, slotsContainer);
-            slot.Bind(entry);
-
-            bool fits = targetManager.CanPlace(targetCell.GridCoordinates, entry.plantDefinition);
-            slot.SetInteractable(fits);
-
-            slot.OnSlotClicked += HandleSeedSelected;
-            spawnedSlots.Add(slot);
-        }
     }
 
     private void HandleSeedSelected(SeedEntry entry)
     {
-        if (targetCell == null || targetManager == null)
+        if (targetCell == null || targetManager == null || entry == null)
             return;
 
-        // Capture references before Close() nulls them
-        BiofiltreCell    cell    = targetCell;
+        if (playerInventory == null || playerInventory.Count(entry.seedItem) <= 0)
+        {
+            BuildSlots();
+            return;
+        }
+
+        BiofiltreCell cell = targetCell;
         BiofiltreManager manager = targetManager;
-        GridManager      grid    = gridManager;
+        GridManager grid = gridManager;
 
         Close();
 
         if (placementPreview == null)
         {
-            Debug.LogWarning("[SeedSelectionUI] No PlantPlacementPreview assigned — falling back to direct placement.", this);
-            manager.PlantSeed(cell, entry.plantDefinition, entry.plantPrefab);
+            if (!manager.TryPlantSeedAt(cell.GridCoordinates, entry.plantDefinition, entry.plantPrefab, entry.seedItem))
+                Debug.LogWarning("[SeedSelectionUI] Plantation impossible (stock ou emplacement).", this);
             return;
         }
 
         placementPreview.Begin(
             entry.plantDefinition,
             entry.plantPrefab,
+            entry.seedItem,
             cell,
             grid,
-            manager
-        );
+            manager);
     }
 
-    /// <summary>
-    /// Resolve un prefab a partir d'un PlantDefinition.
-    /// </summary>
+    private void HandleOpenShopClicked()
+    {
+        Close();
+        targetManager?.HideFarmSeedSelectionPopup();
+
+        if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Shop))
+            return;
+
+        Debug.LogWarning("[SeedSelectionUI] Impossible d'ouvrir le shop (UIManager).", this);
+    }
+
     public bool TryGetPlantPrefab(PlantDefinition definition, out GameObject prefab)
     {
         prefab = null;
@@ -144,9 +258,6 @@ public class SeedSelectionUI : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Resolve une PlantDefinition par plantId.
-    /// </summary>
     public bool TryGetPlantDefinitionById(string plantId, out PlantDefinition definition)
     {
         definition = null;
@@ -166,10 +277,11 @@ public class SeedSelectionUI : MonoBehaviour
     }
 }
 
-/// <summary>Associates a <see cref="PlantDefinition"/> with the world prefab to instantiate.</summary>
+/// <summary>Plant definition, world prefab, and inventory item consumed when planting.</summary>
 [Serializable]
 public class SeedEntry
 {
     public PlantDefinition plantDefinition;
-    public GameObject      plantPrefab;
+    public GameObject plantPrefab;
+    public ItemDefinition seedItem;
 }

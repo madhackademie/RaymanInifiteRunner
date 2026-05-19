@@ -22,7 +22,10 @@ public static class InventorySaveService
     /// <param name="startingCurrencyApplied">
     /// Si la réserve monnaie de départ unique a déjà été accordée pour ce profil (voir <see cref="PlayerInventory"/>).
     /// </param>
-    public static void Save(IReadOnlyList<InventorySlot> slots, bool startingCurrencyApplied)
+    public static void Save(
+        IReadOnlyList<InventorySlot> slots,
+        bool startingCurrencyApplied,
+        bool startingSeedsApplied)
     {
         var records = new List<SlotRecord>(slots.Count);
 
@@ -41,7 +44,12 @@ public static class InventorySaveService
         }
 
         string json = JsonUtility.ToJson(
-            new SaveData { slots = records, startingCurrencyApplied = startingCurrencyApplied },
+            new SaveData
+            {
+                slots = records,
+                startingCurrencyApplied = startingCurrencyApplied,
+                startingSeedsApplied = startingSeedsApplied,
+            },
             prettyPrint: true);
 
         try
@@ -65,10 +73,12 @@ public static class InventorySaveService
         ItemDatabase database,
         IReadOnlyList<InventorySlot> slots,
         out int restoredCount,
-        out bool startingCurrencyApplied)
+        out bool startingCurrencyApplied,
+        out bool startingSeedsApplied)
     {
         restoredCount = 0;
         startingCurrencyApplied = false;
+        startingSeedsApplied = false;
 
         if (!File.Exists(SaveFilePath))
             return false;
@@ -126,6 +136,9 @@ public static class InventorySaveService
     {
         /// <summary>Défaut JsonUtility si absent du JSON (anciennes sauvegardes) : false.</summary>
         public bool startingCurrencyApplied;
+
+        /// <summary>Défaut JsonUtility si absent : false.</summary>
+        public bool startingSeedsApplied;
 
         public List<SlotRecord> slots;
     }

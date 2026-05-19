@@ -2,7 +2,7 @@
 
 **ID tâche :** [P0-FARM-SEED-INV-001]  
 **Branche Git :** `rework/selectionGraine` (depuis `main`)  
-**Statut :** plan validé session — implémentation à faire  
+**Statut :** implémenté en code (2026-05-19) — playtest + empty state UI optionnel restants  
 **Dernière mise à jour :** 2026-05-19
 
 ---
