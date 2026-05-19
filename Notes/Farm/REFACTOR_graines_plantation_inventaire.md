@@ -2,7 +2,7 @@
 
 **ID tâche :** [P0-FARM-SEED-INV-001]  
 **Branche Git :** `rework/selectionGraine` (depuis `main`)  
-**Statut :** implémenté en code (2026-05-19) — playtest + empty state UI optionnel restants  
+**Statut :** mergé sur **`main`** (`5125d7c`, 2026-05-19) — reste playtest [P0-FARM-PLAY-001] + prefab EmptyState [P0-FARM-UI-001]  
 **Dernière mise à jour :** 2026-05-19
 
 ---

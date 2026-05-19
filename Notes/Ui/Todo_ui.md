@@ -20,8 +20,12 @@ Règle :
 
 ## Détails d’exécution UI
 
+### Ferme — graines plantation (merge `main` 2026-05-19)
+- **Livré** : stock inventaire, label `×N`, consommation au plant — `SeedSelectionUI` / `SeedSlotUI`, plan `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
+- **Prochaine session** : playtest [P0-FARM-PLAY-001] ; prefab EmptyState + bouton Acheter [P0-FARM-UI-001] (`emptyStatePanel`, `openShopButton` Inspector).
+
 ### FirstLvl — popups génériques
-- Migrer l’UI de sélection de graines vers le pipeline popup générique (`PopupId` + binding + `ScreenPopupHost`).
+- Migrer l’UI de sélection de graines vers le pipeline popup générique (`PopupId` + binding + `ScreenPopupHost`) — **déjà sur pipeline** ; reste polish EmptyState.
 - Migrer la popup plante (état/info/récolte) vers le même pipeline, sans second chemin legacy.
 - Produire un inventaire des autres popups hors pipeline et proposer un ordre de migration.
 

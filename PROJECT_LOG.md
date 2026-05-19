@@ -1,5 +1,35 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-19 — Fin de session
+
+### Objectifs du jour
+1. **[P0-SHOP-POP-001]** — polish popup achat shop (quantité, Max, confirmation, wallet) → merge `main`.
+2. **[P0-FARM-SEED-INV-001]** — lier plantation ↔ inventaire (plus de plantation sans graines).
+3. Git : branches `rework/shopitempopup`, `rework/selectionGraine` ; merges sur `main`.
+
+### Changements effectués (commits clés sur `main`)
+- **Shop** : `9720f92`, `f5cf8ec`, `2507172` — `ShopItemPopup` + docs.
+- **Graines** : `5125d7c` — `SeedEntry.seedItem`, filtre stock, label `×N`, `TryPlantSeedAt`, pack 3× `laitue_seed`, flag save `startingSeedsApplied`.
+- **Docs / merge** : `b82eec0` — clôture merge + todos.
+- **Fichiers principaux** : `SeedSelectionUI.cs`, `SeedSlotUI.cs`, `BiofiltreManager.cs`, `PlantPlacementPreview.cs`, `PlayerInventory.cs`, `InventorySaveService.cs`, prefabs/scène `SeedSelectionUI`, `NavigationHUD`.
+
+### Décisions
+- **Consommation** : 1 graine retirée à la **confirmation** du placement (preview), pas à l’ouverture du popup.
+- **Sac vide** : message dans le popup + ouverture **Shop** via `UIManager` (bouton dédié prefab encore optionnel).
+- **Onboarding** : **3 graines** une fois par profil (`startingSeedsApplied` dans `inventory.json`), même pattern que la monnaie de départ.
+- **Item référence** : `laitue_seed` (`LaitueSeedling.asset`) aligné shop / récolte / plantation.
+
+### Problèmes / solutions
+- **CS0103** `ApplyStartingSeedsGrantIfNeeded` introuvable → méthodes ajoutées dans `PlayerInventory.cs`.
+- Ambiguïté `PlantSeedAt` → méthode interne **`PlantSeedAtInternal`** (save ferme sans consommation).
+
+### Prochaine session (priorité — voir `Notes/Todo_project.md`)
+1. **[P0-FARM-PLAY-001]** — playtest boucle graines sur `main` (pack départ, `×N`, 3 plants, blocage, shop, re-plant).
+2. **[P0-FARM-UI-001]** — (optionnel) panneau EmptyState + bouton « Acheter » sur `SeedSelectionUI.prefab`.
+3. Sinon : **[CT-SHOP-002]** polish UX shop ou **[CT-FARM-004]** persistance ferme complète.
+
+---
+
 ## 2026-05-19 — [P0-FARM-SEED-INV-001] Merge graines ↔ inventaire sur `main`
 
 ### Livré

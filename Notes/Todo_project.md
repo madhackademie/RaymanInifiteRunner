@@ -37,13 +37,20 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> **`main`** — merge **`rework/selectionGraine`** (`5125d7c`, 2026-05-19). Prochain chantier : nouvelle branche feature (`GIT_HELPER.md`).
+> **`main`** à jour (`b82eec0`, 2026-05-19). Derniers merges : shop popup + graines plantation. **Créer une branche feature** avant le prochain gros chantier (`GIT_HELPER.md` § --3--).
 
-### Ferme — graines vs inventaire
-- [x] [P0-FARM-SEED-INV-001] Plantation ↔ inventaire (merge `main`). Plan : `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`. Optionnel : panneau EmptyState prefab.
+### 1) Validation gameplay — graines (priorité immédiate)
+- [ ] [P0-FARM-PLAY-001] **Playtest sur `main`** : reset inventaire → 3 graines départ ; popup affiche `Laitue ×3` ; planter 3× puis blocage ; acheter au shop ; replanter ; preview annulé (Échap) ne consomme pas. Noter bugs dans `PROJECT_LOG.md`.
+
+### 2) Polish UI ferme (rapide, si playtest OK)
+- [ ] [P0-FARM-UI-001] Prefab **`SeedSelectionUI`** : ajouter **EmptyStatePanel** + bouton **Acheter** câblés (`emptyStatePanel`, `emptyStateLabel`, `openShopButton` sur `SeedSelectionUI`). Détail : `Notes/Farm/REFACTOR_graines_plantation_inventaire.md` §4.4.
+
+### 3) Piste alternative (si graines validées)
+- [ ] [CT-SHOP-002] Polish UX visuel shop (focus, transitions) — optionnel.
+- [ ] [CT-FARM-004] Persistance ferme scénario complet : pose → quit → relance → récolte → relance.
 
 ### Doc — popups
-- [~] [BL-POP-DOC-001] `popup_generique.md` §2.5 aligné (2026-05-15). Reste : `SYSTEMES_carte_mentale.md`, `Codebase_etat_reference.md`.
+- [~] [BL-POP-DOC-001] `popup_generique.md` §2.5 aligné. Reste : `SYSTEMES_carte_mentale.md`, `Codebase_etat_reference.md`.
 
 ---
 

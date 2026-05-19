@@ -19,5 +19,5 @@ alwaysApply: true
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
 - Priorite courante connue (a revalider via docs a chaque session):
- - Branche feature: **`rework/selectionGraine`** — rappeler en tete si demande « tache du jour » et branche != `main`.
- - [P0-FARM-SEED-INV-001] graines plantation ↔ inventaire (`Notes/Farm/REFACTOR_graines_plantation_inventaire.md`).
+ - **`main`** — shop popup + graines plantation merges (2026-05-19).
+ - Prochaine session: [P0-FARM-PLAY-001] playtest graines, [P0-FARM-UI-001] EmptyState prefab optionnel.

@@ -42,7 +42,7 @@ Quand l'utilisateur indique la fin de session ou demande de journaliser:
 
 ## 5) Priorite courante connue (memoire active)
 
-Branche feature documentee: **`rework/selectionGraine`** (ne pas confondre avec `main`).
+Branche courante documentee: **`main`** (`b82eec0`, fin session 2026-05-19).
 
 Priorite immediate actuelle:
-- [P0-FARM-SEED-INV-001] graines plantation ↔ inventaire — plan `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
+- [P0-FARM-PLAY-001] playtest boucle graines sur main ; puis [P0-FARM-UI-001] EmptyState prefab (optionnel).
