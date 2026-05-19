@@ -18,8 +18,8 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **Prochaine session (2026-05-19)** : **[P0-FARM-SEED-INV-001]** sur branche **`rework/selectionGraine`** — plan **`Notes/Farm/REFACTOR_graines_plantation_inventaire.md`** (filtre inventaire, consommation au plant, empty state shop / pack départ).
-2. **Shop** : popup achat **livré** ([P0-SHOP-POP-001] merge `main`, 2026-05-19). Optionnel : [CT-SHOP-002] polish UX visuel.
+1. **Prochaine session** : revalider `Notes/Todo_project.md` § *Prochaine session* ([P0-FARM-SEED-INV-001] clos sur `main`, `5125d7c`).
+2. **Shop** : popup achat **livré** ([P0-SHOP-POP-001]). Optionnel : [CT-SHOP-002] polish UX visuel.
 3. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
 4. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
 5. **~2026-05-01 — Audit Bezi + refactor navigation Scene/UI** : terminer l’audit sur le flux réel (`ShowScene`, boot eager, `UIManager`) ; **clean/refactor** ; supprimer ou documenter le code mort ; **réaligner** `ARCHI` / `Journal_ui` / `Todo_ui` / guide scènes — **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**, **`PROJECT_LOG.md`** (2026-04-21).
@@ -42,7 +42,7 @@
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
 - Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-19** :
-  - **[P0-FARM-SEED-INV-001]** graines plantation ↔ inventaire (popup achat shop clos).
+  - Prochaine priorité à définir ([P0-FARM-SEED-INV-001] mergé sur `main`).
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :

@@ -37,13 +37,10 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> **Tu es sur une branche feature / rework, pas sur `main`.**  
-> Branche documentée : **`rework/selectionGraine`** (graines ↔ inventaire).  
-> Lors d’une demande *« qu’est-ce qu’il y a à faire ? »* / *tâche du jour* : l’assistant doit **annoncer cette branche en tête de réponse** (confirmer avec `git branch --show-current`) et rappeler de **ne pas coder le chantier sur `main`** sans fusion prévue.  
-> Mettre à jour ce bloc quand la branche feature change ou après merge dans `main`.
+> **`main`** — merge **`rework/selectionGraine`** (`5125d7c`, 2026-05-19). Prochain chantier : nouvelle branche feature (`GIT_HELPER.md`).
 
-### Ferme — graines vs inventaire (branche `rework/selectionGraine`)
-- [~] [P0-FARM-SEED-INV-001] Lier plantation ↔ inventaire : filtre + quantités UI, **consommation 1× graine à la confirmation** de placement, **bloquer** si stock 0 ; empty state → **shop** et/ou **pack graines départ** (décision §3). **Plan détaillé :** `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
+### Ferme — graines vs inventaire
+- [x] [P0-FARM-SEED-INV-001] Plantation ↔ inventaire (merge `main`). Plan : `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`. Optionnel : panneau EmptyState prefab.
 
 ### Doc — popups
 - [~] [BL-POP-DOC-001] `popup_generique.md` §2.5 aligné (2026-05-15). Reste : `SYSTEMES_carte_mentale.md`, `Codebase_etat_reference.md`.

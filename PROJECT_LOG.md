@@ -1,5 +1,15 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-19 — [P0-FARM-SEED-INV-001] Merge graines ↔ inventaire sur `main`
+
+### Livré
+- [x] Fast-forward **`rework/selectionGraine`** → **`main`** (`5125d7c`) : filtre stock, affichage `×N`, `TryPlantSeedAt` + consommation, pack 3× `laitue_seed`, message + shop si vide.
+
+### Prochaine session
+- Définir priorité dans `Notes/Todo_project.md` (ex. [CT-SHOP-002], inventaire, doc popups).
+
+---
+
 ## 2026-05-19 — [P0-FARM-SEED-INV-001] Plan graines ↔ inventaire (`rework/selectionGraine`)
 
 ### Contexte
