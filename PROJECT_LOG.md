@@ -1,5 +1,24 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-19 — [P0-SHOP-POP-001] Rework popup achat shop (`rework/shopitempopup`)
+
+### Contexte
+- Branche feature **`rework/shopitempopup`** (depuis `main` à jour).
+- Objectif : polish flux §3 `Notes/Ui/popup_generique.md` sur **`ShopItemPopup`** (`PopupId.ShopItemPurchase`).
+
+### Ce qu’on a fait
+- [x] **`ShopItemPopupController`** : saisie quantité (`TMP_InputField`), bouton **Max** (solde / prix / `MaxQuantity` / place inventaire), **confirmation** avant `PurchaseRequested` (overlay si présent).
+- [x] **`ShopItemPopupView`** : bindings Max, input, overlay confirmation, **`CurrencyBalanceUI`** wallet (`Solde : {0}`) rafraîchi à l’ouverture et à chaque changement de quantité.
+- [x] **`ShopItemPopup.prefab`** : `QuantityInputField`, `MaxButton`, `ConfirmOverlay`, ligne **WalletBalance** dans le Header.
+- [x] Commits branche : `rework amélioration du pop up shop item`, `correctif sur validation achat`.
+- [x] Docs / todo : **`Notes/Todo_project.md`** ([P0-SHOP-POP-001], [CT-SHOP-003]…[006] cochés), **`popup_generique.md`** §3, **`Notes/Ui/Todo_ui.md`**.
+
+### Prochaine session
+- **[P0-FARM-SEED-INV-001]** graines plantation ↔ inventaire (`SeedSelectionUI` vs `PlayerInventory`).
+- Optionnel : **[CT-SHOP-002]** polish UX visuel shop (hors MVP flux achat).
+
+---
+
 ## 2026-05-15 — Fin de session — suites validées auteur
 
 ### Contexte

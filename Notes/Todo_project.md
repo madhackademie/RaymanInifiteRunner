@@ -35,9 +35,6 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-### Shop — polish popup d’achat (branche dédiée)
-- [ ] [P0-SHOP-POP-001] Créer une **branche Git feature** puis **polish du popup d’achat** (`ShopItemPopup` / pipeline `PopupId.ShopItemPurchase`) — enchaîner les items **`Notes/Ui/Todo_ui.md`** (Shop) et **`Notes/Ui/popup_generique.md`** §3 : UI/UX (**CT-SHOP-002**), saisie quantité (**CT-SHOP-003**), bouton Max (**CT-SHOP-004**), confirmation avant paiement (**CT-SHOP-005**), refs Inspector (**CT-SHOP-006**). **Ne pas traiter sur `main` sans branche** (cf. `GIT_HELPER.md`).
-
 ### Ferme — graines vs inventaire
 - [ ] [P0-FARM-SEED-INV-001] Vérifier que les **graines offertes à la plantation** (`SeedSelectionUI` / liste `SeedEntry`) sont **alignées avec le sac** (`PlayerInventory`) : affichage conditionnel des graines possédées, quantités, **consommation d’un item au plant** si le design l’exige, pas de plantation « gratuite » hors inventaire par erreur.
 
@@ -49,12 +46,13 @@ Convention d'IDs :
 ## Court terme (priorités actives)
 
 ### Shop — polish restant
-- [~] [CT-SHOP-001] Flux achat de base opérationnel (catalogue + popup item + transaction) ; finaliser le polish.
-- [ ] [CT-SHOP-002] Passe UI/UX shop (lisibilité, focus, enchaînement modales).
-- [ ] [CT-SHOP-003] Saisie quantité (`TMP_InputField`, clamp min/max).
-- [ ] [CT-SHOP-004] Bouton Max (`floor(solde/prix)` + plafonds métier).
-- [ ] [CT-SHOP-005] Confirmation avant paiement.
-- [ ] [CT-SHOP-006] Corriger les références Inspector manquantes côté shop/prefabs UI.
+- [x] [P0-SHOP-POP-001] Branche **`rework/shopitempopup`** + polish popup achat (`ShopItemPopup` : saisie quantité, Max, confirmation overlay, solde wallet dans le Header). **Fait** (2026-05-19) — merge `main`, voir `PROJECT_LOG.md`.
+- [x] [CT-SHOP-001] Flux achat de base opérationnel (catalogue + popup item + transaction).
+- [~] [CT-SHOP-002] Passe UI/UX shop (lisibilité, focus, transitions) — polish visuel optionnel restant.
+- [x] [CT-SHOP-003] Saisie quantité (`TMP_InputField`, clamp min/max).
+- [x] [CT-SHOP-004] Bouton Max (`floor(solde/prix)` + plafonds métier + place inventaire).
+- [x] [CT-SHOP-005] Confirmation avant paiement (overlay `ConfirmOverlay` sur `ShopItemPopup.prefab`).
+- [x] [CT-SHOP-006] Références Inspector popup item (prefab + `ShopItemPopupView` / `CurrencyBalanceUI` wallet).
 
 ### Inventaire / wallet / runtime UI
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).

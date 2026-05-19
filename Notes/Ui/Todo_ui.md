@@ -25,12 +25,9 @@ Règle :
 - Migrer la popup plante (état/info/récolte) vers le même pipeline, sans second chemin legacy.
 - Produire un inventaire des autres popups hors pipeline et proposer un ordre de migration.
 
-### Shop — polish UI restant
-- Faire une passe UX (focus, lisibilité, transitions modales).
-- Ajouter la saisie quantité (`TMP_InputField`) avec clamp métier.
-- Ajouter le bouton Max cohérent avec règles inventaire/solde.
-- Ajouter la confirmation avant paiement.
-- Vérifier/corriger les références Inspector encore vides.
+### Shop — popup achat (`ShopItemPopup`) — livré 2026-05-19
+- **Fait** (branche `rework/shopitempopup`, merge `main`) : `ShopItemPopupController` / `ShopItemPopupView`, prefab `Assets/Prefabs/Ui/ShopItemPopup.prefab` — input quantité, Max, overlay confirmation, `CurrencyBalanceUI` (solde) dans le Header. Statuts : **`Notes/Todo_project.md`** [P0-SHOP-POP-001], [CT-SHOP-003]…[006].
+- **Reste optionnel** : passe UX globale shop [CT-SHOP-002] (focus, transitions, polish visuel).
 
 ### Navigation Scene/UI
 - Revalider tous les chemins `SceneNavigator.ShowScene` (transitions, hub `HomeScene`, retour gameplay).

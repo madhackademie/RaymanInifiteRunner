@@ -80,7 +80,7 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 
 Base en place : **mécanique d’achat** isolée (UI + logique), en s’appuyant sur la même voie d’entrée inventaire que la récolte (`PlayerInventory.TryAdd` via `InventoryCurrencyAccount.TryPurchase`). Les points ci-dessous servent maintenant de référence pour le polish.
 
-**Mise à jour 2026-05-14** : monnaie, débit, feedback ressources insuffisantes et **popup item shop générique** sont en place sur `main`. **Reste du polish flux §3** : passe **UI/UX**, **saisie quantité** (`TMP_InputField`), bouton **Max**, **confirmation** avant paiement.
+**Mise à jour 2026-05-19** : flux §3 **livré** sur `ShopItemPopup` (branche `rework/shopitempopup` → `main`) : **+** / **−**, **saisie quantité**, **Max**, **confirmation** (overlay), **solde wallet** (`CurrencyBalanceUI` dans le Header). Polish UX visuel optionnel : **`Notes/Todo_project.md`** [CT-SHOP-002].
 
 1. **Clic sur une offre** (slot catalogue) → ouverture d’une **fenêtre détail** avec :
    - **Image** de l’item (icône `ItemDefinition` ou équivalent) ;
@@ -92,7 +92,7 @@ Base en place : **mécanique d’achat** isolée (UI + logique), en s’appuyant
    - Bouton **Max** : applique le maximum **achetable** compte tenu du **solde**, du **prix unitaire**, des plafonds (`MaxPurchaseQuantity`, stock listing, `CanFitQuantity`, etc.) ;
    - Bouton **Payer** (libellé dynamique, voir point 3).
 3. **Prix total** : recalcul continu **`total = prix_unitaire × quantité`** ; le bouton de paiement (ou un libellé associé) **affiche** ce total (ex. « Payer 15 »).
-4. **Confirmation** : au clic sur Payer, ouvrir un **popup de confirmation** (« Confirmer l’achat ? »). À ce stade, le flux existant achète directement depuis la popup item.
+4. **Confirmation** : au clic sur **Acheter**, afficher l’overlay **`ConfirmOverlay`** (« Confirmer l’achat ? » + total) ; **Confirmer** déclenche `PurchaseRequested` (sinon achat direct si overlay absent).
 5. **Transaction** :
    - Si **fonds suffisants** : débit monnaie + **`TryAdd`** de l’item acheté via `InventoryCurrencyAccount.TryPurchase`, fermeture / refresh ;
    - Si **fonds insuffisants** : popup générique ressources insuffisantes (sans débit ni ajout inventaire).
@@ -112,7 +112,7 @@ Les points ci-dessous complètent le **§3** (flux achat) et l’intention **§1
    - Sur **validation d’achat** confirmée, appeler la **même couche** que la récolte pour **ajouter** l’item (`PlayerInventory.TryAdd`, etc.).
 
 3. **UI**  
-   - Modal détail, popup item générique shop, feedback ressources insuffisantes : **OK**. Restent **confirmation**, **saisie quantité**, **Max**, polish visuel.
+   - Modal détail, popup item générique shop, feedback ressources insuffisantes, **saisie quantité**, **Max**, **confirmation**, **wallet dans le popup** : **OK** (2026-05-19). Reste polish visuel optionnel [CT-SHOP-002].
 
 4. **Monnaie**  
    - **OK** sur `main` (solde, débit, `TryPurchase`). Optionnel plus tard : durcir doubles clics / transactions concurrentes.
