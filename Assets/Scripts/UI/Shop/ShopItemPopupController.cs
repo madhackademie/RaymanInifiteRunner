@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// Contrôleur de la popup item shop :
-/// gère quantité, prix total et émission de la demande d'achat.
+/// quantité (+ / − / saisie / Max), confirmation optionnelle, puis demande d'achat.
 /// </summary>
 public sealed class ShopItemPopupController : MonoBehaviour
 {
@@ -64,21 +64,71 @@ public sealed class ShopItemPopupController : MonoBehaviour
         Refresh();
     }
 
+    private void HandleMaxClicked()
+    {
+        if (!HasItem())
+            return;
+
+        currentQuantity = ComputeMaxAffordableQuantity();
+        Refresh();
+    }
+
+    private void HandleQuantityInputSubmitted(string rawText)
+    {
+        if (!HasItem())
+            return;
+
+        if (!int.TryParse(rawText, out int parsed))
+            parsed = currentData.MinQuantity;
+
+        currentQuantity = parsed;
+        Refresh();
+    }
+
     private void HandleConfirmClicked()
     {
         if (!HasItem())
             return;
 
         int totalPrice = ComputeTotalPrice();
-        if (totalPrice <= 0)
+        if (totalPrice <= 0 && currentData.UnitPrice > 0)
             return;
 
-        PurchaseRequested?.Invoke(currentData, currentQuantity, totalPrice);
+        if (view != null && view.HasConfirmOverlay)
+        {
+            view.ShowConfirmOverlay(totalPrice);
+            return;
+        }
+
+        EmitPurchaseRequested(totalPrice);
+    }
+
+    private void HandleConfirmPurchaseClicked()
+    {
+        if (!HasItem())
+            return;
+
+        int totalPrice = ComputeTotalPrice();
+        view?.HideConfirmOverlay();
+        EmitPurchaseRequested(totalPrice);
+    }
+
+    private void HandleConfirmCancelClicked()
+    {
+        view?.HideConfirmOverlay();
     }
 
     private void HandleCloseClicked()
     {
         Close();
+    }
+
+    private void EmitPurchaseRequested(int totalPrice)
+    {
+        if (!HasItem())
+            return;
+
+        PurchaseRequested?.Invoke(currentData, currentQuantity, totalPrice);
     }
 
     private void Refresh()
@@ -91,7 +141,83 @@ public sealed class ShopItemPopupController : MonoBehaviour
         int totalPrice = ComputeTotalPrice();
         view.SetQuantity(currentQuantity);
         view.SetTotalPrice(totalPrice);
-        view.SetConfirmInteractable(totalPrice > 0);
+        view.SetConfirmInteractable(CanConfirmPurchase(totalPrice));
+        view.RefreshWallet();
+    }
+
+    private bool CanConfirmPurchase(int totalPrice)
+    {
+        if (!HasItem())
+            return false;
+
+        if (currentData.UnitPrice > 0 && totalPrice <= 0)
+            return false;
+
+        return currentQuantity >= currentData.MinQuantity;
+    }
+
+    private int ComputeMaxAffordableQuantity()
+    {
+        if (!HasItem())
+            return 1;
+
+        int cap = currentData.MaxQuantity;
+        ItemDefinition item = ResolvePurchasedItem();
+        PlayerInventory inventory = PlayerInventory.Instance;
+
+        if (inventory != null && item != null)
+            cap = Mathf.Min(cap, ComputeMaxInventoryFit(inventory, item, currentData.MaxQuantity));
+
+        cap = Mathf.Min(cap, ComputeMaxByFunds(inventory));
+
+        return Mathf.Max(currentData.MinQuantity, cap);
+    }
+
+    private int ComputeMaxByFunds(PlayerInventory inventory)
+    {
+        if (currentData.UnitPrice <= 0)
+            return currentData.MaxQuantity;
+
+        if (inventory == null || inventory.ItemDatabase == null)
+            return currentData.MaxQuantity;
+
+        ItemDefinition currency = inventory.ItemDatabase.PrimaryCurrency;
+        if (currency == null)
+            return currentData.MaxQuantity;
+
+        int balance = InventoryCurrencyAccount.GetBalance(inventory, currency);
+        if (balance <= 0)
+            return currentData.MinQuantity;
+
+        return Mathf.Max(currentData.MinQuantity, balance / currentData.UnitPrice);
+    }
+
+    private int ComputeMaxInventoryFit(PlayerInventory inventory, ItemDefinition item, int listingCap)
+    {
+        int max = currentData.MinQuantity;
+        int upper = Mathf.Max(currentData.MinQuantity, listingCap);
+
+        for (int quantity = currentData.MinQuantity; quantity <= upper; quantity++)
+        {
+            if (!inventory.CanFitQuantity(item, quantity))
+                break;
+
+            max = quantity;
+        }
+
+        return max;
+    }
+
+    private ItemDefinition ResolvePurchasedItem()
+    {
+        if (!HasItem())
+            return null;
+
+        PlayerInventory inventory = PlayerInventory.Instance;
+        if (inventory == null || inventory.ItemDatabase == null)
+            return null;
+
+        return inventory.ItemDatabase.GetById(currentData.ItemId);
     }
 
     private int ComputeTotalPrice()
@@ -114,7 +240,11 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
         view.OnPlusClicked += HandlePlusClicked;
         view.OnMinusClicked += HandleMinusClicked;
+        view.OnMaxClicked += HandleMaxClicked;
+        view.OnQuantityInputSubmitted += HandleQuantityInputSubmitted;
         view.OnConfirmClicked += HandleConfirmClicked;
+        view.OnConfirmPurchaseClicked += HandleConfirmPurchaseClicked;
+        view.OnConfirmCancelClicked += HandleConfirmCancelClicked;
         view.OnCloseClicked += HandleCloseClicked;
     }
 
@@ -125,7 +255,11 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
         view.OnPlusClicked -= HandlePlusClicked;
         view.OnMinusClicked -= HandleMinusClicked;
+        view.OnMaxClicked -= HandleMaxClicked;
+        view.OnQuantityInputSubmitted -= HandleQuantityInputSubmitted;
         view.OnConfirmClicked -= HandleConfirmClicked;
+        view.OnConfirmPurchaseClicked -= HandleConfirmPurchaseClicked;
+        view.OnConfirmCancelClicked -= HandleConfirmCancelClicked;
         view.OnCloseClicked -= HandleCloseClicked;
     }
 }
