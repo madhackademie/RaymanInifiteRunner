@@ -18,7 +18,7 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **Prochaine session (2026-05-19)** : **[P0-FARM-SEED-INV-001]** — graines plantation ↔ inventaire (`SeedSelectionUI` vs `PlayerInventory`). Voir **`Notes/Todo_project.md`**, **`PROJECT_LOG.md`** (2026-05-19).
+1. **Prochaine session (2026-05-19)** : **[P0-FARM-SEED-INV-001]** sur branche **`rework/selectionGraine`** — plan **`Notes/Farm/REFACTOR_graines_plantation_inventaire.md`** (filtre inventaire, consommation au plant, empty state shop / pack départ).
 2. **Shop** : popup achat **livré** ([P0-SHOP-POP-001] merge `main`, 2026-05-19). Optionnel : [CT-SHOP-002] polish UX visuel.
 3. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
 4. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.

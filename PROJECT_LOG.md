@@ -1,5 +1,21 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-19 — [P0-FARM-SEED-INV-001] Plan graines ↔ inventaire (`rework/selectionGraine`)
+
+### Contexte
+- Bug : plantation possible **sans** graines en sac (`SeedSelectionUI` catalogue Inspector, pas de `TryRemove` dans `PlantSeedAt`).
+- Branche feature créée : **`rework/selectionGraine`**.
+
+### Décisions / doc
+- Note refactor : **`Notes/Farm/REFACTOR_graines_plantation_inventaire.md`** (phases 1–6, options shop vs pack départ, cible `SeedEntry.seedItem` + consommation dans `BiofiltreManager`).
+- Item graine référence : **`laitue_seed`** (`LaitueSeedling.asset`), aligné shop + récolte Seedling.
+
+### Prochaine session (implémentation)
+- Exécuter phases 1–4 du plan (MVP : filtre, quantité, consommation, empty state shop).
+- Trancher option **pack graines départ** (phase 5) avec l’auteur.
+
+---
+
 ## 2026-05-19 — [P0-SHOP-POP-001] Rework popup achat shop (`rework/shopitempopup`)
 
 ### Contexte
