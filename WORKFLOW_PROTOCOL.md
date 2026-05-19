@@ -9,6 +9,8 @@ commande “Bootstrap session : lis @WORKFLOW_PROTOCOL.md, @ASSISTANT_CONTEXT.md
 
 Pour toute demande de gestion de projet (tache du jour, priorite, prochaine session):
 - lire d'abord les 4 fichiers ci-dessus,
+- verifier la branche Git courante (`git branch --show-current` ou `git status -sb`),
+- **rappeler en tete de reponse** si l'on n'est pas sur `main` : nom de la branche feature/rework + lien avec la priorite (`Notes/Todo_project.md` bloc *Contexte Git*),
 - repondre uniquement avec la priorite la plus recente issue des docs,
 - ne jamais inventer une tache generique.
 

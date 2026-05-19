@@ -17,9 +17,12 @@ Lire systematiquement:
 
 Objectif: retrouver la priorite reelle de la session en cours, sans invention.
 
+Verifier aussi la branche Git (`git branch --show-current` ou `git status -sb`) et le bloc **Contexte Git** dans `Notes/Todo_project.md`.
+
 ## 2) Regle de reponse (anti-bruit)
 
 - Ne jamais inventer une "tache du jour".
+- **Si la branche courante n'est pas `main` :** commencer la reponse par un rappel explicite du type *« Tu es sur la branche feature `…` — le travail en cours est … »* (nom de branche = sortie Git ou bloc *Contexte Git* du todo).
 - Repondre avec la priorite la plus recente, concrete et actionnable, basee sur les documents.
 - Si plusieurs priorites existent, proposer un ordre clair (1, 2, 3) avec la priorite immediate en premier.
 - Si les sources se contredisent, le dire explicitement et demander validation.
@@ -39,6 +42,7 @@ Quand l'utilisateur indique la fin de session ou demande de journaliser:
 
 ## 5) Priorite courante connue (memoire active)
 
+Branche feature documentee: **`rework/selectionGraine`** (ne pas confondre avec `main`).
+
 Priorite immediate actuelle:
-- FirstLvl: appliquer le systeme de popup generique pour l'UI des graines selectionnables et le popup etat plante (info / recolte) au clic,
-- scanner le projet pour les autres popups hors pipeline et planifier leur migration.
+- [P0-FARM-SEED-INV-001] graines plantation ↔ inventaire — plan `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.

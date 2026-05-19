@@ -13,6 +13,7 @@
 ### Prochaine session (implémentation)
 - Exécuter phases 1–4 du plan (MVP : filtre, quantité, consommation, empty state shop).
 - Trancher option **pack graines départ** (phase 5) avec l’auteur.
+- **Rappel session :** travail sur **`rework/selectionGraine`** (pas `main`) — bloc *Contexte Git* dans `Notes/Todo_project.md` + protocole `WORKFLOW_PROTOCOL.md` / règles Cursor.
 
 ---
 

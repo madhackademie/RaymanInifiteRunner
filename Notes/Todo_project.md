@@ -35,6 +35,13 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### Contexte Git (rappel obligatoire « tâche du jour »)
+
+> **Tu es sur une branche feature / rework, pas sur `main`.**  
+> Branche documentée : **`rework/selectionGraine`** (graines ↔ inventaire).  
+> Lors d’une demande *« qu’est-ce qu’il y a à faire ? »* / *tâche du jour* : l’assistant doit **annoncer cette branche en tête de réponse** (confirmer avec `git branch --show-current`) et rappeler de **ne pas coder le chantier sur `main`** sans fusion prévue.  
+> Mettre à jour ce bloc quand la branche feature change ou après merge dans `main`.
+
 ### Ferme — graines vs inventaire (branche `rework/selectionGraine`)
 - [ ] [P0-FARM-SEED-INV-001] Lier plantation ↔ inventaire : filtre + quantités UI, **consommation 1× graine à la confirmation** de placement, **bloquer** si stock 0 ; empty state → **shop** et/ou **pack graines départ** (décision §3). **Plan détaillé :** `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
 

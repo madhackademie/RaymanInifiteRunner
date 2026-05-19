@@ -37,7 +37,8 @@ Debut de session :
 1. Lire `WORKFLOW_PROTOCOL.md`
 2. Lire `ASSISTANT_CONTEXT.md`
 3. Lire la derniere entree de `PROJECT_LOG.md`
-4. Ouvrir `Notes/Todo_project.md` -> section **Prochaine session (priorite immediate)**
+4. Ouvrir `Notes/Todo_project.md` -> section **Prochaine session (priorite immediate)** + bloc **Contexte Git**
+5. Verifier la branche (`git branch --show-current`) — si feature/rework, le rappeler en tete lors d'une question *tache du jour*
 
 Pendant la session :
 - passer une tache de `[ ]` vers `[~]` ou `[x]` dans `Notes/Todo_project.md`.

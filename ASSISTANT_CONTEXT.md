@@ -30,6 +30,10 @@
 10. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
 11. Nettoyage assets prototype / références Unity.
 
+### Contexte Git session (2026-05-19)
+- **Branche feature active documentée :** `rework/selectionGraine` ([P0-FARM-SEED-INV-001]).
+- Lors d'une demande *tache du jour* : confirmer la branche courante (`git branch --show-current`) et **le rappeler explicitement** si ce n'est pas `main` (voir `Notes/Todo_project.md` § *Contexte Git*).
+
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
   - `WORKFLOW_PROTOCOL.md`
