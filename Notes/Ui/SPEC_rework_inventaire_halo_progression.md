@@ -169,13 +169,29 @@ Docs inventaire actuelles :
 
 ---
 
-## 8. Questions ouvertes
+## 8. Questions ouvertes & pistes de design
 
-- [ ] Halo : nombre exact de slots visibles au lancement (6 vs 8 vs progression déblocable) ?
+### Déjà acté (direction produit)
+
+- **Déblocage par points** : la progression dans les arbres se fait une fois des **points acquis** (source exacte à préciser via notes perso / GDD).
+- **Choix libre de l’ordre** : le joueur **choisit quel arbre développer en premier** — pas de chemin imposé au départ.
+- **Pistes envisagées** (liste non exhaustive) : **commerce**, **culture plante**, **culture poisson**, etc. Chaque path a ses **avantages et inconvénients**.
+- **Équilibrage = chantier majeur** : les paths doivent rester **viables entre eux**, sans qu’un seul domine toujours. Exemple ouvert : produire **plus de salade, plus vite** pourrait rapporter autant (voire plus) qu’un joueur qui **vend la même salade 3× plus cher** — **à valider par playtest et chiffres**, pas tranché aujourd’hui. C’est l’un des travaux les **plus longs et fastidieux** du projet ; à planifier comme phase dédiée, pas bloquante pour la coque UI.
+
+### Encore à trancher (UI / technique)
+
+- [ ] Halo : nombre exact de slots visibles au lancement (6 vs 8 vs slots déblocables au fil des points) ?
 - [ ] Arbre talents : plein écran ou panneau slide par-dessus la grille ?
 - [ ] Filtres inventaire : reprendre les catégories de la ref. (All / Equip / Conso / Matériaux) ou adapter au contenu ferme actuel ?
 - [ ] Wallet : reste-t-il dans la zone basse ou remonte-t-il dans le halo ?
-- [ ] Premier arbre jouable : **commerce_marketing** confirmé comme vertical slice ?
+- [ ] Premier arbre **jouable en prototype** : commerce, culture plante ou autre (vertical slice UI) ?
+
+### Équilibrage (GDD — long terme)
+
+- [ ] Courbe de gain par path (volume / vitesse vs marge / prix unitaire).
+- [ ] Coût en points par nœud et par branche ; risque de « rush » d’un seul arbre.
+- [ ] Synergies ou pénalités entre paths (ex. focus poisson vs focus plante).
+- [ ] Métriques de validation : temps pour atteindre un seuil de revenu équivalent entre builds.
 
 ---
 
