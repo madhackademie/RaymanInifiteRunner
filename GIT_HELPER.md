@@ -21,6 +21,13 @@ Ensuite, sur cette branche :
 - `git push` suffit (tracking deja configure par `-u`).
 - `git pull` suffit aussi.
 
+## --0b-- Commits : auteur du projet (regle session Cursor)
+
+- **Par defaut, c'est toi qui fais** `git add`, `git commit` et `git push` (plus rapide cote autorisations / IDE).
+- L'assistant modifie le code et les docs ; il **ne commit/push pas** sauf si tu le demandes explicitement (« commit », « push », etc.).
+- En fin de tache, il peut te donner la **liste des fichiers** et un **message de commit suggere** a copier.
+- Regle detaillee : `.cursor/rules/git_commits_user_only.mdc` + `WORKFLOW_PROTOCOL.md` § --4--.
+
 ## --0-- Checklist rapide (branche + synchro)
 
 Utilise cette séquence au début de chaque session ou après un switch de branche :

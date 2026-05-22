@@ -1,0 +1,31 @@
+---
+description: Git commit/push — responsabilite utilisateur sauf demande explicite
+alwaysApply: true
+---
+
+# Regle Git — commits et push (auteur du projet)
+
+## Principe
+
+- **L'utilisateur s'occupe des commits et des push** (delais, autorisations, hooks, controle du message).
+- L'assistant **ne lance pas** `git commit`, `git push`, ni merge vers remote **sauf demande explicite** dans le message utilisateur (ex. « commit », « push », « merge la branche »).
+
+## Ce que l'assistant fait quand meme
+
+- Modifier le code et les docs de suivi (`PROJECT_LOG.md`, `Notes/Todo_project.md`, etc.) quand c'est demande.
+- A la fin d'une tache : **lister les fichiers modifies** et **proposer un message de commit** pret a copier (optionnel : commandes `git add` / `git commit` sans les executer).
+- `git status`, `git diff`, `git branch`, `git log` en lecture seule : OK si utile pour diagnostiquer ou preparer le commit utilisateur.
+- Creer/switch de branche **uniquement si demande** (comme pour commit/push).
+
+## Ce que l'assistant ne fait pas sans demande
+
+- Pas de commit « de confort » apres docs, fin de session, ou fix « evident ».
+- Pas de push automatique apres merge local.
+- Pas de amend / force push sauf instruction explicite et conforme aux regles de securite git du projet.
+
+## Fin de session / journal
+
+- Mettre a jour le journal et les todos : **oui** (sur demande « mets a jour le journal » ou fin de session).
+- Committer ces docs : **non**, sauf si l'utilisateur le demande ; rappeler qu'il reste a committer/pousser cote auteur.
+
+Référence workflow : `WORKFLOW_PROTOCOL.md` § --4--, `GIT_HELPER.md`.

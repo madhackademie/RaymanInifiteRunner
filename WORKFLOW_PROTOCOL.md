@@ -29,7 +29,13 @@ problèmes/solutions testées
 prochaines étapes (checklist)
 
 ## --4--
-add github commande commit/push : cf @GIT_HELPER.md [git helper](GIT_HELPER.md)
+Commit / push : **responsabilite auteur du projet** (pas l'assistant sauf demande explicite).
+
+- L'assistant prepare les changements (code + docs) et peut suggerer message de commit + liste de fichiers.
+- **Seul l'auteur** execute `git add`, `git commit`, `git push` (delais, autorisations, hooks).
+- Demander explicitement a l'assistant : « commit », « push », « merge », etc. si tu veux qu'il le fasse.
+
+Commandes : cf @GIT_HELPER.md [git helper](GIT_HELPER.md). Regle Cursor : `.cursor/rules/git_commits_user_only.mdc`.
 
 ## --5--
 **Nouvelle feature** : créer une branche dédiée avant un gros bloc de code — voir **`GIT_HELPER.md`** section **--3--** (*Branche par feature + fusion dans main*). Même logique avec un **fork** GitHub si besoin (branche sur le fork, puis PR).

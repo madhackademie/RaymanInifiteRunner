@@ -44,6 +44,7 @@ Légende :
 | `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md` | Actif | P1 | Cible ~2026-05-01 : audit **Bezi** navigation Scene/UI + clean/refactor + alignement doc (`ShowScene` vs notes `GoTo`/unload). |
 | `Notes/Ui/RULE_DRAFT_bezi_scene_ui_runtime.md` | Actif | P1 | Brouillon de rule Bezi IA : architecture runtime Scene/UI cible (SceneNavigator + UIManager + NavigationHUD), invariants, do/don't, checklist d’implémentation. |
 | `Notes/Ui/Decision_ui.md` | Actif | P3 | Spéc UI proto -> polish (objectifs, architecture panneaux, animations, contrat d'orchestration). |
+| `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` | Actif | P2 | Rework inventaire scindé : halo joueur (recherches/boosts) + grille items ; navigation arbres de talents. |
 | `Notes/Ui/Spec_ui.md` | Vide | P3 | Fichier placeholder pour future spécification UI dédiée. |
 
 ## Notes GDD
@@ -51,6 +52,7 @@ Légende :
 | Fichier | Statut | Priorité | Synthèse |
 |---|---|---|---|
 | `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` | Actif | P2 | Spéc de progression: XP joueur + maturité du biofiltre/système pour gate les cultures avancées. |
+| `Notes/GDD/INBOX_notes_tablette_recherches.md` | A trier | P3 | Inbox : notes manuscrites / recherches perso (« tablette » = référence auteur, pas feature jeu). |
 | `Notes/GDD/Inbox_gdd.md` | A trier | P3 | Brouillon d'idées GDD en vrac (états de plantes, inspirations casual farm, pistes à structurer). |
 
 ## Notes Learning

@@ -38,7 +38,8 @@ Si l'utilisateur donne/modifie une tache de prochaine session:
 
 Quand l'utilisateur indique la fin de session ou demande de journaliser:
 - proposer "Mets a jour le journal" si necessaire,
-- enregistrer objectifs, changements, decisions, problemes/solutions, prochaines etapes.
+- enregistrer objectifs, changements, decisions, problemes/solutions, prochaines etapes,
+- **ne pas committer** les docs : rappeler a l'auteur de `git add` / `git commit` / `git push` (cf. `.cursor/rules/git_commits_user_only.mdc`).
 
 ## 5) Priorite courante connue (memoire active)
 
