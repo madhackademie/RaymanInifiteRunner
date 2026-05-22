@@ -18,9 +18,9 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **Prochaine session (2026-05-19 fin de session)** : **[P0-FARM-PLAY-001]** playtest boucle graines sur `main` ; puis **[P0-FARM-UI-001]** EmptyState prefab (optionnel). Voir **`Notes/Todo_project.md`**, **`PROJECT_LOG.md`** (*Fin de session*).
-2. **Shop** : popup achat **livré** ([P0-SHOP-POP-001]). Optionnel : [CT-SHOP-002].
-3. **Graines ↔ inventaire** : **livré** ([P0-FARM-SEED-INV-001], merge `5125d7c`).
+1. **Prochaine session (2026-05-22)** : **[P0-FARM-BUG-001]** — popup graines : message empty + slot `Laitue ×N` simultanés après achat shop. Journal **`PROJECT_LOG.md` 2026-05-22**.
+2. **[~] [P0-FARM-PLAY-001]** — playtest graines (partiel, à reprendre après fix bug).
+3. **[P0-FARM-UI-001]** — EmptyState prefab dédié (évite fallback titre).
 3. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
 4. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
 5. **~2026-05-01 — Audit Bezi + refactor navigation Scene/UI** : terminer l’audit sur le flux réel (`ShowScene`, boot eager, `UIManager`) ; **clean/refactor** ; supprimer ou documenter le code mort ; **réaligner** `ARCHI` / `Journal_ui` / `Todo_ui` / guide scènes — **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**, **`PROJECT_LOG.md`** (2026-04-21).
@@ -42,8 +42,8 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **fin session 2026-05-19** :
-  - **[P0-FARM-PLAY-001]** playtest graines ; puis **[P0-FARM-UI-001]** EmptyState prefab (optionnel).
+- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-22** :
+  - **[P0-FARM-BUG-001]** popup graines : message empty persiste après achat shop (slot visible).
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :

@@ -1,5 +1,33 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-22 — Playtest graines + bug popup empty state ([P0-FARM-BUG-001])
+
+### Contexte playtest (auteur)
+Scénario reproduit sur `main` :
+1. Consommer le **pack départ** (3 graines) → popup **« Aucune graine dans l'inventaire… »** (OK).
+2. **Achat shop** de **1×** graine (`laitue_seed`).
+3. Re-clic cellule vide → popup plantation affiche **`Laitue ×1`** (slot OK) **mais conserve le message empty** en titre → **BUG**.
+
+Capture : titre empty + slot `Laitue ×1` simultanés (incohérent).
+
+### Analyse technique (piste — non corrigé)
+- `SeedSelectionUI.ShowEmptyState()` sans `emptyStatePanel` assigné : écrase le **TMP titre** du prefab via `panel.GetComponentInChildren<TextMeshProUGUI>()`.
+- `HideEmptyState()` réactive `slotsContainer` mais **ne restaure pas** le texte du titre → message empty persiste après achat shop.
+- Fichiers : `Assets/Scripts/UI/SeedSelectionUI.cs` (`ShowEmptyState` / `HideEmptyState`), prefab `Assets/Prefabs/Ui/SeedSelectionUI.prefab` (champs `emptyStatePanel` / `emptyStateLabel` encore vides).
+
+### Correctif attendu (prochaine session)
+- Restaurer le titre par défaut dans `HideEmptyState()` **ou** utiliser un panneau empty dédié ([P0-FARM-UI-001]) au lieu du fallback titre.
+- Re-test scénario : pack épuisé → shop ×1 → popup sans message empty + slot `×1`.
+
+### Autres notes playtest (session)
+- **[~] [P0-FARM-PLAY-001]** : boucle graines partiellement validée ; bugs pack départ (6 graines / re-crédit à chaque relance) — correctifs locaux `PlayerInventory` (non commités au moment du log si working tree).
+
+### Prochaine session
+- **[P0-FARM-BUG-001]** corriger popup graines (message empty + slot simultanés).
+- Puis clôturer **[P0-FARM-PLAY-001]** si scénario complet OK.
+
+---
+
 ## 2026-05-19 — Fin de session
 
 ### Objectifs du jour

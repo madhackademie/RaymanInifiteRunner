@@ -45,4 +45,5 @@ Quand l'utilisateur indique la fin de session ou demande de journaliser:
 Branche courante documentee: **`main`** (`b82eec0`, fin session 2026-05-19).
 
 Priorite immediate actuelle:
-- [P0-FARM-PLAY-001] playtest boucle graines sur main ; puis [P0-FARM-UI-001] EmptyState prefab (optionnel).
+- [P0-FARM-BUG-001] popup graines message empty + slot apres achat shop (2026-05-22).
+- [~] [P0-FARM-PLAY-001] playtest graines a reprendre apres fix.

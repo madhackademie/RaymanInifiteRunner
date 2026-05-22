@@ -37,17 +37,20 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> **`main`** à jour (`b82eec0`, 2026-05-19). Derniers merges : shop popup + graines plantation. **Créer une branche feature** avant le prochain gros chantier (`GIT_HELPER.md` § --3--).
+> **`main`**. Créer une branche feature avant correctif code (ex. `fix/seed-popup-empty-state`) — `GIT_HELPER.md` § --3--.
 
-### 1) Validation gameplay — graines (priorité immédiate)
-- [ ] [P0-FARM-PLAY-001] **Playtest sur `main`** : reset inventaire → 3 graines départ ; popup affiche `Laitue ×3` ; planter 3× puis blocage ; acheter au shop ; replanter ; preview annulé (Échap) ne consomme pas. Noter bugs dans `PROJECT_LOG.md`.
+### 1) Bug popup plantation — priorité immédiate
+- [ ] **[P0-FARM-BUG-001]** Après épuisement pack départ + achat shop (1 graine) : popup affiche **slot `Laitue ×N`** **et** le message **« Aucune graine dans l'inventaire… »** en même temps. Repro : `PROJECT_LOG.md` **2026-05-22**. Piste : `SeedSelectionUI.HideEmptyState()` ne restaure pas le titre ; prefab sans `emptyStatePanel`. Fichier : `Assets/Scripts/UI/SeedSelectionUI.cs`.
 
-### 2) Polish UI ferme (rapide, si playtest OK)
-- [ ] [P0-FARM-UI-001] Prefab **`SeedSelectionUI`** : ajouter **EmptyStatePanel** + bouton **Acheter** câblés (`emptyStatePanel`, `emptyStateLabel`, `openShopButton` sur `SeedSelectionUI`). Détail : `Notes/Farm/REFACTOR_graines_plantation_inventaire.md` §4.4.
+### 2) Playtest graines (suite)
+- [~] **[P0-FARM-PLAY-001]** Playtest boucle graines — partiel ; re-valider après fix [P0-FARM-BUG-001] (+ correctifs pack départ `PlayerInventory` si pas encore commités).
 
-### 3) Piste alternative (si graines validées)
-- [ ] [CT-SHOP-002] Polish UX visuel shop (focus, transitions) — optionnel.
-- [ ] [CT-FARM-004] Persistance ferme scénario complet : pose → quit → relance → récolte → relance.
+### 3) Polish UI ferme (lié au bug)
+- [ ] **[P0-FARM-UI-001]** Prefab **`SeedSelectionUI`** : panneau **EmptyStatePanel** + bouton **Acheter** (`emptyStatePanel`, `emptyStateLabel`, `openShopButton`) — évite le fallback titre. §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
+
+### 4) Pistes alternatives
+- [ ] [CT-SHOP-002] Polish UX shop — optionnel.
+- [ ] [CT-FARM-004] Persistance ferme complète — optionnel.
 
 ### Doc — popups
 - [~] [BL-POP-DOC-001] `popup_generique.md` §2.5 aligné. Reste : `SYSTEMES_carte_mentale.md`, `Codebase_etat_reference.md`.

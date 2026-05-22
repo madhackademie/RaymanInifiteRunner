@@ -22,7 +22,8 @@ Règle :
 
 ### Ferme — graines plantation (merge `main` 2026-05-19)
 - **Livré** : stock inventaire, label `×N`, consommation au plant — `SeedSelectionUI` / `SeedSlotUI`, plan `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
-- **Prochaine session** : playtest [P0-FARM-PLAY-001] ; prefab EmptyState + bouton Acheter [P0-FARM-UI-001] (`emptyStatePanel`, `openShopButton` Inspector).
+- **Bug ouvert [P0-FARM-BUG-001]** : après achat shop, titre « Aucune graine… » reste affiché avec slot visible — `PROJECT_LOG.md` 2026-05-22.
+- **Prochaine session** : fix bug ; prefab EmptyState [P0-FARM-UI-001].
 
 ### FirstLvl — popups génériques
 - Migrer l’UI de sélection de graines vers le pipeline popup générique (`PopupId` + binding + `ScreenPopupHost`) — **déjà sur pipeline** ; reste polish EmptyState.

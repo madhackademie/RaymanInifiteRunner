@@ -19,5 +19,5 @@ alwaysApply: true
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
 - Priorite courante connue (a revalider via docs a chaque session):
- - **`main`** — shop popup + graines plantation merges (2026-05-19).
- - Prochaine session: [P0-FARM-PLAY-001] playtest graines, [P0-FARM-UI-001] EmptyState prefab optionnel.
+ - [P0-FARM-BUG-001] popup graines empty + slot (2026-05-22).
+ - [~] [P0-FARM-PLAY-001] playtest graines apres fix.

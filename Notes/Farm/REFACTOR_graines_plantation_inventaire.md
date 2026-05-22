@@ -178,3 +178,15 @@ Ordre :
 ## 8. Suivi statut
 
 Le statut `[ ]` / `[x]` de [P0-FARM-SEED-INV-001] reste dans **`Notes/Todo_project.md`** uniquement. Cocher après phases 1–4 validées en playtest (phase 5 si option B retenue).
+
+---
+
+## 9. Bugs connus (post-merge)
+
+### [P0-FARM-BUG-001] Message empty + slot graines simultanés
+
+**Repro (2026-05-22)** : pack départ consommé → message « Aucune graine… » → achat shop 1× → re-ouverture popup : **titre empty** + **slot `Laitue ×1`**.
+
+**Cause probable** : `ShowEmptyState()` écrase le TMP titre (fallback sans `emptyStatePanel`) ; `HideEmptyState()` ne restaure pas le libellé d’origine.
+
+**Fix cible** : `SeedSelectionUI.cs` + prefab EmptyState [P0-FARM-UI-001]. Journal : **`PROJECT_LOG.md` 2026-05-22**.
