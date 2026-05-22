@@ -37,6 +37,9 @@ public class PlayerInventory : MonoBehaviour
 
     private bool startingSeedsApplied;
 
+    /// <summary>True si <see cref="LoadFromDisk"/> a restauré un fichier (pas un reset / nouvelle partie).</summary>
+    private bool profileLoadedFromSave;
+
     /// <summary>Fired after any successful mutation of the inventory.</summary>
     public event Action OnInventoryChanged;
 
@@ -58,6 +61,12 @@ public class PlayerInventory : MonoBehaviour
     }
 
     private void OnApplicationQuit() => SaveToDisk();
+
+    private void OnDisable()
+    {
+        if (Instance == this)
+            SaveToDisk();
+    }
 
     // ── Initialisation ────────────────────────────────────────────────────────
 
@@ -85,12 +94,14 @@ public class PlayerInventory : MonoBehaviour
             return;
         }
 
-        if (InventorySaveService.TryLoad(
+        profileLoadedFromSave = InventorySaveService.TryLoad(
                 itemDatabase,
                 slots,
                 out int count,
                 out bool currencyFlagFromDisk,
-                out bool seedsFlagFromDisk))
+                out bool seedsFlagFromDisk);
+
+        if (profileLoadedFromSave)
         {
             startingCurrencyApplied = currencyFlagFromDisk;
             startingSeedsApplied = seedsFlagFromDisk;
@@ -139,15 +150,42 @@ public class PlayerInventory : MonoBehaviour
         if (seed == null || startingSeedAmount <= 0)
             return;
 
+        int existing = Count(seed);
+
+        // Migration : stock déjà >= pack sans flag (ex. double crédit ancien bug).
+        if (existing >= startingSeedAmount)
+        {
+            MarkStartingSeedsApplied();
+            return;
+        }
+
+        // Sauvegarde existante + 0 graine : pack déjà consommé (flag absent des anciennes saves).
+        if (profileLoadedFromSave && existing == 0)
+        {
+            MarkStartingSeedsApplied();
+            return;
+        }
+
+        // Nouveau profil ou reset inventaire : crédit unique.
         startingSeedsApplied = true;
         InventoryResult result = TryAdd(seed, startingSeedAmount);
         if (result == InventoryResult.Full)
         {
             startingSeedsApplied = false;
+            SaveToDisk();
             Debug.LogWarning(
                 "[PlayerInventory] Pack graines de départ impossible (inventaire plein ?).",
                 this);
+            return;
         }
+
+        SaveToDisk();
+    }
+
+    private void MarkStartingSeedsApplied()
+    {
+        startingSeedsApplied = true;
+        SaveToDisk();
     }
 
     private ItemDefinition ResolveStartingSeedItem()
@@ -164,10 +202,12 @@ public class PlayerInventory : MonoBehaviour
     {
         InitialiseSlots();
         InventorySaveService.Delete();
+        profileLoadedFromSave = false;
         startingCurrencyApplied = false;
         startingSeedsApplied = false;
         ApplyStartingCurrencyGrantIfNeeded();
         ApplyStartingSeedsGrantIfNeeded();
+        SaveToDisk();
         OnInventoryChanged?.Invoke();
     }
 
