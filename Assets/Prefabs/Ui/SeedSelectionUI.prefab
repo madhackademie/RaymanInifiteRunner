@@ -314,6 +314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedSelectionUI
   panel: {fileID: 8380639586146016083}
+  titleLabel: {fileID: 2162172229894705731}
   closeButton: {fileID: 2614649085195052761}
   availableSeeds:
   - plantDefinition: {fileID: 11400000, guid: 8bc33cbc19362c94b8bc576596d09598, type: 2}

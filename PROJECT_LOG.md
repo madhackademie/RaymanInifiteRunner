@@ -12,6 +12,9 @@
   - resolution explicite d'un label titre fallback (`ResolveFallbackTitleLabel`) ;
   - `ShowEmptyState(...)` memorise le titre precedent avant de poser le message empty ;
   - `HideEmptyState()` restaure le titre par defaut apres re-affichage des slots.
+- [x] Renforcement (iteration) :
+  - switch explicite d'etat visuel (`HasSeeds` / `Empty`) pour eviter les etats mixtes ;
+  - prefab `SeedSelectionUI` lie a `titleLabel` explicitement (plus de fallback implicite ambigu).
 
 ### Resultat attendu
 - Scenario : pack vide -> achat shop x1 -> re-ouverture popup.

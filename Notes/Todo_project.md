@@ -40,7 +40,7 @@ Convention d'IDs :
 > **`main`**. Créer une branche feature avant correctif code (ex. `fix/seed-popup-empty-state`) — `GIT_HELPER.md` § --3--.
 
 ### 1) Bug popup plantation — priorité immédiate
-- [~] **[P0-FARM-BUG-001]** Après épuisement pack départ + achat shop (1 graine) : popup affiche **slot `Laitue ×N`** **et** le message **« Aucune graine dans l'inventaire… »** en même temps. Repro : `PROJECT_LOG.md` **2026-05-22**. Correctif code appliqué sur `SeedSelectionUI` (restauration titre fallback) ; **playtest de validation requis**. Fichier : `Assets/Scripts/UI/SeedSelectionUI.cs`.
+- [~] **[P0-FARM-BUG-001]** Après épuisement pack départ + achat shop (1 graine) : popup affiche **slot `Laitue ×N`** **et** le message **« Aucune graine dans l'inventaire… »** en même temps. Repro : `PROJECT_LOG.md` **2026-05-22**. Correctif renforcé : **switch explicite d'état** (HasSeeds/Empty) + restauration titre fallback + `titleLabel` lié sur prefab ; **playtest de validation requis**. Fichiers : `Assets/Scripts/UI/SeedSelectionUI.cs`, `Assets/Prefabs/Ui/SeedSelectionUI.prefab`.
 
 ### 2) Playtest graines (suite)
 - [~] **[P0-FARM-PLAY-001]** Playtest boucle graines — partiel ; re-valider après fix [P0-FARM-BUG-001] (+ correctifs pack départ `PlayerInventory` si pas encore commités).

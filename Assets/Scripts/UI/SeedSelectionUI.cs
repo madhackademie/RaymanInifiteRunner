@@ -11,6 +11,12 @@ public class SeedSelectionUI : MonoBehaviour
 {
     private const string DefaultEmptyMessage =
         "Aucune graine dans l'inventaire. Ouvrez le Shop (barre du bas) pour en acheter.";
+    private enum SeedInventoryVisualState
+    {
+        Unknown = 0,
+        Empty = 1,
+        HasSeeds = 2
+    }
 
     [Header("Panel")]
     [SerializeField] private GameObject panel;
@@ -40,6 +46,7 @@ public class SeedSelectionUI : MonoBehaviour
 
     private readonly List<SeedSlotUI> spawnedSlots = new();
     private string defaultPanelTitle = string.Empty;
+    private SeedInventoryVisualState visualState = SeedInventoryVisualState.Unknown;
 
     private void Awake()
     {
@@ -52,6 +59,7 @@ public class SeedSelectionUI : MonoBehaviour
             emptyStatePanel.SetActive(false);
 
         CacheDefaultPanelTitle();
+        visualState = SeedInventoryVisualState.Unknown;
         panel.SetActive(false);
     }
 
@@ -120,7 +128,7 @@ public class SeedSelectionUI : MonoBehaviour
 
         if (playerInventory == null)
         {
-            ShowEmptyState(DefaultEmptyMessage);
+            SetVisualState(SeedInventoryVisualState.Empty, DefaultEmptyMessage);
             return;
         }
 
@@ -145,9 +153,9 @@ public class SeedSelectionUI : MonoBehaviour
         }
 
         if (visibleCount == 0)
-            ShowEmptyState(DefaultEmptyMessage);
+            SetVisualState(SeedInventoryVisualState.Empty, DefaultEmptyMessage);
         else
-            HideEmptyState();
+            SetVisualState(SeedInventoryVisualState.HasSeeds);
     }
 
     private bool IsEntryPlantable(SeedEntry entry, out int stock)
@@ -161,19 +169,39 @@ public class SeedSelectionUI : MonoBehaviour
         return stock > 0;
     }
 
-    private void ShowEmptyState(string message)
+    private void SetVisualState(SeedInventoryVisualState nextState, string emptyMessage = null)
     {
+        if (visualState == nextState && nextState != SeedInventoryVisualState.Empty)
+            return;
+
+        visualState = nextState;
+        bool hasSeeds = nextState == SeedInventoryVisualState.HasSeeds;
+
         if (slotsContainer != null)
-            slotsContainer.gameObject.SetActive(false);
+            slotsContainer.gameObject.SetActive(hasSeeds);
 
         if (emptyStatePanel != null)
         {
-            emptyStatePanel.SetActive(true);
-            if (emptyStateLabel != null)
-                emptyStateLabel.text = message;
+            emptyStatePanel.SetActive(!hasSeeds);
+            if (!hasSeeds && emptyStateLabel != null)
+                emptyStateLabel.text = string.IsNullOrEmpty(emptyMessage) ? DefaultEmptyMessage : emptyMessage;
+
+            if (openShopButton != null)
+                openShopButton.gameObject.SetActive(!hasSeeds);
+
+            if (hasSeeds)
+                RestoreDefaultPanelTitle();
+
             return;
         }
 
+        if (hasSeeds)
+        {
+            RestoreDefaultPanelTitle();
+            return;
+        }
+
+        string message = string.IsNullOrEmpty(emptyMessage) ? DefaultEmptyMessage : emptyMessage;
         TextMeshProUGUI fallbackLabel = ResolveFallbackTitleLabel();
         if (fallbackLabel != null)
         {
@@ -182,17 +210,6 @@ public class SeedSelectionUI : MonoBehaviour
 
             fallbackLabel.text = message;
         }
-    }
-
-    private void HideEmptyState()
-    {
-        if (slotsContainer != null)
-            slotsContainer.gameObject.SetActive(true);
-
-        if (emptyStatePanel != null)
-            emptyStatePanel.SetActive(false);
-
-        RestoreDefaultPanelTitle();
     }
 
     private void CacheDefaultPanelTitle()
