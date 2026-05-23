@@ -14,6 +14,7 @@ public class SeedSelectionUI : MonoBehaviour
 
     [Header("Panel")]
     [SerializeField] private GameObject panel;
+    [SerializeField] private TextMeshProUGUI titleLabel;
     [SerializeField] private Button closeButton;
 
     [Header("Seed slots")]
@@ -38,6 +39,7 @@ public class SeedSelectionUI : MonoBehaviour
     public bool IsPreviewActive => placementPreview != null && placementPreview.enabled;
 
     private readonly List<SeedSlotUI> spawnedSlots = new();
+    private string defaultPanelTitle = string.Empty;
 
     private void Awake()
     {
@@ -49,6 +51,7 @@ public class SeedSelectionUI : MonoBehaviour
         if (emptyStatePanel != null)
             emptyStatePanel.SetActive(false);
 
+        CacheDefaultPanelTitle();
         panel.SetActive(false);
     }
 
@@ -171,9 +174,14 @@ public class SeedSelectionUI : MonoBehaviour
             return;
         }
 
-        TextMeshProUGUI fallbackLabel = panel.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI fallbackLabel = ResolveFallbackTitleLabel();
         if (fallbackLabel != null)
+        {
+            if (fallbackLabel.text != message)
+                defaultPanelTitle = fallbackLabel.text;
+
             fallbackLabel.text = message;
+        }
     }
 
     private void HideEmptyState()
@@ -183,6 +191,50 @@ public class SeedSelectionUI : MonoBehaviour
 
         if (emptyStatePanel != null)
             emptyStatePanel.SetActive(false);
+
+        RestoreDefaultPanelTitle();
+    }
+
+    private void CacheDefaultPanelTitle()
+    {
+        TextMeshProUGUI fallbackLabel = ResolveFallbackTitleLabel();
+        if (fallbackLabel != null)
+            defaultPanelTitle = fallbackLabel.text;
+    }
+
+    private TextMeshProUGUI ResolveFallbackTitleLabel()
+    {
+        if (titleLabel != null)
+            return titleLabel;
+
+        if (panel == null)
+            return null;
+
+        TextMeshProUGUI[] labels = panel.GetComponentsInChildren<TextMeshProUGUI>(true);
+
+        foreach (TextMeshProUGUI label in labels)
+        {
+            if (label != null && label.transform.parent == panel.transform)
+            {
+                titleLabel = label;
+                return titleLabel;
+            }
+        }
+
+        if (labels.Length > 0)
+            titleLabel = labels[0];
+
+        return titleLabel;
+    }
+
+    private void RestoreDefaultPanelTitle()
+    {
+        if (string.IsNullOrEmpty(defaultPanelTitle))
+            return;
+
+        TextMeshProUGUI fallbackLabel = ResolveFallbackTitleLabel();
+        if (fallbackLabel != null)
+            fallbackLabel.text = defaultPanelTitle;
     }
 
     private void ClearSpawnedSlots()

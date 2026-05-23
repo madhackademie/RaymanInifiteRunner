@@ -1,5 +1,28 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-23 — [P0-FARM-BUG-001] Correctif popup graines (message empty persistant)
+
+### Contexte
+- Bug reproduit (2026-05-22) : apres achat d'une graine, le popup affiche a la fois le slot `Laitue xN` et le message empty.
+- Travail effectue sur branche : `cursor/fix-seed-popup-empty-state-cb4d`.
+
+### Correctif code
+- [x] `Assets/Scripts/UI/SeedSelectionUI.cs` :
+  - ajout d'un cache du titre par defaut du panel (`defaultPanelTitle`) ;
+  - resolution explicite d'un label titre fallback (`ResolveFallbackTitleLabel`) ;
+  - `ShowEmptyState(...)` memorise le titre precedent avant de poser le message empty ;
+  - `HideEmptyState()` restaure le titre par defaut apres re-affichage des slots.
+
+### Resultat attendu
+- Scenario : pack vide -> achat shop x1 -> re-ouverture popup.
+- Attendu : slot `Laitue x1` visible **sans** message empty persistant.
+
+### A faire (validation)
+- Playtest manuel Unity sur le scenario complet pour cloturer `P0-FARM-BUG-001`.
+- Si OK : passer `P0-FARM-BUG-001` en `[x]` dans `Notes/Todo_project.md`.
+
+---
+
 ## 2026-05-22 — Playtest graines + bug popup empty state ([P0-FARM-BUG-001])
 
 ### Contexte playtest (auteur)
