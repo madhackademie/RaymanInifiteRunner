@@ -21,6 +21,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     private PlantGrow plantGrow;
     private PlantDefinition cachedDefinition;
     private ScreenPopupHost injectedFarmPopupHost;
+    private BiofiltreManager biofiltreManager;
 
     // Contexte grille — fourni par BiofiltreManager après instantiation.
     private GridManager gridManager;
@@ -62,6 +63,14 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
+    /// Manager ferme pour ignorer les clics consommés par la preview de placement.
+    /// </summary>
+    public void InjectBiofiltreManager(BiofiltreManager manager)
+    {
+        biofiltreManager = manager;
+    }
+
+    /// <summary>
     /// Callback notifiee apres suppression de la plante (recolte/arrache).
     /// </summary>
     public void SetOnPlantRemoved(Action callback)
@@ -76,6 +85,9 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (biofiltreManager != null && biofiltreManager.ShouldSuppressFarmPointerUi)
+            return;
+
         TryHarvest();
     }
 

@@ -37,7 +37,7 @@ public class BiofiltreManager : MonoBehaviour
     private bool hasLoadedFromSave;
     private SeedSelectionUI cachedSeedSelectionUi;
     private HarvestPanelUI cachedHarvestPanelUi;
-    private bool suppressGridCellUiThisFrame;
+    private bool suppressFarmPointerUiThisFrame;
 
     private void Awake()
     {
@@ -76,26 +76,29 @@ public class BiofiltreManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        suppressGridCellUiThisFrame = false;
+        suppressFarmPointerUiThisFrame = false;
     }
 
     // ── Cell click ────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Appelé par <see cref="PlantPlacementPreview"/> quand un clic souris est consommé
-    /// (placement, annulation) pour éviter que le même clic rouvre le popup graines.
+    /// Appelé quand un clic souris est consommé (placement preview, annulation)
+    /// pour éviter que le même clic déclenche graines / info plante.
     /// </summary>
-    public void SuppressGridCellUiThisFrame()
+    public void SuppressFarmPointerUiThisFrame()
     {
-        suppressGridCellUiThisFrame = true;
+        suppressFarmPointerUiThisFrame = true;
     }
 
     /// <summary>True tant que le fantôme de placement suit la souris.</summary>
     public bool IsPlantPlacementPreviewActive =>
         placementPreview != null && placementPreview.enabled;
 
-    private bool ShouldBlockGridCellUi =>
-        suppressGridCellUiThisFrame || IsPlantPlacementPreviewActive;
+    /// <summary>Bloque les clics ferme déjà consommés (grille ou plante sous la souris).</summary>
+    public bool ShouldSuppressFarmPointerUi =>
+        suppressFarmPointerUiThisFrame || IsPlantPlacementPreviewActive;
+
+    private bool ShouldBlockGridCellUi => ShouldSuppressFarmPointerUi;
 
     private void HandleCellClicked(BiofiltreCell cell)
     {
@@ -126,6 +129,18 @@ public class BiofiltreManager : MonoBehaviour
     internal void OnPlacementPreviewStarted()
     {
         HideFarmSeedSelectionPopup();
+    }
+
+    /// <summary>
+    /// Rouvre le popup graines en état vide après consommation de la dernière graine.
+    /// </summary>
+    internal void ReopenSeedSelectionAfterLastSeedPlanted(BiofiltreCell contextCell)
+    {
+        if (contextCell == null)
+            return;
+
+        HideFarmPlantHarvestPopup();
+        TryOpenFarmSeedSelection(contextCell);
     }
 
     private void TryOpenPlantPopup(Vector2Int coords)
@@ -291,6 +306,7 @@ public class BiofiltreManager : MonoBehaviour
             harvestInteractor.Initialise(gridManager, visualizer, cells);
             harvestInteractor.InjectInventory(itemDatabase);
             harvestInteractor.InjectFarmPopupHost(ResolveFarmPopupHost());
+            harvestInteractor.InjectBiofiltreManager(this);
             harvestInteractor.SetOnPlantRemoved(SaveFarmState);
         }
 

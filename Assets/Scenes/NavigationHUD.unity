@@ -601,7 +601,7 @@ MonoBehaviour:
   itemDatabase: {fileID: 11400000, guid: 0cdfbba7d963c334ca688e5f0519ef63, type: 2}
   startingCurrencyAmount: 100
   startingSeedItem: {fileID: 11400000, guid: eee016e7728a0374ca7e6a2da06050a9, type: 2}
-  startingSeedAmount: 3
+  startingSeedAmount: 1
 --- !u!1 &919069777
 GameObject:
   m_ObjectHideFlags: 0

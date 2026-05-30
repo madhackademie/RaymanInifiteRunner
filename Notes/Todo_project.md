@@ -37,18 +37,21 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> **`main`**. Créer une branche feature avant correctif code (ex. `fix/seed-popup-empty-state`) — `GIT_HELPER.md` § --3--.
+> Branche **`fix/seed-selection`** (correctif plantation en cours, **non mergé**). Base : `main` (`f0ae48e`). Voir `PROJECT_LOG.md` **2026-05-30**.
 
-### 1) Bug popup plantation — priorité immédiate
-- [~] **[P0-FARM-BUG-001]** Après épuisement pack départ + achat shop (1 graine) : popup affiche **slot `Laitue ×N`** **et** le message **« Aucune graine dans l'inventaire… »** en même temps. Repro : `PROJECT_LOG.md` **2026-05-22**. Correctif renforcé : **switch explicite d'état** (HasSeeds/Empty) + restauration titre fallback + `titleLabel` lié sur prefab ; **playtest de validation requis**. Fichiers : `Assets/Scripts/UI/SeedSelectionUI.cs`, `Assets/Prefabs/Ui/SeedSelectionUI.prefab`.
+### 1) Bug panel info plante après plantation — priorité immédiate
+- [ ] **[P0-FARM-BUG-002]** **Régression playtest 2026-05-30** : après **chaque** confirmation de plantation (preview), le popup **`FarmPlantHarvest`** (info plante) s'ouvre au lieu de laisser le flux graines actif. Bug initial (dernière graine seulement → panel info au lieu de l'état empty graines) ; tentative correctif sur `fix/seed-selection` a **empiré** le comportement (désormais **à chaque** graine plantée). **Attendu** : pas d'ouverture auto du panel info au clic de placement ; si dernière graine → `SeedSelectionUI` repasse en état empty (« plus de graines »), l'utilisateur ferme lui-même. **Piste** : clic souris de confirmation consommé par `PlantHarvestInteractor` (`IPointerClickHandler`) sur la plante fraîchement instanciée ; vérifier `SuppressFarmPointerUiThisFrame` / ordre EventSystem vs `PlantPlacementPreview`. Fichiers : `PlantPlacementPreview.cs`, `PlantHarvestInteractor.cs`, `BiofiltreManager.cs`, `SeedSelectionUI.cs`. Journal : `PROJECT_LOG.md` **2026-05-30**.
 
-### 2) Playtest graines (suite)
+### 2) Bug popup plantation empty + slot (validation)
+- [~] **[P0-FARM-BUG-001]** Après épuisement pack départ + achat shop (1 graine) : popup affiche **slot `Laitue ×N`** **et** le message **« Aucune graine dans l'inventaire… »** en même temps. Correctif mergé sur `main` (switch HasSeeds/Empty) ; **playtest de validation** à reprendre après fix [P0-FARM-BUG-002]. Fichiers : `SeedSelectionUI.cs`, `SeedSelectionUI.prefab`.
+
+### 3) Playtest graines (suite)
 - [~] **[P0-FARM-PLAY-001]** Playtest boucle graines — partiel ; re-valider après fix [P0-FARM-BUG-001] (+ correctifs pack départ `PlayerInventory` si pas encore commités).
 
-### 3) Polish UI ferme (lié au bug)
+### 4) Polish UI ferme (lié au bug)
 - [ ] **[P0-FARM-UI-001]** Prefab **`SeedSelectionUI`** : panneau **EmptyStatePanel** + bouton **Acheter** (`emptyStatePanel`, `emptyStateLabel`, `openShopButton`) — évite le fallback titre. §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
 
-### 4) Pistes alternatives
+### 5) Pistes alternatives
 - [ ] [CT-SHOP-002] Polish UX shop — optionnel.
 - [ ] [CT-FARM-004] Persistance ferme complète — optionnel.
 

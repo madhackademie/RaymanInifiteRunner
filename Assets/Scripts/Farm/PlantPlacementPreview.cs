@@ -72,7 +72,7 @@ public class PlantPlacementPreview : MonoBehaviour
         bool escapePressed = Keyboard.current.escapeKey.wasPressedThisFrame;
 
         if (leftPressed || rightPressed || escapePressed)
-            biofiltreManager.SuppressGridCellUiThisFrame();
+            biofiltreManager.SuppressFarmPointerUiThisFrame();
 
         if (leftPressed)
         {
@@ -175,9 +175,15 @@ public class PlantPlacementPreview : MonoBehaviour
             return;
         }
 
-        PlayerInventory inventory = PlayerInventory.Instance;
-        if (seedItem == null || inventory == null || inventory.Count(seedItem) <= 0)
-            Cancel();
+        BiofiltreCell cellForReopen = originCell;
+        bool noSeedsLeft = seedItem == null ||
+                           PlayerInventory.Instance == null ||
+                           PlayerInventory.Instance.Count(seedItem) <= 0;
+
+        Cancel();
+
+        if (noSeedsLeft)
+            biofiltreManager.ReopenSeedSelectionAfterLastSeedPlanted(cellForReopen);
     }
 
     /// <summary>Cancels the preview and destroys the ghost without placing anything.</summary>

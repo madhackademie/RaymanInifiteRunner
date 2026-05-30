@@ -424,7 +424,14 @@ public class SeedSelectionUI : MonoBehaviour
         if (placementPreview == null)
         {
             if (!manager.TryPlantSeedAt(cell.GridCoordinates, entry.plantDefinition, entry.plantPrefab, entry.seedItem))
+            {
                 Debug.LogWarning("[SeedSelectionUI] Plantation impossible (stock ou emplacement).", this);
+                return;
+            }
+
+            if (playerInventory.Count(entry.seedItem) <= 0)
+                manager.ReopenSeedSelectionAfterLastSeedPlanted(cell);
+
             return;
         }
 

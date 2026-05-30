@@ -1,5 +1,32 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-05-30 — Playtest plantation + régression panel info plante ([P0-FARM-BUG-002])
+
+### Contexte playtest (auteur)
+- Branche de travail : **`fix/seed-selection`** (correctif « dernière graine → état empty graines »).
+- **Bug initial** (avant correctif) : en plantant la **dernière** graine, le panel info/récolte (`FarmPlantHarvest`) s'ouvrait au lieu de mettre à jour `SeedSelectionUI` avec le message « plus de graines ».
+- **Comportement attendu** : pas d'ouverture auto du panel info au placement ; si stock graines épuisé → popup graines en état empty, fermeture manuelle par le joueur.
+
+### Résultat playtest (régression)
+- Après tentative correctif local (`SuppressFarmPointerUiThisFrame`, `ReopenSeedSelectionAfterLastSeedPlanted`, injection `BiofiltreManager` dans `PlantHarvestInteractor`) : le panel info plante s'affiche maintenant après **chaque** plantation confirmée (pas seulement la dernière graine) → **régression**.
+
+### Piste technique (non corrigé — prochaine session)
+- Le clic gauche de confirmation preview instancie la plante puis l'EventSystem peut router le même clic vers `PlantHarvestInteractor.OnPointerClick` (plante sous le curseur, collider actif).
+- Le flag « suppress this frame » ne bloque peut‑être pas assez tôt / assez longtemps (ordre d'exécution `PlantPlacementPreview` vs EventSystem, reset `LateUpdate`).
+- Revoir le flux complet : placement → consommation graine → UI graines (preview continue ou empty) **sans** `TryOpenHarvestPopup`.
+
+### Fichiers touchés (WIP non mergé)
+- `Assets/Scripts/Farm/BiofiltreManager.cs`
+- `Assets/Scripts/Farm/PlantHarvestInteractor.cs`
+- `Assets/Scripts/Farm/PlantPlacementPreview.cs`
+- `Assets/Scripts/UI/SeedSelectionUI.cs`
+
+### Prochaine session
+- **[P0-FARM-BUG-002]** corriger l'ouverture intempestive du panel info plante à chaque placement.
+- Puis re-valider [P0-FARM-BUG-001] et [P0-FARM-PLAY-001].
+
+---
+
 ## 2026-05-23 — [P0-FARM-BUG-001] Correctif popup graines (message empty persistant)
 
 ### Contexte
