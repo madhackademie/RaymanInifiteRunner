@@ -21,9 +21,18 @@
 - `Assets/Scripts/Farm/PlantPlacementPreview.cs`
 - `Assets/Scripts/UI/SeedSelectionUI.cs`
 
-### Prochaine session
-- **[P0-FARM-BUG-002]** corriger l'ouverture intempestive du panel info plante à chaque placement.
-- Puis re-valider [P0-FARM-BUG-001] et [P0-FARM-PLAY-001].
+### Correctif appliqué (même session, `fix/seed-selection`)
+- **Cause racine** : la pose est confirmée au **pointer-down** (plante instanciée + collider actif) avant que l'EventSystem ne traite le clic ; `OnPointerClick` est ensuite livré au **pointer-up** (souvent frame suivante) sur cette nouvelle plante → ouverture `FarmPlantHarvest`. Le flag « suppress une frame » (réinitialisé en `LateUpdate`) était déjà expiré au relâchement. De plus, mon 1er essai forçait `Cancel()` après **chaque** pose : la preview désactivée ne masquait plus le clic → régression sur **toutes** les graines.
+- **Fix** :
+  - `BiofiltreManager` : suppression basée sur le **relâchement** du clic (`awaitingPlacementPointerRelease` + `placementReleaseGraceFrames`, polling `Mouse.current.leftButton` dans `Update`) ; `SuppressFarmPointerUiUntilPointerRelease()` remplace l'ancien flag une-frame ; `ShouldSuppressFarmPointerUi` couvre attente-relâchement + grâce + preview active.
+  - `HandleCellClicked` (branche bloquée) : simple `return` (ne ferme plus le popup graines volontairement ré-ouvert).
+  - `PlantPlacementPreview.ConfirmPlacement` : **preview maintenue active** tant qu'il reste des graines (enchaînement de poses) ; dernière graine → `Cancel()` + `ReopenSeedSelectionAfterLastSeedPlanted`.
+  - `PlantHarvestInteractor` : `OnPointerClick` ignoré si `biofiltreManager.ShouldSuppressFarmPointerUi`.
+  - `SeedSelectionUI` (chemin sans preview) : ré-ouverture état empty si stock épuisé après pose.
+
+### À faire (validation)
+- Playtest Unity : poser **plusieurs** graines d'affilée (aucun panel info ne doit s'ouvrir) ; à la **dernière** graine → popup « plus de graines », fermeture manuelle.
+- Si OK : passer **[P0-FARM-BUG-002]** en `[x]`, puis re-valider [P0-FARM-BUG-001] et [P0-FARM-PLAY-001].
 
 ---
 

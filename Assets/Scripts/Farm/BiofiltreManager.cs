@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using System;
 using System.Collections.Generic;
 
@@ -37,7 +38,13 @@ public class BiofiltreManager : MonoBehaviour
     private bool hasLoadedFromSave;
     private SeedSelectionUI cachedSeedSelectionUi;
     private HarvestPanelUI cachedHarvestPanelUi;
-    private bool suppressFarmPointerUiThisFrame;
+
+    // Suppression du clic de placement : le clic confirmant la pose est livré par
+    // l'EventSystem au relâchement (souvent une frame plus tard que l'instanciation
+    // de la plante). On suppresse donc jusqu'au relâchement effectif + quelques frames
+    // de grâce, pour couvrir l'ordre d'exécution EventSystem vs scripts.
+    private bool awaitingPlacementPointerRelease;
+    private int placementReleaseGraceFrames;
 
     private void Awake()
     {
@@ -74,20 +81,35 @@ public class BiofiltreManager : MonoBehaviour
         SaveFarmState();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        suppressFarmPointerUiThisFrame = false;
+        if (awaitingPlacementPointerRelease)
+        {
+            bool pressed = Mouse.current != null && Mouse.current.leftButton.isPressed;
+            if (!pressed)
+            {
+                // Relâchement détecté : le clic (OnPointerClick) est livré sur cette frame.
+                // On conserve la suppression encore quelques frames de grâce.
+                awaitingPlacementPointerRelease = false;
+                placementReleaseGraceFrames = 2;
+            }
+        }
+        else if (placementReleaseGraceFrames > 0)
+        {
+            placementReleaseGraceFrames--;
+        }
     }
 
     // ── Cell click ────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Appelé quand un clic souris est consommé (placement preview, annulation)
-    /// pour éviter que le même clic déclenche graines / info plante.
+    /// Appelé quand un clic souris confirme/annule une pose : on neutralise ce clic
+    /// jusqu'à son relâchement pour qu'il ne déclenche pas graines / info plante.
     /// </summary>
-    public void SuppressFarmPointerUiThisFrame()
+    public void SuppressFarmPointerUiUntilPointerRelease()
     {
-        suppressFarmPointerUiThisFrame = true;
+        awaitingPlacementPointerRelease = true;
+        placementReleaseGraceFrames = Mathf.Max(placementReleaseGraceFrames, 1);
     }
 
     /// <summary>True tant que le fantôme de placement suit la souris.</summary>
@@ -96,17 +118,18 @@ public class BiofiltreManager : MonoBehaviour
 
     /// <summary>Bloque les clics ferme déjà consommés (grille ou plante sous la souris).</summary>
     public bool ShouldSuppressFarmPointerUi =>
-        suppressFarmPointerUiThisFrame || IsPlantPlacementPreviewActive;
+        awaitingPlacementPointerRelease ||
+        placementReleaseGraceFrames > 0 ||
+        IsPlantPlacementPreviewActive;
 
     private bool ShouldBlockGridCellUi => ShouldSuppressFarmPointerUi;
 
     private void HandleCellClicked(BiofiltreCell cell)
     {
+        // Clic déjà consommé par une pose : ne pas (re)déclencher graines / info plante,
+        // ni fermer un popup graines volontairement ré-ouvert (état « plus de graines »).
         if (ShouldBlockGridCellUi)
-        {
-            HideFarmSeedSelectionPopup();
             return;
-        }
 
         if (gridManager.IsCellFree(cell.GridCoordinates))
             TryOpenFarmSeedSelection(cell);

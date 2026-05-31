@@ -72,7 +72,7 @@ public class PlantPlacementPreview : MonoBehaviour
         bool escapePressed = Keyboard.current.escapeKey.wasPressedThisFrame;
 
         if (leftPressed || rightPressed || escapePressed)
-            biofiltreManager.SuppressFarmPointerUiThisFrame();
+            biofiltreManager.SuppressFarmPointerUiUntilPointerRelease();
 
         if (leftPressed)
         {
@@ -175,15 +175,21 @@ public class PlantPlacementPreview : MonoBehaviour
             return;
         }
 
-        BiofiltreCell cellForReopen = originCell;
+        PlayerInventory inventory = PlayerInventory.Instance;
         bool noSeedsLeft = seedItem == null ||
-                           PlayerInventory.Instance == null ||
-                           PlayerInventory.Instance.Count(seedItem) <= 0;
+                           inventory == null ||
+                           inventory.Count(seedItem) <= 0;
 
+        // Tant qu'il reste des graines : garder la preview active pour enchaîner
+        // les plantations (le ghost continue de suivre la souris).
+        if (!noSeedsLeft)
+            return;
+
+        // Dernière graine consommée : fermer la preview et ré-ouvrir la sélection
+        // de graines en état vide ("plus de graines"), que le joueur fermera lui-même.
+        BiofiltreCell cellForReopen = originCell;
         Cancel();
-
-        if (noSeedsLeft)
-            biofiltreManager.ReopenSeedSelectionAfterLastSeedPlanted(cellForReopen);
+        biofiltreManager.ReopenSeedSelectionAfterLastSeedPlanted(cellForReopen);
     }
 
     /// <summary>Cancels the preview and destroys the ghost without placing anything.</summary>
