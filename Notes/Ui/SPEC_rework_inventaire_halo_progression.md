@@ -102,6 +102,8 @@ Quand tu apporteras ce contenu au projet :
 
 → déposer / structurer dans [`Notes/GDD/INBOX_notes_tablette_recherches.md`](../GDD/INBOX_notes_tablette_recherches.md)
 
+**Tâche projet :** session **[P0-IDEA-001]** (`Notes/Todo_project.md`) — synthèse boucle + priorités ; vrac déjà numérisé dans [`Inbox_gdd.md`](../GDD/Inbox_gdd.md).
+
 Jusque-là, le halo UI reste une **intention visuelle + navigation vers arbres** ; les règles métier (coûts, niveaux, effets shop/market, save) viendront **après** import des notes, pas inventées ici.
 
 ---

@@ -37,26 +37,42 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche **`main`** — merge **`feature/farm-harvest-reward-popup`** (2026-06-02) : toast récolte `FarmHarvestReward` + croissance offline UTC. Voir `PROJECT_LOG.md` **2026-06-02**.
+> Branche **`main`** (à jour `origin/main`). Ferme stable (playtests graines + toast récolte + offline UTC, **2026-06-02**). **Prochaine session : idées gameplay / features** (notes tablette) — voir **[P0-IDEA-001]**.
 
-### 1) Bug popup plantation empty + slot (validation) — priorité immédiate
-- [~] **[P0-FARM-BUG-001]** Après épuisement pack départ + achat shop (1 graine) : popup affiche **slot `Laitue ×N`** **et** le message **« Aucune graine dans l'inventaire… »** en même temps. Correctif mergé sur `main` (switch HasSeeds/Empty) ; **playtest de validation** à faire. Fichiers : `SeedSelectionUI.cs`, `SeedSelectionUI.prefab`.
+### 1) Idées projet & boucle gameplay — priorité immédiate (session auteur, demain matin)
 
-### 2) Bug panel info plante après plantation — clos
-- [x] **[P0-FARM-BUG-002]** Panel info plante (`FarmPlantHarvest`) qui s'ouvrait après plantation. Correctif sur `main` : suppression du clic de pose **jusqu'au relâchement** (`SuppressFarmPointerUiUntilPointerRelease` + frames de grâce) ; preview **maintenue active** tant qu'il reste des graines ; dernière graine → popup empty. **Playtest validé** (2026-06-02). Fichiers : `PlantPlacementPreview.cs`, `PlantHarvestInteractor.cs`, `BiofiltreManager.cs`, `SeedSelectionUI.cs`. Journal : `PROJECT_LOG.md` **2026-06-02**.
+- [ ] **[P0-IDEA-001]** **Transcrire et structurer** les idées / réflexions portées sur la tablette (boucle de gameplay, features, liens ferme ↔ shop ↔ inventaire ↔ runner). **Livrables session :**
+  1. Synthèse courte (1 page max) : vision boucle, features candidates, hors scope explicite.
+  2. Liste **3–5 tâches concrètes** proposées (IDs `P0-*` / `CT-*`) avec ordre 1, 2, 3…
+  3. Mise à jour de **`Notes/Todo_project.md`** § *Prochaine session* + trace dans **`PROJECT_LOG.md`**.
+- **Sources déjà dans le repo** (à parcourir avant / pendant la session) :
+  - **Hub tablette** : `Notes/GDD/INBOX_notes_tablette_recherches.md` (cartographie complète)
+  - **Vrac GDD partiel** : `Notes/GDD/Inbox_gdd.md` (états plantes, salade/tomate, pistes meta)
+  - **UI halo / talents** : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` §4
+  - **Progression XP / biofiltre** : `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`
+  - **Veille jeux** : `Notes/References/REFERENCES_jeux_inspiration.md`
+- **Ne pas démarrer** les items § *Stock en attente* tant que **[P0-IDEA-001]** n'est pas clos (priorités validées par l'auteur).
 
-### 3) Playtest graines (suite)
-- [~] **[P0-FARM-PLAY-001]** Playtest boucle graines — partiel ; re-valider après fix [P0-FARM-BUG-001] (+ correctifs pack départ `PlayerInventory` si pas encore commités).
+### Bugs / playtests ferme — clos
 
-### 4) Polish UI ferme (lié au bug)
-- [ ] **[P0-FARM-UI-001]** Prefab **`SeedSelectionUI`** : panneau **EmptyStatePanel** + bouton **Acheter** (`emptyStatePanel`, `emptyStateLabel`, `openShopButton`) — évite le fallback titre. §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
+- [x] **[P0-FARM-BUG-001]** Popup empty + slot simultanés après achat shop. **Playtest validé** (2026-06-02).
+- [x] **[P0-FARM-BUG-002]** Panel info plante après plantation. **Playtest validé** (2026-06-02).
+- [x] **[P0-FARM-PLAY-001]** Boucle graines complète. **Playtest validé** (2026-06-02).
+- [x] **[CT-FARM-POLISH-001]** Toast récolte **`FarmHarvestReward`**. Merge `main` 2026-06-02.
 
-### 4b) Polish récolte — clos
-- [x] **[CT-FARM-POLISH-001]** Toast récolte **`FarmHarvestReward`** : icône item + `+X`, montée + fade à la position plante. Prefab `HarvestRewardFeedbackPopup`, merge `main` 2026-06-02.
+---
 
-### 5) Pistes alternatives
-- [ ] [CT-SHOP-002] Polish UX shop — optionnel.
-- [ ] [CT-FARM-004] Persistance ferme complète — optionnel.
+## Stock en attente (priorités à valider après [P0-IDEA-001])
+
+> Tâches connues **gelées** : ne pas implémenter tant que la session idées n'a pas produit et validé le nouvel ordre P0/CT.
+
+| Ordre indicatif | ID | Intention | Détail |
+|-----------------|-----|-----------|--------|
+| — | **[CT-INV-HALO-001]** | Rework inventaire halo + grille | `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` |
+| — | **[CT-FARM-UI-001]** | EmptyStatePanel graines (polish) | Prefab `SeedSelectionUI` — §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md` ; **reclassé polish** (2026-06-02), plus P0 immédiat |
+| — | **[CT-SHOP-002]** | Polish UX shop | Optionnel |
+| — | **[CT-FARM-004]** | Persistance ferme scénario complet | Playtest long |
+| — | **[CT-INV-001]** … **[CT-NAV-004]** | Voir § *Court terme* | Inchangé |
 
 ### Doc — popups
 - [~] [BL-POP-DOC-001] `popup_generique.md` §2.5 aligné. Reste : `SYSTEMES_carte_mentale.md`, `Codebase_etat_reference.md`.
@@ -75,9 +91,13 @@ Convention d'IDs :
 - [x] [CT-SHOP-006] Références Inspector popup item (prefab + `ShopItemPopupView` / `CurrencyBalanceUI` wallet).
 
 ### Inventaire / wallet / runtime UI
+- [ ] **[CT-INV-HALO-001]** Rework inventaire halo + grille basse — `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`. **Stock** jusqu'à validation post-[P0-IDEA-001].
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
 - [ ] [CT-INV-002] Valider qu’il n’y a plus de dépendance runtime cachée à `Inventaire.unity` (ou documenter explicitement son rôle).
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).
+
+### Ferme — polish & UI
+- [ ] **[CT-FARM-UI-001]** *(ex-P0, polish)* Prefab **`SeedSelectionUI`** : **EmptyStatePanel** + bouton **Acheter** — code prêt, prefab à câbler. §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`. **Stock** jusqu'à validation post-[P0-IDEA-001].
 
 ### Ferme — croissance et persistance
 - [~] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).

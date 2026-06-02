@@ -52,8 +52,8 @@ Légende :
 | Fichier | Statut | Priorité | Synthèse |
 |---|---|---|---|
 | `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` | Actif | P2 | Spéc de progression: XP joueur + maturité du biofiltre/système pour gate les cultures avancées. |
-| `Notes/GDD/INBOX_notes_tablette_recherches.md` | A trier | P3 | Inbox : notes manuscrites / recherches perso (« tablette » = référence auteur, pas feature jeu). |
-| `Notes/GDD/Inbox_gdd.md` | A trier | P3 | Brouillon d'idées GDD en vrac (états de plantes, inspirations casual farm, pistes à structurer). |
+| `Notes/GDD/INBOX_notes_tablette_recherches.md` | Actif | P1 | Hub [P0-IDEA-001] : notes manuscrites / recherches perso (« tablette » = référence auteur) + cartographie docs liés. |
+| `Notes/GDD/Inbox_gdd.md` | A trier | P1 | Brouillon GDD partiel (états plantes, salade/tomate, meta) — compléter depuis tablette via [P0-IDEA-001]. |
 
 ## Notes Learning
 

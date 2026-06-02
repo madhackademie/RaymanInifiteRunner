@@ -1,4 +1,9 @@
+# Inbox GDD — brouillon (vrac)
 
+> **Liaison tablette :** contenu partiel déjà saisi au clavier ; compléter depuis les notes manuscrites lors de **[P0-IDEA-001]**.  
+> Hub : [`INBOX_notes_tablette_recherches.md`](INBOX_notes_tablette_recherches.md) · Tâche : `Notes/Todo_project.md` § [P0-IDEA-001].
+
+---
 
 a voir farm city
 a voir google ia pour les réponses de jeu casu farm 

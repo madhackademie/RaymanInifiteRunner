@@ -1,5 +1,36 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-02 — Repriorisation : session idées gameplay ([P0-IDEA-001])
+
+### Décisions auteur
+- **[P0-FARM-UI-001]** (EmptyStatePanel graines) **reclassé polish** → **[CT-FARM-UI-001]** en stock ; le code `SeedSelectionUI` est prêt, seul le prefab manque — non bloquant (playtests graines validés).
+- **Prochaine session (demain matin)** : transcrire les **idées / réflexions sur tablette** (boucle gameplay, features projet) — **pas** import d'assets.
+- **[CT-INV-HALO-001]**, polish ferme, etc. → **stock en attente** tant que **[P0-IDEA-001]** n'a pas produit une liste de priorités validées.
+
+### Prochaine session
+- **[P0-IDEA-001]** — synthèse idées + 3–5 tâches ordonnées dans `Notes/Todo_project.md`.
+
+### Doc — liaison notes tablette
+- Hub enrichi : `Notes/GDD/INBOX_notes_tablette_recherches.md` (cartographie + lien [P0-IDEA-001]).
+- Renvois croisés : `Inbox_gdd.md`, `SPEC_rework_inventaire_halo_progression.md` §4, `Todo_project.md`, `ASSISTANT_CONTEXT.md`, `INDEX.md`.
+
+---
+
+## 2026-06-02 — Playtests ferme graines validés ([P0-FARM-BUG-001], [P0-FARM-PLAY-001])
+
+### Validation auteur
+- [x] **[P0-FARM-BUG-001]** Pack épuisé → achat shop ×1 → popup slot `Laitue ×1` **sans** message empty persistant.
+- [x] **[P0-FARM-PLAY-001]** Boucle graines complète (plantation en chaîne, dernière graine → empty, shop, replant).
+
+### Statut
+- `[x]` dans `Notes/Todo_project.md` pour les deux IDs ci-dessus (avec [P0-FARM-BUG-002] déjà clos).
+
+### Prochaine session
+- **[P0-FARM-UI-001]** — EmptyStatePanel + bouton Acheter sur `SeedSelectionUI`.
+- Puis **[CT-INV-HALO-001]** — rework inventaire halo (`Notes/Ui/SPEC_rework_inventaire_halo_progression.md`).
+
+---
+
 ## 2026-06-02 — Toast récolte ferme + croissance offline UTC (merge `feature/farm-harvest-reward-popup`)
 
 ### Contexte

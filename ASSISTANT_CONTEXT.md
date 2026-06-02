@@ -18,13 +18,11 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **Prochaine session** : **[P0-FARM-BUG-001]** puis **[P0-FARM-PLAY-001]** — validation popup graines / boucle complète.
-2. **[P0-FARM-UI-001]** — EmptyStatePanel graines.
-3. **Rework inventaire halo** — `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` (nouvelle branche feature).
+1. **[P0-IDEA-001]** — Session auteur (demain matin) : idées tablette → boucle gameplay / features → liste tâches validées. **Docs liés :** `Notes/GDD/INBOX_notes_tablette_recherches.md` (hub), `Notes/GDD/Inbox_gdd.md` (vrac partiel), `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`.
+2. **Stock gelé** jusqu'à clôture [P0-IDEA-001] : [CT-INV-HALO-001], [CT-FARM-UI-001] (polish EmptyState), etc.
 
 ### Contexte Git session (2026-06-02)
-- **`main`** — merge **`feature/farm-harvest-reward-popup`** : toast récolte `PopupId.FarmHarvestReward`, croissance offline `FarmTimeService` / `FarmPersistenceCoordinator`.
-- Popups ferme : graines, panel récolte, inventaire plein, toast loot récolte (lazy `ScreenPopupHost` FirstLvl).
+- **`main`** (à jour `origin/main`) — ferme stable ; repriorisation produit en cours.
 
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
@@ -34,9 +32,9 @@
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
 - Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-06-02** :
-  - **[P0-FARM-BUG-001]** playtest validation popup graines (empty + slot après achat shop).
-  - **[x] [P0-FARM-BUG-002]** panel info plante apres plantation — valide 2026-06-02.
-  - **[x] [CT-FARM-POLISH-001]** toast récolte FarmHarvestReward — merge main 2026-06-02.
+  - **[P0-IDEA-001]** session idées tablette (gameplay loop / features) → produire priorités.
+  - Stock gelé : [CT-INV-HALO-001], [CT-FARM-UI-001] (polish EmptyState), etc.
+  - **[x]** Ferme : playtests graines + toast récolte [CT-FARM-POLISH-001].
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :
