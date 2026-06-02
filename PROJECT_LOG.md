@@ -1,5 +1,50 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-02 — Toast récolte ferme + croissance offline UTC (merge `feature/farm-harvest-reward-popup`)
+
+### Contexte
+- Branche **`feature/farm-harvest-reward-popup`** (base `main` `45dd477`).
+- Playtest auteur OK : toast récolte à la position plante, montée + fade ; croissance offline au retour scène / quit jeu.
+
+### Livré — feedback récolte
+- **`PopupId.FarmHarvestReward`** (`farm.harvest.reward`) + binding **`NavigationHUD`** → prefab **`HarvestRewardFeedbackPopup`**.
+- **`HarvestRewardFeedbackPopupUI`** : icône `ItemDefinition.Icon` + texte `+X`, animation montée + fade à la **position monde** de la plante (projection `Camera.main` → canvas overlay).
+- **`PlantHarvestInteractor`** : appel après récolte réussie (position capturée avant `Destroy`).
+
+### Livré — croissance hors ligne (prototype)
+- **`FarmTimeService`** : ticks UTC, plafond 72 h, rejet horloge reculée.
+- **`FarmPersistenceCoordinator`** + **`FarmApplicationLifecycle`** : save quit / pause ; réapplication delta au retour ferme (`BiofiltreManager.OnEnable`).
+- **`FarmSaveService`** v2 : `lastSavedUtcTicks` + `stageUpdatedUtcTicks` par plante.
+
+### Docs
+- `Notes/Ui/popup_generique.md` §2.5 — entrée `FarmHarvestReward`.
+- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md` — priorités et contexte Git realignés.
+
+### Prochaine session
+- **[P0-FARM-BUG-001]** / **[P0-FARM-PLAY-001]** si pas encore clos en playtest.
+- **[P0-FARM-UI-001]** EmptyStatePanel graines.
+- Rework inventaire halo : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`.
+
+---
+
+## 2026-06-02 — Validation playtest [P0-FARM-BUG-002]
+
+### Contexte
+- Branche **`main`**. Correctif plantation (panel info plante après pose) déjà intégré via audit **2026-06-02** et travail **`fix/seed-selection`** (2026-05-30).
+
+### Validation auteur
+- [x] Poser **plusieurs** graines d'affilée : **aucun** panel info plante (`FarmPlantHarvest`) à chaque pose.
+- [x] **Dernière** graine : popup « plus de graines », fermeture manuelle — OK.
+
+### Statut
+- **[P0-FARM-BUG-002]** → `[x]` dans `Notes/Todo_project.md`.
+
+### Prochaine session
+- **[P0-FARM-BUG-001]** — playtest validation popup empty + slot après achat shop.
+- Puis **[P0-FARM-PLAY-001]** — boucle graines complète.
+
+---
+
 ## 2026-06-02 — Audit code : nettoyage code mort, factorisations, découpage god classes
 
 ### Contexte

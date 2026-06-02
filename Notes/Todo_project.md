@@ -37,19 +37,22 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche **`fix/seed-selection`** (correctif plantation en cours, **non mergé**). Base : `main` (`f0ae48e`). Voir `PROJECT_LOG.md` **2026-05-30**.
+> Branche **`main`** — merge **`feature/farm-harvest-reward-popup`** (2026-06-02) : toast récolte `FarmHarvestReward` + croissance offline UTC. Voir `PROJECT_LOG.md` **2026-06-02**.
 
-### 1) Bug panel info plante après plantation — priorité immédiate
-- [~] **[P0-FARM-BUG-002]** Panel info plante (`FarmPlantHarvest`) qui s'ouvre après plantation. **Correctif appliqué** (`fix/seed-selection`, 2026-05-30) : suppression du clic de pose **jusqu'au relâchement** du bouton (`SuppressFarmPointerUiUntilPointerRelease` + frames de grâce) au lieu d'un flag « une frame » ; preview **maintenue active** tant qu'il reste des graines (enchaînement) ; dernière graine → `ReopenSeedSelectionAfterLastSeedPlanted` (état empty). **Playtest de validation requis** : poser plusieurs graines (pas d'info plante à chaque pose) + dernière graine → popup « plus de graines ». Fichiers : `PlantPlacementPreview.cs`, `PlantHarvestInteractor.cs`, `BiofiltreManager.cs`, `SeedSelectionUI.cs`. Journal : `PROJECT_LOG.md` **2026-05-30**.
+### 1) Bug popup plantation empty + slot (validation) — priorité immédiate
+- [~] **[P0-FARM-BUG-001]** Après épuisement pack départ + achat shop (1 graine) : popup affiche **slot `Laitue ×N`** **et** le message **« Aucune graine dans l'inventaire… »** en même temps. Correctif mergé sur `main` (switch HasSeeds/Empty) ; **playtest de validation** à faire. Fichiers : `SeedSelectionUI.cs`, `SeedSelectionUI.prefab`.
 
-### 2) Bug popup plantation empty + slot (validation)
-- [~] **[P0-FARM-BUG-001]** Après épuisement pack départ + achat shop (1 graine) : popup affiche **slot `Laitue ×N`** **et** le message **« Aucune graine dans l'inventaire… »** en même temps. Correctif mergé sur `main` (switch HasSeeds/Empty) ; **playtest de validation** à reprendre après fix [P0-FARM-BUG-002]. Fichiers : `SeedSelectionUI.cs`, `SeedSelectionUI.prefab`.
+### 2) Bug panel info plante après plantation — clos
+- [x] **[P0-FARM-BUG-002]** Panel info plante (`FarmPlantHarvest`) qui s'ouvrait après plantation. Correctif sur `main` : suppression du clic de pose **jusqu'au relâchement** (`SuppressFarmPointerUiUntilPointerRelease` + frames de grâce) ; preview **maintenue active** tant qu'il reste des graines ; dernière graine → popup empty. **Playtest validé** (2026-06-02). Fichiers : `PlantPlacementPreview.cs`, `PlantHarvestInteractor.cs`, `BiofiltreManager.cs`, `SeedSelectionUI.cs`. Journal : `PROJECT_LOG.md` **2026-06-02**.
 
 ### 3) Playtest graines (suite)
 - [~] **[P0-FARM-PLAY-001]** Playtest boucle graines — partiel ; re-valider après fix [P0-FARM-BUG-001] (+ correctifs pack départ `PlayerInventory` si pas encore commités).
 
 ### 4) Polish UI ferme (lié au bug)
 - [ ] **[P0-FARM-UI-001]** Prefab **`SeedSelectionUI`** : panneau **EmptyStatePanel** + bouton **Acheter** (`emptyStatePanel`, `emptyStateLabel`, `openShopButton`) — évite le fallback titre. §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`.
+
+### 4b) Polish récolte — clos
+- [x] **[CT-FARM-POLISH-001]** Toast récolte **`FarmHarvestReward`** : icône item + `+X`, montée + fade à la position plante. Prefab `HarvestRewardFeedbackPopup`, merge `main` 2026-06-02.
 
 ### 5) Pistes alternatives
 - [ ] [CT-SHOP-002] Polish UX shop — optionnel.
@@ -77,10 +80,10 @@ Convention d'IDs :
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).
 
 ### Ferme — croissance et persistance
-- [ ] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).
-- [ ] [CT-FARM-002] Garantir la persistance du temps déjà écoulé (stade + timer) via `FarmSaveService` / `PlantPersistenceMarker`.
+- [~] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).
+- [~] [CT-FARM-002] Croissance offline UTC prototype (`FarmTimeService`, quit/pause, retour scène) — playtest auteur OK 2026-06-02 ; affiner plafond / cloud plus tard.
 - [ ] [CT-FARM-003] Revalider le démarrage visuel/logique au stade Graine puis transition vers feuilles.
-- [ ] [CT-FARM-004] Valider la persistance JSON en scénario complet : pose -> quit -> relance -> récolte/arrache -> relance.
+- [~] [CT-FARM-004] Persistance JSON scénario complet : pose → quit → relance → récolte (offline inclus).
 
 ### Navigation Scene/UI
 - [ ] [CT-NAV-001] Debug complet des flux `SceneNavigator.ShowScene` (transitions concurrentes, scènes orphelines, ordre d’activation).

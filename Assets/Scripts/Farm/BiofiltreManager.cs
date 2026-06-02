@@ -31,6 +31,7 @@ public class BiofiltreManager : MonoBehaviour
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
     private bool hasLoadedFromSave;
+    private bool runtimeInitialized;
     private SeedSelectionUI cachedSeedSelectionUi;
     private HarvestPanelUI cachedHarvestPanelUi;
 
@@ -53,11 +54,18 @@ public class BiofiltreManager : MonoBehaviour
     private void OnEnable()
     {
         visualizer.OnCellClicked += HandleCellClicked;
+        FarmPersistenceCoordinator.Register(this);
+
+        // Scène masquée via SceneNavigator : Start ne repasse pas — recalcul UTC ici.
+        if (runtimeInitialized)
+            ApplyOfflineGrowthSinceLastSave();
     }
 
     private void OnDisable()
     {
         visualizer.OnCellClicked -= HandleCellClicked;
+        SaveFarmState();
+        FarmPersistenceCoordinator.Unregister(this);
     }
 
     private void Start()
@@ -69,12 +77,14 @@ public class BiofiltreManager : MonoBehaviour
         WarmUpHarvestPanelPopup();
 
         TryLoadFarmState();
+        runtimeInitialized = true;
     }
 
-    private void OnApplicationQuit()
-    {
-        SaveFarmState();
-    }
+    /// <summary>Sauvegarde JSON demandée par <see cref="FarmPersistenceCoordinator"/> (quit / pause).</summary>
+    public void FlushPersistence() => SaveFarmState();
+
+    /// <summary>Croissance offline au retour focus / reprise sans quitter la scène.</summary>
+    public void ApplyOfflinePersistence() => ApplyOfflineGrowthSinceLastSave();
 
     private void Update()
     {
@@ -370,7 +380,9 @@ public class BiofiltreManager : MonoBehaviour
         gridManager.ResetRuntimeState();
         visualizer.RefreshAllCellStates();
 
-        float offlineDelta = FarmStateSerializer.ComputeOfflineSeconds(saveData.lastSavedUtc);
+        float offlineDelta = FarmStateSerializer.ComputeOfflineSeconds(
+            saveData.lastSavedUtcTicks,
+            saveData.lastSavedUtc);
 
         foreach (FarmPlantRecord record in saveData.plants)
         {
@@ -395,6 +407,36 @@ public class BiofiltreManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applique la croissance écoulée depuis la dernière sauvegarde UTC (retour en ferme).
+    /// </summary>
+    private void ApplyOfflineGrowthSinceLastSave()
+    {
+        if (!enablePrototypePersistence || visualizer == null || visualizer.PlantsContainer == null)
+            return;
+
+        if (!FarmSaveService.TryLoad(out FarmSaveService.FarmSaveData saveData))
+            return;
+
+        float offlineDelta = FarmStateSerializer.ComputeOfflineSeconds(
+            saveData.lastSavedUtcTicks,
+            saveData.lastSavedUtc);
+        if (offlineDelta <= 0f)
+            return;
+
+        foreach (Transform child in visualizer.PlantsContainer)
+        {
+            if (child.TryGetComponent(out PlantGrow grow))
+                grow.AdvanceBySeconds(offlineDelta);
+        }
+
+        SaveFarmState();
+        Debug.Log($"[BiofiltreManager] Croissance hors ligne : +{offlineDelta:F0}s appliquée.");
+    }
+
+    /// <summary>
+    /// Sauvegarde immédiate après pose, récolte ou arrachage (même chemin JSON, sans inventaire).
+    /// </summary>
     private void SaveFarmState()
     {
         if (!enablePrototypePersistence || visualizer == null || visualizer.PlantsContainer == null)

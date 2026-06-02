@@ -549,6 +549,9 @@ MonoBehaviour:
   - screenId: FirstLvlFarm
     popupId: farm.inventory.feedback
     popupPrefab: {fileID: 8667043653346198443, guid: 72ca5fc0fce0fc74db56a4066de24fdb, type: 3}
+  - screenId: FirstLvlFarm
+    popupId: farm.harvest.reward
+    popupPrefab: {fileID: 7080806659365243136, guid: 57949baf1706e954c856d1a2cf05315e, type: 3}
 --- !u!1 &877250849
 GameObject:
   m_ObjectHideFlags: 0

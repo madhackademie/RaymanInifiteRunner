@@ -18,23 +18,13 @@
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
 ### Priorités en cours
-1. **Prochaine session (2026-05-22)** : **[P0-FARM-BUG-001]** — popup graines : message empty + slot `Laitue ×N` simultanés après achat shop. Journal **`PROJECT_LOG.md` 2026-05-22**.
-2. **[~] [P0-FARM-PLAY-001]** — playtest graines (partiel, à reprendre après fix bug).
-3. **[P0-FARM-UI-001]** — EmptyState prefab dédié (évite fallback titre).
-3. **Inventaire** : finaliser la **séparation inventaire/gameplay** (actuellement `FirstLvl`, cible tous niveaux), rétablir la scène inventaire dédiée si encore pertinente, et sécuriser le flux de reprise après interruption BezyIA.
-4. **Persistance inventaire JSON** : fiabiliser save/load (ouverture scène, changement de scène, relance jeu) ; vérifier cohérence UI/slots.
-5. **~2026-05-01 — Audit Bezi + refactor navigation Scene/UI** : terminer l’audit sur le flux réel (`ShowScene`, boot eager, `UIManager`) ; **clean/refactor** ; supprimer ou documenter le code mort ; **réaligner** `ARCHI` / `Journal_ui` / `Todo_ui` / guide scènes — **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**, **`PROJECT_LOG.md`** (2026-04-21).
-6. **Navigation inter-scène / UI** : playtests et durcissement (Build Settings, double **`EventSystem`**, tous chemins hub ↔ inventaire ↔ niveau) — croiser **`Notes/Todo_project.md`**, **`Notes/Ui/Todo_ui.md`** ; réf. **`Notes/Ui/SceneUiLoadManagement.md`**.
-7. **Persistance grille** : état des cellules / cultures à la **fermeture de scène** et à la **quitt** (piste **`ScriptableObject`** + save ultérieure) — **`Notes/Todo_project.md`**.
-8. **Croissance plantes hors scène / hors ligne** : recalcul via **UTC** à la reprise ; **cloud** (ex. UGS) en évolution possible — croiser **`Timer`**, spec temps GDD, **`Notes/Todo_project.md`**.
-9. **LoadingScreen — visuel** : illustration + intégration **`Bootstrap`** — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
-10. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
-11. Nettoyage assets prototype / références Unity.
+1. **Prochaine session** : **[P0-FARM-BUG-001]** puis **[P0-FARM-PLAY-001]** — validation popup graines / boucle complète.
+2. **[P0-FARM-UI-001]** — EmptyStatePanel graines.
+3. **Rework inventaire halo** — `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` (nouvelle branche feature).
 
 ### Contexte Git session (2026-06-02)
-- **`main`** — intègre la passe de nettoyage code (audit `chore/audit-cleanup-2026-06`, mergée puis branche supprimée). Voir `PROJECT_LOG.md` 2026-06-02.
-- Rappel structure : `Timer.cs`, `MainMenuUI`, `SampleScene` supprimés ; `SceneId` dans `Systems/SceneId.cs` ; helpers `UiMessages`, `FarmPopupCanvasFactory`, `FarmStateSerializer`, `ShopCatalogResolver`.
-- Prochain chantier code : **nouvelle branche feature** avant implémentation.
+- **`main`** — merge **`feature/farm-harvest-reward-popup`** : toast récolte `PopupId.FarmHarvestReward`, croissance offline `FarmTimeService` / `FarmPersistenceCoordinator`.
+- Popups ferme : graines, panel récolte, inventaire plein, toast loot récolte (lazy `ScreenPopupHost` FirstLvl).
 
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
@@ -43,8 +33,10 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-05-22** :
-  - **[P0-FARM-BUG-001]** popup graines : message empty persiste après achat shop (slot visible).
+- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-06-02** :
+  - **[P0-FARM-BUG-001]** playtest validation popup graines (empty + slot après achat shop).
+  - **[x] [P0-FARM-BUG-002]** panel info plante apres plantation — valide 2026-06-02.
+  - **[x] [CT-FARM-POLISH-001]** toast récolte FarmHarvestReward — merge main 2026-06-02.
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :

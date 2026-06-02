@@ -136,11 +136,14 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         int amount = UnityEngine.Random.Range(config.harvestAmountMin, config.harvestAmountMax + 1);
         InventoryResult result = inventory.TryAdd(item, amount);
 
+        // Capturer la position monde AVANT RemovePlantFromGrid / Destroy.
+        Vector3 harvestWorldPos = transform.position;
+
         switch (result)
         {
             case InventoryResult.Success:
             case InventoryResult.Partial:
-                Debug.Log($"[PlantHarvestInteractor] Récolté '{item.DisplayName}' x{amount}. Résultat : {result}.");
+                ShowHarvestRewardFeedback(item, amount, harvestWorldPos);
                 OnHarvestSuccess();
                 break;
 
@@ -179,6 +182,10 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
             foreach (Vector2Int coords in occupiedCells)
                 visualizer.GetCell(coords)?.SetVisualState(false);
         }
+
+        // Destroy() est différé en fin de frame : retirer du conteneur avant la sauvegarde
+        // pour ne pas réécrire la plante dans farm_state.json (CT-FARM-004).
+        transform.SetParent(null, worldPositionStays: true);
 
         onPlantRemoved?.Invoke();
         Destroy(gameObject);
@@ -271,6 +278,28 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         Debug.LogWarning(
             "[PlantHarvestInteractor] Popup inventaire plein introuvable. " +
             "Ajoutez un ScreenPopupBinding (FirstLvlFarm + PopupId.FarmInventoryFeedback + prefab ResourceFeedbackPopup) " +
+            "dans UIManager.runtimePopupBindings (NavigationHUD).",
+            this);
+    }
+
+    private void ShowHarvestRewardFeedback(ItemDefinition item, int amount, Vector3 worldPos)
+    {
+        if (item == null)
+            return;
+
+        ScreenPopupHost host = ResolvePopupHost();
+        if (host == null)
+            return;
+
+        if (host.TryGetPopup(PopupId.FarmHarvestReward, out HarvestRewardFeedbackPopupUI popup))
+        {
+            popup.ShowHarvestReward(item.Icon, item.DisplayName, amount, worldPos);
+            return;
+        }
+
+        Debug.LogWarning(
+            "[PlantHarvestInteractor] Popup récompense récolte introuvable. " +
+            "Ajoutez un ScreenPopupBinding (FirstLvlFarm + PopupId.FarmHarvestReward + prefab HarvestRewardFeedbackPopup) " +
             "dans UIManager.runtimePopupBindings (NavigationHUD).",
             this);
     }

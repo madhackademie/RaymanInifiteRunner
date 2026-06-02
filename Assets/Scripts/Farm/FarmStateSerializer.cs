@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
 
 /// <summary>
@@ -36,25 +34,15 @@ public static class FarmStateSerializer
                 anchorX = marker.Anchor.x,
                 anchorY = marker.Anchor.y,
                 currentStage = grow.CurrentStage,
-                stageElapsedSeconds = grow.CurrentStageElapsedSeconds
+                stageElapsedSeconds = grow.CurrentStageElapsedSeconds,
+                stageUpdatedUtcTicks = FarmTimeService.UtcNowTicks
             });
         }
 
         return records;
     }
 
-    /// <summary>
-    /// Secondes écoulées (hors ligne) entre l'horodatage UTC sauvegardé et maintenant.
-    /// Retourne 0 si l'horodatage est absent ou invalide.
-    /// </summary>
-    public static float ComputeOfflineSeconds(string lastSavedUtcIso)
-    {
-        if (string.IsNullOrEmpty(lastSavedUtcIso) ||
-            !DateTime.TryParse(lastSavedUtcIso, null, DateTimeStyles.RoundtripKind, out DateTime savedUtc))
-        {
-            return 0f;
-        }
-
-        return Mathf.Max(0f, (float)(DateTime.UtcNow - savedUtc).TotalSeconds);
-    }
+    /// <summary>Délègue à <see cref="FarmTimeService"/> (ticks + plafond + garde-fous horloge).</summary>
+    public static float ComputeOfflineSeconds(long savedUtcTicks, string lastSavedUtcIso) =>
+        FarmTimeService.ComputeOfflineSeconds(savedUtcTicks, lastSavedUtcIso);
 }

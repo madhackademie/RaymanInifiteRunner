@@ -20,8 +20,9 @@ public static class FarmSaveService
     {
         FarmSaveData data = new()
         {
-            saveVersion = 1,
-            lastSavedUtc = DateTime.UtcNow.ToString("O"),
+            saveVersion = FarmTimeService.SaveVersion,
+            lastSavedUtc = FarmTimeService.UtcNowIso,
+            lastSavedUtcTicks = FarmTimeService.UtcNowTicks,
             plants = plants ?? new List<FarmPlantRecord>()
         };
 
@@ -60,8 +61,10 @@ public static class FarmSaveService
     [Serializable]
     public class FarmSaveData
     {
-        public int saveVersion = 1;
+        public int saveVersion = FarmTimeService.SaveVersion;
         public string lastSavedUtc;
+        /// <summary>Horodatage UTC principal (ticks) — plus fiable que la chaîne ISO seule.</summary>
+        public long lastSavedUtcTicks;
         public List<FarmPlantRecord> plants = new();
     }
 }
@@ -77,5 +80,7 @@ public class FarmPlantRecord
     // Stade courant + progression du stade au moment de la sauvegarde.
     public PlantGrow.GrowthStage currentStage;
     public float stageElapsedSeconds;
+    /// <summary>Dernière persistance de cet état (UTC ticks) — base pour validation cloud / anti-triche.</summary>
+    public long stageUpdatedUtcTicks;
 }
 

@@ -17,4 +17,7 @@ public static class PopupId
 
     /// <summary>Message court inventaire / contraintes sac (ex. inventaire plein à la récolte).</summary>
     public const string FarmInventoryFeedback = "farm.inventory.feedback";
+
+    /// <summary>Toast succès récolte : icône item + quantité animée (scène FirstLvl / ferme).</summary>
+    public const string FarmHarvestReward = "farm.harvest.reward";
 }
