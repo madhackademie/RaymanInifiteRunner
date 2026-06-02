@@ -187,9 +187,11 @@ public class PlantPlacementPreview : MonoBehaviour
 
         // Dernière graine consommée : fermer la preview et ré-ouvrir la sélection
         // de graines en état vide ("plus de graines"), que le joueur fermera lui-même.
+        // Cancel() remet biofiltreManager à null (Cleanup) : on capture la référence avant.
         BiofiltreCell cellForReopen = originCell;
+        BiofiltreManager managerForReopen = biofiltreManager;
         Cancel();
-        biofiltreManager.ReopenSeedSelectionAfterLastSeedPlanted(cellForReopen);
+        managerForReopen.ReopenSeedSelectionAfterLastSeedPlanted(cellForReopen);
     }
 
     /// <summary>Cancels the preview and destroys the ghost without placing anything.</summary>

@@ -31,8 +31,9 @@
 10. **Doc flux** : `Notes/Farm/SYSTEMES_carte_mentale.md` ; **`Docs/PLANTES_ET_INVENTAIRE.md`**.
 11. Nettoyage assets prototype / références Unity.
 
-### Contexte Git session (2026-05-19)
-- **`main`** — merges `rework/shopitempopup` + `rework/selectionGraine` (`b82eec0`).
+### Contexte Git session (2026-06-02)
+- **`main`** — intègre la passe de nettoyage code (audit `chore/audit-cleanup-2026-06`, mergée puis branche supprimée). Voir `PROJECT_LOG.md` 2026-06-02.
+- Rappel structure : `Timer.cs`, `MainMenuUI`, `SampleScene` supprimés ; `SceneId` dans `Systems/SceneId.cs` ; helpers `UiMessages`, `FarmPopupCanvasFactory`, `FarmStateSerializer`, `ShopCatalogResolver`.
 - Prochain chantier code : **nouvelle branche feature** avant implémentation.
 
 ### Rappel protocole gestion de projet (session)

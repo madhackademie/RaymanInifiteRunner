@@ -1,5 +1,27 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-02 — Audit code : nettoyage code mort, factorisations, découpage god classes
+
+### Contexte
+- Branche dédiée **`chore/audit-cleanup-2026-06`** (base `main` `cedefd6`).
+- Audit complet de `Assets/Scripts/` (57 scripts) : code mort/obsolète + opportunités d'amélioration. Vérification des références GUID en scènes/prefabs avant toute suppression.
+
+### Changements
+- **Bug corrigé** : `InventorySaveService.TryLoad` ne restaurait jamais `startingSeedsApplied` (risque de re-crédit des graines de départ au rechargement).
+- **Code mort supprimé** : `Core/Timer.cs` (inutilisé) ; API orphelines (`NavigationHUD.ShowNavBar/ShowExitOnly/Hide`, `GridManager.OccupyCell/FreeCell` singuliers, `UIManager.HasScreen/PreloadScreenLazy`, `HudModalBackdrop.EnsureModalCanvas`, `InventorySceneController.Open`, `ItemDatabase.Items`, `CurrencyBalanceUI.SetReferences`, `HorizontalGradient.SetColors`, `PlantDefinition.IsHarvestableStage`).
+- **Legacy supprimé** : `Assets/SampleScene.unity` (doublon orphelin) + `Assets/Scenes/SampleScene.unity` + `MainMenuUI.cs` + entrée Build Settings (boot = `Bootstrap`).
+- **Factorisations / constantes** : `PlantDefinition.GetSprite()` (mapping stade→sprite unique) ; `PlantHarvestInteractor.RemovePlantFromGrid()` (récolte+arrachage) ; `UiMessages.InventoryFull` + constante `laitue_seed` ; `SceneId` déplacé dans `Systems/SceneId.cs`.
+- **Découpage god classes** (extractions sans déplacer de `[SerializeField]`) : `ShopCatalogResolver` (RuntimeShopScreen), `FarmPopupCanvasFactory` + `FarmStateSerializer` (BiofiltreManager). `HarvestPanelUI` : visuels recalculés au changement de stade seulement (timer chaque frame).
+- **Bug préexistant corrigé (playtest)** : `PlantPlacementPreview.ConfirmPlacement` lançait une `NullReferenceException` à la dernière graine (`Cancel()` mettait `biofiltreManager` à null avant l'appel `ReopenSeedSelectionAfterLastSeedPlanted`). Référence du manager capturée avant `Cancel()`.
+
+### Validation
+- Lint propre sur tout `Assets/Scripts/`. Playtest auteur OK (shop, ferme save/load, popup récolte, boucle graines, plus de NRE).
+
+### Conséquence docs
+- Doc obsolète réalignée : `TryOpenHarvestPanel` / `FindInteractorAt` / `ShowNavBar()` manuel n'existent plus dans le code (cf. `Notes/Codebase_etat_reference.md`).
+
+---
+
 ## 2026-05-30 — Playtest plantation + régression panel info plante ([P0-FARM-BUG-002])
 
 ### Contexte playtest (auteur)

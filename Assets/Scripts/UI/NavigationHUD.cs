@@ -101,29 +101,6 @@ public class NavigationHUD : MonoBehaviour
             exitButton.onClick.RemoveListener(OnExitClicked);
     }
 
-    // ── Display API ───────────────────────────────────────────────────────────
-
-    /// <summary>Affiche la barre de navigation complète.</summary>
-    public static void ShowNavBar()
-    {
-        if (Instance == null) return;
-        Instance.ApplyMode(HudMode.Navigation);
-    }
-
-    /// <summary>Affiche uniquement le bouton de sortie (croix). Pour les scènes gameplay.</summary>
-    public static void ShowExitOnly()
-    {
-        if (Instance == null) return;
-        Instance.ApplyMode(HudMode.ExitOnly);
-    }
-
-    /// <summary>Masque le HUD entièrement. Pour les cinématiques et l'écran de chargement.</summary>
-    public static void Hide()
-    {
-        if (Instance == null) return;
-        Instance.ApplyMode(HudMode.Hidden);
-    }
-
     // ── Tab callbacks ─────────────────────────────────────────────────────────
 
     /// <summary>Affiche HomeScene via SceneNavigator.</summary>

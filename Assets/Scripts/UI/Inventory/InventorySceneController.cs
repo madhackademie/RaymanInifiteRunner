@@ -55,13 +55,6 @@ public class InventorySceneController : MonoBehaviour
 
     // ── Public API ────────────────────────────────────────────────────────────
 
-    /// <summary>Affiche l'écran inventaire global via UIManager.</summary>
-    public static void Open()
-    {
-        if (UIManager.Instance != null)
-            UIManager.Instance.ShowScreen(ScreenId.Inventory);
-    }
-
     /// <summary>Ferme l'écran inventaire global ou retourne à Home si un navigateur de scène existe.</summary>
     public void Close()
     {

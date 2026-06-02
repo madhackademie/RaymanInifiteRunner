@@ -143,16 +143,6 @@ public class UIManager : MonoBehaviour
             EnsureInstantiated(entry);
     }
 
-    /// <summary>
-    /// Instancie (caché) un écran secondaire à la demande puis le conserve en mémoire.
-    /// Appeler avant ShowScreen pour éviter la latence au premier affichage.
-    /// </summary>
-    public void PreloadScreenLazy(string screenId)
-    {
-        if (TryGetEntry(screenId, out ScreenEntry entry))
-            EnsureInstantiated(entry);
-    }
-
     // ── Display API ───────────────────────────────────────────────────────────
 
     /// <summary>
@@ -190,9 +180,6 @@ public class UIManager : MonoBehaviour
     /// <summary>Retourne true si l'écran a déjà été instancié.</summary>
     public bool IsScreenLoaded(string screenId)
         => TryGetEntry(screenId, out ScreenEntry entry) && entry.IsLoaded;
-
-    /// <summary>Retourne true si l'identifiant d'écran existe dans le registre.</summary>
-    public bool HasScreen(string screenId) => registry.ContainsKey(screenId);
 
     /// <summary>Affiche un écran si disponible, retourne true en cas de succès.</summary>
     public bool TryShowScreen(string screenId)

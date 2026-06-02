@@ -9,8 +9,6 @@ using System;
 [RequireComponent(typeof(Collider2D))]
 public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 {
-    private const string InventoryFullFeedbackMessage = "Inventaire plein !";
-
     [Header("Dependencies")]
     [SerializeField] private ItemDatabase itemDatabase;
 
@@ -160,25 +158,15 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     /// <summary>
     /// Arrache la plante sans récolter.
     /// </summary>
-    public void Uproot()
-    {
-        if (gridManager != null && occupiedCells != null)
-        {
-            gridManager.FreeCells(occupiedCells);
-            gridManager.UnregisterPlant(occupiedCells);
-        }
+    public void Uproot() => RemovePlantFromGrid();
 
-        if (visualizer != null && occupiedCells != null)
-        {
-            foreach (Vector2Int coords in occupiedCells)
-                visualizer.GetCell(coords)?.SetVisualState(false);
-        }
+    private void OnHarvestSuccess() => RemovePlantFromGrid();
 
-        onPlantRemoved?.Invoke();
-        Destroy(gameObject);
-    }
-
-    private void OnHarvestSuccess()
+    /// <summary>
+    /// Libère les cellules occupées, réinitialise leurs visuels, notifie et détruit la plante.
+    /// Chemin commun à la récolte réussie et à l'arrachage.
+    /// </summary>
+    private void RemovePlantFromGrid()
     {
         if (gridManager != null && occupiedCells != null)
         {
@@ -224,7 +212,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         return null;
     }
 
-    public HarvestStageConfig? GetCurrentHarvestConfig()
+    private HarvestStageConfig? GetCurrentHarvestConfig()
     {
         PlantDefinition definition = ResolveDefinition();
         return definition?.GetHarvestConfig(plantGrow.CurrentStage);
@@ -276,7 +264,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         if (host.HasPopup(PopupId.FarmInventoryFeedback) &&
             host.TryGetPopup(PopupId.FarmInventoryFeedback, out ResourceFeedbackPopupUI popup))
         {
-            popup.ShowMessage(InventoryFullFeedbackMessage);
+            popup.ShowMessage(UiMessages.InventoryFull);
             return;
         }
 

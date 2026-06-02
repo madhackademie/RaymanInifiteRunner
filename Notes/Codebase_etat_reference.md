@@ -1,4 +1,6 @@
-# État de référence — scripts & assets (audit 2026-04-12, navigation 2026-04-19, alignement 2026-04-21, update 2026-04-26)
+# État de référence — scripts & assets (audit 2026-04-12, navigation 2026-04-19, alignement 2026-04-21, update 2026-04-26, nettoyage 2026-06-02)
+
+> **MAJ 2026-06-02 (branche `chore/audit-cleanup-2026-06`)** : `Core/Timer.cs` supprimé (inutilisé) ; `MainMenuUI` + les deux `SampleScene.unity` supprimés (flux legacy hors build) ; `SceneId` déplacé dans `Systems/SceneId.cs` ; nouveaux helpers `UiMessages`, `FarmPopupCanvasFactory`, `FarmStateSerializer`, `ShopCatalogResolver`. Les symboles `TryOpenHarvestPanel` / `FindInteractorAt` / `NavigationHUD.ShowNavBar()` **n'existent plus** (voir journal `PROJECT_LOG.md` 2026-06-02).
 
 Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **mettre à jour** après refactors importants.
 
@@ -17,7 +19,7 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 **Liste des classes publiques** (fichiers `.cs` sous `Assets/Scripts/`) :
 
-- `Core` : `Timer`, `GameBootstrap`
+- `Core` : `GameBootstrap` (`Timer` supprimé 2026-06-02)
 - `Systems` : `UIManager`, `ScreenEntry` (même fichier que `UIManager`), `ScreenId`, `SceneId`, `SceneNavigator`
 - `Data` : `GridConfig`, `GridData`, `PlantDefinition` (+ `PlantGrowthPattern` dans le même fichier)
 - `Farm` : `BiofiltreCell`, `BiofiltreGridVisualizer`, `BiofiltreManager`, `GridLinesRenderer`, `GridManager`, `PlantDefinitionHolder`, `PlantGrow`, `PlantHarvestInteractor`, `PlantPlacementPreview`
@@ -35,7 +37,7 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 - Depuis **`HomeScene`**, **`MapSceneController`** appelle **`ShowScene(targetSceneName)`** (ex. **`FirstLvl`**) ; retour : **`FirstLvlController`** sur **`OnExitToHomeRequested`** → **`ShowScene(HomeScene)`** + **`NavigationHUD.ShowNavBar()`**.
 - **Onglets HUD** : **`NavigationHUD`** → **`ShowScene(HomeScene)`** ; l’inventaire runtime passe par **`UIManager.ShowScreen(ScreenId.Inventory)`** (plus de dépendance scène `Inventaire`).
 - **`LoadingScreen`** : barre + pourcentage + fade ; art — **`Notes/Ui/LOADINGSCREEN_image_workflow.md`**.
-- **`MainMenuUI`** / `SampleScene` : flux legacy possible — à réaligner si tout passe par **`Bootstrap`**.
+- ~~**`MainMenuUI`** / `SampleScene` : flux legacy~~ — **supprimé 2026-06-02** (boot unique via `Bootstrap`).
 
 ### Plantation (cellule libre)
 1. `BiofiltreCell` (clic) → événement `BiofiltreGridVisualizer.OnCellClicked`.
@@ -53,7 +55,7 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 - `PlantHarvestInteractor` implémente **`IPointerClickHandler`** : `OnPointerClick` appelle **`ConfirmHarvest()`** sans ouvrir le panel (récolte immédiate si `IsHarvestable()`). Nécessite **EventSystem** + **Physics2DRaycaster** sur la caméra.
 
 ### Code présent mais non branché au clic grille
-- `BiofiltreManager.TryOpenHarvestPanel` et `FindInteractorAt` : **non appelés** par `HandleCellClicked` à la date de l’audit. Voir `PROJECT_LOG.md` (2026-04-12).
+- **Obsolète (2026-06-02)** : `BiofiltreManager.TryOpenHarvestPanel` et `FindInteractorAt` **n'existent plus** dans le code. Le flux récolte passe par `HandleCellClicked` → `TryOpenPlantPopup` (cellule occupée) et `PlantHarvestInteractor.OnPointerClick`.
 
 ---
 
@@ -99,6 +101,7 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 3. **`maxHarvestCount`** : présent sur `PlantDefinition`, pas exploité pour des récoltes répétées **sans** destruction dans `PlantHarvestInteractor`.
 4. **`HarvestPanelUI.Update`** : rafraîchissement continu du timer tant que le panel est ouvert — acceptable prototype ; à revoir si plusieurs panneaux ou perf mobile.
 5. **Doc historique** : plusieurs notes (`ARCHI_hud_ui_manager_additive.md`, `Todo_ui.md`, entrées **`PROJECT_LOG`**) décrivent encore **`GoTo` + `UnloadSceneAsync`** par transition — le code actuel privilégie **`ShowScene` + `SetActive` sur racines** ; à harmoniser lors de l’audit Bezi / refactor (voir **`Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md`**).
+6. **Nettoyage code (2026-06-02)** : code mort retiré et doublons factorisés (voir `PROJECT_LOG.md` 2026-06-02). `maxHarvestCount` conservé comme placeholder de design (récolte unique actuelle).
 
 ---
 

@@ -54,9 +54,6 @@ public class PlantDefinition : ScriptableObject
         return null;
     }
 
-    /// <summary>Retourne true si le stade donné est déclaré comme récoltable dans cette définition.</summary>
-    public bool IsHarvestableStage(PlantGrow.GrowthStage stage) => GetHarvestConfig(stage).HasValue;
-
     [Header("Stage Sprites (2D)")]
     [Tooltip("Slot Graine — identique pour les deux profils.")]
     public Sprite spriteGraine;
@@ -72,6 +69,19 @@ public class PlantDefinition : ScriptableObject
     public Sprite spriteFlowering;
     [Tooltip("Slot Seedling — dernier stade pour les deux profils (fin de cycle / production de graines).")]
     public Sprite spriteSeedling;
+
+    /// <summary>Sprite configuré pour le stade donné, ou null si aucun. Source unique du mapping stade→sprite.</summary>
+    public Sprite GetSprite(PlantGrow.GrowthStage stage) => stage switch
+    {
+        PlantGrow.GrowthStage.Graine    => spriteGraine,
+        PlantGrow.GrowthStage.Starting  => spriteStarting,
+        PlantGrow.GrowthStage.Baby      => spriteBaby,
+        PlantGrow.GrowthStage.Growing   => spriteGrowing,
+        PlantGrow.GrowthStage.Mature    => spriteMature,
+        PlantGrow.GrowthStage.Flowering => spriteFlowering,
+        PlantGrow.GrowthStage.Seedling  => spriteSeedling,
+        _                               => null
+    };
 
     [Header("Grid Placement")]
     [Tooltip("Relative offsets from the placement origin. Must always include (0,0).")]

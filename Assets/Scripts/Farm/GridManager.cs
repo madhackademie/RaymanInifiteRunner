@@ -145,22 +145,10 @@ public class GridManager : MonoBehaviour
     /// <summary>Returns true if every cell in the collection is free and in bounds.</summary>
     public bool AreAllCellsFree(IEnumerable<Vector2Int> cells) => Grid != null && Grid.AreAllFree(cells);
 
-    /// <summary>Marks a cell as occupied.</summary>
-    public void OccupyCell(Vector2Int cell)
-    {
-        if (Grid != null) Grid.SetOccupied(cell);
-    }
-
     /// <summary>Marks a collection of cells as occupied.</summary>
     public void OccupyCells(IEnumerable<Vector2Int> cells)
     {
         if (Grid != null) Grid.SetOccupied(cells);
-    }
-
-    /// <summary>Marks a cell as free.</summary>
-    public void FreeCell(Vector2Int cell)
-    {
-        if (Grid != null) Grid.SetFree(cell);
     }
 
     /// <summary>Marks a collection of cells as free.</summary>

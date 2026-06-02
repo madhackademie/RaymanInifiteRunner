@@ -11,7 +11,6 @@ public class RuntimeShopScreen : MonoBehaviour
 {
     private const int PriceSummaryMaxChars = 160;
     private const string CurrencyNotConfiguredMessage = "Monnaie non configuree.";
-    private const string InventoryFullMessage = "Inventaire plein !";
 
     [Header("Bindings UI (prefab)")]
     [SerializeField] private RectTransform slotsContainer;
@@ -179,51 +178,15 @@ public class RuntimeShopScreen : MonoBehaviour
 
     private bool TryResolveListings(out List<MarketCatalogPrototype.ListingRow> listings, out string errorMessage)
     {
-        if (shopCatalogDefinition != null)
-            return TryBuildListingsFromScriptableObject(out listings, out errorMessage);
+        bool ok = ShopCatalogResolver.TryResolve(
+            shopCatalogDefinition,
+            itemDatabase,
+            out listings,
+            out List<ShopItemDefinition> definitions,
+            out errorMessage);
 
-        bool ok = MarketCatalogPrototype.TryLoad(itemDatabase, out listings, out errorMessage);
-        if (ok)
-            lastShopDefinitions = null;
-
+        lastShopDefinitions = definitions;
         return ok;
-    }
-
-    private bool TryBuildListingsFromScriptableObject(
-        out List<MarketCatalogPrototype.ListingRow> listings,
-        out string errorMessage)
-    {
-        listings = new List<MarketCatalogPrototype.ListingRow>();
-        lastShopDefinitions = new List<ShopItemDefinition>();
-        errorMessage = null;
-
-        if (shopCatalogDefinition.Items == null || shopCatalogDefinition.Items.Count == 0)
-            return true;
-
-        for (int i = 0; i < shopCatalogDefinition.Items.Count; i++)
-        {
-            ShopItemDefinition entry = shopCatalogDefinition.Items[i];
-            if (entry == null)
-            {
-                Debug.LogWarning("[RuntimeShopScreen] ShopCatalogDefinition: entree null ignoree.");
-                continue;
-            }
-
-            ItemDefinition item = entry.ItemDefinition;
-            if (item == null)
-            {
-                Debug.LogWarning("[RuntimeShopScreen] ShopCatalogDefinition: ItemDefinition manquant, entree ignoree.");
-                continue;
-            }
-
-            var slot = new InventorySlot();
-            slot.Set(item, entry.ListingQuantity);
-
-            listings.Add(new MarketCatalogPrototype.ListingRow(slot, entry.UnitPrice));
-            lastShopDefinitions.Add(entry);
-        }
-
-        return true;
     }
 
     private void TryResolveDatabaseFromPlayer()
@@ -378,7 +341,7 @@ public class RuntimeShopScreen : MonoBehaviour
 
         if (!inventory.CanFitQuantity(item, qty))
         {
-            ShowFeedbackMessage(InventoryFullMessage);
+            ShowFeedbackMessage(UiMessages.InventoryFull);
             return;
         }
 

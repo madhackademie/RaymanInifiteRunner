@@ -1,8 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using System;
-using System.Collections.Generic;
 
 /// <summary>
 /// Bridges the biofiltre grid and the planting UI.
@@ -13,8 +10,6 @@ using System.Collections.Generic;
 [RequireComponent(typeof(GridManager))]
 public class BiofiltreManager : MonoBehaviour
 {
-    private const int FarmPopupCanvasSortOrder = 10;
-
     [Header("UI")]
     [Tooltip("Hôte popups ferme (ScreenPopupHost, ex. sur LevelController dans FirstLvl).")]
     [SerializeField] private ScreenPopupHost farmPopupHost;
@@ -375,15 +370,7 @@ public class BiofiltreManager : MonoBehaviour
         gridManager.ResetRuntimeState();
         visualizer.RefreshAllCellStates();
 
-        DateTime nowUtc = DateTime.UtcNow;
-        DateTime savedUtc = nowUtc;
-        if (!string.IsNullOrEmpty(saveData.lastSavedUtc) &&
-            DateTime.TryParse(saveData.lastSavedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime parsedUtc))
-        {
-            savedUtc = parsedUtc;
-        }
-
-        float offlineDelta = Mathf.Max(0f, (float)(nowUtc - savedUtc).TotalSeconds);
+        float offlineDelta = FarmStateSerializer.ComputeOfflineSeconds(saveData.lastSavedUtc);
 
         foreach (FarmPlantRecord record in saveData.plants)
         {
@@ -413,30 +400,7 @@ public class BiofiltreManager : MonoBehaviour
         if (!enablePrototypePersistence || visualizer == null || visualizer.PlantsContainer == null)
             return;
 
-        List<FarmPlantRecord> records = new();
-
-        foreach (Transform child in visualizer.PlantsContainer)
-        {
-            if (!child.TryGetComponent(out PlantPersistenceMarker marker))
-                continue;
-
-            if (!child.TryGetComponent(out PlantGrow grow))
-                continue;
-
-            if (string.IsNullOrEmpty(marker.PlantId))
-                continue;
-
-            records.Add(new FarmPlantRecord
-            {
-                plantId = marker.PlantId,
-                anchorX = marker.Anchor.x,
-                anchorY = marker.Anchor.y,
-                currentStage = grow.CurrentStage,
-                stageElapsedSeconds = grow.CurrentStageElapsedSeconds
-            });
-        }
-
-        FarmSaveService.Save(records);
+        FarmSaveService.Save(FarmStateSerializer.BuildRecords(visualizer.PlantsContainer));
     }
 
     // ── Popup pipeline ────────────────────────────────────────────────────────
@@ -585,34 +549,6 @@ public class BiofiltreManager : MonoBehaviour
         if (farmPopupRoot != null || host == null)
             return;
 
-        Transform existing = host.transform.Find("FarmPopupRoot");
-        if (existing != null)
-        {
-            farmPopupRoot = existing as RectTransform;
-            return;
-        }
-
-        var canvasGo = new GameObject("FarmUICanvas");
-        canvasGo.transform.SetParent(host.transform, false);
-
-        Canvas canvas = canvasGo.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = FarmPopupCanvasSortOrder;
-
-        CanvasScaler scaler = canvasGo.AddComponent<CanvasScaler>();
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(800f, 600f);
-
-        canvasGo.AddComponent<GraphicRaycaster>();
-
-        var rootGo = new GameObject("FarmPopupRoot", typeof(RectTransform));
-        RectTransform rect = rootGo.GetComponent<RectTransform>();
-        rect.SetParent(canvasGo.transform, false);
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-
-        farmPopupRoot = rect;
+        farmPopupRoot = FarmPopupCanvasFactory.CreateOrFind(host.transform);
     }
 }

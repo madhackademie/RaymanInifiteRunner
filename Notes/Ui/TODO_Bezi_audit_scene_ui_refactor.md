@@ -18,10 +18,13 @@ Objectif :
 
 ## Clean / refactor (après audit)
 
-- Supprimer ou raccorder le code mort identifié (`BiofiltreManager.TryOpenHarvestPanel`, `FindInteractorAt`, etc.).
-- Mettre à jour commentaires XML et en-têtes de scripts UI/navigation.
-- Harmoniser `ARCHI_hud_ui_manager_additive.md`, `Journal_ui.md`, `Todo_ui.md`, `GUIDE_scenes_navigation_Unity_inventaire_market.md` avec le code réel.
-- Recenser les classes peu référencées (dont `InventorySceneController`) et décider "supprimer" vs "réservé scène Unity".
+> **MAJ 2026-06-02 (`chore/audit-cleanup-2026-06`)** : passe de nettoyage code réalisée — voir `PROJECT_LOG.md` 2026-06-02.
+
+- [x] Code mort retiré (`Timer.cs`, API orphelines). `TryOpenHarvestPanel`/`FindInteractorAt` **n'existaient déjà plus** dans le code.
+- [x] Legacy supprimé : `MainMenuUI` + `SampleScene` (×2) + entrée Build Settings.
+- [x] Doublons factorisés (`PlantDefinition.GetSprite`, `RemovePlantFromGrid`, `ShopCatalogResolver`, `FarmPopupCanvasFactory`, `FarmStateSerializer`).
+- [x] `InventorySceneController` : conservé (prefab runtime + bouton `Close` câblé), `Open()` mort retiré.
+- [ ] Reste : harmoniser `ARCHI_hud_ui_manager_additive.md`, `Journal_ui.md`, `Todo_ui.md`, guide scènes avec le code réel (`ShowScene`/`SetActive`).
 
 ## Suivi documentaire
 

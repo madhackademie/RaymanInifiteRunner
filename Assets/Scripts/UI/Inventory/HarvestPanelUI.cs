@@ -30,6 +30,11 @@ public class HarvestPanelUI : MonoBehaviour
     private ScreenPopupHost farmPopupHost;
     private bool isOpen;
 
+    // Suivi du stade rendu : les visuels (sprite, nom, rendement, boutons) ne dépendent
+    // que du stade, on évite donc de les recalculer à chaque frame — seul le timer l'est.
+    private PlantGrow.GrowthStage lastRenderedStage;
+    private bool hasRenderedStage;
+
     // Noms lisibles des stades
     private static readonly System.Collections.Generic.Dictionary<PlantGrow.GrowthStage, string> StageNames =
         new()
@@ -79,6 +84,7 @@ public class HarvestPanelUI : MonoBehaviour
 
         plantNameLabel.text = definition != null ? definition.displayName : interactor.gameObject.name;
 
+        hasRenderedStage = false;
         RefreshDynamic();
 
         panel.SetActive(true);
@@ -100,37 +106,35 @@ public class HarvestPanelUI : MonoBehaviour
 
     // ── Rafraîchissement ──────────────────────────────────────────────────────
 
-    /// <summary>Met à jour les éléments qui changent chaque frame (timer, stade, boutons).</summary>
+    /// <summary>
+    /// Rafraîchit le panneau : visuels du stade (uniquement si le stade a changé) + timer (chaque frame).
+    /// </summary>
     private void RefreshDynamic()
     {
         PlantGrow.GrowthStage stage = currentPlantGrow.CurrentStage;
 
-        // Sprite du stade courant
+        if (!hasRenderedStage || stage != lastRenderedStage)
+        {
+            RefreshStageVisuals(stage);
+            lastRenderedStage = stage;
+            hasRenderedStage = true;
+        }
+
+        RefreshTimer(stage);
+    }
+
+    /// <summary>Met à jour les éléments dépendant uniquement du stade (sprite, nom, rendement, boutons).</summary>
+    private void RefreshStageVisuals(PlantGrow.GrowthStage stage)
+    {
         Sprite stageSprite = GetSpriteForStage(stage);
         plantIcon.sprite  = stageSprite;
         plantIcon.enabled = stageSprite != null;
 
-        // Nom du stade
         stageLabel.text = StageNames.TryGetValue(stage, out string name) ? name : stage.ToString();
 
-        // Timer
-        float progress = currentPlantGrow.StageProgress;
-        float duration = currentDefinition != null ? currentDefinition.GetDuration(stage) : 0f;
-        if (duration > 0f)
-        {
-            float remaining = duration * (1f - progress);
-            timerLabel.text = FormatTime(remaining);
-        }
-        else
-        {
-            timerLabel.text = "—";
-        }
-
-        // Stade récoltable → config issue de la PlantDefinition
         HarvestStageConfig? harvestConfig = currentDefinition?.GetHarvestConfig(stage);
         bool isHarvestable = harvestConfig.HasValue;
 
-        // Label quantité
         if (isHarvestable)
         {
             int min = harvestConfig.Value.harvestAmountMin;
@@ -143,9 +147,23 @@ public class HarvestPanelUI : MonoBehaviour
             yieldLabel.gameObject.SetActive(false);
         }
 
-        // Bouton récolter : visible et interactable uniquement si récoltable
         harvestButton.gameObject.SetActive(isHarvestable);
         harvestButton.interactable = isHarvestable;
+    }
+
+    /// <summary>Met à jour le label de temps restant du stade courant (rafraîchi chaque frame).</summary>
+    private void RefreshTimer(PlantGrow.GrowthStage stage)
+    {
+        float duration = currentDefinition != null ? currentDefinition.GetDuration(stage) : 0f;
+        if (duration > 0f)
+        {
+            float remaining = duration * (1f - currentPlantGrow.StageProgress);
+            timerLabel.text = FormatTime(remaining);
+        }
+        else
+        {
+            timerLabel.text = "—";
+        }
     }
 
     // ── Handlers ──────────────────────────────────────────────────────────────
@@ -167,22 +185,7 @@ public class HarvestPanelUI : MonoBehaviour
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private Sprite GetSpriteForStage(PlantGrow.GrowthStage stage)
-    {
-        if (currentDefinition == null)
-            return null;
-
-        return stage switch
-        {
-            PlantGrow.GrowthStage.Graine    => currentDefinition.spriteGraine,
-            PlantGrow.GrowthStage.Starting  => currentDefinition.spriteStarting,
-            PlantGrow.GrowthStage.Baby      => currentDefinition.spriteBaby,
-            PlantGrow.GrowthStage.Growing   => currentDefinition.spriteGrowing,
-            PlantGrow.GrowthStage.Mature    => currentDefinition.spriteMature,
-            PlantGrow.GrowthStage.Flowering => currentDefinition.spriteFlowering,
-            PlantGrow.GrowthStage.Seedling  => currentDefinition.spriteSeedling,
-            _                               => null
-        };
-    }
+        => currentDefinition != null ? currentDefinition.GetSprite(stage) : null;
 
     private static string FormatTime(float seconds)
     {

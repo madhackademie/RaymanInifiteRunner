@@ -34,7 +34,7 @@ public class CurrencyBalanceUI : MonoBehaviour
 
     private void Start()
     {
-        // Auto-resolve child references if not set via Inspector or SetReferences.
+        // Auto-resolve child references if not set via Inspector or SetCurrencyItem.
         if (amountLabel == null)
             amountLabel = GetComponentInChildren<TextMeshProUGUI>(true);
 
@@ -63,17 +63,6 @@ public class CurrencyBalanceUI : MonoBehaviour
             PlayerInventory.Instance.OnInventoryChanged -= Refresh;
 
         subscribed = false;
-    }
-
-    /// <summary>
-    /// Injection runtime (tests ou prefab construit sans assignation complète dans l'inspecteur).
-    /// Préférer l'assignation dans le prefab quand c'est possible.
-    /// </summary>
-    public void SetReferences(ItemDefinition item, TextMeshProUGUI label, Image icon)
-    {
-        currencyItem = item;
-        amountLabel = label;
-        iconImage = icon;
     }
 
     /// <summary>

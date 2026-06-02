@@ -92,6 +92,7 @@ public static class InventorySaveService
                 return false;
 
             startingCurrencyApplied = data.startingCurrencyApplied;
+            startingSeedsApplied = data.startingSeedsApplied;
 
             foreach (SlotRecord record in data.slots)
             {

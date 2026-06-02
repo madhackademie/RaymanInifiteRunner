@@ -16,9 +16,6 @@ public class ItemDatabase : ScriptableObject
 
     private Dictionary<string, ItemDefinition> lookupCache;
 
-    /// <summary>Read-only list of all registered items.</summary>
-    public IReadOnlyList<ItemDefinition> Items => items;
-
     /// <summary>Monnaie principale (ex. euros), ou null si non configurée.</summary>
     public ItemDefinition PrimaryCurrency => primaryCurrency;
 

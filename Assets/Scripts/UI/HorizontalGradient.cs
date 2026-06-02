@@ -13,14 +13,6 @@ public class HorizontalGradient : BaseMeshEffect
     [SerializeField] private Color leftColor  = Color.blue;
     [SerializeField] private Color rightColor = Color.green;
 
-    /// <summary>Rafraîchit le mesh pour appliquer le nouveau gradient.</summary>
-    public void SetColors(Color left, Color right)
-    {
-        leftColor  = left;
-        rightColor = right;
-        graphic.SetVerticesDirty();
-    }
-
     public override void ModifyMesh(VertexHelper vh)
     {
         if (!IsActive()) return;

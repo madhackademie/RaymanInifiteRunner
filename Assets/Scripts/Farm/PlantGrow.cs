@@ -203,15 +203,5 @@ public class PlantGrow : MonoBehaviour
         SetStage(order[nextIndex]);
     }
 
-    private Sprite GetSpriteForStage(GrowthStage stage) => stage switch
-    {
-        GrowthStage.Graine    => plantDefinition.spriteGraine,
-        GrowthStage.Starting  => plantDefinition.spriteStarting,
-        GrowthStage.Baby      => plantDefinition.spriteBaby,
-        GrowthStage.Growing   => plantDefinition.spriteGrowing,
-        GrowthStage.Mature    => plantDefinition.spriteMature,
-        GrowthStage.Flowering => plantDefinition.spriteFlowering,
-        GrowthStage.Seedling  => plantDefinition.spriteSeedling,
-        _                     => null
-    };
+    private Sprite GetSpriteForStage(GrowthStage stage) => plantDefinition.GetSprite(stage);
 }

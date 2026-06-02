@@ -13,6 +13,9 @@ public class PlayerInventory : MonoBehaviour
     /// <summary>Singleton instance. Resolved from the NavigationHUD scene, always available.</summary>
     public static PlayerInventory Instance { get; private set; }
 
+    /// <summary>Id d'item utilisé en secours si aucun item de graine de départ n'est assigné dans l'Inspector.</summary>
+    private const string DefaultStartingSeedItemId = "laitue_seed";
+
     [SerializeField] private int slotCount = 20;
 
     [Tooltip("Database used to resolve item IDs during save/load.")]
@@ -193,7 +196,7 @@ public class PlayerInventory : MonoBehaviour
         if (startingSeedItem != null)
             return startingSeedItem;
 
-        return itemDatabase != null ? itemDatabase.GetById("laitue_seed") : null;
+        return itemDatabase != null ? itemDatabase.GetById(DefaultStartingSeedItemId) : null;
     }
 
     /// <summary>Clears all slots and deletes the save file from disk.</summary>

@@ -50,27 +50,6 @@ public static class HudModalBackdrop
         image.raycastTarget = true;
     }
 
-    /// <summary>
-    /// Canvas local pour trier la modale au-dessus du reste du même canvas (ex. Home en arrière-plan).
-    /// </summary>
-    public static void EnsureModalCanvas(GameObject root)
-    {
-        if (root == null)
-            return;
-
-        int order = UIManager.Instance != null ? UIManager.Instance.HudModalCanvasSortingOrder : 400;
-
-        Canvas canvas = root.GetComponent<Canvas>();
-        if (canvas == null)
-            canvas = root.AddComponent<Canvas>();
-
-        canvas.overrideSorting = true;
-        canvas.sortingOrder = order;
-
-        if (root.GetComponent<GraphicRaycaster>() == null)
-            root.AddComponent<GraphicRaycaster>();
-    }
-
     /// <summary>Sans sprite, certains builds n’affichent pas la couleur : on force un blanc 1×1.</summary>
     public static void SetupSolidFillImage(Image image)
     {
