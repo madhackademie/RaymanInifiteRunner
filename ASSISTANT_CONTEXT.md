@@ -17,12 +17,13 @@
 - Récolte/inventaire: comportement courant prévu en “all-or-nothing” tant que l’ajout partiel n’est pas formalisé.
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
-### Priorités en cours
-1. **[P0-IDEA-001]** — Session auteur (demain matin) : idées tablette → boucle gameplay / features → liste tâches validées. **Docs liés :** `Notes/GDD/INBOX_notes_tablette_recherches.md` (hub), `Notes/GDD/Inbox_gdd.md` (vrac partiel), `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`, `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`.
-2. **Stock gelé** jusqu'à clôture [P0-IDEA-001] : [CT-INV-HALO-001], [CT-FARM-UI-001] (polish EmptyState), etc.
+### Priorités en cours (2026-06-04)
+1. **[P0-INV-HALO-002]** — Cursor : valider Bezy Phase 2 inventaire halo (`feature/inventory-halo-ui`).
+2. **[P0-INV-HALO-003]** — Bezy Phase 3 : wiring scripts + playtest overlay.
+3. **[P0-IDEA-001]** — Import notes tablette perso → `Notes/GDD/INBOX_notes_tablette_recherches.md`, renommage `ProgressionTrackId`.
 
-### Contexte Git session (2026-06-02)
-- **`main`** (à jour `origin/main`) — ferme stable ; repriorisation produit en cours.
+### Contexte Git session (2026-06-04)
+- **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] ; Ph.1 Bezy OK.
 
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
@@ -31,10 +32,9 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate actuellement retenue (a revalider via docs a chaque session) — **2026-06-02** :
-  - **[P0-IDEA-001]** session idées tablette (gameplay loop / features) → produire priorités.
-  - Stock gelé : [CT-INV-HALO-001], [CT-FARM-UI-001] (polish EmptyState), etc.
-  - **[x]** Ferme : playtests graines + toast récolte [CT-FARM-POLISH-001].
+- Priorite immediate — **2026-06-04** (`Notes/Todo_project.md`) :
+  - **[P0-INV-HALO-002]** / **[P0-INV-HALO-003]** puis **[P0-IDEA-001]** (notes tablette).
+  - Branche **`feature/inventory-halo-ui`**.
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :

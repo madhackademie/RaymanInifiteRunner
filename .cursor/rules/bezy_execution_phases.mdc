@@ -2,6 +2,12 @@
 description: Prompting and phased task execution for Bezy to avoid timeouts
 alwaysApply: true
 ---
+## Ownership prefabs (prioritaire)
+
+- **Par défaut, seul Bezy.ai crée ou modifie les prefabs UI** (et le wiring Inspector associé).
+- L'assistant Cursor **ne génère pas** de prefabs/scènes UI sauf **demande explicite** de l'auteur.
+- Cursor fournit : scripts, specs, arbre hiérarchique cible, prompts Bezy phasés — voir `.cursor/rules/bezi_prefab_ownership.mdc`.
+
 When delegating work to Bezy (or similar UI-building agent), always provide:
 
 1) A concise prompt with explicit output files.

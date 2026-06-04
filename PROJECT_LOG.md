@@ -1,5 +1,23 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-04 — Inventaire halo : Phase 1 OK + priorités prochaine session
+
+### Git
+- Branche : **`feature/inventory-halo-ui`**.
+
+### Fait
+- Scripts coque `Assets/Scripts/UI/Inventory/Progression/`, docs (`ARBRE_inventory_halo_ui.md`, `PROMPTS_Bezi_inventory_halo.md`), règle `bezi_prefab_ownership.mdc`.
+- **Bezy Phase 1** validée Cursor (prefabs `PlayerHaloSlotUI`, `PlayerHaloPanel`, patch `InventoryScreen`).
+
+### Prochaine session (ordre validé auteur)
+1. **[P0-INV-HALO-002]** Cursor — valider Phase 2 Bezy (composants UI).
+2. **[P0-INV-HALO-003]** Bezy Phase 3 — wiring + playtest overlay talents.
+3. **[P0-IDEA-001]** Import notes tablette perso → `INBOX_notes_tablette_recherches.md` / renommage `ProgressionTrackId`.
+
+Trace : `Notes/Todo_project.md` § *Prochaine session*.
+
+---
+
 ## 2026-06-02 — Repriorisation : session idées gameplay ([P0-IDEA-001])
 
 ### Décisions auteur

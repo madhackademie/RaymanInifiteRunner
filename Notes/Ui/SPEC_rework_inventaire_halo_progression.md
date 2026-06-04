@@ -2,8 +2,11 @@
 
 Vision **brute → polish** pour scinder l’écran inventaire en **deux zones**, sur le modèle de la référence mobile (portrait central + slots périphériques + grille basse).
 
-Statut : **concept UI + navigation talents** — pas encore implémenté.  
-Référence visuelle : capture fournie session 2026-05-22 (inventaire type RPG mobile : personnage au centre, équipements en orbite, onglets + grille en bas).
+Statut : **coque UI Phase 1 en cours** (scripts + builder éditeur placeholders). Gameplay talents / save : après notes tablette.  
+Références visuelles :
+- `Assets/Art/Models/ImageRef/UI/InventoryStats.png` (halo seul)
+- `Assets/Art/Models/ImageRef/UI/InventorySplitStatsCompetances.png` (split complet ; **zone footer A hors scope**)
+- Arbre technique : `Notes/Ui/ARBRE_inventory_halo_ui.md`
 
 ---
 
@@ -116,6 +119,7 @@ Jusque-là, le halo UI reste une **intention visuelle + navigation vers arbres**
 | `UIManager` / `ScreenId.Inventory` | Point d’entrée unique depuis le HUD |
 | `PlayerInventory` | Stock items — inchangé |
 | XP joueur | `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` — niveau au centre du halo |
+| Progression ferme (par niveau) | `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md` — panneau in-scène, distinct du halo |
 | Shop | Talents acheteur → prix final dans popup achat |
 | Market | Talents vendeur → prix / capacité vente |
 | Popups | Nouveaux écrans talents via pipeline générique si overlay modal |
@@ -138,15 +142,16 @@ Docs inventaire actuelles :
 
 ### Phase 1 — Coque UI
 
-- [ ] Refactor prefab `InventoryScreen` : split vertical halo + grille.
-- [ ] Placeholders halo (icônes + niveau joueur mock).
-- [ ] Filtres / barre intermédiaire alignés ref.
+- [ ] Refactor prefab `InventoryScreen` : split vertical halo + grille — **Bezy.ai** (cf. `Notes/Ui/ARBRE_inventory_halo_ui.md`).
+- [x] Scripts coque + IDs placeholder — `Assets/Scripts/UI/Inventory/Progression/`.
+- [ ] Placeholders visuels halo — prefabs **Bezy** (`PlayerHaloSlotUI`, `PlayerHaloPanel`, patch `InventoryScreen`).
+- [ ] Filtres / barre intermédiaire alignés ref (`FilterBarPlaceholder` inactif).
 
 ### Phase 2 — Navigation talents
 
-- [ ] Écran ou overlay arbre (layout gauche / droite).
-- [ ] Clic halo → ouverture arbre mock (1 piste : commerce).
-- [ ] Bouton retour → inventaire.
+- [x] Overlay arbre — script `TalentTreeOverlayController` (prefab racine overlay : **Bezy**).
+- [ ] Clic halo → ouverture arbre mock — après wiring Bezy.
+- [ ] Bouton retour → inventaire — après wiring Bezy (`CanvasGroup` sur `InventoryPanel`).
 
 ### Phase 3 — Données & gameplay
 

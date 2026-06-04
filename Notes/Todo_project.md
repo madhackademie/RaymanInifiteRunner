@@ -37,21 +37,28 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche **`main`** (à jour `origin/main`). Ferme stable (playtests graines + toast récolte + offline UTC, **2026-06-02**). **Prochaine session : idées gameplay / features** (notes tablette) — voir **[P0-IDEA-001]**.
+> Branche courante : **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] inventaire halo. Base : `main`. **Ne pas merger** sans playtest Phase 3 + renommage pistes post-notes.
 
-### 1) Idées projet & boucle gameplay — priorité immédiate (session auteur, demain matin)
+### Ordre session (validé 2026-06-04)
 
-- [ ] **[P0-IDEA-001]** **Transcrire et structurer** les idées / réflexions portées sur la tablette (boucle de gameplay, features, liens ferme ↔ shop ↔ inventaire ↔ runner). **Livrables session :**
-  1. Synthèse courte (1 page max) : vision boucle, features candidates, hors scope explicite.
-  2. Liste **3–5 tâches concrètes** proposées (IDs `P0-*` / `CT-*`) avec ordre 1, 2, 3…
-  3. Mise à jour de **`Notes/Todo_project.md`** § *Prochaine session* + trace dans **`PROJECT_LOG.md`**.
-- **Sources déjà dans le repo** (à parcourir avant / pendant la session) :
-  - **Hub tablette** : `Notes/GDD/INBOX_notes_tablette_recherches.md` (cartographie complète)
-  - **Vrac GDD partiel** : `Notes/GDD/Inbox_gdd.md` (états plantes, salade/tomate, pistes meta)
-  - **UI halo / talents** : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` §4
-  - **Progression XP / biofiltre** : `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`
-  - **Veille jeux** : `Notes/References/REFERENCES_jeux_inspiration.md`
-- **Ne pas démarrer** les items § *Stock en attente* tant que **[P0-IDEA-001]** n'est pas clos (priorités validées par l'auteur).
+**1 — Code / UI halo (Cursor puis Bezy)**
+
+- [x] Bezy **Phase 1** shell — validée Cursor (2026-06-04).
+- [ ] **[P0-INV-HALO-002]** **Cursor** : contrôler / valider **Phase 2** Bezy (composants UI : `VLG`, `CanvasGroup`, `TMP`, overlay **inactif**). Réf. `Notes/Ui/PROMPTS_Bezi_inventory_halo_ui.md` Phase 2 + retours Phase 1 (désactiver `TalentTreeOverlay` racine).
+- [ ] **[P0-INV-HALO-003]** **Bezy Phase 3** : wiring scripts `Assets/Scripts/UI/Inventory/Progression/` + playtest (clic P1–P8 → overlay → Retour). Prompt : même fichier, Phase 3.
+
+**2 — Notes tablette perso**
+
+- [ ] **[P0-IDEA-001]** **Importer / structurer** les notes tablette perso dans le projet (boucle gameplay, pistes talents, commerce, cultures…). **Livrables :**
+  1. Contenu déposé ou synthétisé dans **`Notes/GDD/INBOX_notes_tablette_recherches.md`** (+ alimentation **`Notes/GDD/Inbox_gdd.md`** si vrac).
+  2. Renommage cible des **`ProgressionTrackId`** (remplacer `track.placeholder.01`…`08`) — aligner spec halo §4.
+  3. Trace dans **`PROJECT_LOG.md`** + mise à jour priorités si besoin.
+
+**Références**
+
+- Prompts Bezy : `Notes/Ui/PROMPTS_Bezi_inventory_halo.md`
+- Arbre UI : `Notes/Ui/ARBRE_inventory_halo_ui.md`
+- Hub tablette : `Notes/GDD/INBOX_notes_tablette_recherches.md`
 
 ### Bugs / playtests ferme — clos
 
@@ -68,7 +75,7 @@ Convention d'IDs :
 
 | Ordre indicatif | ID | Intention | Détail |
 |-----------------|-----|-----------|--------|
-| — | **[CT-INV-HALO-001]** | Rework inventaire halo + grille | `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` |
+| 1 | **[CT-INV-HALO-001]** | Rework inventaire halo + grille — **actif** sur `feature/inventory-halo-ui` (Ph.1 OK, Ph.2–3 en cours) | `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` |
 | — | **[CT-FARM-UI-001]** | EmptyStatePanel graines (polish) | Prefab `SeedSelectionUI` — §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md` ; **reclassé polish** (2026-06-02), plus P0 immédiat |
 | — | **[CT-SHOP-002]** | Polish UX shop | Optionnel |
 | — | **[CT-FARM-004]** | Persistance ferme scénario complet | Playtest long |
@@ -91,7 +98,7 @@ Convention d'IDs :
 - [x] [CT-SHOP-006] Références Inspector popup item (prefab + `ShopItemPopupView` / `CurrencyBalanceUI` wallet).
 
 ### Inventaire / wallet / runtime UI
-- [ ] **[CT-INV-HALO-001]** Rework inventaire halo + grille basse — `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`. **Stock** jusqu'à validation post-[P0-IDEA-001].
+- [~] **[CT-INV-HALO-001]** Rework inventaire halo + grille — Ph.1 Bezy OK ; Ph.2 review Cursor + Ph.3 Bezy + playtest — voir **[P0-INV-HALO-002]** / **[P0-INV-HALO-003]**.
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
 - [ ] [CT-INV-002] Valider qu’il n’y a plus de dépendance runtime cachée à `Inventaire.unity` (ou documenter explicitement son rôle).
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).
@@ -133,6 +140,7 @@ Convention d'IDs :
 - [ ] [BL-GDD-002] Spécifier le temps de ferme (`lastUtc -> delta`, plafond offline).
 - [ ] [BL-GDD-003] Formaliser la progression XP joueur + maturité biofiltre.
 - [ ] [BL-GDD-004] [OPTIONNEL] Collecter 2-3 références UI et noter ce qui est repris/évité.
+- [ ] [BL-GDD-005] Progression système aquaponique par scène (`FirstLvl+`) — spec `SPEC_progression_systeme_aquaponique_par_niveau.md` (panneau onglets, points, anti-aléas).
 
 ### Workflow / documentation
 - [ ] [BL-DOC-001] Documenter les règles projet (style, conventions AI/notes, organisation dossiers).

@@ -1,0 +1,32 @@
+---
+description: Ownership des prefabs UI — Bezy par défaut, Cursor/Codex scripts et doc
+alwaysApply: true
+---
+# Prefabs UI / scènes — propriété Bezy.ai
+
+## Règle par défaut
+
+- **Tous les prefabs** (UI gameplay, HUD, popups, modules inventaire, etc.) sont créés et modifiés par **Bezy.ai**, sauf **contre-indication explicite** de l'auteur du projet dans le message (ex. « fais le prefab toi-même », « sans Bezy pour cette fois »).
+- **Cursor / l'assistant code** ne doit **pas** :
+  - générer ou réécrire des `.prefab` / `.unity` (YAML) pour de la UI ;
+  - ajouter de menus éditeur « build prefab » qui remplacent Bezy ;
+  - déléguer à un subagent la construction hiérarchique complète d'écrans.
+- **Cursor / l'assistant code** **doit** :
+  - fournir scripts C#, constantes (`ScreenId`, `PopupId`, `ProgressionTrackId`, etc.) ;
+  - documenter l'arbre cible (hiérarchie, `SerializeField`, chemins prefab attendus) ;
+  - préparer des **prompts Bezy** en phases (cf. `bezy_execution_phases.mdc`) ;
+  - revue qualité, refactor scripts, mise à jour `Notes/`, `PROJECT_LOG.md`.
+
+## Exceptions (auteur uniquement)
+
+- L'auteur demande explicitement que l'assistant touche un prefab ou une scène.
+- Correctif **minimal** d'une référence cassée (une ligne YAML) si Bezy n'est pas disponible — **à signaler** à l'auteur et à refaire proprement via Bezy ensuite.
+
+## Binôme
+
+| Livrable | Agent |
+|----------|--------|
+| Prefab, hierarchy, Image/Button/TMP, Animator, bindings Inspector | **Bezy** |
+| Scripts, services, navigation, popup pipeline, specs, prompts Bezy | **Cursor/Codex** |
+
+Référence : `Notes/Bezi/README_bezi.md`, `Notes/Ui/ARBRE_*.md` pour les chantiers UI.

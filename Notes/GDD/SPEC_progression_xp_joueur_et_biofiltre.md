@@ -41,3 +41,4 @@ Objectif design : les **plantes à fruits** (ou cultures avancées) **débloqué
 
 - Pipeline plantation : `Notes/Farm/TODO_plantation_pipeline.md`
 - Temps ferme / reprise : à croiser avec **Spec temps de ferme** (`Notes/Todo_project.md` → section GDD)
+- Progression **active** par installation (panneau onglets Biofiltre / Poisson / Techno, points, anti-aléas) : `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md`

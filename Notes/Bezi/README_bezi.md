@@ -10,8 +10,10 @@ Objectif: utiliser les deux assistants comme un **binome complementaire** pour a
 - **Cursor/Codex**: excellent pour architecture, refactor, fiabilite, documentation, roadmap, quality gate.
 
 Regle simple:
-- **Visuel / scene / prefab / branchements inspector** -> Bezy en premier.
+- **Visuel / scene / prefab / branchements inspector** -> Bezy en premier (**prefabs = Bezy par defaut**, sauf contre-indication explicite de l'auteur).
 - **Structure / dette technique / persistance / cloud / clean code** -> Codex en premier.
+
+Regle Cursor : `.cursor/rules/bezi_prefab_ownership.mdc` — l'assistant code ne cree pas les prefabs UI sans instruction contraire.
 
 ---
 
