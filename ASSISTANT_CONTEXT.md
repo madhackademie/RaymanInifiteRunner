@@ -17,13 +17,12 @@
 - Récolte/inventaire: comportement courant prévu en “all-or-nothing” tant que l’ajout partiel n’est pas formalisé.
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
-### Priorités en cours (2026-06-04)
-1. **[P0-INV-HALO-002]** — Cursor : valider Bezy Phase 2 inventaire halo (`feature/inventory-halo-ui`).
-2. **[P0-INV-HALO-003]** — Bezy Phase 3 : wiring scripts + playtest overlay.
-3. **[P0-IDEA-001]** — Import notes tablette perso → `Notes/GDD/INBOX_notes_tablette_recherches.md`, renommage `ProgressionTrackId`.
+### Priorités en cours (2026-06-05)
+1. **[P0-INV-HALO-004]** — **Playtest** inventaire halo (P1–P8 → overlay → Retour ; grille visible, pas de HUD en fond). Phases 1–3 + fix layout faits.
+2. **[P0-IDEA-001]** — Import notes tablette perso → `Notes/GDD/INBOX_notes_tablette_recherches.md`, renommage `ProgressionTrackId`.
 
-### Contexte Git session (2026-06-04)
-- **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] ; Ph.1 Bezy OK.
+### Contexte Git session (2026-06-05)
+- **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] ; Ph.1–3 + fix layout OK, reste playtest.
 
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
@@ -32,8 +31,8 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate — **2026-06-04** (`Notes/Todo_project.md`) :
-  - **[P0-INV-HALO-002]** / **[P0-INV-HALO-003]** puis **[P0-IDEA-001]** (notes tablette).
+- Priorite immediate — **2026-06-05** (`Notes/Todo_project.md`) :
+  - **[P0-INV-HALO-004]** playtest inventaire halo, puis **[P0-IDEA-001]** (notes tablette).
   - Branche **`feature/inventory-halo-ui`**.
 
 ### Prompt de reprise BezyIA

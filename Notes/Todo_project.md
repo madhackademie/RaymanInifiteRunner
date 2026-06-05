@@ -37,17 +37,27 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] inventaire halo. Base : `main`. **Ne pas merger** sans playtest Phase 3 + renommage pistes post-notes.
+> Branche courante : **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] inventaire halo. Base : `main`. **Ne pas merger** sans **playtest [P0-INV-HALO-004]** validé + renommage pistes post-notes.
 
-### Ordre session (validé 2026-06-04)
+### Ordre session (mis à jour 2026-06-05)
 
-**1 — Code / UI halo (Cursor puis Bezy)**
+**1 — [PRIORITÉ IMMÉDIATE] Playtest inventaire halo**
+
+- [ ] **[P0-INV-HALO-004]** **Playtest** onglet Inventaire (HUD) après fix layout + wiring Phase 3 :
+  - 8 slots visibles (P1–P8, pas de prefab cassé/pink),
+  - clic P1–P8 → overlay talents + titre piste,
+  - **Retour** → overlay fermé + grille restaurée,
+  - grille inventaire bien visible (pas de HUD en fond, header non décalé).
+  - Si KO : noter le symptôme exact → corriger prefab `InventoryScreen` / contrôleurs.
+
+**2 — Code / UI halo — historique**
 
 - [x] Bezy **Phase 1** shell — validée Cursor (2026-06-04).
-- [ ] **[P0-INV-HALO-002]** **Cursor** : contrôler / valider **Phase 2** Bezy (composants UI : `VLG`, `CanvasGroup`, `TMP`, overlay **inactif**). Réf. `Notes/Ui/PROMPTS_Bezi_inventory_halo_ui.md` Phase 2 + retours Phase 1 (désactiver `TalentTreeOverlay` racine).
-- [ ] **[P0-INV-HALO-003]** **Bezy Phase 3** : wiring scripts `Assets/Scripts/UI/Inventory/Progression/` + playtest (clic P1–P8 → overlay → Retour). Prompt : même fichier, Phase 3.
+- [x] **[P0-INV-HALO-002]** Phase 2 + 2 bis — débloquée **Cursor** (2026-06-05) : régression slot réparée, GUID panel corrigé, `BodyText` TMP ajouté.
+- [x] **[P0-INV-HALO-003]** **Phase 3 wiring** (Bezy) — **review Cursor OK** (2026-06-05) : `PlayerHaloSlotUI`, `PlayerHaloPanelController` (slots 01→08 ordonnés), `TalentTreeOverlayController`, `InventoryScreenController` câblés.
+- [x] Fix layout (2026-06-05) : `VerticalLayoutGroup.ChildControlHeight=1` → grille restaurée.
 
-**2 — Notes tablette perso**
+**3 — Notes tablette perso**
 
 - [ ] **[P0-IDEA-001]** **Importer / structurer** les notes tablette perso dans le projet (boucle gameplay, pistes talents, commerce, cultures…). **Livrables :**
   1. Contenu déposé ou synthétisé dans **`Notes/GDD/INBOX_notes_tablette_recherches.md`** (+ alimentation **`Notes/GDD/Inbox_gdd.md`** si vrac).
@@ -56,8 +66,9 @@ Convention d'IDs :
 
 **Références**
 
-- Prompts Bezy : `Notes/Ui/PROMPTS_Bezi_inventory_halo.md`
+- Spec halo : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`
 - Arbre UI : `Notes/Ui/ARBRE_inventory_halo_ui.md`
+- Fallback wiring : menu Unity `Rayman → UI → Wire Inventory Halo (Phase 3)` (`Assets/Editor/InventoryHaloPrefabWiring.cs`)
 - Hub tablette : `Notes/GDD/INBOX_notes_tablette_recherches.md`
 
 ### Bugs / playtests ferme — clos
@@ -98,7 +109,7 @@ Convention d'IDs :
 - [x] [CT-SHOP-006] Références Inspector popup item (prefab + `ShopItemPopupView` / `CurrencyBalanceUI` wallet).
 
 ### Inventaire / wallet / runtime UI
-- [~] **[CT-INV-HALO-001]** Rework inventaire halo + grille — Ph.1 Bezy OK ; Ph.2 review Cursor + Ph.3 Bezy + playtest — voir **[P0-INV-HALO-002]** / **[P0-INV-HALO-003]**.
+- [~] **[CT-INV-HALO-001]** Rework inventaire halo + grille — Ph.1–3 + fix layout faits (2026-06-05) ; reste **playtest [P0-INV-HALO-004]** puis renommage pistes.
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
 - [ ] [CT-INV-002] Valider qu’il n’y a plus de dépendance runtime cachée à `Inventaire.unity` (ou documenter explicitement son rôle).
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).

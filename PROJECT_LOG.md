@@ -1,5 +1,57 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-05 (soir) — Inventaire halo : Phase 2 bis débloquée + Phase 3 wiring OK + fix layout
+
+### Contexte
+- Bezy en difficulté (prompts + create/delete d’éléments UI). Reprise correctifs **côté Cursor** sur les prefabs, wiring Phase 3 finalisé par Bezy puis revu Cursor.
+
+### Fait
+- **Phase 2 bis (Cursor)** : `PlayerHaloSlotUI.prefab` réparé (Image/Button/TMP), `PlayerHaloPanel.prefab` couleurs + nom racine, `InventoryScreen.prefab` GUID panel corrigé (`1432e647…`) + `BodyText` TMP sous `BodyPlaceholder`.
+- **Phase 3 wiring (Bezy, review Cursor OK)** : `PlayerHaloSlotUI`, `PlayerHaloPanelController` (haloSlots[8] ordonnés 01→08 vérifiés), `TalentTreeOverlayController`, `InventoryScreenController` — toutes refs résolues.
+- **Fallback** : `Assets/Editor/InventoryHaloPrefabWiring.cs` (menu `Rayman → UI → Wire Inventory Halo (Phase 3)`) ; fix CS1503 (`SetFloat`).
+- **Fix layout runtime** : `VerticalLayoutGroup` de `InventorySplitLayout` → `ChildControlHeight=1` (halo 300px via LayoutElement, `InventoryPanel` flexible). Corrige : grille disparue, header décalé, HUD visible en fond.
+
+### Nettoyage doc
+- Suppression de `Notes/Ui/PROMPTS_Bezi_inventory_halo.md` (prompts Bezy jugés non pertinents) + retrait des références (`INDEX.md`, `Todo_project.md`).
+
+### Prochaine session — priorité immédiate
+- **[P0-INV-HALO-004]** **Playtest** Inventaire : P1–P8 → overlay → Retour, grille visible (pas de HUD en fond). Puis [P0-IDEA-001] notes tablette + renommage `ProgressionTrackId`.
+
+---
+
+## 2026-06-05 — Review Cursor Phase 2 bis Bezy — **non validé (régression)**
+
+### Constats
+- `PlayerHaloSlotUI.prefab` : **régression** — remplacé par racine vide (Transform 3D, pas RectTransform, plus d’enfants Phase 1).
+- `PlayerHaloPanel.prefab` : inchangé (shell) ; slots référencent toujours l’ancien fileID du slot — prefab cassé en UI.
+- `BodyPlaceholder` : toujours Image seule, **pas de TMP**.
+
+### Suite
+- Reprendre Phase 2 bis Bezy en exigeant **restauration hiérarchie Phase 1** du slot avant composants, ou correction manuelle Unity.
+
+---
+
+## 2026-06-05 — Review Cursor Phase 2 Bezy inventaire halo
+
+### Verdict
+- **Partiel** — ne pas lancer Phase 3 tant que halo/slots pas complétés.
+
+### OK (`InventoryScreen.prefab`)
+- `VerticalLayoutGroup` sur `InventorySplitLayout`, `LayoutElement` halo h=300 + panel flexible, `CanvasGroup` sur `InventoryPanel`.
+- `TalentTreeOverlay` **inactif**, `CanvasGroup` alpha 0 ; dimmer + panel + `BackButton` (Image+Button+TMP « Retour ») + `TrackTitle` TMP.
+- Pas de scripts custom Phase 3.
+
+### Manques / corrections Bezy (fin Phase 2)
+- `PlayerHaloPanel.prefab` : racine / `PortraitFrame` / `LevelLabel` encore **shell** (pas Image + TMP « Niveau 1 »).
+- `PlayerHaloSlotUI.prefab` : composants slot absents ou asset **cassé** (réf. guid `26dedaa…` dans le panel) — Image+Button racine, TMP labels, etc.
+- `BodyPlaceholder` : Image seule → ajouter **TMP** pour Phase 3 (`bodyPlaceholderLabel`).
+- Optionnel : `OverlayPanel` centré ~520×640 (actuellement stretch).
+
+### Suite
+- Finir Phase 2 sur prefabs Progression, puis Phase 3 wiring.
+
+---
+
 ## 2026-06-04 — Inventaire halo : Phase 1 OK + priorités prochaine session
 
 ### Git
