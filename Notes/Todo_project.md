@@ -152,6 +152,7 @@ Convention d'IDs :
 - [ ] [BL-PROTO-003] Supprimer le doublon éventuel `Assets/SampleScene.unity` vs `Assets/Scenes/SampleScene.unity`.
 - [ ] [BL-PROTO-004] Terminer le panel Options du menu principal.
 - [ ] [BL-PROTO-005] Maintenir à jour la carte des flux système (`Notes/Farm/SYSTEMES_carte_mentale.md`).
+- [ ] [BL-QUEST-DAILY-001] Ajouter une feature de quêtes quotidiennes (missions courtes) avec récompenses en ressources + points de compétences (design, logique runtime, reset journalier UTC, UI de suivi, persistance).
 
 ### GDD / design
 - [ ] [BL-GDD-001] Esquisser le GDD MVP (concept, boucle, scope).
