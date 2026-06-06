@@ -9,8 +9,8 @@ using UnityEngine.UI;
 /// </summary>
 public class TalentTreeOverlayController : MonoBehaviour
 {
-    private const string PlaceholderBodyFormat =
-        "Arbre talents — placeholder\nPiste : {0}\n(Renommer pistes après notes tablette)";
+    private const string MissingServiceMessage =
+        "Service de talents absent.\nAjoute TalentProgressionService dans la scene.";
 
     [Header("Root")]
     [SerializeField] private GameObject overlayRoot;
@@ -21,6 +21,12 @@ public class TalentTreeOverlayController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI trackTitleLabel;
     [SerializeField] private TextMeshProUGUI bodyPlaceholderLabel;
     [SerializeField] private Button backButton;
+    [SerializeField] private Button purchaseNextButton;
+    [SerializeField] private bool autoBindPlaceholderAsPurchaseButton = true;
+
+    [Header("Progression (MVP)")]
+    [SerializeField] private TalentProgressionService progressionService;
+    [SerializeField] private bool autoCreateServiceWhenMissing = true;
 
     [Header("Transition")]
     [SerializeField] private float fadeDuration = 0.15f;
@@ -33,12 +39,16 @@ public class TalentTreeOverlayController : MonoBehaviour
 
     private Coroutine fadeRoutine;
     private bool isTransitioning;
+    private bool purchaseButtonWasAutoAdded;
 
     private void Awake()
     {
         if (backButton != null)
             backButton.onClick.AddListener(Close);
 
+        ResolveProgressionService();
+        BindPurchaseButton();
+        SubscribeProgressionEvents();
         HideImmediate();
     }
 
@@ -46,6 +56,9 @@ public class TalentTreeOverlayController : MonoBehaviour
     {
         if (backButton != null)
             backButton.onClick.RemoveListener(Close);
+
+        UnsubscribeProgressionEvents();
+        UnbindPurchaseButton();
     }
 
     public void Open(string trackId)
@@ -55,13 +68,7 @@ public class TalentTreeOverlayController : MonoBehaviour
 
         CurrentTrackId = trackId;
         IsOpen = true;
-
-        if (trackTitleLabel != null)
-            trackTitleLabel.text = trackId;
-
-        if (bodyPlaceholderLabel != null)
-            bodyPlaceholderLabel.text = string.Format(PlaceholderBodyFormat, trackId);
-
+        RefreshOverlayContent();
         if (overlayRoot != null)
             overlayRoot.SetActive(true);
 
@@ -89,6 +96,17 @@ public class TalentTreeOverlayController : MonoBehaviour
         Closed?.Invoke();
     }
 
+    private void RefreshOverlayContent()
+    {
+        if (trackTitleLabel != null)
+            trackTitleLabel.text = GetTrackTitle();
+
+        if (bodyPlaceholderLabel != null)
+            bodyPlaceholderLabel.text = GetBodyText();
+
+        UpdatePurchaseButtonState();
+    }
+
     private void HideImmediate()
     {
         IsOpen = false;
@@ -103,6 +121,8 @@ public class TalentTreeOverlayController : MonoBehaviour
             canvasGroup.blocksRaycasts = false;
             canvasGroup.interactable = false;
         }
+
+        UpdatePurchaseButtonState();
     }
 
     private void PlayAnimatorBool(bool isOpen)
@@ -159,5 +179,107 @@ public class TalentTreeOverlayController : MonoBehaviour
         bool visible = alpha > 0.01f;
         canvasGroup.blocksRaycasts = visible;
         canvasGroup.interactable = visible;
+    }
+
+    private void ResolveProgressionService()
+    {
+        if (progressionService != null)
+            return;
+
+        progressionService = FindFirstObjectByType<TalentProgressionService>();
+        if (progressionService != null || !autoCreateServiceWhenMissing)
+            return;
+
+        GameObject serviceRoot = new GameObject("TalentProgressionService");
+        progressionService = serviceRoot.AddComponent<TalentProgressionService>();
+    }
+
+    private void BindPurchaseButton()
+    {
+        if (purchaseNextButton == null && autoBindPlaceholderAsPurchaseButton && bodyPlaceholderLabel != null)
+        {
+            purchaseNextButton = bodyPlaceholderLabel.GetComponent<Button>();
+            if (purchaseNextButton == null)
+            {
+                purchaseNextButton = bodyPlaceholderLabel.gameObject.AddComponent<Button>();
+                purchaseButtonWasAutoAdded = true;
+            }
+
+            purchaseNextButton.targetGraphic = bodyPlaceholderLabel;
+        }
+
+        if (purchaseNextButton != null)
+            purchaseNextButton.onClick.AddListener(HandlePurchaseNextClicked);
+    }
+
+    private void UnbindPurchaseButton()
+    {
+        if (purchaseNextButton != null)
+            purchaseNextButton.onClick.RemoveListener(HandlePurchaseNextClicked);
+
+        if (purchaseButtonWasAutoAdded && purchaseNextButton != null)
+            Destroy(purchaseNextButton);
+    }
+
+    private void SubscribeProgressionEvents()
+    {
+        if (progressionService != null)
+            progressionService.StateChanged += HandleProgressionStateChanged;
+    }
+
+    private void UnsubscribeProgressionEvents()
+    {
+        if (progressionService != null)
+            progressionService.StateChanged -= HandleProgressionStateChanged;
+    }
+
+    private void HandleProgressionStateChanged()
+    {
+        if (IsOpen)
+            RefreshOverlayContent();
+    }
+
+    private void HandlePurchaseNextClicked()
+    {
+        if (!IsOpen || progressionService == null || string.IsNullOrEmpty(CurrentTrackId))
+            return;
+
+        bool purchased = progressionService.TryPurchaseFirstAvailableNode(CurrentTrackId, out _, out _);
+        if (purchased)
+            RefreshOverlayContent();
+    }
+
+    private void UpdatePurchaseButtonState()
+    {
+        if (purchaseNextButton == null)
+            return;
+
+        bool enabled = IsOpen && progressionService != null && HasPurchasableNode();
+        purchaseNextButton.interactable = enabled;
+    }
+
+    private bool HasPurchasableNode()
+    {
+        if (progressionService == null || string.IsNullOrEmpty(CurrentTrackId))
+            return false;
+
+        return progressionService.CanPurchaseAnyNode(CurrentTrackId);
+    }
+
+    private string GetTrackTitle()
+    {
+        if (progressionService == null || string.IsNullOrEmpty(CurrentTrackId))
+            return CurrentTrackId;
+
+        return progressionService.GetTrackDisplayName(CurrentTrackId);
+    }
+
+    private string GetBodyText()
+    {
+        if (progressionService == null || string.IsNullOrEmpty(CurrentTrackId))
+            return MissingServiceMessage;
+
+        string summary = progressionService.BuildTrackSummary(CurrentTrackId);
+        return $"{summary}\n\nClique sur ce panneau pour acheter le prochain noeud disponible.";
     }
 }

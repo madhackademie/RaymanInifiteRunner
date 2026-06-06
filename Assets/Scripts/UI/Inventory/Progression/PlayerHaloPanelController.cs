@@ -53,9 +53,10 @@ public class PlayerHaloPanelController : MonoBehaviour
             if (haloSlots[i] == null)
                 continue;
 
-            string id = i < trackIds.Length ? trackIds[i] : ProgressionTrackId.Placeholder01;
-            string shortLabel = $"P{i + 1}";
-            haloSlots[i].Configure(id, shortLabel, locked: false, displayLevel: 0);
+            string id = i < trackIds.Length ? trackIds[i] : ProgressionTrackId.Reserved07;
+            string shortLabel = ProgressionTrackId.GetShortLabel(id);
+            bool isLocked = ProgressionTrackId.IsReserved(id);
+            haloSlots[i].Configure(id, shortLabel, isLocked, displayLevel: 0);
         }
     }
 

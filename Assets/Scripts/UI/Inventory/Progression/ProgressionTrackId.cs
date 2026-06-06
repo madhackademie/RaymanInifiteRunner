@@ -1,28 +1,63 @@
 /// <summary>
 /// Identifiants des pistes de progression (halo inventaire).
-/// Placeholders jusqu'à import des notes tablette / GDD — renommer sans changer les constantes si possible.
+/// Les IDs restent stables pour éviter les casses de sauvegarde.
 /// </summary>
 public static class ProgressionTrackId
 {
-    public const string Placeholder01 = "track.placeholder.01";
-    public const string Placeholder02 = "track.placeholder.02";
-    public const string Placeholder03 = "track.placeholder.03";
-    public const string Placeholder04 = "track.placeholder.04";
-    public const string Placeholder05 = "track.placeholder.05";
-    public const string Placeholder06 = "track.placeholder.06";
-    public const string Placeholder07 = "track.placeholder.07";
-    public const string Placeholder08 = "track.placeholder.08";
+    public const string Commerce = "track.commerce";
+    public const string PlantCulture = "track.plant";
+    public const string FishCulture = "track.fish";
+    public const string Agronomy = "track.agronomy";
+    public const string Logistics = "track.logistics";
+    public const string Technology = "track.technology";
+    public const string Reserved07 = "track.reserved.07";
+    public const string Reserved08 = "track.reserved.08";
 
     /// <summary>Ordre halo : sens horaire depuis le haut (12 h).</summary>
     public static readonly string[] HaloSlotOrder =
     {
-        Placeholder01,
-        Placeholder02,
-        Placeholder03,
-        Placeholder04,
-        Placeholder05,
-        Placeholder06,
-        Placeholder07,
-        Placeholder08,
+        Commerce,
+        PlantCulture,
+        FishCulture,
+        Agronomy,
+        Logistics,
+        Technology,
+        Reserved07,
+        Reserved08,
     };
+
+    public static bool IsReserved(string trackId) =>
+        trackId == Reserved07 || trackId == Reserved08;
+
+    public static string GetShortLabel(string trackId)
+    {
+        return trackId switch
+        {
+            Commerce => "Commerce",
+            PlantCulture => "Plante",
+            FishCulture => "Poisson",
+            Agronomy => "Agro",
+            Logistics => "Logis",
+            Technology => "Tech",
+            Reserved07 => "Bientot",
+            Reserved08 => "Bientot",
+            _ => "Inconnu",
+        };
+    }
+
+    public static string GetDisplayName(string trackId)
+    {
+        return trackId switch
+        {
+            Commerce => "Commerce",
+            PlantCulture => "Culture des plantes",
+            FishCulture => "Culture des poissons",
+            Agronomy => "Agronomie",
+            Logistics => "Logistique",
+            Technology => "Technologie",
+            Reserved07 => "Piste reservee 7",
+            Reserved08 => "Piste reservee 8",
+            _ => trackId,
+        };
+    }
 }
