@@ -42,6 +42,50 @@ Ce fichier est le **hub d’accueil** quand ces notes seront retranscrites ou im
 
 ---
 
+## Synthèse notes perso — halo & compétences (session 2026-06-05)
+
+> Import structuré pour la tâche **lier slots halo → arbres**. Plan d’exécution : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`.
+
+### Règles de progression joueur (notes + spec halo — actées)
+
+- Points dépensés pour débloquer des nœuds ; **ordre libre** entre pistes.
+- Chaque piste = **avantages et inconvénients** ; équilibrage = chantier long (volume/vitesse vs marge/prix).
+- UI : **pas** d’onglets par compétence dans l’overlay — le **slot halo** choisit la piste.
+
+### Pistes halo (mapping provisoire 8 slots)
+
+| Slot | ID cible | Notes perso |
+|------|----------|-------------|
+| 1 | `track.commerce` | Branches **Acheteur** / **Vendeur** — **prototype v1** |
+| 2 | `track.plant` | Lié aux 6 stades plantes (salade / tomate) — vitesse, rendement |
+| 3 | `track.fish` | Culture poisson — bonus indirect plantes ; détail nœuds **TBD tablette** |
+| 4 | `track.agronomy` | Anti-aléas : limaces, germination, casse récolte |
+| 5 | `track.logistics` | Logistique — **TBD tablette** |
+| 6 | `track.technology` | Recherches / équipement transverse |
+| 7–8 | réservé | Verrouillés au lancement ou pistes futures |
+
+### Arbre Commerce (structure notes — effets à chiffrer)
+
+```
+Racine Commerce
+├── Acheteur : remises achat, offres shop
+└── Vendeur : prix vente, bonus volume market
+```
+
+### Distinction explicite (note session 2026-06-04)
+
+- **Halo inventaire** = progression **joueur** globale (cette tâche).
+- **Panneau ferme `FirstLvl`** = progression **système aquaponique** par niveau (onglets Biofiltre / Poisson / Techno) → `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md` — **autre chantier**.
+
+### Encore manquant (tablette)
+
+- Coûts en points par nœud Commerce.
+- Effets % exacts Acheteur / Vendeur.
+- Source XP / points joueur (niveau seul vs récoltes vs quêtes).
+- Détail nœuds Culture plante, Poisson, Logistique.
+
+---
+
 ## À importer (quand disponible — session [P0-IDEA-001])
 
 - [ ] Transcription ou scan des notes manuscrites tablette

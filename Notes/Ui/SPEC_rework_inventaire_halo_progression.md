@@ -150,12 +150,12 @@ Docs inventaire actuelles :
 ### Phase 2 — Navigation talents
 
 - [x] Overlay arbre — script `TalentTreeOverlayController` (prefab racine overlay : **Bezy**).
-- [ ] Clic halo → ouverture arbre mock — après wiring Bezy.
-- [ ] Bouton retour → inventaire — après wiring Bezy (`CanvasGroup` sur `InventoryPanel`).
+- [x] Clic halo → overlay placeholder — wiring Phase 3 OK (2026-06-05).
+- [x] Bouton retour → inventaire — wiring Phase 3 OK (`CanvasGroup` sur `InventoryPanel`).
 
 ### Phase 3 — Données & gameplay
 
-- [ ] Modèle data piste + arbre + nœuds (après import notes perso).
+- [ ] Modèle data piste + arbre + nœuds — **plan 3 étapes** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md` ([P0-INV-HALO-006]…[008]).
 - [ ] Service progression + save.
 - [ ] Application modificateurs shop / market.
 

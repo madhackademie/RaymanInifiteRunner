@@ -57,15 +57,22 @@ Convention d'IDs :
 - [x] **[P0-INV-HALO-003]** **Phase 3 wiring** (Bezy) — **review Cursor OK** (2026-06-05) : `PlayerHaloSlotUI`, `PlayerHaloPanelController` (slots 01→08 ordonnés), `TalentTreeOverlayController`, `InventoryScreenController` câblés.
 - [x] Fix layout (2026-06-05) : `VerticalLayoutGroup.ChildControlHeight=1` → grille restaurée.
 
-**3 — Notes tablette perso**
+**3 — Lier halo → arbres de compétences (3 étapes)**
 
-- [ ] **[P0-IDEA-001]** **Importer / structurer** les notes tablette perso dans le projet (boucle gameplay, pistes talents, commerce, cultures…). **Livrables :**
-  1. Contenu déposé ou synthétisé dans **`Notes/GDD/INBOX_notes_tablette_recherches.md`** (+ alimentation **`Notes/GDD/Inbox_gdd.md`** si vrac).
-  2. Renommage cible des **`ProgressionTrackId`** (remplacer `track.placeholder.01`…`08`) — aligner spec halo §4.
-  3. Trace dans **`PROJECT_LOG.md`** + mise à jour priorités si besoin.
+> Plan détaillé + notes perso synthétisées : **`Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`**
+
+- [ ] **[P0-INV-HALO-006]** **Étape 1** — Renommer `ProgressionTrackId` (6 pistes + 2 réservées) + aligner prefab slots Bezy.
+- [ ] **[P0-INV-HALO-007]** **Étape 2** — ScriptableObjects `TalentTrackDefinition` / `TalentNodeDefinition` + arbre mock **Commerce** (Acheteur / Vendeur).
+- [ ] **[P0-INV-HALO-008]** **Étape 3** — Bezy Phase 4 overlay : `TreeScrollView` + prefab `TalentNodeUI` (prompt dans note session).
+
+**4 — Notes tablette perso (complément)**
+
+- [~] **[P0-IDEA-001]** Synthèse halo importée dans **`INBOX_notes_tablette_recherches.md`** § *Synthèse 2026-06-05* — reste à compléter depuis tablette (coûts, effets %, nœuds détaillés).
+- [ ] Trace finale dans **`PROJECT_LOG.md`** quand étapes 1–3 validées.
 
 **Références**
 
+- **Session prochaine (3 étapes)** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
 - Spec halo : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`
 - Arbre UI : `Notes/Ui/ARBRE_inventory_halo_ui.md`
 - Fallback wiring : menu Unity `Rayman → UI → Wire Inventory Halo (Phase 3)` (`Assets/Editor/InventoryHaloPrefabWiring.cs`)

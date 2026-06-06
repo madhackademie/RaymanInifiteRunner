@@ -93,6 +93,10 @@ Réutiliser scripts existants ; ne pas rescanner tout le projet. Phases Bezy : s
 
 ## Phase suivante (hors coque)
 
+- **Session prochaine — 3 étapes** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
+  1. Renommer `ProgressionTrackId`
+  2. SO + arbre Commerce mock
+  3. Bezy overlay `TreeScrollView` + `TalentNodeUI`
 - Filtres inventaire (onglets C)
 - Données talents + save
 - `PopupId` modales petites si besoin
