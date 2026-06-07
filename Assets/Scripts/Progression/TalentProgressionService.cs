@@ -246,12 +246,24 @@ public class TalentProgressionService : MonoBehaviour
 
     private bool TryGetTrack(string trackId, out TalentTrackDefinition track)
     {
-        return !string.IsNullOrEmpty(trackId) && tracksById.TryGetValue(trackId, out track);
+        if (string.IsNullOrEmpty(trackId))
+        {
+            track = null;
+            return false;
+        }
+
+        return tracksById.TryGetValue(trackId, out track);
     }
 
     private bool TryGetNode(string nodeId, out TalentNodeDefinition node)
     {
-        return !string.IsNullOrEmpty(nodeId) && nodesById.TryGetValue(nodeId, out node);
+        if (string.IsNullOrEmpty(nodeId))
+        {
+            node = null;
+            return false;
+        }
+
+        return nodesById.TryGetValue(nodeId, out node);
     }
 
     private void EnsureStartingSkillPoints()

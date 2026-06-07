@@ -1,11 +1,14 @@
 # Session prochaine — halo inventaire → arbres de compétences
 
 **Statut :** plan d’exécution pour la **prochaine session** (après playtest **[P0-INV-HALO-004]**).  
-**Date :** 2026-06-05  
+**Date :** 2026-06-05 (MAJ décision layout **2026-06-07**)  
 **Branche :** `feature/inventory-halo-ui`  
 **Contexte :** coque UI prête (Phase 3 wiring OK) — il reste à **lier chaque `PlayerHaloSlotUI` à un arbre de compétences réel**.
 
+> **Décision layout (2026-06-07)** — l’arbre visuel sera **composé à la main dans l’éditeur Unity** (drag RectTransform, edges éditeur), pas généré par stratégies layout en code. Spec dédiée : **`Notes/Ui/SPEC_talent_tree_layout_editeur.md`**. Réflexion auteur en cours ; les étapes 2–3 ci-dessous restent valides côté data/service, l’étape 3 Bezy est **alignée** sur cette spec (conteneur libre + prefabs `TalentNodeView` / `TalentTreeEdgeView`).
+
 Docs liés :
+- `Notes/Ui/SPEC_talent_tree_layout_editeur.md` ← **layout WYSIWYG**
 - `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`
 - `Notes/Ui/ARBRE_inventory_halo_ui.md`
 - `Notes/GDD/INBOX_notes_tablette_recherches.md` (notes perso)
@@ -170,7 +173,7 @@ Assets/Data/Progression/Nodes/Commerce/
 
 ### Étape 3 — Prompt Bezy : zone arbre dans l’overlay
 
-**Objectif :** remplacer `bodyPlaceholderLabel` par une hiérarchie scrollable pour les nœuds ; prefab nœud réutilisable.
+**Objectif :** remplacer `bodyPlaceholderLabel` par une hiérarchie scrollable ; prefabs **briques** pour composition manuelle dans l’éditeur (cf. `SPEC_talent_tree_layout_editeur.md`).
 
 **Fichier cible :** `Assets/Prefabs/Ui/InventoryScreen.prefab` (enfant `TalentTreeOverlay`).
 
@@ -182,12 +185,16 @@ TalentTreeOverlay [TalentTreeOverlayController]
 └── OverlayPanel
     ├── Header (trackTitleLabel + backButton)
     └── TreeScrollView
-        └── TreeContent          ← conteneur layout nœuds
-            └── (instances TalentNodeUI)
+        └── TreeContent          ← conteneur LIBRE (pas de LayoutGroup auto)
+            └── (prefab arbre piste instancié — ex. Track_Commerce)
 ```
 
-**Prefab à créer :** `Assets/Prefabs/Ui/Progression/TalentNodeUI.prefab`  
-Composants : `Button`, `Image` icône, TMP titre, états visuels locked/purchased, script `TalentNodeUI`.
+**Prefabs à créer (Bezy) :**
+- `Assets/Prefabs/Ui/Progression/TalentNodeView.prefab` — Button, icône, TMP, overlays Locked/Purchased.
+- `Assets/Prefabs/Ui/Progression/TalentTreeEdgeView.prefab` — Image ligne entre deux ancres.
+- `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab` — **shell vide** ; l’auteur place les nœuds à la main ensuite.
+
+Scripts Cursor (foundation, cf. spec) : `TalentNodeView`, `TalentTreeEdgeView`, `TalentTreeLayoutRoot`.
 
 **Prompt Bezy — Phase 4 (shell arbre, ≤ 3500 car.) :**
 

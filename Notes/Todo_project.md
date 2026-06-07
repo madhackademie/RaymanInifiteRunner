@@ -39,7 +39,7 @@ Convention d'IDs :
 
 > Branche courante : **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] inventaire halo. Base : `main`. **Ne pas merger** sans **playtest [P0-INV-HALO-004]** validé + renommage pistes post-notes.
 
-### Ordre session (mis à jour 2026-06-05)
+### Ordre session (mis à jour 2026-06-07)
 
 **1 — [PRIORITÉ IMMÉDIATE] Playtest inventaire halo**
 
@@ -57,13 +57,18 @@ Convention d'IDs :
 - [x] **[P0-INV-HALO-003]** **Phase 3 wiring** (Bezy) — **review Cursor OK** (2026-06-05) : `PlayerHaloSlotUI`, `PlayerHaloPanelController` (slots 01→08 ordonnés), `TalentTreeOverlayController`, `InventoryScreenController` câblés.
 - [x] Fix layout (2026-06-05) : `VerticalLayoutGroup.ChildControlHeight=1` → grille restaurée.
 
-**3 — Lier halo → arbres de compétences (3 étapes)**
+**3 — Lier halo → arbres de compétences**
 
-> Plan détaillé + notes perso synthétisées : **`Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`**
+> Plan historique (3 étapes) : **`Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`**  
+> **Décision layout 2026-06-07** : arbres composés **à la main dans l’éditeur Unity** — spec **`Notes/Ui/SPEC_talent_tree_layout_editeur.md`**. Réflexion auteur en cours avant implémentation.
 
-- [ ] **[P0-INV-HALO-006]** **Étape 1** — Renommer `ProgressionTrackId` (6 pistes + 2 réservées) + aligner prefab slots Bezy.
-- [ ] **[P0-INV-HALO-007]** **Étape 2** — ScriptableObjects `TalentTrackDefinition` / `TalentNodeDefinition` + arbre mock **Commerce** (Acheteur / Vendeur).
-- [ ] **[P0-INV-HALO-008]** **Étape 3** — Bezy Phase 4 overlay : `TreeScrollView` + prefab `TalentNodeUI` (prompt dans note session).
+- [x] **[P0-INV-HALO-006]** **Étape 1 (code)** — `ProgressionTrackId` renommé (6 pistes + 2 réservées) + `HaloSlotOrder`.
+- [~] **[P0-INV-HALO-006b]** Aligner prefab Bezy slots (labels / `trackId` Inspector) — reste playtest + polish prefab.
+- [~] **[P0-INV-HALO-007]** **Étape 2** — SO + `TalentProgressionService` mock Commerce en runtime ; overlay texte + achat OK. Reste : assets SO sur disque + prefab arbre visuel.
+- [ ] **[P0-INV-HALO-009]** **Réflexion auteur** — valider points ouverts § spec layout éditeur (prefab par piste, edges, scroll, nommage scripts).
+- [ ] **[P0-INV-HALO-008]** **Bezy briques arbre** — `TreeScrollView` + conteneur **libre** (`TreeContent`, sans LayoutGroup auto) + prefabs `TalentNodeView` + `TalentTreeEdgeView` (cf. spec layout éditeur).
+- [ ] **[P0-INV-HALO-011]** **Cursor foundation** — scripts `TalentNodeView`, `TalentTreeEdgeView`, `TalentTreeLayoutRoot` (+ Custom Editor collect/validate) + wiring `TalentTreeOverlayController`.
+- [ ] **[P0-INV-HALO-012]** **Auteur composition** — prefab `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab` : placer nœuds + edges à la main, tester achat Play mode.
 
 **4 — Notes tablette perso (complément)**
 
@@ -72,7 +77,8 @@ Convention d'IDs :
 
 **Références**
 
-- **Session prochaine (3 étapes)** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
+- **Layout éditeur (décision 2026-06-07)** : `Notes/Ui/SPEC_talent_tree_layout_editeur.md`
+- **Session prochaine (3 étapes historiques)** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
 - Spec halo : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`
 - Arbre UI : `Notes/Ui/ARBRE_inventory_halo_ui.md`
 - Fallback wiring : menu Unity `Rayman → UI → Wire Inventory Halo (Phase 3)` (`Assets/Editor/InventoryHaloPrefabWiring.cs`)

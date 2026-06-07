@@ -92,6 +92,74 @@ Routine conseillee pour eviter les ecarts entre appareils :
 - apres suppression/merge d'une branche sur GitHub : `git fetch --all --prune`
 - avant de chercher une branche "manquante" : verifier avec `git branch -r`
 
+## --0C-- Supprimer une branche (locale, distante, les deux)
+
+Rappel : `git branch` seul liste les **branches locales**. Une branche peut exister sur GitHub (`origin/...`) sans branche locale du meme nom — voir `--0B--`.
+
+### Pre-requis
+
+- Tu ne peux pas supprimer la branche **active**. Bascule d'abord :
+```bash
+git switch main
+```
+
+### Supprimer une branche locale
+
+```bash
+git branch -d nom-branche
+```
+
+- `-d` : suppression **sure** (refuse si la branche n'est pas mergee).
+- `-D` : suppression **forcee** (perd les commits non merges sur cette branche).
+
+Exemple :
+```bash
+git branch -d feature/inventory-halo-ui
+```
+
+### Supprimer une branche distante (GitHub)
+
+```bash
+git push origin --delete nom-branche
+```
+
+Equivalent historique :
+```bash
+git push origin :nom-branche
+```
+
+Exemple :
+```bash
+git push origin --delete cursor/mvp-talent-tree-950d
+```
+
+### Supprimer locale + distante (workflow complet)
+
+Apres merge ou abandon d'une feature :
+```bash
+git switch main
+git pull
+git branch -d feature/nom-branche
+git push origin --delete feature/nom-branche
+git fetch --all --prune
+```
+
+### Nettoyer les refs distantes deja supprimees sur GitHub
+
+Sur **chaque machine** (PC bureau, portable) :
+```bash
+git fetch --all --prune
+git branch -vv
+```
+
+Si une branche locale affiche `[origin/...: gone]` : la branche distante n'existe plus — tu peux la retirer en local avec `git branch -d nom-branche`.
+
+### Pieges frequents
+
+- Supprimer sur GitHub **ne supprime pas** automatiquement la branche locale (et inversement).
+- `git branch` sans `-r` / `-a` : la branche distante peut exister sans etre visible.
+- Ne pas supprimer `main` (branche principale).
+
 
 ## --1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
 

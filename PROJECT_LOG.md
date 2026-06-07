@@ -1,5 +1,28 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-07 — Arbres talents : décision layout éditeur + fixes overlay/service
+
+### Contexte
+- Playtest / dev overlay talents : erreur coroutine sur GO inactif ; erreur compile CS0177 sur `out` parameter.
+- Réflexion auteur : préférence pour **manipuler le rendu et déplacer les nœuds dans l’IDE Unity**, pas layout calculé en code.
+
+### Fait
+- **Fix** `TalentTreeOverlayController` : `Awake()` n’appelle plus `HideImmediate()` (race au 1er `Open` → coroutine sur GO inactif).
+- **Fix** `TalentProgressionService.TryGetTrack` / `TryGetNode` : assignation `out` explicite si id vide (CS0177).
+- **Doc** : nouvelle spec `Notes/Ui/SPEC_talent_tree_layout_editeur.md` (WYSIWYG prefab, `TalentNodeView`, `TalentTreeEdgeView`, `TalentTreeLayoutRoot`).
+- **Todo** : `Notes/Todo_project.md` § prochaine session — tâches [P0-INV-HALO-009] à [P0-INV-HALO-012], alignement session + `ARBRE_inventory_halo_ui.md`.
+
+### Décision
+- Layout visuel des arbres = **composition prefab à la main** (RectTransform libre, edges éditeur) ; logique achat reste sur SO + `TalentProgressionService`.
+- Réflexion auteur **en cours** (points ouverts dans la spec) avant implémentation scripts foundation.
+
+### Prochaine session
+1. **[P0-INV-HALO-004]** Playtest inventaire halo (si pas encore validé).
+2. **[P0-INV-HALO-009]** Valider points ouverts spec layout éditeur.
+3. Enchaîner Bezy briques → Cursor foundation → composition `Track_Commerce`.
+
+---
+
 ## 2026-06-05 (soir) — Inventaire halo : Phase 2 bis débloquée + Phase 3 wiring OK + fix layout
 
 ### Contexte

@@ -93,10 +93,11 @@ Réutiliser scripts existants ; ne pas rescanner tout le projet. Phases Bezy : s
 
 ## Phase suivante (hors coque)
 
+- **Layout éditeur (décision 2026-06-07)** : `Notes/Ui/SPEC_talent_tree_layout_editeur.md` — nœuds déplacés à la main dans Unity, edges `[ExecuteAlways]`.
 - **Session prochaine — 3 étapes** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
-  1. Renommer `ProgressionTrackId`
-  2. SO + arbre Commerce mock
-  3. Bezy overlay `TreeScrollView` + `TalentNodeUI`
+  1. Renommer `ProgressionTrackId` (code OK)
+  2. SO + service Commerce mock (partiel)
+  3. Bezy briques + Cursor foundation + composition auteur `Track_Commerce`
 - Filtres inventaire (onglets C)
 - Données talents + save
 - `PopupId` modales petites si besoin

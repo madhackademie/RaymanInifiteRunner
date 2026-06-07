@@ -49,7 +49,11 @@ public class TalentTreeOverlayController : MonoBehaviour
         ResolveProgressionService();
         BindPurchaseButton();
         SubscribeProgressionEvents();
-        HideImmediate();
+
+        // Prefab déjà inactif (alpha 0) : ne pas appeler HideImmediate ici —
+        // SetActive(true) dans Open déclenche Awake et HideImmediate désactivait
+        // l'overlay avant StartFade (coroutine impossible sur GO inactif).
+        ApplyCanvasGroupState(0f);
     }
 
     private void OnDestroy()
@@ -66,12 +70,11 @@ public class TalentTreeOverlayController : MonoBehaviour
         if (isTransitioning || string.IsNullOrEmpty(trackId))
             return;
 
+        EnsureOverlayRootActive();
+
         CurrentTrackId = trackId;
         IsOpen = true;
         RefreshOverlayContent();
-        if (overlayRoot != null)
-            overlayRoot.SetActive(true);
-
         PlayAnimatorBool(isOpen: true);
         StartFade(1f);
     }
@@ -133,8 +136,16 @@ public class TalentTreeOverlayController : MonoBehaviour
         animator.SetBool("IsOpen", isOpen);
     }
 
+    private void EnsureOverlayRootActive()
+    {
+        if (overlayRoot != null && !overlayRoot.activeSelf)
+            overlayRoot.SetActive(true);
+    }
+
     private void StartFade(float targetAlpha, Action onComplete = null)
     {
+        EnsureOverlayRootActive();
+
         if (fadeRoutine != null)
             StopCoroutine(fadeRoutine);
 
