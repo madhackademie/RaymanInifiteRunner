@@ -159,7 +159,7 @@ Convention d'IDs :
 - [ ] [BL-GDD-003] Formaliser la progression XP joueur + maturité biofiltre.
 - [ ] [BL-GDD-004] [OPTIONNEL] Collecter 2-3 références UI et noter ce qui est repris/évité.
 - [ ] [BL-GDD-005] Progression système aquaponique par scène (`FirstLvl+`) — spec `SPEC_progression_systeme_aquaponique_par_niveau.md` (panneau onglets, points, anti-aléas).
-- [ ] **[BL-GDD-006]** Boucle **reset / prestige** systèmes (type idle miner) — `Notes/GDD/IDEA_boucle_reset_prestige_systemes.md`. **Après** validation boucle principale (technique + fun) ; pas avant.
+- [ ] **[BL-GDD-006]** Boucle **ascension** / méta-progression (jeu **incrémental**, type Idle Miner) — `Notes/GDD/IDEA_boucle_reset_prestige_systemes.md`. **Après** validation boucle principale (technique + fun) ; pas avant.
 
 ### Workflow / documentation
 - [ ] [BL-DOC-001] Documenter les règles projet (style, conventions AI/notes, organisation dossiers).

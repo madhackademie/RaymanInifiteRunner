@@ -25,7 +25,7 @@ Ce fichier est le **hub d’accueil** quand ces notes seront retranscrites ou im
 | **`Notes/Ui/SPEC_rework_inventaire_halo_progression.md`** | Vision UI halo (XP centre, talents acheteur / vendeur), §4 renvoie ici | Spec UI — règles métier **après** import notes |
 | **`Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`** | XP joueur, maturité biofiltre (~10 cycles salade), gating cultures fruits | Spec partielle — à aligner avec notes tablette |
 | **`Notes/References/REFERENCES_jeux_inspiration.md`** | Veille jeux idle / cozy farm — alimente idées, pas engagement prod | Référence externe |
-| **`Notes/GDD/IDEA_boucle_reset_prestige_systemes.md`** | Boucle reset / prestige — backlog **[BL-GDD-006]** ; après validation boucle principale (tech + fun) | Backlog |
+| **`Notes/GDD/IDEA_boucle_reset_prestige_systemes.md`** | Jeu incrémental — **ascension** + méta-progression — backlog **[BL-GDD-006]** | Backlog |
 | **`Notes/Inbox_features.md`** | Vrac features sans priorité (vide pour l’instant) | Destination possible post-session |
 | **`Notes/Ui/Journal_ui.md`** § *Inbox (idées brutes)* | Idées UI en vrac (historique) | Secondaire |
 | **`Notes/Todo_project.md`** § *Stock en attente* | [CT-INV-HALO-001], [CT-FARM-UI-001], etc. — **gelé** jusqu’à clôture [P0-IDEA-001] | Priorités à revalider |

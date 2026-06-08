@@ -57,7 +57,7 @@ Légende :
 | `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md` | Actif | P3 | Note future : progression **par scène/niveau** (FirstLvl+) — panneau 3 onglets, points système, techno, anti-aléas. |
 | `Notes/GDD/INBOX_notes_tablette_recherches.md` | Actif | P1 | Hub [P0-IDEA-001] : notes manuscrites / recherches perso (« tablette » = référence auteur) + cartographie docs liés. |
 | `Notes/GDD/Inbox_gdd.md` | A trier | P1 | Brouillon GDD partiel (états plantes, salade/tomate, meta) — compléter depuis tablette via [P0-IDEA-001]. |
-| `Notes/GDD/IDEA_boucle_reset_prestige_systemes.md` | Backlog | P3 | [BL-GDD-006] Reset/prestige type idle miner — **après** boucle principale validée (tech + fun). |
+| `Notes/GDD/IDEA_boucle_reset_prestige_systemes.md` | Backlog | P3 | [BL-GDD-006] Jeu incrémental — ascension / méta-progression — **après** core loop validé. |
 
 ## Notes Learning
 

@@ -1,8 +1,20 @@
-# Idée GDD — boucle reset / prestige des systèmes
+# Idée GDD — boucle ascension / méta-progression (jeu incrémental)
 
 **Statut :** **backlog** — `[BL-GDD-006]` dans `Notes/Todo_project.md`. Pas de code, pas d’engagement prod avant prérequis.  
 **Date :** 2026-06-08  
-**Demande auteur :** mécanique type **idle miner** / idle mobile — « recommencer » un système pour débloquer de **nouveaux compteurs**, **boosts permanents** et un **redémarrage plus rapide**.
+**Demande auteur :** mécanique type **Idle Miner** — recommencer à zéro avec des **bonus permanents** issus des runs précédents.
+
+### Terminologie (validée auteur — EN / FR)
+
+| Anglais (réf. industrie) | Français | Usage projet |
+|--------------------------|----------|--------------|
+| **Incremental game** | Jeu **incrémental** | Genre cible (idle / tycoon mobile) |
+| **Ascension** | **Ascension** | Action joueur : soft reset → palier supérieur + bonus permanents |
+| **Prestige** | Prestige | **Synonyme courant** (même mécanique ; Idle Farming Empire, etc.) |
+| **Meta-progression** | Méta-progression | Ce qui **persiste entre** les ascensions (compteurs méta, multiplicateurs) |
+| **Soft reset** | Reset doux | Remise à zéro de la couche locale, pas du save entier |
+
+> Vocabulaire retenu côté design : **incrémental** + **ascension**. « Prestige » reste acceptable dans la veille jeux et la doc technique.
 
 ### Prérequis (décision auteur 2026-06-08)
 
@@ -28,7 +40,7 @@ Tant que ce seuil n’est pas atteint, ce document sert de **référence d’id�
 
 ## 2. Intention produit (ébauche)
 
-Inspiré des idle / tycoon mobile (Idle Miner, Idle Farming Empire, Melvor Idle) :
+Inspiré des **jeux incrémentaux** / idle mobile (Idle Miner, Idle Farming Empire, Melvor Idle) :
 
 1. Le joueur fait progresser une **installation** ou une **carrière** (ferme, système aquaponique, comptes de production).
 2. À un moment, il peut **volontairement tout remettre à zéro** (ou presque) sur cette couche.
