@@ -561,7 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bd220492046c7e468162f4334eb579b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHaloSlotUI
-  trackId: track.placeholder.01
+  trackId: track.marketing
   clickButton: {fileID: 8428086381464673607}
   animatedVisual: {fileID: 2063607683988308237}
   placeholderLabel: {fileID: 7363301999927282640}

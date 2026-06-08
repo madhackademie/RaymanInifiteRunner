@@ -52,25 +52,37 @@ Ce fichier est le **hub d’accueil** quand ces notes seront retranscrites ou im
 - Chaque piste = **avantages et inconvénients** ; équilibrage = chantier long (volume/vitesse vs marge/prix).
 - UI : **pas** d’onglets par compétence dans l’overlay — le **slot halo** choisit la piste.
 
-### Pistes halo (mapping provisoire 8 slots)
+### Pistes halo — 8 compétences (import tablette 2026-06-08)
 
-| Slot | ID cible | Notes perso |
-|------|----------|-------------|
-| 1 | `track.commerce` | Branches **Acheteur** / **Vendeur** — **prototype v1** |
-| 2 | `track.plant` | Lié aux 6 stades plantes (salade / tomate) — vitesse, rendement |
-| 3 | `track.fish` | Culture poisson — bonus indirect plantes ; détail nœuds **TBD tablette** |
-| 4 | `track.agronomy` | Anti-aléas : limaces, germination, casse récolte |
-| 5 | `track.logistics` | Logistique — **TBD tablette** |
-| 6 | `track.technology` | Recherches / équipement transverse |
-| 7–8 | réservé | Verrouillés au lancement ou pistes futures |
+> **Code source de vérité :** `Assets/Scripts/UI/Inventory/Progression/ProgressionTrackId.cs`  
+> Ordre halo : sens horaire depuis 12 h (slot 1 en haut).
 
-### Arbre Commerce (structure notes — effets à chiffrer)
+| Slot | ID | Compétence | Périmètre indicatif (notes perso) |
+|------|----|------------|-----------------------------------|
+| 1 | `track.marketing` | **Marketing** | Vente, market, marges, volume — ex-branche « Vendeur » de l’ancien arbre Commerce |
+| 2 | `track.insect.feed` | **Nourriture & élevage insectes** | Alimentation et élevage des insectes (source protéines / boucle ferme) |
+| 3 | `track.bioconversion` | **Bioconversion** | Chaîne biofiltre / transformation matière organique |
+| 4 | `track.fish.reproduction` | **Reproduction poisson** | Cycle reproductif, qualité eau, nutriments indirects sur plantes |
+| 5 | `track.water` | **Eau** | Qualité, traitement, équilibre hydrique du système |
+| 6 | `track.gardening` | **Jardinage plantes & graines** | 6 stades plantes (salade / tomate), germination, rendement, récolte |
+| 7 | `track.dis` | **DIS** | Acronyme notes tablette — **à préciser** (distribution ? autre) |
+| 8 | `track.shop` | **Magasin** | Achats shop, remises, offres — ex-branche « Acheteur » de l’ancien arbre Commerce |
 
+### Arbres talents — structure provisoire
+
+**Marketing** (prototype v1 recommandé) :
 ```
-Racine Commerce
-├── Acheteur : remises achat, offres shop
-└── Vendeur : prix vente, bonus volume market
+Racine Marketing
+└── Vendeur : prix vente, bonus volume market, marges
 ```
+
+**Magasin** :
+```
+Racine Magasin
+└── Acheteur : remises achat, offres shop, déblocages catalogue
+```
+
+> L’ancien arbre unique « Commerce » (Acheteur / Vendeur) est **scindé** en deux pistes distinctes (slots 1 et 8).
 
 ### Distinction explicite (note session 2026-06-04)
 
@@ -79,10 +91,11 @@ Racine Commerce
 
 ### Encore manquant (tablette)
 
-- Coûts en points par nœud Commerce.
-- Effets % exacts Acheteur / Vendeur.
+- Signification exacte de **DIS** (slot 7).
+- Coûts en points par nœud (toutes pistes).
+- Effets % Marketing / Magasin et autres branches.
 - Source XP / points joueur (niveau seul vs récoltes vs quêtes).
-- Détail nœuds Culture plante, Poisson, Logistique.
+- Détail nœuds par piste (insectes, bioconversion, eau, jardinage…).
 
 ---
 

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// </summary>
 public class PlayerHaloSlotUI : MonoBehaviour
 {
-    [SerializeField] private string trackId = ProgressionTrackId.Placeholder01;
+    [SerializeField] private string trackId = ProgressionTrackId.Marketing;
     [SerializeField] private Button clickButton;
     [SerializeField] private Image animatedVisual;
     [SerializeField] private TextMeshProUGUI placeholderLabel;

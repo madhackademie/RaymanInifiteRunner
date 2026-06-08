@@ -41,7 +41,7 @@ InventoryScreen                    [Canvas + InventoryScreenController]
 
 | Fichier | Rôle |
 |---------|------|
-| `ProgressionTrackId.cs` | IDs placeholder `track.placeholder.01` … `08` |
+| `ProgressionTrackId.cs` | 8 IDs compétences (`track.marketing` … `track.shop`) + libellés courts/longs |
 | `PlayerHaloSlotUI.cs` | Bouton + `AnimatedVisual` + labels |
 | `PlayerHaloPanelController.cs` | 8 slots, niveau mock, `OnTrackSelected` |
 | `TalentTreeOverlayController.cs` | Overlay arbre (fade, Retour) |
@@ -78,24 +78,33 @@ Réutiliser scripts existants ; ne pas rescanner tout le projet. Phases Bezy : s
 ## Validation playtest
 
 1. Onglet Inventaire (HUD).
-2. Clic slot **P1…P8** → overlay placeholder + titre `trackId`.
+2. Clic slot halo → overlay placeholder + titre **nom lisible** (ex. « Marketing », « Magasin »).
 3. Retour → overlay fermé, grille inchangée (pas de rebuild slots).
 
 ---
 
-## Renommage pistes (après notes tablette)
+## Pistes intégrées (2026-06-08)
 
-1. `ProgressionTrackId.cs`
-2. Labels / GameObjects dans prefabs Bezy
-3. Sprites + `Animator` sur `AnimatedVisual`
+| Slot | ID | Label court |
+|------|----|-------------|
+| 1 | `track.marketing` | Marketing |
+| 2 | `track.insect.feed` | Insectes |
+| 3 | `track.bioconversion` | Bioconv. |
+| 4 | `track.fish.reproduction` | Poisson |
+| 5 | `track.water` | Eau |
+| 6 | `track.gardening` | Jardin |
+| 7 | `track.dis` | DIS |
+| 8 | `track.shop` | Magasin |
+
+Reste : sprites + `Animator` sur `AnimatedVisual` (Bezy).
 
 ---
 
 ## Phase suivante (hors coque)
 
-- **Session prochaine — 3 étapes** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
-  1. Renommer `ProgressionTrackId`
-  2. SO + arbre Commerce mock
+- **Session prochaine — étapes 2–3** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
+  1. ~~Renommer `ProgressionTrackId`~~ **fait** (2026-06-08)
+  2. SO + arbre Marketing mock
   3. Bezy overlay `TreeScrollView` + `TalentNodeUI`
 - Filtres inventaire (onglets C)
 - Données talents + save

@@ -47,17 +47,20 @@ PlayerHaloSlotUI (trackId)
 - **Choix libre** : le joueur **choisit quel arbre pousser en premier** — pas de chemin linéaire imposé.
 - **Équilibrage long terme** : chaque path doit rester viable (ex. *plus de salade plus vite* vs *vendre 3× plus cher* — à valider par chiffres, pas bloquant pour le prototype UI).
 
-### Pistes de compétences (notes perso — liste de travail)
+### Pistes de compétences — 8 slots (import tablette 2026-06-08)
 
-| # slot halo (ordre 12 h) | Piste (nom de travail) | Contenu notes perso / spec |
-|--------------------------|------------------------|----------------------------|
-| 1 | **Commerce** | Arbre confirmé en notes : branche **Acheteur** (payer moins, remises shop) / branche **Vendeur** (vendre plus cher, bonus volume market). **Premier arbre prototype recommandé** (lien direct shop/market existants). |
-| 2 | **Culture plante** | Lié aux notes **6 stades** plantes (`Inbox_gdd.md`) : salade (graines → seedling → baby → croissance → mature → fleur) vs tomate (… → fruit pas mûr → fruit mûr / graines). Effets cibles : vitesse croissance, rendement récolte, germination. |
-| 3 | **Culture poisson** | Piste listée spec halo ; détails nœuds **manquants** tablette — bonus indirect sur plantes via qualité eau / nutriments. |
-| 4 | **Agronomie** | Résistance **aléas** culture : limaces, faible germination, casse récolte (recoupe spec système aquaponique — effets **joueur global** ici, pas upgrades d’installation). |
-| 5 | **Logistique** | Piste listée spec halo ; détails **manquants** — stock, transport, slots inventaire ? |
-| 6 | **Technologie** | Recherches / équipements transverses (capteurs, automatisation) — à croiser avec onglet Techno ferme (synergie narrative, pas même UI). |
-| 7–8 | **Réservé** | Slots **verrouillés** au lancement ou pistes futures — trancher en session (6 slots actifs vs 8). |
+| # slot halo (ordre 12 h) | ID | Piste | Contenu notes perso / spec |
+|--------------------------|----|-------|----------------------------|
+| 1 | `track.marketing` | **Marketing** | Vente, market, marges — **premier arbre prototype recommandé**. |
+| 2 | `track.insect.feed` | **Nourriture & élevage insectes** | Alimentation et élevage insectes — détail nœuds **TBD**. |
+| 3 | `track.bioconversion` | **Bioconversion** | Chaîne biofiltre / transformation — détail nœuds **TBD**. |
+| 4 | `track.fish.reproduction` | **Reproduction poisson** | Cycle reproductif, bonus indirect plantes via eau / nutriments. |
+| 5 | `track.water` | **Eau** | Qualité et équilibre hydrique — détail nœuds **TBD**. |
+| 6 | `track.gardening` | **Jardinage plantes & graines** | 6 stades plantes (`Inbox_gdd.md`) : vitesse, rendement, germination. |
+| 7 | `track.dis` | **DIS** | Acronyme notes tablette — **à préciser**. |
+| 8 | `track.shop` | **Magasin** | Achats shop, remises, offres — lien direct shop existant. |
+
+> Ancien plan « Commerce » scindé : **Marketing** (vendeur) + **Magasin** (acheteur).
 
 ### Notes perso hors halo (contexte — ne pas mélanger dans cette session)
 
@@ -69,7 +72,8 @@ PlayerHaloSlotUI (trackId)
 - [ ] Liste exacte des nœuds Commerce (noms, coûts, effets %).
 - [ ] Détail branches Culture plante / Poisson.
 - [ ] Source et courbe des **points de compétence** joueur.
-- [ ] Nombre final de slots visibles au lancement (6 vs 8).
+- [x] Nombre final de slots visibles au lancement → **8** (2026-06-08).
+- [ ] Signification **DIS** (slot 7).
 
 ---
 
@@ -79,43 +83,31 @@ Ordre recommandé **après** validation playtest **[P0-INV-HALO-004]**.
 
 ---
 
-### Étape 1 — Renommer `ProgressionTrackId` + aligner les 8 slots
+### Étape 1 — Renommer `ProgressionTrackId` + aligner les 8 slots ✅ (2026-06-08)
 
-**Objectif :** chaque `PlayerHaloSlotUI` expose un `trackId` stable et lisible ; le prefab Bezy et `HaloSlotOrder` sont alignés.
+**Objectif :** chaque `PlayerHaloSlotUI` expose un `trackId` stable et lisible ; prefab et `HaloSlotOrder` alignés.
 
-**Fichiers :**
-- `Assets/Scripts/UI/Inventory/Progression/ProgressionTrackId.cs`
-- `Assets/Prefabs/Ui/Progression/PlayerHaloPanel.prefab` (labels / `trackId` par slot — **Bezy**)
-- `Assets/Editor/InventoryHaloPrefabWiring.cs` (si re-wiring nécessaire)
+**Fichiers mis à jour :**
+- `ProgressionTrackId.cs` — constantes + `GetShortLabel` / `GetDisplayName`
+- `PlayerHaloPanelController.cs` — libellés runtime
+- `TalentTreeOverlayController.cs` — titre overlay
+- `PlayerHaloPanel.prefab` — `trackId` par slot
 
-**Proposition IDs v1** (à valider avec notes tablette) :
-
-```csharp
-public const string Commerce     = "track.commerce";
-public const string PlantCulture = "track.plant";
-public const string FishCulture  = "track.fish";
-public const string Agronomy     = "track.agronomy";
-public const string Logistics    = "track.logistics";
-public const string Technology   = "track.technology";
-public const string Reserved07   = "track.reserved.07";
-public const string Reserved08   = "track.reserved.08";
-```
-
-**`HaloSlotOrder`** : même ordre que le tableau ci-dessus (positions 12 h → sens horaire).
+**IDs intégrés :** `track.marketing`, `track.insect.feed`, `track.bioconversion`, `track.fish.reproduction`, `track.water`, `track.gardening`, `track.dis`, `track.shop`.
 
 **Checklist :**
-- [ ] Constantes + `HaloSlotOrder` mis à jour (Cursor).
-- [ ] Slots 07–08 : `locked: true` dans `PlayerHaloPanelController.RefreshPlaceholderPresentation` jusqu’à déblocage design.
-- [ ] Labels courts slot : ex. « Commerce », « Plante », « Poisson »… (Bezy ou `Configure` runtime).
-- [ ] Playtest : clic chaque slot actif → overlay titre = nouveau `trackId` (pas `track.placeholder.XX`).
+- [x] Constantes + `HaloSlotOrder` mis à jour (Cursor).
+- [x] Labels courts slot via `Configure` runtime.
+- [ ] Playtest : clic chaque slot → overlay titre = nom lisible.
+- [ ] Signification **DIS** confirmée par auteur.
 
-**Livrable :** PR partiel ou commit auteur — **pas de merge** sans playtest overlay.
+**Livrable :** playtest overlay avant merge.
 
 ---
 
-### Étape 2 — Esquisser le modèle data + premier arbre mock Commerce
+### Étape 2 — Esquisser le modèle data + premier arbre mock Marketing
 
-**Objectif :** remplacer le placeholder texte de `TalentTreeOverlayController` par un chargement data-driven ; vertical slice sur **Commerce** uniquement.
+**Objectif :** remplacer le placeholder texte de `TalentTreeOverlayController` par un chargement data-driven ; vertical slice sur **Marketing** uniquement.
 
 **Nouveaux fichiers suggérés (Cursor) :**
 
@@ -132,26 +124,24 @@ Assets/Scripts/Progression/
 
 ```
 Assets/Data/Progression/Tracks/
-  Track_Commerce.asset
-Assets/Data/Progression/Nodes/Commerce/
-  Node_Commerce_Root.asset
-  Node_Buyer_Discount01.asset
-  Node_Buyer_ShopUnlock.asset
+  Track_Marketing.asset
+Assets/Data/Progression/Nodes/Marketing/
+  Node_Marketing_Root.asset
   Node_Seller_PriceUp01.asset
   Node_Seller_VolumeBonus.asset
+  …
 ```
 
-**Arbre mock Commerce** (structure notes perso — effets **placeholder** sans brancher shop tout de suite) :
+**Arbre mock Marketing** (effets **placeholder** — Magasin = piste séparée slot 8) :
 
 ```
-              [ Racine Commerce ]
+              [ Racine Marketing ]
                       │
-        ┌─────────────┴─────────────┐
-        ▼                           ▼
-   Branche ACHETEUR            Branche VENDEUR
-   - Remise achat −5 %         - Prix vente +5 %
-   - Déblocage offres shop     - Bonus volume market
-   (coûts : 1, 2, 3 pts…)      (coûts : 1, 2, 3 pts…)
+                      ▼
+              Branche VENDEUR
+              - Prix vente +5 %
+              - Bonus volume market
+              (coûts : 1, 2, 3 pts…)
 ```
 
 **Modifs scripts existants :**
@@ -159,7 +149,7 @@ Assets/Data/Progression/Nodes/Commerce/
 - Nouveau `TalentNodeUI.cs` : affiche icône, titre, état (locked / available / purchased), clic → `TryPurchaseNode`.
 
 **Checklist :**
-- [ ] SO + 5 nœuds Commerce créés (même valeurs mock).
+- [ ] SO + nœuds Marketing créés (même valeurs mock).
 - [ ] Overlay affiche l’arbre Commerce quand slot 1 cliqué.
 - [ ] Autres pistes : message « À venir » ou arbre vide propre (pas de crash).
 - [ ] Service retourne modificateurs mock pour branche Acheteur/Vendeur (log debug OK).
@@ -221,7 +211,7 @@ Confirmer fichiers modifiés. Attendre validation avant Phase 5 wiring.
 |---|----------|-----|-----------|
 | 0 | **[P0-INV-HALO-004]** playtest coque actuelle | Auteur | — |
 | 1 | **[P0-INV-HALO-006]** Étape 1 — `ProgressionTrackId` | Cursor + Bezy labels | playtest OK |
-| 2 | **[P0-INV-HALO-007]** Étape 2 — SO + arbre Commerce mock | Cursor | étape 1 |
+| 2 | **[P0-INV-HALO-007]** Étape 2 — SO + arbre Marketing mock | Cursor | étape 1 |
 | 3 | **[P0-INV-HALO-008]** Étape 3 — Bezy overlay arbre | Bezy puis Cursor review | étape 2 (SO + `TalentNodeUI.cs`) |
 | — | **[P0-IDEA-001]** compléter notes tablette | Auteur | en parallèle si possible |
 
@@ -229,8 +219,8 @@ Confirmer fichiers modifiés. Attendre validation avant Phase 5 wiring.
 
 ## Critères de fin de session
 
-- [ ] 6 pistes nommées + 2 réservées ; overlay affiche le bon `trackId`.
-- [ ] Arbre **Commerce** visible (5 nœuds mock) avec branches gauche/droite.
+- [x] 8 pistes nommées ; overlay affiche le nom lisible.
+- [ ] Arbre **Marketing** visible (nœuds mock).
 - [ ] Prefab overlay prêt pour instanciation dynamique des nœuds (Phase 5).
 - [ ] Notes tablette : section Commerce complétée dans `INBOX_notes_tablette_recherches.md` si nouveaux détails apportés.
 - [ ] Trace dans `PROJECT_LOG.md` + statuts `Notes/Todo_project.md`.
@@ -239,10 +229,11 @@ Confirmer fichiers modifiés. Attendre validation avant Phase 5 wiring.
 
 ## Questions à trancher en session (5 min)
 
-1. **6 ou 8** slots actifs au lancement ?
-2. **Commerce** confirmé comme premier arbre jouable ?
-3. Overlay **demi-écran** (actuel) ou **quasi plein écran** pour l’arbre ?
-4. Points compétence : **niveau joueur** uniquement ou aussi **actions ferme** ?
+1. ~~**6 ou 8** slots actifs au lancement ?~~ → **8** (2026-06-08).
+2. **Marketing** confirmé comme premier arbre jouable ?
+3. Signification de **DIS** (slot 7) ?
+4. Overlay **demi-écran** (actuel) ou **quasi plein écran** pour l’arbre ?
+5. Points compétence : **niveau joueur** uniquement ou aussi **actions ferme** ?
 
 ---
 
@@ -254,4 +245,4 @@ Confirmer fichiers modifiés. Attendre validation avant Phase 5 wiring.
 | `PlayerHaloPanelController.cs` | `OnTrackSelected`, mock 8 slots |
 | `InventoryScreenController.cs` | Dim grille + ouvre overlay |
 | `TalentTreeOverlayController.cs` | `Open(trackId)` — à enrichir étape 2 |
-| `ProgressionTrackId.cs` | IDs à renommer étape 1 |
+| `ProgressionTrackId.cs` | 8 IDs compétences intégrés (2026-06-08) |

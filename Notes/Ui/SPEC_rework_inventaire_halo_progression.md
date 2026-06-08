@@ -137,7 +137,7 @@ Docs inventaire actuelles :
 
 - [x] Noter la vision et la ref. visuelle (ce document).
 - [x] Introduire le document tablette GDD.
-- [ ] Valider la liste des pistes v1 (commerce, agronomie, logistique…).
+- [x] Valider la liste des pistes v1 — **8 compétences** (Marketing, Insectes, Bioconversion, Poisson, Eau, Jardinage, DIS, Magasin) — voir `ProgressionTrackId.cs`.
 - [ ] Maquette statique (Figma ou prefab Bezi sans logique).
 
 ### Phase 1 — Coque UI

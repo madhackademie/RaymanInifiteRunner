@@ -1,5 +1,28 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-08 — Halo inventaire : intégration des 8 compétences (ProgressionTrackId)
+
+### Contexte
+- Import des notes tablette : liste définitive des **8 pistes** du halo inventaire (remplace les placeholders `track.placeholder.01`…`08` et l’ancien plan provisoire Commerce / Culture plante / etc.).
+
+### Fait
+- **`ProgressionTrackId.cs`** : 8 constantes stables + `HaloSlotOrder` + `GetShortLabel` / `GetDisplayName`.
+  - Marketing, Nourriture & élevage insectes, Bioconversion, Reproduction poisson, Eau, Jardinage plantes & graines, DIS, Magasin.
+- **`PlayerHaloPanelController`** : libellés courts runtime sur les slots (plus P1–P8).
+- **`TalentTreeOverlayController`** : titre overlay = nom lisible de la piste.
+- **Prefabs** : `trackId` alignés dans `PlayerHaloPanel.prefab` et `PlayerHaloSlotUI.prefab`.
+- **Docs** : `INBOX_notes_tablette_recherches.md`, `ARBRE_inventory_halo_ui.md`, `SESSION_prochaine_halo_arbres_competences.md`, `SPEC_rework_inventaire_halo_progression.md`, `Todo_project.md`.
+
+### Décision / note
+- L’ancien arbre unique « Commerce » (Acheteur / Vendeur) est **scindé** : **Marketing** (slot 1) + **Magasin** (slot 8).
+- **DIS** (slot 7) : acronyme conservé tel quel — signification **à préciser** par l’auteur.
+
+### Prochaine étape
+- Playtest **[P0-INV-HALO-004]** avec les nouveaux libellés.
+- **[P0-INV-HALO-007]** : arbre mock **Marketing** (data-driven).
+
+---
+
 ## 2026-06-05 (soir) — Inventaire halo : Phase 2 bis débloquée + Phase 3 wiring OK + fix layout
 
 ### Contexte

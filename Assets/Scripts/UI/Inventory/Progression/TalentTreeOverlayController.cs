@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class TalentTreeOverlayController : MonoBehaviour
 {
     private const string PlaceholderBodyFormat =
-        "Arbre talents — placeholder\nPiste : {0}\n(Renommer pistes après notes tablette)";
+        "Arbre talents — à venir\nPiste : {0}\n(Détail des nœuds : prochaine étape data)";
 
     [Header("Root")]
     [SerializeField] private GameObject overlayRoot;
@@ -56,11 +56,13 @@ public class TalentTreeOverlayController : MonoBehaviour
         CurrentTrackId = trackId;
         IsOpen = true;
 
+        string displayName = ProgressionTrackId.GetDisplayName(trackId);
+
         if (trackTitleLabel != null)
-            trackTitleLabel.text = trackId;
+            trackTitleLabel.text = displayName;
 
         if (bodyPlaceholderLabel != null)
-            bodyPlaceholderLabel.text = string.Format(PlaceholderBodyFormat, trackId);
+            bodyPlaceholderLabel.text = string.Format(PlaceholderBodyFormat, displayName);
 
         if (overlayRoot != null)
             overlayRoot.SetActive(true);
