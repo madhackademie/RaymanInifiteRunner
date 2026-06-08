@@ -1,8 +1,16 @@
 # Idée GDD — boucle reset / prestige des systèmes
 
-**Statut :** idée de design **non validée** — pas de code, pas d’engagement prod.  
+**Statut :** **backlog** — `[BL-GDD-006]` dans `Notes/Todo_project.md`. Pas de code, pas d’engagement prod avant prérequis.  
 **Date :** 2026-06-08  
 **Demande auteur :** mécanique type **idle miner** / idle mobile — « recommencer » un système pour débloquer de **nouveaux compteurs**, **boosts permanents** et un **redémarrage plus rapide**.
+
+### Prérequis (décision auteur 2026-06-08)
+
+> **Ne pas concevoir ni implémenter** tant que la **boucle principale** n’est pas validée :
+> - **techniquement** (plantation → croissance → récolte → inventaire → shop/market, persistance, navigation) ;
+> - **fon** (le core loop est satisfaisant en playtest, pas seulement « ça compile »).
+
+Tant que ce seuil n’est pas atteint, ce document sert de **référence d’idée** uniquement.
 
 ---
 
@@ -101,11 +109,12 @@ flowchart TD
 
 ---
 
-## 7. Prochaine étape suggérée (auteur)
+## 7. Prochaine étape (quand boucle principale validée)
 
-1. Décider si la boucle prestige vit surtout sur **système aquaponique** (ferme) ou aussi sur **joueur global**.
-2. Une page tableau : colonnes *Reset / Garde / Débloque* pour un premier palier fictif.
-3. Si validé → promouvoir en `SPEC_reset_prestige_systemes.md` + tâche `CT-*` dans `Notes/Todo_project.md`.
+1. Confirmer que le **core loop** est stable et fun (playtests documentés).
+2. Décider si la boucle prestige vit surtout sur **système aquaponique** (ferme) ou aussi sur **joueur global**.
+3. Tableau *Reset / Garde / Débloque* pour un premier palier fictif.
+4. Promouvoir en `SPEC_reset_prestige_systemes.md` + passage en `CT-*` si le design est tranché.
 
 ---
 

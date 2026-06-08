@@ -1,5 +1,16 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-08 (suite) — Reset/prestige : classé backlog
+
+### Décision auteur
+- Boucle reset/prestige (type idle miner) = **backlog** `[BL-GDD-006]` — à traiter **uniquement après** validation de la boucle principale (technique + fun).
+
+### Fait
+- `IDEA_boucle_reset_prestige_systemes.md` : prérequis explicites + lien `Todo_project.md`.
+- Entrée backlog § GDD/design.
+
+---
+
 ## 2026-06-08 — Halo inventaire : intégration des 8 compétences (ProgressionTrackId)
 
 ### Contexte
