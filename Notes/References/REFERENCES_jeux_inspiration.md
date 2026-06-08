@@ -74,6 +74,8 @@ Sommaire :
 
 **À observer** : calcul/affichage des gains hors-ligne, courbe de prestige, clarté des upgrades.
 
+**Lien projet** : idée prestige / reset système → `Notes/GDD/IDEA_boucle_reset_prestige_systemes.md`.
+
 ---
 
 ### A4) Idle Farm: Farming Simulator

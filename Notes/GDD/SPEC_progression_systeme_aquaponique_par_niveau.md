@@ -241,6 +241,7 @@ La progression **ne se partage pas** entre fermes sauf décision produit explici
 - [ ] Le **niveau système** et la **maturité passive** (10 cycles salade) fusionnent-ils en un seul compteur ou restent-ils séparés ?
 - [ ] Les **points** sont-ils **un pool global** par panneau ou **par onglet** ?
 - [ ] Respec / reset des nœuds (oui/non, coût) ?
+- [ ] Boucle **prestige / reset système** (type idle miner) : voir `Notes/GDD/IDEA_boucle_reset_prestige_systemes.md`.
 - [ ] Le panneau est-il **popup** (`ScreenPopupHost`) ou **panel** enfant du canvas `FirstLvl` ?
 - [ ] Faut-il afficher le **niveau système** dans le HUD en permanence ?
 - [ ] Lien avec **économie** : les upgrades affectent-elles aussi les prix shop/market de ce biome ?
