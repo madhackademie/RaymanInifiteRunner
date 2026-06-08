@@ -93,7 +93,7 @@ Réutiliser scripts existants ; ne pas rescanner tout le projet. Phases Bezy : s
 | 4 | `track.fish.reproduction` | Poisson |
 | 5 | `track.water` | Eau |
 | 6 | `track.gardening` | Jardin |
-| 7 | `track.dis` | DIS |
+| 7 | `track.diy` | DIY |
 | 8 | `track.shop` | Magasin |
 
 Reste : sprites + `Animator` sur `AnimatedVisual` (Bezy).

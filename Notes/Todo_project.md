@@ -62,12 +62,12 @@ Convention d'IDs :
 > Plan détaillé + notes perso synthétisées : **`Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`**
 
 - [x] **[P0-INV-HALO-006]** **Étape 1** — Renommer `ProgressionTrackId` (8 compétences tablette) + aligner prefab slots — **fait** 2026-06-08.
-- [ ] **[P0-INV-HALO-007]** **Étape 2** — ScriptableObjects `TalentTrackDefinition` / `TalentNodeDefinition` + arbre mock **Commerce** (Acheteur / Vendeur).
-- [ ] **[P0-INV-HALO-008]** **Étape 3** — Bezy Phase 4 overlay : `TreeScrollView` + prefab `TalentNodeUI` (prompt dans note session).
+- [~] **[P0-INV-HALO-007]** **Étape 2** — SO + arbre mock — **gelé** jusqu’à architecture talents définie (cf. `INBOX_notes_tablette_recherches.md` § gel design).
+- [~] **[P0-INV-HALO-008]** **Étape 3** — Bezy overlay arbre — **gelé** (dépend étape 2 + choix UX global vs hybride).
 
 **4 — Notes tablette perso (complément)**
 
-- [~] **[P0-IDEA-001]** Liste **8 compétences** intégrée code + doc (2026-06-08) — reste : coûts, effets %, nœuds détaillés, signification **DIS**.
+- [~] **[P0-IDEA-001]** **8 compétences** + **DIY** confirmé (2026-06-08) — reste : **architecture arbres** (global vs joueur+système), carte liens tabletop, coûts / effets / nœuds.
 - [ ] Trace finale dans **`PROJECT_LOG.md`** quand étapes 1–3 validées.
 
 **Références**

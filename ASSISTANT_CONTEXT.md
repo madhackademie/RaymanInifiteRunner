@@ -19,7 +19,7 @@
 
 ### Priorités en cours (2026-06-05)
 1. **[P0-INV-HALO-004]** — **Playtest** inventaire halo (P1–P8 → overlay → Retour ; grille visible, pas de HUD en fond). Phases 1–3 + fix layout faits.
-2. **[P0-IDEA-001]** — 8 compétences intégrées dans `ProgressionTrackId` (2026-06-08) ; reste : nœuds détaillés, signification **DIS**.
+2. **[P0-IDEA-001]** — 8 compétences + DIY (`track.diy`) intégrés ; **gel** arbres talents — architecture global vs joueur+système à définir (tabletop / liens transverses).
 
 ### Contexte Git session (2026-06-05)
 - **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] ; Ph.1–3 + fix layout OK, reste playtest.

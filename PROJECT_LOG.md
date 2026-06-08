@@ -7,7 +7,7 @@
 
 ### Fait
 - **`ProgressionTrackId.cs`** : 8 constantes stables + `HaloSlotOrder` + `GetShortLabel` / `GetDisplayName`.
-  - Marketing, Nourriture & élevage insectes, Bioconversion, Reproduction poisson, Eau, Jardinage plantes & graines, DIS, Magasin.
+  - Marketing, Nourriture & élevage insectes, Bioconversion, Reproduction poisson, Eau, Jardinage plantes & graines, DIY, Magasin.
 - **`PlayerHaloPanelController`** : libellés courts runtime sur les slots (plus P1–P8).
 - **`TalentTreeOverlayController`** : titre overlay = nom lisible de la piste.
 - **Prefabs** : `trackId` alignés dans `PlayerHaloPanel.prefab` et `PlayerHaloSlotUI.prefab`.
@@ -15,11 +15,32 @@
 
 ### Décision / note
 - L’ancien arbre unique « Commerce » (Acheteur / Vendeur) est **scindé** : **Marketing** (slot 1) + **Magasin** (slot 8).
-- **DIS** (slot 7) : acronyme conservé tel quel — signification **à préciser** par l’auteur.
+- **DIY** (slot 7) : faute de frappe « Dis » corrigée (`track.diy`).
 
-### Prochaine étape
-- Playtest **[P0-INV-HALO-004]** avec les nouveaux libellés.
-- **[P0-INV-HALO-007]** : arbre mock **Marketing** (data-driven).
+### Prochaine étape (mise à jour même jour)
+- Voir entrée ci-dessous — **gel** arbres talents jusqu’à architecture gameplay définie.
+
+---
+
+## 2026-06-08 (suite) — Arbres talents : gel design + DIY confirmé
+
+### Clarification auteur
+- Slot 7 = **DIY** (pas « Dis ») — bricolage / craft, souvent lié biogaz, bioconversion tech, montage installations.
+- **Structure des arbres non figée** : besoin de réfléchir aux liens transverses (ex. bioconversion ↔ élevage insectes / composting ; biogaz ↔ bioconversion ↔ DIY).
+- Méthode envisagée : poser les blocs sur une **table** et les déplacer avant de figer l’UI.
+- Options ouvertes : arbre **global** unique vs **joueur** (halo) + **système aquaponique** (ferme) vs **hybride** (nœuds pont).
+
+### Fait
+- Renommage code : `Dis` → `Diy`, `track.dis` → `track.diy`.
+- Section **gel design** dans `INBOX_notes_tablette_recherches.md` (liens, options A/B/C, mermaid).
+
+### Décision
+- **[P0-INV-HALO-007]** et **[P0-INV-HALO-008]** : **en attente** — pas de SO / nœuds / arbre mock tant que l’architecture n’est pas tranchée.
+- Coque UI actuelle (halo + overlay placeholder) : **conservée**.
+
+### Prochaine étape (auteur)
+- Carte de liens (tabletop / Miro) entre les 8 pistes + technologies (biogaz, compost…).
+- Trancher : arbre global vs double couche joueur / système.
 
 ---
 

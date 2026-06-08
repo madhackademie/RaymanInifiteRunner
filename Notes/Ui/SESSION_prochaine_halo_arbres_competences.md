@@ -57,7 +57,7 @@ PlayerHaloSlotUI (trackId)
 | 4 | `track.fish.reproduction` | **Reproduction poisson** | Cycle reproductif, bonus indirect plantes via eau / nutriments. |
 | 5 | `track.water` | **Eau** | Qualité et équilibre hydrique — détail nœuds **TBD**. |
 | 6 | `track.gardening` | **Jardinage plantes & graines** | 6 stades plantes (`Inbox_gdd.md`) : vitesse, rendement, germination. |
-| 7 | `track.dis` | **DIS** | Acronyme notes tablette — **à préciser**. |
+| 7 | `track.diy` | **DIY** | Acronyme notes tablette — **à préciser**. |
 | 8 | `track.shop` | **Magasin** | Achats shop, remises, offres — lien direct shop existant. |
 
 > Ancien plan « Commerce » scindé : **Marketing** (vendeur) + **Magasin** (acheteur).
@@ -73,7 +73,7 @@ PlayerHaloSlotUI (trackId)
 - [ ] Détail branches Culture plante / Poisson.
 - [ ] Source et courbe des **points de compétence** joueur.
 - [x] Nombre final de slots visibles au lancement → **8** (2026-06-08).
-- [ ] Signification **DIS** (slot 7).
+- [ ] Signification **DIY** (slot 7).
 
 ---
 
@@ -93,21 +93,23 @@ Ordre recommandé **après** validation playtest **[P0-INV-HALO-004]**.
 - `TalentTreeOverlayController.cs` — titre overlay
 - `PlayerHaloPanel.prefab` — `trackId` par slot
 
-**IDs intégrés :** `track.marketing`, `track.insect.feed`, `track.bioconversion`, `track.fish.reproduction`, `track.water`, `track.gardening`, `track.dis`, `track.shop`.
+**IDs intégrés :** `track.marketing`, `track.insect.feed`, `track.bioconversion`, `track.fish.reproduction`, `track.water`, `track.gardening`, `track.diy`, `track.shop`.
 
 **Checklist :**
 - [x] Constantes + `HaloSlotOrder` mis à jour (Cursor).
 - [x] Labels courts slot via `Configure` runtime.
 - [ ] Playtest : clic chaque slot → overlay titre = nom lisible.
-- [ ] Signification **DIS** confirmée par auteur.
+- [ ] Signification **DIY** confirmée par auteur.
 
 **Livrable :** playtest overlay avant merge.
 
 ---
 
-### Étape 2 — Esquisser le modèle data + premier arbre mock Marketing
+### Étape 2 — Esquisser le modèle data + premier arbre mock — **GELÉ** (2026-06-08)
 
-**Objectif :** remplacer le placeholder texte de `TalentTreeOverlayController` par un chargement data-driven ; vertical slice sur **Marketing** uniquement.
+> **Blocage :** architecture gameplay des arbres non définie (liens transverses bioconversion ↔ insectes ↔ DIY / biogaz ; arbre global vs joueur + système aquaponique). Voir `INBOX_notes_tablette_recherches.md` § gel design. **Ne pas implémenter** tant que l’auteur n’a pas tranché.
+
+**Objectif (quand débloqué) :** remplacer le placeholder texte de `TalentTreeOverlayController` par un chargement data-driven ; vertical slice sur une piste pilote (ex. Marketing).
 
 **Nouveaux fichiers suggérés (Cursor) :**
 
@@ -230,10 +232,11 @@ Confirmer fichiers modifiés. Attendre validation avant Phase 5 wiring.
 ## Questions à trancher en session (5 min)
 
 1. ~~**6 ou 8** slots actifs au lancement ?~~ → **8** (2026-06-08).
-2. **Marketing** confirmé comme premier arbre jouable ?
-3. Signification de **DIS** (slot 7) ?
-4. Overlay **demi-écran** (actuel) ou **quasi plein écran** pour l’arbre ?
-5. Points compétence : **niveau joueur** uniquement ou aussi **actions ferme** ?
+2. ~~**DIY** (slot 7) ?~~ → **DIY** confirmé (faute « Dis ») — `track.diy`.
+3. **Architecture** : arbre global vs **joueur** (halo) + **système aquaponique** (ferme) vs hybride (nœuds pont) ?
+4. **Carte liens** : tabletop / Miro avant nœuds chiffrés ?
+5. Overlay **demi-écran** (actuel) ou **quasi plein écran** pour l’arbre ?
+6. Points compétence : **niveau joueur** uniquement ou aussi **actions ferme** ?
 
 ---
 

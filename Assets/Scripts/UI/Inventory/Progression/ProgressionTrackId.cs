@@ -12,7 +12,7 @@ public static class ProgressionTrackId
     public const string FishReproduction = "track.fish.reproduction";
     public const string Water = "track.water";
     public const string Gardening = "track.gardening";
-    public const string Dis = "track.dis";
+    public const string Diy = "track.diy";
     public const string Shop = "track.shop";
 
     /// <summary>Ordre halo : sens horaire depuis le haut (12 h).</summary>
@@ -24,7 +24,7 @@ public static class ProgressionTrackId
         FishReproduction,
         Water,
         Gardening,
-        Dis,
+        Diy,
         Shop,
     };
 
@@ -80,7 +80,7 @@ public static class ProgressionTrackId
         new("Poisson", "Reproduction poisson"),
         new("Eau", "Eau"),
         new("Jardin", "Jardinage plantes & graines"),
-        new("DIS", "DIS"),
+        new("DIY", "DIY"),
         new("Magasin", "Magasin"),
     };
 

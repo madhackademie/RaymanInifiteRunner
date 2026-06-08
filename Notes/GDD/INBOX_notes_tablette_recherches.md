@@ -65,33 +65,83 @@ Ce fichier est le **hub d’accueil** quand ces notes seront retranscrites ou im
 | 4 | `track.fish.reproduction` | **Reproduction poisson** | Cycle reproductif, qualité eau, nutriments indirects sur plantes |
 | 5 | `track.water` | **Eau** | Qualité, traitement, équilibre hydrique du système |
 | 6 | `track.gardening` | **Jardinage plantes & graines** | 6 stades plantes (salade / tomate), germination, rendement, récolte |
-| 7 | `track.dis` | **DIS** | Acronyme notes tablette — **à préciser** (distribution ? autre) |
+| 7 | `track.diy` | **DIY** | Bricolage / craft / montage — relie souvent biogaz, bioconversion tech, installations maison |
 | 8 | `track.shop` | **Magasin** | Achats shop, remises, offres — ex-branche « Acheteur » de l’ancien arbre Commerce |
 
-### Arbres talents — structure provisoire
+### Arbres talents — **gel design** (2026-06-08)
 
-**Marketing** (prototype v1 recommandé) :
+> **Décision auteur :** la structure gameplay des arbres n'est **pas encore définie**. Pas d'implémentation data (SO, nœuds, effets) tant que le modèle d'architecture n'est pas tranché. La coque UI halo + overlay placeholder reste en place.
+
+#### Liens transverses entre pistes (notes auteur)
+
+Les compétences ne sont **pas toujours indépendantes** — exemples de couplages évoqués :
+
+| Zone | Pistes liées | Idée |
+|------|--------------|------|
+| Boucle matière | **Bioconversion** ↔ **Élevage insectes** / composting | Déchets → insectes → nutriments / filière organique |
+| Énergie / tech | **Biogaz** ↔ **Bioconversion** (tech) ↔ **DIY** | Montage, équipements, chaîne énergétique |
+| Eau / vivant | **Eau** ↔ **Poisson** ↔ **Jardinage** | Déjà implicite dans l'aquaponie |
+
+```mermaid
+flowchart LR
+  subgraph organique["Boucle organique"]
+    BC[Bioconversion]
+    INS[Élevage insectes]
+    BC <-->|composting| INS
+  end
+  subgraph energie["Énergie / montage"]
+    BG[Biogaz]
+    DIY[DIY]
+    BC --> BG
+    BG --> DIY
+    DIY --> BC
+  end
 ```
-Racine Marketing
-└── Vendeur : prix vente, bonus volume market, marges
+
+#### Options d'architecture (à trancher)
+
+| Option | Description | Pour | Contre |
+|--------|-------------|------|--------|
+| **A — Arbre global unique** | Tous les nœuds dans un même graphe | Synergies visibles, pas de doublon conceptuel | UI lourde ; mélange joueur / installation |
+| **B — Deux couches** | **Joueur** (halo, 8 slots) + **Système aquaponique** (ferme par niveau, cf. `SPEC_progression_systeme_aquaponique_par_niveau.md`) | Séparation claire déjà amorcée en doc | Risque de redondance ou de liens obscurs entre les deux |
+| **C — Hybride** | 8 arbres par slot + **nœuds pont** / prérequis croisés | Garde le halo actuel ; exprime les liens bioconversion ↔ insectes ↔ DIY | Complexité data + UX (comment montrer un prérequis hors arbre ouvert ?) |
+
+#### Méthode de travail suggérée (auteur)
+
+- Poser les **blocs** (pistes, technologies, installations) sur une **table** (physique ou tabletop) et les **déplacer** pour tester les dépendances avant de figer l'UI.
+- Produit intermédiaire utile : **carte de liens** (pas encore un arbre figé) — feuille / Miro / cartes sur table.
+
+#### Conséquence projet
+
+- **[P0-INV-HALO-007]** (SO + arbre mock) : **en attente** architecture.
+- Ébauches Marketing / Magasin ci-dessous = **hypothèses**, pas engagement.
+
+<details>
+<summary>Ébauches provisoires commerce (non validées)</summary>
+
+**Marketing** :
+```
+Racine Marketing → vendeur : prix vente, volume market
 ```
 
 **Magasin** :
 ```
-Racine Magasin
-└── Acheteur : remises achat, offres shop, déblocages catalogue
+Racine Magasin → acheteur : remises, offres shop
 ```
 
-> L’ancien arbre unique « Commerce » (Acheteur / Vendeur) est **scindé** en deux pistes distinctes (slots 1 et 8).
+> L'ancien arbre unique « Commerce » (Acheteur / Vendeur) est **scindé** en deux pistes (slots 1 et 8).
+
+</details>
 
 ### Distinction explicite (note session 2026-06-04)
 
 - **Halo inventaire** = progression **joueur** globale (cette tâche).
 - **Panneau ferme `FirstLvl`** = progression **système aquaponique** par niveau (onglets Biofiltre / Poisson / Techno) → `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md` — **autre chantier**.
 
-### Encore manquant (tablette)
+### Encore manquant (tablette / design)
 
-- Signification exacte de **DIS** (slot 7).
+- **Architecture** : arbre global vs joueur + système aquaponique vs hybride (cf. § gel design).
+- Carte des **liens** entre pistes (tabletop / Miro) avant nœuds chiffrés.
 - Coûts en points par nœud (toutes pistes).
 - Effets % Marketing / Magasin et autres branches.
 - Source XP / points joueur (niveau seul vs récoltes vs quêtes).

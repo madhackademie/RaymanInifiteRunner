@@ -970,7 +970,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5172948361058273641, guid: a1931597dd60ec948aeb14c6a9ccfa34, type: 3}
       propertyPath: trackId
-      value: track.dis
+      value: track.diy
       objectReference: {fileID: 0}
     - target: {fileID: 5833174102046874588, guid: a1931597dd60ec948aeb14c6a9ccfa34, type: 3}
       propertyPath: m_Pivot.x
