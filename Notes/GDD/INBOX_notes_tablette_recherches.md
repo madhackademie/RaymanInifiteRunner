@@ -163,6 +163,7 @@ Racine Magasin → acheteur : remises, offres shop
 
 ## Liens utiles côté projet
 
+- Backlog import : **`Notes/Todo_project.md`** → **[BL-DOC-005]**
 - Tâche session : **`Notes/Todo_project.md`** → **[P0-IDEA-001]**
 - Vision UI halo + talents : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`
 - XP joueur + biofiltre : `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`

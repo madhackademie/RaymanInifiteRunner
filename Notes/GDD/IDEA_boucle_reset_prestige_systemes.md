@@ -59,7 +59,7 @@ Inspiré des **jeux incrémentaux** / idle mobile (Idle Miner, Idle Farming Empi
 ```
 Run N (progression locale)
     → seuil atteint (niveau système, quota cycles, objectif quête…)
-    → choix : continuer OU « Reset / Prestige »
+    → choix : continuer OU « Ascension » (soft reset)
     → reset couche locale (ferme, upgrades temporaires, stock partiel…)
     → gain permanent (méta-monnaie, talent global, multiplicateur)
 Run N+1 (redémarrage accéléré grâce aux gains permanents)

@@ -166,6 +166,7 @@ Convention d'IDs :
 - [ ] [BL-DOC-002] Finaliser le rappel workflow Git "Save All avant Git".
 - [ ] [BL-DOC-003] Définir les conventions de localisation (`country` vs `language`, keys TMP).
 - [ ] [BL-DOC-004] [OPTIONNEL] Compléter `Notes/Bezi/README_bezi.md` (version Unity, scènes, bezi.actions).
+- [ ] **[BL-DOC-005]** **Importer notes et dessins personnels** (tablette, carnets, croquis) — numériser / déposer dans le repo, puis synthétiser dans `Notes/GDD/INBOX_notes_tablette_recherches.md` (et specs GDD/UI liées). Complète [P0-IDEA-001]. **Backlog auteur** — non bloquant pour le prototype technique.
 
 ### Art / assets
 - [~] [BL-ART-001] Finaliser le cycle complet de la laitue prototype.
