@@ -91,8 +91,11 @@ Routine conseillee pour eviter les ecarts entre appareils :
 - en debut de session : `git fetch --all --prune`
 - apres suppression/merge d'une branche sur GitHub : `git fetch --all --prune`
 - avant de chercher une branche "manquante" : verifier avec `git branch -r`
+- pour **supprimer** une branche (locale, GitHub, ou les deux) : voir **--0C--**
 
 ## --0C-- Supprimer une branche (locale, distante, les deux)
+
+Voir aussi **--0B--** pour rafraichir la liste `origin/...` apres suppression.
 
 Rappel : `git branch` seul liste les **branches locales**. Une branche peut exister sur GitHub (`origin/...`) sans branche locale du meme nom — voir `--0B--`.
 
@@ -133,6 +136,18 @@ Exemple :
 git push origin --delete cursor/mvp-talent-tree-950d
 ```
 
+### Cas frequent : supprimee en local, encore sur GitHub
+
+`git branch` ne la montre plus, mais `git branch -r` affiche encore `origin/nom-branche` :
+```bash
+git fetch --all --prune
+git branch -r
+git push origin --delete nom-branche
+git fetch --all --prune
+```
+
+Inverse (supprimee sur GitHub, encore en local) : `git branch -d nom-branche` puis `git fetch --all --prune`.
+
 ### Supprimer locale + distante (workflow complet)
 
 Apres merge ou abandon d'une feature :
@@ -142,6 +157,33 @@ git pull
 git branch -d feature/nom-branche
 git push origin --delete feature/nom-branche
 git fetch --all --prune
+```
+
+### Une seule ligne (local + remote)
+
+Git **n'a pas** de commande unique native type `git branch --delete-everywhere`.
+En pratique, on enchaine (meme effet qu'au-dessus) :
+
+**PowerShell** (separateur `;` — fonctionne sur Windows) :
+```powershell
+git switch main; git branch -d nom-branche; git push origin --delete nom-branche; git fetch --all --prune
+```
+
+**Bash / Git Bash** (arrete si une etape echoue) :
+```bash
+git switch main && git branch -d nom-branche && git push origin --delete nom-branche && git fetch --all --prune
+```
+
+Branche non mergee (abandon volontaire) : remplacer `-d` par `-D` en local.
+
+Ordre possible **remote d'abord** (utile si d'autres machines doivent voir la suppression tout de suite) :
+```powershell
+git push origin --delete nom-branche; git branch -D nom-branche; git fetch --all --prune
+```
+
+Exemple concret projet :
+```powershell
+git push origin --delete cursor/integrate-progression-tracks-abbb
 ```
 
 ### Nettoyer les refs distantes deja supprimees sur GitHub
