@@ -62,7 +62,7 @@ Légende :
 
 | Fichier | Statut | Priorité | Synthèse |
 |---|---|---|---|
-| `Notes/References/REFERENCES_jeux_inspiration.md` | Actif | P3 | Catalogue jeux de référence (idle farming, cozy, automatisation) : veille mécaniques/features, statut d'étude par jeu, liens vers `Inbox_features` pour idées concrètes. |
+| `Notes/References/REFERENCES_jeux_inspiration.md` | Actif | P3 | Catalogue jeux de référence (idle farming mobile, cozy, PC/automatisation, mécaniques voisines) : ordre d'étude recommandé, veille features, statut par jeu, liens vers `Inbox_features`. |
 
 ## Notes Learning
 

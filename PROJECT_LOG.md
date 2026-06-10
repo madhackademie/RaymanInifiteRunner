@@ -9,6 +9,7 @@
 - Suppression remote **`feature/inventory-halo-ui`**.
 - Mise à jour docs de suivi : branche courante → **`main`** (`Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`).
 - `INDEX.md` : ajout section **Notes References** (`REFERENCES_jeux_inspiration.md`).
+- `REFERENCES_jeux_inspiration.md` : +8 jeux mobile (A5–A11, B4, D1) + section **Ordre d'étude recommandé** (2026-06-10).
 
 ### Prochaine session — inchangé
 - **[P0-INV-HALO-004]** playtest inventaire halo, puis **[P0-IDEA-001]** notes tablette.

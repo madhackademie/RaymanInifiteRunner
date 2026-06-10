@@ -11,9 +11,26 @@ Règles d'usage :
 Convention d'ajout : recopier le **gabarit** en bas du fichier pour chaque nouveau jeu.
 
 Sommaire :
+- [Ordre d'étude recommandé](#ordre-détude-recommandé)
 - [A. Mobile — idle farming (le plus proche du projet)](#a-mobile--idle-farming)
 - [B. Mobile — cozy / pixel art](#b-mobile--cozy--pixel-art)
 - [C. PC / cross-platform — idle & automatisation](#c-pc--cross-platform--idle--automatisation)
+- [D. Mobile — références mécaniques voisines](#d-mobile--références-mécaniques-voisines)
+
+---
+
+## Ordre d'étude recommandé
+
+> Synthèse veille 2026-06-10 — ordre pour **notre** projet (plantation → inventaire → shop → biofiltre, mobile casual).
+
+| Priorité | Jeu | Pourquoi en premier |
+|---|---|---|
+| **1** | **A1 Tiny Harvest** | Le plus proche : chaîne plante → transformation, cozy, progression non punitive. *Limite : surtout iOS.* |
+| **2** | **A3 Idle Farming Empire** | Référence mobile idle : offline earnings, prestige, timing upgrades. Idéal si pas d'accès Tiny Harvest (Android). |
+| **3** | **A4 Idle Farm (Luma)** | Managers / machines / scale — proche de l'automatisation biofiltre. |
+| **4** | **A2 Cube Farm** | Session courte (30–45 min) pour disséquer l'essentiel d'un idle (timers, déblocage terrain). |
+| **5** | **B1 Mini Mini Farm** | Ensuite si besoin pixel art + quêtes + feedback outils (moins idle pur). |
+| **6** | **B2/B3** Window Garden / Viladia | Plus tard : ambiance cozy ou social/market, pas la boucle farming de base. |
 
 ---
 
@@ -95,6 +112,139 @@ Sommaire :
 
 ---
 
+### A5) Idle Farm Tycoon – Merge Crops
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Fancy Elephant
+- **Plateformes** : Android / iOS
+- **Genre** : Idle tycoon + merge
+- **Liens** : https://play.google.com/store/apps/details?id=com.fancyelephant.idlemergetycoon
+
+**Pitch** — Ferme idle où l'on **merge** des cultures/objets pour monter en niveau, automatiser la production et faire croître l'empire agricole. Boucle typique merge-tycoon appliquée au farming.
+
+**Intéressant pour nous** :
+- Comment le **merge** se greffe sur une boucle récolte/vente (alternative ou complément à notre grille).
+- Progression par fusion vs déblocage direct de slots/crops.
+- Patterns de monétisation et rythme idle sur ce sous-genre.
+
+**À observer** : clarté merge vs idle passif, moment où le joueur revient pour fusionner.
+
+---
+
+### A6) Farm Thru Empire
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Migmig Dijital
+- **Plateformes** : iOS (Android à vérifier)
+- **Genre** : Idle farm-to-market tycoon
+- **Liens** : https://apps.apple.com/us/app/farm-thru-empire/id6754455667
+
+**Pitch** — Chaîne **ferme → transformation → marché** (volailles, lait, fromage…), gains **offline**, festivals saisonniers, montée en richesse progressive.
+
+**Intéressant pour nous** :
+- Pipeline **récolte → produit transformé → vente** (très proche shop + inventaire + biofiltre).
+- Offline earnings et événements saisonniers comme rétention.
+- Courbe « farm story » sans pression extrême.
+
+**À observer** : lisibilité de la chaîne de transformation, feedback vente au marché.
+
+---
+
+### A7) Hay Day
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Supercell
+- **Plateformes** : Android / iOS
+- **Genre** : Farming casual (référence industrie — plus actif qu'idle pur)
+- **Liens** : https://play.google.com/store/apps/details?id=com.supercell.hayday
+
+**Pitch** — Ferme sociale de référence : semer, élever, produire, **commandes** (camion, bateau), marché entre joueurs, progression douce par déblocage de bâtiments/cultures.
+
+**Intéressant pour nous** :
+- **Shop / commandes** et structure économique farming mobile mature.
+- Feedback plantation/récolte et file d'attente de production.
+- Modèle de rétention long terme (pas à copier tel quel — plus « actif » que notre cible idle).
+
+**À observer** : UX commandes, équilibrage temps d'attente vs satisfaction, clarté inventaire.
+
+---
+
+### A8) Pocket Harvest
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Kairosoft
+- **Plateformes** : Android / iOS
+- **Genre** : Farming sim pixel (gestion / tycoon léger)
+- **Liens** : https://play.google.com/store/apps/details?id=net.kairosoft.android.harvest_en
+
+**Pitch** — Gérer une ferme pixel : cultures à cycles variés, animaux, shop, upgrades d'installations, objectifs à court terme. Boucle lisible et équilibrage crop/profit très transparent.
+
+**Intéressant pour nous** :
+- **Cycles de cultures** et rentabilité par crop (référence équilibrage).
+- Structure shop + upgrades sans surcharge UI.
+- Format « session courte » compatible mobile.
+
+**À observer** : courbes de profit par culture, déblocages progressifs, lisibilité des timers.
+
+---
+
+### A9) Big Farm: Mobile Harvest
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Goodgame Studios
+- **Plateformes** : Android / iOS
+- **Genre** : Farming casual / gestion de ferme
+- **Liens** : https://play.google.com/store/apps/details?id=com.goodgamestudios.bigfarmmobileharvest
+
+**Pitch** — Ferme à grande échelle : cultures, animaux, bâtiments, quêtes, voisinage. Progression par expansion et amélioration de la ferme plutôt qu'idle pur.
+
+**Intéressant pour nous** :
+- Gestion de ferme qui **scale** (plusieurs types de production simultanés).
+- Quêtes/objectifs qui rythment la progression.
+- Référence « casual farming » européen (complément à Hay Day).
+
+**À observer** : organisation UI quand plusieurs productions tournent, priorisation des objectifs.
+
+---
+
+### A10) Plantera
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Varagtun
+- **Plateformes** : Android / iOS / PC
+- **Genre** : Idle « jardin / plantes »
+- **Liens** : https://play.google.com/store/apps/details?id=com.varagtun.plantera
+
+**Pitch** — Faire pousser des plantes en idle, débloquer espèces, améliorer le jardin, récolter en continu. Focus **timers et croissance** plus que économie complexe.
+
+**Intéressant pour nous** :
+- Feedback **croissance / prêt à récolter** très lisible.
+- Déblocage d'espèces comme palier de progression.
+- Idle léger — bon pour calibrer les timers de nos plantes.
+
+**À observer** : sensation de progression avec peu de systèmes, animations de croissance.
+
+---
+
+### A11) Pocket Plants
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Thumbspark
+- **Plateformes** : Android / iOS
+- **Genre** : Idle collection / croissance de plantes
+- **Liens** : https://play.google.com/store/apps/details?id=com.thumbspark.pocketplants
+
+**Pitch** — Collectionner et faire évoluer des plantes, les combiner pour découvrir de nouvelles espèces, progression idle avec objectifs de collection.
+
+**Intéressant pour nous** :
+- **Collection** comme moteur d'engagement (complément à l'économie pure).
+- Combinaisons / découvertes = meta-progression douce.
+- Timers courts adaptés au mobile casual.
+
+**À observer** : équilibre collection vs boucle économique, rétention sans pression.
+
+---
+
 ## B. Mobile — cozy / pixel art
 
 ### B1) Mini Mini Farm
@@ -150,6 +300,25 @@ Sommaire :
 - Events saisonniers = contenu live récurrent.
 
 **À observer** : design du marché entre joueurs, boucle d'events saisonniers.
+
+---
+
+### B4) Goodville: Farm Game Adventure
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Goodville AG
+- **Plateformes** : Android / iOS
+- **Genre** : Farm casual + quêtes narrative
+- **Liens** : https://play.google.com/store/apps/details?id=com.goodville.goodville
+
+**Pitch** — Ferme avec **quêtes** et fil narrative léger, production agricole, personnages, événements. Moins idle pur, plus « aventure ferme » cozy.
+
+**Intéressant pour nous** :
+- Quêtes comme structure de progression (alternative aux commandes shop).
+- Ton cozy + personnages pour la rétention émotionnelle.
+- Équilibre narration vs boucle économique farming.
+
+**À observer** : rythme des quêtes, ne pas noyer la boucle plantation/récolte.
 
 ---
 
@@ -253,6 +422,29 @@ Sommaire :
 - Comparable à notre direction « robots/ouvriers » sur le biofiltre.
 
 **À observer** : autonomie des assistants vs ordres du joueur, lisibilité de l'activité simultanée.
+
+---
+
+## D. Mobile — références mécaniques voisines
+
+> Jeux **hors farming pur** mais utiles pour des patterns idle mobile (offline, prestige, numbers go up).
+
+### D1) Egg, Inc.
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Auxbrain
+- **Plateformes** : Android / iOS / PC
+- **Genre** : Idle incrémental (œufs / couveuses — pas du farming)
+- **Liens** : https://play.google.com/store/apps/details?id=com.auxbrain.egginc
+
+**Pitch** — Incrémental iconique : produire des œufs, upgrader couveuses et transports, **prestige** (soul eggs), gains **offline**, sensation « numbers go up » très maîtrisée.
+
+**Intéressant pour nous** :
+- Référence **offline earnings** et affichage des gains au retour.
+- Boucle **prestige** et meta-progression permanente.
+- Clarté des upgrades à grande échelle (inventaire économique abstrait).
+
+**À observer** : pas le thème — étudier les **mécaniques** idle/prestige/offline, pas le skin œufs.
 
 ---
 
