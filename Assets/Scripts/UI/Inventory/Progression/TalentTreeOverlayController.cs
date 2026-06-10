@@ -23,6 +23,7 @@ public class TalentTreeOverlayController : MonoBehaviour
     [SerializeField] private Button backButton;
     [SerializeField] private Button purchaseNextButton;
     [SerializeField] private bool autoBindPlaceholderAsPurchaseButton = true;
+    [SerializeField] private bool createRuntimePurchaseButtonWhenMissing = true;
 
     [Header("Progression (MVP)")]
     [SerializeField] private TalentProgressionService progressionService;
@@ -40,6 +41,8 @@ public class TalentTreeOverlayController : MonoBehaviour
     private Coroutine fadeRoutine;
     private bool isTransitioning;
     private bool purchaseButtonWasAutoAdded;
+    private GameObject runtimePurchaseButtonRoot;
+    private string lastPurchaseFeedback;
 
     private void Awake()
     {
@@ -47,7 +50,9 @@ public class TalentTreeOverlayController : MonoBehaviour
             backButton.onClick.AddListener(Close);
 
         ResolveProgressionService();
+        EnsureRuntimePurchaseButton();
         BindPurchaseButton();
+        RegisterPurchaseClickHandler();
         SubscribeProgressionEvents();
 
         // Prefab déjà inactif (alpha 0) : ne pas appeler HideImmediate ici —
@@ -62,7 +67,8 @@ public class TalentTreeOverlayController : MonoBehaviour
             backButton.onClick.RemoveListener(Close);
 
         UnsubscribeProgressionEvents();
-        UnbindPurchaseButton();
+        UnregisterPurchaseClickHandler();
+        DestroyRuntimePurchaseButton();
     }
 
     public void Open(string trackId)
@@ -74,6 +80,7 @@ public class TalentTreeOverlayController : MonoBehaviour
 
         CurrentTrackId = trackId;
         IsOpen = true;
+        lastPurchaseFeedback = null;
         RefreshOverlayContent();
         PlayAnimatorBool(isOpen: true);
         StartFade(1f);
@@ -205,31 +212,114 @@ public class TalentTreeOverlayController : MonoBehaviour
         progressionService = serviceRoot.AddComponent<TalentProgressionService>();
     }
 
+    private void EnsureRuntimePurchaseButton()
+    {
+        if (purchaseNextButton != null || !createRuntimePurchaseButtonWhenMissing)
+            return;
+
+        Transform panel = GetOverlayPanelTransform();
+        if (panel == null)
+            return;
+
+        runtimePurchaseButtonRoot = new GameObject(
+            "PurchaseNextButton",
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(Image),
+            typeof(Button));
+
+        runtimePurchaseButtonRoot.transform.SetParent(panel, false);
+
+        RectTransform buttonRect = runtimePurchaseButtonRoot.GetComponent<RectTransform>();
+        buttonRect.anchorMin = new Vector2(1f, 0f);
+        buttonRect.anchorMax = new Vector2(1f, 0f);
+        buttonRect.pivot = new Vector2(1f, 0f);
+        buttonRect.anchoredPosition = new Vector2(-16f, 16f);
+        buttonRect.sizeDelta = new Vector2(180f, 40f);
+
+        Image buttonImage = runtimePurchaseButtonRoot.GetComponent<Image>();
+        buttonImage.color = new Color(0.12f, 0.35f, 0.18f, 1f);
+        buttonImage.raycastTarget = true;
+
+        purchaseNextButton = runtimePurchaseButtonRoot.GetComponent<Button>();
+        purchaseNextButton.targetGraphic = buttonImage;
+
+        GameObject labelRoot = new GameObject("Label", typeof(RectTransform));
+        labelRoot.transform.SetParent(runtimePurchaseButtonRoot.transform, false);
+
+        RectTransform labelRect = labelRoot.GetComponent<RectTransform>();
+        labelRect.anchorMin = Vector2.zero;
+        labelRect.anchorMax = Vector2.one;
+        labelRect.offsetMin = Vector2.zero;
+        labelRect.offsetMax = Vector2.zero;
+
+        TextMeshProUGUI label = labelRoot.AddComponent<TextMeshProUGUI>();
+        label.text = "Acheter";
+        label.alignment = TextAlignmentOptions.Center;
+        label.fontSize = 16f;
+        label.color = Color.white;
+        label.raycastTarget = false;
+    }
+
     private void BindPurchaseButton()
     {
-        if (purchaseNextButton == null && autoBindPlaceholderAsPurchaseButton && bodyPlaceholderLabel != null)
-        {
-            purchaseNextButton = bodyPlaceholderLabel.GetComponent<Button>();
-            if (purchaseNextButton == null)
-            {
-                purchaseNextButton = bodyPlaceholderLabel.gameObject.AddComponent<Button>();
-                purchaseButtonWasAutoAdded = true;
-            }
+        if (purchaseNextButton != null || !autoBindPlaceholderAsPurchaseButton || bodyPlaceholderLabel == null)
+            return;
 
-            purchaseNextButton.targetGraphic = bodyPlaceholderLabel;
+        GameObject clickRoot = bodyPlaceholderLabel.transform.parent != null
+            ? bodyPlaceholderLabel.transform.parent.gameObject
+            : bodyPlaceholderLabel.gameObject;
+
+        Image panelImage = clickRoot.GetComponent<Image>();
+        if (panelImage != null)
+            panelImage.raycastTarget = true;
+
+        bodyPlaceholderLabel.raycastTarget = false;
+
+        purchaseNextButton = clickRoot.GetComponent<Button>();
+        if (purchaseNextButton == null)
+        {
+            purchaseNextButton = clickRoot.AddComponent<Button>();
+            purchaseButtonWasAutoAdded = true;
         }
 
+        purchaseNextButton.targetGraphic = panelImage != null ? panelImage : bodyPlaceholderLabel;
+    }
+
+    private void RegisterPurchaseClickHandler()
+    {
         if (purchaseNextButton != null)
             purchaseNextButton.onClick.AddListener(HandlePurchaseNextClicked);
     }
 
-    private void UnbindPurchaseButton()
+    private void UnregisterPurchaseClickHandler()
     {
         if (purchaseNextButton != null)
             purchaseNextButton.onClick.RemoveListener(HandlePurchaseNextClicked);
 
         if (purchaseButtonWasAutoAdded && purchaseNextButton != null)
             Destroy(purchaseNextButton);
+    }
+
+    private void DestroyRuntimePurchaseButton()
+    {
+        if (runtimePurchaseButtonRoot == null)
+            return;
+
+        Destroy(runtimePurchaseButtonRoot);
+        runtimePurchaseButtonRoot = null;
+        purchaseNextButton = null;
+    }
+
+    private Transform GetOverlayPanelTransform()
+    {
+        if (backButton != null)
+            return backButton.transform.parent;
+
+        if (bodyPlaceholderLabel != null && bodyPlaceholderLabel.transform.parent != null)
+            return bodyPlaceholderLabel.transform.parent.parent;
+
+        return overlayRoot != null ? overlayRoot.transform : transform;
     }
 
     private void SubscribeProgressionEvents()
@@ -255,9 +345,16 @@ public class TalentTreeOverlayController : MonoBehaviour
         if (!IsOpen || progressionService == null || string.IsNullOrEmpty(CurrentTrackId))
             return;
 
-        bool purchased = progressionService.TryPurchaseFirstAvailableNode(CurrentTrackId, out _, out _);
-        if (purchased)
-            RefreshOverlayContent();
+        bool purchased = progressionService.TryPurchaseFirstAvailableNode(
+            CurrentTrackId,
+            out TalentNodeDefinition purchasedNode,
+            out string reason);
+
+        lastPurchaseFeedback = purchased
+            ? $"Noeud achete : {purchasedNode.DisplayName}."
+            : reason;
+
+        RefreshOverlayContent();
     }
 
     private void UpdatePurchaseButtonState()
@@ -291,6 +388,13 @@ public class TalentTreeOverlayController : MonoBehaviour
             return MissingServiceMessage;
 
         string summary = progressionService.BuildTrackSummary(CurrentTrackId);
-        return $"{summary}\n\nClique sur ce panneau pour acheter le prochain noeud disponible.";
+        string actionHint = HasPurchasableNode()
+            ? "Appuie sur « Acheter » (en bas a droite) pour debloquer le prochain noeud."
+            : "Aucun noeud achetable pour l'instant (points ou pre-requis manquants).";
+
+        if (string.IsNullOrEmpty(lastPurchaseFeedback))
+            return $"{summary}\n\n{actionHint}";
+
+        return $"{summary}\n\n{actionHint}\n\n{lastPurchaseFeedback}";
     }
 }

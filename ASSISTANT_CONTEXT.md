@@ -17,12 +17,13 @@
 - Récolte/inventaire: comportement courant prévu en “all-or-nothing” tant que l’ajout partiel n’est pas formalisé.
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
-### Priorités en cours (2026-06-05)
-1. **[P0-INV-HALO-004]** — **Playtest** inventaire halo (P1–P8 → overlay → Retour ; grille visible, pas de HUD en fond). Phases 1–3 + fix layout faits.
+### Priorités en cours (2026-06-10)
+1. Playtest **`cursor/mvp-talent-tree-950d`** — MVP talents (PR #8).
 2. **[P0-IDEA-001]** — Import notes tablette perso → `Notes/GDD/INBOX_notes_tablette_recherches.md`, renommage `ProgressionTrackId`.
 
-### Contexte Git session (2026-06-05)
-- **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] ; Ph.1–3 + fix layout OK, reste playtest.
+### Contexte Git session (2026-06-10)
+- **`cursor/mvp-talent-tree-950d`** — MVP talents ; base **`main`** (`a32c63c`).
+- **[P0-INV-HALO-004]** playtest halo inventaire **validé sur `main`** (2026-06-10).
 
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
@@ -31,9 +32,9 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate — **2026-06-05** (`Notes/Todo_project.md`) :
-  - **[P0-INV-HALO-004]** playtest inventaire halo, puis **[P0-IDEA-001]** (notes tablette).
-  - Branche **`feature/inventory-halo-ui`**.
+- Priorite immediate — **2026-06-10** (`Notes/Todo_project.md`) :
+  - Playtest MVP talents sur **`cursor/mvp-talent-tree-950d`**, puis **[P0-IDEA-001]** (notes tablette).
+  - **[P0-INV-HALO-004]** clos (playtest `main` OK 2026-06-10).
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :
