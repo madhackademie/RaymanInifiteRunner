@@ -46,7 +46,6 @@ Légende :
 | `Notes/Ui/Decision_ui.md` | Actif | P3 | Spéc UI proto -> polish (objectifs, architecture panneaux, animations, contrat d'orchestration). |
 | `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` | Actif | P2 | Rework inventaire scindé : halo joueur (recherches/boosts) + grille items ; navigation arbres de talents. |
 | `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md` | Actif | P1 | Plan prochaine session : 3 étapes (TrackId, SO Commerce, Bezy overlay) + synthèse notes perso halo. |
-| `Notes/Ui/SPEC_talent_tree_layout_editeur.md` | Actif | P1 | Décision layout WYSIWYG : nœuds déplacés à la main dans Unity, edges éditeur, scripts foundation à implémenter. |
 | `Notes/Ui/ARBRE_inventory_halo_ui.md` | Actif | P2 | Arbre hiérarchie prefabs/scripts coque halo + overlay talents (placeholders). |
 | `Notes/Ui/Spec_ui.md` | Vide | P3 | Fichier placeholder pour future spécification UI dédiée. |
 
@@ -58,6 +57,12 @@ Légende :
 | `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md` | Actif | P3 | Note future : progression **par scène/niveau** (FirstLvl+) — panneau 3 onglets, points système, techno, anti-aléas. |
 | `Notes/GDD/INBOX_notes_tablette_recherches.md` | Actif | P1 | Hub [P0-IDEA-001] : notes manuscrites / recherches perso (« tablette » = référence auteur) + cartographie docs liés. |
 | `Notes/GDD/Inbox_gdd.md` | A trier | P1 | Brouillon GDD partiel (états plantes, salade/tomate, meta) — compléter depuis tablette via [P0-IDEA-001]. |
+
+## Notes References
+
+| Fichier | Statut | Priorité | Synthèse |
+|---|---|---|---|
+| `Notes/References/REFERENCES_jeux_inspiration.md` | Actif | P3 | Catalogue jeux de référence (idle farming mobile, cozy, PC/automatisation, mécaniques voisines) : ordre d'étude recommandé, veille features, statut par jeu, liens vers `Inbox_features`. |
 
 ## Notes Learning
 
