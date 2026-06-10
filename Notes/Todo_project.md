@@ -37,7 +37,7 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] inventaire halo. Base : `main`. **Ne pas merger** sans **playtest [P0-INV-HALO-004]** validé + renommage pistes post-notes.
+> Branche courante : **`main`** — [CT-INV-HALO-001] inventaire halo (ex-`feature/inventory-halo-ui`, supprimée 2026-06-10 car identique à `main`). Suite : **playtest [P0-INV-HALO-004]** + renommage pistes post-notes.
 
 ### Ordre session (mis à jour 2026-06-05)
 
@@ -93,7 +93,7 @@ Convention d'IDs :
 
 | Ordre indicatif | ID | Intention | Détail |
 |-----------------|-----|-----------|--------|
-| 1 | **[CT-INV-HALO-001]** | Rework inventaire halo + grille — **actif** sur `feature/inventory-halo-ui` (Ph.1 OK, Ph.2–3 en cours) | `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` |
+| 1 | **[CT-INV-HALO-001]** | Rework inventaire halo + grille — **actif** sur `main` (Ph.1–3 OK, playtest [P0-INV-HALO-004] en attente) | `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` |
 | — | **[CT-FARM-UI-001]** | EmptyStatePanel graines (polish) | Prefab `SeedSelectionUI` — §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md` ; **reclassé polish** (2026-06-02), plus P0 immédiat |
 | — | **[CT-SHOP-002]** | Polish UX shop | Optionnel |
 | — | **[CT-FARM-004]** | Persistance ferme scénario complet | Playtest long |

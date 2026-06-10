@@ -21,8 +21,8 @@
 1. **[P0-INV-HALO-004]** — **Playtest** inventaire halo (P1–P8 → overlay → Retour ; grille visible, pas de HUD en fond). Phases 1–3 + fix layout faits.
 2. **[P0-IDEA-001]** — Import notes tablette perso → `Notes/GDD/INBOX_notes_tablette_recherches.md`, renommage `ProgressionTrackId`.
 
-### Contexte Git session (2026-06-05)
-- **`feature/inventory-halo-ui`** — [CT-INV-HALO-001] ; Ph.1–3 + fix layout OK, reste playtest.
+### Contexte Git session (2026-06-10)
+- **`main`** — [CT-INV-HALO-001] inventaire halo ; Ph.1–3 + fix layout OK, reste playtest. Ex-`feature/inventory-halo-ui` supprimée (identique à `main`).
 
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
@@ -31,9 +31,9 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate — **2026-06-05** (`Notes/Todo_project.md`) :
+- Priorite immediate — **2026-06-10** (`Notes/Todo_project.md`) :
   - **[P0-INV-HALO-004]** playtest inventaire halo, puis **[P0-IDEA-001]** (notes tablette).
-  - Branche **`feature/inventory-halo-ui`**.
+  - Branche **`main`**.
 
 ### Prompt de reprise BezyIA
 - Prompt à relancer tel quel :

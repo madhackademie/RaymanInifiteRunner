@@ -2,7 +2,7 @@
 
 **Statut :** plan d’exécution pour la **prochaine session** (après playtest **[P0-INV-HALO-004]**).  
 **Date :** 2026-06-05  
-**Branche :** `feature/inventory-halo-ui`  
+**Branche :** `main` (ex-`feature/inventory-halo-ui`, supprimée 2026-06-10)  
 **Contexte :** coque UI prête (Phase 3 wiring OK) — il reste à **lier chaque `PlayerHaloSlotUI` à un arbre de compétences réel**.
 
 Docs liés :

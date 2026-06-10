@@ -1,5 +1,20 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-10 — Tri Git : suppression branche `feature/inventory-halo-ui` + sync docs
+
+### Contexte
+- Branche **`feature/inventory-halo-ui`** identique à **`main`** (`a32c63c`) — nettoyage dépôt.
+
+### Fait
+- Suppression remote **`feature/inventory-halo-ui`**.
+- Mise à jour docs de suivi : branche courante → **`main`** (`Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`).
+- `INDEX.md` : ajout section **Notes References** (`REFERENCES_jeux_inspiration.md`).
+
+### Prochaine session — inchangé
+- **[P0-INV-HALO-004]** playtest inventaire halo, puis **[P0-IDEA-001]** notes tablette.
+
+---
+
 ## 2026-06-05 (soir) — Inventaire halo : Phase 2 bis débloquée + Phase 3 wiring OK + fix layout
 
 ### Contexte
