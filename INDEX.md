@@ -58,6 +58,12 @@ Légende :
 | `Notes/GDD/INBOX_notes_tablette_recherches.md` | Actif | P1 | Hub [P0-IDEA-001] : notes manuscrites / recherches perso (« tablette » = référence auteur) + cartographie docs liés. |
 | `Notes/GDD/Inbox_gdd.md` | A trier | P1 | Brouillon GDD partiel (états plantes, salade/tomate, meta) — compléter depuis tablette via [P0-IDEA-001]. |
 
+## Notes References
+
+| Fichier | Statut | Priorité | Synthèse |
+|---|---|---|---|
+| `Notes/References/REFERENCES_jeux_inspiration.md` | Actif | P3 | Catalogue jeux de référence (idle farming, cozy, automatisation) : veille mécaniques/features, statut d'étude par jeu, liens vers `Inbox_features` pour idées concrètes. |
+
 ## Notes Learning
 
 | Fichier | Statut | Priorité | Synthèse |
