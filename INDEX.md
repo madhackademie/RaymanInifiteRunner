@@ -57,6 +57,7 @@ Légende :
 | `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md` | Actif | P3 | Note future : progression **par scène/niveau** (FirstLvl+) — panneau 3 onglets, points système, techno, anti-aléas. |
 | `Notes/GDD/INBOX_notes_tablette_recherches.md` | Actif | P1 | Hub [P0-IDEA-001] : notes manuscrites / recherches perso (« tablette » = référence auteur) + cartographie docs liés. |
 | `Notes/GDD/Inbox_gdd.md` | A trier | P1 | Brouillon GDD partiel (états plantes, salade/tomate, meta) — compléter depuis tablette via [P0-IDEA-001]. |
+| `Notes/GDD/SPEC_vente_production_boucle_jeu.md` | Actif | P1 | Vente production : canaux voisinage → bandoulière → vélo ; parallélisme ; proto V0 PNJ salades ; phase personnel véhicule. |
 
 ## Notes References
 
