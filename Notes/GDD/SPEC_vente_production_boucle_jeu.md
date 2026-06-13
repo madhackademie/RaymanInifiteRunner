@@ -70,9 +70,9 @@ Référence visuelle pour la **conception UI** des canaux de vente / zones d’�
 | Illustration isométrique par panneau | Ambiance / thème du canal — pas un bouton plat générique |
 | Style cartoon saturé, lisible mobile | Cohérent avec le ton cozy farm du projet |
 | Scroll vertical | Plusieurs canaux ou zones sans écran surchargé |
-| **Slot PNG PNJ** (coin du bandeau) | Assigner un **vendeur délégué** sur ce canal — cf. §2.8 |
+| **Slot PNG PNJ** + **slot Inviter ami** (coin du bandeau) | Deux portraits + **étoiles d’upgrade** — cf. §2.8 |
 
-*Proto V0 (voisinage seul) : un seul panneau actif au départ ; les autres apparaissent **verrouillés** ou absents jusqu’au déblocage recherche (cf. §2.5). La délégation PNJ (§2.8) est **hors scope V0** — north star UI.*
+*Proto V0 (voisinage seul) : un seul panneau actif au départ ; délégation PNJ / ami (§2.8) **hors scope V0**.*
 
 ### 2.3 Échelle des canaux
 
@@ -135,18 +135,14 @@ flowchart TD
   V2 --> Staff[Phase personnel : fiche véhicule]
 ```
 
-### 2.6 Phase personnel / délégation PNJ (horizon — non proto)
+### 2.6 Délégation & slots bandeau (horizon — non proto)
 
-Quand un **personnage non joueur (PNJ vendeur)** est disponible, le joueur peut **déléguer** l’écoulement d’un canal pendant qu’il gère les autres.
+Chaque bandeau débloqué expose **deux actions** (cf. §2.8) pendant que le joueur gère d’autres canaux.
 
-- **Fiche véhicule / bandeau** (UI) : le joueur **remplit l’inventaire** du canal délégué (légumes, poissons, glace…).
-- **Slot PNG** sur le bandeau : portrait du PNJ assigné — lancer une **action de vente déléguée** depuis ce slot.
-- **Rentabilité PNJ** : **50 %** du rendement que le joueur obtiendrait en gérant le canal lui-même (multiplicateur **×0,5** sur la marge / monnaie créditée).
-- **Visualisation** : chiffre d’affaire prévisionnel ou réalisé **moins le coût du vendeur** (salaire / commission — à chiffrer) ; badge **« 50 % »** visible sur le bandeau quand le PNJ est actif.
-- Permet de **déléguer le vélo** tout en gardant voisinage + bandoulière côté joueur (cf. §2.4).
-- Lien possible avec piste **Logistique** / **Commerce** des talents halo — détail TBD tablette.
-
-*Version **multi** ultérieure (si le jeu est rentable) : un **ami** pourrait remplacer ou compléter le PNJ — rendement et règles **TBD** ; ne pas confondre avec le slot PNG vendeur solo.*
+- **Slot 1 — PNJ** : vente déléguée à **50 %** ; déblocage via **pub** puis acquisition **PNJ/robot** si rentable.
+- **Slot 2 — Ami** : boost production / bénéfice **win/win** (horizon lointain, multi).
+- **Étoiles** : niveau d’upgrade visuel sous chaque portrait.
+- Le joueur **remplit le stock** ; exemple : joueur **voisinage + bandoulière**, PNJ sur **vélo** (§2.4).
 
 ### 2.7 Axes économiques par canal (à chiffrer)
 
@@ -157,49 +153,80 @@ Quand un **personnage non joueur (PNJ vendeur)** est disponible, le joueur peut 
 | Coût d’exploitation | Négligeable | Amortissement upgrade | Amortissement + entretien ? |
 | Interaction joueur | Dialogue PNJ / livraison | Session mobile (TBD gameplay) | Session mobile ou assignation staff |
 
-### 2.8 Délégation PNJ — slot PNG par bandeau
+### 2.8 Slots bandeau — PNJ délégué & ami (2 portraits + étoiles)
 
-Sur chaque **bandeau** (canal d’écoulement débloqué), un **slot PNG** affiche le **portrait d’un personnage non joueur** (vendeur délégué). Ce n’est **pas** une icône de pub ni un boost : c’est l’**assignation d’un PNJ** pour faire tourner ce canal à la place du joueur.
+Sur chaque **bandeau** (canal débloqué), la UI expose **deux emplacements portrait** empilés + un indicateur **étoiles** d’upgrade sous chaque slot.
 
-#### Mécanique actée (intention auteur)
+```
+┌─────────────────────────────────────────────┐
+│  [Bandeau canal — ex. Vélo marchand]        │
+│                              ┌──────────┐   │
+│                              │ Portrait │   │  ← Slot 1 : action PNJ
+│                              │   PNJ    │   │
+│                              │  ★ ★ ☆   │   │  ← niveau upgrade
+│                              ├──────────┤   │
+│                              │ Inviter  │   │  ← Slot 2 : action ami
+│                              │   ami    │   │
+│                              │  ☆ ☆ ☆   │   │
+│                              └──────────┘   │
+└─────────────────────────────────────────────┘
+```
+
+#### Slot 1 — Action PNJ (vendeur délégué)
 
 | Élément | Règle |
 |---------|--------|
-| **Qui vend** | Un **PNJ** (PNG portrait sur le bandeau), pas le joueur |
-| **Rentabilité** | **50 %** seulement par rapport à une vente gérée par le joueur sur le même canal (×0,5 sur la marge / monnaie) |
-| **Exemple typique** | Joueur : **voisinage + bandoulière** — PNJ délégué : **vélo marchand** |
-| **Déclenchement** | Le joueur lance une **action** depuis le slot PNG (assigner stock + démarrer tournée / cycle de vente) |
-| **Feedback UI** | Portrait PNJ actif + badge **« 50 % »** ou **« Rentabilité ×0,5 »** sur le bandeau concerné |
+| **Rôle** | Un **personnage non joueur** vend à ta place sur ce canal |
+| **Rentabilité** | **50 %** vs joueur sur le même canal (×0,5 marge / monnaie) |
+| **Déblocage** | Le slot PNJ **n’est pas disponible** tant qu’il n’est pas débloqué (cf. paliers ci-dessous) |
+| **Action** | Lancer cycle de vente déléguée (stock à remplir par le joueur) |
 
-**Comparaison rendement (même canal, même stock) :**
+**Paliers de déblocage PNJ (ordre d’intention) :**
 
-| Mode | Rentabilité | Feedback bandeau |
-|------|-------------|------------------|
-| Joueur gère le canal | **100 %** (référence) | Pas de slot PNJ actif, ou silhouette joueur |
-| PNJ délégué (action lancée) | **50 %** | Portrait PNG + badge orange « 50 % » |
+| Palier | Condition | Effet |
+|--------|-----------|-------|
+| **A — Pub** | Vision d’une **publicité récompensée** | Débloque l’**usage** du slot PNJ (session ou durée **TBD**) — rentabilité **50 %** |
+| **B — Acquisition** | Achat / déblocage d’un **PNJ ou robot** vendeur | Accès **permanent** au slot — feature si le jeu est **rentable** |
+| **C — Étoiles** | Upgrades du slot (monnaie, recherche, répétition…) | Améliore le vendeur délégué (niveau visuel ★ + bonus **TBD**) |
 
-**Règles provisoires :**
+#### Slot 2 — Action « Inviter un ami » (horizon lointain)
 
-- Un PNJ ne remplace pas le **coût d’approvisionnement** : le joueur remplit toujours le stock du canal délégué.
-- Le malus **50 %** s’applique au **résultat de vente** (monnaie nette), pas au volume physique écoulé — **TBD** au chiffrage.
-- Plusieurs PNJ sur plusieurs bandeaux : possible en extension (§2.4) ; équilibrage à valider.
+| Élément | Règle |
+|---------|--------|
+| **Rôle** | Assigner un **ami** pour booster **production / bénéfice** sur ce bandeau |
+| **Win / win** | L’ami reçoit un **petit bonus passif** sans jouer (cosmétique, monnaie soft, cadeau — **TBD**) |
+| **Déblocage** | **Multi** — seulement si le jeu est **rentable** ; plus tard que le PNJ |
+| **Effet joueur** | **Booster** rendement ou volume (**% exact TBD**) — complète le PNJ, ne le remplace pas forcément |
+| **Étoiles** | Niveau d’upgrade du lien ami (fidélité, durée boost, etc.) |
+
+*Le slot ami reste **verrouillé** en solo : portrait grisé + cadenas + libellé « Inviter ami · bientôt ».*
+
+#### Comparaison rendement (même canal)
+
+| Mode | Rentabilité / effet | Slot actif |
+|------|---------------------|------------|
+| Joueur gère le canal | **100 %** (référence) | Aucun slot délégué |
+| PNJ délégué (action lancée) | **50 %** | Portrait PNJ + badge « 50 % » |
+| PNJ + ami (horizon) | **50 %** base PNJ **+ boost ami** (**TBD**) | Les deux portraits actifs |
 
 #### Référence visuelle — feedback joueur
 
-<img src="./ref_ui_bandeau_pnj_delegue_rendement.png" alt="Maquette UI — bandeau vélo avec PNJ délégué à 50 % rentabilité pendant que le joueur gère voisinage et bandoulière" width="900" />
+<img src="./ref_ui_bandeau_slots_pnj_ami_upgrades.png" alt="Maquette UI — bandeau avec slot PNJ (pub débloquée, 50 %, étoiles) et slot Inviter ami (verrouillé)" width="900" />
 
-**Fichier :** `Notes/GDD/ref_ui_bandeau_pnj_delegue_rendement.png`
+**Fichiers :**
+- `Notes/GDD/ref_ui_bandeau_slots_pnj_ami_upgrades.png` — maquette **2 portraits + étoiles**
+- `Notes/GDD/ref_ui_bandeau_pnj_delegue_rendement.png` — variante focus PNJ seul (conservée)
 
 **États UI à prévoir (Bezy / prefab bandeau) :**
 
-| État | Rendu |
-|------|-------|
-| Aucun PNJ assigné | Slot vide ou « + Vendeur » grisé |
-| PNJ assigné, inactif | Portrait PNG visible, pas de cycle en cours |
-| PNJ en action (vente) | Portrait + badge **50 %** + indicateur « Rentabilité ×0,5 » |
-| Joueur sur ce canal | Pas de délégation — rendement **100 %**, slot PNJ masqué ou désactivé |
+| État | Slot PNJ | Slot ami |
+|------|----------|----------|
+| Verrouillé (pas encore débloqué) | Cadenas + icône **pub** ou boutique PNJ | Cadenas « bientôt » |
+| Débloqué, inactif | Portrait PNG visible, étoiles niveau 0–N | Portrait silhouettes grisées |
+| En action | Portrait + **50 %** + étoiles remplies | Boost actif + étoiles (**horizon**) |
+| Upgrade disponible | Étoile vide clignotante / CTA upgrade | Idem |
 
-*Maquette conceptuelle — le sprite PNG final du vendeur sera un asset dédié (personnage non joueur), pas une icône générique.*
+*Assets finaux : sprite portrait **PNJ/robot** distinct ; icône **ami** ; sprites **étoiles** pleines / vides.*
 
 ---
 
@@ -231,7 +258,7 @@ Sur chaque **bandeau** (canal d’écoulement débloqué), un **slot PNG** affic
 - Aucun canal de vente (PNJ voisinage, bandoulière, vélo).
 - Pas de prix de **revente** par item / par canal.
 - Pas de système **recherche / upgrade** lié aux canaux commerce.
-- Pas de **délégation PNJ** par bandeau (slot PNG, rentabilité 50 % — §2.8).
+- Pas de **slots bandeau** PNJ / ami (§2.8 : pub, acquisition, étoiles).
 - Pas de règle **parallélisme** canaux côté code.
 
 ---
@@ -261,13 +288,15 @@ Sur chaque **bandeau** (canal d’écoulement débloqué), un **slot PNG** affic
 - [ ] Proto : salades uniquement ; extension poisson quand piste `track.fish` active ?
 - [ ] Flag `canSell` + canal autorisé par item ?
 
-### 5.6 Délégation PNJ par bandeau (§2.8)
+### 5.6 Slots bandeau — PNJ & ami (§2.8)
 
-- [ ] Coût du vendeur PNJ (salaire fixe, % du CA, ou inclus dans le malus 50 % ?).
-- [ ] Durée d’une **action** déléguée (tournée complète, timer, jusqu’à stock épuisé ?).
-- [ ] Le malus 50 % s’applique sur **marge** ou sur **volume** écoulé ?
-- [ ] Déblocage du premier PNJ vendeur (recherche, quête, upgrade vélo ?).
-- [ ] Version **multi ami** (rendement différent du PNJ ?) — horizon si jeu rentable.
+- [ ] Durée d’accès PNJ après **pub** (session, X h, jusqu’au prochain cycle ?).
+- [ ] Prix / déblocage **PNJ ou robot** permanent (palier B).
+- [ ] Courbe **étoiles** : combien de niveaux, coût, bonus par étoile ?
+- [ ] Malus 50 % PNJ : sur **marge** ou **volume** ?
+- [ ] Boost **ami** : % exact, cumul avec PNJ, durée du lien ?
+- [ ] Récompense **win/win ami** passive (monnaie, cosmétique, loot box soft ?).
+- [ ] SDK pub + backend **ami** — choix technique post-rentabilité.
 
 ---
 
@@ -279,9 +308,11 @@ Sur chaque **bandeau** (canal d’écoulement débloqué), un **slot PNG** affic
 2. **`SaleChannelDefinition` (SO)** — id, tier, prix multiplier, volume cap, unlock research id.
 3. **PNJ voisinage V0** — composant `NeighborBuyerNPC` + data table demandes (item, qty max, prix).
 4. **Parallélisme** — `SaleChannelManager` : un seul canal mobile **joueur** ; voisinage OK ; canal supplémentaire possible via **PNJ délégué** (§2.8).
-5. **Délégation PNJ** — `NpcSaleAssignment` : portrait PNG sur bandeau, stock canal, cycle vente à **×0,5** rentabilité.
-6. **UI** — popup livraison PNJ (proto) ; fiche véhicule / bandeau délégué ; prefabs **Bezy** ; **slot PNG vendeur** sur chaque bandeau (§2.8).
-7. **`SaleChannelYieldModifier`** — multiplicateur rendement : **1,0** (joueur) ou **0,5** (PNJ délégué) ; talents commerce en sus.
+5. **Slots bandeau** — `SaleChannelBandeauSlots` : portrait PNJ + portrait ami, étoiles upgrade, états verrouillé / actif.
+6. **Délégation PNJ** — `NpcSaleAssignment` : déblocage pub ou acquisition PNJ/robot ; cycle vente **×0,5**.
+7. **Boost ami** — `FriendSaleBooster` (horizon) : assignation ami, bonus rendement, récompense passive win/win.
+8. **UI** — prefabs **Bezy** : bandeau + 2 portraits + rangée étoiles (§2.8).
+9. **`SaleChannelYieldModifier`** — **1,0** (joueur), **0,5** (PNJ), **+ boost ami** (TBD) ; talents commerce en sus.
 
 ### Fichiers code probablement touchés (V0 voisinage)
 
@@ -337,4 +368,4 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 ---
 
-*Dernière mise à jour : 2026-06-13 — délégation PNJ par bandeau (§2.8 : slot PNG, rentabilité 50 %) + maquette feedback UI.*
+*Dernière mise à jour : 2026-06-13 — §2.8 : 2 portraits (PNJ + ami), étoiles upgrade, déblocage pub / acquisition PNJ, boost ami win/win.*
