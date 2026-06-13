@@ -5,15 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Overlay arbre de talents au-dessus de l'inventaire (meme ecran, pas de changement de scene).
+/// Overlay arbre de talents au-dessus de l'inventaire (même écran, pas de changement de scène).
 /// </summary>
 public class TalentTreeOverlayController : MonoBehaviour
 {
     private const string MissingServiceMessage =
         "Service de talents absent.\nAjoute TalentProgressionService dans la scene.";
-
-    private const string MissingTreePrefabMessage =
-        "Arbre visuel a venir pour cette piste.\nLe resume texte reste disponible ci-dessous.";
 
     [Header("Root")]
     [SerializeField] private GameObject overlayRoot;
@@ -27,12 +24,6 @@ public class TalentTreeOverlayController : MonoBehaviour
     [SerializeField] private Button purchaseNextButton;
     [SerializeField] private bool autoBindPlaceholderAsPurchaseButton = true;
     [SerializeField] private bool createRuntimePurchaseButtonWhenMissing = true;
-
-    [Header("Arbre visuel (swap prefab par piste)")]
-    [SerializeField] private RectTransform treeContentHost;
-    [SerializeField] private TalentTrackPrefabBinding[] trackPrefabBindings = Array.Empty<TalentTrackPrefabBinding>();
-    [SerializeField] private bool hidePlaceholderWhenTreeVisible = true;
-    [SerializeField] private bool hideFallbackPurchaseWhenTreeVisible = true;
 
     [Header("Progression (MVP)")]
     [SerializeField] private TalentProgressionService progressionService;
@@ -52,22 +43,21 @@ public class TalentTreeOverlayController : MonoBehaviour
     private bool purchaseButtonWasAutoAdded;
     private GameObject runtimePurchaseButtonRoot;
     private string lastPurchaseFeedback;
-    private TalentTreeLayoutRoot activeLayoutRoot;
-    private GameObject activeTreeInstance;
-    private bool isVisualTreeActive;
 
     private void Awake()
     {
         if (backButton != null)
             backButton.onClick.AddListener(Close);
 
-        ResolveTreeContentHost();
         ResolveProgressionService();
         EnsureRuntimePurchaseButton();
         BindPurchaseButton();
         RegisterPurchaseClickHandler();
         SubscribeProgressionEvents();
 
+        // Prefab déjà inactif (alpha 0) : ne pas appeler HideImmediate ici —
+        // SetActive(true) dans Open déclenche Awake et HideImmediate désactivait
+        // l'overlay avant StartFade (coroutine impossible sur GO inactif).
         ApplyCanvasGroupState(0f);
     }
 
@@ -79,7 +69,6 @@ public class TalentTreeOverlayController : MonoBehaviour
         UnsubscribeProgressionEvents();
         UnregisterPurchaseClickHandler();
         DestroyRuntimePurchaseButton();
-        ClearActiveTreeInstance();
     }
 
     public void Open(string trackId)
@@ -92,7 +81,6 @@ public class TalentTreeOverlayController : MonoBehaviour
         CurrentTrackId = trackId;
         IsOpen = true;
         lastPurchaseFeedback = null;
-        MountTrackVisual(trackId);
         RefreshOverlayContent();
         PlayAnimatorBool(isOpen: true);
         StartFade(1f);
@@ -111,8 +99,6 @@ public class TalentTreeOverlayController : MonoBehaviour
     {
         IsOpen = false;
         CurrentTrackId = null;
-        ClearActiveTreeInstance();
-        isVisualTreeActive = false;
 
         if (overlayRoot != null)
             overlayRoot.SetActive(false);
@@ -120,109 +106,33 @@ public class TalentTreeOverlayController : MonoBehaviour
         Closed?.Invoke();
     }
 
-    private void MountTrackVisual(string trackId)
-    {
-        ClearActiveTreeInstance();
-        isVisualTreeActive = false;
-
-        if (!TryGetTreePrefab(trackId, out TalentTreeLayoutRoot prefab))
-            return;
-
-        if (treeContentHost == null)
-        {
-            Debug.LogWarning(
-                "[TalentTreeOverlayController] treeContentHost absent — arbre visuel non monte.");
-            return;
-        }
-
-        activeTreeInstance = Instantiate(prefab.gameObject, treeContentHost);
-        activeTreeInstance.name = prefab.name;
-
-        RectTransform instanceRect = activeTreeInstance.transform as RectTransform;
-        if (instanceRect != null)
-        {
-            instanceRect.anchorMin = Vector2.zero;
-            instanceRect.anchorMax = Vector2.one;
-            instanceRect.offsetMin = Vector2.zero;
-            instanceRect.offsetMax = Vector2.zero;
-            instanceRect.localScale = Vector3.one;
-        }
-
-        activeLayoutRoot = activeTreeInstance.GetComponent<TalentTreeLayoutRoot>();
-        if (activeLayoutRoot == null)
-        {
-            Debug.LogWarning(
-                $"[TalentTreeOverlayController] Prefab '{prefab.name}' sans TalentTreeLayoutRoot.");
-            ClearActiveTreeInstance();
-            return;
-        }
-
-        if (progressionService != null)
-            activeLayoutRoot.Bind(progressionService);
-
-        isVisualTreeActive = true;
-    }
-
-    private void ClearActiveTreeInstance()
-    {
-        if (activeLayoutRoot != null)
-        {
-            activeLayoutRoot.Unbind();
-            activeLayoutRoot = null;
-        }
-
-        if (activeTreeInstance != null)
-        {
-            Destroy(activeTreeInstance);
-            activeTreeInstance = null;
-        }
-    }
-
-    private bool TryGetTreePrefab(string trackId, out TalentTreeLayoutRoot prefab)
-    {
-        prefab = null;
-        for (int i = 0; i < trackPrefabBindings.Length; i++)
-        {
-            TalentTrackPrefabBinding binding = trackPrefabBindings[i];
-            if (!binding.IsValid || binding.TrackId != trackId)
-                continue;
-
-            prefab = binding.TreePrefab;
-            return prefab != null;
-        }
-
-        return false;
-    }
-
     private void RefreshOverlayContent()
     {
         if (trackTitleLabel != null)
             trackTitleLabel.text = GetTrackTitle();
 
-        ApplyPlaceholderVisibility();
         if (bodyPlaceholderLabel != null)
             bodyPlaceholderLabel.text = GetBodyText();
-
-        if (isVisualTreeActive && activeLayoutRoot != null)
-            activeLayoutRoot.RefreshAll();
 
         UpdatePurchaseButtonState();
     }
 
-    private void ApplyPlaceholderVisibility()
+    private void HideImmediate()
     {
-        if (bodyPlaceholderLabel == null)
-            return;
+        IsOpen = false;
+        CurrentTrackId = null;
 
-        bool showPlaceholderText = !isVisualTreeActive || !hidePlaceholderWhenTreeVisible;
-        bodyPlaceholderLabel.gameObject.SetActive(showPlaceholderText);
+        if (overlayRoot != null)
+            overlayRoot.SetActive(false);
 
-        if (!showPlaceholderText)
-            return;
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+        }
 
-        Transform placeholderRoot = bodyPlaceholderLabel.transform.parent;
-        if (placeholderRoot != null)
-            placeholderRoot.gameObject.SetActive(true);
+        UpdatePurchaseButtonState();
     }
 
     private void PlayAnimatorBool(bool isOpen)
@@ -287,15 +197,6 @@ public class TalentTreeOverlayController : MonoBehaviour
         bool visible = alpha > 0.01f;
         canvasGroup.blocksRaycasts = visible;
         canvasGroup.interactable = visible;
-    }
-
-    private void ResolveTreeContentHost()
-    {
-        if (treeContentHost != null)
-            return;
-
-        if (bodyPlaceholderLabel != null)
-            treeContentHost = bodyPlaceholderLabel.transform.parent as RectTransform;
     }
 
     private void ResolveProgressionService()
@@ -461,14 +362,6 @@ public class TalentTreeOverlayController : MonoBehaviour
         if (purchaseNextButton == null)
             return;
 
-        bool hideForVisualTree = isVisualTreeActive && hideFallbackPurchaseWhenTreeVisible;
-        if (hideForVisualTree)
-        {
-            purchaseNextButton.gameObject.SetActive(false);
-            return;
-        }
-
-        purchaseNextButton.gameObject.SetActive(true);
         bool enabled = IsOpen && progressionService != null && HasPurchasableNode();
         purchaseNextButton.interactable = enabled;
     }
@@ -491,29 +384,17 @@ public class TalentTreeOverlayController : MonoBehaviour
 
     private string GetBodyText()
     {
-        if (isVisualTreeActive && hidePlaceholderWhenTreeVisible)
-            return string.Empty;
-
         if (progressionService == null || string.IsNullOrEmpty(CurrentTrackId))
             return MissingServiceMessage;
 
         string summary = progressionService.BuildTrackSummary(CurrentTrackId);
-        string actionHint = GetActionHint();
-        string missingTreeHint = isVisualTreeActive ? string.Empty : $"\n\n{MissingTreePrefabMessage}";
-
-        if (string.IsNullOrEmpty(lastPurchaseFeedback))
-            return $"{summary}\n\n{actionHint}{missingTreeHint}";
-
-        return $"{summary}\n\n{actionHint}{missingTreeHint}\n\n{lastPurchaseFeedback}";
-    }
-
-    private string GetActionHint()
-    {
-        if (isVisualTreeActive)
-            return "Clique un noeud disponible pour debloquer la branche.";
-
-        return HasPurchasableNode()
+        string actionHint = HasPurchasableNode()
             ? "Appuie sur « Acheter » (en bas a droite) pour debloquer le prochain noeud."
             : "Aucun noeud achetable pour l'instant (points ou pre-requis manquants).";
+
+        if (string.IsNullOrEmpty(lastPurchaseFeedback))
+            return $"{summary}\n\n{actionHint}";
+
+        return $"{summary}\n\n{actionHint}\n\n{lastPurchaseFeedback}";
     }
 }

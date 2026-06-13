@@ -1,14 +1,12 @@
 # Spec — arbres de talents : layout éditeur (WYSIWYG)
 
-**Statut :** décision architecture **actée** (2026-06-12) — foundation Cursor implémentée.  
+**Statut :** décision architecture — **en réflexion auteur** (2026-06-07).  
 **Contexte :** suite session halo inventaire ; remplace l’approche « modules layout calculés en code » pour la **partie visuelle**.
 
 Docs liés :
-- **`Notes/Ui/WORKFLOW_creation_arbre_talents.md`** ← procédure auteur pas-à-pas (composition prefab)
 - `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
 - `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`
 - `Notes/Ui/ARBRE_inventory_halo_ui.md`
-- `Notes/Ui/PROMPTS_Bezi_talent_tree.md`
 - Scripts : `Assets/Scripts/Progression/`, `Assets/Scripts/UI/Inventory/Progression/`
 
 ---
@@ -85,7 +83,7 @@ TalentTreeOverlay
 
 ---
 
-## Scripts foundation (Cursor — implémentés 2026-06-12)
+## Scripts à créer (Cursor — pas encore implémentés)
 
 ### `TalentNodeView`
 
@@ -162,30 +160,13 @@ Bezy fournit les **briques** ; l’auteur **compose** les arbres comme un level 
 
 ---
 
-## Décisions actées (2026-06-12)
+## Points ouverts (réflexion auteur)
 
-| Point | Décision |
-|-------|----------|
-| Prefab par piste | **1 prefab arbre par piste** (`Track_Commerce`, …) |
-| Conteneur overlay | **`TreeContent` partagé** dans `TreeScrollView` |
-| Runtime | **Swap dynamique** : `Open(trackId)` → `Instantiate` → `Bind` → `RefreshAll` |
-| Lignes MVP | **Droites** (`TalentTreeEdgeView`, `[ExecuteAlways]`) |
-| Validation editor | **Warning** via bouton Custom Editor (pas bloquant) |
-| Scroll | **`ScrollRect` seul** pour le MVP (pas de pinch) |
-| Nommage scripts | **`TalentNodeView`**, `TalentTreeEdgeView`, `TalentTreeLayoutRoot` |
-
-Fichiers :
-- `Assets/Scripts/UI/Inventory/Progression/TalentNodeView.cs`
-- `Assets/Scripts/UI/Inventory/Progression/TalentTreeEdgeView.cs`
-- `Assets/Scripts/UI/Inventory/Progression/TalentTreeLayoutRoot.cs`
-- `Assets/Scripts/UI/Inventory/Progression/TalentTrackPrefabBinding.cs`
-- `Assets/Editor/TalentTreeLayoutRootEditor.cs`
-- `TalentTreeOverlayController` : bindings `trackPrefabBindings` + `treeContentHost`
-
-## Points ouverts (polish)
-
-- [ ] Courbes / angles sur edges (post-MVP)
-- [ ] Zoom pinch mobile si arbre très large
+- [ ] 1 prefab arbre par piste vs swap dynamique vs variants Unity ?
+- [ ] Lignes droites uniquement (MVP) vs courbes / angles (polish) ?
+- [ ] Validation stricte edges ↔ `prerequisiteNodeIds` en editor vs warning seulement ?
+- [ ] Zoom / pinch sur arbre large (ScrollRect seul suffit-il ?) ?
+- [ ] Nommage final des scripts : `TalentNodeView` vs `TalentNodeUI` (doc session historique) ?
 
 ---
 
