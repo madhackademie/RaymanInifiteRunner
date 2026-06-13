@@ -70,8 +70,9 @@ Référence visuelle pour la **conception UI** des canaux de vente / zones d’�
 | Illustration isométrique par panneau | Ambiance / thème du canal — pas un bouton plat générique |
 | Style cartoon saturé, lisible mobile | Cohérent avec le ton cozy farm du projet |
 | Scroll vertical | Plusieurs canaux ou zones sans écran surchargé |
+| **Slots d’upgrade** (coin du bandeau) | Options **rendement** par canal — cf. §2.8 |
 
-*Proto V0 (voisinage seul) : un seul panneau actif au départ ; les autres apparaissent **verrouillés** ou absents jusqu’au déblocage recherche (cf. §2.5).*
+*Proto V0 (voisinage seul) : un seul panneau actif au départ ; les autres apparaissent **verrouillés** ou absents jusqu’au déblocage recherche (cf. §2.5). Les upgrades rendement (§2.8) sont **hors scope V0** — north star UI.*
 
 ### 2.3 Échelle des canaux
 
@@ -151,6 +152,41 @@ Quand du **personnel vendeur** est disponible :
 | Coût d’exploitation | Négligeable | Amortissement upgrade | Amortissement + entretien ? |
 | Interaction joueur | Dialogue PNJ / livraison | Session mobile (TBD gameplay) | Session mobile ou assignation staff |
 
+### 2.8 Upgrades rendement — par bandeau
+
+Chaque **bandeau** (canal d’écoulement débloqué) expose des **options d’upgrade** pour augmenter le rendement des ventes sur ce canal. Le joueur voit immédiatement l’état **actif / inactif / verrouillé** via des **icônes PNG** sur le bandeau (pas de texte long).
+
+#### Options actées (intention auteur)
+
+| Option | Déclencheur | Effet rendement | Proto | Feedback UI |
+|--------|-------------|-----------------|-------|-------------|
+| **Boost pub** | Vision d’une **publicité** récompensée | **+50 %** sur les ventes du bandeau (multiplicateur **×1,5**) | Post-V0 (monétisation) | Icône **lecteur / AD** — état **actif** (halo doré + badge « Pub vue ») ou **inactif** (grisé, CTA « Regarder ») |
+| **Ami coop** | Ajout d’un **ami** sur le canal | **150 %** du rendement de base (multiplicateur **×1,5** — même ordre de grandeur que la pub, à valider si cumul) | **Multi** — seulement si le jeu est **rentable** | Icône **deux silhouettes** — **verrouillé** en solo (« Ami · bientôt ») ; actif en multi |
+
+**Règles provisoires :**
+
+- Les upgrades sont **par bandeau** : chaque canal a ses propres slots (voisinage, bandoulière, vélo…).
+- Le **rendement courant** du bandeau doit être lisible en un coup d’œil (ex. jauge ou libellé « Rendement ×1,5 » sur le bandeau actif).
+- **Cumul pub + ami** : **TBD** — ne pas supposer ×2,25 sans équilibrage ; documenter le choix avant implémentation multi.
+- Durée du boost pub : **TBD** (session, X heures, jusqu’au prochain cycle de vente…).
+
+#### Référence visuelle — feedback joueur
+
+<img src="./ref_ui_bandeau_upgrades_rendement.png" alt="Maquette UI — bandeau canal avec slots upgrade pub (+50 %) et ami (150 %, verrouillé multi)" width="900" />
+
+**Fichier :** `Notes/GDD/ref_ui_bandeau_upgrades_rendement.png`
+
+**États UI à prévoir (Bezy / prefab bandeau) :**
+
+| État | Rendu |
+|------|-------|
+| Inactif | Icône grisée, pas de halo |
+| Actif (pub vue) | Icône couleur + anneau doré + indicateur rendement |
+| Verrouillé (ami / multi) | Cadenas + libellé court « bientôt » |
+| Rendement global bandeau | Badge ou barre « ×1,0 » / « ×1,5 » visible sur le bandeau sélectionné |
+
+*Maquette conceptuelle — les assets finaux (sprites PNG des icônes AD / Ami) seront produits en phase polish ou via Bezy.*
+
 ---
 
 ## 3) Distinction achat vs vente (vocabulaire projet)
@@ -181,6 +217,7 @@ Quand du **personnel vendeur** est disponible :
 - Aucun canal de vente (PNJ voisinage, bandoulière, vélo).
 - Pas de prix de **revente** par item / par canal.
 - Pas de système **recherche / upgrade** lié aux canaux commerce.
+- Pas de **boost rendement** par bandeau (pub / ami — §2.8).
 - Pas de règle **parallélisme** canaux côté code.
 
 ---
@@ -210,9 +247,12 @@ Quand du **personnel vendeur** est disponible :
 - [ ] Proto : salades uniquement ; extension poisson quand piste `track.fish` active ?
 - [ ] Flag `canSell` + canal autorisé par item ?
 
-### 5.5 Talents halo Commerce
+### 5.6 Upgrades rendement par bandeau (§2.8)
 
-- [ ] Modificateurs par canal (ex. vendeur → bonus vélo, acheteur inchangé) — après import notes tablette.
+- [ ] Durée du boost **pub** après vision (session, timer, cycle vente ?).
+- [ ] Cumul **pub + ami** : additionnel ou le plus fort des deux ?
+- [ ] SDK pub (Unity Ads, AdMob…) — choix technique post-rentabilité.
+- [ ] Scope **multi ami** : coop async, invitation, ou salon — horizon uniquement.
 
 ---
 
@@ -225,7 +265,8 @@ Quand du **personnel vendeur** est disponible :
 3. **PNJ voisinage V0** — composant `NeighborBuyerNPC` + data table demandes (item, qty max, prix).
 4. **Parallélisme** — `SaleChannelManager` : vérifie qu’un seul canal mobile joueur est actif ; voisinage toujours OK.
 5. **Phase staff** — `VehicleSaleAssignment` : inventaire dédié véhicule, simulation CA / coût vendeur (offline tick ou à la collecte).
-6. **UI** — popup livraison PNJ (proto) ; fiche véhicule (plus tard) ; prefabs **Bezy** pour étal / vélo quand gameplay visuel requis.
+6. **UI** — popup livraison PNJ (proto) ; fiche véhicule (plus tard) ; prefabs **Bezy** pour étal / vélo quand gameplay visuel requis ; **slots upgrade rendement** sur chaque bandeau (§2.8).
+7. **`SaleChannelYieldModifier`** — multiplicateur rendement par canal (pub, ami, talents) ; appliqué au calcul monnaie créditée.
 
 ### Fichiers code probablement touchés (V0 voisinage)
 
@@ -281,4 +322,4 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 ---
 
-*Dernière mise à jour : 2026-06-13 — référence UI écran écoulement (§2.2) + vision canaux voisinage / bandoulière / vélo + règle parallélisme + phase personnel.*
+*Dernière mise à jour : 2026-06-13 — upgrades rendement par bandeau (§2.8 : pub +50 %, ami 150 % multi) + maquette feedback UI.*
