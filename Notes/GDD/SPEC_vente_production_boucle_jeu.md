@@ -70,9 +70,9 @@ Référence visuelle pour la **conception UI** des canaux de vente / zones d’�
 | Illustration isométrique par panneau | Ambiance / thème du canal — pas un bouton plat générique |
 | Style cartoon saturé, lisible mobile | Cohérent avec le ton cozy farm du projet |
 | Scroll vertical | Plusieurs canaux ou zones sans écran surchargé |
-| **Slots d’upgrade** (coin du bandeau) | Options **rendement** par canal — cf. §2.8 |
+| **Slot PNG PNJ** (coin du bandeau) | Assigner un **vendeur délégué** sur ce canal — cf. §2.8 |
 
-*Proto V0 (voisinage seul) : un seul panneau actif au départ ; les autres apparaissent **verrouillés** ou absents jusqu’au déblocage recherche (cf. §2.5). Les upgrades rendement (§2.8) sont **hors scope V0** — north star UI.*
+*Proto V0 (voisinage seul) : un seul panneau actif au départ ; les autres apparaissent **verrouillés** ou absents jusqu’au déblocage recherche (cf. §2.5). La délégation PNJ (§2.8) est **hors scope V0** — north star UI.*
 
 ### 2.3 Échelle des canaux
 
@@ -106,11 +106,12 @@ Le joueur **ne peut pas** exploiter tous les canaux mobiles en même temps lui-m
 | Combinaison | Autorisée ? |
 |-------------|-------------|
 | Voisinage **+** bandoulière (joueur) | Oui — voisinage reste le socle |
-| Voisinage **+** vélo marchand (joueur) | Oui — **un seul** canal mobile actif à la fois |
-| Bandoulière **+** vélo en parallèle (joueur) | **Non** |
-| Voisinage **+** N véhicules avec **personnel** | Oui — phase personnel (§2.6) : le joueur gère l’approvisionnement, le vendeur écoule |
+| Voisinage **+** vélo marchand (joueur) | Oui — **un seul** canal mobile actif à la fois côté joueur |
+| Bandoulière **+** vélo en parallèle (**joueur** sur les deux) | **Non** |
+| Voisinage **+** bandoulière (joueur) **+** vélo (PNJ délégué) | **Oui** — exemple cible : le joueur gère voisinage et bandoulière pendant qu’un **PNG vendeur** écoule le vélo à **50 %** de rentabilité (§2.8) |
+| Voisinage **+** N véhicules avec **personnel** | Oui — extension §2.6 / §2.8 : plusieurs PNJ possibles si le jeu le permet |
 
-En résumé : **voisinage toujours possible** ; le joueur n’active qu’**un** des systèmes mobiles (bandoulière **ou** vélo) jusqu’à l’arrivée du personnel.
+En résumé : le joueur n’exploite qu’**un** canal mobile lui-même (bandoulière **ou** vélo). En revanche, un **canal supplémentaire** peut tourner via un **PNJ assigné** (portrait PNG sur le bandeau), avec une **rentabilité réduite**.
 
 ### 2.5 Prototype en cours — périmètre V0
 
@@ -134,14 +135,18 @@ flowchart TD
   V2 --> Staff[Phase personnel : fiche véhicule]
 ```
 
-### 2.6 Phase personnel (horizon — non proto)
+### 2.6 Phase personnel / délégation PNJ (horizon — non proto)
 
-Quand du **personnel vendeur** est disponible :
+Quand un **personnage non joueur (PNJ vendeur)** est disponible, le joueur peut **déléguer** l’écoulement d’un canal pendant qu’il gère les autres.
 
-- **Fiche véhicule** (UI dédiée) : le joueur **remplit l’inventaire** du véhicule (légumes, poissons, glace… selon le type d’étal).
-- **Visualisation** : chiffre d’affaire prévisionnel ou réalisé **moins le coût du vendeur** (salaire / commission — à chiffrer).
-- Permet de **déléguer** un canal mobile tout en gardant le voisinage (et éventuellement un second véhicule avec un autre employé).
+- **Fiche véhicule / bandeau** (UI) : le joueur **remplit l’inventaire** du canal délégué (légumes, poissons, glace…).
+- **Slot PNG** sur le bandeau : portrait du PNJ assigné — lancer une **action de vente déléguée** depuis ce slot.
+- **Rentabilité PNJ** : **50 %** du rendement que le joueur obtiendrait en gérant le canal lui-même (multiplicateur **×0,5** sur la marge / monnaie créditée).
+- **Visualisation** : chiffre d’affaire prévisionnel ou réalisé **moins le coût du vendeur** (salaire / commission — à chiffrer) ; badge **« 50 % »** visible sur le bandeau quand le PNJ est actif.
+- Permet de **déléguer le vélo** tout en gardant voisinage + bandoulière côté joueur (cf. §2.4).
 - Lien possible avec piste **Logistique** / **Commerce** des talents halo — détail TBD tablette.
+
+*Version **multi** ultérieure (si le jeu est rentable) : un **ami** pourrait remplacer ou compléter le PNJ — rendement et règles **TBD** ; ne pas confondre avec le slot PNG vendeur solo.*
 
 ### 2.7 Axes économiques par canal (à chiffrer)
 
@@ -152,40 +157,49 @@ Quand du **personnel vendeur** est disponible :
 | Coût d’exploitation | Négligeable | Amortissement upgrade | Amortissement + entretien ? |
 | Interaction joueur | Dialogue PNJ / livraison | Session mobile (TBD gameplay) | Session mobile ou assignation staff |
 
-### 2.8 Upgrades rendement — par bandeau
+### 2.8 Délégation PNJ — slot PNG par bandeau
 
-Chaque **bandeau** (canal d’écoulement débloqué) expose des **options d’upgrade** pour augmenter le rendement des ventes sur ce canal. Le joueur voit immédiatement l’état **actif / inactif / verrouillé** via des **icônes PNG** sur le bandeau (pas de texte long).
+Sur chaque **bandeau** (canal d’écoulement débloqué), un **slot PNG** affiche le **portrait d’un personnage non joueur** (vendeur délégué). Ce n’est **pas** une icône de pub ni un boost : c’est l’**assignation d’un PNJ** pour faire tourner ce canal à la place du joueur.
 
-#### Options actées (intention auteur)
+#### Mécanique actée (intention auteur)
 
-| Option | Déclencheur | Effet rendement | Proto | Feedback UI |
-|--------|-------------|-----------------|-------|-------------|
-| **Boost pub** | Vision d’une **publicité** récompensée | **+50 %** sur les ventes du bandeau (multiplicateur **×1,5**) | Post-V0 (monétisation) | Icône **lecteur / AD** — état **actif** (halo doré + badge « Pub vue ») ou **inactif** (grisé, CTA « Regarder ») |
-| **Ami coop** | Ajout d’un **ami** sur le canal | **150 %** du rendement de base (multiplicateur **×1,5** — même ordre de grandeur que la pub, à valider si cumul) | **Multi** — seulement si le jeu est **rentable** | Icône **deux silhouettes** — **verrouillé** en solo (« Ami · bientôt ») ; actif en multi |
+| Élément | Règle |
+|---------|--------|
+| **Qui vend** | Un **PNJ** (PNG portrait sur le bandeau), pas le joueur |
+| **Rentabilité** | **50 %** seulement par rapport à une vente gérée par le joueur sur le même canal (×0,5 sur la marge / monnaie) |
+| **Exemple typique** | Joueur : **voisinage + bandoulière** — PNJ délégué : **vélo marchand** |
+| **Déclenchement** | Le joueur lance une **action** depuis le slot PNG (assigner stock + démarrer tournée / cycle de vente) |
+| **Feedback UI** | Portrait PNJ actif + badge **« 50 % »** ou **« Rentabilité ×0,5 »** sur le bandeau concerné |
+
+**Comparaison rendement (même canal, même stock) :**
+
+| Mode | Rentabilité | Feedback bandeau |
+|------|-------------|------------------|
+| Joueur gère le canal | **100 %** (référence) | Pas de slot PNJ actif, ou silhouette joueur |
+| PNJ délégué (action lancée) | **50 %** | Portrait PNG + badge orange « 50 % » |
 
 **Règles provisoires :**
 
-- Les upgrades sont **par bandeau** : chaque canal a ses propres slots (voisinage, bandoulière, vélo…).
-- Le **rendement courant** du bandeau doit être lisible en un coup d’œil (ex. jauge ou libellé « Rendement ×1,5 » sur le bandeau actif).
-- **Cumul pub + ami** : **TBD** — ne pas supposer ×2,25 sans équilibrage ; documenter le choix avant implémentation multi.
-- Durée du boost pub : **TBD** (session, X heures, jusqu’au prochain cycle de vente…).
+- Un PNJ ne remplace pas le **coût d’approvisionnement** : le joueur remplit toujours le stock du canal délégué.
+- Le malus **50 %** s’applique au **résultat de vente** (monnaie nette), pas au volume physique écoulé — **TBD** au chiffrage.
+- Plusieurs PNJ sur plusieurs bandeaux : possible en extension (§2.4) ; équilibrage à valider.
 
 #### Référence visuelle — feedback joueur
 
-<img src="./ref_ui_bandeau_upgrades_rendement.png" alt="Maquette UI — bandeau canal avec slots upgrade pub (+50 %) et ami (150 %, verrouillé multi)" width="900" />
+<img src="./ref_ui_bandeau_pnj_delegue_rendement.png" alt="Maquette UI — bandeau vélo avec PNJ délégué à 50 % rentabilité pendant que le joueur gère voisinage et bandoulière" width="900" />
 
-**Fichier :** `Notes/GDD/ref_ui_bandeau_upgrades_rendement.png`
+**Fichier :** `Notes/GDD/ref_ui_bandeau_pnj_delegue_rendement.png`
 
 **États UI à prévoir (Bezy / prefab bandeau) :**
 
 | État | Rendu |
 |------|-------|
-| Inactif | Icône grisée, pas de halo |
-| Actif (pub vue) | Icône couleur + anneau doré + indicateur rendement |
-| Verrouillé (ami / multi) | Cadenas + libellé court « bientôt » |
-| Rendement global bandeau | Badge ou barre « ×1,0 » / « ×1,5 » visible sur le bandeau sélectionné |
+| Aucun PNJ assigné | Slot vide ou « + Vendeur » grisé |
+| PNJ assigné, inactif | Portrait PNG visible, pas de cycle en cours |
+| PNJ en action (vente) | Portrait + badge **50 %** + indicateur « Rentabilité ×0,5 » |
+| Joueur sur ce canal | Pas de délégation — rendement **100 %**, slot PNJ masqué ou désactivé |
 
-*Maquette conceptuelle — les assets finaux (sprites PNG des icônes AD / Ami) seront produits en phase polish ou via Bezy.*
+*Maquette conceptuelle — le sprite PNG final du vendeur sera un asset dédié (personnage non joueur), pas une icône générique.*
 
 ---
 
@@ -217,7 +231,7 @@ Chaque **bandeau** (canal d’écoulement débloqué) expose des **options d’u
 - Aucun canal de vente (PNJ voisinage, bandoulière, vélo).
 - Pas de prix de **revente** par item / par canal.
 - Pas de système **recherche / upgrade** lié aux canaux commerce.
-- Pas de **boost rendement** par bandeau (pub / ami — §2.8).
+- Pas de **délégation PNJ** par bandeau (slot PNG, rentabilité 50 % — §2.8).
 - Pas de règle **parallélisme** canaux côté code.
 
 ---
@@ -247,12 +261,13 @@ Chaque **bandeau** (canal d’écoulement débloqué) expose des **options d’u
 - [ ] Proto : salades uniquement ; extension poisson quand piste `track.fish` active ?
 - [ ] Flag `canSell` + canal autorisé par item ?
 
-### 5.6 Upgrades rendement par bandeau (§2.8)
+### 5.6 Délégation PNJ par bandeau (§2.8)
 
-- [ ] Durée du boost **pub** après vision (session, timer, cycle vente ?).
-- [ ] Cumul **pub + ami** : additionnel ou le plus fort des deux ?
-- [ ] SDK pub (Unity Ads, AdMob…) — choix technique post-rentabilité.
-- [ ] Scope **multi ami** : coop async, invitation, ou salon — horizon uniquement.
+- [ ] Coût du vendeur PNJ (salaire fixe, % du CA, ou inclus dans le malus 50 % ?).
+- [ ] Durée d’une **action** déléguée (tournée complète, timer, jusqu’à stock épuisé ?).
+- [ ] Le malus 50 % s’applique sur **marge** ou sur **volume** écoulé ?
+- [ ] Déblocage du premier PNJ vendeur (recherche, quête, upgrade vélo ?).
+- [ ] Version **multi ami** (rendement différent du PNJ ?) — horizon si jeu rentable.
 
 ---
 
@@ -263,10 +278,10 @@ Chaque **bandeau** (canal d’écoulement débloqué) expose des **options d’u
    - retourne prix, quantité acceptée, monnaie créditée.
 2. **`SaleChannelDefinition` (SO)** — id, tier, prix multiplier, volume cap, unlock research id.
 3. **PNJ voisinage V0** — composant `NeighborBuyerNPC` + data table demandes (item, qty max, prix).
-4. **Parallélisme** — `SaleChannelManager` : vérifie qu’un seul canal mobile joueur est actif ; voisinage toujours OK.
-5. **Phase staff** — `VehicleSaleAssignment` : inventaire dédié véhicule, simulation CA / coût vendeur (offline tick ou à la collecte).
-6. **UI** — popup livraison PNJ (proto) ; fiche véhicule (plus tard) ; prefabs **Bezy** pour étal / vélo quand gameplay visuel requis ; **slots upgrade rendement** sur chaque bandeau (§2.8).
-7. **`SaleChannelYieldModifier`** — multiplicateur rendement par canal (pub, ami, talents) ; appliqué au calcul monnaie créditée.
+4. **Parallélisme** — `SaleChannelManager` : un seul canal mobile **joueur** ; voisinage OK ; canal supplémentaire possible via **PNJ délégué** (§2.8).
+5. **Délégation PNJ** — `NpcSaleAssignment` : portrait PNG sur bandeau, stock canal, cycle vente à **×0,5** rentabilité.
+6. **UI** — popup livraison PNJ (proto) ; fiche véhicule / bandeau délégué ; prefabs **Bezy** ; **slot PNG vendeur** sur chaque bandeau (§2.8).
+7. **`SaleChannelYieldModifier`** — multiplicateur rendement : **1,0** (joueur) ou **0,5** (PNJ délégué) ; talents commerce en sus.
 
 ### Fichiers code probablement touchés (V0 voisinage)
 
@@ -294,7 +309,7 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 1. **Proto** = tier 0 voisinage seul ; salades ; prix correct ; volume très bas.
 2. **Progression** = monnaie accumulée sur **plusieurs cycles** avant chaque recherche (bandoulière → vélo).
-3. **Parallélisme** = voisinage + **un** canal mobile joueur max ; pas bandoulière + vélo simultanés sans staff.
+3. **Parallélisme** = voisinage + **un** canal mobile joueur max ; **vélo (ou autre) en PNJ délégué** possible en parallèle à **50 %** rentabilité (§2.8).
 4. **Spread économique** : le voisinage reste rentable en marge unitaire ; les canaux supérieurs compensent par **volume** (à valider au chiffrage).
 5. Le **shop actuel** reste l’**achat** ; la **vente** passe par les canaux §2, pas par un onglet « vendre » générique du shop (sauf raccourci UI plus tard).
 
@@ -322,4 +337,4 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 ---
 
-*Dernière mise à jour : 2026-06-13 — upgrades rendement par bandeau (§2.8 : pub +50 %, ami 150 % multi) + maquette feedback UI.*
+*Dernière mise à jour : 2026-06-13 — délégation PNJ par bandeau (§2.8 : slot PNG, rentabilité 50 %) + maquette feedback UI.*
