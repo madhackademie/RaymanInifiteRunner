@@ -51,7 +51,29 @@ Le **runner**, le **biofiltre** et les **talents commerce** modulent ou consomme
 
 La vente n’est **pas** un écran shop générique au départ : ce sont des **canaux d’écoulement** débloqués progressivement. Chaque canal a son propre **prix**, **capacité / volume** et **coût d’accès** (recherche ou upgrade).
 
-### 2.2 Échelle des canaux
+### 2.2 Référence interface UI — écran d’écoulement
+
+> **Affichage :** les images s’affichent correctement **sur GitHub** (après push). L’aperçu Markdown **Cursor / VS Code** peut ne pas les rendre en local — ouvrir le PNG dans le même dossier que cette note, ou consulter le fichier sur github.com.
+
+Référence visuelle pour la **conception UI** des canaux de vente / zones d’écoulement : liste verticale de **bandeaux thématiques** (scroll), chaque panneau = un univers ou un canal distinct.
+
+<img src="./ref_ui_ecoulement_production_panneaux.png" alt="Référence UI — panneaux thématiques empilés verticalement pour sélection de zones ou canaux d'écoulement" width="900" />
+
+**Fichier :** `Notes/GDD/ref_ui_ecoulement_production_panneaux.png`
+
+**Ce qu’on retient pour l’implémentation :**
+
+| Élément référence | Traduction gameplay |
+|-------------------|---------------------|
+| Bandeaux horizontaux empilés | Liste scrollable des **canaux de vente** (voisinage, bandoulière, vélo, …) ou des **zones d’écoulement** débloquées |
+| Pancarte + icône en haut à gauche | Identifiant visuel du canal (icône + libellé court) |
+| Illustration isométrique par panneau | Ambiance / thème du canal — pas un bouton plat générique |
+| Style cartoon saturé, lisible mobile | Cohérent avec le ton cozy farm du projet |
+| Scroll vertical | Plusieurs canaux ou zones sans écran surchargé |
+
+*Proto V0 (voisinage seul) : un seul panneau actif au départ ; les autres apparaissent **verrouillés** ou absents jusqu’au déblocage recherche (cf. §2.5).*
+
+### 2.3 Échelle des canaux
 
 | Tier | Canal | Rôle | Déblocage (intention) | Proto |
 |------|-------|------|------------------------|-------|
@@ -76,7 +98,7 @@ La vente n’est **pas** un écran shop générique au départ : ce sont des **c
 
 Quatre variantes : remorque étal, camionnette revisitée, triporteur magasin, bi-porteur modulable — palette bois / vert éco, circuit court.
 
-### 2.3 Règle de parallélisme (actée en intention)
+### 2.4 Règle de parallélisme (actée en intention)
 
 Le joueur **ne peut pas** exploiter tous les canaux mobiles en même temps lui-même.
 
@@ -85,11 +107,11 @@ Le joueur **ne peut pas** exploiter tous les canaux mobiles en même temps lui-m
 | Voisinage **+** bandoulière (joueur) | Oui — voisinage reste le socle |
 | Voisinage **+** vélo marchand (joueur) | Oui — **un seul** canal mobile actif à la fois |
 | Bandoulière **+** vélo en parallèle (joueur) | **Non** |
-| Voisinage **+** N véhicules avec **personnel** | Oui — phase personnel (§2.5) : le joueur gère l’approvisionnement, le vendeur écoule |
+| Voisinage **+** N véhicules avec **personnel** | Oui — phase personnel (§2.6) : le joueur gère l’approvisionnement, le vendeur écoule |
 
 En résumé : **voisinage toujours possible** ; le joueur n’active qu’**un** des systèmes mobiles (bandoulière **ou** vélo) jusqu’à l’arrivée du personnel.
 
-### 2.4 Prototype en cours — périmètre V0
+### 2.5 Prototype en cours — périmètre V0
 
 Focus **tier 0 — voisinage** uniquement :
 
@@ -111,7 +133,7 @@ flowchart TD
   V2 --> Staff[Phase personnel : fiche véhicule]
 ```
 
-### 2.5 Phase personnel (horizon — non proto)
+### 2.6 Phase personnel (horizon — non proto)
 
 Quand du **personnel vendeur** est disponible :
 
@@ -120,7 +142,7 @@ Quand du **personnel vendeur** est disponible :
 - Permet de **déléguer** un canal mobile tout en gardant le voisinage (et éventuellement un second véhicule avec un autre employé).
 - Lien possible avec piste **Logistique** / **Commerce** des talents halo — détail TBD tablette.
 
-### 2.6 Axes économiques par canal (à chiffrer)
+### 2.7 Axes économiques par canal (à chiffrer)
 
 | Paramètre | Voisinage | Bandoulière | Vélo marchand |
 |-----------|-----------|-------------|---------------|
@@ -259,4 +281,4 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 ---
 
-*Dernière mise à jour : 2026-06-10 — vision canaux voisinage / bandoulière / vélo + règle parallélisme + phase personnel.*
+*Dernière mise à jour : 2026-06-13 — référence UI écran écoulement (§2.2) + vision canaux voisinage / bandoulière / vélo + règle parallélisme + phase personnel.*
