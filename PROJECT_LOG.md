@@ -1,5 +1,78 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-12 (soir) — Fin de session : arbres talents — composition en cours
+
+### Contexte
+- Branche **`feature/talent-tree-ui`** créée avant suite Bezy (lot isolé de `main`).
+
+### Objectifs du jour
+- Playtest MVP talents (texte) — déjà validé.
+- Foundation Cursor arbres + Bezy Ph.1–3 + revue wiring.
+- Documenter workflow auteur composition arbre.
+
+### Changements effectués
+- **Cursor** : `TalentNodeView`, `TalentTreeEdgeView`, `TalentTreeLayoutRoot`, `TalentTrackPrefabBinding`, `TalentTreeLayoutRootEditor`, évolution `TalentTreeOverlayController` (swap prefab).
+- **Bezy** : `TalentNodeView.prefab`, `TalentTreeEdgeView.prefab`, patch `InventoryScreen` (`TreeScrollView`, `TreeContent`, wiring Phase 3) — **revue Cursor OK**.
+- **Docs** : `SPEC_talent_tree_layout_editeur.md` (décisions actées), `PROMPTS_Bezi_talent_tree.md`, **`WORKFLOW_creation_arbre_talents.md`**, mises à jour `Todo_project`, `ARBRE_inventory_halo_ui.md`.
+
+### Décisions
+- 1 prefab arbre / piste + `TreeContent` partagé + swap dynamique ([P0-INV-HALO-009] clos).
+- Composition `Track_Commerce` = travail auteur Unity (pas Bezy).
+
+### État auteur fin session
+- **[P0-INV-HALO-012]** en cours : auteur à l'**étape 1** du workflow (`Track_Commerce` racine + `TalentTreeLayoutRoot`).
+- SO Commerce sur disque : **à confirmer** demain (étape 0 si pas encore faite).
+
+### Prochaine session (2026-06-13 matin)
+1. Reprendre `WORKFLOW_creation_arbre_talents.md` — étape 1 → 8.
+2. Binding `track.commerce` dans overlay + playtest P1 arbre visuel.
+3. Commit sur **`feature/talent-tree-ui`** (auteur) ; merge `main` après playtest OK.
+
+### Fichiers touchés (non exhaustif — commit auteur)
+- `Assets/Scripts/UI/Inventory/Progression/` (nouveaux scripts + overlay)
+- `Assets/Editor/TalentTreeLayoutRootEditor.cs`
+- `Assets/Prefabs/Ui/Progression/`, `Assets/Prefabs/Ui/InventoryScreen.prefab`
+- `Notes/Ui/*.md`, `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `PROJECT_LOG.md`
+
+---
+
+## 2026-06-12 — Doc workflow création arbre talents
+
+### Fait
+- Nouvelle note `Notes/Ui/WORKFLOW_creation_arbre_talents.md` : procédure auteur complète (SO → composition `Track_Commerce` → binding overlay → playtest).
+- Renvois ajoutés : `SPEC_talent_tree_layout_editeur.md`, `PROMPTS_Bezi_talent_tree.md`, `ARBRE_inventory_halo_ui.md`, `Todo_project.md`.
+
+---
+
+## 2026-06-12 — Foundation arbres talents (layout éditeur)
+
+### Décision [P0-INV-HALO-009]
+- 1 prefab arbre par piste, conteneur scroll partagé, swap dynamique à l'ouverture overlay.
+
+### Fait (Cursor)
+- Scripts : `TalentNodeView`, `TalentTreeEdgeView`, `TalentTreeLayoutRoot`, `TalentTrackPrefabBinding`.
+- `TalentTreeOverlayController` : `treeContentHost`, `trackPrefabBindings`, instantiate/bind/refresh, fallback texte MVP conservé.
+- Custom Editor : `TalentTreeLayoutRootEditor` (collect nodes/edges, validate warnings).
+- Doc : `SPEC_talent_tree_layout_editeur.md` actée, `PROMPTS_Bezi_talent_tree.md` Phase 1.
+
+### Prochaine session
+1. **[P0-INV-HALO-008]** Bezy Phase 1 (shell `TreeScrollView` + briques prefab).
+2. **[P0-INV-HALO-012]** Composition auteur `Track_Commerce.prefab` après Bezy Phase 2–3.
+
+---
+
+## 2026-06-12 — Playtest MVP talents validé sur `main`
+
+### Validation auteur
+- [x] Playtest halo → overlay Commerce → achat nœuds mock (`TalentProgressionService`) → Retour : **OK** (déjà effectué côté auteur).
+- Branche documentée `cursor/mvp-talent-tree-950d` : **absente** du remote ; code MVP talents présent sur **`main`**.
+
+### Prochaine session
+1. **[P0-INV-HALO-009]** — Valider points ouverts `Notes/Ui/SPEC_talent_tree_layout_editeur.md`.
+2. **[P0-INV-HALO-008]** → **[P0-INV-HALO-011]** → **[P0-INV-HALO-012]** — briques Bezy, foundation Cursor, composition `Track_Commerce.prefab`.
+
+---
+
 ## 2026-06-07 — Arbres talents : décision layout éditeur + fixes overlay/service
 
 ### Contexte

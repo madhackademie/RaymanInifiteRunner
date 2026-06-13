@@ -51,7 +51,31 @@ Le **runner**, le **biofiltre** et les **talents commerce** modulent ou consomme
 
 La vente n’est **pas** un écran shop générique au départ : ce sont des **canaux d’écoulement** débloqués progressivement. Chaque canal a son propre **prix**, **capacité / volume** et **coût d’accès** (recherche ou upgrade).
 
-### 2.2 Échelle des canaux
+### 2.2 Référence interface UI — écran d’écoulement
+
+> **Affichage :** les images s’affichent correctement **sur GitHub** (après push). L’aperçu Markdown **Cursor / VS Code** peut ne pas les rendre en local — ouvrir le PNG dans le même dossier que cette note, ou consulter le fichier sur github.com.
+
+Référence visuelle pour la **conception UI** des canaux de vente / zones d’écoulement : liste verticale de **bandeaux thématiques** (scroll), chaque panneau = un univers ou un canal distinct.
+
+<img src="./ref_ui_ecoulement_production_panneaux.png" alt="Référence UI — panneaux thématiques empilés verticalement pour sélection de zones ou canaux d'écoulement" width="900" />
+
+**Fichier :** `Notes/GDD/ref_ui_ecoulement_production_panneaux.png`
+
+**Ce qu’on retient pour l’implémentation :**
+
+| Élément référence | Traduction gameplay |
+|-------------------|---------------------|
+| Bandeaux horizontaux empilés | Liste scrollable des **canaux de vente** (voisinage, bandoulière, vélo, …) ou des **zones d’écoulement** débloquées |
+| Pancarte + icône en haut à gauche | Identifiant visuel du canal (icône + libellé court) |
+| Illustration isométrique par panneau | Ambiance / thème du canal — pas un bouton plat générique |
+| Style cartoon saturé, lisible mobile | Cohérent avec le ton cozy farm du projet |
+| Scroll vertical | Plusieurs canaux ou zones sans écran surchargé |
+| **Étoiles roses** (en-tête bandeau) | Niveau d’**upgrade du canal** — cf. §2.9 |
+| **2 portraits** (coin du bandeau) | Actions PNJ délégué + inviter ami — cf. §2.8 |
+
+*Proto V0 (voisinage seul) : un seul panneau actif au départ ; délégation PNJ / ami (§2.8) **hors scope V0**.*
+
+### 2.3 Échelle des canaux
 
 | Tier | Canal | Rôle | Déblocage (intention) | Proto |
 |------|-------|------|------------------------|-------|
@@ -76,28 +100,30 @@ La vente n’est **pas** un écran shop générique au départ : ce sont des **c
 
 Quatre variantes : remorque étal, camionnette revisitée, triporteur magasin, bi-porteur modulable — palette bois / vert éco, circuit court.
 
-### 2.3 Règle de parallélisme (actée en intention)
+### 2.4 Règle de parallélisme (actée en intention)
 
 Le joueur **ne peut pas** exploiter tous les canaux mobiles en même temps lui-même.
 
 | Combinaison | Autorisée ? |
 |-------------|-------------|
 | Voisinage **+** bandoulière (joueur) | Oui — voisinage reste le socle |
-| Voisinage **+** vélo marchand (joueur) | Oui — **un seul** canal mobile actif à la fois |
-| Bandoulière **+** vélo en parallèle (joueur) | **Non** |
-| Voisinage **+** N véhicules avec **personnel** | Oui — phase personnel (§2.5) : le joueur gère l’approvisionnement, le vendeur écoule |
+| Voisinage **+** vélo marchand (joueur) | Oui — **un seul** canal mobile actif à la fois côté joueur |
+| Bandoulière **+** vélo en parallèle (**joueur** sur les deux) | **Non** |
+| Voisinage **+** bandoulière (joueur) **+** vélo (PNJ délégué) | **Oui** — exemple cible : le joueur gère voisinage et bandoulière pendant qu’un **PNG vendeur** écoule le vélo à **50 %** de rentabilité (§2.8) |
+| Voisinage **+** N véhicules avec **personnel** | Oui — extension §2.6 / §2.8 : plusieurs PNJ possibles si le jeu le permet |
 
-En résumé : **voisinage toujours possible** ; le joueur n’active qu’**un** des systèmes mobiles (bandoulière **ou** vélo) jusqu’à l’arrivée du personnel.
+En résumé : le joueur n’exploite qu’**un** canal mobile lui-même (bandoulière **ou** vélo). En revanche, un **canal supplémentaire** peut tourner via un **PNJ assigné** (portrait PNG sur le bandeau), avec une **rentabilité réduite**.
 
-### 2.4 Prototype en cours — périmètre V0
+### 2.5 Prototype en cours — périmètre V0
 
 Focus **tier 0 — voisinage** uniquement :
 
 - Implémenter **quelques PNJ voisins** comme points de vente.
 - Produit cible initial : **salades** (laitue récoltée).
+- **★1 voisinage** (vision §2.9) : **1 voisin**, plafond **2 salades** — point de départ même en proto.
 - **Prix** : très correct pour le joueur (bonne marge relative au coût des graines).
-- **Quantité** : **très réduite** par PNJ / par cycle — goulot volontaire pour forcer la progression et plusieurs boucles récolte → vente avant la bandoulière.
-- Pas de bandoulière ni vélo dans le proto immédiat ; ils servent de **north star** pour les recherches.
+- **Quantité** : **très réduite** par PNJ / par cycle — goulot volontaire pour forcer la progression.
+- Pas de bandoulière ni vélo dans le proto immédiat ; système **étoiles ★2+** en north star post-V0.
 
 ```mermaid
 flowchart TD
@@ -111,16 +137,16 @@ flowchart TD
   V2 --> Staff[Phase personnel : fiche véhicule]
 ```
 
-### 2.5 Phase personnel (horizon — non proto)
+### 2.6 Délégation & slots bandeau (horizon — non proto)
 
-Quand du **personnel vendeur** est disponible :
+Chaque bandeau débloqué expose **deux actions** (cf. §2.8) pendant que le joueur gère d’autres canaux.
 
-- **Fiche véhicule** (UI dédiée) : le joueur **remplit l’inventaire** du véhicule (légumes, poissons, glace… selon le type d’étal).
-- **Visualisation** : chiffre d’affaire prévisionnel ou réalisé **moins le coût du vendeur** (salaire / commission — à chiffrer).
-- Permet de **déléguer** un canal mobile tout en gardant le voisinage (et éventuellement un second véhicule avec un autre employé).
-- Lien possible avec piste **Logistique** / **Commerce** des talents halo — détail TBD tablette.
+- **Slot 1 — PNJ** : vente déléguée à **50 %** ; déblocage via **pub** puis acquisition **PNJ/robot** si rentable.
+- **Slot 2 — Ami** : boost production / bénéfice **win/win** (horizon lointain, multi).
+- **Étoiles roses** : progression du **bandeau / canal** entier (§2.9), pas des portraits.
+- Le joueur **remplit le stock** ; exemple : joueur **voisinage + bandoulière**, PNJ sur **vélo** (§2.4).
 
-### 2.6 Axes économiques par canal (à chiffrer)
+### 2.7 Axes économiques par canal (à chiffrer)
 
 | Paramètre | Voisinage | Bandoulière | Vélo marchand |
 |-----------|-----------|-------------|---------------|
@@ -128,6 +154,108 @@ Quand du **personnel vendeur** est disponible :
 | Volume max / cycle | Très faible | Faible–moyen (~15 kg ref. art) | Élevé |
 | Coût d’exploitation | Négligeable | Amortissement upgrade | Amortissement + entretien ? |
 | Interaction joueur | Dialogue PNJ / livraison | Session mobile (TBD gameplay) | Session mobile ou assignation staff |
+
+### 2.8 Slots bandeau — PNJ délégué & ami (2 portraits)
+
+Sur chaque **bandeau** (canal débloqué), la UI expose **deux emplacements portrait** empilés sur le côté. Les **étoiles d’upgrade** du canal sont sur l’**en-tête du bandeau** (§2.9), pas sous les portraits.
+
+```
+┌─────────────────────────────────────────────┐
+│  Voisinage          ★ ☆ ☆ ☆ ☆  (étoiles)    │  ← upgrade bandeau §2.9
+│  [illustration canal]        ┌──────────┐   │
+│                              │ Portrait │   │  ← Slot 1 : action PNJ
+│                              │   PNJ    │   │
+│                              ├──────────┤   │
+│                              │ Inviter  │   │  ← Slot 2 : action ami
+│                              │   ami    │   │
+│                              └──────────┘   │
+└─────────────────────────────────────────────┘
+```
+
+#### Slot 1 — Action PNJ (vendeur délégué)
+
+| Élément | Règle |
+|---------|--------|
+| **Rôle** | Un **personnage non joueur** vend à ta place sur ce canal |
+| **Rentabilité** | **50 %** vs joueur sur le même canal (×0,5 marge / monnaie) |
+| **Déblocage** | Le slot PNJ **n’est pas disponible** tant qu’il n’est pas débloqué (cf. paliers ci-dessous) |
+| **Action** | Lancer cycle de vente déléguée (stock à remplir par le joueur) |
+
+**Paliers de déblocage PNJ (ordre d’intention) :**
+
+| Palier | Condition | Effet |
+|--------|-----------|-------|
+| **A — Pub** | Vision d’une **publicité récompensée** | Débloque l’**usage** du slot PNJ (session ou durée **TBD**) — rentabilité **50 %** |
+| **B — Acquisition** | Achat / déblocage d’un **PNJ ou robot** vendeur | Accès **permanent** au slot — feature si le jeu est **rentable** |
+
+#### Slot 2 — Action « Inviter un ami » (horizon lointain)
+
+| Élément | Règle |
+|---------|--------|
+| **Rôle** | Assigner un **ami** pour booster **production / bénéfice** sur ce bandeau |
+| **Win / win** | L’ami reçoit un **petit bonus passif** sans jouer (cosmétique, monnaie soft, cadeau — **TBD**) |
+| **Déblocage** | **Multi** — seulement si le jeu est **rentable** ; plus tard que le PNJ |
+| **Effet joueur** | **Booster** rendement ou volume (**% exact TBD**) — complète le PNJ, ne le remplace pas forcément |
+
+*Le slot ami reste **verrouillé** en solo : portrait grisé + cadenas + libellé « Inviter ami · bientôt ».*
+
+#### Comparaison rendement (même canal)
+
+| Mode | Rentabilité / effet | Slot actif |
+|------|---------------------|------------|
+| Joueur gère le canal | **100 %** (référence) | Aucun slot délégué |
+| PNJ délégué (action lancée) | **50 %** | Portrait PNJ + badge « 50 % » |
+| PNJ + ami (horizon) | **50 %** base PNJ **+ boost ami** (**TBD**) | Les deux portraits actifs |
+
+#### Référence visuelle — feedback joueur
+
+<img src="./ref_ui_bandeau_slots_pnj_ami_upgrades.png" alt="Maquette UI — bandeau avec slot PNJ et slot Inviter ami" width="900" />
+
+**Fichiers :**
+- `Notes/GDD/ref_ui_bandeau_slots_pnj_ami_upgrades.png` — maquette **2 portraits** (étoiles à repositionner sur en-tête bandeau en polish)
+- `Notes/GDD/ref_ui_bandeau_pnj_delegue_rendement.png` — variante focus PNJ seul (conservée)
+
+**États UI à prévoir (Bezy / prefab bandeau) :**
+
+| État | Slot PNJ | Slot ami |
+|------|----------|----------|
+| Verrouillé | Cadenas + icône **pub** ou boutique PNJ | Cadenas « bientôt » |
+| Débloqué, inactif | Portrait PNG visible | Portrait silhouettes grisées |
+| En action | Portrait + badge **50 %** | Boost actif (**horizon**) |
+
+*Assets finaux : sprite portrait **PNJ/robot** ; icône **ami**.*
+
+### 2.9 Étoiles d’upgrade — progression du bandeau (canal)
+
+Les **étoiles roses** (★) sont l’**upgrade du bandeau / canal dans son ensemble** — pas des portraits PNJ ou ami. Chaque canal (voisinage, bandoulière, vélo…) possède sa propre courbe **1 à 5 étoiles**.
+
+**Principe :**
+
+- **★1** = état de départ du canal une fois débloqué (capacités minimales).
+- Monter d’une étoile exige des **conditions cumulatives** : ventes répétées **par ce canal**, volumes d’items écoulés, **monnaie** investie (montants **TBD** par canal).
+- Chaque palier débloque **un choix ou une extension** : plus de clients, plus de volume, nouveaux produits, nouveaux services.
+- **★5** = capacité maximale du canal (vision long terme).
+
+#### Exemple acté — bandeau **Voisinage**
+
+| Étoile | État du canal | Conditions pour monter (*exemple ★1 → ★2*) | Récompense du palier |
+|--------|---------------|---------------------------------------------|----------------------|
+| **★1** | **1 voisin** acheteur ; plafond **2 salades** par cycle / livraison | — (départ) | Premier écoulement local |
+| **★2** | Extension capacité / offre | **5 ventes** passées par ce canal **+** **50 salades** écoulées au total **+** **2 000** gold *(monnaie à définir)* | **Au choix** (ou cumul partiel **TBD**) : **+1 voisin** **ou** **3 salades** / voisin *(6 salades max pour 2 voisins)* **ou** vente d’**autres légumes** plus rentables |
+| **★3** | *TBD* | *TBD* (ventes + volume + monnaie) | *TBD* — élargissement entourage / produits |
+| **★4** | *TBD* | *TBD* | *TBD* — préparation poisson / système |
+| **★5** | **Entourage élargi** — vision **~7 personnes** | *TBD* | Vente de **poissons**, de **systèmes aquaponiques**, **formations** (ateliers / conseils) |
+
+**Notes de design (voisinage) :**
+
+- Les compteurs (**5 ventes**, **50 salades**, **2 000 gold**) sont des **valeurs de travail** pour ★2 — à équilibrer en playtest.
+- La montée d’étoile est **spécifique au canal** : progresser le voisinage ne débloque pas automatiquement le vélo.
+- L’UI affiche la **prochaine étoile** grisée + barre de progression (ventes / salades / gold) sur le bandeau concerné.
+- Les **5 étoiles roses** au sommet du bandeau = lecture immédiate du niveau du canal.
+
+#### Autres bandeaux (bandoulière, vélo…)
+
+Même logique **1–5 étoiles**, récompenses adaptées au tier (capacité kg, zones desservies, types de produits). Détail **TBD** quand chaque canal sera priorisé en prod.
 
 ---
 
@@ -159,6 +287,7 @@ Quand du **personnel vendeur** est disponible :
 - Aucun canal de vente (PNJ voisinage, bandoulière, vélo).
 - Pas de prix de **revente** par item / par canal.
 - Pas de système **recherche / upgrade** lié aux canaux commerce.
+- Pas de **étoiles d’upgrade bandeau** (§2.9) ni **slots** PNJ / ami (§2.8).
 - Pas de règle **parallélisme** canaux côté code.
 
 ---
@@ -188,22 +317,33 @@ Quand du **personnel vendeur** est disponible :
 - [ ] Proto : salades uniquement ; extension poisson quand piste `track.fish` active ?
 - [ ] Flag `canSell` + canal autorisé par item ?
 
-### 5.5 Talents halo Commerce
+### 5.6 Étoiles bandeau & slots PNJ / ami (§2.8–§2.9)
+
+- [ ] Courbes ★3 et ★4 voisinage (seuils ventes / volume / gold).
+- [ ] ★2 voisinage : le joueur **choisit** +1 voisin, +volume, ou nouveaux légumes — ou les trois en paliers séparés ?
+- [ ] Monnaie upgrade : **gold** = `PrimaryCurrency` ou ressource dédiée ?
+- [ ] ★5 : détail des **7 personnes** entourage (PNJ nommés, slots, types d’offres).
+- [ ] Étoiles **bandoulière / vélo** : calquer le modèle voisinage.
+- [ ] Durée accès PNJ après **pub** ; boost **ami** win/win (% et récompense passive).
+
+### 5.7 Talents halo Commerce
 
 - [ ] Modificateurs par canal (ex. vendeur → bonus vélo, acheteur inchangé) — après import notes tablette.
 
 ---
-
-## 6) Pistes d’architecture (cible technique, non engagée)
 
 1. **`ISaleChannelService`** (ou équivalent) — un contrat par canal :
    - `CanSell(itemId, quantity)` / `TrySell(channelId, itemId, quantity)`
    - retourne prix, quantité acceptée, monnaie créditée.
 2. **`SaleChannelDefinition` (SO)** — id, tier, prix multiplier, volume cap, unlock research id.
 3. **PNJ voisinage V0** — composant `NeighborBuyerNPC` + data table demandes (item, qty max, prix).
-4. **Parallélisme** — `SaleChannelManager` : vérifie qu’un seul canal mobile joueur est actif ; voisinage toujours OK.
-5. **Phase staff** — `VehicleSaleAssignment` : inventaire dédié véhicule, simulation CA / coût vendeur (offline tick ou à la collecte).
-6. **UI** — popup livraison PNJ (proto) ; fiche véhicule (plus tard) ; prefabs **Bezy** pour étal / vélo quand gameplay visuel requis.
+4. **Parallélisme** — `SaleChannelManager` : un seul canal mobile **joueur** ; voisinage OK ; canal supplémentaire possible via **PNJ délégué** (§2.8).
+5. **Slots bandeau** — `SaleChannelBandeauSlots` : portrait PNJ + portrait ami (§2.8).
+6. **`SaleChannelStarProgression`** — étoiles 1–5 par canal ; compteurs ventes / volume / gold ; récompenses palier (§2.9).
+7. **Délégation PNJ** — `NpcSaleAssignment` : déblocage pub ou acquisition ; cycle **×0,5**.
+8. **Boost ami** — `FriendSaleBooster` (horizon) : win/win passif.
+9. **UI** — prefabs **Bezy** : bandeau + **5 étoiles roses** en-tête + 2 portraits + barre progression upgrade.
+10. **`SaleChannelYieldModifier`** — 1,0 joueur, 0,5 PNJ, + boost ami ; modificateurs étoiles canal en sus.
 
 ### Fichiers code probablement touchés (V0 voisinage)
 
@@ -231,7 +371,7 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 1. **Proto** = tier 0 voisinage seul ; salades ; prix correct ; volume très bas.
 2. **Progression** = monnaie accumulée sur **plusieurs cycles** avant chaque recherche (bandoulière → vélo).
-3. **Parallélisme** = voisinage + **un** canal mobile joueur max ; pas bandoulière + vélo simultanés sans staff.
+3. **Parallélisme** = voisinage + **un** canal mobile joueur max ; **vélo (ou autre) en PNJ délégué** possible en parallèle à **50 %** rentabilité (§2.8).
 4. **Spread économique** : le voisinage reste rentable en marge unitaire ; les canaux supérieurs compensent par **volume** (à valider au chiffrage).
 5. Le **shop actuel** reste l’**achat** ; la **vente** passe par les canaux §2, pas par un onglet « vendre » générique du shop (sauf raccourci UI plus tard).
 
@@ -259,4 +399,4 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 ---
 
-*Dernière mise à jour : 2026-06-10 — vision canaux voisinage / bandoulière / vélo + règle parallélisme + phase personnel.*
+*Dernière mise à jour : 2026-06-13 — §2.9 étoiles bandeau (ex. voisinage ★1→★5) ; §2.8 portraits PNJ/ami séparés.*
