@@ -53,20 +53,81 @@ Pour les prérequis : dans l’Inspector du SO, section *Prerequisite NodeIds*, 
 
 ---
 
-## Étape 2 — Hiérarchie cible
+## Étape 2 — Hiérarchie cible (organiser le prefab avant de placer nœuds et lignes)
+
+### Objectif
+
+Structurer **`Track_Commerce`** en deux zones logiques :
+
+- **`Nodes/`** — tout ce qui est cliquable (instances `TalentNodeView`)
+- **`Edges/`** — tout ce qui relie visuellement les nœuds (instances `TalentTreeEdgeView`)
+
+Ce n’est pas du code : c’est du **rangment éditeur** pour composer l’arbre comme un petit level design UI. Les dossiers vides n’ont pas de rendu à l’écran.
+
+### Hiérarchie attendue
 
 ```
-Track_Commerce          [TalentTreeLayoutRoot]
-├── Nodes
-│   ├── Node_Root       (instance TalentNodeView)
+Track_Commerce          [TalentTreeLayoutRoot]  trackId = track.commerce
+├── Nodes               (GameObject vide — conteneur)
+│   ├── Node_Root       ← étape 3 (instance TalentNodeView)
 │   ├── Node_Buyer
 │   └── Node_Seller
-└── Edges
-    ├── Edge_Root_Buyer (instance TalentTreeEdgeView)
+└── Edges               (GameObject vide — conteneur)
+    ├── Edge_Root_Buyer ← étape 4 (instance TalentTreeEdgeView)
     └── Edge_Root_Seller
 ```
 
-Créer les dossiers vides `Nodes` et `Edges` (Create Empty).
+> Variante plus tard : sous `Nodes/`, tu peux ajouter des groupes vides (`Module_Hub`, `Module_Grid`…) pour séparer visuellement des branches. **Pas obligatoire** pour le prototype Commerce.
+
+### Procédure Unity (pas à pas)
+
+**Contexte :** tu as terminé l’étape 1 — racine `Track_Commerce` avec `TalentTreeLayoutRoot` et `trackId` = `track.commerce`.
+
+1. Sélectionner **`Track_Commerce`** dans la hiérarchie (mode Prefab ou instance temporaire).
+2. Clic droit sur `Track_Commerce` → **Create Empty** → renommer **`Nodes`**.
+3. Recommencer → **Create Empty** → renommer **`Edges`**.
+4. Vérifier l’**ordre des enfants** sous `Track_Commerce` (du haut vers le bas dans la hiérarchie) :
+   - **`Edges` en premier** (au-dessus dans la liste)
+   - **`Nodes` en second** (en dessous)
+
+   Pourquoi : en UI Unity, un sibling **plus bas** dans la hiérarchie est dessiné **par-dessus**. Les lignes restent derrière les nœuds.
+
+5. Sur `Nodes` et `Edges` (RectTransform) :
+   - **Anchors** : stretch plein parent (min 0,0 — max 1,1) *ou* center selon ton habitude ;
+   - **Pivot** : 0.5 / 0.5 ;
+   - **Pos** : 0, 0 ;
+   - **Taille** : laisser le parent gérer (offset 0) — **pas de LayoutGroup** sur ces dossiers.
+
+6. Ne pas encore glisser `TalentNodeView` ni `TalentTreeEdgeView` — c’est l’**étape 3** et **4**.
+
+### Ce que cette étape ne fait pas
+
+| Hors scope étape 2 | Étape concernée |
+|--------------------|-----------------|
+| Instancier les nœuds | Étape 3 |
+| Assigner les SO | Étape 3 |
+| Positionner RectTransform des nœuds | Étape 3 |
+| Créer / câbler les edges | Étape 4 |
+| Bouton *Collect child nodes* | Étape 5 |
+| Sauver le `.prefab` sur disque | Étape 6 |
+
+### Validation rapide (avant étape 3)
+
+- [ ] `Track_Commerce` a le composant **`TalentTreeLayoutRoot`** (`trackId` = `track.commerce`).
+- [ ] Deux enfants directs : **`Nodes`** et **`Edges`** (GameObjects vides, sans Image obligatoire).
+- [ ] **`Edges`** listé **avant** **`Nodes`** dans la hiérarchie (lignes sous les icônes).
+- [ ] Aucun `VerticalLayoutGroup` / `GridLayoutGroup` sur `Track_Commerce`, `Nodes` ou `Edges`.
+- [ ] Aucune instance `TalentNodeView` / `TalentTreeEdgeView` encore — normal à ce stade.
+
+### Erreurs fréquentes
+
+- **Mettre les nœuds directement sous `Track_Commerce`** sans dossier `Nodes/` → fonctionne au runtime, mais la hiérarchie devient illisible dès 5+ nœuds ; le bouton *Collect child nodes* ramasse quand même les vues, mais le rangement est pénible.
+- **Edges après Nodes dans la hiérarchie** → lignes qui passent **par-dessus** les icônes (illisible).
+- **Ajouter un LayoutGroup** sur `Nodes` → écrase les positions manuelles de l’étape 3 (anti-pattern spec layout éditeur).
+
+### Durée estimée
+
+~2–5 minutes. Si tu bloques sur le mode Prefab : ouvre `Track_Commerce` en **Prefab Mode** (double-clic sur le prefab dans Project) pour isoler l’édition.
 
 ---
 
@@ -173,7 +234,7 @@ Vérifie que les tableaux contiennent 3 nodes et 2 edges.
 ## Checklist finale
 
 - [ ] 3 SO Commerce avec IDs exacts
-- [ ] `Track_Commerce.prefab` + `TalentTreeLayoutRoot` (`track.commerce`)
+- [ ] Étape 2 : dossiers `Nodes` + `Edges` créés, ordre hiérarchie OK (Edges avant Nodes)
 - [ ] 3 nœuds positionnés + SO assignés
 - [ ] 2 edges câblés + validation OK
 - [ ] Collect nodes/edges fait
