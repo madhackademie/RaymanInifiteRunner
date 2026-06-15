@@ -1,5 +1,33 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-15 — Merge talent tree sur `main` + prochaine session étape 7
+
+### Contexte
+- Branche de travail : **`main`** (`d2339e0`), remote à jour.
+- Merge `feature/talent-tree-ui` → `main` après revert PR #11 : talent tree UI, SO Commerce, docs GDD réintégrés.
+
+### Changements effectués (session)
+- Résolution conflits merge (`InventoryScreen.prefab`, `WORKFLOW_creation_arbre_talents.md`).
+- Restauration complète du lot talent tree (scripts, prefabs, assets, notes) depuis `feature/talent-tree-ui`.
+- Commit : `merge: réintégrer feature/talent-tree-ui sur main`.
+
+### État auteur `Track_Commerce` (fin session)
+- [x] Étapes **0–6** : SO Commerce, prefab `Track_Commerce` avec nœuds/edges visuels.
+- [~] Étape **5** : arrays `nodeViews` / `edgeViews` sur `TalentTreeLayoutRoot` **à revérifier** (Collect en Unity).
+- [ ] Étape **7** : `trackPrefabBindings` encore **vide** dans `InventoryScreen.prefab`.
+- [ ] Étape **8** : playtest P1 arbre visuel non fait.
+
+### Prochaine session
+1. **`Notes/Ui/WORKFLOW_creation_arbre_talents.md` — étape 7** : binder `track.commerce` → `Track_Commerce.prefab` dans `TalentTreeOverlayController`.
+2. Revérifier Collect (étape 5) si besoin.
+3. **Étape 8** : playtest Bootstrap → Inventaire → P1 Commerce.
+4. Commit auteur sur **`main`** si playtest OK.
+
+### Fichiers touchés (docs session)
+- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `PROJECT_LOG.md`
+
+---
+
 ## 2026-06-12 (soir) — Fin de session : arbres talents — composition en cours
 
 ### Contexte

@@ -2,8 +2,19 @@
 
 **Création :** 2026-06-12  
 **Statut :** procédure auteur active  
-**Branche type :** `feature/talent-tree-ui`  
+**Branche type :** **`main`** (merge talent tree 2026-06-15)  
 **Public :** auteur du projet (composition manuelle après livraison Bezy Phases 1–3)
+
+### État `Track_Commerce` (2026-06-15)
+
+| Étape | Statut |
+|-------|--------|
+| 0 SO | OK — `Assets/Data/Progression/Commerce/` |
+| 1–4 | OK — prefab avec `Nodes` / `Edges` + 3 nœuds + 2 edges |
+| 5 Collect | **À revérifier** — `nodeViews` / `edgeViews` peuvent être vides → boutons Collect |
+| 6 Sauvegarde | OK — `Trees/Track_Commerce.prefab` |
+| **7 Binding** | **Prochaine session** — `trackPrefabBindings` vide dans `InventoryScreen` |
+| 8 Playtest | Après étape 7 |
 
 Docs liés :
 - `Notes/Ui/SPEC_talent_tree_layout_editeur.md` — architecture et décisions
@@ -15,9 +26,64 @@ Exemple de référence : **`Track_Commerce`** (premier arbre prototype).
 
 ---
 
+## Où travailler + contrôles entre étapes
+
+### Pourquoi tu ne vois « rien » dans `InventoryScreen`
+
+C’est **normal** aux étapes 1–2 :
+
+| Raison | Détail |
+|--------|--------|
+| Overlay **inactif** | `TalentTreeOverlay` est désactivé par défaut dans le prefab (comportement runtime). |
+| `CanvasGroup` alpha 0 | L’overlay est invisible tant qu’il n’est pas ouvert en jeu. |
+| `TreeContent` vide | Pas encore d’instances `TalentNodeView` — étapes 1–2 = structure vide. |
+| Pas de binding | `trackPrefabBindings` vide jusqu’à l’**étape 7** — en Play, l’arbre ne se charge pas tout seul. |
+| Dossiers `Nodes` / `Edges` | GameObjects **sans Image** → rien à l’écran, seulement dans la hiérarchie. |
+
+**Recommandation :** composer **`Track_Commerce` en Prefab Mode** (double-clic sur le prefab dans Project), **pas** en permanence sous `InventoryScreen`. Réserver `InventoryScreen` à l’**étape 7** (binding overlay).
+
+### Contrôle visuel rapide dans `InventoryScreen` (optionnel)
+
+Si tu veux quand même voir la zone scroll dans l’overlay :
+
+1. Ouvrir `InventoryScreen.prefab`
+2. Activer temporairement **`TalentTreeOverlay`** (case à cocher à gauche du nom)
+3. Sélectionner **`OverlayPanel` → `TreeScrollView`** — tu dois voir la zone scroll (viewport vide)
+4. **Désactiver** `TalentTreeOverlay` avant de sauver (remettre l’état inactif comme à l’origine)
+
+Ne pas laisser l’overlay actif en permanence dans le prefab sauf si tu sais ce que tu fais — le runtime s’attend à alpha 0 + inactif au départ.
+
+### Tableau — quoi contrôler après chaque étape
+
+| Étape | Où vérifier | Tu dois voir / avoir |
+|-------|-------------|----------------------|
+| **0** SO | Project + Inspector | 3 assets `.asset` dans `Assets/Data/Progression/Commerce/`, `nodeId` exacts |
+| **1** Racine | Prefab Mode `Track_Commerce` | Composant `TalentTreeLayoutRoot`, `trackId` = `track.commerce` |
+| **2** Hiérarchie | Hiérarchie prefab (pas Scene obligatoire) | `Nodes` + `Edges` vides ; **Edges avant Nodes** |
+| **3** Nœuds | **Scene / Prefab Mode** | **3 carrés 120×120** (cadres sombres) + labels TMP |
+| **4** Edges | Scene / Prefab Mode | **Lignes grises** entre racine et branches (se mettent à jour si tu bouges un nœud) |
+| **5** Collect | Inspector `TalentTreeLayoutRoot` | Arrays : 3 nodes, 2 edges |
+| **6** Sauvegarde | Project | Fichier `Trees/Track_Commerce.prefab` |
+| **7** Binding | `InventoryScreen` → overlay | Entrée `track.commerce` dans `trackPrefabBindings` |
+| **8** Playtest | Play mode | Arbre complet au clic P1 Commerce |
+
+**Premier retour visuel net :** fin de l’**étape 3** (nœuds instanciés).
+
+### Mini playtests intermédiaires (optionnel)
+
+| Moment | Faisable ? | Ce que tu obtiens |
+|--------|------------|-------------------|
+| Après étape 2 | Non visuel | Hiérarchie seulement |
+| Après étape 3–6 | Oui, en glissant `Track_Commerce` **à la main** sous `TreeContent` + binding temporaire | Aperçu layout sans achat SO |
+| Après étape 7–8 | Oui, test complet | Swap runtime + achat nœuds |
+
+Pour un aperçu avant l’étape 7 : ouvre `InventoryScreen`, active overlay, glisse une **instance** de `Track_Commerce` sous `TreeContent`, Play → Inventaire → P1. Sans binding, le code ne l’instanciera pas tout seul — c’est un **preview manuel** éditeur seulement.
+
+---
+
 ## Prérequis
 
-- Branche **`feature/talent-tree-ui`**
+- Branche **`main`** (lot talent tree mergé)
 - Unity ouvert, prefabs Bezy compilés sans erreur
 - Dossier à créer si absent : `Assets/Prefabs/Ui/Progression/Trees/`
 - Dossier SO : `Assets/Data/Progression/Commerce/` (à créer)

@@ -139,7 +139,13 @@ public class TalentTreeOverlayController : MonoBehaviour
         activeTreeInstance.name = prefab.name;
 
         RectTransform instanceRect = activeTreeInstance.transform as RectTransform;
-        if (instanceRect != null)
+        if (instanceRect == null)
+        {
+            Debug.LogWarning(
+                $"[TalentTreeOverlayController] Prefab '{prefab.name}' sans RectTransform sur la racine. " +
+                "Recree la racine via UI → Empty (cf. WORKFLOW_creation_arbre_talents.md).");
+        }
+        else
         {
             instanceRect.anchorMin = Vector2.zero;
             instanceRect.anchorMax = Vector2.one;
@@ -211,18 +217,16 @@ public class TalentTreeOverlayController : MonoBehaviour
 
     private void ApplyPlaceholderVisibility()
     {
-        if (bodyPlaceholderLabel == null)
-            return;
+        bool hidePlaceholder = isVisualTreeActive && hidePlaceholderWhenTreeVisible;
+        Transform placeholderRoot = bodyPlaceholderLabel != null
+            ? bodyPlaceholderLabel.transform.parent
+            : null;
 
-        bool showPlaceholderText = !isVisualTreeActive || !hidePlaceholderWhenTreeVisible;
-        bodyPlaceholderLabel.gameObject.SetActive(showPlaceholderText);
-
-        if (!showPlaceholderText)
-            return;
-
-        Transform placeholderRoot = bodyPlaceholderLabel.transform.parent;
         if (placeholderRoot != null)
-            placeholderRoot.gameObject.SetActive(true);
+            placeholderRoot.gameObject.SetActive(!hidePlaceholder);
+
+        if (bodyPlaceholderLabel != null)
+            bodyPlaceholderLabel.gameObject.SetActive(!hidePlaceholder);
     }
 
     private void PlayAnimatorBool(bool isOpen)

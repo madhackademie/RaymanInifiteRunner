@@ -37,16 +37,25 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/talent-tree-ui`** — arbres talents visuels (foundation Cursor + Bezy Ph.1–3 OK). Base : **`main`**. **Ne pas committer sur `main`** tant que le lot n'est pas validé.
+> Branche courante : **`main`** (`d2339e0`) — merge `feature/talent-tree-ui` **effectué** (2026-06-15) : talent tree UI + docs GDD réintégrés après revert PR #11. Remote **`origin/main`** à jour.
 
-### Prochaine session (priorité immédiate — reprise 2026-06-13)
+### Prochaine session (priorité immédiate — reprise 2026-06-15)
 
-**[P0-INV-HALO-012]** Composition auteur **`Track_Commerce.prefab`** — reprendre le workflow :
+**[P0-INV-HALO-012]** Composition auteur **`Track_Commerce.prefab`** — reprendre le workflow **`Notes/Ui/WORKFLOW_creation_arbre_talents.md`** :
 
-1. Doc : **`Notes/Ui/WORKFLOW_creation_arbre_talents.md`**
-2. **Étape 0** (si pas fait) : créer les 3 SO Commerce (`Assets/Data/Progression/Commerce/`) avec IDs mock exacts.
-3. **Étape 1 en cours** : créer racine `Track_Commerce` + `TalentTreeLayoutRoot` (`trackId` = `track.commerce`).
-4. Enchaîner étapes 2→8 (nœuds, edges, collect, binding overlay, playtest P1).
+| Étape | Statut | Détail repo |
+|-------|--------|-------------|
+| **0** SO Commerce | [x] | 3 assets dans `Assets/Data/Progression/Commerce/` |
+| **1–4** Racine + hiérarchie + nœuds + edges | [x] | `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab` |
+| **5** Collect nodes/edges | [~] | **À revérifier Unity** : `nodeViews` / `edgeViews` encore vides dans le prefab |
+| **6** Sauvegarde prefab | [x] | Fichier `.prefab` sur disque |
+| **7** Binding overlay | **[ ] priorité session** | `InventoryScreen` → `trackPrefabBindings` **vide** — ajouter `track.commerce` → `Track_Commerce.prefab` |
+| **8** Playtest P1 | [ ] | Après étape 7 : Bootstrap → Inventaire → P1 Commerce → achat visuel |
+
+**Ordre session :**
+1. Ouvrir Unity → `Track_Commerce.prefab` → **Collect child nodes** + **Collect child edges** (étape 5 si arrays vides).
+2. **Étape 7** : `InventoryScreen.prefab` → `TalentTreeOverlay` / `TalentTreeOverlayController` → binding `track.commerce`.
+3. **Étape 8** : playtest arbre visuel + achat mock ; commit sur **`main`** si OK.
 
 ### Ordre session (historique 2026-06-12)
 
@@ -80,7 +89,7 @@ Convention d'IDs :
 - [x] **[P0-INV-HALO-009]** **Décision layout** — 1 prefab/piste + `TreeContent` partagé + swap dynamique (2026-06-12, cf. spec).
 - [x] **[P0-INV-HALO-008]** **Bezy briques arbre** — Ph.1–3 **validées Cursor** (2026-06-12) : `TreeScrollView`, `TreeContent`, `TalentNodeView`, `TalentTreeEdgeView`, wiring overlay (`treeContentHost`).
 - [x] **[P0-INV-HALO-011]** **Cursor foundation** — scripts + Custom Editor + `TalentTreeOverlayController` swap prefab (2026-06-12).
-- [~] **[P0-INV-HALO-012]** **Auteur composition** — `Track_Commerce.prefab` : **en cours** (2026-06-12 soir) — auteur à l'**étape 1** du workflow (prefab racine) ; suite demain matin.
+- [~] **[P0-INV-HALO-012]** **Auteur composition** — `Track_Commerce.prefab` : **en cours** (2026-06-15) — étapes 0–6 faites ; **prochaine session = étape 7** (binding overlay) puis playtest étape 8.
 
 **4 — Notes tablette perso (complément)**
 

@@ -17,13 +17,14 @@
 - Récolte/inventaire: comportement courant prévu en “all-or-nothing” tant que l’ajout partiel n’est pas formalisé.
 - **Récolte (décision jeu, 2026)** : **une seule récolte par plante** puis **destruction**. Plusieurs lignes dans **`harvestStages`** = **choix de timing** (ex. récolter à Mature ou attendre Seedling) : l’UI n’expose que la config du **stade courant** ; ce n’est **pas** deux récoltes d’affilée sur la même instance. Pas de « première récolte puis plante intacte pour une deuxième » sans changer ce flux.
 
-### Priorités en cours (2026-06-13 — reprise)
-1. **[P0-INV-HALO-012]** — Composition `Track_Commerce.prefab` (workflow `Notes/Ui/WORKFLOW_creation_arbre_talents.md`, reprise **étape 1**).
+### Priorités en cours (2026-06-15 — reprise)
+1. **[P0-INV-HALO-012]** — Workflow `Notes/Ui/WORKFLOW_creation_arbre_talents.md` : **étape 7** (binding `track.commerce` dans `InventoryScreen` → `trackPrefabBindings`) puis **étape 8** playtest P1.
 2. **[P0-IDEA-001]** — Compléter notes tablette (après arbre Commerce playtesté).
 
-### Contexte Git session (2026-06-12 fin)
-- **`feature/talent-tree-ui`** — foundation Cursor + Bezy Ph.1–3 ; composition auteur en cours.
-- Playtest MVP talents texte **validé** ; arbre visuel Commerce **pas encore** playtesté.
+### Contexte Git session (2026-06-15)
+- **`main`** (`d2339e0`) — merge `feature/talent-tree-ui` réintégré ; remote à jour.
+- `Track_Commerce.prefab` + SO Commerce sur disque ; binding overlay **pas encore** câblé (`trackPrefabBindings: []`).
+- Playtest MVP talents texte **validé** ; arbre visuel Commerce **pas encore** playtesté (étape 8).
 
 ### Rappel protocole gestion de projet (session)
 - Pour toute question "tache du jour / priorite / prochaine session", lire en premier:
@@ -32,8 +33,9 @@
   - `PROJECT_LOG.md` (derniere entree)
   - `Notes/Todo_project.md` (prochaine session / priorite immediate)
 - Repondre uniquement avec la priorite la plus recente issue des docs, sans invention.
-- Priorite immediate — **2026-06-13** (`Notes/Todo_project.md`) :
-  - **[P0-INV-HALO-012]** workflow création arbre — reprise étape 1 `Track_Commerce` sur **`feature/talent-tree-ui`**.
+- Priorite immediate — **2026-06-15** (`Notes/Todo_project.md`) :
+  - **[P0-INV-HALO-012]** workflow création arbre — **étape 7** binding overlay + **étape 8** playtest sur **`main`**.
+  - Vérifier étape 5 (Collect) si arrays `nodeViews` / `edgeViews` vides dans `Track_Commerce.prefab`.
   - Bezy Ph.1–3 + Cursor foundation **clos** (2026-06-12).
 
 ### Prompt de reprise BezyIA
