@@ -37,13 +37,22 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`cursor/mvp-talent-tree-950d`** — MVP talents (PR #8). Base stable : **`main`** (`a32c63c`). **[P0-INV-HALO-004]** playtest halo validé sur `main` (2026-06-10).
+> Branche courante : **`feature/talent-tree-ui`** — arbres talents visuels (foundation Cursor + Bezy Ph.1–3 OK). Base : **`main`**. **Ne pas committer sur `main`** tant que le lot n'est pas validé.
 
-### Ordre session (mis à jour 2026-06-10)
+### Prochaine session (priorité immédiate — reprise 2026-06-13)
 
-**1 — [PRIORITÉ IMMÉDIATE] Playtest MVP talents (branche courante)**
+**[P0-INV-HALO-012]** Composition auteur **`Track_Commerce.prefab`** — reprendre le workflow :
 
-- [ ] Playtest **`cursor/mvp-talent-tree-950d`** : halo → overlay → achat nœud mock Commerce (PR #8).
+1. Doc : **`Notes/Ui/WORKFLOW_creation_arbre_talents.md`**
+2. **Étape 0** (si pas fait) : créer les 3 SO Commerce (`Assets/Data/Progression/Commerce/`) avec IDs mock exacts.
+3. **Étape 1 en cours** : créer racine `Track_Commerce` + `TalentTreeLayoutRoot` (`trackId` = `track.commerce`).
+4. Enchaîner étapes 2→8 (nœuds, edges, collect, binding overlay, playtest P1).
+
+### Ordre session (historique 2026-06-12)
+
+**1 — Playtest MVP talents — clos**
+
+- [x] Playtest MVP talents sur **`main`** — **validé** (2026-06-12) : halo P1 Commerce → overlay → achat nœud mock (Racine + branches) → Retour OK.
 
 **Playtest inventaire halo — clos**
 
@@ -60,18 +69,18 @@ Convention d'IDs :
 - [x] **[P0-INV-HALO-003]** **Phase 3 wiring** (Bezy) — **review Cursor OK** (2026-06-05) : `PlayerHaloSlotUI`, `PlayerHaloPanelController` (slots 01→08 ordonnés), `TalentTreeOverlayController`, `InventoryScreenController` câblés.
 - [x] Fix layout (2026-06-05) : `VerticalLayoutGroup.ChildControlHeight=1` → grille restaurée.
 
-**3 — Lier halo → arbres de compétences**
+**2 — [PRIORITÉ IMMÉDIATE] Lier halo → arbres de compétences (visuel éditeur)** — foundation Cursor OK (2026-06-12)
 
 > Plan historique (3 étapes) : **`Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`**  
-> **Décision layout 2026-06-07** : arbres composés **à la main dans l’éditeur Unity** — spec **`Notes/Ui/SPEC_talent_tree_layout_editeur.md`**. Réflexion auteur en cours avant implémentation.
+> **Décision layout 2026-06-12** : arbres composés **à la main dans l’éditeur Unity** — spec **`Notes/Ui/SPEC_talent_tree_layout_editeur.md`**, procédure **`WORKFLOW_creation_arbre_talents.md`**.
 
 - [x] **[P0-INV-HALO-006]** **Étape 1 (code)** — `ProgressionTrackId` renommé (6 pistes + 2 réservées) + `HaloSlotOrder`.
 - [~] **[P0-INV-HALO-006b]** Aligner prefab Bezy slots (labels / `trackId` Inspector) — playtest OK ; reste polish prefab.
 - [~] **[P0-INV-HALO-007]** **Étape 2** — SO + `TalentProgressionService` mock Commerce en runtime ; overlay texte + achat OK. Reste : assets SO sur disque + prefab arbre visuel.
-- [ ] **[P0-INV-HALO-009]** **Réflexion auteur** — valider points ouverts § spec layout éditeur (prefab par piste, edges, scroll, nommage scripts).
-- [ ] **[P0-INV-HALO-008]** **Bezy briques arbre** — `TreeScrollView` + conteneur **libre** (`TreeContent`, sans LayoutGroup auto) + prefabs `TalentNodeView` + `TalentTreeEdgeView` (cf. spec layout éditeur).
-- [ ] **[P0-INV-HALO-011]** **Cursor foundation** — scripts `TalentNodeView`, `TalentTreeEdgeView`, `TalentTreeLayoutRoot` (+ Custom Editor collect/validate) + wiring `TalentTreeOverlayController`.
-- [ ] **[P0-INV-HALO-012]** **Auteur composition** — prefab `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab` : placer nœuds + edges à la main, tester achat Play mode.
+- [x] **[P0-INV-HALO-009]** **Décision layout** — 1 prefab/piste + `TreeContent` partagé + swap dynamique (2026-06-12, cf. spec).
+- [x] **[P0-INV-HALO-008]** **Bezy briques arbre** — Ph.1–3 **validées Cursor** (2026-06-12) : `TreeScrollView`, `TreeContent`, `TalentNodeView`, `TalentTreeEdgeView`, wiring overlay (`treeContentHost`).
+- [x] **[P0-INV-HALO-011]** **Cursor foundation** — scripts + Custom Editor + `TalentTreeOverlayController` swap prefab (2026-06-12).
+- [~] **[P0-INV-HALO-012]** **Auteur composition** — `Track_Commerce.prefab` : **en cours** (2026-06-12 soir) — auteur à l'**étape 1** du workflow (prefab racine) ; suite demain matin.
 
 **4 — Notes tablette perso (complément)**
 
@@ -81,6 +90,7 @@ Convention d'IDs :
 **Références**
 
 - **Layout éditeur (décision 2026-06-07)** : `Notes/Ui/SPEC_talent_tree_layout_editeur.md`
+- **Workflow création arbre talents (auteur)** : `Notes/Ui/WORKFLOW_creation_arbre_talents.md`
 - **Session prochaine (3 étapes historiques)** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
 - Spec halo : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`
 - Arbre UI : `Notes/Ui/ARBRE_inventory_halo_ui.md`
