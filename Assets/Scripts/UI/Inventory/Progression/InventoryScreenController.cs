@@ -11,6 +11,7 @@ public class InventoryScreenController : MonoBehaviour
     [SerializeField] private TalentTreeOverlayController talentTreeOverlay;
     [Header("Grille — atténuation")]
     [SerializeField] private CanvasGroup inventoryBodyCanvasGroup;
+    [SerializeField] private GameObject screenDimmer;
 
     [Header("Filtres (phase 2)")]
     [SerializeField] private GameObject filterBarPlaceholder;
@@ -21,6 +22,7 @@ public class InventoryScreenController : MonoBehaviour
 
     private void Awake()
     {
+        ResolveScreenDimmer();
         WireModules();
     }
 
@@ -75,12 +77,30 @@ public class InventoryScreenController : MonoBehaviour
         }
 
         SetInventoryBodyDim(inventoryDimAlphaWhenTreeOpen);
+        SetScreenDimmerActive(false);
         talentTreeOverlay.Open(trackId);
     }
 
     private void HandleTalentTreeClosed()
     {
         SetInventoryBodyDim(0f);
+        SetScreenDimmerActive(true);
+    }
+
+    private void ResolveScreenDimmer()
+    {
+        if (screenDimmer != null)
+            return;
+
+        Transform dimmer = transform.Find("Dimmer");
+        if (dimmer != null)
+            screenDimmer = dimmer.gameObject;
+    }
+
+    private void SetScreenDimmerActive(bool active)
+    {
+        if (screenDimmer != null)
+            screenDimmer.SetActive(active);
     }
 
     private void SetInventoryBodyDim(float dimAmount)

@@ -18,6 +18,11 @@ public class TalentNodeView : MonoBehaviour
     [SerializeField] private GameObject availableOverlay;
     [SerializeField] private GameObject purchasedOverlay;
 
+    [Header("Lisibilite runtime (MVP — retirer quand prefab Bezy final)")]
+    [SerializeField] private bool repositionTitleAboveNode = true;
+    [SerializeField] private float titleFontSize = 14f;
+    [SerializeField] private float titleOffsetAboveNode = 8f;
+
     private TalentProgressionService progressionService;
 
     public string NodeId => nodeDefinition != null ? nodeDefinition.NodeId : string.Empty;
@@ -64,6 +69,7 @@ public class TalentNodeView : MonoBehaviour
 
         ApplyStatusVisuals(status);
         UpdatePurchaseButton(status);
+        ApplyTitlePresentation();
     }
 
     private void HandlePurchaseClicked()
@@ -106,6 +112,33 @@ public class TalentNodeView : MonoBehaviour
 
         if (purchaseButton != null)
             purchaseButton.interactable = false;
+
+        ApplyTitlePresentation();
+    }
+
+    private void ApplyTitlePresentation()
+    {
+        if (titleLabel == null)
+            return;
+
+        titleLabel.fontSize = titleFontSize;
+        titleLabel.fontStyle = FontStyles.Bold;
+        titleLabel.color = Color.white;
+        titleLabel.alignment = TextAlignmentOptions.Center;
+        titleLabel.enableWordWrapping = true;
+        titleLabel.raycastTarget = false;
+
+        if (!repositionTitleAboveNode)
+            return;
+
+        // Au-dessus du carre noeud : evite d'etre noye dans les overlays plein cadre.
+        RectTransform titleRect = titleLabel.rectTransform;
+        titleRect.SetAsLastSibling();
+        titleRect.anchorMin = new Vector2(0.5f, 1f);
+        titleRect.anchorMax = new Vector2(0.5f, 1f);
+        titleRect.pivot = new Vector2(0.5f, 0f);
+        titleRect.anchoredPosition = new Vector2(0f, titleOffsetAboveNode);
+        titleRect.sizeDelta = new Vector2(160f, 32f);
     }
 
     private static void SetOverlayActive(GameObject overlay, bool active)

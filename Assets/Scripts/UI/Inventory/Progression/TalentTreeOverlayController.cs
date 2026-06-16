@@ -15,6 +15,9 @@ public class TalentTreeOverlayController : MonoBehaviour
     private const string MissingTreePrefabMessage =
         "Arbre visuel a venir pour cette piste.\nLe resume texte reste disponible ci-dessous.";
 
+    private const float DefaultTreeContentWidth = 800f;
+    private const float DefaultTreeContentHeight = 600f;
+
     [Header("Root")]
     [SerializeField] private GameObject overlayRoot;
     [SerializeField] private CanvasGroup canvasGroup;
@@ -30,6 +33,8 @@ public class TalentTreeOverlayController : MonoBehaviour
 
     [Header("Arbre visuel (swap prefab par piste)")]
     [SerializeField] private RectTransform treeContentHost;
+    [SerializeField] private RectTransform treeMountHost;
+    [SerializeField] private bool bypassScrollRectForTreeMount = true;
     [SerializeField] private TalentTrackPrefabBinding[] trackPrefabBindings = Array.Empty<TalentTrackPrefabBinding>();
     [SerializeField] private bool hidePlaceholderWhenTreeVisible = true;
     [SerializeField] private bool hideFallbackPurchaseWhenTreeVisible = true;
@@ -55,6 +60,9 @@ public class TalentTreeOverlayController : MonoBehaviour
     private TalentTreeLayoutRoot activeLayoutRoot;
     private GameObject activeTreeInstance;
     private bool isVisualTreeActive;
+    private Coroutine layoutRefreshRoutine;
+    private GameObject hiddenScrollViewRoot;
+    private bool createdRuntimeTreeMountHost;
 
     private void Awake()
     {
@@ -79,6 +87,16 @@ public class TalentTreeOverlayController : MonoBehaviour
         UnsubscribeProgressionEvents();
         UnregisterPurchaseClickHandler();
         DestroyRuntimePurchaseButton();
+        StopLayoutRefreshRoutine();
+        SetScrollViewVisible(true);
+
+        if (createdRuntimeTreeMountHost && treeMountHost != null)
+        {
+            Destroy(treeMountHost.gameObject);
+            treeMountHost = null;
+            createdRuntimeTreeMountHost = false;
+        }
+
         ClearActiveTreeInstance();
     }
 
@@ -126,7 +144,12 @@ public class TalentTreeOverlayController : MonoBehaviour
         isVisualTreeActive = false;
 
         if (!TryGetTreePrefab(trackId, out TalentTreeLayoutRoot prefab))
+        {
+            Debug.LogWarning(
+                $"[TalentTreeOverlayController] Aucun prefab pour '{trackId}'. " +
+                "Verifier trackPrefabBindings sur InventoryScreen.");
             return;
+        }
 
         if (treeContentHost == null)
         {
@@ -135,7 +158,18 @@ public class TalentTreeOverlayController : MonoBehaviour
             return;
         }
 
-        activeTreeInstance = Instantiate(prefab.gameObject, treeContentHost);
+        RectTransform mountHost = ResolveTreeMountHost();
+        if (mountHost == null)
+        {
+            Debug.LogWarning(
+                "[TalentTreeOverlayController] Aucun hote de montage pour l'arbre visuel.");
+            return;
+        }
+
+        if (UsesScrollRectBypass())
+            SetScrollViewVisible(false);
+
+        activeTreeInstance = Instantiate(prefab.gameObject, mountHost, false);
         activeTreeInstance.name = prefab.name;
 
         RectTransform instanceRect = activeTreeInstance.transform as RectTransform;
@@ -146,13 +180,7 @@ public class TalentTreeOverlayController : MonoBehaviour
                 "Recree la racine via UI → Empty (cf. WORKFLOW_creation_arbre_talents.md).");
         }
         else
-        {
-            instanceRect.anchorMin = Vector2.zero;
-            instanceRect.anchorMax = Vector2.one;
-            instanceRect.offsetMin = Vector2.zero;
-            instanceRect.offsetMax = Vector2.zero;
-            instanceRect.localScale = Vector3.one;
-        }
+            ApplyTreeInstanceLayout(instanceRect, mountHost);
 
         activeLayoutRoot = activeTreeInstance.GetComponent<TalentTreeLayoutRoot>();
         if (activeLayoutRoot == null)
@@ -167,10 +195,14 @@ public class TalentTreeOverlayController : MonoBehaviour
             activeLayoutRoot.Bind(progressionService);
 
         isVisualTreeActive = true;
+        BeginTreeLayoutRefresh();
     }
 
     private void ClearActiveTreeInstance()
     {
+        StopLayoutRefreshRoutine();
+        SetScrollViewVisible(true);
+
         if (activeLayoutRoot != null)
         {
             activeLayoutRoot.Unbind();
@@ -182,6 +214,125 @@ public class TalentTreeOverlayController : MonoBehaviour
             Destroy(activeTreeInstance);
             activeTreeInstance = null;
         }
+    }
+
+    private bool UsesScrollRectBypass() => bypassScrollRectForTreeMount;
+
+    private RectTransform ResolveTreeMountHost()
+    {
+        if (treeMountHost != null)
+            return treeMountHost;
+
+        if (!UsesScrollRectBypass())
+            return treeContentHost;
+
+        EnsureRuntimeTreeMountHost();
+        return treeMountHost;
+    }
+
+    private void EnsureRuntimeTreeMountHost()
+    {
+        if (treeMountHost != null)
+            return;
+
+        Transform panel = GetOverlayPanelTransform();
+        if (panel == null)
+            return;
+
+        Transform existing = panel.Find("TreeMountHost");
+        if (existing != null)
+        {
+            treeMountHost = existing as RectTransform;
+            return;
+        }
+
+        var hostObject = new GameObject("TreeMountHost", typeof(RectTransform));
+        treeMountHost = hostObject.GetComponent<RectTransform>();
+        treeMountHost.SetParent(panel, false);
+        treeMountHost.anchorMin = Vector2.zero;
+        treeMountHost.anchorMax = Vector2.one;
+        treeMountHost.pivot = new Vector2(0.5f, 0.5f);
+        treeMountHost.offsetMin = new Vector2(16f, 56f);
+        treeMountHost.offsetMax = new Vector2(-16f, -56f);
+        createdRuntimeTreeMountHost = true;
+    }
+
+    private void ApplyTreeInstanceLayout(RectTransform instanceRect, RectTransform mountHost)
+    {
+        instanceRect.localRotation = Quaternion.identity;
+        instanceRect.localScale = Vector3.one;
+
+        if (UsesScrollRectBypass() && mountHost != treeContentHost)
+        {
+            instanceRect.anchorMin = new Vector2(0.5f, 0.5f);
+            instanceRect.anchorMax = new Vector2(0.5f, 0.5f);
+            instanceRect.pivot = new Vector2(0.5f, 0.5f);
+            instanceRect.anchoredPosition = Vector2.zero;
+            instanceRect.sizeDelta = new Vector2(DefaultTreeContentWidth, DefaultTreeContentHeight);
+            return;
+        }
+
+        ApplyScrollContentTreeLayout(instanceRect);
+    }
+
+    private void ApplyScrollContentTreeLayout(RectTransform instanceRect)
+    {
+        Vector2 contentSize = ResolveTreeContentSize();
+
+        instanceRect.anchorMin = new Vector2(0f, 1f);
+        instanceRect.anchorMax = new Vector2(0f, 1f);
+        instanceRect.pivot = new Vector2(0f, 1f);
+        instanceRect.anchoredPosition = Vector2.zero;
+        instanceRect.sizeDelta = contentSize;
+    }
+
+    private Vector2 ResolveTreeContentSize()
+    {
+        if (treeContentHost == null)
+            return new Vector2(DefaultTreeContentWidth, DefaultTreeContentHeight);
+
+        treeContentHost.anchorMin = new Vector2(0f, 1f);
+        treeContentHost.anchorMax = new Vector2(0f, 1f);
+        treeContentHost.pivot = new Vector2(0f, 1f);
+
+        Vector2 size = treeContentHost.sizeDelta;
+        if (size.x < 1f || size.y < 1f)
+            size = new Vector2(DefaultTreeContentWidth, DefaultTreeContentHeight);
+
+        treeContentHost.sizeDelta = size;
+        return size;
+    }
+
+    private void BeginTreeLayoutRefresh()
+    {
+        StopLayoutRefreshRoutine();
+        layoutRefreshRoutine = StartCoroutine(RefreshTreeLayoutNextFrame());
+    }
+
+    private void StopLayoutRefreshRoutine()
+    {
+        if (layoutRefreshRoutine == null)
+            return;
+
+        StopCoroutine(layoutRefreshRoutine);
+        layoutRefreshRoutine = null;
+    }
+
+    private IEnumerator RefreshTreeLayoutNextFrame()
+    {
+        yield return null;
+
+        Canvas.ForceUpdateCanvases();
+
+        if (treeContentHost != null && !UsesScrollRectBypass())
+            LayoutRebuilder.ForceRebuildLayoutImmediate(treeContentHost);
+
+        ApplyPlaceholderVisibility();
+
+        if (activeLayoutRoot != null)
+            activeLayoutRoot.RefreshAll();
+
+        layoutRefreshRoutine = null;
     }
 
     private bool TryGetTreePrefab(string trackId, out TalentTreeLayoutRoot prefab)
@@ -227,6 +378,54 @@ public class TalentTreeOverlayController : MonoBehaviour
 
         if (bodyPlaceholderLabel != null)
             bodyPlaceholderLabel.gameObject.SetActive(!hidePlaceholder);
+
+        if (isVisualTreeActive && UsesScrollRectBypass())
+        {
+            if (treeMountHost != null)
+                treeMountHost.SetAsLastSibling();
+
+            SetScrollViewVisible(false);
+            return;
+        }
+
+        ScrollRect scroll = treeContentHost != null
+            ? treeContentHost.GetComponentInParent<ScrollRect>()
+            : null;
+
+        if (scroll == null)
+            return;
+
+        scroll.gameObject.SetActive(true);
+
+        if (isVisualTreeActive)
+        {
+            scroll.transform.SetAsLastSibling();
+            scroll.verticalNormalizedPosition = 1f;
+            scroll.horizontalNormalizedPosition = 0f;
+        }
+    }
+
+    private void SetScrollViewVisible(bool visible)
+    {
+        if (!UsesScrollRectBypass() || treeContentHost == null)
+            return;
+
+        ScrollRect scroll = treeContentHost.GetComponentInParent<ScrollRect>();
+        if (scroll == null)
+            return;
+
+        if (!visible)
+        {
+            hiddenScrollViewRoot = scroll.gameObject;
+            scroll.gameObject.SetActive(false);
+            return;
+        }
+
+        if (hiddenScrollViewRoot != null)
+        {
+            hiddenScrollViewRoot.SetActive(true);
+            hiddenScrollViewRoot = null;
+        }
     }
 
     private void PlayAnimatorBool(bool isOpen)

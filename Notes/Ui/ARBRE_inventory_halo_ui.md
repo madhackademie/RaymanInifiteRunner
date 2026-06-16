@@ -94,7 +94,7 @@ Réutiliser scripts existants ; ne pas rescanner tout le projet. Phases Bezy : s
 ## Phase suivante (hors coque)
 
 - **Layout éditeur (décision 2026-06-07)** : `Notes/Ui/SPEC_talent_tree_layout_editeur.md` — nœuds déplacés à la main dans Unity, edges `[ExecuteAlways]`.
-- **Workflow création arbre (auteur)** : `Notes/Ui/WORKFLOW_creation_arbre_talents.md` — SO, composition `Track_Commerce`, binding overlay, playtest.
+- **Procédure arbre talents 8 étapes (auteur)** : `Notes/Ui/WORKFLOW_creation_arbre_talents.md` — SO, composition `Track_Commerce`, binding overlay, playtest.
 - **Session prochaine — 3 étapes** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
   1. Renommer `ProgressionTrackId` (code OK)
   2. SO + service Commerce mock (partiel)

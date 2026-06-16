@@ -1,5 +1,36 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-16 — Session debug affichage arbre Commerce + prochaine session Bezy
+
+### Contexte
+- Branche **`main`** — travail local (prefabs + scripts) **non commité** au moment de la fin de session.
+- Playtest auteur : overlay s’ouvre (titre « Commerce »), mais **arbre visuel entier masqué ou illisible** en Game view.
+
+### Diagnostic
+- Titre overlay OK → `TalentTreeOverlayController.Open` + binding fonctionnent.
+- Nœuds montés sous `TreeContent` / **Mask ScrollRect** → contenu clipé ou recouvert (`BodyPlaceholder`, `Dimmer` racine).
+- `TalentNodeView` : titre sous overlays plein cadre (Bezy a corrigé l’ordre prefab ensuite).
+
+### Changements effectués (Cursor — contournements temporaires)
+- **`TalentTreeOverlayController`** : bypass ScrollRect (`TreeMountHost` runtime sous `OverlayPanel`), masque `BodyPlaceholder`, désactive `TreeScrollView` à l’ouverture ; layout centré 800×600.
+- **`InventoryScreenController`** : désactive `Dimmer` racine quand overlay talents ouvert.
+- **`TalentNodeView`** : MVP lisibilité titre (reposition au-dessus du nœud) — retiré après fix Bezy ordre prefab ; contournements overlay conservés en attente Bezy.
+- **`InventoryScreen.prefab`** (local) : binding `track.commerce` → `Track_Commerce`, `TreeContent` vidé.
+
+### Prochaine session — **[P0-INV-HALO-013]**
+1. **Playtest** étape 8 (`WORKFLOW_creation_arbre_talents.md`) avec correctifs runtime.
+2. **Bezy Phase 4** : fix affichage définitif prefabs (`TreeMountHost`, ScrollRect/Mask, contrastes, `TalentNodeView`) — prompt `Notes/Ui/PROMPTS_Bezi_talent_tree.md`.
+3. Re-playtest ; retirer contournements Cursor si prefab OK ; **commit auteur** sur `main`.
+
+### Fichiers touchés (session)
+- `Assets/Scripts/UI/Inventory/Progression/TalentTreeOverlayController.cs`
+- `Assets/Scripts/UI/Inventory/Progression/TalentNodeView.cs`
+- `Assets/Scripts/UI/Inventory/Progression/InventoryScreenController.cs`
+- `Assets/Prefabs/Ui/InventoryScreen.prefab` (local)
+- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `Notes/Ui/WORKFLOW_creation_arbre_talents.md`, `Notes/Ui/PROMPTS_Bezi_talent_tree.md`
+
+---
+
 ## 2026-06-15 — Merge talent tree sur `main` + prochaine session étape 7
 
 ### Contexte
@@ -24,7 +55,8 @@
 4. Commit auteur sur **`main`** si playtest OK.
 
 ### Fichiers touchés (docs session)
-- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `PROJECT_LOG.md`
+- `Notes/Ui/WORKFLOW_creation_arbre_talents.md` (consolidé — procédure auteur autonome 8 étapes)
+- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, `PROJECT_LOG.md`, `Notes/GUIDE_suivi_projet.md`
 
 ---
 

@@ -49,7 +49,31 @@ Ajouter scripts (déjà dans le projet) :
 | `TalentTreeEdgeView` | `TalentTreeEdgeView` | fromNode, toNode, lineRect, lineImage |
 | `TalentTreeOverlay` | `TalentTreeOverlayController` | treeContentHost → `TreeContent`, trackPrefabBindings (vide pour l'instant) |
 
-Menu fallback Cursor : pas encore — wiring manuel Inspector.
+Menu fallback Cursor : `Rayman → UI → Wire Track Commerce Binding (overlay)`.
+
+---
+
+## Phase 4 — Fix affichage arbre en jeu (2026-06-16, après playtest auteur)
+
+**Symptôme :** titre overlay « Commerce » visible ; arbre `Track_Commerce` masqué ou illisible en Game view.
+
+**Objectif :** rendre l’arbre visible sans contournement runtime Cursor (`TreeMountHost` dynamique).
+
+Modifier **uniquement** :
+
+1. `Assets/Prefabs/Ui/InventoryScreen.prefab` → `TalentTreeOverlay/OverlayPanel` :
+   - Ajouter **`TreeMountHost`** (RectTransform stretch, offsets ~16/56, **sans Mask**).
+   - Assigner `TalentTreeOverlayController.treeMountHost` → `TreeMountHost` (si champ exposé).
+   - `TreeContent` reste **vide** ; `TreeScrollView` peut rester pour scroll futur ou être désactivé par défaut.
+   - `BodyPlaceholder` : ne doit pas recouvrir la zone arbre quand arbre actif.
+
+2. `Assets/Prefabs/Ui/Progression/TalentNodeView.prefab` :
+   - `TitleLabel` **dernier enfant**, au-dessus du nœud (anchor top-center, blanc 14px Bold).
+   - Fond nœud plus clair que `OverlayPanel` ; `AvailableOverlay` alpha ≤ 0.4.
+
+3. Vérifier binding : `track.commerce` → `Track_Commerce.prefab` dans `trackPrefabBindings`.
+
+**Ne pas rescanner le projet.** Confirmer fichiers modifiés + playtest Bootstrap → Inventaire → P1.
 
 ---
 

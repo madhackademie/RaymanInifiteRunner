@@ -58,7 +58,20 @@ Fin de session :
 
 ---
 
-## 5) Exemple concret
+## 5) Procedures auteur (reference long terme)
+
+Pour reprendre un chantier Unity **sans parcourir le journal** :
+
+| Sujet | Fichier unique |
+|-------|----------------|
+| Composition arbre de talents (8 etapes, Track_Commerce) | **`Notes/Ui/WORKFLOW_creation_arbre_talents.md`** |
+
+- **Statut session** (etape en cours) : `Notes/Todo_project.md` uniquement.
+- **Historique** : `PROJECT_LOG.md` — pas necessaire pour refaire la procedure.
+
+---
+
+## 6) Exemple concret
 
 Si tu veux prioriser la migration popup FirstLvl :
 - dans `Notes/Todo_project.md`, tu mets `P0-POP-001` en `[~]` ;

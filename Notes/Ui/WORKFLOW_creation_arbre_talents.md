@@ -1,217 +1,193 @@
-# Workflow — création d'un arbre de talents (éditeur Unity)
+# Workflow — création d'un arbre de talents (8 étapes)
 
-**Création :** 2026-06-12  
-**Statut :** procédure auteur active  
-**Branche type :** **`main`** (merge talent tree 2026-06-15)  
-**Public :** auteur du projet (composition manuelle après livraison Bezy Phases 1–3)
+**Type :** procédure Unity éditeur (référence long terme)  
+**Création :** 2026-06-12 · **Consolidé :** 2026-06-15  
+**Statut doc :** stable — ne pas y mettre le statut de session (voir `Notes/Todo_project.md` → `[P0-INV-HALO-012]`)  
+**Exemple :** premier arbre **`Track_Commerce`** (piste P1 Inventaire)
 
-### État `Track_Commerce` (2026-06-15)
-
-| Étape | Statut |
-|-------|--------|
-| 0 SO | OK — `Assets/Data/Progression/Commerce/` |
-| 1–4 | OK — prefab avec `Nodes` / `Edges` + 3 nœuds + 2 edges |
-| 5 Collect | **À revérifier** — `nodeViews` / `edgeViews` peuvent être vides → boutons Collect |
-| 6 Sauvegarde | OK — `Trees/Track_Commerce.prefab` |
-| **7 Binding** | **Prochaine session** — `trackPrefabBindings` vide dans `InventoryScreen` |
-| 8 Playtest | Après étape 7 |
-
-Docs liés :
-- `Notes/Ui/SPEC_talent_tree_layout_editeur.md` — architecture et décisions
-- `Notes/Ui/PROMPTS_Bezi_talent_tree.md` — phases Bezy (briques UI)
-- `Notes/Ui/ARBRE_inventory_halo_ui.md` — hiérarchie inventaire / overlay
-- Scripts : `Assets/Scripts/UI/Inventory/Progression/`, `Assets/Scripts/Progression/`
-
-Exemple de référence : **`Track_Commerce`** (premier arbre prototype).
+> **Tu reviens dans 1–2 mois ?** Ouvre **uniquement ce fichier**.  
+> Pas besoin de parcourir `PROJECT_LOG.md` : l’avancement session est dans `Notes/Todo_project.md`.
 
 ---
 
-## Où travailler + contrôles entre étapes
+## Sommaire
 
-### Pourquoi tu ne vois « rien » dans `InventoryScreen`
+1. [Fichiers clés](#fichiers-clés)
+2. [Vue d’ensemble des 8 étapes](#vue-densemble-des-8-étapes)
+3. [Prérequis](#prérequis)
+4. [Où travailler dans Unity](#où-travailler-dans-unity)
+5. [Étape 0 — ScriptableObjects](#étape-0--scriptableobjects)
+6. [Étape 1 — Prefab racine](#étape-1--prefab-racine)
+7. [Étape 2 — Hiérarchie Nodes / Edges](#étape-2--hiérarchie-nodes--edges)
+8. [Étape 3 — Placer les nœuds](#étape-3--placer-les-nœuds)
+9. [Étape 4 — Placer les edges](#étape-4--placer-les-edges)
+10. [Étape 5 — Collect](#étape-5--collect)
+11. [Étape 6 — Sauver le prefab](#étape-6--sauver-le-prefab)
+12. [Étape 7 — Binding overlay](#étape-7--binding-overlay)
+13. [Étape 8 — Playtest](#étape-8--playtest)
+14. [Dépannage](#dépannage)
+15. [Checklist finale](#checklist-finale)
+16. [Dupliquer pour une autre piste](#dupliquer-pour-une-autre-piste)
+17. [Docs complémentaires](#docs-complémentaires)
 
-C’est **normal** aux étapes 1–2 :
+---
 
-| Raison | Détail |
-|--------|--------|
-| Overlay **inactif** | `TalentTreeOverlay` est désactivé par défaut dans le prefab (comportement runtime). |
-| `CanvasGroup` alpha 0 | L’overlay est invisible tant qu’il n’est pas ouvert en jeu. |
-| `TreeContent` vide | Pas encore d’instances `TalentNodeView` — étapes 1–2 = structure vide. |
-| Pas de binding | `trackPrefabBindings` vide jusqu’à l’**étape 7** — en Play, l’arbre ne se charge pas tout seul. |
-| Dossiers `Nodes` / `Edges` | GameObjects **sans Image** → rien à l’écran, seulement dans la hiérarchie. |
+## Fichiers clés
 
-**Recommandation :** composer **`Track_Commerce` en Prefab Mode** (double-clic sur le prefab dans Project), **pas** en permanence sous `InventoryScreen`. Réserver `InventoryScreen` à l’**étape 7** (binding overlay).
+| Rôle | Chemin |
+|------|--------|
+| Prefab arbre Commerce | `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab` |
+| Briques nœud / edge | `Assets/Prefabs/Ui/Progression/TalentNodeView.prefab`, `TalentTreeEdgeView.prefab` |
+| Overlay inventaire | `Assets/Prefabs/Ui/InventoryScreen.prefab` |
+| SO Commerce | `Assets/Data/Progression/Commerce/` |
+| Script layout | `Assets/Scripts/UI/Inventory/Progression/TalentTreeLayoutRoot.cs` |
+| Script overlay | `Assets/Scripts/UI/Inventory/Progression/TalentTreeOverlayController.cs` |
+| Custom Editor | `Assets/Editor/TalentTreeLayoutRootEditor.cs` |
 
-### Contrôle visuel rapide dans `InventoryScreen` (optionnel)
+**Branche de travail type :** `main` (lot talent tree mergé).
 
-Si tu veux quand même voir la zone scroll dans l’overlay :
+---
 
-1. Ouvrir `InventoryScreen.prefab`
-2. Activer temporairement **`TalentTreeOverlay`** (case à cocher à gauche du nom)
-3. Sélectionner **`OverlayPanel` → `TreeScrollView`** — tu dois voir la zone scroll (viewport vide)
-4. **Désactiver** `TalentTreeOverlay` avant de sauver (remettre l’état inactif comme à l’origine)
+## Vue d’ensemble des 8 étapes
 
-Ne pas laisser l’overlay actif en permanence dans le prefab sauf si tu sais ce que tu fais — le runtime s’attend à alpha 0 + inactif au départ.
+| Étape | Action | Validation rapide |
+|-------|--------|-------------------|
+| **0** | Créer 3 SO `TalentNodeDefinition` | 3 `.asset` avec `nodeId` exacts |
+| **1** | Racine `Track_Commerce` + `TalentTreeLayoutRoot` | `trackId` = `track.commerce` |
+| **2** | Dossiers `Edges` puis `Nodes` | Hiérarchie vide, ordre OK |
+| **3** | 3 × `TalentNodeView` + SO assignés | 3 carrés visibles en Prefab Mode |
+| **4** | 2 × `TalentTreeEdgeView` câblés | Lignes entre racine et branches |
+| **5** | Collect nodes + edges | Arrays : 3 nodes, 2 edges |
+| **6** | Sauver `.prefab` sur disque | Fichier dans `Trees/` |
+| **7** | Binding dans `InventoryScreen` | `track.commerce` → prefab arbre |
+| **8** | Playtest P1 Commerce | Arbre + achat mock OK |
 
-### Tableau — quoi contrôler après chaque étape
-
-| Étape | Où vérifier | Tu dois voir / avoir |
-|-------|-------------|----------------------|
-| **0** SO | Project + Inspector | 3 assets `.asset` dans `Assets/Data/Progression/Commerce/`, `nodeId` exacts |
-| **1** Racine | Prefab Mode `Track_Commerce` | Composant `TalentTreeLayoutRoot`, `trackId` = `track.commerce` |
-| **2** Hiérarchie | Hiérarchie prefab (pas Scene obligatoire) | `Nodes` + `Edges` vides ; **Edges avant Nodes** |
-| **3** Nœuds | **Scene / Prefab Mode** | **3 carrés 120×120** (cadres sombres) + labels TMP |
-| **4** Edges | Scene / Prefab Mode | **Lignes grises** entre racine et branches (se mettent à jour si tu bouges un nœud) |
-| **5** Collect | Inspector `TalentTreeLayoutRoot` | Arrays : 3 nodes, 2 edges |
-| **6** Sauvegarde | Project | Fichier `Trees/Track_Commerce.prefab` |
-| **7** Binding | `InventoryScreen` → overlay | Entrée `track.commerce` dans `trackPrefabBindings` |
-| **8** Playtest | Play mode | Arbre complet au clic P1 Commerce |
-
-**Premier retour visuel net :** fin de l’**étape 3** (nœuds instanciés).
-
-### Mini playtests intermédiaires (optionnel)
-
-| Moment | Faisable ? | Ce que tu obtiens |
-|--------|------------|-------------------|
-| Après étape 2 | Non visuel | Hiérarchie seulement |
-| Après étape 3–6 | Oui, en glissant `Track_Commerce` **à la main** sous `TreeContent` + binding temporaire | Aperçu layout sans achat SO |
-| Après étape 7–8 | Oui, test complet | Swap runtime + achat nœuds |
-
-Pour un aperçu avant l’étape 7 : ouvre `InventoryScreen`, active overlay, glisse une **instance** de `Track_Commerce` sous `TreeContent`, Play → Inventaire → P1. Sans binding, le code ne l’instanciera pas tout seul — c’est un **preview manuel** éditeur seulement.
+**Premier retour visuel net :** fin de l’**étape 3**.
 
 ---
 
 ## Prérequis
 
-- Branche **`main`** (lot talent tree mergé)
-- Unity ouvert, prefabs Bezy compilés sans erreur
-- Dossier à créer si absent : `Assets/Prefabs/Ui/Progression/Trees/`
-- Dossier SO : `Assets/Data/Progression/Commerce/` (à créer)
+- Unity ouvert, projet compile sans erreur.
+- Prefabs Bezy livrés : `TreeScrollView`, `TreeContent`, `TalentNodeView`, `TalentTreeEdgeView` dans `InventoryScreen`.
+- Dossiers (créer si absents) :
+  - `Assets/Prefabs/Ui/Progression/Trees/`
+  - `Assets/Data/Progression/Commerce/`
 
 ---
 
-## Étape 0 — Créer les 3 ScriptableObjects (obligatoire pour les clics)
+## Où travailler dans Unity
 
-Le service mock utilise ces **IDs exacts**. Chaque nœud UI doit pointer vers un SO avec les **mêmes** `nodeId`.
+### Règle d’or
+
+Composer **`Track_Commerce` en Prefab Mode** (double-clic sur le prefab dans Project).  
+Réserver **`InventoryScreen`** surtout à l’**étape 7** (binding).
+
+### Pourquoi tu ne vois « rien » aux étapes 1–2
+
+| Raison | Détail |
+|--------|--------|
+| Overlay inactif | `TalentTreeOverlay` désactivé par défaut |
+| Alpha 0 | `CanvasGroup` invisible jusqu’à ouverture runtime |
+| `TreeContent` vide | Normal avant étapes 3+ |
+| Pas de binding | `trackPrefabBindings` vide jusqu’à **étape 7** |
+| Dossiers vides | `Nodes` / `Edges` sans Image → hiérarchie seulement |
+
+### Contrôle visuel optionnel dans `InventoryScreen`
+
+1. Ouvrir `InventoryScreen.prefab`
+2. Activer temporairement **`TalentTreeOverlay`**
+3. Vérifier **`TreeScrollView`** / viewport
+4. **Désactiver** l’overlay avant sauvegarde (état d’origine)
+
+### Mini playtests intermédiaires
+
+| Moment | Faisable ? | Résultat |
+|--------|------------|----------|
+| Après étape 2 | Non visuel | Hiérarchie seulement |
+| Après étapes 3–6 | Oui (preview manuel sous `TreeContent`) | Layout sans swap runtime |
+| Après étapes 7–8 | Oui | Test complet swap + achat |
+
+---
+
+## Étape 0 — ScriptableObjects
+
+Le mock runtime exige des **`nodeId` exacts**. Chaque nœud UI pointe vers le SO correspondant.
 
 **Menu :** clic droit → *Create → Game → Progression → Talent Node*
 
-| Asset (nom fichier) | nodeId | displayName | trackId | cost | prerequis |
-|---------------------|--------|-------------|---------|------|-----------|
+| Fichier asset (exemple repo) | nodeId | displayName | trackId | cost | prerequis |
+|------------------------------|--------|-------------|---------|------|-----------|
 | `TalentNode_Commerce_Root` | `talent.commerce.root` | Racine Commerce | `track.commerce` | 1 | *(vide)* |
-| `TalentNode_Commerce_Buyer` | `talent.commerce.buyer.discount1` | Acheteur -5% | `track.commerce` | 1 | `talent.commerce.root` |
-| `TalentNode_Commerce_Seller` | `talent.commerce.seller.price1` | Vendeur +5% | `track.commerce` | 1 | `talent.commerce.root` |
+| `TalentNode_Buyer` | `talent.commerce.buyer.discount1` | Acheteur -5% | `track.commerce` | 1 | `talent.commerce.root` |
+| `TalentNode_Seller` | `talent.commerce.seller.price1` | Vendeur +5% | `track.commerce` | 1 | `talent.commerce.root` |
 
-Pour les prérequis : dans l’Inspector du SO, section *Prerequisite NodeIds*, **taille = 1**, élément 0 = `talent.commerce.root`.
+**Prérequis SO :** section *Prerequisite NodeIds*, taille = 1, élément 0 = `talent.commerce.root`.
 
 ---
 
-## Étape 1 — Créer le prefab racine
+## Étape 1 — Prefab racine
 
-1. Dans `Trees/`, clic droit → **Create Empty** → renommer **`Track_Commerce`**
-2. **Add Component** → `RectTransform` (si besoin) — en fait crée plutôt via **UI → Empty** sous un canvas temporaire, ou :
-   - Ouvrir `InventoryScreen` en mode prefab
-   - Sous `TreeContent`, clic droit → **Create Empty**
-   - Renommer `Track_Commerce`
-3. Sur `Track_Commerce` : **Add Component** → **`TalentTreeLayoutRoot`**
-4. Inspector `TalentTreeLayoutRoot` :
+> **Important :** la racine doit avoir un **`RectTransform`** (objet UI), pas un `Transform` 3D (`Create Empty` seul dans Project). Sinon l’arbre ne s’affiche pas en Play (`TalentTreeOverlayController` warning).
+
+1. Ouvrir **`InventoryScreen.prefab`** (ou un Canvas temporaire) → clic droit → **UI → Empty** → renommer **`Track_Commerce`**.
+2. **Add Component** → **`TalentTreeLayoutRoot`**
+3. Inspector :
    - **Track Id** : `track.commerce`
+4. Vérifier le composant affiché est bien **`Rect Transform`** (pas `Transform` seul).
+5. Composer les étapes 2–6 en **Prefab Mode**, puis sauver dans `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab`.
 
 ---
 
-## Étape 2 — Hiérarchie cible (organiser le prefab avant de placer nœuds et lignes)
+## Étape 2 — Hiérarchie Nodes / Edges
 
-### Objectif
-
-Structurer **`Track_Commerce`** en deux zones logiques :
-
-- **`Nodes/`** — tout ce qui est cliquable (instances `TalentNodeView`)
-- **`Edges/`** — tout ce qui relie visuellement les nœuds (instances `TalentTreeEdgeView`)
-
-Ce n’est pas du code : c’est du **rangment éditeur** pour composer l’arbre comme un petit level design UI. Les dossiers vides n’ont pas de rendu à l’écran.
-
-### Hiérarchie attendue
+### Hiérarchie cible
 
 ```
 Track_Commerce          [TalentTreeLayoutRoot]  trackId = track.commerce
-├── Nodes               (GameObject vide — conteneur)
-│   ├── Node_Root       ← étape 3 (instance TalentNodeView)
-│   ├── Node_Buyer
-│   └── Node_Seller
-└── Edges               (GameObject vide — conteneur)
-    ├── Edge_Root_Buyer ← étape 4 (instance TalentTreeEdgeView)
-    └── Edge_Root_Seller
+├── Edges               (GameObject vide — EN PREMIER dans la liste)
+│   ├── Edge_Root_Buyer     ← étape 4
+│   └── Edge_Root_Seller
+└── Nodes               (GameObject vide)
+    ├── Node_Root           ← étape 3
+    ├── Node_Buyer
+    └── Node_Seller
 ```
 
-> Variante plus tard : sous `Nodes/`, tu peux ajouter des groupes vides (`Module_Hub`, `Module_Grid`…) pour séparer visuellement des branches. **Pas obligatoire** pour le prototype Commerce.
+### Procédure
 
-### Procédure Unity (pas à pas)
+1. Sous `Track_Commerce` → **Create Empty** → **`Edges`**
+2. **Create Empty** → **`Nodes`**
+3. Ordre hiérarchie : **`Edges` au-dessus**, **`Nodes` en dessous** (lignes derrière les icônes)
+4. RectTransform `Nodes` / `Edges` : anchors stretch ou center, pivot 0.5, pos 0 — **pas de LayoutGroup**
 
-**Contexte :** tu as terminé l’étape 1 — racine `Track_Commerce` avec `TalentTreeLayoutRoot` et `trackId` = `track.commerce`.
+### Validation
 
-1. Sélectionner **`Track_Commerce`** dans la hiérarchie (mode Prefab ou instance temporaire).
-2. Clic droit sur `Track_Commerce` → **Create Empty** → renommer **`Nodes`**.
-3. Recommencer → **Create Empty** → renommer **`Edges`**.
-4. Vérifier l’**ordre des enfants** sous `Track_Commerce` (du haut vers le bas dans la hiérarchie) :
-   - **`Edges` en premier** (au-dessus dans la liste)
-   - **`Nodes` en second** (en dessous)
-
-   Pourquoi : en UI Unity, un sibling **plus bas** dans la hiérarchie est dessiné **par-dessus**. Les lignes restent derrière les nœuds.
-
-5. Sur `Nodes` et `Edges` (RectTransform) :
-   - **Anchors** : stretch plein parent (min 0,0 — max 1,1) *ou* center selon ton habitude ;
-   - **Pivot** : 0.5 / 0.5 ;
-   - **Pos** : 0, 0 ;
-   - **Taille** : laisser le parent gérer (offset 0) — **pas de LayoutGroup** sur ces dossiers.
-
-6. Ne pas encore glisser `TalentNodeView` ni `TalentTreeEdgeView` — c’est l’**étape 3** et **4**.
-
-### Ce que cette étape ne fait pas
-
-| Hors scope étape 2 | Étape concernée |
-|--------------------|-----------------|
-| Instancier les nœuds | Étape 3 |
-| Assigner les SO | Étape 3 |
-| Positionner RectTransform des nœuds | Étape 3 |
-| Créer / câbler les edges | Étape 4 |
-| Bouton *Collect child nodes* | Étape 5 |
-| Sauver le `.prefab` sur disque | Étape 6 |
-
-### Validation rapide (avant étape 3)
-
-- [ ] `Track_Commerce` a le composant **`TalentTreeLayoutRoot`** (`trackId` = `track.commerce`).
-- [ ] Deux enfants directs : **`Nodes`** et **`Edges`** (GameObjects vides, sans Image obligatoire).
-- [ ] **`Edges`** listé **avant** **`Nodes`** dans la hiérarchie (lignes sous les icônes).
-- [ ] Aucun `VerticalLayoutGroup` / `GridLayoutGroup` sur `Track_Commerce`, `Nodes` ou `Edges`.
-- [ ] Aucune instance `TalentNodeView` / `TalentTreeEdgeView` encore — normal à ce stade.
+- [ ] `TalentTreeLayoutRoot` + `track.commerce`
+- [ ] `Edges` avant `Nodes`
+- [ ] Pas encore d’instances nœud/edge
 
 ### Erreurs fréquentes
 
-- **Mettre les nœuds directement sous `Track_Commerce`** sans dossier `Nodes/` → fonctionne au runtime, mais la hiérarchie devient illisible dès 5+ nœuds ; le bouton *Collect child nodes* ramasse quand même les vues, mais le rangement est pénible.
-- **Edges après Nodes dans la hiérarchie** → lignes qui passent **par-dessus** les icônes (illisible).
-- **Ajouter un LayoutGroup** sur `Nodes` → écrase les positions manuelles de l’étape 3 (anti-pattern spec layout éditeur).
-
-### Durée estimée
-
-~2–5 minutes. Si tu bloques sur le mode Prefab : ouvre `Track_Commerce` en **Prefab Mode** (double-clic sur le prefab dans Project) pour isoler l’édition.
+- Nœuds directement sous racine → hiérarchie illisible dès 5+ nœuds
+- `Edges` après `Nodes` → lignes par-dessus les icônes
+- `LayoutGroup` sur `Nodes` → écrase le placement manuel
 
 ---
 
-## Étape 3 — Placer les 3 nœuds
+## Étape 3 — Placer les nœuds
 
 1. Glisser **`TalentNodeView.prefab`** ×3 sous `Nodes/`
 2. Renommer : `Node_Root`, `Node_Buyer`, `Node_Seller`
-3. **RectTransform** (anchors **center**, pivot 0.5/0.5) — positions de départ :
+3. **RectTransform** (anchors center, pivot 0.5) :
 
-| Nœud | Pos X | Pos Y | SO à assigner |
-|------|-------|-------|---------------|
+| Nœud | Pos X | Pos Y | SO (Node Definition) |
+|------|-------|-------|----------------------|
 | Node_Root | 0 | 120 | `TalentNode_Commerce_Root` |
-| Node_Buyer | -160 | -40 | `TalentNode_Commerce_Buyer` |
-| Node_Seller | 160 | -40 | `TalentNode_Commerce_Seller` |
+| Node_Buyer | -160 | -40 | `TalentNode_Buyer` |
+| Node_Seller | 160 | -40 | `TalentNode_Seller` |
 
-4. Sur chaque instance, composant **`TalentNodeView`** → champ **Node Definition** = le SO correspondant
-
-Disposition visuelle (hub) :
+4. Chaque **`TalentNodeView`** → **Node Definition** = SO correspondant
 
 ```
            [Racine]
@@ -219,11 +195,11 @@ Disposition visuelle (hub) :
     [Acheteur]    [Vendeur]
 ```
 
-Ajuste à la main avec l’outil **Rect Transform** — pas de LayoutGroup.
+Ajuster à la main — pas de LayoutGroup.
 
 ---
 
-## Étape 4 — Placer les 2 edges
+## Étape 4 — Placer les edges
 
 1. Glisser **`TalentTreeEdgeView.prefab`** ×2 sous `Edges/`
 2. Renommer : `Edge_Root_Buyer`, `Edge_Root_Seller`
@@ -231,90 +207,115 @@ Ajuste à la main avec l’outil **Rect Transform** — pas de LayoutGroup.
 
 | Edge | From Node | To Node |
 |------|-----------|---------|
-| Edge_Root_Buyer | `Node_Root` | `Node_Buyer` |
-| Edge_Root_Seller | `Node_Root` | `Node_Seller` |
+| Edge_Root_Buyer | Node_Root | Node_Buyer |
+| Edge_Root_Seller | Node_Root | Node_Seller |
 
-Les lignes se mettent à jour seules (`ExecuteAlways`) quand tu déplaces les nœuds.
+4. Inspector `Track_Commerce` → **Validate edges vs prerequisites** (sans warning bloquant)
 
-4. Bouton Inspector sur `Track_Commerce` : **Validate edges vs prerequisites** → doit passer sans warning (ou seulement des warnings explicites si typo d’ID).
+Les lignes se mettent à jour en éditeur (`ExecuteAlways`) quand tu bouges un nœud.
 
 ---
 
-## Étape 5 — Collecter les listes
+## Étape 5 — Collect
 
 Sur **`TalentTreeLayoutRoot`** (racine `Track_Commerce`) :
 
 1. **Collect child nodes**
 2. **Collect child edges**
 
-Vérifie que les tableaux contiennent 3 nodes et 2 edges.
+**Attendu :** 3 entrées dans `nodeViews`, 2 dans `edgeViews`.
+
+> Si les arrays sont vides après sauvegarde : rouvrir le prefab et refaire Collect avant l’étape 7.
 
 ---
 
 ## Étape 6 — Sauver le prefab
 
-1. Glisser `Track_Commerce` de la hiérarchie vers `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab`
-2. Supprimer l’instance temporaire dans la scène/prefab parent si tu as composé dans `InventoryScreen`
+1. Si composé dans une scène temporaire : glisser la racine vers  
+   `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab`
+2. Supprimer toute instance temporaire sous `InventoryScreen` ou scène de test
+3. Vérifier le fichier dans Project
 
 ---
 
-## Étape 7 — Binder dans l’overlay
+## Étape 7 — Binding overlay
 
-1. Ouvrir **`InventoryScreen.prefab`**
-2. Sélectionner **`TalentTreeOverlay`** → `TalentTreeOverlayController`
-3. **Track Prefab Bindings** → **+** :
+1. Ouvrir **`Assets/Prefabs/Ui/InventoryScreen.prefab`**
+2. Vérifier que **`TreeContent`** est **vide** (pas d’instance `Track_Commerce` enfant — le runtime instancie seul).
+3. Sélectionner **`TalentTreeOverlay`** → composant **`TalentTreeOverlayController`**
+4. **Track Prefab Bindings** → **+** :
    - **Track Id** : `track.commerce`
-   - **Tree Prefab** : glisser **`Track_Commerce.prefab`** (Unity prend le `TalentTreeLayoutRoot` sur la racine)
-4. Vérifier **Tree Content Host** = `TreeContent` (déjà câblé par Bezy)
-5. **Save** le prefab
+   - **Tree Prefab** : glisser **`Track_Commerce.prefab`** depuis Project (asset `.prefab`, pas une instance scene)
+5. Vérifier **Tree Content Host** = `TreeContent` (wiring Bezy)
+6. Sauver le prefab
+
+Sans cette étape, le Play mode affiche le fallback texte MVP au lieu de l’arbre visuel.
 
 ---
 
 ## Étape 8 — Playtest
 
-1. Play depuis **Bootstrap**
+1. **Play** depuis **`Bootstrap`**
 2. Onglet **Inventaire** → clic **P1 Commerce**
-3. Attendu :
-   - Overlay avec **3 nœuds** + lignes
-   - Racine **disponible** (overlay vert), autres **verrouillés** (sombre)
-   - Clic Racine → achat (1 pt) → état **acheté**
+3. **Attendu :**
+   - Overlay : **3 nœuds** + **2 lignes**
+   - Racine disponible (vert), branches verrouillées (sombre)
+   - Clic Racine → achat 1 pt → état acheté
    - Puis Acheteur ou Vendeur débloqué
    - **Retour** → overlay fermé, grille OK
-4. Pas de texte placeholder (masqué si arbre visible)
-5. Console : pas d’erreur rouge
+4. Pas de placeholder texte si arbre visible
+5. Console : aucune erreur rouge
 
 ---
 
-## Dépannage rapide
+## Dépannage
 
-| Problème | Cause probable |
-|----------|----------------|
-| Arbre pas visible, texte seulement | `trackPrefabBindings` vide ou mauvais `trackId` |
-| Clic nœud sans effet | SO absent ou `nodeId` ≠ mock |
-| « Noeud (SO manquant) » | **Node Definition** non assigné sur l’instance |
-| Lignes mal placées | `fromNode` / `toNode` inversés ou non assignés |
-| Tous les overlays visibles en même temps | Normal avant Play — au runtime un seul état actif |
+| Problème | Cause probable | Action |
+|----------|----------------|--------|
+| Texte seulement, pas d’arbre | `trackPrefabBindings` vide ou mauvais `trackId` | Étape 7 |
+| Warning « sans RectTransform sur la racine » | Racine créée via **Create Empty** (3D) au lieu de **UI → Empty** | Refaire étape 1 |
+| Arbre monté mais invisible (pas d’erreur) | Instance sous `TreeContent` en preview + mauvaise position world | Vider `TreeContent` ; laisser le runtime instancier |
+| **Arbre entier masqué en jeu** (titre overlay OK) | `TreeScrollView` / **Mask viewport** clippe le contenu ; `BodyPlaceholder` ou `Dimmer` recouvre | Bezy : ajouter **`TreeMountHost`** fixe sous `OverlayPanel` (sans Mask) ; revoir ScrollRect. Cursor : bypass runtime `TreeMountHost` (2026-06-16) |
+| Titre nœud invisible | `TitleLabel` sous overlays plein cadre ou contraste faible | Bezy : `TitleLabel` **dernier enfant**, au-dessus du nœud, blanc 14px |
+| Clic sans effet | SO absent ou `nodeId` ≠ mock | Étape 0 + 3 |
+| « Noeud (SO manquant) » | **Node Definition** non assigné | Étape 3 |
+| Lignes mal placées | `fromNode` / `toNode` inversés | Étape 4 |
+| Arrays vides au runtime | Collect non fait | Étape 5 |
+| Rien visible étapes 1–2 | Normal | Prefab Mode + étape 3 |
 
 ---
 
 ## Checklist finale
 
-- [ ] 3 SO Commerce avec IDs exacts
-- [ ] Étape 2 : dossiers `Nodes` + `Edges` créés, ordre hiérarchie OK (Edges avant Nodes)
+- [ ] 3 SO Commerce, IDs exacts
+- [ ] Hiérarchie `Edges` + `Nodes`, ordre OK
 - [ ] 3 nœuds positionnés + SO assignés
 - [ ] 2 edges câblés + validation OK
-- [ ] Collect nodes/edges fait
-- [ ] Binding overlay `track.commerce` → prefab
-- [ ] Playtest P1 achat visuel OK
+- [ ] Collect : 3 nodes, 2 edges
+- [ ] Prefab sauvé dans `Trees/`
+- [ ] Binding `track.commerce` dans overlay
+- [ ] Playtest P1 OK
 
 ---
 
-## Répéter pour une autre piste
+## Dupliquer pour une autre piste
 
-1. Dupliquer la structure : `Track_Plant`, `Track_Fish`, etc.
-2. Créer les SO `TalentNodeDefinition` avec `trackId` = `track.plant`, `track.fish`, …
-3. Composer le layout visuel (forme différente par piste — grille, chaîne, hub…)
-4. Ajouter une entrée dans **Track Prefab Bindings** (`ProgressionTrackId` stable)
-5. Playtest via le slot halo correspondant (P2 Plante, P3 Poisson, …)
+1. Dupliquer le prefab : `Track_Plant`, `Track_Fish`, …
+2. Créer les SO avec `trackId` = `track.plant`, `track.fish`, …
+3. Composer un layout visuel différent (hub, chaîne, grille…)
+4. **Étape 7** : nouvelle entrée dans **Track Prefab Bindings**
+5. **Étape 8** : playtest via le slot halo (P2, P3, …)
 
-Piste sans prefab bindé : message texte « À venir » (fallback overlay MVP).
+Piste sans binding : fallback texte « À venir » (MVP overlay).
+
+---
+
+## Docs complémentaires
+
+| Sujet | Fichier |
+|-------|---------|
+| Architecture layout | `Notes/Ui/SPEC_talent_tree_layout_editeur.md` |
+| Phases Bezy (prefabs) | `Notes/Ui/PROMPTS_Bezi_talent_tree.md` |
+| Hiérarchie inventaire | `Notes/Ui/ARBRE_inventory_halo_ui.md` |
+| Statut tâche / prochaine session | `Notes/Todo_project.md` → `[P0-INV-HALO-012]` |
+| Journal session | `PROJECT_LOG.md` (historique uniquement) |
