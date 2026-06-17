@@ -1,27 +1,19 @@
 ## Assistant Context — RaymanInifiteRunner
 
 ### Etat actuel (compact)
-- Projet Unity 6000.3.x : **boot** `Bootstrap.unity` → **`GameBootstrap`** charge additivement le shell **`NavigationHUD`**, **`HomeScene`**, puis **`Inventaire`** (eager, racines masquées jusqu'à navigation) ; visibilité des scènes de contenu via **`SceneNavigator.ShowScene`** ; gameplay ferme dans **`FirstLvl`**.
-- Suivi taches : **statut source unique** dans `Notes/Todo_project.md`.
+- Projet Unity 6000.3.x : boot `Bootstrap` → shell `NavigationHUD` + inventaire via `UIManager`.
+- **Arbre talents Commerce : MVP OK** (2026-06-16) — feature gelée, polish en backlog.
 
 ### Priorités en cours (2026-06-16)
-1. **[P0-INV-HALO-013]** — **Playtest** arbre Commerce (workflow étape 8) + **fix affichage** en collaboration **Bezy** (prefabs) / **Cursor** (retrait contournements runtime).
-2. **[P0-IDEA-001]** — Compléter notes tablette (après playtest Commerce OK).
+1. **Prochaine session non fixée** — commit lot talent tree recommandé, ou reprendre stock / **[P0-IDEA-001]**.
+2. **Arbres talents (plus tard)** — polish `BL-INV-TALENT-*` dans `Notes/Todo_project.md`.
 
-### Contexte Git session (2026-06-16)
-- **`main`** — modifications locales **non commitées** : scripts overlay, `InventoryScreen.prefab` (binding étape 7), `Track_Commerce.prefab`.
-- Symptôme : titre overlay OK, **arbre entier masqué** en jeu (ScrollRect/Mask / calques overlay).
-- Contournement Cursor temporaire : `TreeMountHost` runtime (`TalentTreeOverlayController`).
+### Contexte Git
+- **`main`** — lot talent tree local ; commit auteur à planifier.
 
-### Rappel protocole gestion de projet (session)
-- Lire : `WORKFLOW_PROTOCOL.md`, `ASSISTANT_CONTEXT.md`, `PROJECT_LOG.md`, `Notes/Todo_project.md`.
-- Priorité immédiate — **2026-06-16** :
-  - **[P0-INV-HALO-013]** playtest + fix Bezy (`PROMPTS_Bezi_talent_tree.md` § Phase 4).
-  - **[P0-INV-HALO-012]** composition ~ clos (étapes 0–7) ; étape 8 → 013.
+### Rappel « tâche du jour »
+- Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md` (entrée 2026-06-16 fin).
 
-### Références clés (talent tree)
-- `Notes/Ui/WORKFLOW_creation_arbre_talents.md`
-- `Notes/Ui/PROMPTS_Bezi_talent_tree.md`
-- `Notes/Ui/SPEC_talent_tree_layout_editeur.md`
-- `PROJECT_LOG.md` (entrée 2026-06-16)
-- `Notes/Todo_project.md`
+### Références talent tree
+- Workflow : `Notes/Ui/WORKFLOW_creation_arbre_talents.md` (§ Polish / backlog)
+- Backlog IDs : `BL-INV-TALENT-001` … `004` dans `Notes/Todo_project.md`

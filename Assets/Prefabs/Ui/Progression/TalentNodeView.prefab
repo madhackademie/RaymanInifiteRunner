@@ -363,13 +363,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a0ede1fd0d8d14ab1e1366e06748c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TalentNodeView
-  nodeDefinition: {fileID: 0}
+  nodeDefinition: {fileID: 11400000, guid: 14a8dd1614a7091428b72d918d7f7ea3, type: 2}
   purchaseButton: {fileID: 9152319427651118486}
   iconImage: {fileID: 5284145973111969883}
   titleLabel: {fileID: 1526741684133098749}
   lockedOverlay: {fileID: 3069249931171833786}
   availableOverlay: {fileID: 761946974370207731}
   purchasedOverlay: {fileID: 7521311573636833120}
+  repositionTitleAboveNode: 1
+  titleFontSize: 14
+  titleOffsetAboveNode: 8
 --- !u!1 &7521311573636833120
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,7 +522,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4293322470
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3

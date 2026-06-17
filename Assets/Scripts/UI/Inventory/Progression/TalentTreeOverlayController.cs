@@ -172,6 +172,15 @@ public class TalentTreeOverlayController : MonoBehaviour
         activeTreeInstance = Instantiate(prefab.gameObject, mountHost, false);
         activeTreeInstance.name = prefab.name;
 
+        activeLayoutRoot = activeTreeInstance.GetComponent<TalentTreeLayoutRoot>();
+        if (activeLayoutRoot == null)
+        {
+            Debug.LogWarning(
+                $"[TalentTreeOverlayController] Prefab '{prefab.name}' sans TalentTreeLayoutRoot.");
+            ClearActiveTreeInstance();
+            return;
+        }
+
         RectTransform instanceRect = activeTreeInstance.transform as RectTransform;
         if (instanceRect == null)
         {
@@ -180,15 +189,9 @@ public class TalentTreeOverlayController : MonoBehaviour
                 "Recree la racine via UI → Empty (cf. WORKFLOW_creation_arbre_talents.md).");
         }
         else
-            ApplyTreeInstanceLayout(instanceRect, mountHost);
-
-        activeLayoutRoot = activeTreeInstance.GetComponent<TalentTreeLayoutRoot>();
-        if (activeLayoutRoot == null)
         {
-            Debug.LogWarning(
-                $"[TalentTreeOverlayController] Prefab '{prefab.name}' sans TalentTreeLayoutRoot.");
-            ClearActiveTreeInstance();
-            return;
+            bool centerInHost = UsesScrollRectBypass() && mountHost != treeContentHost;
+            activeLayoutRoot.ApplyRuntimeMountLayout(mountHost, centerInHost);
         }
 
         if (progressionService != null)
@@ -257,35 +260,6 @@ public class TalentTreeOverlayController : MonoBehaviour
         createdRuntimeTreeMountHost = true;
     }
 
-    private void ApplyTreeInstanceLayout(RectTransform instanceRect, RectTransform mountHost)
-    {
-        instanceRect.localRotation = Quaternion.identity;
-        instanceRect.localScale = Vector3.one;
-
-        if (UsesScrollRectBypass() && mountHost != treeContentHost)
-        {
-            instanceRect.anchorMin = new Vector2(0.5f, 0.5f);
-            instanceRect.anchorMax = new Vector2(0.5f, 0.5f);
-            instanceRect.pivot = new Vector2(0.5f, 0.5f);
-            instanceRect.anchoredPosition = Vector2.zero;
-            instanceRect.sizeDelta = new Vector2(DefaultTreeContentWidth, DefaultTreeContentHeight);
-            return;
-        }
-
-        ApplyScrollContentTreeLayout(instanceRect);
-    }
-
-    private void ApplyScrollContentTreeLayout(RectTransform instanceRect)
-    {
-        Vector2 contentSize = ResolveTreeContentSize();
-
-        instanceRect.anchorMin = new Vector2(0f, 1f);
-        instanceRect.anchorMax = new Vector2(0f, 1f);
-        instanceRect.pivot = new Vector2(0f, 1f);
-        instanceRect.anchoredPosition = Vector2.zero;
-        instanceRect.sizeDelta = contentSize;
-    }
-
     private Vector2 ResolveTreeContentSize()
     {
         if (treeContentHost == null)
@@ -330,7 +304,10 @@ public class TalentTreeOverlayController : MonoBehaviour
         ApplyPlaceholderVisibility();
 
         if (activeLayoutRoot != null)
+        {
+            activeLayoutRoot.CenterVisualContentInCanvas();
             activeLayoutRoot.RefreshAll();
+        }
 
         layoutRefreshRoutine = null;
     }

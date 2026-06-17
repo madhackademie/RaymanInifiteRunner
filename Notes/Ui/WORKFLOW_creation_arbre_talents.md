@@ -28,7 +28,8 @@
 14. [Dépannage](#dépannage)
 15. [Checklist finale](#checklist-finale)
 16. [Dupliquer pour une autre piste](#dupliquer-pour-une-autre-piste)
-17. [Docs complémentaires](#docs-complémentaires)
+17. [Positionnement UI prefab → runtime](#positionnement-ui-prefab--runtime)
+18. [Docs complémentaires](#docs-complémentaires)
 
 ---
 
@@ -135,7 +136,12 @@ Le mock runtime exige des **`nodeId` exacts**. Chaque nœud UI pointe vers le SO
 3. Inspector :
    - **Track Id** : `track.commerce`
 4. Vérifier le composant affiché est bien **`Rect Transform`** (pas `Transform` seul).
-5. Composer les étapes 2–6 en **Prefab Mode**, puis sauver dans `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab`.
+5. **Rect Transform racine** (convention WYSIWYG — voir aussi [Positionnement UI prefab → runtime](#positionnement-ui-prefab--runtime)) :
+   - **Anchor** : centre `(0.5, 0.5)` — *recommandé* (ancres stretch fonctionnent aussi grâce au montage runtime).
+   - **Pivot** : `(0.5, 0.5)` *recommandé*, ou `(0, 1)` haut-gauche si tu composes ainsi en Prefab Mode.
+   - **Width / Height** : `800 × 600` (doit correspondre au champ **Layout Canvas Size** sur `TalentTreeLayoutRoot`).
+   - **Pos X/Y** : `0, 0` (origine = centre du canvas arbre si pivot centre).
+6. Composer les étapes 2–6 en **Prefab Mode**, puis sauver dans `Assets/Prefabs/Ui/Progression/Trees/Track_Commerce.prefab`.
 
 ---
 
@@ -282,6 +288,34 @@ Sans cette étape, le Play mode affiche le fallback texte MVP au lieu de l’arb
 | Lignes mal placées | `fromNode` / `toNode` inversés | Étape 4 |
 | Arrays vides au runtime | Collect non fait | Étape 5 |
 | Rien visible étapes 1–2 | Normal | Prefab Mode + étape 3 |
+| **Arbre décalé en haut-gauche en Play** | Racine avec ancres stretch + pivot haut-gauche : à l’instanciation le runtime recentre la boîte 800×600, mais un mauvais pivot décale le contenu | Vérifier **Layout Canvas Size** = 800×600 ; pivot centre recommandé ; relancer Play (fix `ApplyRuntimeMountLayout` 2026-06-16) |
+
+---
+
+## Positionnement UI prefab → runtime
+
+### Pourquoi Prefab Mode ≠ Play mode
+
+En **Prefab Mode**, Unity **cadre la racine** du prefab au centre de la vue — pas le groupe de nœuds. Si tu composes visuellement « au centre », le contenu peut en réalité être dans le **quadrant haut-gauche** du canvas 800×600.
+
+En **Play mode**, le runtime :
+1. Centre la boîte 800×600 dans `TreeMountHost`.
+2. Mesure les **bounds des nœuds** et décale `Nodes` pour centrer le groupe (`CenterVisualContentInCanvas`).
+
+### Convention auteur (recommandée)
+
+| Élément | Valeur |
+|---------|--------|
+| Racine `Track_*` | Anchor centre, Pivot centre, 800×600 |
+| `Nodes` / `Edges` | Stretch plein parent, offset `(0, 0)` |
+| Chaque nœud | Anchor centre, positions relatives au **centre** de l’arbre (ex. racine `(0, 120)`) |
+| `TalentTreeLayoutRoot` | **Layout Canvas Size** = même taille que la racine |
+
+Tu composes ainsi en Prefab Mode : ce que tu vois centré dans la fenêtre prefab = ce que tu obtiens en overlay.
+
+### Ancien layout (pivot haut-gauche)
+
+Si tu as déjà placé les nœuds avec pivot `(0, 1)` et des coords « depuis le coin », **ne change pas tout** : le runtime compense le pivot. Pour les nouveaux arbres, préfère pivot centre dès l’étape 1.
 
 ---
 
@@ -307,6 +341,18 @@ Sans cette étape, le Play mode affiche le fallback texte MVP au lieu de l’arb
 5. **Étape 8** : playtest via le slot halo (P2, P3, …)
 
 Piste sans binding : fallback texte « À venir » (MVP overlay).
+
+---
+
+## Polish / backlog (post-MVP)
+
+> Statut des tâches : **`Notes/Todo_project.md`** → § *Backlog — arbres talents* (`BL-INV-TALENT-*`).
+
+| Idée | Notes d'implémentation |
+|------|------------------------|
+| **Filigrane thématique** | Calque décoratif derrière les nœuds, lié à la piste (`track.commerce`, `track.plant`, …). Alpha faible pour ne pas gêner la lisibilité. Candidate Bezy : enfant de `TreeMountHost` ou `Track_*` prefab. |
+| **Zoom + scroll** | Pertinent quand un arbre **dépasse** la zone utile (mobile portrait, arbres 10+ nœuds). MVP actuel (Commerce, 800×600) : **optionnel / plus tard**. Critère d'activation : hauteur ou largeur contenu > viewport overlay. |
+| **Device mobile** | Valider lisibilité tactile (taille nœuds, scroll inertia) lors d'un playtest tablette/téléphone avant d'investir le zoom. |
 
 ---
 

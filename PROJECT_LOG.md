@@ -1,5 +1,28 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-16 (fin) — Arbre talents Commerce MVP validé + polish backlog
+
+### Décision
+- Feature **talent tree Commerce MVP fonctionnelle** — gel volontaire ; reprise plus tard en polish.
+- Idées polish enregistrées : filigrane thématique par piste, zoom/scroll **conditionnel** (si arbre > écran, utile mobile).
+
+### Backlog ajouté (`Notes/Todo_project.md`)
+- **[BL-INV-TALENT-001]** Filigrane thématique par piste.
+- **[BL-INV-TALENT-002]** Zoom + pan overlay (uniquement si contenu dépasse viewport).
+- **[BL-INV-TALENT-003]** Prefabs définitifs Bezy + retrait contournements runtime.
+- **[BL-INV-TALENT-004]** Arbres P2–P6 + bindings.
+
+### Clos
+- **[P0-INV-HALO-012]**, **[P0-INV-HALO-013]** — playtest Commerce OK.
+
+### Prochaine session
+- Priorité **non fixée** par l'auteur — commit lot talent tree recommandé ; sinon reprendre stock / **[P0-IDEA-001]**.
+
+### Docs
+- `Notes/Todo_project.md`, `Notes/Ui/WORKFLOW_creation_arbre_talents.md` § Polish, `ASSISTANT_CONTEXT.md`
+
+---
+
 ## 2026-06-16 — Session debug affichage arbre Commerce + prochaine session Bezy
 
 ### Contexte
