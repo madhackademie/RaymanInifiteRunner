@@ -1,5 +1,37 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-17 — Shell HUD Vente + prochaine session bandeaux Bezy
+
+### Contexte
+- Nouveau chantier **canaux de vente** : UX actée = **100 % UI** (clic bandeau), pas de scène PNJ.
+- Vocabulaire : onglet HUD **« Vente »** (`ScreenId.SaleChannels`) — **pas** « Market » (réservé cloud global).
+
+### Ce qu'on a fait
+- [x] **`ScreenId.SaleChannels`** + **`RuntimeSaleChannelsScreen`** (shell placeholder).
+- [x] **`SaleChannelsScreen.prefab`** + enregistrement `UIManager.secondaryScreens`.
+- [x] Onglet **`TabVente`** dans **`NavigationHUD.unity`** (4e bouton nav bar, couleur active verte).
+- [x] Docs : **`Notes/Ui/SPEC_sale_channels_ui_bandeaux.md`**, **`Notes/Ui/PROMPTS_Bezi_sale_channels.md`** (Bezy Ph.1–3).
+- [x] Mise à jour GDD **`SPEC_vente_production_boucle_jeu.md`** §4–§5.1 + **`Notes/Todo_project.md`**.
+
+### Prochaine session (priorité immédiate)
+1. **[P0-SALE-PLAY-001]** Playtest shell : HUD → Vente → fermeture.
+2. **[P0-SALE-BEZI-001 à 003]** Bezy : scroll + bandeaux (Voisinage ★1 actif, bandoulière/vélo verrouillés) — prompts phasés.
+3. **[P0-SALE-PLAY-002]** Playtest bandeaux scrollables.
+4. *(Session suivante Cursor)* **[P0-SALE-CODE-001]** : `SaleChannelService` + popup vente salades.
+
+### Fichiers touchés
+- `Assets/Scripts/Systems/ScreenId.cs`
+- `Assets/Scripts/UI/NavigationHUD.cs`
+- `Assets/Scripts/UI/SaleChannels/RuntimeSaleChannelsScreen.cs`
+- `Assets/Prefabs/Ui/SaleChannelsScreen.prefab`
+- `Assets/Scenes/NavigationHUD.unity`
+- `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md`
+- `Notes/Ui/PROMPTS_Bezi_sale_channels.md`
+- `Notes/GDD/SPEC_vente_production_boucle_jeu.md`
+- `Notes/Todo_project.md`
+
+---
+
 ## 2026-06-16 (fin) — Arbre talents Commerce MVP validé + polish backlog
 
 ### Décision

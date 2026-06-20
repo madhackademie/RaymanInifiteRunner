@@ -38,11 +38,13 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private Button tabAventuresButton;
     [SerializeField] private Button tabInventaireButton;
     [SerializeField] private Button tabShopButton;
+    [SerializeField] private Button tabSaleChannelsButton;
 
     [Header("Tab Icons")]
     [SerializeField] private Image tabAventuresIcon;
     [SerializeField] private Image tabInventaireIcon;
     [SerializeField] private Image tabShopIcon;
+    [SerializeField] private Image tabSaleChannelsIcon;
 
     [Header("Exit Button")]
     [SerializeField] private Button exitButton;
@@ -50,6 +52,7 @@ public class NavigationHUD : MonoBehaviour
     [Header("Couleurs de tab")]
     [SerializeField] private Color colorActive      = new Color(1f,    0.78f, 0.2f,  1f);
     [SerializeField] private Color colorActiveShop  = new Color(0.2f,  0.6f,  1f,   1f);
+    [SerializeField] private Color colorActiveSaleChannels = new Color(0.35f, 0.78f, 0.42f, 1f);
     [SerializeField] private Color colorInactive    = new Color(0.55f, 0.55f, 0.55f, 1f);
 
     private HudMode currentMode = HudMode.Hidden;
@@ -72,6 +75,8 @@ public class NavigationHUD : MonoBehaviour
             tabInventaireButton.onClick.AddListener(OnTabInventaireClicked);
         if (tabShopButton != null)
             tabShopButton.onClick.AddListener(OnTabShopClicked);
+        if (tabSaleChannelsButton != null)
+            tabSaleChannelsButton.onClick.AddListener(OnTabSaleChannelsClicked);
         if (exitButton != null)
             exitButton.onClick.AddListener(OnExitClicked);
 
@@ -97,6 +102,8 @@ public class NavigationHUD : MonoBehaviour
             tabInventaireButton.onClick.RemoveListener(OnTabInventaireClicked);
         if (tabShopButton != null)
             tabShopButton.onClick.RemoveListener(OnTabShopClicked);
+        if (tabSaleChannelsButton != null)
+            tabSaleChannelsButton.onClick.RemoveListener(OnTabSaleChannelsClicked);
         if (exitButton != null)
             exitButton.onClick.RemoveListener(OnExitClicked);
     }
@@ -125,7 +132,7 @@ public class NavigationHUD : MonoBehaviour
 
         if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Inventory))
         {
-            UIManager.Instance.HideScreen(ScreenId.Shop);
+            HideOtherModalScreens(ScreenId.Inventory);
             RefreshTabVisuals(Tab.Inventaire);
             SetTabsInteractable(true);
             return;
@@ -145,13 +152,33 @@ public class NavigationHUD : MonoBehaviour
 
         if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Shop))
         {
-            UIManager.Instance.HideScreen(ScreenId.Inventory);
+            HideOtherModalScreens(ScreenId.Shop);
             RefreshTabVisuals(Tab.Shop);
             SetTabsInteractable(true);
             return;
         }
 
         Debug.LogWarning("[NavigationHUD] Ecran Shop introuvable dans UIManager.");
+        SetTabsInteractable(true);
+    }
+
+    /// <summary>Affiche l'écran canaux de vente via UIManager.</summary>
+    public void OnTabSaleChannelsClicked()
+    {
+        if (IsSceneTransitionBlocking())
+            return;
+
+        SetTabsInteractable(false);
+
+        if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.SaleChannels))
+        {
+            HideOtherModalScreens(ScreenId.SaleChannels);
+            RefreshTabVisuals(Tab.SaleChannels);
+            SetTabsInteractable(true);
+            return;
+        }
+
+        Debug.LogWarning("[NavigationHUD] Ecran SaleChannels introuvable dans UIManager.");
         SetTabsInteractable(true);
     }
 
@@ -184,6 +211,8 @@ public class NavigationHUD : MonoBehaviour
             tabInventaireButton.interactable = interactable;
         if (tabShopButton != null)
             tabShopButton.interactable = interactable;
+        if (tabSaleChannelsButton != null)
+            tabSaleChannelsButton.interactable = interactable;
     }
 
     private SceneNavigator boundNavigator;
@@ -262,6 +291,14 @@ public class NavigationHUD : MonoBehaviour
                             UIManager.Instance.IsScreenVisible(ScreenId.Inventory);
         bool onShop = UIManager.Instance != null &&
                       UIManager.Instance.IsScreenVisible(ScreenId.Shop);
+        bool onSaleChannels = UIManager.Instance != null &&
+                              UIManager.Instance.IsScreenVisible(ScreenId.SaleChannels);
+
+        if (onSaleChannels)
+        {
+            RefreshTabVisuals(Tab.SaleChannels);
+            return;
+        }
 
         if (onShop)
         {
@@ -274,9 +311,10 @@ public class NavigationHUD : MonoBehaviour
 
     private void RefreshTabVisuals(Tab active)
     {
-        SetIconColor(tabAventuresIcon,  active == Tab.Aventures,  colorActive);
-        SetIconColor(tabInventaireIcon, active == Tab.Inventaire, colorActive);
-        SetIconColor(tabShopIcon,       active == Tab.Shop,       colorActiveShop);
+        SetIconColor(tabAventuresIcon,     active == Tab.Aventures,     colorActive);
+        SetIconColor(tabInventaireIcon,    active == Tab.Inventaire,    colorActive);
+        SetIconColor(tabShopIcon,          active == Tab.Shop,          colorActiveShop);
+        SetIconColor(tabSaleChannelsIcon,  active == Tab.SaleChannels,  colorActiveSaleChannels);
     }
 
     private void SetIconColor(Image icon, bool isActive, Color activeColor)
@@ -294,7 +332,21 @@ public class NavigationHUD : MonoBehaviour
 
         UIManager.Instance.HideScreen(ScreenId.Inventory);
         UIManager.Instance.HideScreen(ScreenId.Shop);
+        UIManager.Instance.HideScreen(ScreenId.SaleChannels);
     }
 
-    private enum Tab { Aventures, Inventaire, Shop }
+    private static void HideOtherModalScreens(string keepVisibleScreenId)
+    {
+        if (UIManager.Instance == null)
+            return;
+
+        if (keepVisibleScreenId != ScreenId.Inventory)
+            UIManager.Instance.HideScreen(ScreenId.Inventory);
+        if (keepVisibleScreenId != ScreenId.Shop)
+            UIManager.Instance.HideScreen(ScreenId.Shop);
+        if (keepVisibleScreenId != ScreenId.SaleChannels)
+            UIManager.Instance.HideScreen(ScreenId.SaleChannels);
+    }
+
+    private enum Tab { Aventures, Inventaire, Shop, SaleChannels }
 }

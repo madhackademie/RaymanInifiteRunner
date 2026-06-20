@@ -264,14 +264,14 @@ Même logique **1–5 étoiles**, récompenses adaptées au tier (capacité kg, 
 | Terme | Sens actuel / cible | Écran / flux |
 |-------|---------------------|--------------|
 | **Shop — achat** | Le joueur **dépense** de la monnaie pour recevoir des items (ex. graines) | `ScreenId.Shop`, `RuntimeShopScreen` — **livré (achat)** |
-| **Vente production** | Le joueur **cède** des items récoltés contre de la monnaie via un **canal** (§2) | **Non implémenté** |
+| **Vente production** | Le joueur **cède** des items récoltés contre de la monnaie via un **canal** (§2) | **Shell HUD** livré (2026-06-17) — bandeaux + vente métier **en cours** ; voir `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` |
 | **Market (global)** | Place de marché interconnectée (cloud) — hors scope proto local | `ScreenId.Market` commenté ; spec cloud : `Notes/Ui/SPEC_services_inventory_market_cloud.md` |
 
 **Règle de rédaction :** « vente voisinage / bandoulière / vélo » pour les canaux locaux ; réserver « market » au marché global cloud.
 
 ---
 
-## 4) État actuel du code (2026-06-10)
+## 4) État actuel du code (2026-06-17)
 
 ### Ce qui existe
 
@@ -281,13 +281,15 @@ Même logique **1–5 étoiles**, récompenses adaptées au tier (capacité kg, 
 | Monnaie + achat | `InventoryCurrencyAccount.TryPurchase`, wallet UI — voir `Notes/Ui/popup_generique.md` |
 | Catalogue prototype | `MarketCatalogPrototype` + `market_catalog.json` — offres **achat** shop uniquement |
 | Talents vendeur (mock) | Branche « Vendeur » — mock `talent.commerce.seller.price1` ; à relier aux canaux plus tard |
+| **Écran HUD Vente (shell)** | `ScreenId.SaleChannels`, onglet **Vente** `NavigationHUD`, prefab `SaleChannelsScreen.prefab`, `RuntimeSaleChannelsScreen` — doc `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` |
 
 ### Ce qui manque (gap principal)
 
-- Aucun canal de vente (PNJ voisinage, bandoulière, vélo).
+- Pas de **bandeaux scroll** ni prefab `SaleChannelBandeauView` (prochaine session **Bezy**).
+- Pas de transaction **TrySell** (inventaire → monnaie) ni popup confirmation vente.
 - Pas de prix de **revente** par item / par canal.
 - Pas de système **recherche / upgrade** lié aux canaux commerce.
-- Pas de **étoiles d’upgrade bandeau** (§2.9) ni **slots** PNJ / ami (§2.8).
+- Pas de **étoiles d’upgrade bandeau** (§2.9) ni **slots** PNJ / ami (§2.8) côté UI.
 - Pas de règle **parallélisme** canaux côté code.
 
 ---
@@ -296,9 +298,9 @@ Même logique **1–5 étoiles**, récompenses adaptées au tier (capacité kg, 
 
 ### 5.1 Proto voisinage (priorité immédiate)
 
-- [ ] Nombre de PNJ voisins (2–3 ?) et emplacement scène (Hub, FirstLvl, quartier dédié ?).
-- [ ] UX : dialogue, popup livraison, ou interaction « donner X salades » ?
-- [ ] Plafond quantité par PNJ : fixe, reset journalier, ou par cycle de récolte ?
+- [x] UX : **bandeau cliquable** sur écran HUD `SaleChannels` (pas de PNJ 3D / scène dédiée) — 2026-06-17.
+- [ ] Bandeau Voisinage ★1 + scroll (prefab Bezy) — voir `Notes/Ui/PROMPTS_Bezi_sale_channels.md`.
+- [ ] Plafond quantité (2 salades) + popup confirmation vente — Cursor après bandeaux.
 - [ ] Prix exact salade vs prix graine (ratio cible pour N cycles avant bandoulière).
 
 ### 5.2 Recherches & upgrades
@@ -399,4 +401,4 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 ---
 
-*Dernière mise à jour : 2026-06-13 — §2.9 étoiles bandeau (ex. voisinage ★1→★5) ; §2.8 portraits PNJ/ami séparés.*
+*Dernière mise à jour : 2026-06-17 — shell HUD Vente ; UX bandeau actée ; suite Bezy bandeaux.*

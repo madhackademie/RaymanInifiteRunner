@@ -37,12 +37,41 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`main`** — lot talent tree **MVP fonctionnel** (2026-06-16). Commit local recommandé avant changement de chantier. Polish arbre talents → **backlog** (cf. § *Backlog — arbres talents*).
+> Branche courante : **`main`** — chantier **canaux de vente** démarré (2026-06-17) : shell HUD onglet **Vente** + écran `SaleChannelsScreen` placeholder. Commit local recommandé avant session Bezy.
 
-### Reprise session
+### Reprise session — canaux de vente (bandeaux Bezy)
 
-> **Arbre talents Commerce : MVP validé** — feature gelée ; reprise plus tard en polish.
-> Prochaine priorité : **à choisir** (stock `§ Stock en attente`, **[P0-IDEA-001]**, ou commit du lot talent tree).
+> **Priorité immédiate :** remplacer le shell par la **liste scrollable de bandeaux** (Voisinage actif ★1, bandoulière/vélo verrouillés) via **Bezy**, puis playtest HUD → Vente.
+
+**Ordre suggéré :**
+
+1. [ ] **[P0-SALE-PLAY-001]** Playtest rapide shell actuel : Bootstrap → Home → onglet **Vente** → écran placeholder + fermeture OK.
+2. [ ] **[P0-SALE-BEZI-001]** Bezy **Phase 1** — scroll + hiérarchie bandeaux (`PROMPTS_Bezi_sale_channels.md`).
+3. [ ] **[P0-SALE-BEZI-002]** Bezy **Phase 2** — visuels bandeau (étoiles ★, illustration placeholder, overlay verrouillé).
+4. [ ] **[P0-SALE-BEZI-003]** Bezy **Phase 3** — wiring Inspector + review Cursor (`SaleChannelBandeauView` si script ajouté).
+5. [ ] **[P0-SALE-PLAY-002]** Playtest post-Bezy : 3 bandeaux scrollables, Voisinage actif, 2 verrouillés lisibles.
+
+**Session suivante (Cursor, après bandeaux OK) :**
+
+- [ ] **[P0-SALE-CODE-001]** `SaleChannelService` + popup vente salades (cap 2) — spec GDD §2.5.
+
+**Références**
+
+- UI / architecture : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md`
+- Prompts Bezy phasés : `Notes/Ui/PROMPTS_Bezi_sale_channels.md`
+- GDD économie : `Notes/GDD/SPEC_vente_production_boucle_jeu.md`
+
+---
+
+### Clos — shell HUD Vente (2026-06-17)
+
+- [x] **[P0-SALE-SHELL-001]** `ScreenId.SaleChannels` + onglet HUD **Vente** + prefab shell `SaleChannelsScreen.prefab`.
+
+---
+
+### Reprise session (historique — arbre talents)
+
+> **Arbre talents Commerce : MVP validé** — feature gelée ; reprise plus tard en polish (backlog `BL-INV-TALENT-*`).
 
 ---
 
@@ -130,6 +159,18 @@ Convention d'IDs :
 ---
 
 ## Court terme (priorités actives)
+
+### Canaux de vente — UI bandeaux (Bezy + Cursor)
+
+> Détail : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` — statut tâches : § *Prochaine session* ci-dessus.
+
+- [x] **[P0-SALE-SHELL-001]** Shell HUD : onglet Vente + `ScreenId.SaleChannels` + prefab placeholder.
+- [ ] **[P0-SALE-BEZI-001]** Bezy Phase 1 — scroll + prefab `SaleChannelBandeauView` + 3 bandeaux instanciés.
+- [ ] **[P0-SALE-BEZI-002]** Bezy Phase 2 — visuels bandeau (★, illustration, locked).
+- [ ] **[P0-SALE-BEZI-003]** Bezy Phase 3 — wiring Inspector.
+- [ ] **[P0-SALE-PLAY-001]** Playtest shell HUD Vente.
+- [ ] **[P0-SALE-PLAY-002]** Playtest bandeaux post-Bezy.
+- [ ] **[P0-SALE-CODE-001]** `SaleChannelService` + popup vente V0 voisinage (salades, cap 2).
 
 ### Shop — polish restant
 - [x] [P0-SHOP-POP-001] Branche **`rework/shopitempopup`** + polish popup achat (`ShopItemPopup` : saisie quantité, Max, confirmation overlay, solde wallet dans le Header). **Fait** (2026-05-19) — merge `main`, voir `PROJECT_LOG.md`.
