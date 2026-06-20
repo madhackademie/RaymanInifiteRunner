@@ -125,7 +125,7 @@ public class TalentNodeView : MonoBehaviour
         titleLabel.fontStyle = FontStyles.Bold;
         titleLabel.color = Color.white;
         titleLabel.alignment = TextAlignmentOptions.Center;
-        titleLabel.enableWordWrapping = true;
+        titleLabel.textWrappingMode = TextWrappingModes.Normal;
         titleLabel.raycastTarget = false;
 
         if (!repositionTitleAboveNode)

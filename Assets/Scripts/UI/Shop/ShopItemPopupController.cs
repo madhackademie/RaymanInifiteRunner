@@ -11,6 +11,7 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
     private ShopItemPopupData currentData;
     private int currentQuantity;
+    private ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase;
 
     public event Action<ShopItemPopupData, int, int> PurchaseRequested;
 
@@ -24,15 +25,17 @@ public sealed class ShopItemPopupController : MonoBehaviour
         UnbindViewEvents();
     }
 
-    public void Open(ShopItemPopupData data)
+    public void Open(ShopItemPopupData data, ShopItemPopupFlowMode mode = ShopItemPopupFlowMode.Purchase)
     {
         if (data == null || view == null)
             return;
 
+        flowMode = mode;
         currentData = data;
         currentQuantity = data.MinQuantity;
 
         view.SetItemVisuals(data);
+        view.SetConfirmMessageForFlow(flowMode);
         view.Show();
         Refresh();
     }
@@ -41,6 +44,7 @@ public sealed class ShopItemPopupController : MonoBehaviour
     {
         currentData = null;
         currentQuantity = 0;
+        flowMode = ShopItemPopupFlowMode.Purchase;
 
         if (view != null)
             view.Hide();
@@ -96,7 +100,7 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
         if (view != null && view.HasConfirmOverlay)
         {
-            view.ShowConfirmOverlay(totalPrice);
+            view.ShowConfirmOverlay(totalPrice, flowMode);
             return;
         }
 
@@ -140,9 +144,31 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
         int totalPrice = ComputeTotalPrice();
         view.SetQuantity(currentQuantity);
-        view.SetTotalPrice(totalPrice);
-        view.SetConfirmInteractable(CanConfirmPurchase(totalPrice));
+        view.SetTotalPrice(totalPrice, flowMode);
+        view.SetConfirmInteractable(CanConfirmTransaction(totalPrice));
         view.RefreshWallet();
+    }
+
+    private bool CanConfirmTransaction(int totalPrice)
+    {
+        if (!HasItem())
+            return false;
+
+        if (flowMode == ShopItemPopupFlowMode.Sell)
+            return CanConfirmSell();
+
+        return CanConfirmPurchase(totalPrice);
+    }
+
+    private bool CanConfirmSell()
+    {
+        ItemDefinition item = ResolvePurchasedItem();
+        PlayerInventory inventory = PlayerInventory.Instance;
+        if (item == null || inventory == null)
+            return false;
+
+        return currentQuantity >= currentData.MinQuantity &&
+               inventory.Count(item) >= currentQuantity;
     }
 
     private bool CanConfirmPurchase(int totalPrice)
@@ -161,6 +187,9 @@ public sealed class ShopItemPopupController : MonoBehaviour
         if (!HasItem())
             return 1;
 
+        if (flowMode == ShopItemPopupFlowMode.Sell)
+            return ComputeMaxSellableQuantity();
+
         int cap = currentData.MaxQuantity;
         ItemDefinition item = ResolvePurchasedItem();
         PlayerInventory inventory = PlayerInventory.Instance;
@@ -170,6 +199,18 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
         cap = Mathf.Min(cap, ComputeMaxByFunds(inventory));
 
+        return Mathf.Max(currentData.MinQuantity, cap);
+    }
+
+    private int ComputeMaxSellableQuantity()
+    {
+        ItemDefinition item = ResolvePurchasedItem();
+        PlayerInventory inventory = PlayerInventory.Instance;
+        if (item == null || inventory == null)
+            return currentData.MinQuantity;
+
+        int owned = inventory.Count(item);
+        int cap = Mathf.Min(owned, currentData.MaxQuantity);
         return Mathf.Max(currentData.MinQuantity, cap);
     }
 

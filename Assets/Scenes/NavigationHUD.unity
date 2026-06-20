@@ -557,6 +557,12 @@ MonoBehaviour:
   - screenId: FirstLvlFarm
     popupId: farm.harvest.reward
     popupPrefab: {fileID: 7080806659365243136, guid: 57949baf1706e954c856d1a2cf05315e, type: 3}
+  - screenId: SaleChannels
+    popupId: sale.channel.sell
+    popupPrefab: {fileID: 8190502661174207168, guid: 67c4733d4537b9c40b7e1ebdae85b0aa, type: 3}
+  - screenId: SaleChannels
+    popupId: shop.resource.feedback
+    popupPrefab: {fileID: 8667043653346198443, guid: 72ca5fc0fce0fc74db56a4066de24fdb, type: 3}
 --- !u!1 &877250849
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,6 +573,7 @@ GameObject:
   m_Component:
   - component: {fileID: 877250850}
   - component: {fileID: 877250851}
+  - component: {fileID: 877250852}
   m_Layer: 5
   m_Name: PlayerInventory
   m_TagString: Untagged
@@ -610,6 +617,21 @@ MonoBehaviour:
   startingCurrencyAmount: 100
   startingSeedItem: {fileID: 11400000, guid: eee016e7728a0374ca7e6a2da06050a9, type: 2}
   startingSeedAmount: 1
+--- !u!114 &877250852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877250849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f2a9c14b5d6e3f80123456789abcde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaleChannelService
+  neighborSellItemId: laitue_mature
+  neighborUnitPrice: 15
+  neighborMaxQuantityPerSale: 2
 --- !u!1 &919069777
 GameObject:
   m_ObjectHideFlags: 0

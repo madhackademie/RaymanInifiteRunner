@@ -20,4 +20,7 @@ public static class PopupId
 
     /// <summary>Toast succès récolte : icône item + quantité animée (scène FirstLvl / ferme).</summary>
     public const string FarmHarvestReward = "farm.harvest.reward";
+
+    /// <summary>Popup quantité / confirmation vente canal (écran SaleChannels).</summary>
+    public const string SaleChannelSell = "sale.channel.sell";
 }

@@ -1,7 +1,7 @@
 # SPEC UI — Canaux de vente (écran HUD + bandeaux)
 
 **Création :** 2026-06-17  
-**Statut :** actif — shell HUD livré ; bandeaux = prochaine session Bezy  
+**Statut :** actif — V0 voisinage livré (bandeaux + vente) ; prochaine étape = **timer canal**  
 **GDD :** `Notes/GDD/SPEC_vente_production_boucle_jeu.md`  
 **Prompts Bezy :** `Notes/Ui/PROMPTS_Bezi_sale_channels.md`
 
@@ -20,26 +20,29 @@
 
 ---
 
-## 2) État code / assets (2026-06-17)
+## 2) État code / assets (2026-06-20)
 
-### Livré (Cursor)
+### Livré (Bezy + Cursor)
 
 | Élément | Chemin |
 |---------|--------|
 | Id écran | `Assets/Scripts/Systems/ScreenId.cs` → `SaleChannels` |
 | Controller shell | `Assets/Scripts/UI/SaleChannels/RuntimeSaleChannelsScreen.cs` |
-| Prefab placeholder | `Assets/Prefabs/Ui/SaleChannelsScreen.prefab` |
+| Vue bandeau | `Assets/Scripts/UI/SaleChannels/SaleChannelBandeauView.cs` |
+| Prefab écran | `Assets/Prefabs/Ui/SaleChannelsScreen.prefab` |
+| Prefab bandeau | `Assets/Prefabs/Ui/SaleChannels/SaleChannelBandeauView.prefab` |
+| Scroll + 3 bandeaux | Voisinage actif, Bandoulière/Vélo verrouillés |
 | Onglet HUD | `Assets/Scenes/NavigationHUD.unity` → `TabVente` |
-| Enregistrement UIManager | `secondaryScreens` → `SaleChannels` + prefab |
+| Popup vente | `PopupId.SaleChannelSell` + mode `ShopItemPopupFlowMode.Sell` |
+| Service métier | `Assets/Scripts/Systems/SaleChannelService.cs` (voisinage, laitue, cap 2, 15 gold) |
 
-### Manque (prochaine session)
+### Prochaine session (Cursor)
 
 | Élément | Owner |
 |---------|-------|
-| Liste scroll + **bandeau Voisinage** ★1 (bandoulière/vélo verrouillés) | **Bezy** |
-| Prefab **`SaleChannelBandeauView`** réutilisable | **Bezy** |
-| Popup confirmation vente (quantité, prix) | Bezy prefab + Cursor `PopupId` (après bandeaux) |
-| `SaleChannelService` (TrySell inventaire → monnaie) | **Cursor** (après UI bandeau cliquable) |
+| **Timer / cooldown canal** — ex. 1 vente / jour par canal | **Cursor** |
+| Feedback UI bandeau (indispo + compte à rebours ou « demain ») | Cursor (+ Bezy si label dédié sur prefab) |
+| Persistance dernier reset vente (save locale / service temps existant) | **Cursor** |
 
 ---
 
@@ -98,6 +101,21 @@ Cursor fournira `SaleChannelBandeauView.cs` minimal (clic → event) **après** 
 | Document | Rôle |
 |----------|------|
 | `Notes/GDD/SPEC_vente_production_boucle_jeu.md` | Vision gameplay / économie |
-| `Notes/Ui/popup_generique.md` | Pipeline popup (futur `PopupId` vente) |
+| `Notes/Ui/popup_generique.md` | Pipeline popup (`PopupId.SaleChannelSell`) |
 | `Notes/Ui/PROMPTS_Bezi_sale_channels.md` | Prompts phasés Bezy |
 | `Notes/Todo_project.md` | Statut tâches `[P0-SALE-*]` |
+
+---
+
+## 7) Timer canal — cible prochaine session (2026-06-20)
+
+**Intention design :** limiter la fréquence de vente par canal pour rythmer la boucle ferme → économie (ex. **1 transaction / jour calendaire** sur Voisinage ★1).
+
+| Sujet | Cible V0 |
+|-------|----------|
+| Règle | Après une vente réussie sur un canal, blocage jusqu'au **prochain reset jour** (UTC ou `FarmTimeService` si réutilisable) |
+| API service | `SaleChannelService.CanSell(channelId)` / message d'échec explicite (« Reviens demain ») |
+| UI bandeau | Overlay ou label indisponible + indication temporelle (optionnel Bezy : champ TMP sur `SaleChannelBandeauView`) |
+| Popup | Refuser ou griser confirmation si canal en cooldown |
+| Persistance | Stocker timestamp ou date du dernier reset par `SaleChannelId` |
+| Playtest | **[P0-SALE-PLAY-004]** — vendre → canal bloqué → simuler jour → vente à nouveau possible |

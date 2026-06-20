@@ -1,5 +1,35 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-20 (fin) — Canaux vente V0 voisinage validés + prochaine session timer
+
+### Contexte
+- Branche **`feature/vente-production`** — chantier **canaux de vente** : bandeaux Bezy + vente laitue voisinage.
+
+### Ce qu'on a fait
+- [x] Bezy **Ph.1–3** — scroll, `SaleChannelBandeauView.prefab`, 3 bandeaux (Voisinage actif, Bandoulière/Vélo verrouillés), wiring Inspector — **review Cursor OK**.
+- [x] **`SaleChannelService`** — voisinage, `laitue_mature`, 15 gold/unité, cap 2 ; `InventoryCurrencyAccount.TrySell`.
+- [x] Popup vente — `PopupId.SaleChannelSell`, mode `ShopItemPopupFlowMode.Sell`, bindings `NavigationHUD.unity`.
+- [x] Correctifs UI — IDs YAML `CloseLabel` ; croix fermeture `x` (police TMP) sur Vente + Shop.
+- [x] Fix compile — `TrySell` param `out InventoryResult` ; warning `TalentNodeView.textWrappingMode`.
+- [x] **[P0-SALE-PLAY-003]** Playtest auteur : récolte → Vente → Voisinage → popup → gold + inventaire **OK**.
+
+### Prochaine session (priorité immédiate)
+1. **[P0-SALE-TIMER-001]** Timer / cooldown par canal — ex. **1 vente par jour** sur Voisinage (persistance, blocage vente, feedback bandeau/popup).
+2. **[P0-SALE-PLAY-004]** Playtest timer (vente → indispo → reset jour).
+3. Commit auteur recommandé sur `feature/vente-production` avant ou après timer (selon auteur).
+
+### Fichiers touchés (session)
+- `Assets/Scripts/Systems/SaleChannelId.cs`, `SaleChannelService.cs`
+- `Assets/Scripts/Inventory/InventoryCurrencyAccount.cs`
+- `Assets/Scripts/UI/SaleChannels/RuntimeSaleChannelsScreen.cs`, `SaleChannelBandeauView.cs`
+- `Assets/Scripts/UI/Shop/ShopItemPopupData.cs`, `ShopItemPopupController.cs`, `ShopItemPopupView.cs`
+- `Assets/Scripts/UI/Popups/PopupId.cs`
+- `Assets/Prefabs/Ui/SaleChannelsScreen.prefab`, `SaleChannels/SaleChannelBandeauView.prefab`, `ShopScreen.prefab`
+- `Assets/Scenes/NavigationHUD.unity`
+- `Notes/Todo_project.md`, `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md`, `Notes/GDD/SPEC_vente_production_boucle_jeu.md`
+
+---
+
 ## 2026-06-17 — Shell HUD Vente + prochaine session bandeaux Bezy
 
 ### Contexte

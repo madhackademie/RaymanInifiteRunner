@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public sealed class ShopItemPopupView : MonoBehaviour
 {
     private const string DefaultConfirmMessage = "Confirmer l'achat ?";
+    private const string DefaultSellConfirmMessage = "Confirmer la vente ?";
 
     [Header("Root")]
     [SerializeField] private GameObject root;
@@ -104,10 +105,25 @@ public sealed class ShopItemPopupView : MonoBehaviour
         }
     }
 
-    public void SetTotalPrice(int totalPrice)
+    public void SetTotalPrice(int totalPrice, ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase)
     {
-        if (confirmButtonText != null)
-            confirmButtonText.text = $"Acheter {Mathf.Max(0, totalPrice)}";
+        if (confirmButtonText == null)
+            return;
+
+        int value = Mathf.Max(0, totalPrice);
+        confirmButtonText.text = flowMode == ShopItemPopupFlowMode.Sell
+            ? $"Vendre {value}"
+            : $"Acheter {value}";
+    }
+
+    public void SetConfirmMessageForFlow(ShopItemPopupFlowMode flowMode)
+    {
+        if (confirmMessageText == null)
+            return;
+
+        confirmMessageText.text = flowMode == ShopItemPopupFlowMode.Sell
+            ? DefaultSellConfirmMessage
+            : DefaultConfirmMessage;
     }
 
     public void SetConfirmButtonLabel(string label)
@@ -125,13 +141,12 @@ public sealed class ShopItemPopupView : MonoBehaviour
             maxButton.interactable = interactable;
     }
 
-    public void ShowConfirmOverlay(int totalPrice)
+    public void ShowConfirmOverlay(int totalPrice, ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase)
     {
         if (confirmOverlayRoot == null)
             return;
 
-        if (confirmMessageText != null && string.IsNullOrWhiteSpace(confirmMessageText.text))
-            confirmMessageText.text = DefaultConfirmMessage;
+        SetConfirmMessageForFlow(flowMode);
 
         if (confirmTotalText != null)
             confirmTotalText.text = $"Total : {Mathf.Max(0, totalPrice)}";

@@ -37,27 +37,36 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`main`** — chantier **canaux de vente** démarré (2026-06-17) : shell HUD onglet **Vente** + écran `SaleChannelsScreen` placeholder. Commit local recommandé avant session Bezy.
+> Branche courante : **`feature/vente-production`** — V0 voisinage **validé** (2026-06-20) ; prochaine étape **timer canal** (1 vente/jour).
 
-### Reprise session — canaux de vente (bandeaux Bezy)
+### Reprise session — timer canal vente
 
-> **Priorité immédiate :** remplacer le shell par la **liste scrollable de bandeaux** (Voisinage actif ★1, bandoulière/vélo verrouillés) via **Bezy**, puis playtest HUD → Vente.
+> **Priorité immédiate :** ajouter un **timer / cooldown par canal** (ex. **1 vente par jour** sur Voisinage) — branche **`feature/vente-production`**.
 
 **Ordre suggéré :**
 
-1. [ ] **[P0-SALE-PLAY-001]** Playtest rapide shell actuel : Bootstrap → Home → onglet **Vente** → écran placeholder + fermeture OK.
-2. [ ] **[P0-SALE-BEZI-001]** Bezy **Phase 1** — scroll + hiérarchie bandeaux (`PROMPTS_Bezi_sale_channels.md`).
-3. [ ] **[P0-SALE-BEZI-002]** Bezy **Phase 2** — visuels bandeau (étoiles ★, illustration placeholder, overlay verrouillé).
-4. [ ] **[P0-SALE-BEZI-003]** Bezy **Phase 3** — wiring Inspector + review Cursor (`SaleChannelBandeauView` si script ajouté).
-5. [ ] **[P0-SALE-PLAY-002]** Playtest post-Bezy : 3 bandeaux scrollables, Voisinage actif, 2 verrouillés lisibles.
-
-**Session suivante (Cursor, après bandeaux OK) :**
-
-- [ ] **[P0-SALE-CODE-001]** `SaleChannelService` + popup vente salades (cap 2) — spec GDD §2.5.
+1. [ ] **[P0-SALE-TIMER-001]** Timer canal — fenêtre de vente par canal (V0 : **1 transaction / jour** Voisinage ; persistance + feedback UI bandeau / popup).
+2. [ ] **[P0-SALE-PLAY-004]** Playtest timer : vendre → attendre reset (ou simuler jour) → bandeau indisponible puis à nouveau actif.
 
 **Références**
 
-- UI / architecture : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md`
+- UI / architecture : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` §7
+- GDD économie : `Notes/GDD/SPEC_vente_production_boucle_jeu.md` §5.1
+- Service actuel : `Assets/Scripts/Systems/SaleChannelService.cs`
+
+---
+
+### Clos — canaux de vente V0 voisinage (2026-06-20)
+
+1. [x] **[P0-SALE-BEZI-001]** Bezy **Phase 1** — scroll + hiérarchie bandeaux — **review Cursor OK** (2026-06-20).
+2. [x] **[P0-SALE-BEZI-002]** Bezy **Phase 2** — visuels bandeau — **review Cursor OK** (2026-06-20).
+3. [x] **[P0-SALE-BEZI-003]** Bezy **Phase 3** — wiring Inspector — **review Cursor OK** (2026-06-20).
+4. [x] **[P0-SALE-PLAY-002]** Playtest HUD Vente — bandeaux + fermeture OK (2026-06-20).
+5. [x] **[P0-SALE-CODE-001]** `SaleChannelService` + popup vente laitue (cap 2, 15 gold/unité) — livré Cursor (2026-06-20).
+6. [x] **[P0-SALE-PLAY-003]** Playtest vente : récolter laitue → Vente → Voisinage → vendre 1–2 → gold + inventaire OK (2026-06-20).
+
+**Références (clos)**
+
 - Prompts Bezy phasés : `Notes/Ui/PROMPTS_Bezi_sale_channels.md`
 - GDD économie : `Notes/GDD/SPEC_vente_production_boucle_jeu.md`
 
@@ -162,15 +171,18 @@ Convention d'IDs :
 
 ### Canaux de vente — UI bandeaux (Bezy + Cursor)
 
-> Détail : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` — statut tâches : § *Prochaine session* ci-dessus.
+> Détail : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` — prochaine étape : § *Prochaine session* (timer).
 
 - [x] **[P0-SALE-SHELL-001]** Shell HUD : onglet Vente + `ScreenId.SaleChannels` + prefab placeholder.
-- [ ] **[P0-SALE-BEZI-001]** Bezy Phase 1 — scroll + prefab `SaleChannelBandeauView` + 3 bandeaux instanciés.
-- [ ] **[P0-SALE-BEZI-002]** Bezy Phase 2 — visuels bandeau (★, illustration, locked).
-- [ ] **[P0-SALE-BEZI-003]** Bezy Phase 3 — wiring Inspector.
-- [ ] **[P0-SALE-PLAY-001]** Playtest shell HUD Vente.
-- [ ] **[P0-SALE-PLAY-002]** Playtest bandeaux post-Bezy.
-- [ ] **[P0-SALE-CODE-001]** `SaleChannelService` + popup vente V0 voisinage (salades, cap 2).
+- [x] **[P0-SALE-BEZI-001]** Bezy Phase 1 — scroll + prefab `SaleChannelBandeauView` + 3 bandeaux instanciés.
+- [x] **[P0-SALE-BEZI-002]** Bezy Phase 2 — visuels bandeau (★, illustration, locked).
+- [x] **[P0-SALE-BEZI-003]** Bezy Phase 3 — wiring Inspector.
+- [x] **[P0-SALE-PLAY-001]** Playtest shell HUD Vente.
+- [x] **[P0-SALE-PLAY-002]** Playtest bandeaux post-Bezy.
+- [x] **[P0-SALE-CODE-001]** `SaleChannelService` + popup vente V0 voisinage (salades, cap 2).
+- [x] **[P0-SALE-PLAY-003]** Playtest vente réelle (inventaire + gold).
+- [ ] **[P0-SALE-TIMER-001]** Timer / cooldown canal (ex. 1 vente / jour).
+- [ ] **[P0-SALE-PLAY-004]** Playtest timer canal.
 
 ### Shop — polish restant
 - [x] [P0-SHOP-POP-001] Branche **`rework/shopitempopup`** + polish popup achat (`ShopItemPopup` : saisie quantité, Max, confirmation overlay, solde wallet dans le Header). **Fait** (2026-05-19) — merge `main`, voir `PROJECT_LOG.md`.

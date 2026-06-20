@@ -96,4 +96,50 @@ public static class InventoryCurrencyAccount
 
         return false;
     }
+
+    /// <summary>
+    /// Vente atomique : retire l'item vendu puis crédite la monnaie.
+    /// Rembourse l'item si le crédit échoue après retrait.
+    /// </summary>
+    public static bool TrySell(
+        PlayerInventory inventory,
+        ItemDefinition soldItem,
+        int quantity,
+        ItemDefinition currency,
+        int totalGain,
+        out InventoryResult removeResult)
+    {
+        removeResult = InventoryResult.InvalidItem;
+
+        if (inventory == null || soldItem == null || quantity <= 0)
+            return false;
+
+        if (totalGain < 0)
+            totalGain = 0;
+
+        if (inventory.Count(soldItem) < quantity)
+            return false;
+
+        removeResult = inventory.TryRemove(soldItem, quantity);
+        if (removeResult != InventoryResult.Success)
+            return false;
+
+        if (totalGain == 0)
+            return true;
+
+        if (currency == null)
+        {
+            inventory.TryAdd(soldItem, quantity);
+            removeResult = InventoryResult.InvalidItem;
+            return false;
+        }
+
+        InventoryResult creditResult = inventory.TryAdd(currency, totalGain);
+        if (creditResult == InventoryResult.Success || creditResult == InventoryResult.Partial)
+            return true;
+
+        inventory.TryAdd(soldItem, quantity);
+        removeResult = InventoryResult.Full;
+        return false;
+    }
 }

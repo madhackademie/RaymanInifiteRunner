@@ -299,8 +299,9 @@ Même logique **1–5 étoiles**, récompenses adaptées au tier (capacité kg, 
 ### 5.1 Proto voisinage (priorité immédiate)
 
 - [x] UX : **bandeau cliquable** sur écran HUD `SaleChannels` (pas de PNJ 3D / scène dédiée) — 2026-06-17.
-- [ ] Bandeau Voisinage ★1 + scroll (prefab Bezy) — voir `Notes/Ui/PROMPTS_Bezi_sale_channels.md`.
-- [ ] Plafond quantité (2 salades) + popup confirmation vente — Cursor après bandeaux.
+- [x] Bandeau Voisinage ★1 + scroll (prefab Bezy) — livré 2026-06-20.
+- [x] Plafond quantité (2 salades) + popup confirmation vente — livré 2026-06-20 (`SaleChannelService`, 15 gold/unité).
+- [ ] **Timer canal** — ex. **1 vente / jour** par canal (cooldown + persistance) — **[P0-SALE-TIMER-001]** prochaine session.
 - [ ] Prix exact salade vs prix graine (ratio cible pour N cycles avant bandoulière).
 
 ### 5.2 Recherches & upgrades
@@ -401,4 +402,4 @@ Noter surtout : **écoulement local limité**, **déblocage capacité de vente**
 
 ---
 
-*Dernière mise à jour : 2026-06-17 — shell HUD Vente ; UX bandeau actée ; suite Bezy bandeaux.*
+*Dernière mise à jour : 2026-06-20 — V0 voisinage livré (bandeaux + vente laitue) ; prochaine session timer canal (1 vente/jour).*

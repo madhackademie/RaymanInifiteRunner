@@ -35,3 +35,12 @@ public sealed class ShopItemPopupData
         MaxQuantity = Mathf.Max(MinQuantity, maxQuantity);
     }
 }
+
+/// <summary>
+/// Sens de la transaction affichée dans la popup item (shop achat vs vente canal).
+/// </summary>
+public enum ShopItemPopupFlowMode
+{
+    Purchase,
+    Sell
+}
