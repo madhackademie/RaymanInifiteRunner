@@ -1,7 +1,9 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Logique métier V0 — vente voisinage (laitue mature, plafond quantité, crédit monnaie).
+/// Logique métier V0 — vente voisinage (laitue mature, plafond quantité, crédit monnaie, cooldown 24 h).
 /// </summary>
 public class SaleChannelService : MonoBehaviour
 {
@@ -10,11 +12,18 @@ public class SaleChannelService : MonoBehaviour
     private const string NeighborSellItemId = "laitue_mature";
     private const int NeighborUnitPrice = 15;
     private const int NeighborMaxQuantityPerSale = 2;
+    private const float NeighborSaleCooldownSeconds = 24f * 3600f;
 
     [Header("Proto V0 — voisinage")]
     [SerializeField] private string neighborSellItemId = NeighborSellItemId;
     [SerializeField] private int neighborUnitPrice = NeighborUnitPrice;
     [SerializeField] private int neighborMaxQuantityPerSale = NeighborMaxQuantityPerSale;
+    [SerializeField] private float neighborSaleCooldownSeconds = NeighborSaleCooldownSeconds;
+
+    [Header("Debug")]
+    [SerializeField] private bool ignoreSaleCooldown;
+
+    private readonly Dictionary<string, long> lastSaleUtcTicksByChannel = new();
 
     private void Awake()
     {
@@ -26,6 +35,7 @@ public class SaleChannelService : MonoBehaviour
         }
 
         Instance = this;
+        LoadCooldownState();
     }
 
     private void OnDestroy()
@@ -34,9 +44,57 @@ public class SaleChannelService : MonoBehaviour
             Instance = null;
     }
 
+    private void OnApplicationQuit()
+    {
+        PersistCooldownState();
+    }
+
     public bool IsChannelUnlocked(string channelId)
     {
         return channelId == SaleChannelId.Neighbor;
+    }
+
+    public bool IsOnCooldown(string channelId)
+    {
+        return TryGetCooldownRemainingSeconds(channelId, out _);
+    }
+
+    public bool TryGetCooldownRemainingSeconds(string channelId, out float remainingSeconds)
+    {
+        remainingSeconds = 0f;
+
+        if (ignoreSaleCooldown || string.IsNullOrWhiteSpace(channelId))
+            return false;
+
+        if (!TryGetLastSaleUtc(channelId, out DateTime lastSaleUtc))
+            return false;
+
+        float cooldownSeconds = GetCooldownSeconds(channelId);
+        DateTime nowUtc = DateTime.UtcNow;
+
+        if (nowUtc < lastSaleUtc)
+        {
+            remainingSeconds = cooldownSeconds;
+            return true;
+        }
+
+        double elapsedSeconds = (nowUtc - lastSaleUtc).TotalSeconds;
+        if (elapsedSeconds >= cooldownSeconds)
+            return false;
+
+        remainingSeconds = (float)(cooldownSeconds - elapsedSeconds);
+        return remainingSeconds > 0f;
+    }
+
+    public bool TryGetCooldownMessage(string channelId, out string message)
+    {
+        message = null;
+
+        if (!TryGetCooldownRemainingSeconds(channelId, out float remainingSeconds))
+            return false;
+
+        message = $"Canal indisponible — déblocage dans {SaleChannelCooldownFormatter.FormatRemainingSeconds(remainingSeconds)}.";
+        return true;
     }
 
     public bool TryBuildSellPopupData(string channelId, out ShopItemPopupData popupData)
@@ -44,6 +102,9 @@ public class SaleChannelService : MonoBehaviour
         popupData = null;
 
         if (!IsChannelUnlocked(channelId))
+            return false;
+
+        if (IsOnCooldown(channelId))
             return false;
 
         ItemDefinition item = ResolveSellItem();
@@ -80,6 +141,9 @@ public class SaleChannelService : MonoBehaviour
         if (!IsChannelUnlocked(channelId) || quantity <= 0)
             return false;
 
+        if (IsOnCooldown(channelId))
+            return false;
+
         if (quantity > neighborMaxQuantityPerSale)
             return false;
 
@@ -98,6 +162,13 @@ public class SaleChannelService : MonoBehaviour
         if (!IsChannelUnlocked(channelId))
         {
             failureMessage = "Ce canal de vente n'est pas encore débloqué.";
+            return false;
+        }
+
+        if (IsOnCooldown(channelId) &&
+            TryGetCooldownMessage(channelId, out string cooldownMessage))
+        {
+            failureMessage = cooldownMessage;
             return false;
         }
 
@@ -137,6 +208,7 @@ public class SaleChannelService : MonoBehaviour
             return false;
         }
 
+        RecordSuccessfulSale(channelId);
         return true;
     }
 
@@ -163,6 +235,50 @@ public class SaleChannelService : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void RecordSuccessfulSale(string channelId)
+    {
+        if (string.IsNullOrWhiteSpace(channelId))
+            return;
+
+        lastSaleUtcTicksByChannel[channelId] = FarmTimeService.UtcNowTicks;
+        PersistCooldownState();
+    }
+
+    private void LoadCooldownState()
+    {
+        lastSaleUtcTicksByChannel.Clear();
+
+        if (!SaleChannelSaveService.TryLoad(out Dictionary<string, long> loaded))
+            return;
+
+        foreach (KeyValuePair<string, long> entry in loaded)
+            lastSaleUtcTicksByChannel[entry.Key] = entry.Value;
+    }
+
+    private void PersistCooldownState()
+    {
+        SaleChannelSaveService.Save(lastSaleUtcTicksByChannel);
+    }
+
+    private bool TryGetLastSaleUtc(string channelId, out DateTime lastSaleUtc)
+    {
+        lastSaleUtc = default;
+
+        if (!lastSaleUtcTicksByChannel.TryGetValue(channelId, out long ticks) || ticks <= 0)
+            return false;
+
+        lastSaleUtc = new DateTime(ticks, DateTimeKind.Utc);
+        return true;
+    }
+
+    private float GetCooldownSeconds(string channelId)
+    {
+        if (channelId == SaleChannelId.Neighbor)
+            return neighborSaleCooldownSeconds;
+
+        return NeighborSaleCooldownSeconds;
     }
 
     private ItemDefinition ResolveSellItem()

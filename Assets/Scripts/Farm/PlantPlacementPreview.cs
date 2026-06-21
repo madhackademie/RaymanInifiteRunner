@@ -50,6 +50,11 @@ public class PlantPlacementPreview : MonoBehaviour
 
         biofiltreManager.OnPlacementPreviewStarted();
         SpawnGhost();
+
+        if (biofiltreManager.TryResolvePlacementAnchor(origin.GridCoordinates, plantDefinition, out Vector2Int resolvedAnchor))
+            currentCell = resolvedAnchor;
+
+        currentlyValid = biofiltreManager.CanPlace(currentCell, plantDefinition);
         enabled = true;
     }
 

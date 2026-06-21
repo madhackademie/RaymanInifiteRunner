@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 {
     private const string BandeauxContentPath = "Body/BandeauxScrollView/Viewport/BandeauxContent";
     private const string NoStockMessage = "Aucune laitue mature à vendre pour ce canal.";
+    private const float CooldownRefreshIntervalSeconds = 1f;
 
     [Header("Popups (ScreenPopupHost)")]
     [SerializeField] private string saleSellPopupId = PopupId.SaleChannelSell;
@@ -27,6 +29,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     private ResourceFeedbackPopupUI resourceFeedbackPopupInstance;
     private ScreenPopupHost screenPopupHost;
     private string pendingChannelId;
+    private Coroutine cooldownRefreshRoutine;
 
     private void Awake()
     {
@@ -38,10 +41,17 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     private void OnEnable()
     {
         Refresh();
+        StartCooldownRefreshIfNeeded();
+    }
+
+    private void OnDisable()
+    {
+        StopCooldownRefresh();
     }
 
     private void OnDestroy()
     {
+        StopCooldownRefresh();
         UnhookBandeauViews();
         UnhookSellPopupHandler();
     }
@@ -49,12 +59,105 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     public void Refresh()
     {
         ApplyShellBackdrop();
+        RefreshBandeauStates();
+    }
+
+    private void RefreshBandeauStates()
+    {
+        SaleChannelService service = SaleChannelService.Instance;
 
         foreach (SaleChannelBandeauView bandeau in bandeauViews)
         {
-            if (bandeau != null)
+            if (bandeau == null)
+                continue;
+
+            if (bandeau.IsLocked)
+            {
+                bandeau.ApplyCooldownState(false, null);
                 bandeau.ApplyLockedInteractable();
+                continue;
+            }
+
+            if (service == null ||
+                !SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
+            {
+                bandeau.ApplyCooldownState(false, null);
+                bandeau.ApplyLockedInteractable();
+                continue;
+            }
+
+            if (service.TryGetCooldownRemainingSeconds(channelId, out float remainingSeconds))
+            {
+                string remainingText = SaleChannelCooldownFormatter.FormatRemainingSeconds(remainingSeconds);
+                bandeau.ApplyCooldownState(true, remainingText);
+            }
+            else
+            {
+                bandeau.ApplyCooldownState(false, null);
+            }
+
+            bandeau.ApplyLockedInteractable();
         }
+    }
+
+    private void StartCooldownRefreshIfNeeded()
+    {
+        StopCooldownRefresh();
+
+        if (!isActiveAndEnabled)
+            return;
+
+        cooldownRefreshRoutine = StartCoroutine(CooldownRefreshRoutine());
+    }
+
+    private void StopCooldownRefresh()
+    {
+        if (cooldownRefreshRoutine == null)
+            return;
+
+        StopCoroutine(cooldownRefreshRoutine);
+        cooldownRefreshRoutine = null;
+    }
+
+    private IEnumerator CooldownRefreshRoutine()
+    {
+        var wait = new WaitForSecondsRealtime(CooldownRefreshIntervalSeconds);
+
+        while (isActiveAndEnabled)
+        {
+            yield return wait;
+
+            SaleChannelService service = SaleChannelService.Instance;
+            if (service == null)
+                continue;
+
+            bool anyCooldown = false;
+            foreach (SaleChannelBandeauView bandeau in bandeauViews)
+            {
+                if (bandeau == null || bandeau.IsLocked)
+                    continue;
+
+                if (!SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
+                    continue;
+
+                if (service.TryGetCooldownRemainingSeconds(channelId, out float remainingSeconds))
+                {
+                    anyCooldown = true;
+                    bandeau.ApplyCooldownState(
+                        true,
+                        SaleChannelCooldownFormatter.FormatRemainingSeconds(remainingSeconds));
+                }
+                else if (bandeau.IsOnCooldown)
+                {
+                    bandeau.ApplyCooldownState(false, null);
+                }
+            }
+
+            if (!anyCooldown)
+                break;
+        }
+
+        cooldownRefreshRoutine = null;
     }
 
     private void ResolveBindingsIfNeeded()
@@ -101,7 +204,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
     private void HandleBandeauClicked(SaleChannelBandeauView bandeau)
     {
-        if (bandeau == null || bandeau.IsLocked)
+        if (bandeau == null || bandeau.IsLocked || bandeau.IsOnCooldown)
             return;
 
         if (!SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
@@ -114,6 +217,15 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
         if (service == null)
         {
             Debug.LogWarning("[RuntimeSaleChannelsScreen] SaleChannelService absent — ajoutez-le sur PlayerInventory (NavigationHUD).");
+            return;
+        }
+
+        if (service.IsOnCooldown(channelId) &&
+            service.TryGetCooldownMessage(channelId, out string cooldownMessage))
+        {
+            ShowFeedbackMessage(cooldownMessage);
+            RefreshBandeauStates();
+            StartCooldownRefreshIfNeeded();
             return;
         }
 
@@ -162,6 +274,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
         ResolveSellPopup()?.Close();
         pendingChannelId = null;
         Refresh();
+        StartCooldownRefreshIfNeeded();
     }
 
     private ShopItemPopupController ResolveSellPopup()

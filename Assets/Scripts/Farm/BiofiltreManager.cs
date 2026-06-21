@@ -226,12 +226,52 @@ public class BiofiltreManager : MonoBehaviour
 
     // ── Footprint query (called by SeedSelectionUI) ───────────────────────────
 
+    /// <summary>
+    /// Vérifie qu'un ancre explicite permet de placer la plante (preview souris).
+    /// </summary>
     public bool CanPlace(Vector2Int anchor, PlantDefinition plantDefinition)
     {
         if (plantDefinition == null)
             return false;
 
         return gridManager.AreAllCellsFree(plantDefinition.GetOccupiedCells(anchor));
+    }
+
+    /// <summary>
+    /// Vérifie si la plante peut couvrir <paramref name="targetCell"/> (cellule cliquée),
+    /// en testant toutes les ancres candidates du footprint — pas seulement targetCell comme (0,0).
+    /// </summary>
+    public bool CanPlaceAtCell(Vector2Int targetCell, PlantDefinition plantDefinition)
+    {
+        return TryResolvePlacementAnchor(targetCell, plantDefinition, out _);
+    }
+
+    /// <summary>
+    /// Résout l'ancre de pose lorsque le joueur a cliqué <paramref name="targetCell"/>.
+    /// </summary>
+    public bool TryResolvePlacementAnchor(
+        Vector2Int targetCell,
+        PlantDefinition plantDefinition,
+        out Vector2Int anchor)
+    {
+        anchor = default;
+
+        if (plantDefinition == null)
+            return false;
+
+        foreach (Vector2Int candidate in plantDefinition.EnumerateAnchorCandidatesForCell(targetCell))
+        {
+            if (!gridManager.IsInBounds(candidate))
+                continue;
+
+            if (gridManager.AreAllCellsFree(plantDefinition.GetOccupiedCells(candidate)))
+            {
+                anchor = candidate;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // ── Plant placement ───────────────────────────────────────────────────────
@@ -261,7 +301,7 @@ public class BiofiltreManager : MonoBehaviour
             return false;
         }
 
-        if (!CanPlace(anchor, plantDefinition))
+        if (!TryResolvePlacementAnchor(anchor, plantDefinition, out Vector2Int resolvedAnchor))
             return false;
 
         if (seedItem != null)
@@ -280,7 +320,7 @@ public class BiofiltreManager : MonoBehaviour
             }
         }
 
-        if (PlantSeedAtInternal(anchor, plantDefinition, plantPrefab, saveAfterPlacement: true))
+        if (PlantSeedAtInternal(resolvedAnchor, plantDefinition, plantPrefab, saveAfterPlacement: true))
             return true;
 
         if (seedItem != null && PlayerInventory.Instance != null)

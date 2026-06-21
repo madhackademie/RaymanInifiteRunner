@@ -90,7 +90,7 @@ SaleChannelsScreen (root — RuntimeSaleChannelsScreen, Image backdrop)
 | Script | Champs |
 |--------|--------|
 | `RuntimeSaleChannelsScreen` | `closeButton`, `bandeauxContainer` (RectTransform sous scroll), `rootBackdropImage` |
-| `SaleChannelBandeauView` (à créer Cursor si absent) | `bandeauButton`, `titleLabel`, `starImages[]` (5), `lockedOverlay`, `illustrationImage` |
+| `SaleChannelBandeauView` | `bandeauButton`, `titleLabel`, `starImages[]` (5), `lockedOverlay`, `illustrationImage`, `channelId`, `cooldownOverlay`, `cooldownLabel` |
 
 Cursor fournira `SaleChannelBandeauView.cs` minimal (clic → event) **après** validation hiérarchie Bezy Phase 1.
 
@@ -107,15 +107,16 @@ Cursor fournira `SaleChannelBandeauView.cs` minimal (clic → event) **après** 
 
 ---
 
-## 7) Timer canal — cible prochaine session (2026-06-20)
+## 7) Timer canal — cooldown 24 h (2026-06-20)
 
-**Intention design :** limiter la fréquence de vente par canal pour rythmer la boucle ferme → économie (ex. **1 transaction / jour calendaire** sur Voisinage ★1).
+**Règle V0 :** après une vente réussie sur un canal, blocage **24 h** (UTC via `FarmTimeService`), puis déblocage automatique.
 
-| Sujet | Cible V0 |
-|-------|----------|
-| Règle | Après une vente réussie sur un canal, blocage jusqu'au **prochain reset jour** (UTC ou `FarmTimeService` si réutilisable) |
-| API service | `SaleChannelService.CanSell(channelId)` / message d'échec explicite (« Reviens demain ») |
-| UI bandeau | Overlay ou label indisponible + indication temporelle (optionnel Bezy : champ TMP sur `SaleChannelBandeauView`) |
-| Popup | Refuser ou griser confirmation si canal en cooldown |
-| Persistance | Stocker timestamp ou date du dernier reset par `SaleChannelId` |
-| Playtest | **[P0-SALE-PLAY-004]** — vendre → canal bloqué → simuler jour → vente à nouveau possible |
+| Sujet | Implémentation |
+|-------|----------------|
+| Persistance | `SaleChannelSaveService` → `sale_channels.json` (`lastSaleUtcTicks` par `channelId`) |
+| Service | `SaleChannelService` — `IsOnCooldown`, `TryGetCooldownRemainingSeconds`, enregistrement après `TrySell` OK |
+| UI bandeau | `SaleChannelBandeauView.ApplyCooldownState` — overlay + label + illustration grisée |
+| Refresh | `RuntimeSaleChannelsScreen` — refresh à l’ouverture + coroutine 1 s tant qu’un cooldown actif |
+| Bezy | **Phase 4–5** — `CooldownOverlay` + `CooldownLabel` sur prefab bandeau (`PROMPTS_Bezi_sale_channels.md`) |
+| Debug | `ignoreSaleCooldown` sur `SaleChannelService` (Inspector) |
+| Playtest | **[P0-SALE-PLAY-004]** — vendre → overlay + timer → attendre / simuler 24 h → revendre |

@@ -99,6 +99,19 @@ public class PlantDefinition : ScriptableObject
             yield return origin + offset;
     }
 
+    /// <summary>
+    /// Ancres candidates lorsque le joueur clique une cellule <paramref name="targetCell"/> :
+    /// pour chaque offset du footprint, anchor = targetCell - offset.
+    /// </summary>
+    public IEnumerable<Vector2Int> EnumerateAnchorCandidatesForCell(Vector2Int targetCell)
+    {
+        if (footprint == null || footprint.Length == 0)
+            yield break;
+
+        foreach (Vector2Int offset in footprint)
+            yield return targetCell - offset;
+    }
+
     [Header("Stage Durations (seconds)")]
     [Tooltip("Duration for each stage before automatically advancing to the next one. Leave at 0 to skip auto-advance for that stage.")]
     public StageDuration[] stageDurations = Array.Empty<StageDuration>();

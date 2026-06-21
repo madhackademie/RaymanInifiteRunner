@@ -37,22 +37,29 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/vente-production`** — V0 voisinage **validé** (2026-06-20) ; prochaine étape **timer canal** (1 vente/jour).
+> Branche courante : **`feature/vente-production`** — cooldown 24 h + Bezy Ph.4–5 **validés** ; prochaine étape **playtest [P0-SALE-PLAY-004]**.
 
-### Reprise session — timer canal vente
+### Reprise session — playtest cooldown vente
 
-> **Priorité immédiate :** ajouter un **timer / cooldown par canal** (ex. **1 vente par jour** sur Voisinage) — branche **`feature/vente-production`**.
+> **Priorité immédiate :** playtest **[P0-SALE-PLAY-004]** — cooldown 24 h voisinage (overlay + timer bandeau). Branche **`feature/vente-production`**.
 
 **Ordre suggéré :**
 
-1. [ ] **[P0-SALE-TIMER-001]** Timer canal — fenêtre de vente par canal (V0 : **1 transaction / jour** Voisinage ; persistance + feedback UI bandeau / popup).
-2. [ ] **[P0-SALE-PLAY-004]** Playtest timer : vendre → attendre reset (ou simuler jour) → bandeau indisponible puis à nouveau actif.
+1. [ ] **[P0-SALE-PLAY-004]** Playtest : récolter laitue → vendre Voisinage → bandeau grisé + overlay + timer qui descend → popup refusée si cooldown → (option test rapide : `neighborSaleCooldownSeconds = 60` ou `ignoreSaleCooldown` sur `SaleChannelService`) → commit branche si OK.
 
-**Références**
+**Références playtest**
 
-- UI / architecture : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` §7
-- GDD économie : `Notes/GDD/SPEC_vente_production_boucle_jeu.md` §5.1
-- Service actuel : `Assets/Scripts/Systems/SaleChannelService.cs`
+- Spec cooldown : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` §7
+- Service : `Assets/Scripts/Systems/SaleChannelService.cs` (debug Inspector)
+- Prefab : `Assets/Prefabs/Ui/SaleChannels/SaleChannelBandeauView.prefab`
+
+---
+
+### Clos — cooldown UI Bezy (2026-06-20)
+
+1. [x] **[P0-SALE-TIMER-001]** Code cooldown 24 h + persistance + refresh UI (Cursor, 2026-06-20).
+2. [x] **[P0-SALE-BEZI-004]** Bezy Phase 4 — hiérarchie `CooldownOverlay` + `CooldownLabel` — **review Cursor OK** (2026-06-20).
+3. [x] **[P0-SALE-BEZI-005]** Bezy Phase 5 — wiring Inspector cooldown — **review Cursor OK** (2026-06-20).
 
 ---
 
@@ -181,8 +188,9 @@ Convention d'IDs :
 - [x] **[P0-SALE-PLAY-002]** Playtest bandeaux post-Bezy.
 - [x] **[P0-SALE-CODE-001]** `SaleChannelService` + popup vente V0 voisinage (salades, cap 2).
 - [x] **[P0-SALE-PLAY-003]** Playtest vente réelle (inventaire + gold).
-- [ ] **[P0-SALE-TIMER-001]** Timer / cooldown canal (ex. 1 vente / jour).
-- [ ] **[P0-SALE-PLAY-004]** Playtest timer canal.
+- [x] **[P0-SALE-TIMER-001]** Cooldown 24 h + `sale_channels.json` + refresh bandeau.
+- [x] **[P0-SALE-BEZI-004]** Bezy overlay cooldown bandeau (Ph.4–5) — review Cursor OK.
+- [ ] **[P0-SALE-PLAY-004]** Playtest timer canal (priorité prochaine session).
 
 ### Shop — polish restant
 - [x] [P0-SHOP-POP-001] Branche **`rework/shopitempopup`** + polish popup achat (`ShopItemPopup` : saisie quantité, Max, confirmation overlay, solde wallet dans le Header). **Fait** (2026-05-19) — merge `main`, voir `PROJECT_LOG.md`.

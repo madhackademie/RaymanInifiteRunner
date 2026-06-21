@@ -301,7 +301,7 @@ Même logique **1–5 étoiles**, récompenses adaptées au tier (capacité kg, 
 - [x] UX : **bandeau cliquable** sur écran HUD `SaleChannels` (pas de PNJ 3D / scène dédiée) — 2026-06-17.
 - [x] Bandeau Voisinage ★1 + scroll (prefab Bezy) — livré 2026-06-20.
 - [x] Plafond quantité (2 salades) + popup confirmation vente — livré 2026-06-20 (`SaleChannelService`, 15 gold/unité).
-- [ ] **Timer canal** — ex. **1 vente / jour** par canal (cooldown + persistance) — **[P0-SALE-TIMER-001]** prochaine session.
+- [ ] **Timer canal** — cooldown **24 h** après vente (persistance + UI bandeau) — code Cursor OK ; Bezy Ph.4–5 en cours.
 - [ ] Prix exact salade vs prix graine (ratio cible pour N cycles avant bandoulière).
 
 ### 5.2 Recherches & upgrades

@@ -1,6 +1,51 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
-## 2026-06-20 (fin) — Canaux vente V0 voisinage validés + prochaine session timer
+## 2026-06-20 (fin) — Bezy cooldown Ph.4–5 validées + prochaine session playtest
+
+### Contexte
+- Branche **`feature/vente-production`** — cooldown vente **24 h** (code Cursor + UI Bezy).
+
+### Ce qu'on a fait
+- [x] **[P0-SALE-TIMER-001]** — `SaleChannelSaveService`, cooldown 24 h UTC, refresh bandeau + coroutine timer.
+- [x] **[P0-SALE-BEZI-004]** — Bezy hiérarchie `CooldownOverlay` + `CooldownLabel` — **review Cursor OK**.
+- [x] **[P0-SALE-BEZI-005]** — Bezy wiring `cooldownOverlay` / `cooldownLabel` + `channelId=voisinage` sur instance Voisinage — **review Cursor OK**.
+
+### Prochaine session (priorité immédiate)
+- **[P0-SALE-PLAY-004]** Playtest cooldown complet :
+  1. Récolter laitue → Vente → Voisinage → vendre.
+  2. Vérifier overlay gris + label timer (descente ~1 s).
+  3. Vérifier bandeau non cliquable + popup refusée si cooldown actif.
+  4. Test rapide optionnel : `neighborSaleCooldownSeconds = 60` ou `ignoreSaleCooldown` sur `SaleChannelService`.
+  5. Commit auteur sur `feature/vente-production` si OK.
+
+### Fichiers touchés (session)
+- `Assets/Prefabs/Ui/SaleChannels/SaleChannelBandeauView.prefab`
+- `Assets/Prefabs/Ui/SaleChannelsScreen.prefab`
+- `Assets/Scripts/Systems/SaleChannelSaveService.cs`, `SaleChannelCooldownFormatter.cs`, `SaleChannelService.cs`
+- `Assets/Scripts/UI/SaleChannels/SaleChannelBandeauView.cs`, `RuntimeSaleChannelsScreen.cs`
+- `Notes/Todo_project.md`, `Notes/Ui/PROMPTS_Bezi_sale_channels.md`, `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md`
+
+---
+
+## 2026-06-20 (suite) — Cooldown vente 24 h (code) + Bezy overlay timer
+
+### Ce qu'on a fait (Cursor)
+- [x] **`SaleChannelSaveService`** — persistance `sale_channels.json` (`lastSaleUtcTicks` par canal).
+- [x] **`SaleChannelService`** — cooldown **24 h** UTC, gate `CanSell` / `TrySell` / popup, flag debug `ignoreSaleCooldown`.
+- [x] **`SaleChannelCooldownFormatter`** — affichage `23h 45m` / `12m 30s`.
+- [x] **`SaleChannelBandeauView`** — API `ApplyCooldownState` (overlay, label, illustration grisée).
+- [x] **`RuntimeSaleChannelsScreen`** — refresh bandeaux + coroutine 1 s pendant cooldown actif.
+
+### Prochaine session
+1. **[P0-SALE-BEZI-004–005]** Bezy — `CooldownOverlay` + `CooldownLabel` sur prefab bandeau (prompts Ph.4–5).
+2. **[P0-SALE-PLAY-004]** Playtest cooldown complet (overlay + timer visibles).
+
+### Fichiers touchés
+- `Assets/Scripts/Systems/SaleChannelSaveService.cs`, `SaleChannelCooldownFormatter.cs`, `SaleChannelService.cs`
+- `Assets/Scripts/UI/SaleChannels/SaleChannelBandeauView.cs`, `RuntimeSaleChannelsScreen.cs`
+- `Notes/Ui/PROMPTS_Bezi_sale_channels.md`, `SPEC_sale_channels_ui_bandeaux.md`, `Notes/Todo_project.md`
+
+---
 
 ### Contexte
 - Branche **`feature/vente-production`** — chantier **canaux de vente** : bandeaux Bezy + vente laitue voisinage.

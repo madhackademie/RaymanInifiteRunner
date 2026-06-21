@@ -231,7 +231,7 @@ public class SeedSelectionUI : MonoBehaviour
 
             bool fits = targetManager != null &&
                         targetCell != null &&
-                        targetManager.CanPlace(targetCell.GridCoordinates, entry.plantDefinition);
+                        targetManager.CanPlaceAtCell(targetCell.GridCoordinates, entry.plantDefinition);
             // Le bouton de slot n'est cliquable que si la plante rentre ET si stock > 0.
             slot.SetInteractable(fits && stock > 0);
 
