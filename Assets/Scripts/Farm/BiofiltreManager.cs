@@ -304,6 +304,18 @@ public class BiofiltreManager : MonoBehaviour
         if (!TryResolvePlacementAnchor(anchor, plantDefinition, out Vector2Int resolvedAnchor))
             return false;
 
+        ActionPointService actionPoints = ActionPointService.Instance;
+        int plantCost = actionPoints != null
+            ? actionPoints.GetCostForAction(ActionPointActionId.PlantSeed)
+            : 0;
+
+        if (actionPoints != null &&
+            !actionPoints.TryConsume(ActionPointActionId.PlantSeed, plantCost, out string apMessage))
+        {
+            Debug.Log($"[BiofiltreManager] TryPlantSeedAt: {apMessage}", this);
+            return false;
+        }
+
         if (seedItem != null)
         {
             PlayerInventory inventory = PlayerInventory.Instance;
@@ -316,6 +328,7 @@ public class BiofiltreManager : MonoBehaviour
             if (inventory.TryRemove(seedItem, 1) != InventoryResult.Success)
             {
                 Debug.Log("[BiofiltreManager] TryPlantSeedAt: stock graine insuffisant.", this);
+                actionPoints?.Refund(plantCost);
                 return false;
             }
         }
@@ -326,6 +339,7 @@ public class BiofiltreManager : MonoBehaviour
         if (seedItem != null && PlayerInventory.Instance != null)
             PlayerInventory.Instance.TryAdd(seedItem, 1);
 
+        actionPoints?.Refund(plantCost);
         return false;
     }
 
