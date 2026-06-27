@@ -1,5 +1,42 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-06-26 — Points d'action V0 (feature/points-actions) + design fatigue prochaine session
+
+### Contexte
+- Branche **`feature/points-actions`** — lot PA démarré après merge vente sur `main`.
+
+### Fait (Cursor)
+- [x] **[P0-AP-CODE-001]** `ActionPointService` + `ActionPointSaveService` + `ActionPointActionId` — budget 240/jour UTC, persistance `action_points.json`.
+- [x] **[P0-AP-CODE-001b]** Hook planter — `BiofiltreManager.TryPlantSeedAt` (−1 PA, rollback si échec).
+- [x] **`ActionPointsHudView.cs`** — affichage HUD (écoute `OnActionPointsChanged`).
+- [x] Prefab `ActionPointsHudWidget` — layer 5 corrigé côté Cursor ; prompts `Notes/Ui/PROMPTS_Bezi_action_points.md`.
+
+### Fait (Bezy)
+- [x] HUD shell Ph.1 + micro P2 (instance NavigationHUD, layer 5 scène).
+- [ ] **[P0-AP-BEZI-003]** Phase 3 wiring — en attente auteur.
+
+### Décision design (prochaine session)
+- **[CT-AP-DESIGN-001]** Réévaluer base PA et régénération progressive.
+- Cible auteur : zone confort **100 PA (~10 h)** ; malus sur toutes les actions au-delà :
+  - 10–12 h : **+15 %** coût PA
+  - 12–14 h : **+25 %**
+  - 14–16 h : **+50 %**
+  - Plafond indicatif ~160 PA / ~16 h
+
+### Prochaine session
+1. Clôturer V0 : Bezy P3 + playtest **[P0-AP-PLAY-001]** + hooks récolte/vente.
+2. Session design **[CT-AP-DESIGN-001]** — spec fatigue + régénération (`BL-AP-001` → `BL-AP-004`).
+
+### Fichiers touchés (non exhaustif)
+- `Assets/Scripts/Systems/ActionPoint*.cs`
+- `Assets/Scripts/UI/ActionPointsHudView.cs`
+- `Assets/Scripts/Farm/BiofiltreManager.cs`
+- `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
+- `Assets/Scenes/NavigationHUD.unity`
+- `Notes/Todo_project.md`, `Notes/Ui/PROMPTS_Bezi_action_points.md`
+
+---
+
 ## 2026-06-20 (fin) — Bezy cooldown Ph.4–5 validées + prochaine session playtest
 
 ### Contexte

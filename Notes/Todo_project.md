@@ -37,13 +37,51 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/vente-production`** — cooldown 24 h + Bezy Ph.4–5 **validés** ; prochaine étape **playtest [P0-SALE-PLAY-004]**.
+> Branche courante : **`feature/points-actions`** — V0 PA (240/jour, planter = 1 PA) + HUD Bezy en cours ; merge `main` après playtest OK.
 
-### Reprise session — playtest cooldown vente
+### Reprise session — points d'action (feature en cours)
 
-> **Priorité immédiate :** playtest **[P0-SALE-PLAY-004]** — cooldown 24 h voisinage (overlay + timer bandeau). Branche **`feature/vente-production`**.
+**Ordre suggéré (session courante / immédiat) :**
 
-**Ordre suggéré :**
+1. [ ] **[P0-AP-BEZI-003]** Bezy Phase 3 — wiring `ActionPointsHudView` sur `ActionPointsHudWidget.prefab` (prompt : `Notes/Ui/PROMPTS_Bezi_action_points.md`).
+2. [ ] **[P0-AP-PLAY-001]** Playtest HUD + plantation (−1 PA affiché) + persistance `action_points.json`.
+3. [ ] **[P0-AP-CODE-002]** Hooks récolte + vente (`PlantHarvestInteractor`, `SaleChannelService`).
+4. [ ] Commit auteur sur **`feature/points-actions`** puis merge `main` si playtest OK.
+
+**Références**
+
+- Service : `Assets/Scripts/Systems/ActionPointService.cs`
+- HUD : `Assets/Scripts/UI/ActionPointsHudView.cs`, `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
+- Prompts Bezy : `Notes/Ui/PROMPTS_Bezi_action_points.md`
+
+---
+
+### Prochaine session — design PA (réévaluation gameplay)
+
+> **À traiter après clôture V0** (HUD + hooks planter/récolte/vente playtestés).
+
+1. [ ] **[CT-AP-DESIGN-001]** Réévaluer **quantité de base** et **régénération progressive** des PA (remplacer le refill plat 240/jour UTC).
+
+**Intentions auteur (cible design) :**
+
+- **1 PA = 6 min** de travail réel (inchangé).
+- **Zone confort ~10 h** → **100 PA** « normales » sans malus (budget de base / régénération douce à préciser).
+- **Fatigue au-delà de 10 h** — malus sur **toutes les actions** selon la plage de travail cumulée dans la journée :
+  - **10 h → 12 h** (PA 101–120) : **+15 %** de coût PA par action
+  - **12 h → 14 h** (PA 121–140) : **+25 %**
+  - **14 h → 16 h** (PA 141–160) : **+50 %**
+- Plafond journalier indicatif : **~16 h** (~160 PA) avant épuisement total.
+- À décider en session : formule exacte du malus (arrondi PA ?), affichage HUD fatigue, régénération passive (ex. X PA/h repos), reset journalier.
+
+**Livrables attendus :** spec GDD `Notes/GDD/SPEC_points_actions.md` (ou mise à jour) + évolution `ActionPointService` V1.
+
+---
+
+### Reprise session — playtest cooldown vente (historique / autre branche)
+
+> **Clos ou sur `main`** après merge `feature/vente-production`. Priorité remplacée par **`feature/points-actions`** tant que le lot PA n'est pas mergé.
+
+**Ordre suggéré (si reprise vente) :**
 
 1. [ ] **[P0-SALE-PLAY-004]** Playtest : récolter laitue → vendre Voisinage → bandeau grisé + overlay + timer qui descend → popup refusée si cooldown → (option test rapide : `neighborSaleCooldownSeconds = 60` ou `ignoreSaleCooldown` sur `SaleChannelService`) → commit branche si OK.
 
@@ -222,9 +260,25 @@ Convention d'IDs :
 - [~] [CT-NAV-003] Poursuivre la migration Inventaire/Market/HUD global vers le flux cible.
 - [ ] [CT-NAV-004] Trancher et documenter le mode de chargement final UI (persistant vs sync vs async/additive).
 
+### Points d'action (économie temps joueur)
+- [~] **[P0-AP-CODE-001]** V0 — `ActionPointService` + save + planter = 1 PA (Cursor, 2026-06).
+- [~] **[P0-AP-UI-001]** HUD Bezy + `ActionPointsHudView` — en cours (Ph.3 wiring).
+- [ ] **[P0-AP-CODE-002]** Hooks récolte + vente.
+- [ ] **[P0-AP-PLAY-001]** Playtest V0 complet.
+- [ ] **[CT-AP-DESIGN-001]** **Prochaine session design** — réévaluer base PA + régénération progressive + malus fatigue (>10 h). Voir § *Prochaine session — design PA* en tête de fichier.
+
 ---
 
 ## Backlog structuré
+
+### Points d'action — V1 fatigue / régénération (post-V0)
+
+> Suite **[CT-AP-DESIGN-001]** — malus progressif au-delà de 10 h de travail cumulé (1 PA = 6 min).
+
+- [ ] **[BL-AP-001]** Spec GDD formelle : base **100 PA** (~10 h), plafond ~**160 PA** (~16 h), paliers malus **+15 % / +25 % / +50 %** sur coût de toutes les actions (10–12 h, 12–14 h, 14–16 h).
+- [ ] **[BL-AP-002]** Régénération progressive (taux repos, cap journalier, reset UTC) — à trancher en design.
+- [ ] **[BL-AP-003]** HUD fatigue (indicateur palier, coût effectif avant action).
+- [ ] **[BL-AP-004]** Implémentation `ActionPointService` V1 + tests playtest.
 
 ### Inventaire — arbres talents (polish / post-MVP)
 
