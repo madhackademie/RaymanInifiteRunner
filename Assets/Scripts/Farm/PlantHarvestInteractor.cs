@@ -133,6 +133,18 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
             return;
         }
 
+        ActionPointService actionPoints = ActionPointService.Instance;
+        int harvestCost = actionPoints != null
+            ? actionPoints.GetCostForAction(ActionPointActionId.Harvest)
+            : 0;
+
+        if (actionPoints != null &&
+            !actionPoints.TryConsume(ActionPointActionId.Harvest, harvestCost, out string apMessage))
+        {
+            Debug.Log($"[PlantHarvestInteractor] ConfirmHarvest: {apMessage}", this);
+            return;
+        }
+
         int amount = UnityEngine.Random.Range(config.harvestAmountMin, config.harvestAmountMax + 1);
         InventoryResult result = inventory.TryAdd(item, amount);
 
@@ -149,11 +161,13 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
 
             case InventoryResult.Full:
                 Debug.Log($"[PlantHarvestInteractor] Inventaire plein — '{item.DisplayName}' non ajouté.");
+                actionPoints?.Refund(harvestCost);
                 ShowInventoryFullFeedback();
                 break;
 
             case InventoryResult.InvalidItem:
                 Debug.LogWarning($"[PlantHarvestInteractor] Item invalide résolu pour '{gameObject.name}'.", this);
+                actionPoints?.Refund(harvestCost);
                 break;
         }
     }

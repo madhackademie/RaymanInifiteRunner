@@ -44,12 +44,21 @@ Convention d'IDs :
 **Ordre suggéré (session courante / immédiat) :**
 
 1. [ ] **[P0-AP-BEZI-003]** Bezy Phase 3 — wiring `ActionPointsHudView` sur `ActionPointsHudWidget.prefab` (prompt : `Notes/Ui/PROMPTS_Bezi_action_points.md`).
-2. [ ] **[P0-AP-PLAY-001]** Playtest HUD + plantation (−1 PA affiché) + persistance `action_points.json`.
-3. [ ] **[P0-AP-CODE-002]** Hooks récolte + vente (`PlantHarvestInteractor`, `SaleChannelService`).
+2. [~] **[P0-AP-PLAY-001]** Playtest V0 PA — checklist : `Notes/PLAYTEST_points_actions_v0.md`
+   - [ ] §1 HUD (visible, 240/240, refresh)
+   - [ ] §2 Plantation nominale + PA insuffisants
+   - [ ] §3 Récolte nominale −1 PA
+   - [ ] §3 **Inventaire plein** → popup + PA remboursés, plante intacte
+   - [ ] §3 **PA à 0** → récolte refusée, plante intacte
+   - [ ] §3 Arrachage sans coût PA
+   - [ ] §4 Persistance `action_points.json` + relance
+   - [ ] §5 Vente −1 PA (après hook vente)
+3. [~] **[P0-AP-CODE-002]** Hooks récolte + vente — **récolte OK** (`PlantHarvestInteractor`, refund inventaire plein) ; **vente** `[ ]` (`SaleChannelService`).
 4. [ ] Commit auteur sur **`feature/points-actions`** puis merge `main` si playtest OK.
 
 **Références**
 
+- Playtest : `Notes/PLAYTEST_points_actions_v0.md`
 - Service : `Assets/Scripts/Systems/ActionPointService.cs`
 - HUD : `Assets/Scripts/UI/ActionPointsHudView.cs`, `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
 - Prompts Bezy : `Notes/Ui/PROMPTS_Bezi_action_points.md`
