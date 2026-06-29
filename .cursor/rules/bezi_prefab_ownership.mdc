@@ -29,4 +29,4 @@ alwaysApply: true
 | Prefab, hierarchy, Image/Button/TMP, Animator, bindings Inspector | **Bezy** |
 | Scripts, services, navigation, popup pipeline, specs, prompts Bezy | **Cursor/Codex** |
 
-Référence : `Notes/Bezi/README_bezi.md`, `Notes/Ui/ARBRE_*.md` pour les chantiers UI.
+Référence : `Notes/Bezi/README_bezi.md`, `Notes/Ui/CONVENTION_layers_unity.md`, `Notes/Ui/ARBRE_*.md` pour les chantiers UI.

@@ -33,6 +33,7 @@ Prompt style requirements:
 - Include exact script paths and prefab path.
 - Explicitly say "do not rescan whole project".
 - Explicitly say "reuse existing scripts unless asked otherwise".
+- For UI GameObjects: **layer UI = `m_Layer: 5`** (Water = 4 in this project's TagManager). See `Notes/Ui/CONVENTION_layers_unity.md`.
 
 Prompt size limit:
 

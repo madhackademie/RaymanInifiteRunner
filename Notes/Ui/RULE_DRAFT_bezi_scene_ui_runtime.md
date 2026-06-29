@@ -90,6 +90,11 @@ Conserver une architecture **réactive, lisible et performante** :
      - retirer les composants canvas locaux si nécessaire,
      - enregistrer dans `UIManager` avec un `ScreenId`.
 
+7. **Layers Unity**
+   - UI runtime : **`m_Layer: 5`** (nom Unity « UI ») sur Canvas + enfants.
+   - Index **4** = Water — ne pas l'utiliser pour l'UI.
+   - Référence : `Notes/Ui/CONVENTION_layers_unity.md`.
+
 ---
 
 ## 5) TODO session soir (rappel stratégique)

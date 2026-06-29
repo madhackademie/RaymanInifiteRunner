@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class ActionPointService : MonoBehaviour
 {
-    public const int DefaultDailyBudget = 240;
+    public const int DefaultDailyBudget = BuffManager.MaxDailyActionPoints;
     public const int DefaultMinutesPerPoint = 6;
     public const int DefaultPlantSeedCost = 1;
     public const int DefaultHarvestCost = 1;
@@ -29,6 +29,7 @@ public class ActionPointService : MonoBehaviour
 
     public int RemainingPoints => remainingPoints;
     public int MaxDailyPoints => dailyBudget;
+    public int ConsumedPoints => Mathf.Max(0, dailyBudget - remainingPoints);
     public int MinutesPerPoint => minutesPerPoint;
 
     public event Action OnActionPointsChanged;
@@ -65,7 +66,7 @@ public class ActionPointService : MonoBehaviour
         return cost <= 0 || remainingPoints >= cost;
     }
 
-    public int GetCostForAction(string actionId)
+    public int GetBaseCostForAction(string actionId)
     {
         if (string.IsNullOrWhiteSpace(actionId))
             return 0;
@@ -80,6 +81,25 @@ public class ActionPointService : MonoBehaviour
             return sellCost;
 
         return 0;
+    }
+
+    /// <summary>Coût effectif après malus fatigue (via <see cref="BuffManager"/>).</summary>
+    public int GetCostForAction(string actionId)
+    {
+        int baseCost = GetBaseCostForAction(actionId);
+        return ApplyFatigueCost(baseCost);
+    }
+
+    public int ApplyFatigueCost(int baseCost)
+    {
+        if (baseCost <= 0)
+            return 0;
+
+        BuffManager buffs = BuffManager.Instance;
+        if (buffs == null)
+            return baseCost;
+
+        return buffs.ApplyCurrentActionPointCostMultiplier(baseCost);
     }
 
     public bool TryConsume(string actionId, out string failureMessage)
@@ -161,7 +181,7 @@ public class ActionPointService : MonoBehaviour
             return;
         }
 
-        remainingPoints = loadedRemaining;
+        remainingPoints = Mathf.Clamp(loadedRemaining, 0, dailyBudget);
         lastResetUtcTicks = loadedResetTicks;
     }
 

@@ -256,6 +256,7 @@ Convention d'IDs :
 
 ### Ferme — polish & UI
 - [ ] **[CT-FARM-UI-001]** *(ex-P0, polish)* Prefab **`SeedSelectionUI`** : **EmptyStatePanel** + bouton **Acheter** — code prêt, prefab à câbler. §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`. **Stock** jusqu'à validation post-[P0-IDEA-001].
+- [ ] **[CT-FARM-POLISH-002]** Animation **insecte** (sprite sheet) pendant le stade **Flowering** — par `PlantDefinition` (feuilles : post-récolte ; fruits : pré-récolte). Enfant overlay + `Animator` sur prefab plante ; déclenché par `PlantGrow.SetStage(Flowering)`. Art + Bezy prefab ; code minimal Cursor si besoin.
 
 ### Ferme — croissance et persistance
 - [~] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).

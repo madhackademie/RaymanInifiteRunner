@@ -95,6 +95,14 @@ Outil de dev jeu intégré à **Unity** : indexation **en temps réel** du proje
 **Mauvais exemple :**  
 *« Fix errors »* (trop vague)
 
+### Layers Unity (UI)
+
+**Référence :** `Notes/Ui/CONVENTION_layers_unity.md`
+
+- Layer **UI** = **`m_Layer: 5`** (Canvas + tous les enfants UI).
+- Index **4** = **Water** — ne pas l'utiliser pour l'UI.
+- Dans les prompts Bezy, inclure le snippet layer ou `@Notes/Ui/CONVENTION_layers_unity.md`.
+
 ### Limitation d'execution Bezy (prefabs lourds)
 
 Quand un script de construction est trop volumineux (trop d'objets/composants/wiring en une passe), Bezy peut timeout et s'interrompre.
