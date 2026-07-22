@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +12,24 @@ public sealed class ShopItemPopupView : MonoBehaviour
 {
     private const string DefaultConfirmMessage = "Confirmer l'achat ?";
     private const string DefaultSellConfirmMessage = "Confirmer la vente ?";
+    private const string IsOpenAnimatorBool = "IsOpen";
+    private const string BackdropChildName = "Backdrop";
+    private const float DefaultBackdropFadeDuration = 0.2f;
+    private const float DefaultCloseAnimDuration = 0.18f;
+    private const float DefaultBackdropTargetAlpha = 0.75f;
 
     [Header("Root")]
     [SerializeField] private GameObject root;
+
+    [Header("Transition (backdrop fade + card slide)")]
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Image backdropImage;
+    [Tooltip("Alpha cible du voile sombre (pas de fade sur la carte).")]
+    [SerializeField] private float backdropTargetAlpha = DefaultBackdropTargetAlpha;
+    [SerializeField] private float backdropFadeDuration = DefaultBackdropFadeDuration;
+    [SerializeField] private float closeAnimDuration = DefaultCloseAnimDuration;
+    [SerializeField] private bool useBackdropFade = true;
 
     [Header("Item")]
     [SerializeField] private Image itemIcon;
@@ -47,6 +63,10 @@ public sealed class ShopItemPopupView : MonoBehaviour
     [SerializeField] private Button confirmCancelButton;
 
     private bool suppressQuantityInputEvent;
+    private Coroutine transitionRoutine;
+    private bool isVisible;
+    private bool isTransitioning;
+    private Color backdropBaseColor = Color.black;
 
     public Action OnPlusClicked;
     public Action OnMinusClicked;
@@ -61,15 +81,21 @@ public sealed class ShopItemPopupView : MonoBehaviour
 
     private void Awake()
     {
+        ResolveTransitionRefs();
         ResolveWalletReferences();
         BindButtons();
         BindQuantityInput();
+        // Carte toujours opaque : seul le voile fade. CanvasGroup reste à 1.
+        ApplyCanvasGroupInteractable(false);
+        SetBackdropAlpha(0f);
+        SetAnimatorOpen(false);
     }
 
     private void OnDestroy()
     {
         UnbindButtons();
         UnbindQuantityInput();
+        StopTransitionRoutine();
     }
 
     public void SetItemVisuals(ShopItemPopupData data)
@@ -174,29 +200,194 @@ public sealed class ShopItemPopupView : MonoBehaviour
 
     public void Show()
     {
+        if (isTransitioning && isVisible)
+            return;
+
         HideConfirmOverlay();
         RefreshWallet();
+        EnsureContentActive();
 
-        if (root != null)
-        {
-            root.SetActive(true);
-            return;
-        }
-
-        gameObject.SetActive(true);
+        isVisible = true;
+        ApplyCanvasGroupInteractable(true);
+        SetAnimatorOpen(true);
+        StartBackdropFade(backdropTargetAlpha);
     }
 
     public void Hide()
     {
-        HideConfirmOverlay();
+        if (!isVisible && !IsContentActive())
+            return;
 
+        if (isTransitioning && !isVisible)
+            return;
+
+        HideConfirmOverlay();
+        isVisible = false;
+        ApplyCanvasGroupInteractable(false);
+        SetAnimatorOpen(false);
+        StartBackdropFade(0f, FinishHide);
+    }
+
+    private void FinishHide()
+    {
+        SetContentActive(false);
+    }
+
+    private void EnsureContentActive()
+    {
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
+
+        SetContentActive(true);
+    }
+
+    private void SetContentActive(bool active)
+    {
         if (root != null)
         {
-            root.SetActive(false);
+            root.SetActive(active);
             return;
         }
 
-        gameObject.SetActive(false);
+        if (!active && gameObject.activeSelf)
+            gameObject.SetActive(false);
+    }
+
+    private bool IsContentActive()
+    {
+        if (root != null)
+            return root.activeSelf;
+
+        return gameObject.activeSelf;
+    }
+
+    private void ResolveTransitionRefs()
+    {
+        if (canvasGroup == null)
+            canvasGroup = GetComponent<CanvasGroup>();
+
+        if (animator == null)
+            animator = GetComponent<Animator>();
+
+        if (backdropImage == null)
+            backdropImage = FindBackdropImage();
+
+        if (backdropImage != null)
+        {
+            backdropBaseColor = backdropImage.color;
+            // Conserve l'alpha designer du prefab (ex. 0.75).
+            if (backdropBaseColor.a > 0.01f)
+                backdropTargetAlpha = backdropBaseColor.a;
+        }
+
+        // La carte ne doit jamais hériter d'un alpha CanvasGroup < 1.
+        if (canvasGroup != null)
+            canvasGroup.alpha = 1f;
+    }
+
+    private Image FindBackdropImage()
+    {
+        if (root == null)
+            return null;
+
+        Transform backdrop = root.transform.Find(BackdropChildName);
+        return backdrop != null ? backdrop.GetComponent<Image>() : null;
+    }
+
+    private void SetAnimatorOpen(bool isOpen)
+    {
+        if (animator == null)
+            return;
+
+        animator.SetBool(IsOpenAnimatorBool, isOpen);
+    }
+
+    private void StartBackdropFade(float targetAlpha, Action onComplete = null)
+    {
+        StopTransitionRoutine();
+        transitionRoutine = StartCoroutine(BackdropFadeRoutine(targetAlpha, onComplete));
+    }
+
+    private IEnumerator BackdropFadeRoutine(float targetAlpha, Action onComplete)
+    {
+        isTransitioning = true;
+
+        if (!useBackdropFade || backdropImage == null)
+        {
+            SetBackdropAlpha(targetAlpha);
+            if (targetAlpha <= 0.01f)
+                yield return WaitCloseAnimIfNeeded();
+
+            isTransitioning = false;
+            onComplete?.Invoke();
+            yield break;
+        }
+
+        float start = backdropImage.color.a;
+        float duration = Mathf.Max(0.01f, backdropFadeDuration);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            // Ease in-out : voile plus doux qu'un lerp linéaire.
+            float eased = t * t * (3f - 2f * t);
+            SetBackdropAlpha(Mathf.Lerp(start, targetAlpha, eased));
+            yield return null;
+        }
+
+        SetBackdropAlpha(targetAlpha);
+
+        if (targetAlpha <= 0.01f)
+            yield return WaitCloseAnimIfNeeded();
+
+        isTransitioning = false;
+        onComplete?.Invoke();
+    }
+
+    private IEnumerator WaitCloseAnimIfNeeded()
+    {
+        float remaining = Mathf.Max(0f, closeAnimDuration - backdropFadeDuration);
+        if (remaining <= 0f)
+            yield break;
+
+        float elapsed = 0f;
+        while (elapsed < remaining)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+    }
+
+    private void SetBackdropAlpha(float alpha)
+    {
+        if (backdropImage == null)
+            return;
+
+        Color color = backdropBaseColor;
+        color.a = Mathf.Clamp01(alpha);
+        backdropImage.color = color;
+    }
+
+    private void ApplyCanvasGroupInteractable(bool interactable)
+    {
+        if (canvasGroup == null)
+            return;
+
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = interactable;
+        canvasGroup.interactable = interactable;
+    }
+
+    private void StopTransitionRoutine()
+    {
+        if (transitionRoutine == null)
+            return;
+
+        StopCoroutine(transitionRoutine);
+        transitionRoutine = null;
+        isTransitioning = false;
     }
 
     private void BindButtons()

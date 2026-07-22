@@ -1594,6 +1594,7 @@ MonoBehaviour:
   haloPanel: {fileID: 2956409141846449545}
   talentTreeOverlay: {fileID: 8707134049517859393}
   inventoryBodyCanvasGroup: {fileID: 2131745272968730632}
+  screenDimmer: {fileID: 0}
   filterBarPlaceholder: {fileID: 9131040573392769413}
   inventoryDimAlphaWhenTreeOpen: 0.35
 --- !u!1 &1762777085
@@ -2604,6 +2605,7 @@ GameObject:
   - component: {fileID: 4515422003530783267}
   - component: {fileID: 4715384341189413696}
   - component: {fileID: 8707134049517859393}
+  - component: {fileID: 5868218751948086085}
   m_Layer: 0
   m_Name: TalentTreeOverlay
   m_TagString: Untagged
@@ -2658,7 +2660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TalentTreeOverlayController
   overlayRoot: {fileID: 3965256113169019903}
   canvasGroup: {fileID: 4715384341189413696}
-  animator: {fileID: 0}
+  animator: {fileID: 5868218751948086085}
   trackTitleLabel: {fileID: 2885667655426711352}
   bodyPlaceholderLabel: {fileID: 6382749156048837294}
   backButton: {fileID: 2893865562687882896}
@@ -2666,6 +2668,8 @@ MonoBehaviour:
   autoBindPlaceholderAsPurchaseButton: 1
   createRuntimePurchaseButtonWhenMissing: 1
   treeContentHost: {fileID: 4225905081115979822}
+  treeMountHost: {fileID: 0}
+  bypassScrollRectForTreeMount: 1
   trackPrefabBindings:
   - trackId: track.commerce
     treePrefab: {fileID: 4393251250121785934, guid: eadccb65c90628748b8a296ac423b787, type: 3}
@@ -2675,6 +2679,28 @@ MonoBehaviour:
   autoCreateServiceWhenMissing: 1
   fadeDuration: 0.15
   useFade: 1
+--- !u!95 &5868218751948086085
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3965256113169019903}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e1b3904b23c3f3a40831af6f7f63a3db, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5378050902744429843
 GameObject:
   m_ObjectHideFlags: 0
