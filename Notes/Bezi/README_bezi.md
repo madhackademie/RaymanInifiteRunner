@@ -120,6 +120,19 @@ Pattern obligatoire pour UI/prefab complexe:
 Si echec/timeout:
 - Rejouer la phase en sous-etapes plus petites (sans fusionner les 3 phases).
 
+### Workaround Bezy — bug résolution de chemin sur prefabs disque (2026-07-23)
+
+**Symptôme :** la modification directe de GameObjects **déjà présents** dans un prefab sur disque via les actions standard Bezy échoue systématiquement (résolution de chemin). Reproductible aussi sur d’autres prefabs (ex. `ActionPointsHudWidget.prefab`).
+
+**Contournement validé (halo inventaire) :**
+1. Instancier temporairement le prefab dans **`Bootstrap.unity`** (où la résolution de chemin fonctionne).
+2. Appliquer les mods sur l’instance (Animator, SerializeField, layers).
+3. Régénérer / Apply le prefab à son emplacement d’origine.
+4. Vérifier que le **GUID** du prefab est **inchangé** (ex. `PlayerHaloSlotUI` = `a1931597dd60ec948aeb14c6a9ccfa34`) pour ne pas casser les instances (`PlayerHaloPanel`).
+5. Nettoyer toute instance temporaire dans Bootstrap + supprimer artefacts `TestProbe` / `DebugProbe` / `UiProbe`.
+
+**Quand l’utiliser :** wiring Animator / composants sur prefab existant si Phase « Add Component sur racine » échoue en boucle.
+
 Exemple de sorties explicites:
 - `Assets/Prefabs/UI/ShopItemPopup.prefab` (creer/modifier)
 - `Assets/Scripts/UI/Shop/ShopItemPopupView.cs` (reutiliser)

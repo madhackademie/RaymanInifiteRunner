@@ -1,5 +1,63 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-23 — Halo inventaire micro-anim Bezy (livré) + note workaround prefab
+
+### Fait (Bezy)
+- [x] Clips + controller : `PlayerHaloSlot_Idle` / `_Click` / `PlayerHaloSlot.controller`
+- [x] `PlayerHaloSlotUI.prefab` : Animator câblé, trigger `Click`, layers UI (`m_Layer: 5`)
+- [x] GUID prefab **inchangé** `a1931597dd60ec948aeb14c6a9ccfa34` → 8 instances `PlayerHaloPanel` OK
+- [x] Nettoyage `TestProbe` / probes ; Bootstrap sans instance temporaire résiduelle
+
+### Fait (Cursor)
+- [x] `PlayerHaloPanelController` : `PlayTrigger("Click")` au clic slot avant ouverture arbre
+
+### Note technique Bezy (workaround)
+La modification directe des GameObjects existants dans un prefab disque via les actions standard échouait systématiquement (bug de résolution de chemin ; repro aussi sur `ActionPointsHudWidget.prefab`). Contournement : instanciation temporaire dans `Bootstrap.unity` → mods (Animator, wiring, layers) → régénération du prefab à l’emplacement d’origine, GUID vérifié inchangé.
+
+Documenté dans `Notes/Bezi/README_bezi.md` § *Workaround Bezy — bug résolution de chemin*.
+
+### Playtest
+1. Inventaire → slots halo : Idle breathe visible
+2. Clic Commerce (ou autre) → punch Click puis overlay talents
+
+### Fichiers
+- `Assets/Prefabs/Ui/Progression/PlayerHaloSlotUI.prefab`
+- `Assets/Animations/UI/PlayerHaloSlot*`
+- `Assets/Scripts/UI/Inventory/Progression/PlayerHaloPanelController.cs`
+- `Notes/Bezi/README_bezi.md`, `Notes/Todo_project.md`
+
+### Commit
+- À faire côté **auteur** — assistant non committer.
+
+---
+
+## 2026-07-23 — Spec insecte Flowering `[CT-FARM-POLISH-002]`
+
+### Décisions
+- Sprite sheet partagé (abeille / papillon), **pas** un sheet par plante
+- Path configurable : nodes + arêtes sur prefab plante (laitue ≠ tomate)
+- FSM : FlyAlongEdge → Forage au node → PickNextEdge
+- Orientation : art vers la droite + `SpriteRenderer.flipX` (deadzone sur |vx|)
+- Activation uniquement au stade `Flowering` via `PlantGrow`
+
+### Fait
+- [x] Note complète : `Notes/Farm/SPEC_insecte_flowering.md` (archi, FSM, perf, prompt ChatGPT sheet, critères d’acceptation)
+- [x] Lien todo `[CT-FARM-POLISH-002]` → cette spec
+
+### Prochaine étape (quand art prêt)
+1. Générer / importer sheet abeille (`Assets/Art/Sprites/Farm/Insects/`)
+2. Cursor : `InsectPathFollower` + champs `PlantDefinition` + hook Flowering
+3. Bezy : nodes sur prefabs plantes + wiring overlay
+
+### Fichiers
+- `Notes/Farm/SPEC_insecte_flowering.md`
+- `Notes/Todo_project.md`
+
+### Commit
+- À faire côté **auteur** — assistant non committer.
+
+---
+
 ## 2026-07-23 (soir) — Art VFX planting + todo polish Bezy
 
 ### Fait

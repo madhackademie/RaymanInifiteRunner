@@ -95,6 +95,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - Un thread = un job ; phases 1→2→3  
 - Ne pas fusionner audit layers + rebuild shop dans un seul prompt  
 - Playtests / hooks vente / design PA = **Cursor ou batch**, pas Bezy
+- Si **Add Component / wiring sur prefab disque échoue** (path bug) → workaround Bootstrap documenté dans `Notes/Bezi/README_bezi.md` (halo 2026-07-23) ; vérifier GUID inchangé après Apply
 
 ---
 

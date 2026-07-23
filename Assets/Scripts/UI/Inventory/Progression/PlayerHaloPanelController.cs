@@ -96,6 +96,8 @@ public class PlayerHaloPanelController : MonoBehaviour
         if (slot == null || string.IsNullOrEmpty(slot.TrackId))
             return;
 
+        // Feedback visuel Bezy (Animator trigger Click sur AnimatedVisual).
+        slot.PlayTrigger("Click");
         OnTrackSelected?.Invoke(slot.TrackId);
     }
 }

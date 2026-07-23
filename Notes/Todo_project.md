@@ -65,7 +65,7 @@ Convention d'IDs :
 - [x] HUD PA 3bis + SpendPulse
 - [x] EmptyState graines Ph.1–3
 - [x] Shop polish `[CT-SHOP-002]` Ph.1–3
-
+- [x] **Halo inventaire micro-anim** — `PlayerHaloSlotUI` Animator Idle/Click + layers 5 ; GUID inchangé ; workaround path Bezy documenté (`Notes/Bezi/README_bezi.md`). Hook Cursor `PlayTrigger("Click")` OK.
 ---
 
 ### Prochaine session — design PA (réévaluation gameplay)
@@ -257,7 +257,7 @@ Convention d'IDs :
 
 ### Ferme — polish & UI
 - [x] **[CT-FARM-UI-001]** Prefab **`SeedSelectionUI`** EmptyState — Bezy Ph.1–3 OK (2026-07-23). Playtest → `Notes/Todo_playtest.md` Batch C / `[P0-FARM-BUG-001]`.
-- [ ] **[CT-FARM-POLISH-002]** Animation **insecte** (sprite sheet) pendant le stade **Flowering** — par `PlantDefinition` (feuilles : post-récolte ; fruits : pré-récolte). Enfant overlay + `Animator` sur prefab plante ; déclenché par `PlantGrow.SetStage(Flowering)`. Art + Bezy prefab ; code minimal Cursor si besoin.
+- [ ] **[CT-FARM-POLISH-002]** Animation **insecte** (sprite sheet) pendant le stade **Flowering** — par `PlantDefinition` (feuilles : post-récolte ; fruits : pré-récolte). Enfant overlay + `Animator` sur prefab plante ; déclenché par `PlantGrow.SetStage(Flowering)`. Spec complète : `Notes/Farm/SPEC_insecte_flowering.md` (sheet partagé + path nodes par plante + FSM Fly/Forage + flipX). Art (ChatGPT) → Cursor scripts → Bezy nodes.
 - [ ] **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** VFX particules **plantation + récolte** (burst circulaire terre / cailloux / feuilles). Art prêt : `Assets/Art/Sprites/VFX/Planting/PlantationDirtParticules.png` (9 sprites Multiple). Bezy : prefab Particle System ; Cursor : hook `Play()` plant + harvest. Détail file : `Notes/Ui/TODO_Bezi_polish_semaine.md` #16.
 
 ### Ferme — croissance et persistance
