@@ -11,12 +11,15 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
+> **Priorité prochaine session :** **[BZ-POLISH-002]** HUD PA suite (Refuse shake + fill conso + tooltip fade).  
+> **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-fix · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
+
 | # | ID | Job Bezy | Prefab / assets | Effort | Prérequis |
 |---|-----|----------|-----------------|--------|-----------|
-| 1 | **[BZ-POLISH-001]** | Micro-fix shop : `QuantityText` ≥ 22 + câbler `backdropImage` | `ShopItemPopup.prefab` | XS | Post `[CT-SHOP-002]` |
-| 2 | **[BZ-POLISH-002]** | Tooltip PA : layer UI 5 + fade léger panel | `ActionPointsHudWidget` + `FatigueTooltipPanel` | S | HUD PA OK |
-| 3 | **[BZ-POLISH-003]** | EmptyState graines : polish anim apparition (CanvasGroup/scale) | `SeedSelectionUI` | S | `[CT-FARM-UI-001]` OK |
-| 4 | **[BZ-POLISH-004]** | Bandeaux vente : pulse locked / fade cooldown | `SaleChannelBandeauView` | M | Vente V0 OK |
+| ~~1~~ | ~~**[BZ-POLISH-001]**~~ | ~~Micro-fix shop~~ | — | — | **CLOS** |
+| **P0** | **[BZ-POLISH-002]** | **HUD PA suite** : Refuse shake, fill conso, tooltip fade | `ActionPointsHudWidget` + `FatigueTooltipPanel` | M | HUD PA base OK |
+| ~~3~~ | ~~**[BZ-POLISH-003]**~~ | ~~EmptyState graines anim~~ | — | — | **CLOS** |
+| ~~4~~ | ~~**[BZ-POLISH-004]**~~ | ~~Bandeaux vente cooldown / locked~~ | — | — | **CLOS** (playtest OK) |
 | 5 | **[BZ-POLISH-005]** | `RuntimeShopScreen` : layers 5 + contraste grille slots + empty catalogue | prefab shop screen | M | — |
 | 6 | **[BZ-POLISH-006]** | NavigationHUD : hit areas onglets ≥ 44, contrastes, layer audit | `NavigationHUD` | M | — |
 | 7 | **[BZ-POLISH-007]** | Toast / feedback récolte : polish entrée-sortie (scale+fade) | `FarmHarvestReward` / feedback popup | S | déjà en main |
@@ -34,22 +37,21 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Détail rapide (quoi demander à Bezy)
 
-### 1 — Shop micro-fix `[BZ-POLISH-001]`
-- `QuantityText` fontSize 22–26  
-- `backdropImage` → Image Backdrop  
-- Pas de rebuild
+### 1 — Shop micro-fix `[BZ-POLISH-001]` — CLOS
+- Livré avec `[CT-SHOP-002]` (2026-07-23).
 
-### 2 — Tooltip PA `[BZ-POLISH-002]`
-- `FatigueTooltipPanel` + enfants → layer 5  
-- Option : CanvasGroup fade 0→1 en 0.12 s à l’apparition (si script le permet ; sinon scale only)
+### 2 — HUD PA suite `[BZ-POLISH-002]` — **PRIORITÉ prochaine session**
+- Prefab : `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
+- **Refuse** : pulse / shake léger du `Row` (ou icône) quand action refusée faute de PA
+- **Fill conso** : micro-anim sur la barre / overlay consommé à chaque dépense (complément du SpendPulse Row déjà livré Ph.5)
+- **Tooltip** : `FatigueTooltipPanel` layer 5 + CanvasGroup **fade in/out** (~0.12 s) — structure Ph.4 déjà en place
+- Cursor : hooks trigger `Refuse` / fade tooltip si besoin après Bezy
 
-### 3 — EmptyState pulse `[BZ-POLISH-003]`
-- Animator Idle / Show sur `EmptyStatePanel` (scale 0.96→1)  
-- Trigger ou bool ; wiring SerializeField si Cursor ajoute champ (sinon anim Always Animate à l’activation)
+### 3 — EmptyState pulse `[BZ-POLISH-003]` — CLOS
+- Livré Ph.1–3 (2026-07-23).
 
-### 4 — Bandeaux vente `[BZ-POLISH-004]`
-- Locked : léger pulse cadenas ou teinte  
-- Cooldown : fade-in overlay (pas toucher logique timer)
+### 4 — Bandeaux vente `[BZ-POLISH-004]` — CLOS (playtest OK 2026-07-23)
+- Fade overlay cooldown + pulse timer + locked Bandoulière/Vélo lisible.
 
 ### 5 — Écran shop `[BZ-POLISH-005]`
 - Layer 5 partout  
@@ -81,10 +83,10 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - Même pattern que PA `Spend` (trigger + clip court)
 
 ### 16 — VFX plantation / récolte `[BZ-POLISH-016]` / `[CT-FARM-POLISH-003]`
-- **Art (déjà livré)** : `Assets/Art/Sprites/VFX/Planting/PlantationDirtParticules.png` — Sprite Multiple 3×3 (`dirt_01..03`, `pebble_01..03`, `leaf_01..03`)
-- **Bezy** : prefab Particle System (burst radial / cercle), Texture Sheet Animation ou liste sprites Random, material Alpha Blended ; durée courte (~0.4–0.8 s) ; un prefab réutilisable plant + harvest (ou 2 variants size)
-- **Cursor (après Bezy)** : `Play()` / `Emit` au plant seed + à la récolte
-- Prompts : créer `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md` (phases 1→2→3) avant envoi
+- **Art (déjà livré)** : `PlantationDirtParticules.png` (`_0`…`_10`) + `wurmParticleFarmPlantation.png` (`_0`)
+- **Bezy** : prefab `PlantingDirtBurst` (DirtBurst + WormBurst), burst radial, Alpha Blended, ~0.6 s ; 1 prefab plant/arrachage/récolte
+- **Cursor (après Bezy)** : `Play()` au plant + arrachage + récolte
+- Prompts prêts : `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md` (phases 1→2→3)
 - Hors scope Bezy : pas de régénération sprites
 
 ---

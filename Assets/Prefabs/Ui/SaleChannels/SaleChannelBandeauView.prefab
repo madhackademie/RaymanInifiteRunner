@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5306351114658583880}
   - component: {fileID: 5941096011901145611}
   - component: {fileID: 183184020941638099}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LockedOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.55}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -88,7 +88,8 @@ GameObject:
   - component: {fileID: 3953926528376327955}
   - component: {fileID: 4177317059216238292}
   - component: {fileID: 2238129721654672195}
-  m_Layer: 0
+  - component: {fileID: 4797807215537648502}
+  m_Layer: 5
   m_Name: CooldownOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,6 +154,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &4797807215537648502
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444655200389795788}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &541261984967284647
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +177,7 @@ GameObject:
   - component: {fileID: 6993935796625337610}
   - component: {fileID: 4094612235634005737}
   - component: {fileID: 7437211884243858246}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Star4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +252,7 @@ GameObject:
   - component: {fileID: 2149366726803263656}
   - component: {fileID: 1807835104982473344}
   - component: {fileID: 2297422099588621300}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LockIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +276,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 48, y: 48}
+  m_SizeDelta: {x: 56, y: 56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1807835104982473344
 CanvasRenderer:
@@ -286,7 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -314,7 +327,7 @@ GameObject:
   - component: {fileID: 3069007050457473651}
   - component: {fileID: 3090847576082812104}
   - component: {fileID: 3885102000324339718}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Star1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +405,8 @@ GameObject:
   - component: {fileID: 199996724019705952}
   - component: {fileID: 5245938435296053306}
   - component: {fileID: 7277247827419624180}
-  m_Layer: 0
+  - component: {fileID: 2306979458909346490}
+  m_Layer: 5
   m_Name: SaleChannelBandeauView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -549,6 +563,28 @@ MonoBehaviour:
   channelId: 
   cooldownOverlay: {fileID: 444655200389795788}
   cooldownLabel: {fileID: 8620438311816390175}
+--- !u!95 &2306979458909346490
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743817201057857683}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 23bf4653b03b30a46811ee786d23246c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1973216353941003764
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,7 +596,7 @@ GameObject:
   - component: {fileID: 8967133385595327426}
   - component: {fileID: 8190660636916191783}
   - component: {fileID: 6925048456188039384}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Star3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,7 +671,7 @@ GameObject:
   - component: {fileID: 7914488093325047980}
   - component: {fileID: 5618315504104108940}
   - component: {fileID: 6372245037638233700}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Star5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -710,13 +746,13 @@ GameObject:
   - component: {fileID: 3003195537366291795}
   - component: {fileID: 6340404456507891412}
   - component: {fileID: 8620438311816390175}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CooldownLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3003195537366291795
 RectTransform:
   m_ObjectHideFlags: 0
@@ -847,7 +883,7 @@ GameObject:
   - component: {fileID: 2985943267637235466}
   - component: {fileID: 462329143380741861}
   - component: {fileID: 4737368620925383037}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TitleLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -983,7 +1019,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3648646454029316227}
   - component: {fileID: 829127174738983919}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HeaderRow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1048,7 +1084,7 @@ GameObject:
   - component: {fileID: 4352542404372684963}
   - component: {fileID: 7776935580848701460}
   - component: {fileID: 5614340202247227407}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Star2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1123,7 +1159,7 @@ GameObject:
   - component: {fileID: 7722525122786891329}
   - component: {fileID: 2221537718111677098}
   - component: {fileID: 1545175117094763600}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Illustration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1197,7 +1233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7081686916114385042}
   - component: {fileID: 534869764315600607}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Stars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1265,7 +1301,7 @@ GameObject:
   - component: {fileID: 8743733916827986660}
   - component: {fileID: 4370163206795143884}
   - component: {fileID: 8575630037376156887}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BientotLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1346,13 +1382,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
-  m_fontSizeBase: 22
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 0
-  m_fontStyle: 3
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

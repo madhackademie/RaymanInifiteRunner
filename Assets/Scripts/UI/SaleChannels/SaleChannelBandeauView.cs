@@ -9,6 +9,8 @@ using UnityEngine.UI;
 /// </summary>
 public class SaleChannelBandeauView : MonoBehaviour
 {
+    private const string IsOnCooldownAnimatorBool = "IsOnCooldown";
+
     private static readonly Color IllustrationActiveColor = Color.white;
     private static readonly Color IllustrationCooldownColor = new(0.55f, 0.55f, 0.55f, 1f);
 
@@ -23,6 +25,8 @@ public class SaleChannelBandeauView : MonoBehaviour
     [Header("Cooldown 24 h (Bezy Phase 4)")]
     [SerializeField] private GameObject cooldownOverlay;
     [SerializeField] private TextMeshProUGUI cooldownLabel;
+    [SerializeField] private CanvasGroup cooldownCanvasGroup;
+    [SerializeField] private Animator animator;
 
     public event Action<SaleChannelBandeauView> OnBandeauClicked;
 
@@ -33,10 +37,23 @@ public class SaleChannelBandeauView : MonoBehaviour
 
     private void Awake()
     {
+        ResolvePolishRefs();
+
         if (bandeauButton != null)
             bandeauButton.onClick.AddListener(HandleBandeauClicked);
 
         ApplyInteractableState();
+        ApplyCooldownState(false, null);
+    }
+
+    private void LateUpdate()
+    {
+        // L'Animator (FadeIn / Write Defaults) peut écraser l'alpha : on force la lisibilité du timer.
+        if (!IsOnCooldown || cooldownCanvasGroup == null)
+            return;
+
+        if (cooldownCanvasGroup.alpha < 0.99f)
+            cooldownCanvasGroup.alpha = 1f;
     }
 
     private void OnDestroy()
@@ -52,21 +69,71 @@ public class SaleChannelBandeauView : MonoBehaviour
 
     public void ApplyCooldownState(bool onCooldown, string remainingText)
     {
-        IsOnCooldown = onCooldown && !IsLocked;
+        ResolvePolishRefs();
 
+        bool shouldShow = onCooldown && !IsLocked;
+        IsOnCooldown = shouldShow;
+
+        if (illustrationImage != null)
+            illustrationImage.color = shouldShow ? IllustrationCooldownColor : IllustrationActiveColor;
+
+        if (shouldShow)
+            ShowCooldown(remainingText);
+        else
+            HideCooldown();
+
+        ApplyInteractableState();
+    }
+
+    private void ShowCooldown(string remainingText)
+    {
         if (cooldownOverlay != null)
-            cooldownOverlay.SetActive(IsOnCooldown);
+            cooldownOverlay.SetActive(true);
+
+        if (cooldownCanvasGroup != null)
+            cooldownCanvasGroup.alpha = 1f;
 
         if (cooldownLabel != null)
         {
-            cooldownLabel.gameObject.SetActive(IsOnCooldown);
-            cooldownLabel.text = IsOnCooldown ? remainingText ?? string.Empty : string.Empty;
+            cooldownLabel.gameObject.SetActive(true);
+            cooldownLabel.text = string.IsNullOrEmpty(remainingText) ? "…" : remainingText;
         }
 
-        if (illustrationImage != null)
-            illustrationImage.color = IsOnCooldown ? IllustrationCooldownColor : IllustrationActiveColor;
+        if (animator != null)
+            animator.SetBool(IsOnCooldownAnimatorBool, true);
+    }
 
-        ApplyInteractableState();
+    private void HideCooldown()
+    {
+        if (animator != null)
+            animator.SetBool(IsOnCooldownAnimatorBool, false);
+
+        if (cooldownLabel != null)
+        {
+            cooldownLabel.text = string.Empty;
+            cooldownLabel.gameObject.SetActive(false);
+        }
+
+        if (cooldownCanvasGroup != null)
+            cooldownCanvasGroup.alpha = 0f;
+
+        if (cooldownOverlay != null)
+            cooldownOverlay.SetActive(false);
+    }
+
+    private void ResolvePolishRefs()
+    {
+        if (animator == null)
+            animator = GetComponent<Animator>();
+
+        if (cooldownOverlay == null)
+            return;
+
+        if (cooldownCanvasGroup == null)
+            cooldownCanvasGroup = cooldownOverlay.GetComponent<CanvasGroup>();
+
+        if (cooldownLabel == null)
+            cooldownLabel = cooldownOverlay.GetComponentInChildren<TextMeshProUGUI>(true);
     }
 
     private void ApplyInteractableState()

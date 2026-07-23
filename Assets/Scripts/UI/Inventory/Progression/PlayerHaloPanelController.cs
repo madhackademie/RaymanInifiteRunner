@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,8 @@ using UnityEngine.UI;
 public class PlayerHaloPanelController : MonoBehaviour
 {
     private const string DefaultLevelFormat = "Niveau {0}";
+    private const string ClickTriggerName = "Click";
+    private const float DefaultClickFeedbackDelay = 0.18f;
 
     [Header("Centre")]
     [SerializeField] private Image portraitImage;
@@ -18,10 +21,16 @@ public class PlayerHaloPanelController : MonoBehaviour
     [Header("Slots")]
     [SerializeField] private PlayerHaloSlotUI[] haloSlots = Array.Empty<PlayerHaloSlotUI>();
 
+    [Header("Feedback clic")]
+    [Tooltip("Laisse le punch Animator visible avant d'ouvrir l'overlay talents.")]
+    [SerializeField] private float clickFeedbackDelay = DefaultClickFeedbackDelay;
+
     [Header("Placeholder — mock")]
     [SerializeField] private int mockPlayerLevel = 1;
 
     public event Action<string> OnTrackSelected;
+
+    private Coroutine pendingTrackRoutine;
 
     private void Awake()
     {
@@ -33,6 +42,7 @@ public class PlayerHaloPanelController : MonoBehaviour
     private void OnDestroy()
     {
         UnwireSlots();
+        StopPendingTrackRoutine();
     }
 
     /// <summary>Rafraîchit le niveau centre (brancher XP service plus tard).</summary>
@@ -96,8 +106,33 @@ public class PlayerHaloPanelController : MonoBehaviour
         if (slot == null || string.IsNullOrEmpty(slot.TrackId))
             return;
 
-        // Feedback visuel Bezy (Animator trigger Click sur AnimatedVisual).
-        slot.PlayTrigger("Click");
-        OnTrackSelected?.Invoke(slot.TrackId);
+        if (pendingTrackRoutine != null)
+            return;
+
+        slot.PlayTrigger(ClickTriggerName);
+        pendingTrackRoutine = StartCoroutine(OpenTrackAfterClickFeedback(slot.TrackId));
+    }
+
+    private IEnumerator OpenTrackAfterClickFeedback(string trackId)
+    {
+        float delay = Mathf.Max(0f, clickFeedbackDelay);
+        float elapsed = 0f;
+        while (elapsed < delay)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        pendingTrackRoutine = null;
+        OnTrackSelected?.Invoke(trackId);
+    }
+
+    private void StopPendingTrackRoutine()
+    {
+        if (pendingTrackRoutine == null)
+            return;
+
+        StopCoroutine(pendingTrackRoutine);
+        pendingTrackRoutine = null;
     }
 }

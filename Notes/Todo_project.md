@@ -39,33 +39,42 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/points-actions`** — V0 PA + polish Bezy session 2026-07-23. Playtests → `Notes/Todo_playtest.md`.
+> Branche courante : **`feature/points-actions`** — V0 PA + polish Bezy + VFX planting P1–P2 (session 2026-07-23). Playtests → `Notes/Todo_playtest.md`.
 
-### Prochaine session — file Bezy polish (semaine)
+### Priorité immédiate — playtest VFX plantation
 
-> Source : `Notes/Ui/TODO_Bezy_polish_semaine.md` — **overload crédits Bezy**.
+> Prefab : `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab`  
+> Prompts : `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md` · `[BZ-POLISH-016]` / `[CT-FARM-POLISH-003]`  
+> **P1 + P2 Bezy validés** (repo 2026-07-23). P3 sprites / material pas encore faits.
 
-**Ordre immédiat (reprendre ici) :**
+**Ordre immédiat :**
 
-1. [ ] **[BZ-POLISH-001]** Micro-fix `ShopItemPopup` (`QuantityText` ≥ 22 + `backdropImage`)
-2. [ ] **[BZ-POLISH-002]** Tooltip PA layer 5 + fade léger
-3. [ ] **[BZ-POLISH-003]** EmptyState graines — anim apparition
-4. [ ] **[BZ-POLISH-004]** Bandeaux vente — pulse locked / fade cooldown
-5. [ ] Suite file #5→#16 dans `TODO_Bezy_polish_semaine.md` (incl. **[BZ-POLISH-016]** / **[CT-FARM-POLISH-003]** VFX terre plantation + récolte) (incl. **[BZ-POLISH-016]** / **[CT-FARM-POLISH-003]** VFX terre plantation + récolte)
+1. [ ] **[P0-FARM-VFX-PLAY-001]** Playtest **P2** `PlantingDirtBurst` dans Unity (Simulate / drop scène) : burst radial court, fade alpha, shrink, vers vs terre, Play On Awake OFF. Si OK → enchaîner Phase 3 (sprites terre + vers).
+2. [ ] Après P3 : hook Cursor `Play()` plant + arrachage + récolte (même prefab) + playtest in-game.
+
+### Ensuite — file Bezy polish (semaine)
+
+> Source : `Notes/Ui/TODO_Bezy_polish_semaine.md`
+
+1. [ ] **[BZ-POLISH-002]** HUD PA — suite polish (Refuse pulse, fill conso, tooltip fade)
+2. [ ] Suite file #5→#16 (VFX = P3 après playtest P2)
 
 **Cursor (hors Bezy, quand utile) :**
 
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
-- [ ] Commit auteur lot session 2026-07-23 (PA HUD + EmptyState + shop polish + docs)
+- [ ] Commit auteur lot session 2026-07-23 (PA HUD + vente cooldown + EmptyState + shop + VFX P1–P2 + docs)
 
 **Playtests batch (plus tard) :** `Notes/Todo_playtest.md` (A PA / B vente / C graines / D shop QA Bootstrap)
 
-**Clos session 2026-07-23 (Bezy) :**
+**Clos polish (2026-07-23) :**
 
-- [x] HUD PA 3bis + SpendPulse
-- [x] EmptyState graines Ph.1–3
-- [x] Shop polish `[CT-SHOP-002]` Ph.1–3
+- [x] **[BZ-POLISH-004]** HUD Vente — fade overlay cooldown + pulse timer + locked Bandoulière/Vélo lisible (playtest OK)
+- [x] HUD PA 3bis + SpendPulse (base)
+- [x] **[BZ-POLISH-003]** EmptyState graines Ph.1–3
+- [x] **[BZ-POLISH-001]** / `[CT-SHOP-002]` Shop polish Ph.1–3
 - [x] **Halo inventaire micro-anim** — `PlayerHaloSlotUI` Animator Idle/Click + layers 5 ; GUID inchangé ; workaround path Bezy documenté (`Notes/Bezi/README_bezi.md`). Hook Cursor `PlayTrigger("Click")` OK.
+- [x] Talent nodes Idle + Click punch
+- [x] **[BZ-POLISH-016]** VFX planting **P1 + P2** (`PlantingDirtBurst`) — playtest = `[P0-FARM-VFX-PLAY-001]`
 ---
 
 ### Prochaine session — design PA (réévaluation gameplay)
@@ -258,7 +267,7 @@ Convention d'IDs :
 ### Ferme — polish & UI
 - [x] **[CT-FARM-UI-001]** Prefab **`SeedSelectionUI`** EmptyState — Bezy Ph.1–3 OK (2026-07-23). Playtest → `Notes/Todo_playtest.md` Batch C / `[P0-FARM-BUG-001]`.
 - [ ] **[CT-FARM-POLISH-002]** Animation **insecte** (sprite sheet) pendant le stade **Flowering** — par `PlantDefinition` (feuilles : post-récolte ; fruits : pré-récolte). Enfant overlay + `Animator` sur prefab plante ; déclenché par `PlantGrow.SetStage(Flowering)`. Spec complète : `Notes/Farm/SPEC_insecte_flowering.md` (sheet partagé + path nodes par plante + FSM Fly/Forage + flipX). Art (ChatGPT) → Cursor scripts → Bezy nodes.
-- [ ] **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** VFX particules **plantation + récolte** (burst circulaire terre / cailloux / feuilles). Art prêt : `Assets/Art/Sprites/VFX/Planting/PlantationDirtParticules.png` (9 sprites Multiple). Bezy : prefab Particle System ; Cursor : hook `Play()` plant + harvest. Détail file : `Notes/Ui/TODO_Bezi_polish_semaine.md` #16.
+- [~] **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** VFX plantation — **P1+P2 OK**. Prochaine : **[P0-FARM-VFX-PLAY-001]** playtest P2 puis Phase 3 sprites + hook Play(). Prompts : Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md.
 
 ### Ferme — croissance et persistance
 - [~] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).

@@ -1,9 +1,10 @@
 # Spec — Insecte au stade Flowering (abeille / papillon)
 
-**Ticket** : `[CT-FARM-POLISH-002]`  
-**Statut** : spec prête — art + implémentation à faire  
-**Date** : 2026-07-23  
-**Liens** : `PlantGrow` / `PlantDefinition` · `Notes/Todo_project.md` · shell Bezy `[BZ-POLISH-014]` (placeholder overlay)
+**Ticket** : `[CT-FARM-POLISH-002]` · priorités session `[P0-FARM-INSECT-001..003]`  
+**Statut** : spec prête — **coder demain** sur promesse sheet ; art ChatGPT en attente de crédits  
+**Date** : 2026-07-23 (maj soir)  
+**Liens** : `PlantGrow` / `PlantDefinition` · `Notes/Todo_project.md` · shell Bezy `[BZ-POLISH-014]`  
+**Réfs qualité VFX/critters** : Farm Together, Dinkum, Coral Island → `Notes/References/REFERENCES_jeux_inspiration.md` § E
 
 ---
 
@@ -23,12 +24,15 @@ Quand une plante est au stade **Flowering**, un petit insecte (abeille ou papill
 | Rendu insecte | **Sprite sheet** + Animator | Pas un essaim : 1–few “personnages” lisibles |
 | Particules | Non (ou pollen optionnel plus tard) | Moins de contrôle / identité |
 | Shader | Non pour l’insecte | Coût / complexité ; éventuel wind feuilles ailleurs |
-| Art par plante | **Non** | 1–2 sheets partagés (abeille, papillon) |
+| Art par plante | **Non** | 1 sheet / espèce d’insecte, partagé |
 | Path par plante | **Oui** | Silhouette laitue ≠ tomate → nodes différents |
-| Flip direction | `SpriteRenderer.flipX` (+ deadzone) | Art dessiné d’un seul côté |
+| Flip direction | `SpriteRenderer.flipX` (+ deadzone) | Art vers la **droite** ; pas de sheet 8 directions |
 | Activation | Seulement stade `Flowering` | Perf + sens gameplay |
+| Unity Sprite Atlas | **Plus tard** | Voir § Atlas ci-dessous — inutile pour démarrer le code |
 
 **Mémoire** : une texture abeille chargée une fois, réutilisée par toutes les instances flowering. Ce qui change par plante = **positions des nodes**, pas un nouveau sheet.
+
+**Clarification « 8 directions » (ChatGPT)** : la promesse décrit **8 frames de battement d’ailes** (loop vol), **pas** 8 orientations cardinales. Notre runtime = **1 profil + flipX**.
 
 ---
 
@@ -160,74 +164,122 @@ Triggers / états Animator : `Fly`, `Forage` (bool ou crossfade states).
 
 ---
 
+## Atlas sprites — utile ? maintenant ?
+
+### Deux notions différentes
+
+| Terme | Qu’est-ce | Quand |
+|-------|-----------|--------|
+| **Sprite sheet** (PNG grille) | Une texture, `Sprite Mode = Multiple`, slice en frames | **Maintenant** — c’est la livraison ChatGPT |
+| **Unity Sprite Atlas** (asset `.spriteatlasv2`) | Pack runtime de **plusieurs** sprites/textures pour batcher les draw calls | **Plus tard** — optimisation |
+
+Le sheet 1024×1024 découpé = déjà un « atlas art ». Le **Sprite Atlas** Unity est une étape **supplémentaire** qui regroupe plusieurs assets (abeille + papillon + sprites plantes + UI…) dans une ou des textures packées.
+
+### Faut-il le créer maintenant ?
+
+**Non.** Raisons :
+
+1. Le code référence des `Sprite` / clips d’anim — ça marche **sans** Sprite Atlas.
+2. L’art n’est pas encore livré ; créer un atlas vide / incomplet = maintenance inutile.
+3. Un seul sheet abeille actif = gain de batch quasi nul (1 texture déjà).
+4. On crée l’atlas quand le **pack insectes** (et idéalement les sprites farm co-visibles) est stable, ou si le Frame Debugger montre trop de breaks de batch.
+
+### Quand le faire (todo `[P0-FARM-INSECT-003]`)
+
+- Pack MVP livré (abeille + papillon au minimum), **ou**
+- Profilage : trop de material / texture switches sur la scène ferme.
+
+Jusque-là : import Multiple + compression Unity suffit.
+
+---
+
 ## Pipeline de livraison (ordre)
 
 | # | Qui | Livrable |
 |---|-----|----------|
-| 1 | Art (ChatGPT / auteur) | Sprite sheet abeille (puis papillon) — voir prompt ci-dessous |
-| 2 | Unity import | Slice Multiple, pivots centre, `Pixels Per Unit` aligné farm |
-| 3 | Cursor | Scripts `InsectPathFollower` + hook `PlantGrow` + champs `PlantDefinition` |
-| 4 | Bezy | Shell overlay / nodes sur prefabs plantes (`[BZ-POLISH-014]` puis wiring) |
-| 5 | Auteur | Placer nodes laitue / tomate ; playtest Flowering |
+| 0 | Cursor **demain** | Scripts path + FSM + hook Flowering (**placeholders** OK) `[P0-FARM-INSECT-001]` |
+| 1 | Art (ChatGPT) | Sheet abeille 1024² / 8 frames Fly (crédits en attente) |
+| 2 | Unity import | Slice Multiple, pivots centre, clip `Bee_Fly` `[P0-FARM-INSECT-002]` |
+| 3 | Bezy | Shell overlay / nodes sur prefabs plantes |
+| 4 | Auteur | Nodes laitue / tomate ; playtest |
+| 5 | Plus tard | Sprite Atlas Unity si besoin ; pack multi-insectes ; frames Forage dédiées |
 
 ---
 
-## Spec art — sprite sheet abeille (prompt ChatGPT / image gen)
+## Spec art — promesse ChatGPT (référence de code)
 
-### Contraintes projet
+> Art **pas encore livré** (plus de crédit). On code contre cette grille.
 
-- Style : **pixel art** ou **sprite 2D clean** cohérent avec les plantes farm (ajuster selon art plantes existantes).  
-- Fond : **transparent** (PNG).  
-- Orientation : insecte **face / 3/4, corps vers la DROITE**.  
-- Taille cible sheet : **256×256** ou **512×256** (grille régulière).  
-- Pas de texte, pas d’ombre portée lourde, pas de blur.
+### Livrable abeille (MVP)
 
-### Contenu frames (minimum)
-
-**Rangée A — Fly (vol)** : 4 à 6 frames  
-- Ailes hautes / moyennes / basses (loop battement).  
-- Corps stable, légère variation verticale OK.
-
-**Rangée B — Forage (butinage)** : 4 frames  
-- Ailes semi-fermées ou battement plus lent.  
-- Corps un peu plus bas / “posé” sur une fleur imaginaire.  
-- Peut inclure une légère oscillation (même pose, micro-offset).
-
-### Grille suggérée
+- Grille **1024 × 1024**, fond transparent, frames centrées.
+- **8 frames Fly** (loop fluide ~10–15 FPS) :
 
 ```text
-Sheet 512×256 (exemple)
-┌────┬────┬────┬────┬────┬────┐
-│ F0 │ F1 │ F2 │ F3 │ F4 │ F5 │  ← Fly
-├────┼────┼────┼────┼────┴────┤
-│ G0 │ G1 │ G2 │ G3 │         │  ← Forage
-└────┴────┴────┴────┴─────────┘
-Cellules ~64×64 ou 85×85 selon grille choisie (régulière !).
+1 ailes hautes → 2 milieu → 3 basses → 4 milieu →
+5 ailes hautes → 6 milieu → 7 basses → 8 milieu
 ```
 
-### Prompt type (à coller / adapter)
+- Disposition promise :
 
 ```text
-Pixel art sprite sheet of a small cute honeybee, side view facing RIGHT,
-transparent background, consistent outline, farm game style.
-Top row: 6 frames wing-flapping flight loop.
-Bottom row: 4 frames foraging / hovering over a flower (slower wings, body slightly lower).
-No text, no shadows, even frame grid, 512x256 PNG.
++-----+-----+-----+-----+
+| 01  | 02  | 03  | 04  |
++-----+-----+-----+-----+
+| 05  | 06  | 07  | 08  |
++-----+-----+-----+-----+
 ```
 
-### Variante papillon (plus tard)
+- Cellules : **256×256** chacune (4×2 sur 1024).
+- Orientation : **vers la droite** (flipX runtime).
+- Style : aligné plantes farm / low-poly stylisé du projet (pas un autre art direction).
 
-Même grille / mêmes états `Fly` / `Forage`, art ailes plus larges, toujours orienté **droite**. Même script, `insectKind = Butterfly`.
+### Forage (MVP sans sheet dédié)
 
-### Checklist import Unity
+Tant que ChatGPT ne livre que le loop Fly :
 
-- [ ] Texture Type : Sprite (2D et UI)  
-- [ ] Sprite Mode : **Multiple**  
-- [ ] Slice grille (cell size fixe)  
-- [ ] Pivot : Center  
-- [ ] Nommer : `Bee_Fly_0…`, `Bee_Forage_0…`  
-- [ ] Dossier cible proposé : `Assets/Art/Sprites/Farm/Insects/`  
-- [ ] Créer Animation Clips `Bee_Fly`, `Bee_Forage` + Controller
+- État `Forage` = **même clip Fly** à vitesse réduite **ou** bob scale sur place.
+- Frames Forage dédiées = polish ultérieur (rangée B ou 2ᵉ sheet).
+
+### Pack complet proposé (backlog art — pas bloquant code)
+
+Même style, une grille 8 frames (ou plus) par espèce :
+
+| Insecte | Usage ferme pressenti |
+|---------|------------------------|
+| Abeille | Flowering (MVP) |
+| Papillon | Flowering variantes |
+| Coccinelle | Sol / feuilles (ambiance) |
+| Ver de terre | Après récolte / sol humide |
+| Escargot | Lent, sol |
+| Sauterelle | Rare / jump |
+| Araignée | Coin sombre / night? |
+| Moustique | Near water aquaponie |
+| Mouche | Compost / mature? |
+
+Code MVP : enum `insectKind` extensible, **seules Bee (+ Butterfly)** branchées au Flowering.
+
+### Option premium 16 frames (plus tard)
+
+Battement + micro-mouvement corps / pattes — **ne pas bloquer** le runtime ; remplacer les clips quand dispo.
+
+### Checklist import Unity (dès PNG)
+
+- [ ] Dossier : `Assets/Art/Sprites/Farm/Insects/`
+- [ ] Texture Type : Sprite (2D et UI) · Mode **Multiple**
+- [ ] Slice grille **256×256** (4 colonnes × 2 rangées)
+- [ ] Pivot : Center · noms `Bee_Fly_01` … `Bee_Fly_08`
+- [ ] Animation Clip `Bee_Fly` (sample 10–15 FPS) + Animator Controller
+- [ ] **Pas** de Sprite Atlas tant que `[P0-FARM-INSECT-003]` non décidé
+
+### Prompt de rappel (si regénération)
+
+```text
+Sprite sheet 1024x1024, transparent background, 4x2 grid, each cell 256x256.
+Cute honeybee side view facing RIGHT, same art style as our farm plant sprites.
+8-frame wing flap loop: high, mid, low, mid, high, mid, low, mid.
+Centered in each cell, no text, no drop shadow, consistent outline.
+```
 
 ---
 
@@ -254,6 +306,7 @@ Même grille / mêmes états `Fly` / `Forage`, art ailes plus larges, toujours o
 
 ## Suite immédiate
 
-1. Générer / valider le **sheet abeille** (prompt ci-dessus).  
-2. Quand l’art est OK : session Cursor scripts + session Bezy nodes sur prefabs.  
-3. Mettre à jour cette note avec chemins d’assets réels et noms de classes finaux.
+1. **Demain** : `[P0-FARM-INSECT-001]` — coder path + FSM + hook Flowering (placeholders).  
+2. Dès crédits ChatGPT : livrer PNG abeille → `[P0-FARM-INSECT-002]` import + playtest.  
+3. **Ne pas** créer de Sprite Atlas maintenant (`[P0-FARM-INSECT-003]`).  
+4. Mettre à jour cette note avec chemins d’assets réels et noms de classes finaux.

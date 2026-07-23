@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,9 @@ using UnityEngine.UI;
 /// </summary>
 public class TalentNodeView : MonoBehaviour
 {
+    private const string ClickTriggerName = "Click";
+    private const float DefaultClickFeedbackDelay = 0.12f;
+
     [Header("Definition")]
     [SerializeField] private TalentNodeDefinition nodeDefinition;
 
@@ -17,6 +21,10 @@ public class TalentNodeView : MonoBehaviour
     [SerializeField] private GameObject lockedOverlay;
     [SerializeField] private GameObject availableOverlay;
     [SerializeField] private GameObject purchasedOverlay;
+    [SerializeField] private Animator animator;
+
+    [Header("Feedback clic")]
+    [SerializeField] private float clickFeedbackDelay = DefaultClickFeedbackDelay;
 
     [Header("Lisibilite runtime (MVP — retirer quand prefab Bezy final)")]
     [SerializeField] private bool repositionTitleAboveNode = true;
@@ -24,6 +32,7 @@ public class TalentNodeView : MonoBehaviour
     [SerializeField] private float titleOffsetAboveNode = 8f;
 
     private TalentProgressionService progressionService;
+    private Coroutine purchaseRoutine;
 
     public string NodeId => nodeDefinition != null ? nodeDefinition.NodeId : string.Empty;
     public TalentNodeDefinition Definition => nodeDefinition;
@@ -31,6 +40,9 @@ public class TalentNodeView : MonoBehaviour
 
     private void Awake()
     {
+        if (animator == null)
+            animator = GetComponent<Animator>();
+
         if (purchaseButton != null)
             purchaseButton.onClick.AddListener(HandlePurchaseClicked);
     }
@@ -39,6 +51,9 @@ public class TalentNodeView : MonoBehaviour
     {
         if (purchaseButton != null)
             purchaseButton.onClick.RemoveListener(HandlePurchaseClicked);
+
+        if (purchaseRoutine != null)
+            StopCoroutine(purchaseRoutine);
     }
 
     public void Bind(TalentProgressionService service)
@@ -77,8 +92,32 @@ public class TalentNodeView : MonoBehaviour
         if (progressionService == null || nodeDefinition == null)
             return;
 
-        if (!progressionService.TryPurchaseNode(nodeDefinition.NodeId, out _))
+        if (purchaseRoutine != null)
             return;
+
+        if (animator != null)
+            animator.SetTrigger(ClickTriggerName);
+
+        purchaseRoutine = StartCoroutine(PurchaseAfterClickFeedback());
+    }
+
+    private IEnumerator PurchaseAfterClickFeedback()
+    {
+        float delay = Mathf.Max(0f, clickFeedbackDelay);
+        float elapsed = 0f;
+        while (elapsed < delay)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        purchaseRoutine = null;
+
+        if (progressionService == null || nodeDefinition == null)
+            yield break;
+
+        if (!progressionService.TryPurchaseNode(nodeDefinition.NodeId, out _))
+            yield break;
 
         Refresh();
     }

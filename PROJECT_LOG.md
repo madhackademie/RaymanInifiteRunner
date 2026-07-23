@@ -1,5 +1,180 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-23 (fin session) — VFX plantation P2 validé + playtest priorité
+
+### Contexte
+- Branche : **`feature/points-actions`**
+- Chantier : `[BZ-POLISH-016]` / `[CT-FARM-POLISH-003]`
+
+### Validation Phase 2 (Cursor, repo) — **OK**
+- Size 1→0.4, Color alpha→0, Velocity radial 1.2, Rotation Dirt ±180° / Worm ±90°
+- Play On Awake OFF, Rate=0, Burst 14/1
+
+### Prochaine session (priorité immédiate) — validée auteur
+1. **[P0-FARM-VFX-PLAY-001]** Playtest P2 `PlantingDirtBurst` (Simulate / scène)
+2. Si OK → Phase 3 sprites puis hook `Play()`
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-23 — HUD Vente cooldown validé + polish PA en priorité prochaine
+
+### Contexte
+- Branche : **`feature/points-actions`**
+- Playtest auteur : cooldown voisinage **OK** (overlay + timer visibles après fix Animator/alpha).
+
+### Clos polish
+- [x] **[BZ-POLISH-004]** HUD Vente — fade overlay cooldown, pulse timer, locked Bandoulière/Vélo lisible
+
+### Prochaine session — priorité polish (validée auteur)
+1. **[BZ-POLISH-002]** **HUD PA suite**
+   - Pulse / shake léger si PA insuffisants (Refuse)
+   - Micro-anim fill à la consommation
+   - Tooltip fatigue fade in/out (Ph.4 déjà structurée)
+2. Suite file Bezy #5→#16 (VFX plantation P2 reste dans la file farm / `[BZ-POLISH-016]`)
+
+### Docs mises à jour
+- `Notes/Todo_project.md` — section *Prochaine session — file Bezy polish*
+- `Notes/Ui/TODO_Bezy_polish_semaine.md`
+- `PROJECT_LOG.md`
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-23 (fin session) — VFX plantation P1 + todo P2
+
+### Contexte
+- Branche : **`feature/points-actions`**
+- Chantier : `[BZ-POLISH-016]` / `[CT-FARM-POLISH-003]` — particles plantation (recyclable arrachage / récolte)
+
+### Fait
+- [x] Import + config sprite vers : `Assets/Art/Sprites/VFX/Planting/wurmParticleFarmPlantation.png` (Multiple, slice serrée, pivot centre, alpha OK)
+- [x] Prompts Bezy phasés : `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md`
+- [x] **Phase 1 Bezy OK** : prefab `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab` (`DirtBurst` + `WormBurst`, bursts 14/1, duration 0.6)
+- [x] Correctif Cursor : `playOnAwake` OFF sur les 2 PS
+- [x] Décision rappelée : **pas** de Sprite Atlas Unity pour ce VFX (sheet Multiple suffit)
+
+### Pas fait (reporté)
+- Phase 2 tuning (Color/Size/Velocity/Rotation over Lifetime)
+- Phase 3 sprites + material
+- Hook Cursor `Play()` plant / arrachage / récolte
+
+### Prochaine session (priorité immédiate) — validée auteur
+1. **[P0-FARM-VFX-001]** Contrôle / envoi **Phase 2** particules plantation (`PlantingDirtBurst`)
+2. Puis Phase 3 si P2 OK ; insecte Flowering ensuite (`[P0-FARM-INSECT-001]`)
+
+### Fichiers
+- `Assets/Art/Sprites/VFX/Planting/wurmParticleFarmPlantation.png` (+ `.meta`)
+- `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab`
+- `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md`
+- `Notes/Ui/TODO_Bezy_polish_semaine.md`
+- `Notes/Todo_project.md`
+- `PROJECT_LOG.md`
+
+### Commit
+- À faire côté **auteur** — assistant non committer.
+
+---
+
+## 2026-07-23 — Vente bandeau cooldown polish `[BZ-POLISH-004]` livré
+
+### Fait (Bezy)
+- [x] Assets `SaleChannelBandeau*` (FadeIn alpha + Pulse label)
+- [x] Prefab : CanvasGroup sur CooldownOverlay, Animator `IsOnCooldown`, locked lisible, layer 5
+- [x] GUID `dac6251613d7f9849a21f9c1598ff676` inchangé
+
+### Fait (Cursor)
+- [x] `SaleChannelBandeauView` : bool Animator + alpha reset pour FadeIn
+- [x] Fix binding pulse → path `CooldownOverlay/CooldownLabel`
+
+### Playtest
+1. Vente → cooldown fade + pulse timer
+2. Bandoulière/Vélo locked lisible
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-23 — Punch Click halo + talent nodes (visibilité)
+
+### Problème
+- Punch halo masqué par ouverture immédiate de l’overlay
+- Nœuds talents : Idle seulement
+
+### Fix Cursor
+- [x] Délai ~0.18s après punch halo avant ouverture overlay
+- [x] Clip Click halo plus fort (1.25, 0.22s)
+- [x] `TalentNode_Click` + trigger ; punch puis achat (~0.12s)
+
+### Playtest
+1. Clic Commerce : punch visible puis overlay
+2. Clic nœud Available : punch Icon puis achat
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-23 (soir+) — Todo demain insecte + atlas + refs Farm Together / Dinkum / Coral Island
+
+### Contexte
+- Promesse art ChatGPT (crédits épuisés) : sheet abeille **1024×1024**, **8 frames Fly** (H-M-B-M…), grille 4×2 ; pack multi-insectes proposé en backlog.
+- Clarif : « 8 directions » = **8 frames**, pas 8 orientations (runtime = flipX).
+
+### Décisions
+- **Coder demain** sur la promesse sheet (placeholders OK) — `[P0-FARM-INSECT-001]`
+- **Unity Sprite Atlas : pas maintenant** — le PNG Multiple suffit ; atlas runtime plus tard (`[P0-FARM-INSECT-003]`)
+- Pack étendu (papillon, coccinelle, ver, …) = backlog art ; MVP = abeille
+
+### Fait
+- [x] Todo « prochaine session » insecte en tête de `Notes/Todo_project.md`
+- [x] Spec maj promesse ChatGPT + § Atlas : `Notes/Farm/SPEC_insecte_flowering.md`
+- [x] Refs jeux § E : Farm Together, Dinkum, Coral Island → `Notes/References/REFERENCES_jeux_inspiration.md`
+
+### Prochaine session (priorité)
+1. `[P0-FARM-INSECT-001]` scripts path + FSM + hook Flowering
+2. Dès PNG : `[P0-FARM-INSECT-002]` import + playtest
+3. Pas d’atlas Unity tant que pack non stable
+
+### Fichiers
+- `Notes/Todo_project.md`
+- `Notes/Farm/SPEC_insecte_flowering.md`
+- `Notes/References/REFERENCES_jeux_inspiration.md`
+- `PROJECT_LOG.md`
+
+### Commit
+- À faire côté **auteur** — assistant non committer.
+
+---
+
+## 2026-07-23 — TalentNode Idle breathe Bezy (livré)
+
+### Fait (Bezy)
+- [x] `TalentNode.controller` + `TalentNode_Idle.anim` (path `Icon`, scale 1→1.05→1, loop 1.4s)
+- [x] `TalentNodeView.prefab` : Animator + controller, layers UI 5, Update Mode Unscaled
+- [x] GUID prefab **inchangé** `0f1b14c68efb3324ba77f23eb509d0c8` → instances `Track_Commerce` OK
+- [x] Pas de Probe / instance Bootstrap résiduelle
+- Pas de hook Cursor (Idle auto au runtime)
+
+### Playtest
+1. Inventaire → Commerce → nœuds : Icon breathe Idle visible
+2. Titre / overlays stables (seule Icon scale)
+
+### Fichiers
+- `Assets/Prefabs/Ui/Progression/TalentNodeView.prefab`
+- `Assets/Animations/UI/TalentNode.controller`, `TalentNode_Idle.anim`
+- `Notes/Ui/PROMPTS_Bezi_talent_node_idle.md`, `Notes/Todo_project.md`
+
+### Commit
+- À faire côté **auteur** — assistant non committer.
+
+---
+
 ## 2026-07-23 — Halo inventaire micro-anim Bezy (livré) + note workaround prefab
 
 ### Fait (Bezy)

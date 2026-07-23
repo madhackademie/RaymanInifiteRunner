@@ -16,6 +16,7 @@ Sommaire :
 - [B. Mobile — cozy / pixel art](#b-mobile--cozy--pixel-art)
 - [C. PC / cross-platform — idle & automatisation](#c-pc--cross-platform--idle--automatisation)
 - [D. Mobile — références mécaniques voisines](#d-mobile--références-mécaniques-voisines)
+- [E. PC cozy farm — polish critters / VFX (qualité cible)](#e-pc-cozy-farm--polish-critters--vfx-qualité-cible)
 
 ---
 
@@ -445,6 +446,64 @@ Sommaire :
 - Clarté des upgrades à grande échelle (inventaire économique abstrait).
 
 **À observer** : pas le thème — étudier les **mécaniques** idle/prestige/offline, pas le skin œufs.
+
+---
+
+## E. PC cozy farm — polish critters / VFX (qualité cible)
+
+> Ajout 2026-07-23 — références citées pour la **qualité d’ambiance** (insectes / critters / VFX ferme), pas pour copier la boucle idle mobile. Lié à `[CT-FARM-POLISH-002]` / `Notes/Farm/SPEC_insecte_flowering.md`.
+
+### E1) Farm Together
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Milkstone Studios
+- **Plateformes** : PC / consoles
+- **Genre** : Farming coop cozy
+- **Liens** : https://store.steampowered.com/app/673950/Farm_Together/
+
+**Pitch** — Ferme coopérative sans stress : planter, élever, décorer ; sessions courtes ou longues ; forte présence d’**ambiance visuelle** (animaux, détails de parcelle).
+
+**Intéressant pour nous** :
+- Densité de **vie secondaire** sur la ferme (critters, polish) sans alourdir la boucle principale.
+- Référence de « ferme qui vit » à côté des cultures.
+
+**À observer** : lisibilité des petits éléments animés, densité sans clutter mobile.
+
+---
+
+### E2) Dinkum
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : James Bendon / James Bendon Games
+- **Plateformes** : PC / consoles
+- **Genre** : Life-sim / exploration / farming léger
+- **Liens** : https://store.steampowered.com/app/1062520/Dinkum/
+
+**Pitch** — Coloniser une île : explorer, pêcher, miner, farmer, décorer ; bestiaire et **faune** très présents dans le paysage.
+
+**Intéressant pour nous** :
+- Faune / insectes comme **présence monde** (pas forcément système profond).
+- Qualité de motion / personnalité des petites créatures.
+
+**À observer** : comment les critters renforcent l’immersion sans devenir une corvée.
+
+---
+
+### E3) Coral Island
+
+- **Statut étude** : [ ] à voir
+- **Dev / éditeur** : Stairway Games
+- **Plateformes** : PC / consoles
+- **Genre** : Farming sim / life-sim (Stardew-like tropical)
+- **Liens** : https://store.steampowered.com/app/1155970/Coral_Island/
+
+**Pitch** — Île tropicale : ferme, village, plongée, festivals ; art direction soignée, **critters** et détails environnementaux riches.
+
+**Intéressant pour nous** :
+- Cible de **polish** (insectes, flore, VFX) pour une ferme aquaponie cozy.
+- Cohérence style art ↔ petites animations secondaires.
+
+**À observer** : densité visuelle acceptable vs lisibilité gameplay (surtout si on vise mobile plus tard).
 
 ---
 
