@@ -1236,7 +1236,19 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3026135982764597147, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3379960323793197912, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616380928134559582, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5738021677804351629, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
@@ -1375,81 +1387,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7441046510719425699, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1178429126}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
 --- !u!224 &1178429120 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7496940324090015776, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
   m_PrefabInstance: {fileID: 1178429119}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1178429121 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5148207808225368165, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
-  m_PrefabInstance: {fileID: 1178429119}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &1178429122 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9190128052999748545, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
-  m_PrefabInstance: {fileID: 1178429119}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
---- !u!114 &1178429123 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5816223163763021618, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
-  m_PrefabInstance: {fileID: 1178429119}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &1178429124 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5837022250828861164, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
-  m_PrefabInstance: {fileID: 1178429119}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!1 &1178429125 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7441046510719425699, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
-  m_PrefabInstance: {fileID: 1178429119}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1178429126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1178429125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6d1e5f37a809192b3c4d5e6f7a8092b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActionPointsHudView
-  pointsLabel: {fileID: 1178429124}
-  subtitleLabel: {fileID: 1178429123}
-  barFillImage: {fileID: 1178429121}
-  barBackgroundImage: {fileID: 1178429122}
 --- !u!1 &1263532653
 GameObject:
   m_ObjectHideFlags: 0

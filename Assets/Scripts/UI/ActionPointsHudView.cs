@@ -8,6 +8,8 @@ using UnityEngine.UI;
 /// </summary>
 public class ActionPointsHudView : MonoBehaviour
 {
+    private const string SpendTriggerName = "Spend";
+
     [Header("Labels")]
     [SerializeField] private TextMeshProUGUI pointsLabel;
     [SerializeField] private TextMeshProUGUI subtitleLabel;
@@ -23,8 +25,15 @@ public class ActionPointsHudView : MonoBehaviour
     [Tooltip("Assombrit la portion déjà consommée ; les bandes colorées (Bezy) restent visibles en dessous.")]
     [SerializeField] private Color consumedOverlayColor = new Color(0f, 0f, 0f, 0.42f);
 
+    [Header("Polish anim (Bezy)")]
+    [Tooltip("Animator sur la racine ; trigger Spend → clip SpendPulse. Optionnel jusqu'à Phase 5 Bezy.")]
+    [SerializeField] private Animator animator;
+
+    private static readonly int SpendTriggerHash = Animator.StringToHash(SpendTriggerName);
+
     private bool subscribed;
     private bool buffSubscribed;
+    private int lastConsumedPoints = -1;
 
     private void OnEnable()
     {
@@ -128,6 +137,20 @@ public class ActionPointsHudView : MonoBehaviour
             barFillImage.fillAmount = (float)consumed / max;
             barFillImage.color = consumedOverlayColor;
         }
+
+        PlaySpendPulseIfConsumedIncreased(consumed);
+    }
+
+    private void PlaySpendPulseIfConsumedIncreased(int consumed)
+    {
+        bool shouldPulse = lastConsumedPoints >= 0 && consumed > lastConsumedPoints;
+        lastConsumedPoints = consumed;
+
+        if (!shouldPulse || animator == null)
+            return;
+
+        animator.ResetTrigger(SpendTriggerHash);
+        animator.SetTrigger(SpendTriggerHash);
     }
 
     private void SetFallbackDisplay()

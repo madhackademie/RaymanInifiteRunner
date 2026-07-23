@@ -1511,6 +1511,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7496940324090015776}
   - component: {fileID: 7770252425126254331}
+  - component: {fileID: 872932078101316886}
   m_Layer: 5
   m_Name: ActionPointsHudWidget
   m_TagString: Untagged
@@ -1555,10 +1556,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ActionPointsHudView
   pointsLabel: {fileID: 5837022250828861164}
   subtitleLabel: {fileID: 5816223163763021618}
+  fatigueIconImage: {fileID: 9155675380108771018}
   barFillImage: {fileID: 5148207808225368165}
   barBackgroundImage: {fileID: 9190128052999748545}
-  fatigueIconImage: {fileID: 9155675380108771018}
   consumedOverlayColor: {r: 0, g: 0, b: 0, a: 0.42}
+  animator: {fileID: 872932078101316886}
+--- !u!95 &872932078101316886
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7441046510719425699}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 33f1e7e9e83c2294cbb287f29b3bfb9a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8754830686101995359
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,8 @@ Références de détail :
 - Cloud services : `Notes/Ui/SPEC_services_inventory_market_cloud.md`
 - Navigation scènes : `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
 - Farm : `Notes/Farm/SYSTEMES_carte_mentale.md`
+- Playtests batch : `Notes/Todo_playtest.md`
+- File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
 - Journal : `PROJECT_LOG.md`
 - Guide utilisateur (suivi) : `Notes/GUIDE_suivi_projet.md`
 
@@ -37,31 +39,32 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/points-actions`** — V0 PA (240/jour, planter = 1 PA) + HUD Bezy en cours ; merge `main` après playtest OK.
+> Branche courante : **`feature/points-actions`** — V0 PA + polish Bezy session 2026-07-23. Playtests → `Notes/Todo_playtest.md`.
 
-### Reprise session — points d'action (feature en cours)
+### Prochaine session — file Bezy polish (semaine)
 
-**Ordre suggéré (session courante / immédiat) :**
+> Source : `Notes/Ui/TODO_Bezy_polish_semaine.md` — **overload crédits Bezy**.
 
-1. [ ] **[P0-AP-BEZI-003]** Bezy Phase 3 — wiring `ActionPointsHudView` sur `ActionPointsHudWidget.prefab` (prompt : `Notes/Ui/PROMPTS_Bezi_action_points.md`).
-2. [~] **[P0-AP-PLAY-001]** Playtest V0 PA — checklist : `Notes/PLAYTEST_points_actions_v0.md`
-   - [ ] §1 HUD (visible, 240/240, refresh)
-   - [ ] §2 Plantation nominale + PA insuffisants
-   - [ ] §3 Récolte nominale −1 PA
-   - [ ] §3 **Inventaire plein** → popup + PA remboursés, plante intacte
-   - [ ] §3 **PA à 0** → récolte refusée, plante intacte
-   - [ ] §3 Arrachage sans coût PA
-   - [ ] §4 Persistance `action_points.json` + relance
-   - [ ] §5 Vente −1 PA (après hook vente)
-3. [~] **[P0-AP-CODE-002]** Hooks récolte + vente — **récolte OK** (`PlantHarvestInteractor`, refund inventaire plein) ; **vente** `[ ]` (`SaleChannelService`).
-4. [ ] Commit auteur sur **`feature/points-actions`** puis merge `main` si playtest OK.
+**Ordre immédiat (reprendre ici) :**
 
-**Références**
+1. [ ] **[BZ-POLISH-001]** Micro-fix `ShopItemPopup` (`QuantityText` ≥ 22 + `backdropImage`)
+2. [ ] **[BZ-POLISH-002]** Tooltip PA layer 5 + fade léger
+3. [ ] **[BZ-POLISH-003]** EmptyState graines — anim apparition
+4. [ ] **[BZ-POLISH-004]** Bandeaux vente — pulse locked / fade cooldown
+5. [ ] Suite file #5→#16 dans `TODO_Bezy_polish_semaine.md` (incl. **[BZ-POLISH-016]** / **[CT-FARM-POLISH-003]** VFX terre plantation + récolte) (incl. **[BZ-POLISH-016]** / **[CT-FARM-POLISH-003]** VFX terre plantation + récolte)
 
-- Playtest : `Notes/PLAYTEST_points_actions_v0.md`
-- Service : `Assets/Scripts/Systems/ActionPointService.cs`
-- HUD : `Assets/Scripts/UI/ActionPointsHudView.cs`, `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
-- Prompts Bezy : `Notes/Ui/PROMPTS_Bezi_action_points.md`
+**Cursor (hors Bezy, quand utile) :**
+
+- [~] **[P0-AP-CODE-002]** Hook vente −1 PA
+- [ ] Commit auteur lot session 2026-07-23 (PA HUD + EmptyState + shop polish + docs)
+
+**Playtests batch (plus tard) :** `Notes/Todo_playtest.md` (A PA / B vente / C graines / D shop QA Bootstrap)
+
+**Clos session 2026-07-23 (Bezy) :**
+
+- [x] HUD PA 3bis + SpendPulse
+- [x] EmptyState graines Ph.1–3
+- [x] Shop polish `[CT-SHOP-002]` Ph.1–3
 
 ---
 
@@ -86,15 +89,13 @@ Convention d'IDs :
 
 ---
 
-### Reprise session — playtest cooldown vente (historique / autre branche)
+### Reprise session — playtest cooldown vente (historique)
 
-> **Clos ou sur `main`** après merge `feature/vente-production`. Priorité remplacée par **`feature/points-actions`** tant que le lot PA n'est pas mergé.
+> **Reporté batch** → `Notes/Todo_playtest.md` Batch B. Plus en priorité immédiate.
 
-**Ordre suggéré (si reprise vente) :**
+**ID :** `[P0-SALE-PLAY-004]` — checklist dans `Notes/Todo_playtest.md`.
 
-1. [ ] **[P0-SALE-PLAY-004]** Playtest : récolter laitue → vendre Voisinage → bandeau grisé + overlay + timer qui descend → popup refusée si cooldown → (option test rapide : `neighborSaleCooldownSeconds = 60` ou `ignoreSaleCooldown` sur `SaleChannelService`) → commit branche si OK.
-
-**Références playtest**
+**Références**
 
 - Spec cooldown : `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md` §7
 - Service : `Assets/Scripts/Systems/SaleChannelService.cs` (debug Inspector)
@@ -212,7 +213,7 @@ Convention d'IDs :
 |-----------------|-----|-----------|--------|
 | 1 | **[CT-INV-HALO-001]** | Rework inventaire halo + grille — Ph.1–3 + playtest **[P0-INV-HALO-004]** OK sur `main` ; suite arbres talents sur `cursor/mvp-talent-tree-950d` | `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` |
 | — | **[CT-FARM-UI-001]** | EmptyStatePanel graines (polish) | Prefab `SeedSelectionUI` — §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md` ; **reclassé polish** (2026-06-02), plus P0 immédiat |
-| — | **[CT-SHOP-002]** | Polish UX shop | Optionnel |
+| — | **[CT-SHOP-002]** | Polish UX shop | Bezy Ph.1–3 OK ; QA Batch D |
 | — | **[CT-FARM-004]** | Persistance ferme scénario complet | Playtest long |
 | — | **[CT-INV-001]** … **[CT-NAV-004]** | Voir § *Court terme* | Inchangé |
 
@@ -237,12 +238,12 @@ Convention d'IDs :
 - [x] **[P0-SALE-PLAY-003]** Playtest vente réelle (inventaire + gold).
 - [x] **[P0-SALE-TIMER-001]** Cooldown 24 h + `sale_channels.json` + refresh bandeau.
 - [x] **[P0-SALE-BEZI-004]** Bezy overlay cooldown bandeau (Ph.4–5) — review Cursor OK.
-- [ ] **[P0-SALE-PLAY-004]** Playtest timer canal (priorité prochaine session).
+- [ ] **[P0-SALE-PLAY-004]** Playtest timer canal — **batch** `Notes/Todo_playtest.md` (plus priorité session).
 
 ### Shop — polish restant
 - [x] [P0-SHOP-POP-001] Branche **`rework/shopitempopup`** + polish popup achat (`ShopItemPopup` : saisie quantité, Max, confirmation overlay, solde wallet dans le Header). **Fait** (2026-05-19) — merge `main`, voir `PROJECT_LOG.md`.
 - [x] [CT-SHOP-001] Flux achat de base opérationnel (catalogue + popup item + transaction).
-- [~] [CT-SHOP-002] Passe UI/UX shop (lisibilité, focus, transitions) — polish visuel optionnel restant.
+- [x] [CT-SHOP-002] Passe UI/UX shop — Bezy Ph.1–3 OK (2026-07-23). QA : `Notes/PLAYTEST_shop_polish_ct002.md`.
 - [x] [CT-SHOP-003] Saisie quantité (`TMP_InputField`, clamp min/max).
 - [x] [CT-SHOP-004] Bouton Max (`floor(solde/prix)` + plafonds métier + place inventaire).
 - [x] [CT-SHOP-005] Confirmation avant paiement (overlay `ConfirmOverlay` sur `ShopItemPopup.prefab`).
@@ -255,8 +256,9 @@ Convention d'IDs :
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).
 
 ### Ferme — polish & UI
-- [ ] **[CT-FARM-UI-001]** *(ex-P0, polish)* Prefab **`SeedSelectionUI`** : **EmptyStatePanel** + bouton **Acheter** — code prêt, prefab à câbler. §4.4 `Notes/Farm/REFACTOR_graines_plantation_inventaire.md`. **Stock** jusqu'à validation post-[P0-IDEA-001].
+- [x] **[CT-FARM-UI-001]** Prefab **`SeedSelectionUI`** EmptyState — Bezy Ph.1–3 OK (2026-07-23). Playtest → `Notes/Todo_playtest.md` Batch C / `[P0-FARM-BUG-001]`.
 - [ ] **[CT-FARM-POLISH-002]** Animation **insecte** (sprite sheet) pendant le stade **Flowering** — par `PlantDefinition` (feuilles : post-récolte ; fruits : pré-récolte). Enfant overlay + `Animator` sur prefab plante ; déclenché par `PlantGrow.SetStage(Flowering)`. Art + Bezy prefab ; code minimal Cursor si besoin.
+- [ ] **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** VFX particules **plantation + récolte** (burst circulaire terre / cailloux / feuilles). Art prêt : `Assets/Art/Sprites/VFX/Planting/PlantationDirtParticules.png` (9 sprites Multiple). Bezy : prefab Particle System ; Cursor : hook `Play()` plant + harvest. Détail file : `Notes/Ui/TODO_Bezi_polish_semaine.md` #16.
 
 ### Ferme — croissance et persistance
 - [~] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).
@@ -272,9 +274,9 @@ Convention d'IDs :
 
 ### Points d'action (économie temps joueur)
 - [~] **[P0-AP-CODE-001]** V0 — `ActionPointService` + save + planter = 1 PA (Cursor, 2026-06).
-- [~] **[P0-AP-UI-001]** HUD Bezy + `ActionPointsHudView` — en cours (Ph.3 wiring).
-- [ ] **[P0-AP-CODE-002]** Hooks récolte + vente.
-- [ ] **[P0-AP-PLAY-001]** Playtest V0 complet.
+- [x] **[P0-AP-UI-001]** HUD Bezy + `ActionPointsHudView` — Ph.3 + Ph.5 SpendPulse OK (2026-07-23).
+- [~] **[P0-AP-CODE-002]** Hooks récolte + vente — récolte OK ; vente `[ ]`.
+- [ ] **[P0-AP-PLAY-001]** Playtest V0 — **batch** `Notes/Todo_playtest.md`.
 - [ ] **[CT-AP-DESIGN-001]** **Prochaine session design** — réévaluer base PA + régénération progressive + malus fatigue (>10 h). Voir § *Prochaine session — design PA* en tête de fichier.
 
 ---

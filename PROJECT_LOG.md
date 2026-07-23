@@ -1,5 +1,82 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-23 (soir) — Art VFX planting + todo polish Bezy
+
+### Fait
+- [x] Sprite sheet particules terre/cailloux/feuilles importée et découpée 3×3 → `Assets/Art/Sprites/VFX/Planting/PlantationDirtParticules.png`
+- [x] Todo polish ajouté : **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** (plantation + récolte) — file Bezy #16
+
+### Prochaine session (Bezy)
+- Enchaîner file polish ; quand #16 : prefab Particle System burst (prompts à rédiger `PROMPTS_Bezi_planting_dirt_vfx.md`)
+- Hook Cursor `Play()` plant + harvest après prefab
+
+### Fichiers
+- `Assets/Art/Sprites/VFX/Planting/PlantationDirtParticules.png` (+ `.meta`)
+- `Notes/Todo_project.md`, `Notes/Ui/TODO_Bezi_polish_semaine.md`
+
+---
+
+## 2026-07-23 (fin) — Session Bezy polish + file semaine
+
+### Contexte
+- Branche **`feature/points-actions`**. Priorité : consommer crédits Bezy (prefabs / anims). Playtests reportés en batch.
+
+### Objectifs du jour
+- Wiring HUD PA + polish anim SpendPulse
+- EmptyState graines
+- Polish shop `[CT-SHOP-002]`
+- File Bezy pour la semaine
+
+### Fait
+- [x] HUD PA Phase 3bis + Phase 5 SpendPulse (Bezy) + trigger Cursor
+- [x] EmptyState `SeedSelectionUI` Ph.1–3 (Bezy)
+- [x] Shop polish Ph.1–3 (layers, lisibilité, Open/Close scale+slide, animator/canvasGroup)
+- [x] Playtests → `Notes/Todo_playtest.md` (+ Batch D QA shop / Bootstrap)
+- [x] File overload Bezy : `Notes/Ui/TODO_Bezy_polish_semaine.md` (15 jobs)
+
+### Décisions
+- Playtests en batch, pas bloquants pour Bezy
+- Pas de génération d’images via Bezy (placeholders / layers / Animator)
+
+### Prochaine session
+1. Enchaîner file Bezy à partir de **[BZ-POLISH-001]** (`TODO_Bezy_polish_semaine.md`)
+2. Option Cursor : hook vente PA + commit lot local
+3. Batch QA plus tard (Bootstrap UI parasite = §1 `PLAYTEST_shop_polish_ct002.md`)
+
+### Fichiers touchés (session, non exhaustif)
+- HUD PA : prefab, anims, `ActionPointsHudView.cs`, `NavigationHUD.unity`
+- `SeedSelectionUI.prefab`
+- `ShopItemPopup.prefab` + `ShopItemPopup_Open/Close.anim`
+- Docs : `Todo_project`, `Todo_playtest`, `PROMPTS_Bezi_*`, `TODO_Bezy_polish_semaine`, `PLAYTEST_shop_polish_ct002`
+
+### Commit
+- À faire côté **auteur** (`git add` / `commit` / `push`) — assistant non committer.
+
+---
+
+## 2026-07-23 — Bezy prioritaire ; playtests reportés en batch
+
+### Décision auteur
+- Playtests **plus en priorité session** : batch dans `Notes/Todo_playtest.md`.
+- Priorité immédiate : **crédits Bezy** (prefabs / polish UI).
+
+### Fait session
+- [x] HUD PA Phase 3bis + Phase 5 SpendPulse (Bezy) + trigger Cursor — review OK.
+- [x] Playtests PA / vente / ferme déplacés → `Notes/Todo_playtest.md`.
+
+### Prochaine session (priorité immédiate)
+1. **[P0-FARM-BEZI-001]** / **[CT-FARM-UI-001]** EmptyState `SeedSelectionUI` — prompts `Notes/Ui/PROMPTS_Bezi_seed_empty_state.md` (Phase 1 → 2 → 3).
+2. Option : **[CT-SHOP-002]** polish shop Bezy.
+3. Playtests batch plus tard (`Todo_playtest.md`).
+
+### Fichiers
+- `Notes/Todo_playtest.md` (nouveau)
+- `Notes/Ui/PROMPTS_Bezi_seed_empty_state.md` (nouveau)
+- `Notes/Todo_project.md`, `Notes/Ui/PROMPTS_Bezi_action_points.md`
+- HUD PA : anims + prefab + `ActionPointsHudView.cs`
+
+---
+
 ## 2026-06-26 — Points d'action V0 (feature/points-actions) + design fatigue prochaine session
 
 ### Contexte

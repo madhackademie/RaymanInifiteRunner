@@ -1,12 +1,12 @@
 # Playtest — Points d'action V0
 
 **Branche :** `feature/points-actions`  
-**ID tâche parent :** `[P0-AP-PLAY-001]` dans `Notes/Todo_project.md`  
-**Statut global :** mettre à jour uniquement dans `Todo_project.md` ; cocher ici pendant la session, puis synchroniser.
+**ID tâche parent :** `[P0-AP-PLAY-001]` — **batch** `Notes/Todo_playtest.md` (pas priorité session Bezy).  
+**Statut global :** `Notes/Todo_project.md` + cocher le batch dans `Todo_playtest.md`.
 
 **Prérequis**
 - Play Mode depuis `Bootstrap` → ferme (`FirstLvlFarm`).
-- HUD PA : Bezy Phase 3 wiring recommandé (`Notes/Ui/PROMPTS_Bezi_action_points.md`) — sinon vérifier via Console + `action_points.json`.
+- HUD PA : Phase 3 + Phase 5 SpendPulse OK (2026-07-23).
 - Save PA : `%USERPROFILE%\AppData\LocalLow\<Company>\<Product>\action_points.json` (chemin Unity `persistentDataPath`).
 
 **Références code**

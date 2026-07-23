@@ -20,20 +20,24 @@ Voir @Notes/Ui/CONVENTION_layers_unity.md
 
 - **Phase 1** : prefab + instance NavigationHUD — **OK** (Bezy)
 - **Micro P2** : layer UI (`m_Layer: 5`) sur instance scène — **OK**
-- **Phase 3** : wiring Inspector — **OK** (Bezy, 2026-06-29)
+- **Phase 3** : wiring Inspector prefab — **OK** (Bezy, 2026-06-29)
+- **Phase 3bis** : sync instance `NavigationHUD` (doublon override) — **OK** (Bezy, 2026-07-23)
 - **Phase 4.1** : hiérarchie zones fatigue — **OK** (Bezy, 2026-06-29)
 - **Phase 4.2** : couleurs milestones + overlay consommé — **OK** (Bezy, 2026-06-29)
 - **Phase 4.3** : tooltip survol zones — **OK** (Bezy, 2026-06-29)
-- **Playtest** : **[P0-AP-PLAY-001]** barre fatigue + tooltips + malus PA
+- **Phase 5.1** : clips + controller SpendPulse — **OK** (Bezy, 2026-07-23)
+- **Phase 5.2** : wiring Animator sur prefab — **OK** (Bezy, 2026-07-23)
+- **Playtest** : **[P0-AP-PLAY-001]** barre fatigue + tooltips + malus PA + pulse Spend
 
 ### Design cible (Cursor + Bezy)
 
 - **3 bandes colorées toujours visibles** sous la barre (milestones 80 / 120 / 160 PA).
 - **BarFill** = overlay sombre semi-transparent sur la portion **consommée** (script `ActionPointsHudView`).
 - **Tooltip au survol** de chaque bande (`ActionPointFatigueZoneHover` + `ActionPointFatigueTooltipHost`).
+- **Polish anim** : trigger Animator `Spend` → clip `SpendPulse` (punch scale `Row`) quand la conso PA augmente.
 
-Scripts Cursor (ne pas modifier) :
-- `ActionPointsHudView.cs`
+Scripts Cursor (ne pas modifier sauf wiring Inspector demandé) :
+- `ActionPointsHudView.cs` — champ `animator` + trigger `Spend` déjà prêt
 - `ActionPointFatigueTooltipHost.cs`
 - `ActionPointFatigueZoneHover.cs`
 - `ActionPointFatigueUiCopy.cs`
@@ -161,11 +165,61 @@ Confirmer wiring sans None + capture survol.
 
 ---
 
-## Phase 3 — Wiring Inspector — OK
+## Phase 3 — Wiring Inspector prefab — OK
 
-Validé repo :
-- `ActionPointsHudView` sur prefab + instance NavigationHUD
-- `pointsLabel`, `subtitleLabel`, `barFillImage`, `barBackgroundImage` — tous câblés
+Validé repo (`ActionPointsHudWidget.prefab`) :
+- `ActionPointsHudView` : `pointsLabel`, `subtitleLabel`, `barFillImage`, `barBackgroundImage`, `fatigueIconImage`, `consumedOverlayColor`
+- Tooltips / zones fatigue (Phase 4) aussi câblés sur le prefab
+
+---
+
+## Phase 3bis — Sync instance NavigationHUD — OK
+
+Validé repo (Bezy 2026-07-23) :
+- `m_AddedComponents: []` — override `ActionPointsHudView` scène **supprimé**
+- Instance utilise le composant **prefab** uniquement (plus de doublon)
+- Prefab : ordre SerializeField aligné + `fatigueIconImage` → `Row/Icon`
+- Layers UI (`m_Layer: 5`) ajoutés sur panel tooltip / enfants manquants
+
+### Prompt archive (Phase 3bis)
+
+```
+Ne pas rescanner tout le projet. Réutiliser scripts existants. Pas de nouveaux sprites.
+
+Fichiers :
+- Prefab : @Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab
+- Script : @Assets/Scripts/UI/ActionPointsHudView.cs
+- Scène : @Assets/Scenes/NavigationHUD.unity (instance ActionPointsHudWidget sous HUDRoot)
+
+Constat : le PREFAB a déjà ActionPointsHudView câblé (pointsLabel, subtitleLabel, barFillImage, barBackgroundImage, fatigueIconImage → Row/Icon, consumedOverlayColor).
+L’INSTANCE scène a un ActionPointsHudView AJOUTÉ en override, incomplet (pas fatigueIconImage) → doublon possible.
+
+Tâche UNIQUE — nettoyer + synchroniser l’instance :
+
+1. Sur l’instance ActionPointsHudWidget dans NavigationHUD :
+   - Supprimer le composant ActionPointsHudView ajouté en override (Added Component), s’il existe en double.
+   - Garder UNIQUEMENT le ActionPointsHudView venant du prefab (un seul composant).
+
+2. Vérifier Inspector (instance, sans None) :
+   - pointsLabel → PointsLabel (TMP)
+   - subtitleLabel → SubtitleLabel (TMP)
+   - barFillImage → ProgressBar/BarFill
+   - barBackgroundImage → ProgressBar/BarBackground
+   - fatigueIconImage → Row/Icon (Image)
+   - consumedOverlayColor ≈ noir alpha 0.42
+
+3. Si un champ est None : le recâbler. Ne pas recréer la hiérarchie. Ne pas toucher ActionPointService.
+
+4. Layer UI m_Layer: 5 partout sur le widget. Apply overrides utiles (layers) ; pas de second script HUD.
+
+Play Mode :
+- Un seul ActionPointsHudView sur le widget
+- Affiche "0 / 160" (ou budget courant) + sous-titre travail
+- Icône Row/Icon change de teinte selon zone fatigue
+- Overlay BarFill suit la conso
+
+Confirmer : 1 composant, 0 None, capture Inspector + Play Mode.
+```
 
 ---
 
@@ -208,8 +262,37 @@ Confirmer Inspector sans champs None + capture.
 
 ---
 
+## Phase 5 — Polish anim HUD (SpendPulse)
+
+> Pattern projet : `Assets/Animations/UI/` (comme ShopItemPopup / TalentTreeOverlay).  
+> **Pas de nouveaux sprites.** Ne pas animer `BarFill.fillAmount` (piloté par le script).
+
+### Phase 5.1 — Clips + Animator Controller — OK
+
+Validé repo (Bezy 2026-07-23) :
+- `ActionPointsHud_Idle.anim` — path `Row`, scale 1, 0.01 s, loop OFF
+- `ActionPointsHud_SpendPulse.anim` — keys 1 → 1.07 → 0.97 → 1, 0.28 s, path `Row` only
+- `ActionPointsHud.controller` — Trigger `Spend`, Idle default, Any→SpendPulse, SpendPulse→Idle (exit 1)
+
+### Phase 5.2 — Wiring Animator sur prefab — OK
+
+Validé repo (Bezy 2026-07-23) :
+- Animator sur racine `ActionPointsHudWidget` → `ActionPointsHud.controller`
+- Update Mode Normal (0), Culling Always Animate (0)
+- `ActionPointsHudView.animator` câblé ; labels / barre / icône inchangés
+- Instance `NavigationHUD` : pas de composant ajouté (hérite du prefab)
+
+### Phase 5.2 — archive prompt
+
+```
+(voir historique session — livré OK)
+```
+
+---
+
 ## Anti-patterns
 
 - Pas de débit PA dans les scripts UI
 - Pas de duplicate reset journalier
 - Pas de recréation du prefab from scratch
+- Pas d’animation de `fillAmount` / couleurs barre (conflit script)
