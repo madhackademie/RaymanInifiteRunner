@@ -21,6 +21,7 @@
   - Bezy Phase 3b : stop (« can't verify Simulate ») — normal, limite agent
   - Cursor : Texture Sheet Animation Mode=Sprites branché (Dirt `_0…_10`, Worm `_0`) ; Start Frame dirt random
   - Fix 2026-07-25 : Mesh Type sprites **Full Rect** (pas Tight) ; materials BaseMap ; menu `Rayman/VFX/Bind PlantingDirtBurst Sprites` si Inspector vide
+  - Fix 2026-07-25b : carrés bleus → keyword `_BASEMAP` + **GPU Instancing OFF** + Frame over Time = 0 (Start Frame random pour variété)
 
 ### Validation Phase 2 (repo)
 

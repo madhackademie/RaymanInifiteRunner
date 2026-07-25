@@ -155,6 +155,8 @@ MonoBehaviour:
   placementPreview: {fileID: 8494675260759893495}
   itemDatabase: {fileID: 0}
   enablePrototypePersistence: 1
+  plantingDirtBurstPrefab: {fileID: 659592832372912400, guid: c8164a28916547e49806f3e283de1925, type: 3}
+  plantingDirtBurstDestroyDelay: 2
 --- !u!114 &8494675260759893495
 MonoBehaviour:
   m_ObjectHideFlags: 0

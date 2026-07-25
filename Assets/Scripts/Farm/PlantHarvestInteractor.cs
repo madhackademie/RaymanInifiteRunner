@@ -185,6 +185,8 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private void RemovePlantFromGrid()
     {
+        Vector3 burstWorldPos = transform.position;
+
         if (gridManager != null && occupiedCells != null)
         {
             gridManager.FreeCells(occupiedCells);
@@ -200,6 +202,8 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         // Destroy() est différé en fin de frame : retirer du conteneur avant la sauvegarde
         // pour ne pas réécrire la plante dans farm_state.json (CT-FARM-004).
         transform.SetParent(null, worldPositionStays: true);
+
+        biofiltreManager?.PlayPlantingDirtBurst(burstWorldPos);
 
         onPlantRemoved?.Invoke();
         Destroy(gameObject);

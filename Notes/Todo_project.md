@@ -41,21 +41,20 @@ Convention d'IDs :
 
 > Branche courante : **`feature/points-actions`** — V0 PA + polish Bezy + VFX planting (session 2026-07-25). Playtests → `Notes/Todo_playtest.md`.
 
-### Priorité immédiate — réglage / test dirt particles
+### Priorité immédiate — playtest VFX branché
 
-> Prefab : `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab`  
-> Prompts / notes : `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md` · menu `Rayman/VFX/Bind PlantingDirtBurst Sprites`  
-> Feedback auteur (2026-07-25) : sprites OK en principe ; **trop petit + trop rapide** → retune avant hook in-game.
+> Prefab : `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab` (P1–P3 OK)  
+> Hook Cursor : `FarmDirtBurstVfx` + `BiofiltreManager.PlayPlantingDirtBurst` (plant / arrachage / récolte)
 
-**Ordre immédiat (prochaine session) :**
+**Ordre immédiat :**
 
-1. [ ] **[P0-FARM-VFX-TUNE-001]** Réglage + test `PlantingDirtBurst` (DirtBurst / WormBurst) : **taille** (Start Size / size over lifetime) et **durée / vitesse** (lifetime, start speed, duration, radial) — Simulate jusqu’à rendu confortable.
-2. [ ] Puis hook Cursor `Play()` plant + arrachage + récolte (même prefab) + playtest in-game.
+1. [ ] **[P0-FARM-VFX-PLAY-002]** Playtest in-game : planter, arracher, récolter → burst visible. Si trop petit/rapide → retune `[P0-FARM-VFX-TUNE-001]` puis retester.
+2. [ ] **[P0-FARM-VFX-TUNE-001]** (si besoin) Réglage taille / durée / vitesse DirtBurst + WormBurst.
 
-**Clos session 2026-07-25 (VFX P3) :**
+**Clos :**
 
-1. [x] **[P0-FARM-VFX-PLAY-001]** Sprites branchés (Full Rect + binder Editor) — playtest rendu partiel → report retune `[P0-FARM-VFX-TUNE-001]`.
-2. [x] **[BZ-POLISH-016]** Phase 3 — material + Worm 2–5 + sprites (Cursor / binder).
+- [x] Prefab P1–P3 livré (sprites + materials)
+- [x] Hook `Play()` plant + arrachage + récolte (2026-07-25)
 
 ### Ensuite — file Bezy polish (semaine)
 

@@ -1,5 +1,29 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-25 — VFX plantation branché (hook Play)
+
+### Contexte
+- Branche : **`feature/points-actions`**
+- Prefab P1–P3 livré (`PlantingDirtBurst` + materials + sprites)
+
+### Vérif livrable
+- [x] DirtBurst + WormBurst, Play On Awake OFF
+- [x] Materials dirt/worm + Texture Sheet Sprites `_0…_10` / worm `_0`
+
+### Fait (Cursor)
+- [x] `FarmDirtBurstVfx` + `BiofiltreManager.PlayPlantingDirtBurst` (plant joueur, pas restore save)
+- [x] Burst dans `PlantHarvestInteractor.RemovePlantFromGrid` (récolte + arrachage)
+- [x] Prefab assigné sur `Biofiltre.prefab`
+
+### Prochaine (auteur)
+1. **[P0-FARM-VFX-PLAY-002]** Playtest in-game
+2. Retune si trop petit/rapide (`[P0-FARM-VFX-TUNE-001]`)
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
 ## 2026-07-25 (fin session) — VFX PlantingDirtBurst P3 + prio retune
 
 ### Contexte

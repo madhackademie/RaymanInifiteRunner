@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8492542989369587664}
   - component: {fileID: 7355691137789566359}
   - component: {fileID: 615750847586506196}
+  - component: {fileID: 2444895485939233202}
   m_Layer: 0
   m_Name: LaitueObj
   m_TagString: Untagged
@@ -182,3 +183,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlantHarvestInteractor
   itemDatabase: {fileID: 0}
   harvestItemIdOverride: 
+--- !u!114 &2444895485939233202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5334991705577000362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00ef9ed4e8474ec46af360f1aa15893a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantPlantingPunch
+  peakScaleMultiplier: 3
+  zoomInDurationSeconds: 2
+  zoomOutDurationSeconds: 2.5
+  scaleTarget: {fileID: 0}

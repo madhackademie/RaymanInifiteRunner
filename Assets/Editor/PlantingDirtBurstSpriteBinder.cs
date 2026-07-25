@@ -81,10 +81,25 @@ public static class PlantingDirtBurstSpriteBinder
         }
 
         renderer.sharedMaterial = mat;
+        // TSA Mode=Sprites + GPU Instancing = souvent des quads sans texture (carrés bleus/blancs).
+        renderer.enableGPUInstancing = false;
+
+        if (mat != null)
+        {
+            mat.EnableKeyword("_BASEMAP");
+            if (mat.HasProperty("_BaseMap") && sprites.Length > 0 && sprites[0] != null)
+            {
+                mat.SetTexture("_BaseMap", sprites[0].texture);
+            }
+
+            EditorUtility.SetDirty(mat);
+        }
 
         var tsa = ps.textureSheetAnimation;
         tsa.enabled = true;
         tsa.mode = ParticleSystemAnimationMode.Sprites;
+        // Une frame fixe par particule (variété via Start Frame), pas d'anim UV 0→1.
+        tsa.frameOverTime = new ParticleSystem.MinMaxCurve(0f);
 
         // Clear then set (Unity keeps stale None slots otherwise).
         while (tsa.spriteCount > 0)

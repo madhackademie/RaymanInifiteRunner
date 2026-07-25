@@ -28,6 +28,13 @@ public class BiofiltreManager : MonoBehaviour
     [Tooltip("Active la sauvegarde JSON locale des plantes posees sur la grille.")]
     [SerializeField] private bool enablePrototypePersistence = true;
 
+    [Header("VFX")]
+    [Tooltip("Burst terre / vers — Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab")]
+    [SerializeField] private GameObject plantingDirtBurstPrefab;
+
+    [Tooltip("Délai avant Destroy du VFX (durée PS + marge).")]
+    [SerializeField] private float plantingDirtBurstDestroyDelay = 2f;
+
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
     private bool hasLoadedFromSave;
@@ -404,10 +411,33 @@ public class BiofiltreManager : MonoBehaviour
 
         Debug.Log($"[BiofiltreManager] Planted '{plantDefinition.displayName}' at {anchor}.");
 
+        // VFX / punch seulement sur placement joueur (pas à la restauration save).
         if (saveAfterPlacement)
+        {
+            PlayPlantingDirtBurst(instance.transform.position);
+            if (instance.TryGetComponent(out PlantPlantingPunch plantingPunch))
+                plantingPunch.Play();
             SaveFarmState();
+        }
 
         return true;
+    }
+
+    /// <summary>
+    /// Burst particules plantation / arrachage / récolte (même prefab).
+    /// </summary>
+    public void PlayPlantingDirtBurst(Vector3 worldPosition)
+    {
+        if (plantingDirtBurstPrefab == null)
+        {
+            Debug.LogWarning(
+                "[BiofiltreManager] plantingDirtBurstPrefab non assigné — VFX ignoré. " +
+                "Référence : Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab",
+                this);
+            return;
+        }
+
+        FarmDirtBurstVfx.Play(plantingDirtBurstPrefab, worldPosition, plantingDirtBurstDestroyDelay);
     }
 
     private void TryLoadFarmState()
