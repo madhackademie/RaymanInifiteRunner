@@ -16,7 +16,11 @@
 
 - **Phase 1** : shell prefab + 2 ParticleSystem — **OK** (Bezy 2026-07-23) ; correctif Cursor `playOnAwake` OFF
 - **Phase 2** : tuning burst / fade — **OK** (Bezy 2026-07-23, validé Cursor repo)
-- **Phase 3** : sprites + material — **après playtest P2** (`[P0-FARM-VFX-PLAY-001]`)
+- **Phase 3** : sprites + material — **fix Cursor YAML** (2026-07-25)
+  - Bezy Phase 3 : material + Worm 2–5 OK ; sprites non branchés
+  - Bezy Phase 3b : stop (« can't verify Simulate ») — normal, limite agent
+  - Cursor : Texture Sheet Animation Mode=Sprites branché (Dirt `_0…_10`, Worm `_0`) ; Start Frame dirt random
+  - Fix 2026-07-25 : Mesh Type sprites **Full Rect** (pas Tight) ; materials BaseMap ; menu `Rayman/VFX/Bind PlantingDirtBurst Sprites` si Inspector vide
 
 ### Validation Phase 2 (repo)
 
@@ -118,19 +122,56 @@ WormBurst Renderer:
 - Same material
 - Sprite ONLY: wurmParticleFarmPlantation_0
 
-Keep Play On Awake OFF. Burst counts: Dirt≈14, Worm=1.
-Save prefab. List final hierarchy + material path. STOP.
+Keep Play On Awake OFF.
+Burst counts:
+- DirtBurst: ≈14 (unchanged)
+- WormBurst: Emission Burst count = Random between 2 and 5 (NOT fixed 1)
+- WormBurst Max Particles: at least 5 (was 2 — raise if needed)
+
+Save prefab. List final hierarchy + material path + Worm burst min/max. STOP.
+```
+
+---
+
+## Phase 3b — Fix sprites ONLY (après review Cursor KO)
+
+```
+[BZ-POLISH-016] Phase 3b ONLY — assign sprites on PlantingDirtBurst. Wait success. STOP after.
+
+Open ONLY: Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab
+Keep material M_PlantingDirtParticles already assigned. Do NOT rescan project. Do NOT create scripts. Do NOT regenerate PNG. Do NOT change Dirt/Worm motion tuning except sprites.
+
+On DirtBurst → Particle System → Texture Sheet Animation:
+- Enable module
+- Mode = Sprites (NOT Grid)
+- Clear empty sprite slot
+- Add sprites PlantationDirtParticules_0 through PlantationDirtParticules_10
+  (from Assets/Art/Sprites/VFX/Planting/PlantationDirtParticules.png)
+- Frame over Time or Start Frame: random among frames OK
+
+On WormBurst → Texture Sheet Animation:
+- Enable module
+- Mode = Sprites
+- Sprite ONLY: wurmParticleFarmPlantation_0
+  (from Assets/Art/Sprites/VFX/Planting/wurmParticleFarmPlantation.png)
+- Do NOT add dirt sprites here
+
+Keep Play On Awake OFF. Worm burst still Random 2–5. Max Particles Worm >= 5.
+Save. List hierarchy + which sprites assigned on DirtBurst / WormBurst. STOP.
+(Author playtests Simulate separately — do NOT require Bezy to confirm visual result.)
 ```
 
 ---
 
 ## Checklist validation (auteur)
 
-- [ ] Prefab existe : `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab`
-- [ ] 2 enfants PS : `DirtBurst` + `WormBurst`
-- [ ] Play On Awake = OFF (Cursor appellera `Play()`)
-- [ ] Burst unique court, pas de loop
-- [ ] Sprites terre + vers branchés, fond transparent OK
+- [x] Prefab existe : `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab`
+- [x] 2 enfants PS : `DirtBurst` + `WormBurst`
+- [x] Play On Awake = OFF (Cursor appellera `Play()`)
+- [x] Burst unique court, pas de loop
+- [x] WormBurst : 2–5 particules (random), Max Particles ≥ 5
+- [x] Material `M_PlantingDirtParticles` assigné
+- [x] Sprites terre + vers branchés (YAML Cursor) — **playtest Simulate auteur**
 - [ ] Un seul prefab pour plant / arrachage / récolte
 
 ## Anti-patterns

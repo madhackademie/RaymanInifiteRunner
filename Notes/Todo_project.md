@@ -39,18 +39,23 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/points-actions`** — V0 PA + polish Bezy + VFX planting P1–P2 (session 2026-07-23). Playtests → `Notes/Todo_playtest.md`.
+> Branche courante : **`feature/points-actions`** — V0 PA + polish Bezy + VFX planting (session 2026-07-25). Playtests → `Notes/Todo_playtest.md`.
 
-### Priorité immédiate — playtest VFX plantation
+### Priorité immédiate — réglage / test dirt particles
 
 > Prefab : `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab`  
-> Prompts : `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md` · `[BZ-POLISH-016]` / `[CT-FARM-POLISH-003]`  
-> **P1 + P2 Bezy validés** (repo 2026-07-23). P3 sprites / material pas encore faits.
+> Prompts / notes : `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md` · menu `Rayman/VFX/Bind PlantingDirtBurst Sprites`  
+> Feedback auteur (2026-07-25) : sprites OK en principe ; **trop petit + trop rapide** → retune avant hook in-game.
 
-**Ordre immédiat :**
+**Ordre immédiat (prochaine session) :**
 
-1. [ ] **[P0-FARM-VFX-PLAY-001]** Playtest **P2** `PlantingDirtBurst` dans Unity (Simulate / drop scène) : burst radial court, fade alpha, shrink, vers vs terre, Play On Awake OFF. Si OK → enchaîner Phase 3 (sprites terre + vers).
-2. [ ] Après P3 : hook Cursor `Play()` plant + arrachage + récolte (même prefab) + playtest in-game.
+1. [ ] **[P0-FARM-VFX-TUNE-001]** Réglage + test `PlantingDirtBurst` (DirtBurst / WormBurst) : **taille** (Start Size / size over lifetime) et **durée / vitesse** (lifetime, start speed, duration, radial) — Simulate jusqu’à rendu confortable.
+2. [ ] Puis hook Cursor `Play()` plant + arrachage + récolte (même prefab) + playtest in-game.
+
+**Clos session 2026-07-25 (VFX P3) :**
+
+1. [x] **[P0-FARM-VFX-PLAY-001]** Sprites branchés (Full Rect + binder Editor) — playtest rendu partiel → report retune `[P0-FARM-VFX-TUNE-001]`.
+2. [x] **[BZ-POLISH-016]** Phase 3 — material + Worm 2–5 + sprites (Cursor / binder).
 
 ### Ensuite — file Bezy polish (semaine)
 

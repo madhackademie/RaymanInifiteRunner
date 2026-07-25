@@ -117,6 +117,13 @@ Pattern obligatoire pour UI/prefab complexe:
 - **Phase 2 - Composants**: Image, Button, TMP_Text, LayoutGroup, etc.
 - **Phase 3 - Wiring**: affectation des SerializeField + evenements.
 
+**Critère de succès Bezy (anti-blocage) — 2026-07-25 :**
+- Bezy livre le **wiring** uniquement ; fin de phase typique : `Save. List what changed. STOP.`
+- **Ne pas** demander à Bezy de confirmer Simulate / Play Mode / rendu / playtest (« confirm it looks good »).
+- Bezy ne peut pas (ou refuse de) valider un résultat runtime : il s’arrête plutôt que de deviner (cas VFX `PlantingDirtBurst` Phase 3b).
+- Le **playtest auteur** (Simulate, in-game, rendu) est **toujours** l’étape suivante, hors prompt Bezy.
+- Règle Cursor : `.cursor/rules/bezy_execution_phases.mdc` § *Success criteria*.
+
 Si echec/timeout:
 - Rejouer la phase en sous-etapes plus petites (sans fusionner les 3 phases).
 

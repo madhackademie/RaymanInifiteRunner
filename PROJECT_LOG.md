@@ -1,5 +1,29 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-25 (fin session) — VFX PlantingDirtBurst P3 + prio retune
+
+### Contexte
+- Branche : **`feature/points-actions`**
+- Chantier : `[BZ-POLISH-016]` / sprites dirt + worm
+
+### Fait
+- Phase 3 partielle Bezy (material + Worm burst 2–5) ; sprites YAML puis binder Editor Cursor
+- Fix Mesh Type **Full Rect** ; materials BaseMap dirt/worm ; menu `Rayman/VFX/Bind PlantingDirtBurst Sprites`
+- Règle prompts Bezy : ne pas exiger Simulate / playtest comme succès Bezy (`bezy_execution_phases.mdc`, `Notes/Bezi/README_bezi.md`)
+- Fix compile Unity 6 : `TextureImporterSettings.spriteMeshType` (plus `TextureImporter.spriteMeshType`)
+
+### Feedback auteur
+- Particules **trop petites** et **trop rapides** → retune prochaine session (pas ce soir)
+
+### Prochaine session (priorité immédiate) — validée auteur
+1. **[P0-FARM-VFX-TUNE-001]** Réglage + test dirt particles (`PlantingDirtBurst`) — taille + durée/vitesse
+2. Puis hook `Play()` plant / arrachage / récolte
+
+### Commit
+- À faire côté **auteur** (prefab, mats, binder, docs).
+
+---
+
 ## 2026-07-23 (fin session) — VFX plantation P2 validé + playtest priorité
 
 ### Contexte

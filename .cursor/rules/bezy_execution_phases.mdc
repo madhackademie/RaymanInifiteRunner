@@ -28,12 +28,21 @@ Execution constraints:
 - If a phase fails or times out, retry that phase with smaller sub-steps.
 - Provide a final checklist of created/updated files and missing manual links.
 
+Success criteria (anti-blocage Bezy) — **critique** :
+
+- Bezy livrable = **wiring / hierarchy / composants** seulement.
+- **Ne jamais** mettre comme condition de succès Bezy : Simulate, Play Mode, playtest rendu, « confirm it looks good », ou toute verif runtime Unity.
+- Bezy **ne peut pas** (ou refuse de) valider un rendu/Simulate : s'il doit « confirm Simulate », il s'arrete plutot que de deviner.
+- Formuler la fin de phase ainsi : `Save. List what changed. STOP.` — le **playtest auteur** (Simulate / in-game) vient **apres**, hors prompt Bezy.
+- Checklist visuelle / motion = pour l'auteur ou Cursor review repo, pas pour Bezy.
+
 Prompt style requirements:
 
 - Include exact script paths and prefab path.
 - Explicitly say "do not rescan whole project".
 - Explicitly say "reuse existing scripts unless asked otherwise".
 - For UI GameObjects: **layer UI = `m_Layer: 5`** (Water = 4 in this project's TagManager). See `Notes/Ui/CONVENTION_layers_unity.md`.
+- Do not ask Bezy to verify Simulate / Play Mode / visual playtest (see success criteria above).
 
 Prompt size limit:
 
