@@ -48,8 +48,9 @@ Convention d'IDs :
 
 **Ordre immédiat :**
 
-1. [ ] **[P0-FARM-VFX-PLAY-002]** Playtest in-game : planter, arracher, récolter → burst visible. Si trop petit/rapide → retune `[P0-FARM-VFX-TUNE-001]` puis retester.
-2. [ ] **[P0-FARM-VFX-TUNE-001]** (si besoin) Réglage taille / durée / vitesse DirtBurst + WormBurst.
+1. [~] **[BZ-POLISH-014]** / `[P0-FARM-INSECT-PLAY-001]` Insecte — Bezy P1–P3 **OK** ; **playtest** Flowering → abeille Fly/butinage + flipX
+2. [ ] **[P0-FARM-VFX-PLAY-002]** Playtest in-game DirtBurst (plant / arrachage / récolte)
+3. [ ] **[P0-FARM-VFX-TUNE-001]** (si besoin) Réglage taille / durée DirtBurst + WormBurst
 
 **Clos :**
 
@@ -61,7 +62,8 @@ Convention d'IDs :
 > Source : `Notes/Ui/TODO_Bezy_polish_semaine.md`
 
 1. [ ] **[BZ-POLISH-002]** HUD PA — suite polish (Refuse pulse, fill conso, tooltip fade)
-2. [ ] Suite file #5→#16 (VFX = P3 après playtest P2)
+2. [x] **[BZ-POLISH-017]** HUD Vente — fond opaque Bezy Ph.6 **OK** (2026-07-26) — playtest auteur : Home ne doit plus transparaître
+3. [ ] Suite file #5→#16 (VFX = P3 après playtest P2)
 
 **Cursor (hors Bezy, quand utile) :**
 
@@ -72,6 +74,7 @@ Convention d'IDs :
 
 **Clos polish (2026-07-23) :**
 
+- [x] **[BZ-POLISH-017]** HUD Vente — fond opaque Ph.6 (root + ContentBackdrop) — Bezy OK 2026-07-26 ; playtest auteur
 - [x] **[BZ-POLISH-004]** HUD Vente — fade overlay cooldown + pulse timer + locked Bandoulière/Vélo lisible (playtest OK)
 - [x] HUD PA 3bis + SpendPulse (base)
 - [x] **[BZ-POLISH-003]** EmptyState graines Ph.1–3

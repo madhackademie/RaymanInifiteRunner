@@ -112,6 +112,31 @@ public class PlantDefinition : ScriptableObject
             yield return targetCell - offset;
     }
 
+    [Header("Insecte Flowering")]
+    [Tooltip("None = pas d'insecte. Bee / Butterfly = overlay path pendant Flowering.")]
+    [SerializeField] private InsectKind insectKind = InsectKind.None;
+
+    [Tooltip("Vitesse de vol monde (0 = défaut script ~0.8).")]
+    [SerializeField] private float insectMoveSpeed;
+
+    [Tooltip("Durée min butinage (0 = défaut script).")]
+    [SerializeField] private float forageDurationMin;
+
+    [Tooltip("Durée max butinage (0 = défaut script).")]
+    [SerializeField] private float forageDurationMax;
+
+    /// <summary>Espèce d'insecte au stade Flowering.</summary>
+    public InsectKind InsectKind => insectKind;
+
+    /// <summary>Vitesse vol override (0 = défaut follower).</summary>
+    public float InsectMoveSpeed => insectMoveSpeed;
+
+    /// <summary>Butinage min override (0 = défaut follower).</summary>
+    public float ForageDurationMin => forageDurationMin;
+
+    /// <summary>Butinage max override (0 = défaut follower).</summary>
+    public float ForageDurationMax => forageDurationMax;
+
     [Header("Stage Durations (seconds)")]
     [Tooltip("Duration for each stage before automatically advancing to the next one. Leave at 0 to skip auto-advance for that stage.")]
     public StageDuration[] stageDurations = Array.Empty<StageDuration>();

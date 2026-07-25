@@ -1,8 +1,8 @@
 # Spec — Insecte au stade Flowering (abeille / papillon)
 
 **Ticket** : `[CT-FARM-POLISH-002]` · priorités session `[P0-FARM-INSECT-001..003]`  
-**Statut** : spec prête — **coder demain** sur promesse sheet ; art ChatGPT en attente de crédits  
-**Date** : 2026-07-23 (maj soir)  
+**Statut** : art MVP intégré — sheet Fly 6 frames prêt ; scripts / Bezy path à enchaîner  
+**Date** : 2026-07-25 (maj art `Bee_Fly`)  
 **Liens** : `PlantGrow` / `PlantDefinition` · `Notes/Todo_project.md` · shell Bezy `[BZ-POLISH-014]`  
 **Réfs qualité VFX/critters** : Farm Together, Dinkum, Coral Island → `Notes/References/REFERENCES_jeux_inspiration.md` § E
 
@@ -198,8 +198,8 @@ Jusque-là : import Multiple + compression Unity suffit.
 | # | Qui | Livrable |
 |---|-----|----------|
 | 0 | Cursor **demain** | Scripts path + FSM + hook Flowering (**placeholders** OK) `[P0-FARM-INSECT-001]` |
-| 1 | Art (ChatGPT) | Sheet abeille 1024² / 8 frames Fly (crédits en attente) |
-| 2 | Unity import | Slice Multiple, pivots centre, clip `Bee_Fly` `[P0-FARM-INSECT-002]` |
+| 1 | Art (ChatGPT + crop) | Sheet abeille **1020×132** / **6 frames Fly** — `Assets/Art/Sprites/Farm/Insects/Bee_Fly.png` |
+| 2 | Unity import | Slice Multiple 170×132, pivots centre — **fait** ; clip Animator `Bee_Fly` reste `[P0-FARM-INSECT-002]` |
 | 3 | Bezy | Shell overlay / nodes sur prefabs plantes |
 | 4 | Auteur | Nodes laitue / tomate ; playtest |
 | 5 | Plus tard | Sprite Atlas Unity si besoin ; pack multi-insectes ; frames Forage dédiées |
@@ -210,29 +210,15 @@ Jusque-là : import Multiple + compression Unity suffit.
 
 > Art **pas encore livré** (plus de crédit). On code contre cette grille.
 
-### Livrable abeille (MVP)
+### Livrable abeille (MVP) — **intégré 2026-07-25**
 
-- Grille **1024 × 1024**, fond transparent, frames centrées.
-- **8 frames Fly** (loop fluide ~10–15 FPS) :
-
-```text
-1 ailes hautes → 2 milieu → 3 basses → 4 milieu →
-5 ailes hautes → 6 milieu → 7 basses → 8 milieu
-```
-
-- Disposition promise :
-
-```text
-+-----+-----+-----+-----+
-| 01  | 02  | 03  | 04  |
-+-----+-----+-----+-----+
-| 05  | 06  | 07  | 08  |
-+-----+-----+-----+-----+
-```
-
-- Cellules : **256×256** chacune (4×2 sur 1024).
-- Orientation : **vers la droite** (flipX runtime).
-- Style : aligné plantes farm / low-poly stylisé du projet (pas un autre art direction).
+- Fichier : `Assets/Art/Sprites/Farm/Insects/Bee_Fly.png`
+- Strip **1020 × 132**, fond transparent (RGBA), **1 rangée × 6 frames** (pad +3 px pour blocs DXT 4×4).
+- Cellules : **170 × 132** (`Bee_Fly_01` … `Bee_Fly_06`), pivot Center, Mesh Type Full Rect.
+- Android : Override **ETC2 RGBA8** (comme sprites laitue).
+- Loop Fly ~12 FPS (ailes hautes → basses).
+- Orientation : ¾ / profil vers la droite (flipX runtime).
+- Source brute (backup) : `Assets/Art/Assets Store Dump/abeille.png` (1024×129, non rognée).
 
 ### Forage (MVP sans sheet dédié)
 
@@ -263,13 +249,13 @@ Code MVP : enum `insectKind` extensible, **seules Bee (+ Butterfly)** branchées
 
 Battement + micro-mouvement corps / pattes — **ne pas bloquer** le runtime ; remplacer les clips quand dispo.
 
-### Checklist import Unity (dès PNG)
+### Checklist import Unity
 
-- [ ] Dossier : `Assets/Art/Sprites/Farm/Insects/`
-- [ ] Texture Type : Sprite (2D et UI) · Mode **Multiple**
-- [ ] Slice grille **256×256** (4 colonnes × 2 rangées)
-- [ ] Pivot : Center · noms `Bee_Fly_01` … `Bee_Fly_08`
-- [ ] Animation Clip `Bee_Fly` (sample 10–15 FPS) + Animator Controller
+- [x] Dossier : `Assets/Art/Sprites/Farm/Insects/`
+- [x] Texture Type : Sprite (2D et UI) · Mode **Multiple**
+- [x] Slice grille **170×132** (6 colonnes × 1 rangée)
+- [x] Pivot : Center · noms `Bee_Fly_01` … `Bee_Fly_06`
+- [ ] Animation Clip `Bee_Fly` (sample ~12 FPS) + Animator Controller
 - [ ] **Pas** de Sprite Atlas tant que `[P0-FARM-INSECT-003]` non décidé
 
 ### Prompt de rappel (si regénération)
@@ -306,7 +292,7 @@ Centered in each cell, no text, no drop shadow, consistent outline.
 
 ## Suite immédiate
 
-1. **Demain** : `[P0-FARM-INSECT-001]` — coder path + FSM + hook Flowering (placeholders).  
-2. Dès crédits ChatGPT : livrer PNG abeille → `[P0-FARM-INSECT-002]` import + playtest.  
-3. **Ne pas** créer de Sprite Atlas maintenant (`[P0-FARM-INSECT-003]`).  
-4. Mettre à jour cette note avec chemins d’assets réels et noms de classes finaux.
+1. [x] Scripts path + FSM + hook Flowering (`InsectPathAnchor` / `InsectPathFollower` / `PlantGrow`).  
+2. [x] Art + Bezy P1–P3 (`Bee.prefab`, path sur `LaitueObj`).  
+3. [ ] **Playtest** `[P0-FARM-INSECT-PLAY-001]` : Flowering → abeille active ; hors Flowering → path off.  
+4. **Ne pas** créer de Sprite Atlas maintenant (`[P0-FARM-INSECT-003]`).

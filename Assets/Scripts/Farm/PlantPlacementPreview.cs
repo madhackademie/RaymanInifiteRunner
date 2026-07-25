@@ -102,10 +102,12 @@ public class PlantPlacementPreview : MonoBehaviour
         ghostInstance = Instantiate(plantPrefab);
         ghostInstance.name = $"Ghost_{plantDefinition.displayName}";
 
-        // Disable PlantGrow entirely: its Start() would reset the stage to Graine on the next frame,
-        // overriding any SetStage call made during instantiation.
+        // PlantGrow.Awake a déjà tourné pendant Instantiate (peut activer InsectPath).
+        // On coupe croissance + insectes pour le fantôme de pose uniquement.
         if (ghostInstance.TryGetComponent(out PlantGrow grow))
             grow.enabled = false;
+
+        HideGhostInsects(ghostInstance);
 
         // Directly assign the final-stage sprite so the ghost always shows the mature plant.
         ghostRenderer = ghostInstance.GetComponent<SpriteRenderer>();
@@ -113,8 +115,17 @@ public class PlantPlacementPreview : MonoBehaviour
             ghostRenderer.sprite = plantDefinition.spriteSeedling;
 
         // Disable all colliders so the ghost does not interfere with raycasts
-        foreach (Collider2D col in ghostInstance.GetComponentsInChildren<Collider2D>())
+        foreach (Collider2D col in ghostInstance.GetComponentsInChildren<Collider2D>(true))
             col.enabled = false;
+    }
+
+    private static void HideGhostInsects(GameObject ghostRoot)
+    {
+        foreach (InsectPathAnchor path in ghostRoot.GetComponentsInChildren<InsectPathAnchor>(true))
+            path.SetPathActive(false);
+
+        foreach (InsectPathFollower follower in ghostRoot.GetComponentsInChildren<InsectPathFollower>(true))
+            follower.enabled = false;
     }
 
     private void UpdateGhostPosition()

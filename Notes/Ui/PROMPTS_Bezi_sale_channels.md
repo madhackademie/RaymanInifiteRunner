@@ -98,3 +98,50 @@ Vérifier que `illustrationImage`, `bandeauButton`, `lockedOverlay`, `channelId`
 **Play mode attendu :** après une vente voisinage (test auteur), bandeau Voisinage → overlay visible + label compte à rebours ; Bandoulière/Vélo inchangés (locked).
 
 Confirmer wiring Inspector avant fin.
+
+---
+
+## Suite polish — VFX pièces / billets `[BZ-POLISH-018]`
+
+Feedback monnaie au clic / vente réussie (ParticleSystem).  
+Prompts dédiés : `Notes/Ui/PROMPTS_Bezi_sale_money_vfx.md` (Phases 1→2→3).  
+**Hors ce fichier** — ne pas fusionner avec Phases 4–5 cooldown ni Phase 6 fond opaque.
+
+---
+
+## Phase 6 — Fond opaque HUD Vente `[BZ-POLISH-017]` — **CLOS Bezy** (2026-07-26)
+
+**Bug :** ouvrir onglet Vente → bouton Home « Commencer l’aventure » visible par transparence (root Image alpha ~0.6, pas de panel contenu).
+
+**Livré :** root `(0.04,0.04,0.06) a=0.98` + `Body/ContentBackdrop` `(0.07,0.07,0.09) a=0.99` — sprites Image encore null (playtest auteur).
+
+**Réf. Shop :** même intention que `HudModalBackdrop` / `ShopScreen` (fond quasi opaque).
+
+```
+[BZ-POLISH-017] Phase 6 ONLY — opaque backdrop SaleChannels. Wait success. STOP after save.
+
+Do NOT rescan whole project. Do NOT create C# scripts. Do NOT change bandeaux / cooldown / wiring RuntimeSaleChannelsScreen fields.
+
+EDIT ONLY: Assets/Prefabs/Ui/SaleChannelsScreen.prefab
+
+1) Root SaleChannelsScreen Image (rootBackdropImage):
+   - Keep stretch full screen (anchors 0,0–1,1).
+   - Assign a solid fill sprite (UI Sprite / white square OK — NO new art).
+   - Color almost opaque dark: RGB ~ (0.04, 0.04, 0.06), alpha ≥ 0.97
+   - Raycast Target = ON (block clicks to Home behind)
+   - Layer = 5 (UI)
+
+2) Under Body, as FIRST child (behind BandeauxScrollView):
+   CREATE ContentBackdrop
+   - RectTransform stretch full Body
+   - Image: solid fill sprite, color RGB ~ (0.07, 0.07, 0.09), alpha ≥ 0.99
+   - Raycast Target = ON
+   - Layer = 5
+   - Sibling index 0 so scroll stays on top
+
+3) Do NOT lower Viewport Mask Image alpha (keep mask). Do NOT touch Header/CloseButton/bandeaux.
+
+Save. List hierarchy + Image colors/alphas. STOP. No Simulate / Play Mode.
+```
+
+**Après Bezy (Cursor optionnel) :** aligner `RuntimeSaleChannelsScreen.ApplyShellBackdrop` sur `HudModalBackdrop.ApplyRootBackground` (+ champ `contentBackdropImage` comme Shop) pour forcer l’opaque au runtime.

@@ -11,6 +11,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     private const string BandeauxContentPath = "Body/BandeauxScrollView/Viewport/BandeauxContent";
     private const string NoStockMessage = "Aucune laitue mature à vendre pour ce canal.";
     private const float CooldownRefreshIntervalSeconds = 1f;
+    private const float SaleMoneyBurstDestroyDelaySeconds = 1.5f;
 
     [Header("Popups (ScreenPopupHost)")]
     [SerializeField] private string saleSellPopupId = PopupId.SaleChannelSell;
@@ -21,6 +22,10 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     [SerializeField] private RectTransform bandeauxContainer;
     [SerializeField] private Image rootBackdropImage;
 
+    [Header("VFX vente")]
+    [Tooltip("Prefab Bezy SaleMoneyBurst (ref Simulate / Phase 3). Runtime = burst UI Overlay.")]
+    [SerializeField] private GameObject saleMoneyBurstPrefab;
+
     private Button hookedCloseButton;
     private SaleChannelBandeauView[] bandeauViews = System.Array.Empty<SaleChannelBandeauView>();
     private bool bandeauxHooked;
@@ -29,6 +34,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     private ResourceFeedbackPopupUI resourceFeedbackPopupInstance;
     private ScreenPopupHost screenPopupHost;
     private string pendingChannelId;
+    private SaleChannelBandeauView pendingBandeau;
     private Coroutine cooldownRefreshRoutine;
 
     private void Awake()
@@ -246,6 +252,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
         EnsureSellPopupWired(popup);
         pendingChannelId = channelId;
+        pendingBandeau = bandeau;
 
         if (!popup.gameObject.activeSelf)
             popup.gameObject.SetActive(true);
@@ -271,10 +278,33 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             return;
         }
 
+        PlaySaleMoneyBurst(pendingBandeau);
         ResolveSellPopup()?.Close();
         pendingChannelId = null;
+        pendingBandeau = null;
         Refresh();
         StartCooldownRefreshIfNeeded();
+    }
+
+    private void PlaySaleMoneyBurst(SaleChannelBandeauView bandeau)
+    {
+        RectTransform anchor = bandeau != null
+            ? bandeau.transform as RectTransform
+            : bandeauxContainer;
+
+        if (anchor == null)
+            return;
+
+        // Prefab PS gardé pour Phase 3 / Simulate ; Overlay HUD → burst UI.
+        if (saleMoneyBurstPrefab == null)
+        {
+            Debug.LogWarning(
+                "[RuntimeSaleChannelsScreen] saleMoneyBurstPrefab non assigné — burst UI quand même. " +
+                "Réf. Bezy : Assets/Prefabs/Ui/VFX/SaleMoneyBurst.prefab",
+                this);
+        }
+
+        SaleMoneyBurstVfx.Play(this, anchor, SaleMoneyBurstDestroyDelaySeconds);
     }
 
     private ShopItemPopupController ResolveSellPopup()

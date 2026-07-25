@@ -29,9 +29,11 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 11 | **[BZ-POLISH-011]** | LoadingScreen : layout polish barre + % (pas illustration finale) | `Bootstrap` LoadingCanvas | S | — |
 | 12 | **[BZ-POLISH-012]** | HomeScene / hub : boutons + titres lisibilité mobile | scènes hub | M | — |
 | 13 | **[BZ-POLISH-013]** | Audit layers UI global (scenes + prefabs UI) | multi | L | checklist `TODO_Bezi_audit_scene_ui_refactor` |
-| 14 | **[BZ-POLISH-014]** | Prefab plante : shell overlay insecte **placeholder** (Image + Animator idle) | prefab plante | M | art sheet **plus tard** `[CT-FARM-POLISH-002]` |
+| 14 | **[BZ-POLISH-014]** | Insecte Flowering : prefab `Bee` + `InsectPath` nodes sur `LaitueObj` | Bee + LaitueObj | M | art `Bee_Fly` prêt — `PROMPTS_Bezi_insecte_flowering.md` |
 | 15 | **[BZ-POLISH-015]** | Wallet / CurrencyBalanceUI : polish chiffres + punch +1/−1 | widgets wallet | S | — |
 | 16 | **[BZ-POLISH-016]** / **[CT-FARM-POLISH-003]** | VFX particules plantation + récolte (burst circulaire) | prefab PS + sprites planting | M | art sheet prêt |
+| ~~17~~ | ~~**[BZ-POLISH-017]**~~ | ~~HUD Vente fond opaque~~ | — | — | **CLOS Bezy** (playtest auteur) |
+| 18 | **[BZ-POLISH-018]** | VFX pièces / billets au feedback vente (canal) | `SaleMoneyBurst` PS | M | art coin/billet (sinon Ph.1–2 placeholder) |
 
 ---
 
@@ -75,9 +77,10 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 ### 13 — Audit layers
 - Passe Bezy ciblée par dossier prefab (pas rescans monolithe)
 
-### 14 — Insecte shell
-- Enfant `InsectOverlay` inactif + Animator Idle placeholder (scale breathe)  
-- Sprite final = session art séparée
+### 14 — Insecte Flowering `[BZ-POLISH-014]` — **Bezy P1–P3 CLOS** (2026-07-25)
+- Art : `Bee_Fly.png` · Prefabs : `Bee` + `LaitueObj/InsectPath`
+- Cursor scripts + hook Flowering OK
+- Suite : playtest auteur `[P0-FARM-INSECT-PLAY-001]`
 
 ### 15 — Wallet punch
 - Même pattern que PA `Spend` (trigger + clip court)
@@ -88,6 +91,18 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - **Cursor (après Bezy)** : `Play()` au plant + arrachage + récolte
 - Prompts prêts : `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md` (phases 1→2→3)
 - Hors scope Bezy : pas de régénération sprites
+
+### 17 — Fond opaque HUD Vente `[BZ-POLISH-017]` — **Bezy CLOS** (2026-07-26)
+- Root Image `(0.04, 0.04, 0.06) a=0.98` + `Body/ContentBackdrop` `(0.07, 0.07, 0.09) a=0.99`, layer 5, sibling 0
+- **Note review :** sprites Image encore `null` — OK Editor souvent ; si Home encore visible en build → Cursor `HudModalBackdrop` (white sprite runtime)
+- Suite : playtest auteur HUD → Vente
+
+### 18 — VFX monnaie vente `[BZ-POLISH-018]`
+- **Feel** : burst pièces + billets au feedback vente (canal Voisinage)
+- **Bezy** : prefab `Assets/Prefabs/Ui/VFX/SaleMoneyBurst.prefab` (`CoinBurst` + `BillBurst`), Play On Awake OFF
+- **Art (auteur)** : `Assets/Art/Sprites/VFX/Sale/CoinParticle.png` + `BillParticle.png` — **absent du repo** ; Ph.1–2 OK en couleur placeholder ; Ph.3 après import
+- **Cursor (après Bezy)** : `Play()` après vente réussie (recommandé) près du bandeau — pas au scope Bezy
+- Prompts prêts : `Notes/Ui/PROMPTS_Bezi_sale_money_vfx.md` (phases 1→2→3)
 
 ---
 

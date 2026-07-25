@@ -48,6 +48,9 @@ public class PlantGrow : MonoBehaviour
     [SerializeField] private PlantDefinition plantDefinition;
     [SerializeField] private GrowthStage initialStage = GrowthStage.Graine;
 
+    [Tooltip("Optionnel : path insecte Flowering. Si vide, recherche enfant InsectPathAnchor.")]
+    [SerializeField] private InsectPathAnchor insectPath;
+
     private SpriteRenderer spriteRenderer;
     private GrowthStage currentStage;
     private float stageTimer;
@@ -56,6 +59,7 @@ public class PlantGrow : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        CacheInsectPath();
 
         // Initialisation du stade ici (et pas dans Start) : sinon, après Instantiate,
         // Unity appelle Start sur PlantGrow *après* le Start de BiofiltreManager, ce qui
@@ -115,6 +119,42 @@ public class PlantGrow : MonoBehaviour
         stageTimer = 0f;
         currentStageDuration = plantDefinition.GetDuration(stage);
         WarnIfStageHasZeroDurationButNotTerminal(stage);
+        SyncInsectPathForStage(stage);
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("Debug/Force Flowering (insecte)")]
+    private void DebugForceFlowering()
+    {
+        SetStage(GrowthStage.Flowering);
+    }
+#endif
+
+    private void CacheInsectPath()
+    {
+        if (insectPath == null)
+            insectPath = GetComponentInChildren<InsectPathAnchor>(true);
+    }
+
+    private void SyncInsectPathForStage(GrowthStage stage)
+    {
+        CacheInsectPath();
+        if (insectPath == null)
+            return;
+
+        bool showInsect = stage == GrowthStage.Flowering
+            && plantDefinition != null
+            && plantDefinition.InsectKind != InsectKind.None;
+
+        if (showInsect && insectPath.InsectFollower != null)
+        {
+            insectPath.InsectFollower.ApplyDefinitionOverrides(
+                plantDefinition.InsectMoveSpeed,
+                plantDefinition.ForageDurationMin,
+                plantDefinition.ForageDurationMax);
+        }
+
+        insectPath.SetPathActive(showInsect);
     }
 
     /// <summary>
