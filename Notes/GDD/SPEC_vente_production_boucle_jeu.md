@@ -333,6 +333,18 @@ Même logique **1–5 étoiles**, récompenses adaptées au tier (capacité kg, 
 
 - [ ] Modificateurs par canal (ex. vendeur → bonus vélo, acheteur inchangé) — après import notes tablette.
 
+### 5.8 Affichage / feedback monnaie (HUD vs local) — **ouvert 2026-07-27**
+
+> Détail : `Notes/GDD/NOTE_affichage_monnaie_hud.md`.  
+> Contexte : `[BZ-POLISH-015]` park UX — punch sur wallet inventaire / shop Header **invisible au delta**.
+
+- [ ] Le solde doit-il être **toujours visible** (chip sur `NavigationHUD`) ?
+- [ ] Ou seulement **au moment de la transaction** (shop / vente) — toast / delta / burst ?
+- [ ] Le wallet inventaire reste-t-il **consultation seule** (pas de feedback d’action) ?
+- [ ] Shop Header `WalletBalance` : réparer la **lisibilité** du solde, ou abandonner au profit HUD / toast ?
+
+**Interim :** ne pas investir polish Bezy wallet ; vente garde `SaleMoneyBurst` ; prioriser polish sur surfaces déjà visibles (ex. HUD PA `[BZ-POLISH-002]`).
+
 ---
 
 1. **`ISaleChannelService`** (ou équivalent) — un contrat par canal :

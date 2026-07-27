@@ -11,8 +11,9 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
-> **Priorité prochaine session :** **[BZ-POLISH-002]** HUD PA suite (Refuse shake + fill conso + tooltip fade).  
-> **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-fix · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
+> **Priorité polish Bezy :** **[BZ-POLISH-002]** HUD PA suite (Refuse shake + fill conso + tooltip fade) — surface **visible**.  
+> **Park UX 2026-07-27 :** `[BZ-POLISH-015]` Wallet punch Ph.1–3 livré mais **invisible au delta** — attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`). Assets/hooks conservés.  
+> **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
 
 | # | ID | Job Bezy | Prefab / assets | Effort | Prérequis |
 |---|-----|----------|-----------------|--------|-----------|
@@ -30,7 +31,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 12 | **[BZ-POLISH-012]** | HomeScene / hub : boutons + titres lisibilité mobile | scènes hub | M | — |
 | 13 | **[BZ-POLISH-013]** | Audit layers UI global (scenes + prefabs UI) | multi | L | checklist `TODO_Bezi_audit_scene_ui_refactor` |
 | 14 | **[BZ-POLISH-014]** | Insecte Flowering : prefab `Bee` + `InsectPath` nodes sur `LaitueObj` | Bee + LaitueObj | M | art `Bee_Fly` prêt — `PROMPTS_Bezi_insecte_flowering.md` |
-| 15 | **[BZ-POLISH-015]** | Wallet / CurrencyBalanceUI : polish chiffres + punch +1/−1 | widgets wallet | S | — |
+| ~~15~~ | ~~**[BZ-POLISH-015]**~~ | ~~Wallet punch +1/−1~~ | — | — | **PARK UX** — Bezy OK, surface invisible au delta |
 | 16 | **[BZ-POLISH-016]** / **[CT-FARM-POLISH-003]** | VFX particules plantation + récolte (burst circulaire) | prefab PS + sprites planting | M | art sheet prêt |
 | ~~17~~ | ~~**[BZ-POLISH-017]**~~ | ~~HUD Vente fond opaque~~ | — | — | **CLOS Bezy** (playtest auteur) |
 | 18 | **[BZ-POLISH-018]** | VFX pièces / billets au feedback vente (canal) | `SaleMoneyBurst` PS | M | art coin/billet (sinon Ph.1–2 placeholder) |
@@ -82,8 +83,11 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - Cursor scripts + hook Flowering OK
 - Suite : playtest auteur `[P0-FARM-INSECT-PLAY-001]`
 
-### 15 — Wallet punch
-- Même pattern que PA `Spend` (trigger + clip court)
+### 15 — Wallet punch `[BZ-POLISH-015]` — **PARK UX** (2026-07-27)
+- Bezy Ph.1–3 OK, hooks Cursor OK — **mais widgets hors moment de jeu** (inventaire sans gain ; shop wallet non perçu / popup ferme après débit).
+- **Ne plus investir** Bezy/Cursor. Assets `WalletBalance*` / `WalletWidget*` + triggers `Gain`/`Spend` **conservés**.
+- Reprise après GDD §5.8 / `Notes/GDD/NOTE_affichage_monnaie_hud.md` (HUD chip vs feedback local vs solde shop lisible).
+- Vente : garder `SaleMoneyBurst` (déjà feedback local utile).
 
 ### 16 — VFX plantation / récolte `[BZ-POLISH-016]` / `[CT-FARM-POLISH-003]`
 - **Art (déjà livré)** : `PlantationDirtParticules.png` (`_0`…`_10`) + `wurmParticleFarmPlantation.png` (`_0`)

@@ -39,7 +39,8 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/points-actions`** — V0 PA + polish Bezy + VFX planting (session 2026-07-25). Playtests → `Notes/Todo_playtest.md`.
+> Branche courante : **`main`**.  
+> Docs park monnaie / file Bezy à jour (code wallet punch **jeté**). Prochaine Bezy visible : `[BZ-POLISH-002]` HUD PA. GDD ouvert §5.8 / `NOTE_affichage_monnaie_hud.md`.
 
 ### Priorité immédiate — playtest VFX branché
 
@@ -59,11 +60,13 @@ Convention d'IDs :
 
 ### Ensuite — file Bezy polish (semaine)
 
-> Source : `Notes/Ui/TODO_Bezy_polish_semaine.md`
+> Source : `Notes/Ui/TODO_Bezy_polish_semaine.md`  
+> **Prochain job Bezy (surface visible) :** **[BZ-POLISH-002]** HUD PA — ne pas relancer wallet punch (`[BZ-POLISH-015]` park ; GDD §5.8).
 
-1. [ ] **[BZ-POLISH-002]** HUD PA — suite polish (Refuse pulse, fill conso, tooltip fade)
-2. [x] **[BZ-POLISH-017]** HUD Vente — fond opaque Bezy Ph.6 **OK** (2026-07-26) — playtest auteur : Home ne doit plus transparaître
-3. [ ] Suite file #5→#16 (VFX = P3 après playtest P2)
+1. [ ] **[BZ-POLISH-002]** HUD PA — suite polish (Refuse pulse, fill conso, tooltip fade) — **priorité Bezy**
+2. [~] **[BZ-POLISH-015]** Wallet punch +1/−1 — Bezy Ph.1–3 OK — **PARK UX** (surface invisible au delta ; attendre GDD §5.8 / `NOTE_affichage_monnaie_hud.md`)
+3. [x] **[BZ-POLISH-017]** HUD Vente — fond opaque Bezy Ph.6 **OK** (2026-07-26) — playtest auteur : Home ne doit plus transparaître
+4. [ ] Suite file #5→#16 (VFX = P3 après playtest P2)
 
 **Cursor (hors Bezy, quand utile) :**
 
