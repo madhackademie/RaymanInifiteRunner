@@ -39,8 +39,9 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`main`**.  
-> Docs park monnaie / file Bezy à jour (code wallet punch **jeté**). Prochaine Bezy visible : `[BZ-POLISH-002]` HUD PA. GDD ouvert §5.8 / `NOTE_affichage_monnaie_hud.md`.
+> Branche courante : **`polish/ui-bezy`** (depuis `main` @ `4f2d1e8` docs park monnaie).  
+> Sandbox polish Bezy / UI — **ne pas merger** tant que playtest auteur OK. Rollback : `git checkout main`.  
+> Prochain job Bezy visible : **`[BZ-POLISH-002]` HUD PA**. Wallet punch `[BZ-POLISH-015]` = park GDD §5.8 (code jeté, docs gardées).
 
 ### Priorité immédiate — playtest VFX branché
 
