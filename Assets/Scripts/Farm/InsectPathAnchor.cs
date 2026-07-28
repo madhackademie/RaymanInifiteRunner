@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Path local sous une plante : enfants <c>Node_*</c> drag & drop en Scene.
-/// Chaque node = arrêt (butinage) puis vol vers le suivant.
+/// Path local sous une plante : enfants <c>Node_*</c> placés en Scene.
+/// Chaque node = arrêt (butinage) puis vol vers le suivant (sens fixé au RestartCircuit).
 /// </summary>
 public class InsectPathAnchor : MonoBehaviour
 {
@@ -15,21 +15,24 @@ public class InsectPathAnchor : MonoBehaviour
 
     [SerializeField] private Transform[] nodes = System.Array.Empty<Transform>();
 
-    [Tooltip("Instance insecte (Bee) sous ce path, ou assignée manuellement.")]
+    [Tooltip("Instance insecte sous ce path, ou assignée manuellement.")]
     [SerializeField] private InsectPathFollower insectFollower;
 
     [Header("Gizmos")]
     [SerializeField] private Color gizmoColor = new Color(1f, 0.85f, 0.2f, 0.9f);
     [SerializeField] private float gizmoRadius = 0.08f;
 
-    /// <summary>Nodes ordonnés du circuit (MVP : boucle 0→1→…→0).</summary>
+    /// <summary>Nodes ordonnés du circuit.</summary>
     public IReadOnlyList<Transform> Nodes => nodes;
 
     /// <summary>Follower insecte branché sur ce path.</summary>
     public InsectPathFollower InsectFollower => insectFollower;
 
-    /// <summary>Active/désactive le path + insecte (Flowering uniquement).</summary>
-    public void SetPathActive(bool active)
+    /// <summary>
+    /// Active/désactive le path + insecte.
+    /// Si <paramref name="visualKind"/> est Bee/Butterfly, applique le controller avant RestartCircuit.
+    /// </summary>
+    public void SetPathActive(bool active, InsectKind visualKind = InsectKind.Bee)
     {
         gameObject.SetActive(active);
 
@@ -37,6 +40,8 @@ public class InsectPathAnchor : MonoBehaviour
             return;
 
         insectFollower.BindPath(this);
+        if (visualKind == InsectKind.Bee || visualKind == InsectKind.Butterfly)
+            insectFollower.ApplyVisualKind(visualKind);
         insectFollower.RestartCircuit();
     }
 

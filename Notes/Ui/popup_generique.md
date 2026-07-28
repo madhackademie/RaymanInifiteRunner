@@ -57,6 +57,16 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 - Le popup **feedback ressources** (fonds insuffisants, monnaie non configurée, inventaire plein, etc.) passe par le même host + **`PopupId.ShopResourceFeedback`** + prefab **`ResourceFeedbackPopup`** (même liste de bindings ; pas d’instance embarquée dans **`ShopScreen`**).
 - **Mode strict** : pas de fallback legacy ; binding manquant → warning + pas d’ouverture (comportement attendu).
 
+### 2.4b Inventaire — détail item / drop (mode strict)
+
+- **`PopupId.InventoryItemDetail`** (`inventory.item.detail`) : détail item + quantité + drop + confirmation.
+- Réutilise le prefab **`ShopItemPopup`** (même `ShopItemPopupController` / `ShopItemPopupView`) en mode **`ShopItemPopupFlowMode.Drop`**.
+- Ouverture : clic slot dans **`InventoryUI`** → `ScreenPopupHost` (bindings `UIManager.runtimePopupBindings`, scène **`NavigationHUD`**, `screenId = Inventory`).
+- UX Drop : icône, nom, **`ItemDefinition.Description`**, +/− / saisie / **Max**, CTA **Jeter** ; wallet masqué ; surpopup **`ConfirmOverlay`** (« Voulez-vous vraiment jeter ces ressources ? ») puis anim poubelle (**trigger `DropToTrash`**, si `dropTrashRoot` câblé par Bezy) puis `PlayerInventory.TryRemove`.
+- Ouverture panel : bool Animator **`IsOpen`** (clips Open/Close existants — polish Bezy Phase 4).
+- **Bezy** : binding + anims (`Notes/Ui/PROMPTS_Bezi_inventory_item_drop.md` Phases 1 / 4 / 5). Binding manquant → warning + pas d’ouverture.
+- Monnaie (`ItemInventoryBehavior.Currency`) : hors grille inventaire (wallet) — non droppable via ce flux.
+
 ### 2.5 Ferme FirstLvl — sélection de graine + popup plante (mode strict lazy)
 
 - **`ScreenId.FirstLvlFarm`** : clé logique pour les bindings **sans** prefab d’écran UIManager (scène gameplay séparée).
@@ -127,7 +137,8 @@ Les points ci-dessous complètent le **§3** (flux achat) et l’intention **§1
 ## 5. Fichiers utiles (code)
 
 - `Assets/Scripts/UI/Shop/RuntimeShopScreen.cs` — écran Shop runtime, grille catalogue, `HudModalBackdrop`.
-- `Assets/Scripts/UI/Shop/ShopItemPopupController.cs` — popup détail, quantité, demande d’achat.
+- `Assets/Scripts/UI/Shop/ShopItemPopupController.cs` — popup détail, quantité, achat / vente / **drop**.
+- `Assets/Scripts/UI/Inventory/InventoryUI.cs` — grille inventaire + ouverture popup drop (`PopupId.InventoryItemDetail`).
 - `Assets/Scripts/Inventory/InventoryCurrencyAccount.cs` — solde, crédit, débit et achat atomique.
 - `Assets/Scripts/Inventory/ItemDatabase.cs` — `PrimaryCurrency`.
 - `Assets/Scripts/UI/ResourceFeedbackPopupUI.cs` — popup générique de feedback ressources insuffisantes, réutilisable hors shop.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Contrôle l'ordre de progression d'une plante à travers ses stades de croissance.
+/// Contrôle l'ordre de progression d'une plante à travers ses différents stades de croissance.
 /// Leafy   : Growing → Mature (récolte) → Flowering → Seedling  (laitue, épinard…)
 /// Fruiting: Growing → Flowering → Mature (récolte) → Seedling  (tomate, poivron…)
 /// </summary>
@@ -113,7 +113,7 @@ public class PlantDefinition : ScriptableObject
     }
 
     [Header("Insecte Flowering")]
-    [Tooltip("None = pas d'insecte. Bee / Butterfly = overlay path pendant Flowering.")]
+    [Tooltip("None = pas d'insecte. Bee / Butterfly = espèce fixe. RandomBeeOrButterfly = 50/50 au démarrage Flowering.")]
     [SerializeField] private InsectKind insectKind = InsectKind.None;
 
     [Tooltip("Vitesse de vol monde (0 = défaut script ~0.8).")]
@@ -125,8 +125,22 @@ public class PlantDefinition : ScriptableObject
     [Tooltip("Durée max butinage (0 = défaut script).")]
     [SerializeField] private float forageDurationMax;
 
-    /// <summary>Espèce d'insecte au stade Flowering.</summary>
+    /// <summary>Config Inspector (peut être RandomBeeOrButterfly).</summary>
     public InsectKind InsectKind => insectKind;
+
+    /// <summary>
+    /// Espèce runtime pour ce cycle Flowering : résout RandomBeeOrButterfly en Bee ou Butterfly.
+    /// </summary>
+    public InsectKind ResolveRuntimeInsectKind()
+    {
+        if (insectKind == InsectKind.None)
+            return InsectKind.None;
+
+        if (insectKind == InsectKind.RandomBeeOrButterfly)
+            return UnityEngine.Random.value < 0.5f ? InsectKind.Bee : InsectKind.Butterfly;
+
+        return insectKind;
+    }
 
     /// <summary>Vitesse vol override (0 = défaut follower).</summary>
     public float InsectMoveSpeed => insectMoveSpeed;

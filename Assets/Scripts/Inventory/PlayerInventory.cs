@@ -322,6 +322,31 @@ public class PlayerInventory : MonoBehaviour
         return remaining > 0 ? InventoryResult.Partial : InventoryResult.Success;
     }
 
+    /// <summary>
+    /// Retire une quantité uniquement depuis le slot à <paramref name="slotIndex"/> (stack sélectionné).
+    /// </summary>
+    public InventoryResult TryRemoveFromSlot(int slotIndex, int quantity)
+    {
+        if (slotIndex < 0 || slotIndex >= slots.Count)
+            return InventoryResult.InvalidItem;
+
+        InventorySlot slot = slots[slotIndex];
+        if (slot == null || slot.IsEmpty)
+            return InventoryResult.Full;
+
+        if (quantity <= 0)
+            return InventoryResult.Success;
+
+        int removed = slot.Remove(quantity);
+        if (removed <= 0)
+            return InventoryResult.Full;
+
+        OnInventoryChanged?.Invoke();
+        SaveToDisk();
+
+        return removed >= quantity ? InventoryResult.Success : InventoryResult.Partial;
+    }
+
     /// <summary>Returns the total quantity of the given item across all slots.</summary>
     public int Count(ItemDefinition item)
     {

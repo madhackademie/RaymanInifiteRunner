@@ -129,6 +129,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InsectPathFollower
   spriteRenderer: {fileID: 8257937315939371725}
   animator: {fileID: 5162006610337915656}
+  beeController: {fileID: 9100000, guid: c819e43532f2f7c4ba5c537a3d414c58, type: 2}
+  butterflyController: {fileID: 9100000, guid: 9e8d7c6b5a4938271605f4e3d2c1b0a9, type: 2}
   moveSpeed: 0.8
   forageDurationMin: 0.5
   forageDurationMax: 1.5

@@ -4,7 +4,7 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// Manages a plant's growth state and updates its sprite based on PlantDefinition.
+/// Manages a plant's growth state and updates its sprite from PlantDefinition.
 /// Automatically advances to the next stage after the configured duration.
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
@@ -146,7 +146,14 @@ public class PlantGrow : MonoBehaviour
             && plantDefinition != null
             && plantDefinition.InsectKind != InsectKind.None;
 
-        if (showInsect && insectPath.InsectFollower != null)
+        if (!showInsect)
+        {
+            insectPath.SetPathActive(false);
+            return;
+        }
+
+        InsectKind runtimeKind = plantDefinition.ResolveRuntimeInsectKind();
+        if (insectPath.InsectFollower != null)
         {
             insectPath.InsectFollower.ApplyDefinitionOverrides(
                 plantDefinition.InsectMoveSpeed,
@@ -154,7 +161,7 @@ public class PlantGrow : MonoBehaviour
                 plantDefinition.ForageDurationMax);
         }
 
-        insectPath.SetPathActive(showInsect);
+        insectPath.SetPathActive(true, runtimeKind);
     }
 
     /// <summary>

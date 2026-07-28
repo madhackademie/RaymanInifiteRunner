@@ -37,10 +37,11 @@ public sealed class ShopItemPopupData
 }
 
 /// <summary>
-/// Sens de la transaction affichée dans la popup item (shop achat vs vente canal).
+/// Sens de la transaction affichée dans la popup item (achat, vente canal, drop inventaire).
 /// </summary>
 public enum ShopItemPopupFlowMode
 {
     Purchase,
-    Sell
+    Sell,
+    Drop
 }

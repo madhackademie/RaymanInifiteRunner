@@ -1,8 +1,8 @@
 # Spec — Insecte au stade Flowering (abeille / papillon)
 
 **Ticket** : `[CT-FARM-POLISH-002]` · priorités session `[P0-FARM-INSECT-001..003]`  
-**Statut** : art MVP intégré — sheet Fly 6 frames prêt ; scripts / Bezy path à enchaîner  
-**Date** : 2026-07-25 (maj art `Bee_Fly`)  
+**Statut** : runtime MVP **codé** — rand espèce + sens au start Flowering ; art Bee + Butterfly prêts  
+**Date** : 2026-07-28 (rand Bee/Butterfly + sens path)  
 **Liens** : `PlantGrow` / `PlantDefinition` · `Notes/Todo_project.md` · shell Bezy `[BZ-POLISH-014]`  
 **Réfs qualité VFX/critters** : Farm Together, Dinkum, Coral Island → `Notes/References/REFERENCES_jeux_inspiration.md` § E
 
@@ -79,17 +79,26 @@ Plant prefab (monde)
         └────────────────┴─────────────────────────┘
 ```
 
-1. **FlyAlongEdge** — clip `Fly` (battement), déplacement le long de l’arête (lerp ou léger bruit Y).  
+1. **FlyAlongEdge** — clip `Fly` (battement), déplacement le long de l’arête.  
 2. **ArriveNode** — court / instantané ; mémorise le node courant.  
-3. **Forage** — clip `Forage` (ailes plus lentes + bob léger), durée ~0.5–2 s, **pas de flip**.  
-4. **PickNextEdge** — voisin aléatoire ou suivant dans la boucle → retour Fly.
+3. **Forage** — clip `Forage` (même sheet, vitesse réduite), durée ~0.5–2 s, **pas de flip**.  
+4. **PickNextEdge** — `current + pathDirection` (modulo N) → retour Fly.
+
+### Rand au démarrage Flowering uniquement
+
+À `SetPathActive(true)` / `RestartCircuit` :
+
+1. **Espèce** : si `PlantDefinition.insectKind == RandomBeeOrButterfly` → 50 % Bee / 50 % Butterfly (sinon espèce fixe).  
+2. **Sens** : 50 % `pathDirection = +1` (0→1→2…) / 50 % `pathDirection = -1` (0→N-1→…).
+
+Espèce et sens **gardés** jusqu’à la fin du stade (pas de re-roll à chaque node).
 
 Pas de pathfinding global : graphe **local** 2–6 nodes sur le prefab suffit.
 
 ### Graphe de path (configurable)
 
-**MVP** : boucle ordonnée `0 → 1 → 2 → … → 0`.  
-**V1** : liste d’arêtes `(fromIndex, toIndex)` pour éviter des traversées absurdes.
+**MVP** : liste ordonnée `nodes[]` + direction ±1.  
+**V1** : liste d’arêtes `(fromIndex, toIndex)` si besoin.
 
 Exemple placement :
 
@@ -123,34 +132,34 @@ Pendant `Forage` : ne pas changer `flipX` (reste dans le sens d’arrivée).
 ### Sur `PlantDefinition` (proposition)
 
 ```text
-insectKind          : None | Bee | Butterfly
+insectKind          : None | Bee | Butterfly | RandomBeeOrButterfly
 insectMoveSpeed     : float (optionnel, défaut script)
 forageDurationMin   : float
 forageDurationMax   : float
 ```
 
-*(Noms exacts à figer à l’implémentation Cursor.)*
+`ResolveRuntimeInsectKind()` tire Bee/Butterfly si Random. Laitue asset : **RandomBeeOrButterfly**.
 
-### Sur le prefab plante — composant type `InsectPathAnchor`
+*(Noms exacts figés dans le code.)*
+
+### Sur le prefab plante — `InsectPathAnchor`
 
 ```text
 nodes[]             : Transform[]
-useExplicitEdges    : bool
-edges[]             : (from, to)   // si true
-insectRoot          : Transform    // parent spawn / instance
+insectFollower      : InsectPathFollower
 ```
 
-### Sur le prefab insecte — composant type `InsectPathFollower`
+### Sur le prefab insecte — `InsectPathFollower`
 
 ```text
 spriteRenderer
 animator
-moveSpeed
-forageDurationRange
-flipDeadZone
+beeController          : RuntimeAnimatorController (Bee)
+butterflyController    : RuntimeAnimatorController (Butterfly)
+moveSpeed / forage / flipDeadZone
 ```
 
-Triggers / états Animator : `Fly`, `Forage` (bool ou crossfade states).
+États Animator : `Fly`, `Forage` (même clip Fly à vitesse réduite pour Forage).
 
 ---
 
@@ -198,8 +207,8 @@ Jusque-là : import Multiple + compression Unity suffit.
 | # | Qui | Livrable |
 |---|-----|----------|
 | 0 | Cursor **demain** | Scripts path + FSM + hook Flowering (**placeholders** OK) `[P0-FARM-INSECT-001]` |
-| 1 | Art (ChatGPT + crop) | Sheet abeille **1020×132** / **6 frames Fly** — `Assets/Art/Sprites/Farm/Insects/Bee_Fly.png` |
-| 2 | Unity import | Slice Multiple 170×132, pivots centre — **fait** ; clip Animator `Bee_Fly` reste `[P0-FARM-INSECT-002]` |
+| 1 | Art (ChatGPT + crop) | `Bee_Fly.png` + `Butterfly_Fly.png` — strips **1020×132** / 6 frames |
+| 2 | Unity import | Slice Multiple 170×132 — **fait** (abeille + papillon) ; clips Animator restent `[P0-FARM-INSECT-002]` |
 | 3 | Bezy | Shell overlay / nodes sur prefabs plantes |
 | 4 | Auteur | Nodes laitue / tomate ; playtest |
 | 5 | Plus tard | Sprite Atlas Unity si besoin ; pack multi-insectes ; frames Forage dédiées |
@@ -219,6 +228,14 @@ Jusque-là : import Multiple + compression Unity suffit.
 - Loop Fly ~12 FPS (ailes hautes → basses).
 - Orientation : ¾ / profil vers la droite (flipX runtime).
 - Source brute (backup) : `Assets/Art/Assets Store Dump/abeille.png` (1024×129, non rognée).
+
+### Livrable papillon — **intégré 2026-07-28**
+
+- Fichier : `Assets/Art/Sprites/Farm/Insects/Butterfly_Fly.png`
+- Même format que l’abeille : strip **1020 × 132**, RGBA, **6 frames** `Butterfly_Fly_01` … `_06`, cellules **170 × 132**, pivot Center.
+- Échelle uniforme entre frames (évite le “pop” taille ailes ouvertes/fermées).
+- Orientation : ¾ vers la droite (flipX runtime).
+- Source brute (backup) : `Assets/Art/Assets Store Dump/animPapillon.png` (1979×795).
 
 ### Forage (MVP sans sheet dédié)
 
@@ -253,10 +270,11 @@ Battement + micro-mouvement corps / pattes — **ne pas bloquer** le runtime ; r
 
 - [x] Dossier : `Assets/Art/Sprites/Farm/Insects/`
 - [x] Texture Type : Sprite (2D et UI) · Mode **Multiple**
-- [x] Slice grille **170×132** (6 colonnes × 1 rangée)
-- [x] Pivot : Center · noms `Bee_Fly_01` … `Bee_Fly_06`
-- [ ] Animation Clip `Bee_Fly` (sample ~12 FPS) + Animator Controller
+- [x] Slice grille **170×132** (6 colonnes × 1 rangée) — `Bee_Fly_*` + `Butterfly_Fly_*`
+- [x] Pivot : Center
+- [x] Animation Clips `Bee_Fly` / `Butterfly_Fly` (~12 FPS) + Animator Controllers
 - [ ] **Pas** de Sprite Atlas tant que `[P0-FARM-INSECT-003]` non décidé
+- [x] Rand espèce + sens au `RestartCircuit` / `ResolveRuntimeInsectKind`
 
 ### Prompt de rappel (si regénération)
 

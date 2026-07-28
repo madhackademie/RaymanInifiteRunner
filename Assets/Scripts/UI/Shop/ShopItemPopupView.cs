@@ -12,11 +12,14 @@ public sealed class ShopItemPopupView : MonoBehaviour
 {
     private const string DefaultConfirmMessage = "Confirmer l'achat ?";
     private const string DefaultSellConfirmMessage = "Confirmer la vente ?";
+    private const string DefaultDropConfirmMessage = "Voulez-vous vraiment jeter ces ressources ?";
     private const string IsOpenAnimatorBool = "IsOpen";
+    private const string DropToTrashTrigger = "DropToTrash";
     private const string BackdropChildName = "Backdrop";
     private const float DefaultBackdropFadeDuration = 0.2f;
     private const float DefaultCloseAnimDuration = 0.18f;
     private const float DefaultBackdropTargetAlpha = 0.75f;
+    private const float DefaultDropTrashDuration = 0.85f;
 
     [Header("Root")]
     [SerializeField] private GameObject root;
@@ -62,8 +65,17 @@ public sealed class ShopItemPopupView : MonoBehaviour
     [SerializeField] private Button confirmPurchaseButton;
     [SerializeField] private Button confirmCancelButton;
 
+    [Header("Drop trash (optionnel — inventaire / Bezy)")]
+    [Tooltip("Racine visuelle poubelle + icône volante. Inactive hors anim drop.")]
+    [SerializeField] private GameObject dropTrashRoot;
+    [SerializeField] private Image dropFlyingIcon;
+    [Tooltip("Animator avec trigger DropToTrash (clip icône → poubelle). Si vide, réutilise animator carte.")]
+    [SerializeField] private Animator dropTrashAnimator;
+    [SerializeField] private float dropTrashDuration = DefaultDropTrashDuration;
+
     private bool suppressQuantityInputEvent;
     private Coroutine transitionRoutine;
+    private Coroutine dropTrashRoutine;
     private bool isVisible;
     private bool isTransitioning;
     private Color backdropBaseColor = Color.black;
@@ -79,6 +91,9 @@ public sealed class ShopItemPopupView : MonoBehaviour
 
     public bool HasConfirmOverlay => confirmOverlayRoot != null;
 
+    /// <summary>True si Bezy a câblé une racine poubelle (anim drop possible).</summary>
+    public bool HasDropTrashAnimation => dropTrashRoot != null;
+
     private void Awake()
     {
         ResolveTransitionRefs();
@@ -89,6 +104,7 @@ public sealed class ShopItemPopupView : MonoBehaviour
         ApplyCanvasGroupInteractable(false);
         SetBackdropAlpha(0f);
         SetAnimatorOpen(false);
+        ResetDropTrashVisuals();
     }
 
     private void OnDestroy()
@@ -96,6 +112,7 @@ public sealed class ShopItemPopupView : MonoBehaviour
         UnbindButtons();
         UnbindQuantityInput();
         StopTransitionRoutine();
+        StopDropTrashRoutine();
     }
 
     public void SetItemVisuals(ShopItemPopupData data)
@@ -131,10 +148,19 @@ public sealed class ShopItemPopupView : MonoBehaviour
         }
     }
 
-    public void SetTotalPrice(int totalPrice, ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase)
+    public void SetTotalPrice(
+        int totalPrice,
+        ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase,
+        int quantity = 0)
     {
         if (confirmButtonText == null)
             return;
+
+        if (flowMode == ShopItemPopupFlowMode.Drop)
+        {
+            confirmButtonText.text = $"Jeter x{Mathf.Max(1, quantity)}";
+            return;
+        }
 
         int value = Mathf.Max(0, totalPrice);
         confirmButtonText.text = flowMode == ShopItemPopupFlowMode.Sell
@@ -147,9 +173,20 @@ public sealed class ShopItemPopupView : MonoBehaviour
         if (confirmMessageText == null)
             return;
 
-        confirmMessageText.text = flowMode == ShopItemPopupFlowMode.Sell
-            ? DefaultSellConfirmMessage
-            : DefaultConfirmMessage;
+        confirmMessageText.text = flowMode switch
+        {
+            ShopItemPopupFlowMode.Sell => DefaultSellConfirmMessage,
+            ShopItemPopupFlowMode.Drop => DefaultDropConfirmMessage,
+            _ => DefaultConfirmMessage
+        };
+    }
+
+    public void SetWalletVisible(bool visible)
+    {
+        ResolveWalletReferences();
+
+        if (walletRoot != null)
+            walletRoot.SetActive(visible);
     }
 
     public void SetConfirmButtonLabel(string label)
@@ -167,7 +204,10 @@ public sealed class ShopItemPopupView : MonoBehaviour
             maxButton.interactable = interactable;
     }
 
-    public void ShowConfirmOverlay(int totalPrice, ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase)
+    public void ShowConfirmOverlay(
+        int totalPrice,
+        ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase,
+        int quantity = 0)
     {
         if (confirmOverlayRoot == null)
             return;
@@ -175,9 +215,17 @@ public sealed class ShopItemPopupView : MonoBehaviour
         SetConfirmMessageForFlow(flowMode);
 
         if (confirmTotalText != null)
-            confirmTotalText.text = $"Total : {Mathf.Max(0, totalPrice)}";
+        {
+            confirmTotalText.text = flowMode == ShopItemPopupFlowMode.Drop
+                ? $"Quantité : {Mathf.Max(1, quantity)}"
+                : $"Total : {Mathf.Max(0, totalPrice)}";
+        }
 
-        RefreshWallet();
+        if (flowMode == ShopItemPopupFlowMode.Drop)
+            SetWalletVisible(false);
+        else
+            RefreshWallet();
+
         confirmOverlayRoot.SetActive(true);
         confirmOverlayRoot.transform.SetAsLastSibling();
     }
@@ -186,6 +234,46 @@ public sealed class ShopItemPopupView : MonoBehaviour
     {
         if (confirmOverlayRoot != null)
             confirmOverlayRoot.SetActive(false);
+    }
+
+    /// <summary>
+    /// Joue l'anim « item → poubelle » (Bezy : trigger <c>DropToTrash</c>), puis <paramref name="onComplete"/>.
+    /// Sans racine câblée : callback immédiat.
+    /// </summary>
+    public void PlayDropTrashAnimation(Sprite icon, Action onComplete)
+    {
+        StopDropTrashRoutine();
+
+        if (!HasDropTrashAnimation)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        if (dropFlyingIcon != null)
+        {
+            dropFlyingIcon.sprite = icon;
+            dropFlyingIcon.enabled = icon != null;
+        }
+
+        dropTrashRoot.SetActive(true);
+
+        Animator trashAnimator = dropTrashAnimator != null ? dropTrashAnimator : animator;
+        if (trashAnimator != null)
+            trashAnimator.SetTrigger(DropToTrashTrigger);
+
+        dropTrashRoutine = StartCoroutine(DropTrashRoutine(onComplete));
+    }
+
+    public void ResetDropTrashVisuals()
+    {
+        StopDropTrashRoutine();
+
+        if (dropTrashRoot != null)
+            dropTrashRoot.SetActive(false);
+
+        if (dropFlyingIcon != null)
+            dropFlyingIcon.enabled = false;
     }
 
     public void RefreshWallet()
@@ -204,6 +292,7 @@ public sealed class ShopItemPopupView : MonoBehaviour
             return;
 
         HideConfirmOverlay();
+        ResetDropTrashVisuals();
         RefreshWallet();
         EnsureContentActive();
 
@@ -222,6 +311,7 @@ public sealed class ShopItemPopupView : MonoBehaviour
             return;
 
         HideConfirmOverlay();
+        ResetDropTrashVisuals();
         isVisible = false;
         ApplyCanvasGroupInteractable(false);
         SetAnimatorOpen(false);
@@ -388,6 +478,29 @@ public sealed class ShopItemPopupView : MonoBehaviour
         StopCoroutine(transitionRoutine);
         transitionRoutine = null;
         isTransitioning = false;
+    }
+
+    private IEnumerator DropTrashRoutine(Action onComplete)
+    {
+        float duration = Mathf.Max(0.05f, dropTrashDuration);
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        dropTrashRoutine = null;
+        onComplete?.Invoke();
+    }
+
+    private void StopDropTrashRoutine()
+    {
+        if (dropTrashRoutine == null)
+            return;
+
+        StopCoroutine(dropTrashRoutine);
+        dropTrashRoutine = null;
     }
 
     private void BindButtons()

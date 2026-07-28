@@ -39,23 +39,31 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`main`**.  
-> Docs park monnaie / file Bezy à jour (code wallet punch **jeté**). Prochaine Bezy visible : `[BZ-POLISH-002]` HUD PA. GDD ouvert §5.8 / `NOTE_affichage_monnaie_hud.md`.
+> Branche courante : **`polish/ui-bezy`**.  
+> Chantier inventaire drop + insecte Flowering en cours local. Commit auteur à planifier.
 
-### Priorité immédiate — playtest VFX branché
+### Priorité immédiate — playtest inventaire drop
 
-> Prefab : `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab` (P1–P3 OK)  
-> Hook Cursor : `FarmDirtBurstVfx` + `BiofiltreManager.PlayPlantingDirtBurst` (plant / arrachage / récolte)
+> Prérequis : inventaire **vide** → d’abord remplir via ferme (graines / laitues).
 
 **Ordre immédiat :**
 
-1. [~] **[BZ-POLISH-014]** / `[P0-FARM-INSECT-PLAY-001]` Insecte — Bezy P1–P3 **OK** ; **playtest** Flowering → abeille Fly/butinage + flipX
-2. [ ] **[P0-FARM-VFX-PLAY-002]** Playtest in-game DirtBurst (plant / arrachage / récolte)
-3. [ ] **[P0-FARM-VFX-TUNE-001]** (si besoin) Réglage taille / durée DirtBurst + WormBurst
+1. [ ] **[P0-INV-DROP-PLAY-001]** Playtest inventaire drop — **préparer stock** puis tester
+   1. FirstLvl : planter / faire pousser / **récolter** laitues (ou utiliser graines restantes) → avoir ≥1 stack dans l’Inventaire
+   2. Inventaire → clic item → popup détail → quantité / Max (**limité au stack**) → Jeter → confirm → anim compost
+   3. Vérifier : item retiré du **bon slot** ; Cancel ne retire rien ; compost position / chute item (si Ph.4c Bezy déjà livrée)
+2. [~] **[P0-INV-DROP-001]** Bezy Ph.1–4b OK ; **Ph.4c** compost +100px + item sur compost — confirmer livré ou relancer prompt (`Notes/Ui/PROMPTS_Bezi_inventory_item_drop.md`)
+3. [~] **[BZ-POLISH-014]** / `[P0-FARM-INSECT-PLAY-001]` Insecte — playtest Flowering (espèce + sens path)
+4. [ ] **[P0-FARM-VFX-PLAY-002]** Playtest DirtBurst (plant / arrachage / récolte)
 
-**Clos :**
+**Clos (session 2026-07-28) :**
 
-- [x] Prefab P1–P3 livré (sprites + materials)
+- [x] Scripts inventaire drop + binding + art CompostDrop + Bezy Ph.1–4b
+- [x] Insecte rand Bee/Butterfly + sens path (code)
+
+**Clos VFX (antérieur) :**
+
+- [x] Prefab DirtBurst P1–P3 livré (sprites + materials)
 - [x] Hook `Play()` plant + arrachage + récolte (2026-07-25)
 
 ### Ensuite — file Bezy polish (semaine)
@@ -276,7 +284,7 @@ Convention d'IDs :
 
 ### Ferme — polish & UI
 - [x] **[CT-FARM-UI-001]** Prefab **`SeedSelectionUI`** EmptyState — Bezy Ph.1–3 OK (2026-07-23). Playtest → `Notes/Todo_playtest.md` Batch C / `[P0-FARM-BUG-001]`.
-- [ ] **[CT-FARM-POLISH-002]** Animation **insecte** (sprite sheet) pendant le stade **Flowering** — par `PlantDefinition` (feuilles : post-récolte ; fruits : pré-récolte). Enfant overlay + `Animator` sur prefab plante ; déclenché par `PlantGrow.SetStage(Flowering)`. Spec complète : `Notes/Farm/SPEC_insecte_flowering.md` (sheet partagé + path nodes par plante + FSM Fly/Forage + flipX). Art (ChatGPT) → Cursor scripts → Bezy nodes.
+- [~] **[CT-FARM-POLISH-002]** / `[P0-FARM-INSECT-PLAY-001]` Insecte Flowering — runtime OK (rand Bee/Butterfly + sens ±1, FSM, flipX). Spec `Notes/Farm/SPEC_insecte_flowering.md`. **Reste : playtest** auteur.
 - [~] **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** VFX plantation — **P1+P2 OK**. Prochaine : **[P0-FARM-VFX-PLAY-001]** playtest P2 puis Phase 3 sprites + hook Play(). Prompts : Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md.
 
 ### Ferme — croissance et persistance

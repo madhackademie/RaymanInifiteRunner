@@ -1,5 +1,93 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-28 (fin session) — Prochaine = playtest inventaire drop
+
+### Contexte
+- Branche : **`polish/ui-bezy`**
+- Inventaire drop monté (scripts + Bezy + compost) ; inventaire joueur **vide** → playtest bloqué.
+
+### Prochaine session (confirmée)
+1. **Remplir l’inventaire** : FirstLvl → planter / pousser / **récolter** laitues (ou graines) pour avoir ≥1 stack
+2. **[P0-INV-DROP-PLAY-001]** Playtest drop : clic slot → quantité/Max (stack) → Jeter → confirm → compost → retrait slot
+3. Si besoin : valider / relancer Bezy **Ph.4c** (compost +100 px + chute sur tas)
+4. Ensuite : playtest insecte Flowering / DirtBurst
+
+### Trace
+- Priorité écrite dans `Notes/Todo_project.md` § Prochaine session
+- Sera reprise au prochain « tâche du jour »
+
+### Commit
+- À faire côté **auteur** (lot inventaire drop + insecte + docs).
+
+---
+
+## 2026-07-28 — Insecte Flowering : rand Bee/Butterfly + sens path
+
+### Décisions
+- Au **démarrage** Flowering uniquement : 50 % abeille / 50 % papillon ; 50 % sens nodes +1 / −1
+- Pas de re-roll à chaque node
+- `PlantDefinition.insectKind` : ajout `RandomBeeOrButterfly` (Laitue = 3)
+
+### Fait
+- [x] `InsectPathFollower` : `pathDirection` rand + `ApplyVisualKind` (swap controllers)
+- [x] `InsectPathAnchor.SetPathActive(active, visualKind)`
+- [x] `PlantGrow.SyncInsectPathForStage` → `ResolveRuntimeInsectKind()`
+- [x] Art/anim papillon : `Butterfly_Fly.anim` + `Butterfly.controller`
+- [x] Prefab `Bee` : refs `beeController` + `butterflyController`
+- [x] Spec maj : `Notes/Farm/SPEC_insecte_flowering.md`
+
+### Playtest
+1. Forcer Flowering (laitue) plusieurs fois → parfois bee, parfois butterfly
+2. Sens de parcours nodes parfois inverse
+3. flipX selon direction de vol
+
+### Fichiers
+- `Assets/Scripts/Farm/Insect*.cs`, `PlantGrow.cs`, `PlantDefinition.cs`
+- `Assets/Art/Animations/Farm/Insects/Butterfly*`
+- `Assets/Prefabs/World/Insects/Bee.prefab`, `Assets/Data/Ferme/Laitue.asset`
+- `Notes/Farm/SPEC_insecte_flowering.md`, `Notes/Todo_project.md`
+
+### Commit
+- À faire côté **auteur** — assistant non committer.
+
+---
+
+## 2026-07-28 — Inventaire détail item / drop (scripts + Bezy)
+
+### Contexte
+- Demande : clic item inventaire → popup détail + description + drop quantité/Max + surpopup confirmation.
+
+### Fait (Cursor — scripts uniquement, pas de prefab)
+- [x] `PopupId.InventoryItemDetail`
+- [x] `ShopItemPopupFlowMode.Drop` + labels / ConfirmOverlay drop
+- [x] `ItemDefinition.Description`
+- [x] `InventoryUI` : clic slot → host générique → `TryRemove`
+- [x] Docs : `Notes/Ui/popup_generique.md`, `Notes/Ui/PROMPTS_Bezi_inventory_item_drop.md`
+
+### À faire (Bezy — prefab / scène / anims)
+1. [x] **Phase 1** : binding — OK
+2. [x] **Phase 2** : description — OK noop
+3. [x] **Phase 3** : open anim — OK noop
+4. [x] **Phase 4** : compost / `DropToTrash` — OK Bezy + **art CompostDrop slicé** (2026-07-28) sous `Art/Sprites/UI/Inventory/DropCompost/` ; TrashBin + flipbook anim ; menu `Rayman/UI/Bind Compost Drop Sprites`
+5. Phase 5 optionnelle : prefab dédié — skip OK
+6. **Playtest auteur** — prochaine
+
+### Hooks Cursor (anims)
+- Ouverture : `ShopItemPopupView` → `animator.SetBool("IsOpen", …)`
+- Drop confirm : `PlayDropTrashAnimation` → trigger `DropToTrash` → callback `TryRemove`
+
+### Commit
+- À faire côté **auteur** (scripts + docs + prefab/anims Bezy + art compost).
+
+---
+
+## 2026-07-28 (suite) — Bezy P4b drop motion OK
+
+- TrashBin Y **110** ; FlyingIcon chute vers compost (clip retuné)
+- Prochaine : playtest auteur inventaire drop
+
+---
+
 ## 2026-07-25 — VFX plantation branché (hook Play)
 
 ### Contexte

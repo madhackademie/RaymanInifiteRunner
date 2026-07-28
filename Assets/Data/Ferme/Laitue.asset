@@ -38,7 +38,7 @@ MonoBehaviour:
   - {x: 0, y: 1}
   - {x: 1, y: 1}
   spriteWorldOffset: {x: 0.175, y: -0.525}
-  insectKind: 1
+  insectKind: 3
   insectMoveSpeed: 0
   forageDurationMin: 0
   forageDurationMax: 0

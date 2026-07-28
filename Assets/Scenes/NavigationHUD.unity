@@ -564,6 +564,9 @@ MonoBehaviour:
   - screenId: SaleChannels
     popupId: shop.resource.feedback
     popupPrefab: {fileID: 8667043653346198443, guid: 72ca5fc0fce0fc74db56a4066de24fdb, type: 3}
+  - screenId: Inventory
+    popupId: inventory.item.detail
+    popupPrefab: {fileID: 8190502661174207168, guid: 67c4733d4537b9c40b7e1ebdae85b0aa, type: 3}
 --- !u!1 &877250849
 GameObject:
   m_ObjectHideFlags: 0

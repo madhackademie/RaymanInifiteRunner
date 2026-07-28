@@ -23,4 +23,7 @@ public static class PopupId
 
     /// <summary>Popup quantité / confirmation vente canal (écran SaleChannels).</summary>
     public const string SaleChannelSell = "sale.channel.sell";
+
+    /// <summary>Détail item inventaire + drop quantité / confirmation (écran Inventory).</summary>
+    public const string InventoryItemDetail = "inventory.item.detail";
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Manages the inventory panel: spawns InventorySlotUI instances and keeps them
 /// in sync with the PlayerInventory via the OnInventoryChanged event.
+/// Clic slot → popup détail / drop via ScreenPopupHost (mode strict).
 /// </summary>
 public class InventoryUI : MonoBehaviour
 {
@@ -13,9 +14,17 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Transform slotsContainer;
     [SerializeField] private ScrollRect scrollRect;
 
+    [Header("Popups (ScreenPopupHost)")]
+    [Tooltip("Identifiant popup détail item / drop (binding Inventory).")]
+    [SerializeField] private string itemDetailPopupId = PopupId.InventoryItemDetail;
+
     private readonly List<InventorySlotUI> spawnedSlots = new();
     private bool hasWarnedAboutNestedSlotPrefab;
     private bool hasWarnedAboutLegacyViewportMask;
+    private ShopItemPopupController itemPopupInstance;
+    private bool dropHandlerWired;
+    private ScreenPopupHost screenPopupHost;
+    private int pendingDropSlotIndex = -1;
 
     /// <summary>True une fois que Bind() a été appelé avec un inventaire valide.</summary>
     public bool IsBound => playerInventory != null;
@@ -24,6 +33,8 @@ public class InventoryUI : MonoBehaviour
     {
         if (playerInventory != null)
             playerInventory.OnInventoryChanged -= Refresh;
+
+        UnhookDropHandler();
     }
 
     /// <summary>
@@ -76,7 +87,9 @@ public class InventoryUI : MonoBehaviour
 
     private void EnsureViewportMaskCompatibility()
     {
-        Transform viewportTransform = scrollRect != null ? scrollRect.viewport : slotsContainer != null ? slotsContainer.parent : null;
+        Transform viewportTransform = scrollRect != null
+            ? scrollRect.viewport
+            : slotsContainer != null ? slotsContainer.parent : null;
         if (viewportTransform == null)
             return;
 
@@ -90,7 +103,9 @@ public class InventoryUI : MonoBehaviour
 
             if (!hasWarnedAboutLegacyViewportMask)
             {
-                Debug.LogWarning("[InventoryUI] Viewport Mask legacy detecte. Remplace par RectMask2D pour eviter la disparition des elements Maskable dans le ScrollRect.");
+                Debug.LogWarning(
+                    "[InventoryUI] Viewport Mask legacy detecte. Remplace par RectMask2D " +
+                    "pour eviter la disparition des elements Maskable dans le ScrollRect.");
                 hasWarnedAboutLegacyViewportMask = true;
             }
         }
@@ -118,12 +133,16 @@ public class InventoryUI : MonoBehaviour
 
                 if (!hasWarnedAboutNestedSlotPrefab)
                 {
-                    Debug.LogWarning("[InventoryUI] InventorySlotUI prefab encapsulé détecté. Simplifie le prefab pour éviter les coûts de ré-parentage.");
+                    Debug.LogWarning(
+                        "[InventoryUI] InventorySlotUI prefab encapsulé détecté. " +
+                        "Simplifie le prefab pour éviter les coûts de ré-parentage.");
                     hasWarnedAboutNestedSlotPrefab = true;
                 }
             }
 
+            int slotIndex = spawnedSlots.Count;
             spawnedSlots.Add(slotUI);
+            slotUI.SetClickHandler(() => OnSlotClicked(slotIndex));
         }
 
         Refresh();
@@ -142,5 +161,153 @@ public class InventoryUI : MonoBehaviour
             InventorySlot data = i < slots.Count ? slots[i] : null;
             spawnedSlots[i].Refresh(data);
         }
+    }
+
+    // ── Popup détail / drop ───────────────────────────────────────────────────
+
+    private void OnSlotClicked(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= spawnedSlots.Count)
+            return;
+
+        InventorySlot bound = spawnedSlots[slotIndex].BoundSlot;
+        if (bound == null || bound.IsEmpty || bound.Item == null)
+            return;
+
+        if (bound.Item.InventoryBehavior == ItemInventoryBehavior.Currency)
+            return;
+
+        OpenDropPopup(slotIndex, bound);
+    }
+
+    private void OpenDropPopup(int slotIndex, InventorySlot stack)
+    {
+        if (stack == null || stack.IsEmpty || stack.Item == null)
+            return;
+
+        // Max / drop limités au stack du slot cliqué (pas au total inventaire).
+        int stackQuantity = stack.Quantity;
+        if (stackQuantity <= 0)
+            return;
+
+        ShopItemPopupController popup = ResolveItemPopup();
+        if (popup == null)
+        {
+            Debug.LogWarning(
+                "[InventoryUI] Popup détail inventaire introuvable. " +
+                $"Ajoutez un ScreenPopupBinding ({ScreenId.Inventory} + {PopupId.InventoryItemDetail} " +
+                "+ prefab ShopItemPopup) dans UIManager.runtimePopupBindings (NavigationHUD).",
+                this);
+            return;
+        }
+
+        EnsureDropWired(popup);
+        pendingDropSlotIndex = slotIndex;
+
+        ItemDefinition item = stack.Item;
+        var data = new ShopItemPopupData(
+            item.ItemId,
+            item.DisplayName,
+            string.Empty,
+            item.Description,
+            item.Icon,
+            unitPrice: 0,
+            minQuantity: 1,
+            maxQuantity: stackQuantity);
+
+        if (!popup.gameObject.activeSelf)
+            popup.gameObject.SetActive(true);
+
+        popup.transform.SetAsLastSibling();
+        popup.Open(data, ShopItemPopupFlowMode.Drop);
+    }
+
+    private void HandleDropRequested(ShopItemPopupData data, int quantity, int _)
+    {
+        if (data == null || playerInventory == null || quantity <= 0)
+            return;
+
+        int slotIndex = pendingDropSlotIndex;
+        pendingDropSlotIndex = -1;
+
+        if (slotIndex < 0 || slotIndex >= playerInventory.Slots.Count)
+        {
+            Debug.LogWarning("[InventoryUI] Drop sans slot valide.", this);
+            return;
+        }
+
+        InventorySlot slot = playerInventory.Slots[slotIndex];
+        if (slot == null || slot.IsEmpty || slot.Item == null)
+            return;
+
+        if (slot.Item.InventoryBehavior == ItemInventoryBehavior.Currency)
+            return;
+
+        if (slot.Item.ItemId != data.ItemId)
+        {
+            Debug.LogWarning(
+                $"[InventoryUI] Slot {slotIndex} ne correspond plus à '{data.ItemId}'.",
+                this);
+            return;
+        }
+
+        InventoryResult result = playerInventory.TryRemoveFromSlot(slotIndex, quantity);
+        if (result != InventoryResult.Success && result != InventoryResult.Partial)
+        {
+            Debug.LogWarning(
+                $"[InventoryUI] Drop impossible slot {slotIndex} x{quantity} (result={result}).",
+                this);
+            return;
+        }
+
+        ResolveItemPopup()?.Close();
+    }
+
+    private ShopItemPopupController ResolveItemPopup()
+    {
+        if (itemPopupInstance != null)
+            return itemPopupInstance;
+
+        ScreenPopupHost host = ResolvePopupHost();
+        if (host != null &&
+            host.HasPopup(itemDetailPopupId) &&
+            host.TryGetPopup(itemDetailPopupId, out ShopItemPopupController popupFromHost))
+        {
+            itemPopupInstance = popupFromHost;
+            return itemPopupInstance;
+        }
+
+        return null;
+    }
+
+    private ScreenPopupHost ResolvePopupHost()
+    {
+        if (screenPopupHost != null)
+            return screenPopupHost;
+
+        screenPopupHost = GetComponentInParent<ScreenPopupHost>(true);
+        if (screenPopupHost != null)
+            return screenPopupHost;
+
+        screenPopupHost = GetComponentInChildren<ScreenPopupHost>(true);
+        return screenPopupHost;
+    }
+
+    private void EnsureDropWired(ShopItemPopupController popup)
+    {
+        if (popup == null || dropHandlerWired)
+            return;
+
+        popup.PurchaseRequested += HandleDropRequested;
+        dropHandlerWired = true;
+    }
+
+    private void UnhookDropHandler()
+    {
+        if (!dropHandlerWired || itemPopupInstance == null)
+            return;
+
+        itemPopupInstance.PurchaseRequested -= HandleDropRequested;
+        dropHandlerWired = false;
     }
 }
