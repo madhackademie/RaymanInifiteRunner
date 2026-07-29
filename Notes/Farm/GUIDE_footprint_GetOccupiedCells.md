@@ -1,6 +1,7 @@
 # Guide — `GetOccupiedCells`, BuildManager, footprint 2×2
 
-Référence code : `Assets/Scripts/Data/PlantDefinition.cs` (`footprint`, `GetOccupiedCells`).
+Référence code : `Assets/Scripts/Data/PlantDefinition.cs` (`footprint`, `GetOccupiedCells`).  
+**Protocole création plante** : `WORKFLOW_ajouter_nouvelle_plante.md` (§ Grid Placement).
 
 ---
 

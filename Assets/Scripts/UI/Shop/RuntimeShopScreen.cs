@@ -21,6 +21,10 @@ public class RuntimeShopScreen : MonoBehaviour
     [SerializeField] private Image rootBackdropImage;
     [SerializeField] private Image contentBackdropImage;
 
+    [Header("Empty catalogue (Bezy)")]
+    [Tooltip("Panel placeholder quand le catalogue n'a aucune offre. Optionnel.")]
+    [SerializeField] private GameObject emptyCataloguePanel;
+
     [Header("Layout slots")]
     [SerializeField] private Vector2 slotCellSize = new(112f, 112f);
     [SerializeField] private Vector2 slotSpacing = new(14f, 14f);
@@ -114,6 +118,7 @@ public class RuntimeShopScreen : MonoBehaviour
             SetFooterLines(
                 "Erreur: slotsContainer non configure",
                 "Configure RuntimeShopScreen dans le prefab ShopScreen.");
+            SetEmptyCatalogueVisible(true);
             return;
         }
 
@@ -129,6 +134,7 @@ public class RuntimeShopScreen : MonoBehaviour
                     "Assignez ItemDatabase sur PlayerInventory (NavigationHUD).");
                 ShowFallbackText("ItemDatabase manquant - impossible de resoudre le JSON marche.");
                 ClearSlotViews();
+                SetEmptyCatalogueVisible(true);
                 return;
             }
         }
@@ -140,6 +146,7 @@ public class RuntimeShopScreen : MonoBehaviour
             SetFooterLines("Erreur catalogue JSON", loadError ?? string.Empty);
             ShowFallbackText(loadError ?? string.Empty);
             ClearSlotViews();
+            SetEmptyCatalogueVisible(true);
             return;
         }
 
@@ -155,6 +162,7 @@ public class RuntimeShopScreen : MonoBehaviour
                 $"Prototype JSON - {listings.Count} offre(s) (vue texte)",
                 BuildPriceSummaryLine(listings));
             ClearSlotViews();
+            SetEmptyCatalogueVisible(listings == null || listings.Count == 0);
             return;
         }
 
@@ -169,6 +177,7 @@ public class RuntimeShopScreen : MonoBehaviour
             slotViews[i].SetClickHandler(() => OnShopSlotClicked(capturedIndex));
         }
 
+        SetEmptyCatalogueVisible(listings.Count == 0);
         SetFooterLines(
             $"Market (prototype JSON) - {listings.Count} offre(s)",
             BuildPriceSummaryLine(listings));
@@ -476,8 +485,24 @@ public class RuntimeShopScreen : MonoBehaviour
         if (contentBackdropImage == null && slotsContainer != null && slotsContainer.parent != null)
             contentBackdropImage = slotsContainer.parent.GetComponent<Image>();
 
+        if (emptyCataloguePanel == null)
+        {
+            Transform empty = transform.Find("EmptyCataloguePanel");
+            if (empty != null)
+                emptyCataloguePanel = empty.gameObject;
+        }
+
         if (screenPopupHost == null)
             screenPopupHost = ResolvePopupHost();
+    }
+
+    private void SetEmptyCatalogueVisible(bool visible)
+    {
+        if (emptyCataloguePanel == null)
+            return;
+
+        if (emptyCataloguePanel.activeSelf != visible)
+            emptyCataloguePanel.SetActive(visible);
     }
 
     private Button FindCloseButton()

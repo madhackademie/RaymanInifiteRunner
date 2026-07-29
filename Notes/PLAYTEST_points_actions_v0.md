@@ -7,7 +7,9 @@
 **Prérequis**
 - Play Mode depuis `Bootstrap` → ferme (`FirstLvlFarm`).
 - HUD PA : Phase 3 + Phase 5 SpendPulse OK (2026-07-23).
-- Save PA : `%USERPROFILE%\AppData\LocalLow\<Company>\<Product>\action_points.json` (chemin Unity `persistentDataPath`).
+- Save PA : `%USERPROFILE%\AppData\LocalLow\DefaultCompany\My project\action_points.json`.
+
+**Forcer PA / inventaire à la mano** → cheatsheet complète dans `Notes/Todo_playtest.md` (Context Menu `PA Debug/*` sur `ActionPointService`, reset inventaire, cooldown vente).
 
 **Références code**
 - `Assets/Scripts/Systems/ActionPointService.cs`

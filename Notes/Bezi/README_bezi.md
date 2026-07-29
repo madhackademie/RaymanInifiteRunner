@@ -140,6 +140,19 @@ Si echec/timeout:
 
 **Quand l’utiliser :** wiring Animator / composants sur prefab existant si Phase « Add Component sur racine » échoue en boucle.
 
+### Workaround Bezy — scène doit être ouverte dans l’Editor (2026-07-29)
+
+**Symptôme :** `updateGameObject` / `addOrUpdateComponent` sur une scène **non chargée** renvoie succès mais **zéro effet** au re-read (ex. `NavigationHUD.unity` alors que seul `Bootstrap.unity` est ouvert).
+
+**Cause :** Bezy Actions ne mute que les scènes actuellement ouvertes ; API sans « open existing scene » (seulement `createScene`).
+
+**Contournement :**
+1. Auteur : double-clic la scène cible dans Project (ex. `Assets/Scenes/NavigationHUD.unity`) pour la charger.
+2. Relancer la phase Bezy de wiring.
+3. Vérifier le diff Git / YAML (`Animator`, `m_Transition: 3`, `m_Layer: 5`) avant de marquer OK.
+
+**Exemple :** `[BZ-POLISH-006]` Ph.2 — `Notes/Ui/PROMPTS_Bezi_nav_tabs_press.md`.
+
 Exemple de sorties explicites:
 - `Assets/Prefabs/UI/ShopItemPopup.prefab` (creer/modifier)
 - `Assets/Scripts/UI/Shop/ShopItemPopupView.cs` (reutiliser)

@@ -4,6 +4,7 @@
 **Statut** : runtime MVP **codé** — rand espèce + sens au start Flowering ; art Bee + Butterfly prêts  
 **Date** : 2026-07-28 (rand Bee/Butterfly + sens path)  
 **Liens** : `PlantGrow` / `PlantDefinition` · `Notes/Todo_project.md` · shell Bezy `[BZ-POLISH-014]`  
+**Protocole création plante** : `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md` (§ InsectPath)  
 **Réfs qualité VFX/critters** : Farm Together, Dinkum, Coral Island → `Notes/References/REFERENCES_jeux_inspiration.md` § E
 
 ---
@@ -312,5 +313,5 @@ Centered in each cell, no text, no drop shadow, consistent outline.
 
 1. [x] Scripts path + FSM + hook Flowering (`InsectPathAnchor` / `InsectPathFollower` / `PlantGrow`).  
 2. [x] Art + Bezy P1–P3 (`Bee.prefab`, path sur `LaitueObj`).  
-3. [ ] **Playtest** `[P0-FARM-INSECT-PLAY-001]` : Flowering → abeille active ; hors Flowering → path off.  
+3. [x] **Playtest** `[P0-FARM-INSECT-PLAY-001]` : Flowering → insecte actif (Bee/Butterfly) ; hors Flowering → path off — **OK** (2026-07-29).  
 4. **Ne pas** créer de Sprite Atlas maintenant (`[P0-FARM-INSECT-003]`).

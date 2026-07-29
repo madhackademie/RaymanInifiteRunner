@@ -15,6 +15,15 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
     public event Action<ShopItemPopupData, int, int> PurchaseRequested;
 
+    /// <summary>Ancre burst monnaie (bouton Confirmer / Valider du popup).</summary>
+    public RectTransform ResolveMoneyBurstAnchor()
+    {
+        if (view != null)
+            return view.ResolveMoneyBurstAnchor();
+
+        return transform as RectTransform;
+    }
+
     private void OnEnable()
     {
         BindViewEvents();
@@ -116,8 +125,9 @@ public sealed class ShopItemPopupController : MonoBehaviour
             return;
 
         int totalPrice = ComputeTotalPrice();
-        view?.HideConfirmOverlay();
+        // Garde l’overlay visible jusqu’au emit pour que l’ancre VFX (bouton Confirmer) reste lisible.
         TryEmitAfterOptionalDropTrash(totalPrice);
+        view?.HideConfirmOverlay();
     }
 
     private void TryEmitAfterOptionalDropTrash(int totalPrice)

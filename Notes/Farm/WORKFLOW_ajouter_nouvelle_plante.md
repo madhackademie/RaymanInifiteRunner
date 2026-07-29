@@ -1,144 +1,265 @@
-# Workflow — ajouter une nouvelle plante (prototype)
+# Workflow — créer une nouvelle plante (protocole complet)
 
-Objectif : depuis zéro ou en dupliquant une plante existante, obtenir une culture **plantable** sur le biofiltre (grille), avec **preview** vert/rouge et **occupation multi-cases** cohérente.
+**Statut** : référence active (fusion 2026-07-29)  
+**Plante pilote** : laitue — `Assets/Data/Ferme/Laitue.asset` + `Assets/Prefabs/World/Plantes/LaitueObj.prefab`  
+**Objectif** : checklist unique depuis zéro jusqu’à une culture **plantable**, **récoltable**, avec feedback ambiance (insecte / sparkle) et **items inventaire** cohérents.
 
-**Références code** : `PlantDefinition`, `PlantGrow`, `BiofiltreManager`, `PlantPlacementPreview`, `SeedSelectionUI` / `SeedEntry`, `GridManager`.  
-**Référence footprint** : `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md`.  
-**Contexte pipeline** : `Notes/Farm/TODO_plantation_pipeline.md`.
+---
+
+## Documents liés (ne pas dupliquer)
+
+| Sujet | Note |
+|-------|------|
+| Footprint / grille | `Notes/Farm/GUIDE_footprint_GetOccupiedCells.md` |
+| Pipeline plantation (historique) | `Notes/Farm/TODO_plantation_pipeline.md` |
+| Graines ↔ inventaire | `Notes/Farm/REFACTOR_graines_plantation_inventaire.md` |
+| Règle `harvestItemId` ↔ `itemId` | `Docs/PLANTES_ET_INVENTAIRE.md` |
+| Insecte Flowering | `Notes/Farm/SPEC_insecte_flowering.md` + `Notes/Ui/PROMPTS_Bezi_insecte_flowering.md` |
+| Sparkle récoltable | `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` (`[BZ-POLISH-019]`) |
+| Carte des systèmes | `Notes/Farm/SYSTEMES_carte_mentale.md` |
+| État codebase | `Notes/Codebase_etat_reference.md` |
+
+---
+
+## Checklist rapide (copier pour une nouvelle plante)
+
+```
+[ ] 1. ItemDefinition(s) + ItemDatabase
+[ ] 2. PlantDefinition (pattern, harvestStages, sprites, footprint, insecte, durées)
+[ ] 3. Prefab monde (composants racine + enfants VFX)
+[ ] 4. SeedEntry (definition + prefab + seedItem)
+[ ] 5. Shop (optionnel) + canal de vente (optionnel)
+[ ] 6. Playtest plantation → croissance → récolte Mature → Seedling
+```
 
 ---
 
 ## Vue d’ensemble du flux joueur
 
-1. Clic sur une case **vide** du biofiltre → `BiofiltreManager` ouvre `SeedSelectionUI`.
-2. Pour chaque `SeedEntry`, le slot est **cliquable** seulement si `BiofiltreManager.CanPlace(ancre, plantDefinition)` est vrai (tout le footprint doit tenir sur des cases libres).
-3. Après choix d’une graine → `PlantPlacementPreview` affiche un **fantôme** sous la souris ; **clic gauche** confirme si vert, **clic droit** ou **Échap** annule.
-4. Confirmation → `BiofiltreManager.PlantSeedAt` instancie le prefab, met `PlantGrow` en stade **Graine**, occupe toutes les cellules du footprint.
-
-*(Sans `PlantPlacementPreview` assigné dans l’UI, repli : placement **direct** sur la case du premier clic — utile pour débug rapide seulement.)*
-
----
-
-## Étape 1 — Créer ou dupliquer un `PlantDefinition`
-
-**Création** : menu Unity **Create → Game → Plants → Plant Definition** (attribut `[CreateAssetMenu]` sur `PlantDefinition`).
-
-**Duplication** : clic droit sur un asset existant (ex. laitue) → **Duplicate**, puis renommer le fichier et ajuster les champs pour éviter les collisions d’identité.
-
-### Champs à renseigner (minimum jouable)
-
-| Zone | Rôle |
-|------|------|
-| **Identity** | `plantId` (clé logique stable), `displayName` (affichage). |
-| **Harvest** | `harvestItemId`, quantités min/max, `maxHarvestCount` — utilisés par la future récolte ; pas bloquant pour la plantation seule. |
-| **Stage Sprites** | Un sprite par stade visible dans `PlantGrow` (`Graine` → `Seedling`). Laisser vide seulement pour des tests très brouillon. |
-| **Grid Placement** | `footprint` + `spriteWorldOffset` — voir étape 2. |
-| **Stage Durations** | Entrées `StageDuration` (stade + secondes). Durée `0` = pas d’auto-avancement pour ce stade. |
-
-**Validation éditeur** : le `footprint` **doit** contenir `(0, 0)` (warning dans la Console sinon).
+1. Clic case **vide** biofiltre → `SeedSelectionUI` (filtre stock inventaire).
+2. Slot cliquable si stock `seedItem` > 0 **et** `CanPlace(ancre, plantDefinition)`.
+3. Preview fantôme → clic gauche confirme → `TryPlantSeedAt` consomme **1×** graine.
+4. Instance : `PlantGrow` en **Graine**, grille occupée, VFX plantation éventuel.
+5. Croissance auto selon `stageDurations` + pattern Leafy/Fruiting.
+6. Stade récoltable (`GetHarvestConfig`) → **sparkle** `HarvestReadyFx` ON.
+7. Stade **Flowering** (+ `insectKind ≠ None`) → **insecte** ON.
+8. Récolte via `PlantHarvestInteractor` → item `harvestItemId` → inventaire.
 
 ---
 
-## Étape 1b — Configuration spécifique des plantes à fruits (refactor)
+## Étape 1 — Items inventaire (`ItemDefinition`)
 
-Depuis le refactor, `PlantDefinition` expose un profil de croissance pour gérer les divergences entre
-plantes à feuilles et plantes à fruits sans créer un second type de ScriptableObject.
+Une plante = en général **plusieurs items** (pas le même SO que `PlantDefinition`).
 
-### Réglages à appliquer pour une plante à fruits
+| Rôle typique | Exemple laitue | Menu Create |
+|--------------|----------------|-------------|
+| Graine (planter + souvent loot Seedling) | `laitue_seed` | `Game/Data/Inventaire/Item (définition)` |
+| Récolte Mature (feuilles / fruit) | `laitue_mature` | idem |
 
-- **Growth Pattern** : `Fruiting`
-- **Harvest Stage** : `Mature` (valeur recommandée par défaut)
+**Obligatoire :**
 
-### Ordre des stades selon le profil
-
-| Profil | Séquence en fin de cycle |
-|--------|---------------------------|
-| `Leafy` | `... -> Growing -> Mature (recolte) -> Flowering -> Seedling` |
-| `Fruiting` | `... -> Growing -> Flowering -> Mature (recolte) -> Seedling` |
-
-### Impact sur les sprites (mapping inchangé)
-
-Les 7 slots de sprites restent identiques. Seule leur interprétation change selon le profil :
-
-- `spriteFlowering` : phase de floraison avant maturité (important pour les fruits)
-- `spriteMature` : stade récoltable
-- `spriteSeedling` : stade final orienté production de graines
-
-### Durées à vérifier
-
-Pour les plantes à fruits, configure soigneusement `Stage Durations` sur `Flowering`, car ce stade
-précède désormais la récolte et influence directement le temps avant maturité.
+1. Créer les `ItemDefinition` (`itemId` stable, icône, `maxStack`, nom).
+2. Les **ajouter à `ItemDatabase`** (sinon récolte / shop / plantation cassés).
+3. Règle d’or : **`harvestItemId` = `itemId` exact** (casse, underscores).  
+   Détail : `Docs/PLANTES_ET_INVENTAIRE.md`.
 
 ---
 
-## Étape 2 — Footprint et offset visuel
+## Étape 2 — `PlantDefinition`
 
-- Le **point d’ancrage** de pose est la cellule cliquée : elle correspond à l’offset `(0, 0)` du tableau `footprint`.
-- Chaque autre case occupée est `origin + offset` via `PlantDefinition.GetOccupiedCells(origin)` — détail, exemples 2×2, convention grille (+X droite, +Y bas) : **`GUIDE_footprint_GetOccupiedCells.md`**.
-- **Éviter les doublons** dans `footprint` : la même case pourrait être traitée deux fois (comportements futurs / compteurs).
-- **`spriteWorldOffset`** (Vector2, espace monde) : décale le **SpriteRenderer** pour aligner le pivot du sprite sur le visuel. Exemple documenté dans l’Inspector : plante 2×2 avec pivot bas-centre → souvent `(+0.5, 0)` avec cellules de taille 1.  
-  **Important** : la preview souris utilise un centre géométrique du footprint **sans** ce offset pour le calcul de la case sous la souris (`PlantPlacementPreview`) — ne pas « corriger » le snap en gonflant abusivement `spriteWorldOffset`.
+**Create** : `Game/Data/Ferme/Plante (définition)`  
+**Dossier recommandé** : `Assets/Data/Ferme/`  
+**Duplication** : partir de `Laitue.asset` puis renommer + changer tous les IDs.
 
-**Rotation** : le prototype actuel pose le footprint **tel quel** (pas de rotation à l’exécution). Si tu ajoutes la rotation plus tard, réutilise la logique décrite dans le guide footprint.
+### 2.1 Identity
+
+| Champ | Règle |
+|-------|--------|
+| `plantId` | Clé logique unique (ex. `tomato`) |
+| `displayName` | Affichage joueur |
+
+### 2.2 Growth Pattern
+
+| Profil | Fin de cycle | Usage |
+|--------|--------------|--------|
+| **Leafy** | Growing → **Mature** (récolte) → Flowering → Seedling | Laitue, épinard… |
+| **Fruiting** | Growing → Flowering → **Mature** (récolte) → Seedling | Tomate, poivron… |
+
+Les **7 slots sprites** restent les mêmes ; seule l’interprétation change (Flowering avant/après Mature).
+
+### 2.3 Harvest (`harvestStages[]`)
+
+Une entrée **par stade récoltable** (pas un seul `harvestItemId` global) :
+
+| Exemple Leafy | `stage` | `harvestItemId` |
+|---------------|---------|-----------------|
+| Feuilles | `Mature` | `xxx_mature` |
+| Graines | `Seedling` | `xxx_seed` (souvent = item graine) |
+
+- `harvestAmountMin` / `Max` ≥ 1  
+- `maxHarvestCount` : présent ; MVP = souvent 1 (récolte détruit la plante — voir dette dans `Codebase_etat_reference.md`)
+
+**Effet runtime** : dès qu’un stade a une config → `PlantGrow` active le **sparkle** (`HarvestReadyFxAnchor`).
+
+### 2.4 Stage Sprites
+
+Renseigner `spriteGraine` … `spriteSeedling` (7 slots). Preview placement utilise aujourd’hui surtout le sprite de preview (cf. `PlantPlacementPreview`) — garder au minimum Graine + Mature + Seedling lisibles.
+
+### 2.5 Grid Placement
+
+- `footprint` **doit** contenir `(0,0)` (warning Editor sinon).
+- Pas de doublons d’offsets.
+- `spriteWorldOffset` : alignement pivot sprite ↔ ancre grille.  
+  Guide : `GUIDE_footprint_GetOccupiedCells.md`.
+
+### 2.6 Insecte Flowering
+
+| `insectKind` | Effet |
+|--------------|--------|
+| `None` | Pas d’insecte |
+| `Bee` / `Butterfly` | Espèce fixe |
+| `RandomBeeOrButterfly` | 50/50 au start Flowering (laitue) |
+
+Overrides optionnels : `insectMoveSpeed`, `forageDurationMin/Max` (0 = défauts script).  
+Spec : `SPEC_insecte_flowering.md`.  
+**Prefab** : sans `InsectPath` sous la plante, le champ est ignoré (pas de crash).
+
+### 2.7 Stage Durations
+
+Entrées `stage` + `durationSeconds`.  
+`0` = pas d’auto-advance (OK en dernier stade ; warning si stade non terminal).
+
+Pour **Fruiting**, soigner surtout **Flowering** (avant Mature).
 
 ---
 
-## Étape 3 — Prefab monde avec `PlantGrow`
+## Étape 3 — Prefab monde
 
-1. Crée un GameObject racine (ex. `Plante_MaLaitue`).
-2. Ajoute **`SpriteRenderer`** (requis par `[RequireComponent]` sur `PlantGrow`).
-3. Ajoute **`PlantGrow`** ; dans l’Inspector, assigne le **`PlantDefinition`** créé à l’étape 1.
-4. Règle éventuellement **`initialStage`** pour prévisualiser un stade dans l’éditeur (`OnValidate` met à jour le sprite). **En jeu**, après plantation, `BiofiltreManager` appelle **`SetStage(Graine)`** : le stade initial du prefab ne s’applique pas aux cultures posées via le biofiltre.
-5. Enregistre comme **Prefab** (dossier projet au choix, ex. sous `Assets/.../Prefabs/Farm/`).
+**Référence** : `Assets/Prefabs/World/Plantes/LaitueObj.prefab`  
+**Dossier** : `Assets/Prefabs/World/Plantes/`
 
-**Fantôme de preview** : `PlantPlacementPreview` instancie ce prefab, **désactive** `PlantGrow`, force un sprite (actuellement **`spriteSeedling`** du `PlantDefinition`) et désactive les **Collider2D** pour ne pas bloquer les raycasts. Aucune config spéciale supplémentaire sur le prefab pour la preview.
+### 3.1 Hiérarchie cible
+
+```
+Plante_Xxx (root)
+├── SpriteRenderer
+├── PlantGrow                    ← plantDefinition + refs optionnelles
+├── PlantDefinitionHolder        ← même PlantDefinition
+├── PlantHarvestInteractor
+├── Collider2D (raycast récolte / clic)
+├── PlantPlantingPunch           ← optionnel (polish pose)
+├── InsectPath (souvent inactif hors Flowering)
+│   ├── Node_0 … Node_N
+│   └── Bee / InsectInstance (prefab partagé)
+└── HarvestReadyAnchor (INACTIVE par défaut)
+    └── HarvestReadyFx (instance prefab partagé)
+        └── Sparkle (ParticleSystem)
+```
+
+### 3.2 Composants racine (obligatoires gameplay)
+
+| Composant | Rôle |
+|-----------|------|
+| `SpriteRenderer` | Requis par `PlantGrow` |
+| `PlantGrow` | Stades, timers, sync insecte + sparkle |
+| `PlantDefinitionHolder` | Accès definition pour harvest / grille |
+| `PlantHarvestInteractor` | Clic → popup récolte |
+| `Collider2D` | Hit pour récolte / interactions |
+
+À la pose, `BiofiltreManager` appelle `SetStage(Graine)` + `Initialise` holder / interactor — le `initialStage` du prefab ne gouverne **pas** les cultures plantées en jeu.
+
+### 3.3 Enfants VFX / ambiance
+
+| Enfant | Quand | Prefab / art partagé | Script |
+|--------|-------|----------------------|--------|
+| `InsectPath` | Stade `Flowering` + `insectKind ≠ None` | `Assets/Prefabs/World/Insects/Bee.prefab` (+ Butterfly) | `InsectPathAnchor` + follower |
+| `HarvestReadyAnchor` | Tout stade avec `GetHarvestConfig ≠ null` | `Assets/Prefabs/World/VFX/HarvestReadyFx.prefab` | `HarvestReadyFxAnchor` |
+
+**Recyclage :**
+
+- Art insecte / sparkle = **1 fois pour tout le jeu**.
+- Par plante = **positions** (nodes InsectPath, hauteur `HarvestReadyAnchor` ~ au-dessus du feuillage).
+
+**Bezy** : prompts phasés dans `Notes/Ui/PROMPTS_Bezi_insecte_flowering.md` et `PROMPTS_Bezi_harvest_ready_vfx.md`.  
+**Cursor** : hooks déjà dans `PlantGrow` (`SyncInsectPathForStage`, `SyncHarvestReadyFxForStage`).
+
+Sur `PlantGrow` Inspector (recommandé) :
+
+- `insectPath` → enfant `InsectPath`
+- `harvestReadyFx` → enfant `HarvestReadyAnchor`  
+  (sinon fallback `GetComponentInChildren` incl. inactifs)
+
+### 3.4 Debug Editor
+
+Sur `PlantGrow` (context menu) :
+
+- Force Flowering (insecte)
+- Force Mature (sparkle récolte)
+- Force Seedling (sparkle graines)
 
 ---
 
-## Étape 4 — Enregistrer la plante dans `SeedSelectionUI`
+## Étape 4 — Catalogue plantation (`SeedEntry`)
 
-Sur le GameObject qui porte **`SeedSelectionUI`** (scène ou prefab UI) :
+Sur `SeedSelectionUI` → `availableSeeds` :
 
-1. Liste **`Available Seeds`** : ajoute un élément **`SeedEntry`**.
-2. **`plantDefinition`** → ton nouvel asset.
-3. **`plantPrefab`** → le prefab de l’étape 3.
+| Champ | Contenu |
+|-------|---------|
+| `plantDefinition` | Asset étape 2 |
+| `plantPrefab` | Prefab étape 3 |
+| `seedItem` | `ItemDefinition` graine (étape 1) — **obligatoire** |
 
-Vérifie aussi :
+Sans les trois, le slot est ignoré / non plantable.
 
-- **`Seed Slot UI`** : prefab de ligne/bouton (`SeedSlotUI`).
-- **`Slots Container`** : parent des slots instanciés.
-- **`Placement Preview`** : référence vers le composant **`PlantPlacementPreview`** actif dans la scène (souvent sur un objet dédié).
-- Sur le biofiltre : **`BiofiltreManager`** a bien le champ **`Seed Selection UI`** rempli vers ce panneau.
-
-Sans entrée dans `availableSeeds`, la plante **n’apparaît pas** dans le panneau et ne peut pas être choisie.
+Vérifier aussi : `Seed Slot UI`, `Slots Container`, `Placement Preview`, lien `BiofiltreManager` → panneau graines.
 
 ---
 
-## Étape 5 — Vérifications sur la grille (test manuel)
+## Étape 5 — Shop & vente (optionnel mais fréquent)
 
-1. **Lancer la scène** avec biofiltre + UI câblés (`BiofiltreManager`, `GridManager`, `BiofiltreGridVisualizer`).
-2. Cliquer une case **vide** à l’intérieur de la grille : le panneau s’ouvre.
-3. **Slot grisé / non cliquable** : normal si le footprint ne tient pas depuis **cette** case d’ancrage (ex. 2×2 trop près du bord ou chevauchement). Tester depuis une case plus centrale.
-4. Après sélection : le fantôme doit être **vert** sur les positions valides, **rouge** sinon ; **clic gauche** pose la plante ; les cases couvertes passent en occupé (visuel `BiofiltreCell` + logique `GridManager`).
-5. **Plusieurs poses** : après un placement réussi, la preview reste active pour enchaîner (pas de fermeture automatique) — **clic droit** ou **Échap** pour sortir du mode placement.
+| Système | À faire |
+|---------|---------|
+| **Shop** | `ShopItemDefinition` qui vend `seedItem` (+ listing écran shop) |
+| **Canal vente** | Si le loot Mature/Seedling doit être vendable : entrée `SaleChannel` / listing avec le bon `itemId` |
 
-**Débug rapide** : logs `[BiofiltreManager]` en Console si placement refusé (case occupée, références nulles).
-
----
-
-## Fichiers à connaître (rappel)
-
-| Fichier | Rôle court |
-|---------|------------|
-| `Assets/Scripts/Data/PlantDefinition.cs` | Données plante, `footprint`, `GetOccupiedCells`, sprites, durées. |
-| `Assets/Scripts/Farm/PlantGrow.cs` | Stades, sprites, timers entre stades. |
-| `Assets/Scripts/Farm/BiofiltreManager.cs` | `CanPlace`, `PlantSeedAt`, instanciation, occupation grille. |
-| `Assets/Scripts/Farm/PlantPlacementPreview.cs` | Fantôme, validité, confirmation. |
-| `Assets/Scripts/UI/SeedSelectionUI.cs` | Liste `SeedEntry`, ouverture preview ou placement direct. |
+Pack départ / empty state graines : déjà géré côté inventaire + UI (voir note refactor graines).
 
 ---
 
-## Pistes d’évolution (hors scope de ce guide)
+## Étape 6 — Playtest (DoD)
 
-- Récolte + inventaire (`TryAdd`, feedback « inventaire plein ») — voir `Notes/Todo_project.md`.
-- State machine culture / timer global — scripts `PlantGrow`, `Timer.cs`, todos projet.
+1. Avoir ≥1 graine en inventaire (shop ou cheat).
+2. Planter → cases footprint occupées, preview vert/rouge OK.
+3. Avancer jusqu’à **Mature** → sparkle ON → récolte → item Mature en sac, plante retirée (MVP).
+4. Ou forcer **Flowering** → insecte ON, sparkle OFF (sauf si harvest configuré sur Flowering).
+5. Forcer **Seedling** → sparkle ON → récolte graines = `seedItem`.
+6. Sans stock → empty state / CTA shop.
+7. Footprint bord de grille → slot grisé / preview rouge.
+
+---
+
+## Fichiers code (rappel)
+
+| Fichier | Rôle |
+|---------|------|
+| `Assets/Scripts/Data/PlantDefinition.cs` | SO plante |
+| `Assets/Scripts/Farm/PlantGrow.cs` | Stades + sync VFX |
+| `Assets/Scripts/Farm/HarvestReadyFxAnchor.cs` | Sparkle récoltable |
+| `Assets/Scripts/Farm/InsectPathAnchor.cs` / `InsectPathFollower.cs` | Insecte Flowering |
+| `Assets/Scripts/Farm/BiofiltreManager.cs` | Pose + occupation |
+| `Assets/Scripts/Farm/PlantHarvestInteractor.cs` | Récolte |
+| `Assets/Scripts/UI/SeedSelectionUI.cs` | `SeedEntry` |
+| `Assets/Scripts/Inventory/ItemDefinition.cs` / `ItemDatabase.cs` | Items |
+
+---
+
+## Protocole « prochaine plante » (ordre recommandé)
+
+1. Dupliquer **items** laitue → nouveaux `itemId`.
+2. Dupliquer **PlantDefinition** → pattern + harvestStages + sprites + footprint + insecte.
+3. Dupliquer **LaitueObj** → renommer, rebrancher definition, retuner nodes InsectPath + hauteur sparkle.
+4. Ajouter **SeedEntry** + shop si besoin.
+5. Playtest checklist §6.
+6. Journaliser dans `PROJECT_LOG.md` / cocher todo si ticket ouvert.
+
+Ce document est la **source unique** pour l’ajout de plantes ; les SPEC VFX détaillent le polish Bezy, pas le flux métier complet.

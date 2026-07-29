@@ -34,7 +34,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     private ResourceFeedbackPopupUI resourceFeedbackPopupInstance;
     private ScreenPopupHost screenPopupHost;
     private string pendingChannelId;
-    private SaleChannelBandeauView pendingBandeau;
     private Coroutine cooldownRefreshRoutine;
 
     private void Awake()
@@ -252,7 +251,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
         EnsureSellPopupWired(popup);
         pendingChannelId = channelId;
-        pendingBandeau = bandeau;
 
         if (!popup.gameObject.activeSelf)
             popup.gameObject.SetActive(true);
@@ -278,20 +276,21 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             return;
         }
 
-        PlaySaleMoneyBurst(pendingBandeau);
-        ResolveSellPopup()?.Close();
+        ShopItemPopupController popup = ResolveSellPopup();
+        // Burst sur bouton Confirmer/Valider avant Close (position encore valide).
+        PlaySaleMoneyBurst(popup);
+        popup?.Close();
         pendingChannelId = null;
-        pendingBandeau = null;
         Refresh();
         StartCooldownRefreshIfNeeded();
     }
 
-    private void PlaySaleMoneyBurst(SaleChannelBandeauView bandeau)
+    private void PlaySaleMoneyBurst(ShopItemPopupController popup)
     {
-        RectTransform anchor = bandeau != null
-            ? bandeau.transform as RectTransform
-            : bandeauxContainer;
+        if (popup == null)
+            return;
 
+        RectTransform anchor = popup.ResolveMoneyBurstAnchor();
         if (anchor == null)
             return;
 

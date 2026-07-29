@@ -6,16 +6,24 @@ using UnityEngine.UI;
 /// <summary>
 /// Popup UI reutilisable pour afficher un feedback court lie aux ressources.
 /// Peut servir au shop, au craft, aux upgrades ou a toute action avec cout.
+/// Open/Close soft via Animator Bezy (triggers Open / Close sur Panel).
 /// </summary>
 public class ResourceFeedbackPopupUI : MonoBehaviour
 {
     private const string DefaultInsufficientResourcesMessage =
         "Vous n'avez pas assez de ressources pour cette action.";
+    private const string OpenTriggerName = "Open";
+    private const string CloseTriggerName = "Close";
+    private const float CloseAnimDurationSeconds = 0.14f;
+
+    private static readonly int OpenTriggerHash = Animator.StringToHash(OpenTriggerName);
+    private static readonly int CloseTriggerHash = Animator.StringToHash(CloseTriggerName);
 
     [Header("Bindings UI")]
     [SerializeField] private GameObject root;
     [SerializeField] private TMP_Text messageLabel;
     [SerializeField] private Button closeButton;
+    [SerializeField] private Animator panelAnimator;
 
     [Header("Behaviour")]
     [SerializeField] private string insufficientResourcesMessage = DefaultInsufficientResourcesMessage;
@@ -23,19 +31,27 @@ public class ResourceFeedbackPopupUI : MonoBehaviour
     [SerializeField] private bool hideOnAwake = true;
 
     private Coroutine hideCoroutine;
+    private Coroutine closeAnimCoroutine;
     private Button hookedCloseButton;
 
     private void Awake()
     {
         HookCloseButton();
+        ResolvePanelAnimatorIfNeeded();
 
         if (hideOnAwake)
-            SetVisible(false);
+            SetVisibleImmediate(false);
     }
 
     private void OnEnable()
     {
         HookCloseButton();
+    }
+
+    private void OnDisable()
+    {
+        StopHideCoroutine();
+        StopCloseAnimCoroutine();
     }
 
     private void OnDestroy()
@@ -57,11 +73,12 @@ public class ResourceFeedbackPopupUI : MonoBehaviour
         if (messageLabel != null)
             messageLabel.text = resolvedMessage;
 
-        SetVisible(true);
-        transform.SetAsLastSibling();
+        StopHideCoroutine();
+        StopCloseAnimCoroutine();
 
-        if (hideCoroutine != null)
-            StopCoroutine(hideCoroutine);
+        SetVisibleImmediate(true);
+        transform.SetAsLastSibling();
+        PlayOpen();
 
         if (autoHideDelay > 0f)
             hideCoroutine = StartCoroutine(HideAfterDelay());
@@ -69,26 +86,98 @@ public class ResourceFeedbackPopupUI : MonoBehaviour
 
     public void Hide()
     {
-        if (hideCoroutine != null)
+        StopHideCoroutine();
+
+        if (!IsRootActive())
         {
-            StopCoroutine(hideCoroutine);
-            hideCoroutine = null;
+            SetVisibleImmediate(false);
+            return;
         }
 
-        SetVisible(false);
+        PlayClose();
+        StopCloseAnimCoroutine();
+        closeAnimCoroutine = StartCoroutine(HideAfterCloseAnim());
     }
 
     private IEnumerator HideAfterDelay()
     {
         yield return new WaitForSeconds(autoHideDelay);
         hideCoroutine = null;
-        SetVisible(false);
+        Hide();
     }
 
-    private void SetVisible(bool visible)
+    private IEnumerator HideAfterCloseAnim()
+    {
+        yield return new WaitForSecondsRealtime(CloseAnimDurationSeconds);
+        closeAnimCoroutine = null;
+        SetVisibleImmediate(false);
+    }
+
+    private void PlayOpen()
+    {
+        ResolvePanelAnimatorIfNeeded();
+        if (panelAnimator == null)
+            return;
+
+        panelAnimator.ResetTrigger(CloseTriggerHash);
+        panelAnimator.SetTrigger(OpenTriggerHash);
+    }
+
+    private void PlayClose()
+    {
+        ResolvePanelAnimatorIfNeeded();
+        if (panelAnimator == null)
+            return;
+
+        panelAnimator.ResetTrigger(OpenTriggerHash);
+        panelAnimator.SetTrigger(CloseTriggerHash);
+    }
+
+    private void SetVisibleImmediate(bool visible)
     {
         GameObject target = root != null ? root : gameObject;
-        target.SetActive(visible);
+        if (target.activeSelf != visible)
+            target.SetActive(visible);
+    }
+
+    private bool IsRootActive()
+    {
+        GameObject target = root != null ? root : gameObject;
+        return target.activeSelf;
+    }
+
+    private void ResolvePanelAnimatorIfNeeded()
+    {
+        if (panelAnimator != null)
+            return;
+
+        if (root != null)
+        {
+            Transform panel = root.transform.Find("Panel");
+            if (panel != null)
+                panelAnimator = panel.GetComponent<Animator>();
+        }
+
+        if (panelAnimator == null)
+            panelAnimator = GetComponentInChildren<Animator>(true);
+    }
+
+    private void StopHideCoroutine()
+    {
+        if (hideCoroutine == null)
+            return;
+
+        StopCoroutine(hideCoroutine);
+        hideCoroutine = null;
+    }
+
+    private void StopCloseAnimCoroutine()
+    {
+        if (closeAnimCoroutine == null)
+            return;
+
+        StopCoroutine(closeAnimCoroutine);
+        closeAnimCoroutine = null;
     }
 
     private void HookCloseButton()

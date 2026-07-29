@@ -94,6 +94,24 @@ public sealed class ShopItemPopupView : MonoBehaviour
     /// <summary>True si Bezy a câblé une racine poubelle (anim drop possible).</summary>
     public bool HasDropTrashAnimation => dropTrashRoot != null;
 
+    /// <summary>
+    /// Ancre VFX monnaie : bouton Confirmer (overlay) → bouton Valider → MoneyBurstAnchor Bezy.
+    /// </summary>
+    public RectTransform ResolveMoneyBurstAnchor()
+    {
+        if (confirmPurchaseButton != null)
+            return confirmPurchaseButton.transform as RectTransform;
+
+        if (confirmButton != null)
+            return confirmButton.transform as RectTransform;
+
+        Transform marked = transform.Find("Root/MoneyBurstAnchor");
+        if (marked != null)
+            return marked as RectTransform;
+
+        return transform as RectTransform;
+    }
+
     private void Awake()
     {
         ResolveTransitionRefs();

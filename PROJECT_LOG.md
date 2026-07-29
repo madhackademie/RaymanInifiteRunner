@@ -1,5 +1,139 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-29 — `[BZ-POLISH-008]` Bezy Ph.1–3 OK + hooks Open/Close
+
+### Review
+- Ph.1 layers 5 — OK
+- Ph.2 lisibilité — OK
+- Ph.3 Open/Close scale+alpha sur Panel — OK
+
+### Cursor
+- [x] `ResourceFeedbackPopupUI` triggers Open/Close + hide après 0.14 s
+- [x] `panelAnimator` câblé sur prefab
+
+### Suite
+1. Prochain Bezy : `[BZ-POLISH-009]` talents Commerce
+2. Batch playtests (E HUD PA, inventaire plein, toast)
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — `[BZ-POLISH-007]` Bezy Ph.1–3 OK + hook Show
+
+### Review
+- Ph.1 layers 5 — OK
+- Ph.2 lisibilité (font 32, icon 100) — OK
+- Ph.3 ShowPunch scale only on LootFlyoutGroup — OK (pas d’alpha)
+
+### Cursor
+- [x] `HarvestRewardFeedbackPopupUI.PlayShowPunch()` → trigger `Show`
+
+### Suite
+1. Prochain Bezy : `[BZ-POLISH-008]` popup inventaire plein
+2. Batch E playtest HUD PA / toast récolte
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — `[BZ-POLISH-005]` Bezy Ph.1–3 OK + wire empty catalogue
+
+### Review Bezy
+- Ph.1 layers 5 — OK
+- Ph.2 grille / close / backdrops — OK
+- Ph.3 `EmptyCataloguePanel` inactive + textes — OK
+
+### Cursor
+- [x] `RuntimeShopScreen.emptyCataloguePanel` + Show/Hide si 0 offre / erreur catalogue
+
+### Suite
+1. Prochain Bezy : `[BZ-POLISH-007]` toast / feedback récolte (`[BZ-POLISH-006]` déjà clos)
+2. Batch E playtest HUD PA
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — Hooks `[BZ-POLISH-002]` + prompts Bezy `[BZ-POLISH-005]`
+
+### Fait (Cursor)
+- [x] `ActionPointService.OnSpendRefused` quand PA insuffisants
+- [x] `ActionPointsHudView` → trigger Animator `Refuse`
+- [x] `ActionPointFatigueTooltipHost` → FadeIn/FadeOut + hide après 0.12 s
+- [x] Prompts Bezy shop screen : `Notes/Ui/PROMPTS_Bezi_shop_screen_005.md`
+
+### Suite
+1. Bezy Ph.1 `[BZ-POLISH-005]` ShopScreen layers
+2. Batch E playtest HUD PA (Refuse / Fill / tooltip)
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — `[BZ-POLISH-002]` Bezy Ph.1–3 OK (HUD PA)
+
+### Review Cursor
+- Ph.1 RefuseShake + trigger `Refuse` — OK (pulse Row ; pas d’euler Z)
+- Ph.2 SpendPulse + path `ProgressBar/BarFill` — OK
+- Ph.3 Tooltip layer 5 + CanvasGroup + FadeIn/Out 0.12 s — OK
+
+### Suite
+1. Hooks Cursor : `Refuse` si PA insuffisant + tooltip fade
+2. Batch E playtest (`Notes/Todo_playtest.md`)
+3. Prochain Bezy file : #5→#16
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — File playtest batch + cheatsheet PA/inventaire
+
+### Fait
+- [x] `Notes/Todo_playtest.md` : cheatsheet forcer PA / inventaire / vente / Flowering à la mano
+- [x] Batches A–E listés + F clos (drop/insecte/DirtBurst)
+- [x] Context Menu debug sur `ActionPointService` : remaining 0 / 1 / refill / delete save
+- [x] Pointeur depuis `Notes/Todo_project.md` + `PLAYTEST_points_actions_v0.md`
+
+### Pourquoi
+- Auteur veut faire les playtests **en batch** et savoir comment modifier l’état à la mano.
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — Playtests validés ; prochaine = HUD PA Bezy
+
+### Contexte
+- Branche : **`polish/ui-bezy`**
+- Auteur : tous les playtests de la priorité immédiate **passés et validés**.
+
+### Clos (playtests auteur)
+- [x] **[P0-INV-DROP-PLAY-001]** Inventaire drop (stock → détail → Jeter → compost → retrait slot)
+- [x] **[P0-INV-DROP-001]** Bezy Ph.1–4c drop / compost
+- [x] **[BZ-POLISH-014]** / **[P0-FARM-INSECT-PLAY-001]** Insecte Flowering
+- [x] **[P0-FARM-VFX-PLAY-002]** DirtBurst plant / arrachage / récolte
+
+### Prochaine session (confirmée)
+1. **[BZ-POLISH-002]** HUD PA suite polish (Refuse pulse, fill conso, tooltip fade) — job Bezy prioritaire
+2. Ne pas relancer wallet punch (`[BZ-POLISH-015]` PARK UX)
+3. Suite file Bezy #5→#16 + Cursor `[P0-AP-CODE-002]` si utile
+
+### Trace
+- `Notes/Todo_project.md` § Prochaine session mis à jour
+- Sera reprise au prochain « tâche du jour »
+
+### Commit
+- À faire côté **auteur** (docs + lot drop/insecte/VFX si pas encore poussé).
+
+---
+
 ## 2026-07-28 (fin session) — Prochaine = playtest inventaire drop
 
 ### Contexte

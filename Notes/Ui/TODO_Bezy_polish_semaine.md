@@ -11,20 +11,20 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
-> **Priorité polish Bezy :** **[BZ-POLISH-002]** HUD PA suite (Refuse shake + fill conso + tooltip fade) — surface **visible**.  
-> **Park UX 2026-07-27 :** `[BZ-POLISH-015]` Wallet punch Ph.1–3 livré mais **invisible au delta** — attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`). Assets/hooks conservés.  
+> **Priorité polish Bezy :** file **#9** ([BZ-POLISH-009] talents) — [BZ-POLISH-008] inventaire plein **CLOS**.
+> **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only (code jeté) ; attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`).  
 > **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
 
 | # | ID | Job Bezy | Prefab / assets | Effort | Prérequis |
 |---|-----|----------|-----------------|--------|-----------|
 | ~~1~~ | ~~**[BZ-POLISH-001]**~~ | ~~Micro-fix shop~~ | — | — | **CLOS** |
-| **P0** | **[BZ-POLISH-002]** | **HUD PA suite** : Refuse shake, fill conso, tooltip fade | `ActionPointsHudWidget` + `FatigueTooltipPanel` | M | HUD PA base OK |
+| ~~P0~~ | ~~**[BZ-POLISH-002]**~~ | ~~HUD PA suite~~ | — | — | **Bezy CLOS** 2026-07-29 (hooks Cursor) |
 | ~~3~~ | ~~**[BZ-POLISH-003]**~~ | ~~EmptyState graines anim~~ | — | — | **CLOS** |
 | ~~4~~ | ~~**[BZ-POLISH-004]**~~ | ~~Bandeaux vente cooldown / locked~~ | — | — | **CLOS** (playtest OK) |
-| 5 | **[BZ-POLISH-005]** | `RuntimeShopScreen` : layers 5 + contraste grille slots + empty catalogue | prefab shop screen | M | — |
-| 6 | **[BZ-POLISH-006]** | NavigationHUD : hit areas onglets ≥ 44, contrastes, layer audit | `NavigationHUD` | M | — |
-| 7 | **[BZ-POLISH-007]** | Toast / feedback récolte : polish entrée-sortie (scale+fade) | `FarmHarvestReward` / feedback popup | S | déjà en main |
-| 8 | **[BZ-POLISH-008]** | Popup inventaire plein (récolte) : lisibilité + Open/Close soft | popup pipeline concernée | S | — |
+| ~~5~~ | ~~**[BZ-POLISH-005]**~~ | ~~ShopScreen polish~~ | — | — | **Bezy CLOS** 2026-07-29 + Cursor empty |
+| ~~6~~ | ~~**[BZ-POLISH-006]**~~ | ~~NavigationHUD press tabs + layer 5~~ | — | — | **CLOS** playtest OK 2026-07-29 |
+| ~~7~~ | ~~**[BZ-POLISH-007]**~~ | ~~Toast récolte~~ | — | — | **Bezy CLOS** 2026-07-29 + Cursor Show |
+| ~~8~~ | ~~**[BZ-POLISH-008]**~~ | ~~Popup inventaire plein~~ | — | — | **Bezy CLOS** 2026-07-29 + Cursor Open/Close |
 | 9 | **[BZ-POLISH-009]** | Arbre talents Commerce : contrastes nœuds + edges + `TreeMountHost` | `Track_Commerce` / overlay | M | `[BL-INV-TALENT-003]` |
 | 10 | **[BZ-POLISH-010]** | Filigrane placeholder piste Commerce (couleur/motif UI, **pas** art final) | sous `TreeMountHost` | M | placeholders OK |
 | 11 | **[BZ-POLISH-011]** | LoadingScreen : layout polish barre + % (pas illustration finale) | `Bootstrap` LoadingCanvas | S | — |
@@ -35,6 +35,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 16 | **[BZ-POLISH-016]** / **[CT-FARM-POLISH-003]** | VFX particules plantation + récolte (burst circulaire) | prefab PS + sprites planting | M | art sheet prêt |
 | ~~17~~ | ~~**[BZ-POLISH-017]**~~ | ~~HUD Vente fond opaque~~ | — | — | **CLOS Bezy** (playtest auteur) |
 | 18 | **[BZ-POLISH-018]** | VFX pièces / billets au feedback vente (canal) | `SaleMoneyBurst` PS | M | art coin/billet (sinon Ph.1–2 placeholder) |
+| 19 | **[BZ-POLISH-019]** / **[CT-FARM-POLISH-004]** | Sparkle idle récoltable (Mature + graines) | `HarvestReadyFx` + ancre `LaitueObj` | M | Default-Particle — `PROMPTS_Bezi_harvest_ready_vfx.md` |
 
 ---
 
@@ -43,12 +44,12 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 ### 1 — Shop micro-fix `[BZ-POLISH-001]` — CLOS
 - Livré avec `[CT-SHOP-002]` (2026-07-23).
 
-### 2 — HUD PA suite `[BZ-POLISH-002]` — **PRIORITÉ prochaine session**
+### 2 — HUD PA suite `[BZ-POLISH-002]` — **Bezy Ph.1–3 CLOS** (2026-07-29)
 - Prefab : `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
-- **Refuse** : pulse / shake léger du `Row` (ou icône) quand action refusée faute de PA
-- **Fill conso** : micro-anim sur la barre / overlay consommé à chaque dépense (complément du SpendPulse Row déjà livré Ph.5)
-- **Tooltip** : `FatigueTooltipPanel` layer 5 + CanvasGroup **fade in/out** (~0.12 s) — structure Ph.4 déjà en place
-- Cursor : hooks trigger `Refuse` / fade tooltip si besoin après Bezy
+- **Refuse** : trigger `Refuse` + clip `RefuseShake` (Row pulse) — OK
+- **Fill conso** : `SpendPulse` path `ProgressBar/BarFill` scale punch — OK
+- **Tooltip** : layer 5 + CanvasGroup + FadeIn/Out 0.12 s — OK
+- **Suite Cursor :** hooks `Refuse` + fade tooltip — **OK** (2026-07-29) ; playtest Batch E
 
 ### 3 — EmptyState pulse `[BZ-POLISH-003]` — CLOS
 - Livré Ph.1–3 (2026-07-23).
@@ -56,19 +57,27 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 ### 4 — Bandeaux vente `[BZ-POLISH-004]` — CLOS (playtest OK 2026-07-23)
 - Fade overlay cooldown + pulse timer + locked Bandoulière/Vélo lisible.
 
-### 5 — Écran shop `[BZ-POLISH-005]`
-- Layer 5 partout  
-- Slots plus lisibles ; état vide catalogue (panel placeholder)
+### 5 — Écran shop `[BZ-POLISH-005]` — **Bezy Ph.1–3 CLOS** (2026-07-29)
+- Prefab : `Assets/Prefabs/Ui/ShopScreen.prefab`
+- Layer 5 ; grille / close ; `EmptyCataloguePanel` + Cursor wire Show/Hide
+- Prompts : `Notes/Ui/PROMPTS_Bezi_shop_screen_005.md`
 
-### 6 — HUD navigation `[BZ-POLISH-006]`
-- Onglets Ferme / Shop / Inventaire / Vente : taille tactile, couleurs distinctes  
-- Audit layer 5
+### 6 — HUD navigation `[BZ-POLISH-006]` — **CLOS** (playtest OK 2026-07-29)
+- Press soft : `NavTab.controller` + Transition Animation sur 4 tabs ; layer 5 ; hit layout OK
+- Prompts : `Notes/Ui/PROMPTS_Bezi_nav_tabs_press.md`
+- Prérequis Editor documenté (scène ouverte) — `Notes/Bezi/README_bezi.md`
 
-### 7–8 — Feedbacks gameplay
-- Entrée/sortie soft sans casser `CanvasGroup` métier  
-- Textes ≥ 22 mobile
+### 7 — Toast feedback récolte `[BZ-POLISH-007]` — **Bezy Ph.1–3 CLOS** (2026-07-29)
+- Prefab : `Assets/Prefabs/Ui/HarvestRewardFeedbackPopup.prefab`
+- Layers 5 + lisibilité + scale punch `Show` (pas alpha) + Cursor hook OK
+- Prompts : `Notes/Ui/PROMPTS_Bezi_harvest_reward_toast.md`
 
-### 9–10 — Talents
+### 8 — Popup inventaire plein `[BZ-POLISH-008]` — **Bezy Ph.1–3 CLOS** (2026-07-29)
+- Prefab partagé : `Assets/Prefabs/Ui/ResourceFeedbackPopup.prefab`
+- Layers 5 + lisibilité + Open/Close soft + Cursor hooks OK
+- Prompts : `Notes/Ui/PROMPTS_Bezi_resource_feedback_008.md`
+
+### 9–10 — Talents — **PRIORITÉ Bezy #9**
 - Contrastes Locked/Available/Owned  
 - Filigrane = Image plein fond alpha faible (couleur), **pas** sprite final
 
@@ -81,7 +90,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 ### 14 — Insecte Flowering `[BZ-POLISH-014]` — **Bezy P1–P3 CLOS** (2026-07-25)
 - Art : `Bee_Fly.png` · Prefabs : `Bee` + `LaitueObj/InsectPath`
 - Cursor scripts + hook Flowering OK
-- Suite : playtest auteur `[P0-FARM-INSECT-PLAY-001]`
+- Suite : playtest auteur `[P0-FARM-INSECT-PLAY-001]` — **OK** (2026-07-29)
 
 ### 15 — Wallet punch `[BZ-POLISH-015]` — **PARK UX** (2026-07-27)
 - Bezy Ph.1–3 OK, hooks Cursor OK — **mais widgets hors moment de jeu** (inventaire sans gain ; shop wallet non perçu / popup ferme après débit).
@@ -103,10 +112,17 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ### 18 — VFX monnaie vente `[BZ-POLISH-018]`
 - **Feel** : burst pièces + billets au feedback vente (canal Voisinage)
-- **Bezy** : prefab `Assets/Prefabs/Ui/VFX/SaleMoneyBurst.prefab` (`CoinBurst` + `BillBurst`), Play On Awake OFF
-- **Art (auteur)** : `Assets/Art/Sprites/VFX/Sale/CoinParticle.png` + `BillParticle.png` — **absent du repo** ; Ph.1–2 OK en couleur placeholder ; Ph.3 après import
-- **Cursor (après Bezy)** : `Play()` après vente réussie (recommandé) près du bandeau — pas au scope Bezy
-- Prompts prêts : `Notes/Ui/PROMPTS_Bezi_sale_money_vfx.md` (phases 1→2→3)
+- **Bezy** : prefab `SaleMoneyBurst` Ph.1–2 OK ; **Ph.4** `MoneyBurstAnchor` sur `ShopItemPopup` **OK** (2026-07-29)
+- **Cursor** : burst ancré bouton **Confirmer/Valider** (`ConfirmPurchaseButton`) — **playtest OK** (2026-07-29)
+- **Art (auteur)** : `CoinParticle` + `BillParticle` — absent ; Ph.3 après import
+- Prompts : `Notes/Ui/PROMPTS_Bezi_sale_money_vfx.md`
+
+### 19 — Sparkle récoltable `[BZ-POLISH-019]` / `[CT-FARM-POLISH-004]`
+- **Feel** : idle sparkle crème quand stade récoltable (Mature **ou** graines Seedling)
+- **Bezy** : prefab `HarvestReadyFx` Ph.1–4 + ancre `LaitueObj` — **CLOS** (2026-07-29)
+- **Texture** : `StarsParticle.png` recentré + `M_HarvestReadySparkle` (Cursor 2026-07-29)
+- **Cursor après** : hook `PlantGrow` — **OK** (2026-07-29) `HarvestReadyFxAnchor` + sync récoltable
+- Prompts : `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md`
 
 ---
 

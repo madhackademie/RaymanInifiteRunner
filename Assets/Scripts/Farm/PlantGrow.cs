@@ -51,6 +51,9 @@ public class PlantGrow : MonoBehaviour
     [Tooltip("Optionnel : path insecte Flowering. Si vide, recherche enfant InsectPathAnchor.")]
     [SerializeField] private InsectPathAnchor insectPath;
 
+    [Tooltip("Optionnel : sparkle récoltable. Si vide, recherche enfant HarvestReadyFxAnchor.")]
+    [SerializeField] private HarvestReadyFxAnchor harvestReadyFx;
+
     private SpriteRenderer spriteRenderer;
     private GrowthStage currentStage;
     private float stageTimer;
@@ -60,6 +63,7 @@ public class PlantGrow : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         CacheInsectPath();
+        CacheHarvestReadyFx();
 
         // Initialisation du stade ici (et pas dans Start) : sinon, après Instantiate,
         // Unity appelle Start sur PlantGrow *après* le Start de BiofiltreManager, ce qui
@@ -120,6 +124,7 @@ public class PlantGrow : MonoBehaviour
         currentStageDuration = plantDefinition.GetDuration(stage);
         WarnIfStageHasZeroDurationButNotTerminal(stage);
         SyncInsectPathForStage(stage);
+        SyncHarvestReadyFxForStage(stage);
     }
 
 #if UNITY_EDITOR
@@ -128,12 +133,30 @@ public class PlantGrow : MonoBehaviour
     {
         SetStage(GrowthStage.Flowering);
     }
+
+    [ContextMenu("Debug/Force Mature (sparkle récolte)")]
+    private void DebugForceMature()
+    {
+        SetStage(GrowthStage.Mature);
+    }
+
+    [ContextMenu("Debug/Force Seedling (sparkle graines)")]
+    private void DebugForceSeedling()
+    {
+        SetStage(GrowthStage.Seedling);
+    }
 #endif
 
     private void CacheInsectPath()
     {
         if (insectPath == null)
             insectPath = GetComponentInChildren<InsectPathAnchor>(true);
+    }
+
+    private void CacheHarvestReadyFx()
+    {
+        if (harvestReadyFx == null)
+            harvestReadyFx = GetComponentInChildren<HarvestReadyFxAnchor>(true);
     }
 
     private void SyncInsectPathForStage(GrowthStage stage)
@@ -162,6 +185,18 @@ public class PlantGrow : MonoBehaviour
         }
 
         insectPath.SetPathActive(true, runtimeKind);
+    }
+
+    private void SyncHarvestReadyFxForStage(GrowthStage stage)
+    {
+        CacheHarvestReadyFx();
+        if (harvestReadyFx == null)
+            return;
+
+        bool showFx = plantDefinition != null
+            && plantDefinition.GetHarvestConfig(stage) != null;
+
+        harvestReadyFx.SetFxActive(showFx);
     }
 
     /// <summary>

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Feedback monnaie vente : burst pièces + billets au-dessus du HUD Overlay.
 /// Prefab Bezy <c>SaleMoneyBurst</c> = ref ParticleSystem (Simulate / Phase 3 sprites) ;
+/// ancre runtime = bouton Confirmer/Valider du <c>ShopItemPopup</c> ;
 /// runtime = Images UI (Overlay masque les PS monde).
 /// </summary>
 public static class SaleMoneyBurstVfx
@@ -21,7 +22,7 @@ public static class SaleMoneyBurstVfx
     private static readonly Color BillColor = new(0.482f, 0.776f, 0.494f, 1f);
 
     /// <summary>
-    /// Joue le burst centré sur <paramref name="anchor"/> (bandeau cliqué).
+    /// Joue le burst centré sur <paramref name="anchor"/> (bouton Confirmer / Valider).
     /// </summary>
     public static void Play(
         MonoBehaviour coroutineHost,
@@ -35,36 +36,33 @@ public static class SaleMoneyBurstVfx
         if (canvas == null)
             return;
 
-        RectTransform canvasRect = canvas.transform as RectTransform;
+        RectTransform canvasRect = canvas.rootCanvas != null
+            ? canvas.rootCanvas.transform as RectTransform
+            : canvas.transform as RectTransform;
         if (canvasRect == null)
             return;
 
-        Camera eventCam = canvas.renderMode == RenderMode.ScreenSpaceOverlay
-            ? null
-            : canvas.worldCamera;
-
-        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(eventCam, anchor.position);
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvasRect,
-                screenPoint,
-                eventCam,
-                out Vector2 localPoint))
-        {
-            localPoint = Vector2.zero;
-        }
+        Canvas rootCanvas = canvas.rootCanvas != null ? canvas.rootCanvas : canvas;
 
         var hostGo = new GameObject("SaleMoneyBurstUi", typeof(RectTransform));
         RectTransform host = hostGo.GetComponent<RectTransform>();
-        host.SetParent(canvasRect, false);
-        host.SetAsLastSibling();
+
+        // Position exacte du bouton, puis reparent canvas (worldPositionStays).
+        host.SetParent(anchor, false);
         host.anchorMin = new Vector2(0.5f, 0.5f);
         host.anchorMax = new Vector2(0.5f, 0.5f);
-        host.anchoredPosition = localPoint;
+        host.pivot = new Vector2(0.5f, 0.5f);
+        host.anchoredPosition = Vector2.zero;
+        host.localRotation = Quaternion.identity;
+        host.localScale = Vector3.one;
         host.sizeDelta = Vector2.zero;
+
+        host.SetParent(canvasRect, true);
+        host.SetAsLastSibling();
 
         Canvas hostCanvas = hostGo.AddComponent<Canvas>();
         hostCanvas.overrideSorting = true;
-        hostCanvas.sortingOrder = canvas.sortingOrder + OverlaySortingOrderBoost;
+        hostCanvas.sortingOrder = rootCanvas.sortingOrder + OverlaySortingOrderBoost;
 
         float delay = destroyDelaySeconds > 0f ? destroyDelaySeconds : DefaultDestroyDelaySeconds;
         coroutineHost.StartCoroutine(RunBurst(coroutineHost, host, delay));
