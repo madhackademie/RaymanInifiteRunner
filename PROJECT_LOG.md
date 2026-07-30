@@ -1,5 +1,28 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-30 — Prochaine session = filigrane Commerce (art ChatGPT)
+
+### Décision auteur
+- Pas de job Bezy filigrane **aujourd’hui**.
+- Priorité **prochaine session** : générer l’image filigrane Commerce via ChatGPT, puis import Unity + Bezy `[BZ-POLISH-010]`.
+
+### Intent art (rappel)
+- Emblème soft : balance + pièce / étiquette (acheteur vs vendeur).
+- Flat vector, PNG transparent 1024×1024, peu de détail au centre.
+- En jeu : Image sous `TreeMountHost`, alpha ~0.08–0.15.
+
+### Trace todo
+- [ ] **[P0-ART-FILIGRANE-001]** + chaîne import → `[BZ-POLISH-010]` placés en *Prochaine session* (`Notes/Todo_project.md`).
+- Sera la référence au prochain « tâche du jour ».
+
+### Session du jour (fait)
+- `[BZ-POLISH-009]` Bezy Ph.1–3 OK (TreeMountHost + contrastes nœuds/edges).
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
 ## 2026-07-30 — Idea backlog : récolte grille en un clic
 
 ### Décision

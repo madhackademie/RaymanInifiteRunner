@@ -40,25 +40,25 @@ Convention d'IDs :
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`polish/ui-bezy`**.  
-> `[BZ-POLISH-009]` Bezy Ph.1–3 OK — reste playtest auteur. Commit auteur à planifier.
+> Priorité prochaine session : **filigrane Commerce** (art ChatGPT → import → Bezy). Commit auteur `[BZ-POLISH-009]` à planifier.
 
-### Priorité immédiate — file Bezy polish + playtest talents
+### Priorité immédiate — filigrane Commerce (prochaine session)
 
-> Source : `Notes/Ui/TODO_Bezy_polish_semaine.md`  
-> **Prochain Bezy :** **[BZ-POLISH-010]** filigrane Commerce — ne pas relancer wallet punch (`[BZ-POLISH-015]` park).
+> Décidé session 2026-07-30 : **pas** de Bezy filigrane aujourd’hui — art d’abord via ChatGPT, puis Bezy.  
+> Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).
 
-**Ordre immédiat :**
+**Ordre prochaine session :**
 
-1. [x] **[BZ-POLISH-002]** HUD PA — Bezy + hooks Cursor **OK** — reste Batch E playtest
-2. [x] **[BZ-POLISH-005]** ShopScreen Bezy Ph.1–3 + wire empty catalogue Cursor **OK**
-3. [x] **[BZ-POLISH-006]** NavigationHUD press onglets — **CLOS** playtest OK
-4. [x] **[BZ-POLISH-007]** Toast / feedback récolte — Bezy Ph.1–3 + hook `Show` Cursor **OK**
-5. [x] **[BZ-POLISH-008]** Popup inventaire plein — Bezy Ph.1–3 + hooks Open/Close Cursor **OK**
-6. [x] **[BZ-POLISH-009]** Arbre talents Commerce contrastes — **Bezy Ph.1–3 OK** (2026-07-30) — playtest auteur
-7. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
-8. [x] **[BZ-POLISH-017]** HUD Vente fond opaque **OK**
-9. [ ] **[BZ-POLISH-010]** Filigrane placeholder Commerce — **prochain Bezy**
-10. [ ] Suite file #11→#16
+1. [ ] **[P0-ART-FILIGRANE-001]** Générer image filigrane Commerce (ChatGPT) — emblème soft balance + pièce/étiquette, PNG transparent 1024² ; prompt dans session 2026-07-30
+2. [ ] Import Unity (`Assets/Art/UI/Progression/` ou équiv.) — Sprite + Alpha Is Transparency
+3. [ ] **[BZ-POLISH-010]** / `[BL-INV-TALENT-001]` Bezy : Image filigrane sous `TreeMountHost` (alpha ~0.08–0.15)
+4. [ ] Playtest auteur : Inventaire → P1 Commerce (contrastes `[BZ-POLISH-009]` + filigrane lisible)
+
+**File Bezy (après filigrane) :**
+
+1. [x] **[BZ-POLISH-009]** Contrastes talents Commerce — **Bezy Ph.1–3 OK** (2026-07-30)
+2. [ ] Suite file #11→#16
+3. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
 
 **Cursor (hors Bezy, quand utile) :**
 
@@ -67,7 +67,7 @@ Convention d'IDs :
 - [x] **[BZ-POLISH-007]** `Show` punch toast récolte
 - [x] **[BZ-POLISH-008]** Open/Close soft ResourceFeedback
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
-- [ ] Commit auteur lot session + docs
+- [ ] Commit auteur lot session + docs (`[BZ-POLISH-009]` + notes)
 
 **Clos playtests (session 2026-07-29) — validés auteur :**
 
