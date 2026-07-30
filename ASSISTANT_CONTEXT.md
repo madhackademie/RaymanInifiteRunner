@@ -5,16 +5,16 @@
 - Inventaire drop + insecte Flowering + DirtBurst : **playtests validés** (2026-07-29).
 - **Arbre talents Commerce : MVP OK** — feature gelée, polish en backlog.
 
-### Priorités en cours (2026-07-29)
-1. **[BZ-POLISH-002]** HUD PA suite (Refuse pulse, fill conso, tooltip fade) — prochain job Bezy.
-2. File Bezy #5→#16 ; `[BZ-POLISH-015]` wallet punch reste PARK UX.
-3. Arbres talents (plus tard) — polish `BL-INV-TALENT-*` dans `Notes/Todo_project.md`.
+### Priorités en cours (2026-07-30)
+1. **[BZ-POLISH-009]** Bezy Ph.1–3 OK — playtest auteur arbre Commerce.
+2. **[BZ-POLISH-010]** Filigrane Commerce — prochain job Bezy ; `[BZ-POLISH-015]` PARK UX.
+3. Suite file Bezy #11→#16 ; polish `BL-INV-TALENT-*` backlog.
 
 ### Contexte Git
-- Branche : **`polish/ui-bezy`** — commit auteur à planifier (docs + lot drop/insecte/VFX).
+- Branche : **`polish/ui-bezy`** — commit auteur à planifier (docs + `[BZ-POLISH-009]`).
 
 ### Rappel « tâche du jour »
-- Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md` (entrée 2026-07-29).
+- Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md` (entrée récente).
 
 ### Références talent tree
 - Workflow : `Notes/Ui/WORKFLOW_creation_arbre_talents.md` (§ Polish / backlog)

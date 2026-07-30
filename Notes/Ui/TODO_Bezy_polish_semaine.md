@@ -11,7 +11,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
-> **Priorité polish Bezy :** file **#9** ([BZ-POLISH-009] talents) — [BZ-POLISH-008] inventaire plein **CLOS**.
+> **Priorité polish Bezy :** file **#10** ([BZ-POLISH-010] filigrane) — [BZ-POLISH-009] talents contrastes **Bezy CLOS** 2026-07-30.
 > **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only (code jeté) ; attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`).  
 > **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
 
@@ -25,7 +25,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | ~~6~~ | ~~**[BZ-POLISH-006]**~~ | ~~NavigationHUD press tabs + layer 5~~ | — | — | **CLOS** playtest OK 2026-07-29 |
 | ~~7~~ | ~~**[BZ-POLISH-007]**~~ | ~~Toast récolte~~ | — | — | **Bezy CLOS** 2026-07-29 + Cursor Show |
 | ~~8~~ | ~~**[BZ-POLISH-008]**~~ | ~~Popup inventaire plein~~ | — | — | **Bezy CLOS** 2026-07-29 + Cursor Open/Close |
-| 9 | **[BZ-POLISH-009]** | Arbre talents Commerce : contrastes nœuds + edges + `TreeMountHost` | `Track_Commerce` / overlay | M | `[BL-INV-TALENT-003]` |
+| ~~9~~ | ~~**[BZ-POLISH-009]**~~ | ~~Arbre talents Commerce contrastes~~ | — | — | **Bezy CLOS** 2026-07-30 — playtest auteur |
 | 10 | **[BZ-POLISH-010]** | Filigrane placeholder piste Commerce (couleur/motif UI, **pas** art final) | sous `TreeMountHost` | M | placeholders OK |
 | 11 | **[BZ-POLISH-011]** | LoadingScreen : layout polish barre + % (pas illustration finale) | `Bootstrap` LoadingCanvas | S | — |
 | 12 | **[BZ-POLISH-012]** | HomeScene / hub : boutons + titres lisibilité mobile | scènes hub | M | — |
@@ -77,9 +77,13 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - Layers 5 + lisibilité + Open/Close soft + Cursor hooks OK
 - Prompts : `Notes/Ui/PROMPTS_Bezi_resource_feedback_008.md`
 
-### 9–10 — Talents — **PRIORITÉ Bezy #9**
-- Contrastes Locked/Available/Owned  
-- Filigrane = Image plein fond alpha faible (couleur), **pas** sprite final
+### 9 — Talents contrastes `[BZ-POLISH-009]` — **Bezy Ph.1–3 CLOS** (2026-07-30)
+- `TreeMountHost` fixe + wire `treeMountHost` ; contrastes nœuds/edges ; layers 5
+- Prompts : `Notes/Ui/PROMPTS_Bezi_talent_contrasts_009.md`
+- Suite : playtest auteur Inventaire → P1 Commerce
+
+### 10 — Filigrane `[BZ-POLISH-010]` — **PRIORITÉ Bezy**
+- Filigrane = Image plein fond alpha faible (couleur), **pas** sprite final — sous `TreeMountHost`
 
 ### 11–12 — Bootstrap / Home
 - Lisibilité uniquement ; art LoadingScreen = autre workflow

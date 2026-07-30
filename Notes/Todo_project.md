@@ -40,12 +40,12 @@ Convention d'IDs :
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`polish/ui-bezy`**.  
-> `[BZ-POLISH-002]` Bezy Ph.1–3 OK — reste hooks Cursor. Commit auteur à planifier.
+> `[BZ-POLISH-009]` Bezy Ph.1–3 OK — reste playtest auteur. Commit auteur à planifier.
 
-### Priorité immédiate — hooks Cursor HUD PA + file Bezy
+### Priorité immédiate — file Bezy polish + playtest talents
 
 > Source : `Notes/Ui/TODO_Bezy_polish_semaine.md`  
-> **Prochain Bezy :** **[BZ-POLISH-009]** arbre talents Commerce — ne pas relancer wallet punch (`[BZ-POLISH-015]` park).
+> **Prochain Bezy :** **[BZ-POLISH-010]** filigrane Commerce — ne pas relancer wallet punch (`[BZ-POLISH-015]` park).
 
 **Ordre immédiat :**
 
@@ -54,10 +54,11 @@ Convention d'IDs :
 3. [x] **[BZ-POLISH-006]** NavigationHUD press onglets — **CLOS** playtest OK
 4. [x] **[BZ-POLISH-007]** Toast / feedback récolte — Bezy Ph.1–3 + hook `Show` Cursor **OK**
 5. [x] **[BZ-POLISH-008]** Popup inventaire plein — Bezy Ph.1–3 + hooks Open/Close Cursor **OK**
-6. [ ] **[BZ-POLISH-009]** Arbre talents Commerce contrastes — **prochain Bezy**
+6. [x] **[BZ-POLISH-009]** Arbre talents Commerce contrastes — **Bezy Ph.1–3 OK** (2026-07-30) — playtest auteur
 7. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
 8. [x] **[BZ-POLISH-017]** HUD Vente fond opaque **OK**
-9. [ ] Suite file #10→#16
+9. [ ] **[BZ-POLISH-010]** Filigrane placeholder Commerce — **prochain Bezy**
+10. [ ] Suite file #11→#16
 
 **Cursor (hors Bezy, quand utile) :**
 
@@ -350,6 +351,10 @@ Convention d'IDs :
 - [ ] [BL-AUD-002] Nettoyer le code mort et harmoniser commentaires XML/scripts navigation/UI.
 - [ ] [BL-AUD-003] Audit doc global projet + consolidation des notes obsolètes.
 - [ ] [BL-AUD-004] Passe commentaires FR ciblée sur scripts complexes (`Assets/Scripts/**`).
+
+### Ferme — QoL monétisé (plus tard)
+
+- [ ] **[BL-FARM-HARVEST-ALL-001]** Bouton **récolte en un clic** sur la grille biofiltre : simuler le clic + validation de récolte sur **chaque** objet récoltable de la grille (accélération joueur). **Gate monétisation** (à trancher) : vision pub récompensée **ou** monnaie produite via pubs **ou** pass NoPub. Spec GDD + UI + service harvest batch — **pas avant** fondation monétisation / ads.
 
 ### Prototype gameplay
 - [~] [BL-PROTO-001] Finaliser la state machine culture (transitions gameplay/récolte).

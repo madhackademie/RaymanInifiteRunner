@@ -1,5 +1,20 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-30 — Idea backlog : récolte grille en un clic
+
+### Décision
+- Feature **QoL** notée pour plus tard (pas d’implémentation maintenant) : bouton qui récolte **tout** ce qui est récoltable sur la grille biofiltre (simule clic + validation par plante).
+- Accès conditionné à monétisation : **pub** / **monnaie issue des pubs** / **pass NoPub** (choix design à faire plus tard).
+
+### Trace todo
+- [ ] **[BL-FARM-HARVEST-ALL-001]** ajouté dans `Notes/Todo_project.md` § Backlog → *Ferme — QoL monétisé*.
+
+### Suite session (inchangée)
+1. Prochain Bezy : `[BZ-POLISH-010]` filigrane Commerce
+2. Playtest auteur `[BZ-POLISH-009]` talents Commerce
+
+---
+
 ## 2026-07-29 — `[BZ-POLISH-008]` Bezy Ph.1–3 OK + hooks Open/Close
 
 ### Review

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7722490077629866073}
   - component: {fileID: 4143282352336306233}
   - component: {fileID: 3274872473424604349}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5333, g: 0.5333, b: 0.5333, a: 1}
+  m_Color: {r: 0.75, g: 0.72, b: 0.85, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8717630502073854031}
   - component: {fileID: 4932737034779380001}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TalentTreeEdgeView
   m_TagString: Untagged
   m_Icon: {fileID: 0}

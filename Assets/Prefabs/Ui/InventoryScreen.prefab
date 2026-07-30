@@ -1949,6 +1949,7 @@ MonoBehaviour:
   slotPrefab: {fileID: 4882144160622489148, guid: f7260c5284a06ca498e379228e4ec7ef, type: 3}
   slotsContainer: {fileID: 1963455316}
   scrollRect: {fileID: 626289462}
+  itemDetailPopupId: inventory.item.detail
 --- !u!1 &104147512928257517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1960,7 +1961,7 @@ GameObject:
   - component: {fileID: 7052364742009367768}
   - component: {fileID: 6252303981330821013}
   - component: {fileID: 4764552238684779676}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: OverlayPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1982,6 +1983,7 @@ RectTransform:
   - {fileID: 6359157134044728127}
   - {fileID: 1192084360902982196}
   - {fileID: 3614285813900551079}
+  - {fileID: 3447304019327482190}
   - {fileID: 5980595203253055538}
   m_Father: {fileID: 4515422003530783267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2104,7 +2106,7 @@ GameObject:
   - component: {fileID: 4776343392135665050}
   - component: {fileID: 8420528452825369422}
   - component: {fileID: 4467290611164939415}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2242,7 +2244,7 @@ GameObject:
   - component: {fileID: 5309430201119163305}
   - component: {fileID: 7360606402543293936}
   - component: {fileID: 2301569316125484263}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2331,7 +2333,7 @@ GameObject:
   - component: {fileID: 9106089650823381435}
   - component: {fileID: 7845291638024419021}
   - component: {fileID: 6382749156048837294}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BodyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2457,6 +2459,41 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2973380032755986647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3447304019327482190}
+  m_Layer: 5
+  m_Name: TreeMountHost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3447304019327482190
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2973380032755986647}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7052364742009367768}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -32, y: -112}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3863060605663006436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2468,7 +2505,7 @@ GameObject:
   - component: {fileID: 6359157134044728127}
   - component: {fileID: 541752683809628432}
   - component: {fileID: 2885667655426711352}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TrackTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2606,7 +2643,7 @@ GameObject:
   - component: {fileID: 4715384341189413696}
   - component: {fileID: 8707134049517859393}
   - component: {fileID: 5868218751948086085}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TalentTreeOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2668,7 +2705,7 @@ MonoBehaviour:
   autoBindPlaceholderAsPurchaseButton: 1
   createRuntimePurchaseButtonWhenMissing: 1
   treeContentHost: {fileID: 4225905081115979822}
-  treeMountHost: {fileID: 0}
+  treeMountHost: {fileID: 3447304019327482190}
   bypassScrollRectForTreeMount: 1
   trackPrefabBindings:
   - trackId: track.commerce
@@ -2712,7 +2749,7 @@ GameObject:
   - component: {fileID: 1192084360902982196}
   - component: {fileID: 3973337719074674831}
   - component: {fileID: 7060695638572470430}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BodyPlaceholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2789,7 +2826,7 @@ GameObject:
   - component: {fileID: 4214749665526953117}
   - component: {fileID: 8222549923983226026}
   - component: {fileID: 2893865562687882896}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2909,7 +2946,7 @@ GameObject:
   - component: {fileID: 3590803668111319655}
   - component: {fileID: 8339787233359610854}
   - component: {fileID: 4054934371796159440}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: OverlayDimmer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2982,7 +3019,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4225905081115979822}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TreeContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3018,7 +3055,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5980595203253055538}
   - component: {fileID: 285969488052873515}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TreeScrollView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
