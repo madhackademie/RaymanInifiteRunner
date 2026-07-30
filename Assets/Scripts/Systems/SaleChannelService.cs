@@ -21,6 +21,7 @@ public class SaleChannelService : MonoBehaviour
     [SerializeField] private float neighborSaleCooldownSeconds = NeighborSaleCooldownSeconds;
 
     [Header("Debug")]
+    [Tooltip("Ignore tout cooldown (playtest). Sinon durée = Neighbor Sale Cooldown Seconds.")]
     [SerializeField] private bool ignoreSaleCooldown;
 
     private readonly Dictionary<string, long> lastSaleUtcTicksByChannel = new();
@@ -36,6 +37,15 @@ public class SaleChannelService : MonoBehaviour
 
         Instance = this;
         LoadCooldownState();
+    }
+
+    /// <summary>Playtest : efface les cooldowns en mémoire + fichier <c>sale_channels.json</c>.</summary>
+    [ContextMenu("Debug/Clear Sale Cooldowns")]
+    public void DebugClearSaleCooldowns()
+    {
+        lastSaleUtcTicksByChannel.Clear();
+        SaleChannelSaveService.Delete();
+        Debug.Log("[SaleChannelService] Cooldowns vente effacés (mémoire + save).");
     }
 
     private void OnDestroy()

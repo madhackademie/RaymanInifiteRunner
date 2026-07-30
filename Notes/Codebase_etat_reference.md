@@ -70,12 +70,13 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 ## Données plante (`PlantDefinition`)
 
-- Identité, **GrowthPattern** (`Leafy` / `Fruiting`), **HarvestStage** (souvent `Mature`).
-- Harvest : `harvestItemId`, min/max quantité, `maxHarvestCount`.
+- Identité, **GrowthPattern** (`Leafy` / `Fruiting`).
+- Harvest : tableau **`harvestStages[]`** (`stage` + `harvestItemId` + min/max) — plusieurs fenêtres alternatives (Mature / Seedling…), une seule offerte selon le stade courant.
 - Sprites par stade, **footprint** `Vector2Int[]` avec ancre `(0,0)`, `spriteWorldOffset`.
+- Insecte Flowering : `insectKind` (+ overrides vitesse / butinage).
 - Durées par stade (`StageDuration[]`, `GetDuration`).
 
-`PlantGrow` applique l’ordre des stades selon le pattern (feuille vs fruit).
+`PlantGrow` applique l’ordre des stades selon le pattern et sync **InsectPath** (Flowering) + **HarvestReadyFx** (stade récoltable).
 
 ---
 
@@ -96,7 +97,7 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 
 ## Points d’attention (design / dette)
 
-1. **Deux stades récoltables** (`Mature`, `Seedling`) mais **un seul** `harvestItemId` dans l’asset — les graines fin de cycle partagent l’item feuille/fruit tant qu’on n’étend pas les données.
+1. **Plusieurs `harvestStages`** = fenêtres **alternatives** (Mature **ou** Seedling), pas deux récoltes successives sur la même instance — voir `Docs/PLANTES_ET_INVENTAIRE.md`.
 2. **`InventoryResult.Partial`** : la plante est retirée comme en **succès complet** (`OnHarvestSuccess`) — à trancher côté gameplay (perte vs conservation sur pied).
 3. **`maxHarvestCount`** : présent sur `PlantDefinition`, pas exploité pour des récoltes répétées **sans** destruction dans `PlantHarvestInteractor`.
 4. **`HarvestPanelUI.Update`** : rafraîchissement continu du timer tant que le panel est ouvert — acceptable prototype ; à revoir si plusieurs panneaux ou perf mobile.
@@ -110,5 +111,5 @@ Document **ponctuel** : photographie du dépôt pour onboarding et agents. À **
 - Flux détaillé et diagrammes : `Notes/Farm/SYSTEMES_carte_mentale.md`
 - Hub tâches : `Notes/Todo_project.md`
 - Pipeline plantation : `Notes/Farm/TODO_plantation_pipeline.md`
-- Ajout d’une plante : `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md`
+- **Protocole création plante (complet)** : `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md`
 - Journal chronologique : `PROJECT_LOG.md` (racine du repo)

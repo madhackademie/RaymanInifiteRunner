@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class ActionPointsHudView : MonoBehaviour
 {
     private const string SpendTriggerName = "Spend";
+    private const string RefuseTriggerName = "Refuse";
 
     [Header("Labels")]
     [SerializeField] private TextMeshProUGUI pointsLabel;
@@ -26,10 +27,11 @@ public class ActionPointsHudView : MonoBehaviour
     [SerializeField] private Color consumedOverlayColor = new Color(0f, 0f, 0f, 0.42f);
 
     [Header("Polish anim (Bezy)")]
-    [Tooltip("Animator sur la racine ; trigger Spend → clip SpendPulse. Optionnel jusqu'à Phase 5 Bezy.")]
+    [Tooltip("Animator racine : Spend → SpendPulse, Refuse → RefuseShake.")]
     [SerializeField] private Animator animator;
 
     private static readonly int SpendTriggerHash = Animator.StringToHash(SpendTriggerName);
+    private static readonly int RefuseTriggerHash = Animator.StringToHash(RefuseTriggerName);
 
     private bool subscribed;
     private bool buffSubscribed;
@@ -72,6 +74,7 @@ public class ActionPointsHudView : MonoBehaviour
             return;
 
         ActionPointService.Instance.OnActionPointsChanged += Refresh;
+        ActionPointService.Instance.OnSpendRefused += PlayRefusePulse;
         subscribed = true;
     }
 
@@ -81,7 +84,10 @@ public class ActionPointsHudView : MonoBehaviour
             return;
 
         if (ActionPointService.Instance != null)
+        {
             ActionPointService.Instance.OnActionPointsChanged -= Refresh;
+            ActionPointService.Instance.OnSpendRefused -= PlayRefusePulse;
+        }
 
         subscribed = false;
     }
@@ -151,6 +157,15 @@ public class ActionPointsHudView : MonoBehaviour
 
         animator.ResetTrigger(SpendTriggerHash);
         animator.SetTrigger(SpendTriggerHash);
+    }
+
+    private void PlayRefusePulse()
+    {
+        if (animator == null)
+            return;
+
+        animator.ResetTrigger(RefuseTriggerHash);
+        animator.SetTrigger(RefuseTriggerHash);
     }
 
     private void SetFallbackDisplay()

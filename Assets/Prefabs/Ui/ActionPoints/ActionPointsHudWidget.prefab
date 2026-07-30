@@ -397,7 +397,9 @@ GameObject:
   - component: {fileID: 1892824396665763684}
   - component: {fileID: 7879437509286307480}
   - component: {fileID: 8878043541641639057}
-  m_Layer: 0
+  - component: {fileID: 3067499030633731135}
+  - component: {fileID: 5629920342096267665}
+  m_Layer: 5
   m_Name: FatigueTooltipPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -520,6 +522,40 @@ MonoBehaviour:
   bodyLabel: {fileID: 3678054027672789072}
   panelRect: {fileID: 3019626051563341559}
   screenOffset: {x: 0, y: 12}
+--- !u!225 &3067499030633731135
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026135982764597147}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!95 &5629920342096267665
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026135982764597147}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0b49be49b2753074792f702fa78cdc9e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3379960323793197912
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +770,7 @@ GameObject:
   - component: {fileID: 7193239651503687174}
   - component: {fileID: 3678054027672789072}
   - component: {fileID: 3308848732369230034}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BodyLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -891,7 +927,7 @@ GameObject:
   - component: {fileID: 8504900882595222220}
   - component: {fileID: 1336487606276338745}
   - component: {fileID: 6940534660239166700}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TitleLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1537,11 +1573,11 @@ RectTransform:
   - {fileID: 3019626051563341559}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -40}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -16, y: -16}
   m_SizeDelta: {x: 240, y: 60}
-  m_Pivot: {x: 0.5, y: 1}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &7770252425126254331
 MonoBehaviour:
   m_ObjectHideFlags: 0

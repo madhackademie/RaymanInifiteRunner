@@ -3,6 +3,8 @@
 Document de référence pour configurer une nouvelle culture et la lier à l’inventaire.  
 **Emplacement :** `Docs/PLANTES_ET_INVENTAIRE.md` (à citer ou ouvrir lors des questions sur les plantes / items / récolte).
 
+**Protocole complet (prefab, VFX, SeedEntry, shop)** : `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md` — **source unique** pour créer une plante de A à Z. Cette note Docs se concentre sur le **lien inventaire / harvestItemId**.
+
 ### Décision design — ce jeu
 
 - **Une récolte par plante** : après ajout à l’inventaire (**Success** ou **Partial**), la plante est **détruite** et les cellules sont libérées (`PlantHarvestInteractor.OnHarvestSuccess`).
@@ -71,6 +73,8 @@ Les **scripts** restent sous `Assets/Scripts/`.
 
 ## 6. Checklist — nouvelle plante + récolte
 
+> Checklist **items / harvest** seulement. Pour prefab, insecte, sparkle, SeedEntry, shop : voir **`Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md`**.
+
 1. Créer un **`ItemDefinition`** (ou réutiliser un item existant) ; choisir un **`itemId`** stable (ex. `tomate_mure`).
 2. Ajouter cet item dans **`ItemDatabase`**.
 3. Créer ou dupliquer une **`PlantDefinition`** ; remplir stades, sprites, footprint, etc.
@@ -80,7 +84,7 @@ Les **scripts** restent sous `Assets/Scripts/`.
    - **`harvestAmountMin` / `harvestAmountMax`** = quantité aléatoire incluse entre min et max.
    - Prévoir un **`ItemDefinition`** (et entrée **`ItemDatabase`**) pour **chaque** ligne si les items diffèrent.
 5. Vérifier que le prefab plante a **`PlantHarvestInteractor`**, **`PlantDefinitionHolder`**, **`PlantGrow`**, **`Collider2D`**, et que **`BiofiltreManager`** référence le bon **`ItemDatabase`** et **`PlayerInventory`**.
-
+6. (Polish) `HarvestReadyAnchor` + `InsectPath` selon `WORKFLOW_ajouter_nouvelle_plante.md` §3.3.
 ---
 
 ## 7. Flux runtime (rappel)
@@ -100,6 +104,6 @@ Les **scripts** restent sous `Assets/Scripts/`.
 
 ---
 
-*Dernière mise à jour : alignée sur la convention `itemId` / `harvestItemId` et les dossiers `Assets/Data/Ferme` & `Assets/Data/Inventaire`.*
+*Dernière mise à jour : 2026-07-29 — lien protocole complet `WORKFLOW_ajouter_nouvelle_plante.md`.*
 
-**Journal projet** : `PROJECT_LOG.md` — entrée *2026-04-12 — fin de session (données récolte + organisation assets + doc)*.
+**Journal projet** : `PROJECT_LOG.md`.

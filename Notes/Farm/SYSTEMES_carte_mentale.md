@@ -44,6 +44,8 @@ flowchart TB
       PG[PlantGrow]
       PDH[PlantDefinitionHolder]
       PHI[PlantHarvestInteractor]
+      IPA[InsectPathAnchor]
+      HRF[HarvestReadyFxAnchor]
     end
     subgraph Inv["Inventaire joueur"]
       PI[PlayerInventory]
@@ -73,9 +75,12 @@ flowchart TB
   PHI --> PI
   PHI --> HUI
   PHI --> IFB
+  PG --> IPA
+  PG --> HRF
   PI --> IUI
 ```
 
+> **Créer une nouvelle plante** : protocole unique `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md`.
 ### Niveau 2 — Organisme « un biofiltre » (composants sur le même GameObject)
 
 ```mermaid

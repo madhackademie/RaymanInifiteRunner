@@ -39,42 +39,77 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
+<<<<<<< HEAD
 > Branche courante : **`polish/ui-bezy`** (depuis `main` @ `4f2d1e8` docs park monnaie).  
 > Sandbox polish Bezy / UI — **ne pas merger** tant que playtest auteur OK. Rollback : `git checkout main`.  
 > Prochain job Bezy visible : **`[BZ-POLISH-002]` HUD PA**. Wallet punch `[BZ-POLISH-015]` = park GDD §5.8 (code jeté, docs gardées).
+=======
+> Branche courante : **`polish/ui-bezy`**.  
+> Layout TreeMount plein + HUD PA haut-droite livré Cursor — **playtest auteur**. Commit à planifier.
+>>>>>>> polish/ui-bezy
 
-### Priorité immédiate — playtest VFX branché
+### Priorité immédiate — playtest layout talents + PA
 
-> Prefab : `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab` (P1–P3 OK)  
-> Hook Cursor : `FarmDirtBurstVfx` + `BiofiltreManager.PlayPlantingDirtBurst` (plant / arrachage / récolte)
+> Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).  
+> Crédits Bezy : reset le **30** de chaque mois.
 
 **Ordre immédiat :**
 
-1. [~] **[BZ-POLISH-014]** / `[P0-FARM-INSECT-PLAY-001]` Insecte — Bezy P1–P3 **OK** ; **playtest** Flowering → abeille Fly/butinage + flipX
-2. [ ] **[P0-FARM-VFX-PLAY-002]** Playtest in-game DirtBurst (plant / arrachage / récolte)
-3. [ ] **[P0-FARM-VFX-TUNE-001]** (si besoin) Réglage taille / durée DirtBurst + WormBurst
+1. [x] **[P0-ART-FILIGRANE-001]** Image filigrane Commerce — `CommerceFiligrane.png`
+2. [x] **[BZ-POLISH-010]** / `[BL-INV-TALENT-001]` Filigrane + `FondPanel` (layers fond opaque / art PreserveAspect)
+3. [x] **[CT-UI-SAFE-PA-001]** TreeMount plein cadre + HUD PA haut-droite + convention safe zone (2026-07-30 Cursor)
+4. [x] Filigrane layers `FondPanel` + art PreserveAspect **1120²** — validé auteur (2026-07-30)
+5. [ ] Playtest auteur global : Inventaire → P1 Commerce (contrastes + fond + PA haut-droite) si pas déjà couvert
 
-**Clos :**
+**File Bezy (après playtest) :**
 
-- [x] Prefab P1–P3 livré (sprites + materials)
-- [x] Hook `Play()` plant + arrachage + récolte (2026-07-25)
-
-### Ensuite — file Bezy polish (semaine)
-
-> Source : `Notes/Ui/TODO_Bezy_polish_semaine.md`  
-> **Prochain job Bezy (surface visible) :** **[BZ-POLISH-002]** HUD PA — ne pas relancer wallet punch (`[BZ-POLISH-015]` park ; GDD §5.8).
-
-1. [ ] **[BZ-POLISH-002]** HUD PA — suite polish (Refuse pulse, fill conso, tooltip fade) — **priorité Bezy**
-2. [~] **[BZ-POLISH-015]** Wallet punch +1/−1 — Bezy Ph.1–3 OK — **PARK UX** (surface invisible au delta ; attendre GDD §5.8 / `NOTE_affichage_monnaie_hud.md`)
-3. [x] **[BZ-POLISH-017]** HUD Vente — fond opaque Bezy Ph.6 **OK** (2026-07-26) — playtest auteur : Home ne doit plus transparaître
-4. [ ] Suite file #5→#16 (VFX = P3 après playtest P2)
+1. [x] **[BZ-POLISH-009]** Contrastes talents Commerce — **Bezy Ph.1–3 OK** (2026-07-30)
+2. [ ] Suite file #11→#16
+3. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
 
 **Cursor (hors Bezy, quand utile) :**
 
+- [x] **[BZ-POLISH-002]** Hooks Refuse + tooltip fade
+- [x] **[BZ-POLISH-005]** `emptyCataloguePanel` Show/Hide
+- [x] **[BZ-POLISH-007]** `Show` punch toast récolte
+- [x] **[BZ-POLISH-008]** Open/Close soft ResourceFeedback
+- [x] **[CT-UI-SAFE-PA-001]** Runtime TreeMount offsets 0 + docs `CONVENTION_hud_pa_safe_zone.md`
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
-- [ ] Commit auteur lot session 2026-07-23 (PA HUD + vente cooldown + EmptyState + shop + VFX P1–P2 + docs)
+- [ ] Commit auteur lot session + docs
 
-**Playtests batch (plus tard) :** `Notes/Todo_playtest.md` (A PA / B vente / C graines / D shop QA Bootstrap)
+**Réf. layout PA :** `Notes/Ui/CONVENTION_hud_pa_safe_zone.md`
+
+**Clos playtests (session 2026-07-29) — validés auteur :**
+
+- [x] **[P0-INV-DROP-PLAY-001]** Playtest inventaire drop (stock → détail → Jeter → compost → retrait slot)
+- [x] **[P0-INV-DROP-001]** Bezy Ph.1–4c inventaire drop / compost
+- [x] **[BZ-POLISH-014]** / `[P0-FARM-INSECT-PLAY-001]` Insecte Flowering (espèce + sens path)
+- [x] **[P0-FARM-VFX-PLAY-002]** Playtest DirtBurst (plant / arrachage / récolte)
+- [x] **[BZ-POLISH-006]** NavigationHUD press onglets (`NavTab`) — playtest OK 2026-07-29
+
+**Clos (session 2026-07-28) :**
+
+- [x] Scripts inventaire drop + binding + art CompostDrop + Bezy Ph.1–4b
+- [x] Insecte rand Bee/Butterfly + sens path (code)
+
+**Clos VFX (antérieur) :**
+
+- [x] Prefab DirtBurst P1–P3 livré (sprites + materials)
+- [x] Hook `Play()` plant + arrachage + récolte (2026-07-25)
+
+### Ensuite — playtests batch / historique
+
+> Session QA dédiée : **`Notes/Todo_playtest.md`**  
+> Inclut **cheatsheet** forcer PA / inventaire / vente à la mano + ordre A→E.
+
+| Batch | Contenu | ID |
+|-------|---------|-----|
+| A | Points d’action V0 | `[P0-AP-PLAY-001]` |
+| B | Cooldown vente | `[P0-SALE-PLAY-004]` |
+| C | EmptyState graines | `[P0-FARM-PLAY-001]` / `[P0-FARM-BUG-001]` |
+| D | Shop polish + Bootstrap | `[CT-SHOP-002]` |
+| E | HUD PA Refuse/Fill/Tooltip (après Bezy `[BZ-POLISH-002]`) | — |
+| F | Drop / insecte / DirtBurst | **clos** 2026-07-29 |
 
 **Clos polish (2026-07-23) :**
 
@@ -270,6 +305,7 @@ Convention d'IDs :
 - [x] [CT-SHOP-006] Références Inspector popup item (prefab + `ShopItemPopupView` / `CurrencyBalanceUI` wallet).
 
 ### Inventaire / wallet / runtime UI
+- [x] **[CT-UI-SAFE-PA-001]** HUD PA slot chrome haut-droite + TreeMount plein cadre + convention `Notes/Ui/CONVENTION_hud_pa_safe_zone.md` (2026-07-30). Playtest auteur.
 - [~] **[CT-INV-HALO-001]** Rework inventaire halo + grille — Ph.1–3 + playtest halo OK ; **MVP arbre Commerce OK** (2026-06-16) ; polish arbre → backlog.
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
 - [ ] [CT-INV-002] Valider qu'il n'y a plus de dépendance runtime cachée à `Inventaire.unity` (ou documenter explicitement son rôle).
@@ -277,8 +313,8 @@ Convention d'IDs :
 
 ### Ferme — polish & UI
 - [x] **[CT-FARM-UI-001]** Prefab **`SeedSelectionUI`** EmptyState — Bezy Ph.1–3 OK (2026-07-23). Playtest → `Notes/Todo_playtest.md` Batch C / `[P0-FARM-BUG-001]`.
-- [ ] **[CT-FARM-POLISH-002]** Animation **insecte** (sprite sheet) pendant le stade **Flowering** — par `PlantDefinition` (feuilles : post-récolte ; fruits : pré-récolte). Enfant overlay + `Animator` sur prefab plante ; déclenché par `PlantGrow.SetStage(Flowering)`. Spec complète : `Notes/Farm/SPEC_insecte_flowering.md` (sheet partagé + path nodes par plante + FSM Fly/Forage + flipX). Art (ChatGPT) → Cursor scripts → Bezy nodes.
-- [~] **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** VFX plantation — **P1+P2 OK**. Prochaine : **[P0-FARM-VFX-PLAY-001]** playtest P2 puis Phase 3 sprites + hook Play(). Prompts : Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md.
+- [x] **[CT-FARM-POLISH-002]** / `[P0-FARM-INSECT-PLAY-001]` Insecte Flowering — runtime + playtest **OK** (2026-07-29). Spec `Notes/Farm/SPEC_insecte_flowering.md`.
+- [x] **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** VFX plantation DirtBurst — P1–P3 + hooks + playtest **[P0-FARM-VFX-PLAY-002]** **OK** (2026-07-29).
 
 ### Ferme — croissance et persistance
 - [~] [CT-FARM-001] Corriger la cohérence stade/durée après modification de `PlantDefinition` (runtime + reload).
@@ -326,6 +362,10 @@ Convention d'IDs :
 - [ ] [BL-AUD-002] Nettoyer le code mort et harmoniser commentaires XML/scripts navigation/UI.
 - [ ] [BL-AUD-003] Audit doc global projet + consolidation des notes obsolètes.
 - [ ] [BL-AUD-004] Passe commentaires FR ciblée sur scripts complexes (`Assets/Scripts/**`).
+
+### Ferme — QoL monétisé (plus tard)
+
+- [ ] **[BL-FARM-HARVEST-ALL-001]** Bouton **récolte en un clic** sur la grille biofiltre : simuler le clic + validation de récolte sur **chaque** objet récoltable de la grille (accélération joueur). **Gate monétisation** (à trancher) : vision pub récompensée **ou** monnaie produite via pubs **ou** pass NoPub. Spec GDD + UI + service harvest batch — **pas avant** fondation monétisation / ads.
 
 ### Prototype gameplay
 - [~] [BL-PROTO-001] Finaliser la state machine culture (transitions gameplay/récolte).

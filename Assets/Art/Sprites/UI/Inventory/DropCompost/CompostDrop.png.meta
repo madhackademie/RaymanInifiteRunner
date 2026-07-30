@@ -1,0 +1,465 @@
+fileFormatVersion: 2
+guid: 6d28a3f00bcc4472b41c2ea89dba02ae
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6531837657271282173
+    second: CompostDrop_00
+  - first:
+      213: 3445801721823667140
+    second: CompostDrop_01
+  - first:
+      213: 9041248556691272219
+    second: CompostDrop_02
+  - first:
+      213: -5808407742735174854
+    second: CompostDrop_03
+  - first:
+      213: 5452913157756221011
+    second: CompostDrop_04
+  - first:
+      213: -6218854665962872985
+    second: CompostDrop_05
+  - first:
+      213: 7411554128740077553
+    second: CompostDrop_06
+  - first:
+      213: 8097308030979068903
+    second: CompostDrop_07
+  - first:
+      213: 2320709574433745455
+    second: CompostDrop_08
+  - first:
+      213: 1945044696142769599
+    second: CompostDrop_09
+  - first:
+      213: 824200175421855360
+    second: CompostDrop_10
+  - first:
+      213: 2609223482758001913
+    second: CompostDrop_11
+  - first:
+      213: -5247011119233267318
+    second: CompostDrop_Idle
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CompostDrop_00
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 633
+        width: 207
+        height: 173
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fda92cfcbdbfa55a0800000000000000
+      internalID: 6531837657271282173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_01
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 633
+        width: 204
+        height: 173
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4a3bacb68f2d12f0800000000000000
+      internalID: 3445801721823667140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_02
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 633
+        width: 202
+        height: 173
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bb298e3a8f7787d0800000000000000
+      internalID: 9041248556691272219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_03
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 633
+        width: 216
+        height: 173
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a33a4a7ee6364af0800000000000000
+      internalID: -5808407742735174854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_04
+      rect:
+        serializedVersion: 2
+        x: 975
+        y: 633
+        width: 221
+        height: 173
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53f61c4fa0a3ac4b0800000000000000
+      internalID: 5452913157756221011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_05
+      rect:
+        serializedVersion: 2
+        x: 1228
+        y: 633
+        width: 219
+        height: 173
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 679f8055a130b2a90800000000000000
+      internalID: -6218854665962872985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_06
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 266
+        width: 258
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1cf21453621db660800000000000000
+      internalID: 7411554128740077553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_07
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 266
+        width: 245
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7d36cb7c06a5f700800000000000000
+      internalID: 8097308030979068903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_08
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 266
+        width: 235
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2faaf8f20fd134200800000000000000
+      internalID: 2320709574433745455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_09
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 266
+        width: 197
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfedd889d82ffe1a0800000000000000
+      internalID: 1945044696142769599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_10
+      rect:
+        serializedVersion: 2
+        x: 1196
+        y: 266
+        width: 162
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8096d557b125700b0800000000000000
+      internalID: 824200175421855360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_11
+      rect:
+        serializedVersion: 2
+        x: 1394
+        y: 266
+        width: 109
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9f465edeed235240800000000000000
+      internalID: 2609223482758001913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CompostDrop_Idle
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 49
+        width: 244
+        height: 129
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a8993d92fdf2eb70800000000000000
+      internalID: -5247011119233267318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      CompostDrop_00: 6531837657271282173
+      CompostDrop_01: 3445801721823667140
+      CompostDrop_02: 9041248556691272219
+      CompostDrop_03: -5808407742735174854
+      CompostDrop_04: 5452913157756221011
+      CompostDrop_05: -6218854665962872985
+      CompostDrop_06: 7411554128740077553
+      CompostDrop_07: 8097308030979068903
+      CompostDrop_08: 2320709574433745455
+      CompostDrop_09: 1945044696142769599
+      CompostDrop_10: 824200175421855360
+      CompostDrop_11: 2609223482758001913
+      CompostDrop_Idle: -5247011119233267318
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

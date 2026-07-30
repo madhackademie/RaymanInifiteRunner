@@ -1,6 +1,7 @@
 # Pipeline plantation — ordre recommandé (prototype)
 
-Références : `GUIDE_footprint_GetOccupiedCells.md`, `SPEC_plant_footprint_prompt.md`, scripts `GridManager` / `GridData` / `PlantDefinition`.
+Références : `GUIDE_footprint_GetOccupiedCells.md`, `SPEC_plant_footprint_prompt.md`, scripts `GridManager` / `GridData` / `PlantDefinition`.  
+**Créer une nouvelle plante (protocole à jour)** : `WORKFLOW_ajouter_nouvelle_plante.md`.
 
 ---
 

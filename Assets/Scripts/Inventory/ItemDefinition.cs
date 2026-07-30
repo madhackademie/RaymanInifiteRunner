@@ -10,6 +10,9 @@ public class ItemDefinition : ScriptableObject
     [SerializeField] private string itemId;
     [SerializeField] private string displayName;
 
+    [Tooltip("Court texte de définition affiché dans la popup détail inventaire.")]
+    [SerializeField] [TextArea(2, 4)] private string description;
+
     [Header("Comportement")]
     [SerializeField] private ItemInventoryBehavior inventoryBehavior = ItemInventoryBehavior.Standard;
 
@@ -24,6 +27,9 @@ public class ItemDefinition : ScriptableObject
 
     /// <summary>Human-readable name shown in the UI.</summary>
     public string DisplayName => displayName;
+
+    /// <summary>Définition courte pour les popups inventaire / détail item.</summary>
+    public string Description => description ?? string.Empty;
 
     /// <summary>Rôle inventaire (standard ou monnaie).</summary>
     public ItemInventoryBehavior InventoryBehavior => inventoryBehavior;

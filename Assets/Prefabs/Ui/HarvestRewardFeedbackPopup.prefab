@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4058271165011091301}
   - component: {fileID: 1042537473241769109}
   - component: {fileID: 1877056048755454169}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: IconSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,10 +89,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
   m_IgnoreLayout: 0
-  m_MinWidth: 48
-  m_MinHeight: 48
-  m_PreferredWidth: 48
-  m_PreferredHeight: 48
+  m_MinWidth: 64
+  m_MinHeight: 64
+  m_PreferredWidth: 64
+  m_PreferredHeight: 64
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -108,7 +108,8 @@ GameObject:
   - component: {fileID: 8945057541471913790}
   - component: {fileID: 8702867372234377508}
   - component: {fileID: 921934751280831829}
-  m_Layer: 0
+  - component: {fileID: 7746513316494466966}
+  m_Layer: 5
   m_Name: LootFlyoutGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,6 +189,28 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!95 &7746513316494466966
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2497089281322517587}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cedbbcae693303640abdddae98957999, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7080806659365243136
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2617573029518951587}
   - component: {fileID: 8765432109876543210}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HarvestRewardFeedbackPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,6 +268,7 @@ MonoBehaviour:
   riseDuration: 0.8
   fadeDuration: 0.45
   worldOffset: {x: 0, y: 40}
+  gameplayCamera: {fileID: 0}
   hideOnAwake: 1
 --- !u!1 &8331150598780665243
 GameObject:
@@ -257,7 +281,7 @@ GameObject:
   - component: {fileID: 3080325477670538165}
   - component: {fileID: 223158692448090523}
   - component: {fileID: 1204352705407482035}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: AmountLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -321,7 +345,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 0.7216, g: 0.5255, b: 0.0431, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -338,8 +362,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0

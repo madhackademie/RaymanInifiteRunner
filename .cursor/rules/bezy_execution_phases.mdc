@@ -2,6 +2,11 @@
 description: Prompting and phased task execution for Bezy to avoid timeouts
 alwaysApply: true
 ---
+## Credits Bezy (rappel)
+
+- Reset mensuel **en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour du mois si ≠ 30).
+- Rappeler au planning de jobs Bezy / « tâche du jour » ; détail : `ASSISTANT_CONTEXT.md`, `Notes/Bezi/README_bezi.md`.
+
 ## Ownership prefabs (prioritaire)
 
 - **Par défaut, seul Bezy.ai crée ou modifie les prefabs UI** (et le wiring Inspector associé).

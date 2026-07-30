@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Contrôleur de la popup item shop :
-/// quantité (+ / − / saisie / Max), confirmation optionnelle, puis demande d'achat.
+/// Contrôleur de la popup item shop / inventaire :
+/// quantité (+ / − / saisie / Max), confirmation optionnelle, puis demande d'achat, vente ou drop.
 /// </summary>
 public sealed class ShopItemPopupController : MonoBehaviour
 {
@@ -14,6 +14,15 @@ public sealed class ShopItemPopupController : MonoBehaviour
     private ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase;
 
     public event Action<ShopItemPopupData, int, int> PurchaseRequested;
+
+    /// <summary>Ancre burst monnaie (bouton Confirmer / Valider du popup).</summary>
+    public RectTransform ResolveMoneyBurstAnchor()
+    {
+        if (view != null)
+            return view.ResolveMoneyBurstAnchor();
+
+        return transform as RectTransform;
+    }
 
     private void OnEnable()
     {
@@ -36,6 +45,7 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
         view.SetItemVisuals(data);
         view.SetConfirmMessageForFlow(flowMode);
+        view.SetWalletVisible(flowMode != ShopItemPopupFlowMode.Drop);
         view.Show();
         Refresh();
     }
@@ -95,16 +105,18 @@ public sealed class ShopItemPopupController : MonoBehaviour
             return;
 
         int totalPrice = ComputeTotalPrice();
-        if (totalPrice <= 0 && currentData.UnitPrice > 0)
+        if (flowMode != ShopItemPopupFlowMode.Drop &&
+            totalPrice <= 0 &&
+            currentData.UnitPrice > 0)
             return;
 
         if (view != null && view.HasConfirmOverlay)
         {
-            view.ShowConfirmOverlay(totalPrice, flowMode);
+            view.ShowConfirmOverlay(totalPrice, flowMode, currentQuantity);
             return;
         }
 
-        EmitPurchaseRequested(totalPrice);
+        TryEmitAfterOptionalDropTrash(totalPrice);
     }
 
     private void HandleConfirmPurchaseClicked()
@@ -113,7 +125,22 @@ public sealed class ShopItemPopupController : MonoBehaviour
             return;
 
         int totalPrice = ComputeTotalPrice();
+        // Garde l’overlay visible jusqu’au emit pour que l’ancre VFX (bouton Confirmer) reste lisible.
+        TryEmitAfterOptionalDropTrash(totalPrice);
         view?.HideConfirmOverlay();
+    }
+
+    private void TryEmitAfterOptionalDropTrash(int totalPrice)
+    {
+        if (flowMode == ShopItemPopupFlowMode.Drop &&
+            view != null &&
+            view.HasDropTrashAnimation)
+        {
+            Sprite icon = currentData != null ? currentData.Icon : null;
+            view.PlayDropTrashAnimation(icon, () => EmitPurchaseRequested(totalPrice));
+            return;
+        }
+
         EmitPurchaseRequested(totalPrice);
     }
 
@@ -144,9 +171,13 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
         int totalPrice = ComputeTotalPrice();
         view.SetQuantity(currentQuantity);
-        view.SetTotalPrice(totalPrice, flowMode);
+        view.SetTotalPrice(totalPrice, flowMode, currentQuantity);
         view.SetConfirmInteractable(CanConfirmTransaction(totalPrice));
-        view.RefreshWallet();
+
+        if (flowMode == ShopItemPopupFlowMode.Drop)
+            view.SetWalletVisible(false);
+        else
+            view.RefreshWallet();
     }
 
     private bool CanConfirmTransaction(int totalPrice)
@@ -154,14 +185,24 @@ public sealed class ShopItemPopupController : MonoBehaviour
         if (!HasItem())
             return false;
 
-        if (flowMode == ShopItemPopupFlowMode.Sell)
-            return CanConfirmSell();
+        if (flowMode == ShopItemPopupFlowMode.Sell || flowMode == ShopItemPopupFlowMode.Drop)
+            return CanConfirmOwnedQuantity();
 
         return CanConfirmPurchase(totalPrice);
     }
 
-    private bool CanConfirmSell()
+    private bool CanConfirmOwnedQuantity()
     {
+        if (!HasItem())
+            return false;
+
+        // Drop : plafond = MaxQuantity du stack sélectionné (pas le total inventaire).
+        if (flowMode == ShopItemPopupFlowMode.Drop)
+        {
+            return currentQuantity >= currentData.MinQuantity &&
+                   currentQuantity <= currentData.MaxQuantity;
+        }
+
         ItemDefinition item = ResolvePurchasedItem();
         PlayerInventory inventory = PlayerInventory.Instance;
         if (item == null || inventory == null)
@@ -187,8 +228,11 @@ public sealed class ShopItemPopupController : MonoBehaviour
         if (!HasItem())
             return 1;
 
+        if (flowMode == ShopItemPopupFlowMode.Drop)
+            return currentData.MaxQuantity;
+
         if (flowMode == ShopItemPopupFlowMode.Sell)
-            return ComputeMaxSellableQuantity();
+            return ComputeMaxOwnedQuantity();
 
         int cap = currentData.MaxQuantity;
         ItemDefinition item = ResolvePurchasedItem();
@@ -202,7 +246,7 @@ public sealed class ShopItemPopupController : MonoBehaviour
         return Mathf.Max(currentData.MinQuantity, cap);
     }
 
-    private int ComputeMaxSellableQuantity()
+    private int ComputeMaxOwnedQuantity()
     {
         ItemDefinition item = ResolvePurchasedItem();
         PlayerInventory inventory = PlayerInventory.Instance;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Binds a single InventorySlot's data to its UI elements (icon + quantity label).
-/// Clic optionnel (shop, etc.) : par défaut aucun handler, l'inventaire reste passif.
+/// Clic optionnel : shop, inventaire (détail / drop), etc. Sans handler, le slot ignore le clic.
 /// </summary>
 public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
 {

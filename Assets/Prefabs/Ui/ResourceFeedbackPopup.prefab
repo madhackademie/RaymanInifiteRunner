@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 7341849919896326566}
   - component: {fileID: 11461891476295598}
   - component: {fileID: 8041106378019645520}
-  m_Layer: 0
+  - component: {fileID: 5858923034122715954}
+  - component: {fileID: 3698883266775683432}
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96, g: 0.88, b: 0.7, a: 1}
+  m_Color: {r: 0.102, g: 0.102, b: 0.102, a: 0.95}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -77,6 +79,40 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &5858923034122715954
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4132497175938189508}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!95 &3698883266775683432
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4132497175938189508}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3f8f489fff797cd4f8e7e96d0e489911, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4932636989040527242
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +125,7 @@ GameObject:
   - component: {fileID: 7718047951527035782}
   - component: {fileID: 2856336806020882857}
   - component: {fileID: 195170898142969414}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -209,7 +245,7 @@ GameObject:
   - component: {fileID: 9074440826917998993}
   - component: {fileID: 8968561662425347403}
   - component: {fileID: 717874182355688757}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DimBackdrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.6}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.55}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -284,7 +320,7 @@ GameObject:
   - component: {fileID: 1753690587999914174}
   - component: {fileID: 1603152627605935894}
   - component: {fileID: 229993933973182755}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MessageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,7 +385,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279050552
-  m_fontColor: {r: 0.22, g: 0.13, b: 0.05, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -366,8 +402,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
-  m_fontSizeBase: 22
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -422,7 +458,7 @@ GameObject:
   - component: {fileID: 3594968640957993114}
   - component: {fileID: 577764555406335342}
   - component: {fileID: 9089397701061965011}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CloseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -562,7 +598,7 @@ GameObject:
   - component: {fileID: 8683644275328089918}
   - component: {fileID: 3559933135239550560}
   - component: {fileID: 5820066370812683718}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ResourceFeedbackPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,6 +704,7 @@ MonoBehaviour:
   root: {fileID: 8667043653346198443}
   messageLabel: {fileID: 229993933973182755}
   closeButton: {fileID: 195170898142969414}
+  panelAnimator: {fileID: 3698883266775683432}
   insufficientResourcesMessage: Vous n'avez pas assez de ressources pour cette action.
   autoHideDelay: 0
   hideOnAwake: 1

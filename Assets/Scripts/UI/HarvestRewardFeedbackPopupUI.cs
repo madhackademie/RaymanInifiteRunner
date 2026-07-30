@@ -30,9 +30,13 @@ public class HarvestRewardFeedbackPopupUI : MonoBehaviour
     [SerializeField] private bool hideOnAwake = true;
 
     private const float FadeStartRatio = 0.6f;
+    private const string ShowTriggerName = "Show";
+
+    private static readonly int ShowTriggerHash = Animator.StringToHash(ShowTriggerName);
 
     private Vector2 startAnchoredPosition;
     private Coroutine showCoroutine;
+    private Animator showAnimator;
 
     private void Awake()
     {
@@ -79,8 +83,31 @@ public class HarvestRewardFeedbackPopupUI : MonoBehaviour
         gameObject.SetActive(true);
         SetRootVisible(true);
         transform.SetAsLastSibling();
+        PlayShowPunch();
 
         showCoroutine = StartCoroutine(AnimateRiseThenHide());
+    }
+
+    private void PlayShowPunch()
+    {
+        ResolveShowAnimatorIfNeeded();
+        if (showAnimator == null)
+            return;
+
+        showAnimator.ResetTrigger(ShowTriggerHash);
+        showAnimator.SetTrigger(ShowTriggerHash);
+    }
+
+    private void ResolveShowAnimatorIfNeeded()
+    {
+        if (showAnimator != null)
+            return;
+
+        if (animatedRoot != null)
+            showAnimator = animatedRoot.GetComponent<Animator>();
+
+        if (showAnimator == null)
+            showAnimator = GetComponentInChildren<Animator>(true);
     }
 
     /// <summary>Masque immédiatement le toast et annule toute animation en cours.</summary>

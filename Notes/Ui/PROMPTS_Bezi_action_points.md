@@ -296,3 +296,89 @@ Validé repo (Bezy 2026-07-23) :
 - Pas de duplicate reset journalier
 - Pas de recréation du prefab from scratch
 - Pas d’animation de `fillAmount` / couleurs barre (conflit script)
+
+---
+
+## [BZ-POLISH-002] Suite polish — Refuse / Fill / Tooltip fade
+
+**Statut :** Phase 1–3 = **OK** (Bezy, 2026-07-29) — Bezy clos `[BZ-POLISH-002]`  
+**Ownership :** Bezy = clips / Animator / CanvasGroup / layers. Cursor = hooks `Refuse` + fade tooltip **après** Bezy.  
+**Succès Bezy = Save + liste changements. STOP. Pas de Simulate / Play Mode.**
+
+| Élément | Chemin |
+|--------|--------|
+| Prefab | `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab` |
+| Controller | `Assets/Animations/UI/ActionPointsHud.controller` |
+| SpendPulse | `Assets/Animations/UI/ActionPointsHud_SpendPulse.anim` (`Row` + `ProgressBar/BarFill`) |
+| Tooltip | `ActionPointsHudTooltip.controller` + FadeIn/Out clips |
+| Scripts (hooks Cursor) | `ActionPointsHudView.cs`, `ActionPointFatigueTooltipHost.cs` |
+| Layers | UI = `m_Layer: 5` |
+
+**Ordre Bezy :**
+1. Refuse shake — **OK**
+2. Fill conso BarFill — **OK**
+3. Tooltip layer 5 + CanvasGroup fade — **OK**
+
+### Review Phase 1 (Cursor, 2026-07-29)
+
+- [x] Clip `ActionPointsHud_RefuseShake.anim` (~0.28 s, loop OFF), path `Row`, scale 1→1.04→0.98→1
+- [x] Controller : trigger `Refuse`, state `RefuseShake`, Any→RefuseShake→Idle
+- [x] Spend / SpendPulse / Idle inchangés ; `ActionPointsHudView.animator` câblé
+- [~] Mineur : pas de keys `localEulerAngles.z` — pulse scale seul, OK V0
+
+### Review Phase 2 (Cursor, 2026-07-29)
+
+- [x] `SpendPulse` : paths `Row` + `ProgressBar/BarFill`
+- [x] BarFill scale 1 → (1.06, 1.12) → (0.98, 0.96) → 1 @ 0/0.08/0.18/0.28 s
+- [x] Pas de fillAmount / color ; Refuse intact
+
+### Review Phase 3 (Cursor, 2026-07-29)
+
+- [x] `FatigueTooltipPanel` + enfants `m_Layer: 5`, inactive by default
+- [x] `CanvasGroup` alpha 0, blocksRaycasts OFF
+- [x] Clips FadeIn/Out 0.12 s (alpha 0↔1)
+- [x] Animator → `ActionPointsHudTooltip.controller` : Hidden default, triggers `FadeIn`/`FadeOut`
+- [x] `ActionPointFatigueTooltipHost` fields still wired (`panelRoot`, labels, `panelRect`)
+
+### Phase 1–3 — archives OK
+
+```
+(livré Bezy 2026-07-29 — prompts ci-dessous conservés pour historique)
+```
+
+### Phase 3 — Tooltip fade — OK (archive prompt)
+
+```
+[BZ-POLISH-002] Phase 3 ONLY — FatigueTooltipPanel layer 5 + CanvasGroup fade. Wait success. STOP after save.
+
+Do not rescan whole project. Do not modify C# scripts. No new sprites.
+Do not touch SpendPulse / RefuseShake clips.
+
+Files ONLY:
+- Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab
+- Create (if needed): Assets/Animations/UI/ActionPointsHud_TooltipFadeIn.anim
+- Create (if needed): Assets/Animations/UI/ActionPointsHud_TooltipFadeOut.anim
+- Create (if needed): Assets/Animations/UI/ActionPointsHudTooltip.controller
+
+REQUIRED:
+1) FatigueTooltipPanel + ALL children → m_Layer: 5 (UI). Fix any layer 0.
+2) On FatigueTooltipPanel: add CanvasGroup (blocksRaycasts OFF when hidden OK).
+3) Create TooltipFadeIn (~0.12s): CanvasGroup.alpha 0 → 1
+4) Create TooltipFadeOut (~0.12s): CanvasGroup.alpha 1 → 0
+5) Animator on FatigueTooltipPanel → ActionPointsHudTooltip.controller:
+   - Default Hidden (alpha 0) OR Idle with alpha 0
+   - Triggers: FadeIn, FadeOut
+   - FadeIn → play TooltipFadeIn ; FadeOut → play TooltipFadeOut
+6) Keep ActionPointFatigueTooltipHost SerializeFields wired (panelRoot, panelRect, labels). Do not rename nodes.
+7) Panel stays inactive by default (script SetActive) — Animator ready for Cursor hooks later.
+8) Save.
+
+Interdits: no C# edits; no Simulate; do not break zone hover wiring.
+
+Done = Save. List: layers=5, CanvasGroup present, triggers FadeIn/FadeOut, host fields still wired. STOP.
+```
+
+**Après Bezy (Cursor, hors prompt) :**
+- [x] Hook `Refuse` via `ActionPointService.OnSpendRefused` → `ActionPointsHudView`
+- [x] Tooltip fade `FadeIn`/`FadeOut` dans `ActionPointFatigueTooltipHost` (~0.12 s)
+- Playtest : Batch E `Notes/Todo_playtest.md`

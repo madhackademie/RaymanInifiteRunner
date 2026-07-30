@@ -34,7 +34,8 @@ Aujourd’hui, le flux plantation **ignore l’inventaire** :
 
 **Règle à formaliser :** une entrée plantable = triplet **`PlantDefinition` + prefab monde + `ItemDefinition` graine** (même `itemId` que celui consommé à la pose et, en général, celui récolté au stade graines si le design le prévoit).
 
-Référence générale : `Docs/PLANTES_ET_INVENTAIRE.md` (`harvestItemId` ↔ `itemId`).
+Référence générale : `Docs/PLANTES_ET_INVENTAIRE.md` (`harvestItemId` ↔ `itemId`).  
+**Protocole complet (nouvelle plante)** : `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md`.
 
 ---
 

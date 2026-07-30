@@ -34,6 +34,9 @@ public class ActionPointService : MonoBehaviour
 
     public event Action OnActionPointsChanged;
 
+    /// <summary>Fired when <see cref="TryConsume"/> fails because remaining PA are too low.</summary>
+    public event Action OnSpendRefused;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -126,6 +129,7 @@ public class ActionPointService : MonoBehaviour
         {
             failureMessage =
                 $"Points d'action insuffisants ({remainingPoints} / {dailyBudget} restants).";
+            OnSpendRefused?.Invoke();
             return false;
         }
 
@@ -193,5 +197,45 @@ public class ActionPointService : MonoBehaviour
     private void NotifyChanged()
     {
         OnActionPointsChanged?.Invoke();
+    }
+
+    // ── Debug playtest (Context Menu Inspector) ───────────────────────────────
+
+    [ContextMenu("PA Debug/Set remaining = 0")]
+    private void DebugSetRemainingZero()
+    {
+        remainingPoints = 0;
+        PersistState();
+        NotifyChanged();
+        Debug.Log("[ActionPointService] Debug: remainingPoints = 0.", this);
+    }
+
+    [ContextMenu("PA Debug/Refill full budget")]
+    private void DebugRefillFullBudget()
+    {
+        remainingPoints = dailyBudget;
+        PersistState();
+        NotifyChanged();
+        Debug.Log($"[ActionPointService] Debug: remainingPoints = {remainingPoints}/{dailyBudget}.", this);
+    }
+
+    [ContextMenu("PA Debug/Set remaining = 1")]
+    private void DebugSetRemainingOne()
+    {
+        remainingPoints = 1;
+        PersistState();
+        NotifyChanged();
+        Debug.Log("[ActionPointService] Debug: remainingPoints = 1.", this);
+    }
+
+    [ContextMenu("PA Debug/Delete action_points.json + refill")]
+    private void DebugDeleteSaveAndRefill()
+    {
+        ActionPointSaveService.Delete();
+        remainingPoints = dailyBudget;
+        lastResetUtcTicks = DateTime.UtcNow.Date.Ticks;
+        PersistState();
+        NotifyChanged();
+        Debug.Log("[ActionPointService] Debug: save deleted + refill.", this);
     }
 }

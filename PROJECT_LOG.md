@@ -1,5 +1,336 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-30 — Layers fond + filigrane (sans déformer l’art)
+
+### Demande auteur
+- Remettre filigrane non déformé ; fond opaque séparé derrière.
+
+### Fix
+- `FondPanel` (ex-FiligraneBackdrop) : stretch plein host, Image opaque + UISprite builtin.
+- `Filigrane` : ancre centre, `960×960`, `PreserveAspect = 1`, alpha 0.14.
+
+### Playtest
+- Inventaire → P1 Commerce : fond plein + balance non étirée.
+
+---
+
+## 2026-07-30 — Fix décalage TreeMount / filigrane (Cursor)
+
+### Cause
+- Filigrane `PreserveAspect` → lettrebox (pas plein cadre).
+- Runtime `SetAsLastSibling` sur `TreeMountHost` (mauvais ordre draw).
+- `BodyPlaceholder` encore inset actif possible.
+
+### Fix
+- `PreserveAspect = 0` sur Filigrane ; BodyPlaceholder inactive + stretch 0.
+- `SetAsFirstSibling` + `NormalizeTreeMountHostLayout` à chaque resolve.
+
+### Playtest
+- Inventaire → P1 Commerce : fond/filigrane bord à bord OverlayPanel ; titre/Retour au-dessus ; PA haut-droite.
+
+---
+
+## 2026-07-30 — `[CT-UI-SAFE-PA-001]` TreeMount plein + HUD PA haut-droite
+
+### Fait (Cursor — demande auteur implement plan)
+- `TreeMountHost` sizeDelta `(0,0)` + `OverlayPanel` alpha 1 ; sibling order fond puis `TrackTitle`/`BackButton`
+- `EnsureRuntimeTreeMountHost` offsets `(0,0)`
+- `ActionPointsHudWidget` + instance `NavigationHUD` : anchors top-right, pos `(-16,-16)`
+- Doc : `Notes/Ui/CONVENTION_hud_pa_safe_zone.md` + prompts archive `PROMPTS_Bezi_hud_pa_safe_zone.md`
+
+### Suite
+1. Playtest auteur Inventaire → P1 Commerce
+2. Commit auteur
+
+---
+
+## 2026-07-30 — Mémo crédits Bezy : reset le 30 du mois
+
+### Décision / rappel
+- Les crédits Bezy se **réinitialisent en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour si ≠ 30).
+- Documenté pour rappel à chaque session : `ASSISTANT_CONTEXT.md`, `Notes/Bezi/README_bezi.md`, `WORKFLOW_PROTOCOL.md`, règles Cursor Bezy / gestion projet, `TODO_Bezy_polish_semaine.md`.
+
+### Suite session (inchangée)
+- Bezy `[BZ-POLISH-010]` Ph.2 fond opaque derrière filigrane.
+
+---
+
+## 2026-07-30 — Art filigrane Commerce importé → Bezy `[BZ-POLISH-010]`
+
+### Fait (Cursor)
+- PNG déplacé : `Assets/Art/Sprites/UI/Progression/CommerceFiligrane.png`
+- Import Sprite single + `alphaIsTransparency` (fond déjà transparent)
+- Prompts Bezy : `Notes/Ui/PROMPTS_Bezi_talent_filigrane_010.md`
+
+### Suite
+1. Bezy Ph.1 `[BZ-POLISH-010]` — Image `Filigrane` sous `TreeMountHost`
+2. Playtest auteur Inventaire → P1 Commerce
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-30 — Prochaine session = filigrane Commerce (art ChatGPT)
+
+### Décision auteur
+- Pas de job Bezy filigrane **aujourd’hui**.
+- Priorité **prochaine session** : générer l’image filigrane Commerce via ChatGPT, puis import Unity + Bezy `[BZ-POLISH-010]`.
+
+### Intent art (rappel)
+- Emblème soft : balance + pièce / étiquette (acheteur vs vendeur).
+- Flat vector, PNG transparent 1024×1024, peu de détail au centre.
+- En jeu : Image sous `TreeMountHost`, alpha ~0.08–0.15.
+
+### Trace todo
+- [ ] **[P0-ART-FILIGRANE-001]** + chaîne import → `[BZ-POLISH-010]` placés en *Prochaine session* (`Notes/Todo_project.md`).
+- Sera la référence au prochain « tâche du jour ».
+
+### Session du jour (fait)
+- `[BZ-POLISH-009]` Bezy Ph.1–3 OK (TreeMountHost + contrastes nœuds/edges).
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-30 — Idea backlog : récolte grille en un clic
+
+### Décision
+- Feature **QoL** notée pour plus tard (pas d’implémentation maintenant) : bouton qui récolte **tout** ce qui est récoltable sur la grille biofiltre (simule clic + validation par plante).
+- Accès conditionné à monétisation : **pub** / **monnaie issue des pubs** / **pass NoPub** (choix design à faire plus tard).
+
+### Trace todo
+- [ ] **[BL-FARM-HARVEST-ALL-001]** ajouté dans `Notes/Todo_project.md` § Backlog → *Ferme — QoL monétisé*.
+
+### Suite session (inchangée)
+1. Prochain Bezy : `[BZ-POLISH-010]` filigrane Commerce
+2. Playtest auteur `[BZ-POLISH-009]` talents Commerce
+
+---
+
+## 2026-07-29 — `[BZ-POLISH-008]` Bezy Ph.1–3 OK + hooks Open/Close
+
+### Review
+- Ph.1 layers 5 — OK
+- Ph.2 lisibilité — OK
+- Ph.3 Open/Close scale+alpha sur Panel — OK
+
+### Cursor
+- [x] `ResourceFeedbackPopupUI` triggers Open/Close + hide après 0.14 s
+- [x] `panelAnimator` câblé sur prefab
+
+### Suite
+1. Prochain Bezy : `[BZ-POLISH-009]` talents Commerce
+2. Batch playtests (E HUD PA, inventaire plein, toast)
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — `[BZ-POLISH-007]` Bezy Ph.1–3 OK + hook Show
+
+### Review
+- Ph.1 layers 5 — OK
+- Ph.2 lisibilité (font 32, icon 100) — OK
+- Ph.3 ShowPunch scale only on LootFlyoutGroup — OK (pas d’alpha)
+
+### Cursor
+- [x] `HarvestRewardFeedbackPopupUI.PlayShowPunch()` → trigger `Show`
+
+### Suite
+1. Prochain Bezy : `[BZ-POLISH-008]` popup inventaire plein
+2. Batch E playtest HUD PA / toast récolte
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — `[BZ-POLISH-005]` Bezy Ph.1–3 OK + wire empty catalogue
+
+### Review Bezy
+- Ph.1 layers 5 — OK
+- Ph.2 grille / close / backdrops — OK
+- Ph.3 `EmptyCataloguePanel` inactive + textes — OK
+
+### Cursor
+- [x] `RuntimeShopScreen.emptyCataloguePanel` + Show/Hide si 0 offre / erreur catalogue
+
+### Suite
+1. Prochain Bezy : `[BZ-POLISH-007]` toast / feedback récolte (`[BZ-POLISH-006]` déjà clos)
+2. Batch E playtest HUD PA
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — Hooks `[BZ-POLISH-002]` + prompts Bezy `[BZ-POLISH-005]`
+
+### Fait (Cursor)
+- [x] `ActionPointService.OnSpendRefused` quand PA insuffisants
+- [x] `ActionPointsHudView` → trigger Animator `Refuse`
+- [x] `ActionPointFatigueTooltipHost` → FadeIn/FadeOut + hide après 0.12 s
+- [x] Prompts Bezy shop screen : `Notes/Ui/PROMPTS_Bezi_shop_screen_005.md`
+
+### Suite
+1. Bezy Ph.1 `[BZ-POLISH-005]` ShopScreen layers
+2. Batch E playtest HUD PA (Refuse / Fill / tooltip)
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — `[BZ-POLISH-002]` Bezy Ph.1–3 OK (HUD PA)
+
+### Review Cursor
+- Ph.1 RefuseShake + trigger `Refuse` — OK (pulse Row ; pas d’euler Z)
+- Ph.2 SpendPulse + path `ProgressBar/BarFill` — OK
+- Ph.3 Tooltip layer 5 + CanvasGroup + FadeIn/Out 0.12 s — OK
+
+### Suite
+1. Hooks Cursor : `Refuse` si PA insuffisant + tooltip fade
+2. Batch E playtest (`Notes/Todo_playtest.md`)
+3. Prochain Bezy file : #5→#16
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — File playtest batch + cheatsheet PA/inventaire
+
+### Fait
+- [x] `Notes/Todo_playtest.md` : cheatsheet forcer PA / inventaire / vente / Flowering à la mano
+- [x] Batches A–E listés + F clos (drop/insecte/DirtBurst)
+- [x] Context Menu debug sur `ActionPointService` : remaining 0 / 1 / refill / delete save
+- [x] Pointeur depuis `Notes/Todo_project.md` + `PLAYTEST_points_actions_v0.md`
+
+### Pourquoi
+- Auteur veut faire les playtests **en batch** et savoir comment modifier l’état à la mano.
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
+## 2026-07-29 — Playtests validés ; prochaine = HUD PA Bezy
+
+### Contexte
+- Branche : **`polish/ui-bezy`**
+- Auteur : tous les playtests de la priorité immédiate **passés et validés**.
+
+### Clos (playtests auteur)
+- [x] **[P0-INV-DROP-PLAY-001]** Inventaire drop (stock → détail → Jeter → compost → retrait slot)
+- [x] **[P0-INV-DROP-001]** Bezy Ph.1–4c drop / compost
+- [x] **[BZ-POLISH-014]** / **[P0-FARM-INSECT-PLAY-001]** Insecte Flowering
+- [x] **[P0-FARM-VFX-PLAY-002]** DirtBurst plant / arrachage / récolte
+
+### Prochaine session (confirmée)
+1. **[BZ-POLISH-002]** HUD PA suite polish (Refuse pulse, fill conso, tooltip fade) — job Bezy prioritaire
+2. Ne pas relancer wallet punch (`[BZ-POLISH-015]` PARK UX)
+3. Suite file Bezy #5→#16 + Cursor `[P0-AP-CODE-002]` si utile
+
+### Trace
+- `Notes/Todo_project.md` § Prochaine session mis à jour
+- Sera reprise au prochain « tâche du jour »
+
+### Commit
+- À faire côté **auteur** (docs + lot drop/insecte/VFX si pas encore poussé).
+
+---
+
+## 2026-07-28 (fin session) — Prochaine = playtest inventaire drop
+
+### Contexte
+- Branche : **`polish/ui-bezy`**
+- Inventaire drop monté (scripts + Bezy + compost) ; inventaire joueur **vide** → playtest bloqué.
+
+### Prochaine session (confirmée)
+1. **Remplir l’inventaire** : FirstLvl → planter / pousser / **récolter** laitues (ou graines) pour avoir ≥1 stack
+2. **[P0-INV-DROP-PLAY-001]** Playtest drop : clic slot → quantité/Max (stack) → Jeter → confirm → compost → retrait slot
+3. Si besoin : valider / relancer Bezy **Ph.4c** (compost +100 px + chute sur tas)
+4. Ensuite : playtest insecte Flowering / DirtBurst
+
+### Trace
+- Priorité écrite dans `Notes/Todo_project.md` § Prochaine session
+- Sera reprise au prochain « tâche du jour »
+
+### Commit
+- À faire côté **auteur** (lot inventaire drop + insecte + docs).
+
+---
+
+## 2026-07-28 — Insecte Flowering : rand Bee/Butterfly + sens path
+
+### Décisions
+- Au **démarrage** Flowering uniquement : 50 % abeille / 50 % papillon ; 50 % sens nodes +1 / −1
+- Pas de re-roll à chaque node
+- `PlantDefinition.insectKind` : ajout `RandomBeeOrButterfly` (Laitue = 3)
+
+### Fait
+- [x] `InsectPathFollower` : `pathDirection` rand + `ApplyVisualKind` (swap controllers)
+- [x] `InsectPathAnchor.SetPathActive(active, visualKind)`
+- [x] `PlantGrow.SyncInsectPathForStage` → `ResolveRuntimeInsectKind()`
+- [x] Art/anim papillon : `Butterfly_Fly.anim` + `Butterfly.controller`
+- [x] Prefab `Bee` : refs `beeController` + `butterflyController`
+- [x] Spec maj : `Notes/Farm/SPEC_insecte_flowering.md`
+
+### Playtest
+1. Forcer Flowering (laitue) plusieurs fois → parfois bee, parfois butterfly
+2. Sens de parcours nodes parfois inverse
+3. flipX selon direction de vol
+
+### Fichiers
+- `Assets/Scripts/Farm/Insect*.cs`, `PlantGrow.cs`, `PlantDefinition.cs`
+- `Assets/Art/Animations/Farm/Insects/Butterfly*`
+- `Assets/Prefabs/World/Insects/Bee.prefab`, `Assets/Data/Ferme/Laitue.asset`
+- `Notes/Farm/SPEC_insecte_flowering.md`, `Notes/Todo_project.md`
+
+### Commit
+- À faire côté **auteur** — assistant non committer.
+
+---
+
+## 2026-07-28 — Inventaire détail item / drop (scripts + Bezy)
+
+### Contexte
+- Demande : clic item inventaire → popup détail + description + drop quantité/Max + surpopup confirmation.
+
+### Fait (Cursor — scripts uniquement, pas de prefab)
+- [x] `PopupId.InventoryItemDetail`
+- [x] `ShopItemPopupFlowMode.Drop` + labels / ConfirmOverlay drop
+- [x] `ItemDefinition.Description`
+- [x] `InventoryUI` : clic slot → host générique → `TryRemove`
+- [x] Docs : `Notes/Ui/popup_generique.md`, `Notes/Ui/PROMPTS_Bezi_inventory_item_drop.md`
+
+### À faire (Bezy — prefab / scène / anims)
+1. [x] **Phase 1** : binding — OK
+2. [x] **Phase 2** : description — OK noop
+3. [x] **Phase 3** : open anim — OK noop
+4. [x] **Phase 4** : compost / `DropToTrash` — OK Bezy + **art CompostDrop slicé** (2026-07-28) sous `Art/Sprites/UI/Inventory/DropCompost/` ; TrashBin + flipbook anim ; menu `Rayman/UI/Bind Compost Drop Sprites`
+5. Phase 5 optionnelle : prefab dédié — skip OK
+6. **Playtest auteur** — prochaine
+
+### Hooks Cursor (anims)
+- Ouverture : `ShopItemPopupView` → `animator.SetBool("IsOpen", …)`
+- Drop confirm : `PlayDropTrashAnimation` → trigger `DropToTrash` → callback `TryRemove`
+
+### Commit
+- À faire côté **auteur** (scripts + docs + prefab/anims Bezy + art compost).
+
+---
+
+## 2026-07-28 (suite) — Bezy P4b drop motion OK
+
+- TrashBin Y **110** ; FlyingIcon chute vers compost (clip retuné)
+- Prochaine : playtest auteur inventaire drop
+
+---
+
 ## 2026-07-25 — VFX plantation branché (hook Play)
 
 ### Contexte

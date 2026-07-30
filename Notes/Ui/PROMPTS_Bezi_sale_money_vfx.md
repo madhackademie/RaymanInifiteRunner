@@ -5,7 +5,7 @@
 **Spec UI :** `Notes/Ui/SPEC_sale_channels_ui_bandeaux.md`  
 **Pattern de référence :** `Notes/Ui/PROMPTS_Bezi_planting_dirt_vfx.md` (`PlantingDirtBurst`)
 
-**Feel cible :** au feedback vente (clic canal / vente réussie — hook Cursor), burst court de **pièces** + **billets** qui partent du bandeau puis tombent / fade (~0.7–1.0 s).
+**Feel cible :** au feedback vente réussie (hook Cursor), burst court de **pièces** + **billets** ancré sur le **popup quantité** (`ShopItemPopup`), pas sur le bandeau (~0.7–1.0 s).
 
 **Art (prérequis auteur — Bezy ne régénère PAS de PNG) :**
 - Dossier cible : `Assets/Art/Sprites/VFX/Sale/`
@@ -14,7 +14,7 @@
 - Si art absent : Phases 1–2 avec **Start Color** placeholder (jaune pièce / vert billet) ; Phase 3 seulement quand les PNG sont importés.
 
 **Règles :** ne pas rescanner tout le projet ; pas de scripts C# ; un prompt = une phase ; `Play On Awake` OFF ; pas de playtest Simulate comme critère Bezy.  
-**Cursor après Bezy :** hook livré (2026-07-26) — `SaleMoneyBurstVfx` + `RuntimeSaleChannelsScreen` après vente réussie.  
+**Cursor après Bezy :** `SaleMoneyBurstVfx` + `RuntimeSaleChannelsScreen` — ancre = `MoneyBurstAnchor` sous `ShopItemPopup` (Phase 4).  
 Runtime = burst **UI Images** (HUD Overlay masque les PS monde) ; prefab PS = ref Bezy / Phase 3 sprites.
 
 ---
@@ -24,6 +24,7 @@ Runtime = burst **UI Images** (HUD Overlay masque les PS monde) ; prefab PS = re
 - **Phase 1** : shell prefab + 2 ParticleSystem — **OK** (Bezy 2026-07-26) ; correctif Cursor `playOnAwake` OFF (même piège que DirtBurst)
 - **Phase 2** : tuning burst / gravity / fade — **OK** (Bezy 2026-07-26, validé Cursor repo)
 - **Phase 3** : sprites + material — bloqué tant que art manquant
+- **Phase 4** : ancre `MoneyBurstAnchor` sur `ShopItemPopup` — **OK** (Bezy 2026-07-29) ; hook Cursor ancré popup **OK**
 
 ### Validation Phase 2 (repo)
 
@@ -138,6 +139,44 @@ Save. List material path + sprites assigned. STOP.
 
 ---
 
+## Phase 4 — Ancre burst sur popup vente — **CLOS Bezy + Cursor** (2026-07-29)
+
+**Livré Bezy :** `ShopItemPopup/Root/MoneyBurstAnchor` (layer 5, centre +Y20) + enfant `SaleMoneyBurst` inactif.  
+**Livré Cursor :** `RuntimeSaleChannelsScreen` ancre `SaleMoneyBurstVfx` sur `MoneyBurstAnchor` avant `Close()`.
+
+**Objectif (historique) :** point d’ancrage UI sur `ShopItemPopup` (quantité / validation voisinage).
+
+```
+[BZ-POLISH-018] Phase 4 ONLY — MoneyBurstAnchor on ShopItemPopup. Wait success. STOP after save.
+
+Do NOT rescan whole project. Do NOT create C# scripts. Do NOT edit SaleChannelsScreen. Do NOT retune SaleMoneyBurst particles.
+
+EDIT ONLY: Assets/Prefabs/Ui/ShopItemPopup.prefab
+
+Under Root (child of ShopItemPopup), CREATE empty UI child:
+  MoneyBurstAnchor
+  - RectTransform
+  - Layer = 5 (UI)
+  - Anchors center of Card (or center of Root if Card hard to parent):
+    anchorMin/Max (0.5, 0.5), pivot (0.5, 0.5)
+    sizeDelta (0, 0)
+    anchoredPosition (0, 0) — center of popup card
+  - NO Image, NO Button, NO Canvas
+  - Leave active (empty marker only)
+
+Optional (inactive): nest instance of Assets/Prefabs/Ui/VFX/SaleMoneyBurst.prefab
+  as child of MoneyBurstAnchor, name SaleMoneyBurst, SetActive false
+  (Simulate ref only — runtime Cursor uses UI burst)
+
+Do NOT wire scripts. Do NOT move ConfirmButton / Header / Backdrop.
+
+Save. List hierarchy path of MoneyBurstAnchor. STOP. No Simulate / Play Mode.
+```
+
+**Cursor :** livré — burst sur `MoneyBurstAnchor` avant `Close()` (plus sur le bandeau).
+
+---
+
 ## Checklist validation (auteur)
 
 | Critère | OK? |
@@ -148,7 +187,8 @@ Save. List material path + sprites assigned. STOP.
 | Rate=0 + Burst unique (pas de loop) | |
 | Art coin/billet importé Full Rect | |
 | Material + Texture Sheet Sprites branchés | |
-| Cursor hook après vente réussie (`SaleMoneyBurstVfx` UI) | x |
+| `ShopItemPopup/Root/MoneyBurstAnchor` (+ SaleMoneyBurst inactif) | x |
+| Cursor hook ancré bouton Confirmer/Valider (`ConfirmPurchaseButton`) | x (playtest 2026-07-29) |
 
 ## Anti-patterns
 
