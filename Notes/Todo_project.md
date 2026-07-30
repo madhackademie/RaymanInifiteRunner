@@ -52,7 +52,8 @@ Convention d'IDs :
 1. [x] **[P0-ART-FILIGRANE-001]** Image filigrane Commerce — `CommerceFiligrane.png`
 2. [x] **[BZ-POLISH-010]** / `[BL-INV-TALENT-001]` Filigrane + `FondPanel` (layers fond opaque / art PreserveAspect)
 3. [x] **[CT-UI-SAFE-PA-001]** TreeMount plein cadre + HUD PA haut-droite + convention safe zone (2026-07-30 Cursor)
-4. [ ] Playtest auteur : Inventaire → P1 Commerce (fond plein, titre/Retour lisibles, PA haut-droite sans masquage)
+4. [x] Filigrane layers `FondPanel` + art PreserveAspect **1120²** — validé auteur (2026-07-30)
+5. [ ] Playtest auteur global : Inventaire → P1 Commerce (contrastes + fond + PA haut-droite) si pas déjà couvert
 
 **File Bezy (après playtest) :**
 
