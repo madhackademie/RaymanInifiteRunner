@@ -4,6 +4,14 @@ Objectif: utiliser les deux assistants comme un **binome complementaire** pour a
 
 ---
 
+## Credits Bezy (rappel session)
+
+- **Reset mensuel en dur : le 30 de chaque mois** (pas le 1er, pas « fin de mois » / dernier jour si différent du 30).
+- À rappeler à chaque ouverture de session / « tâche du jour » quand un job Bezy est envisagé.
+- Conséquence planning : jobs lourds **après le 30** ; file polish (`Notes/Ui/TODO_Bezy_polish_semaine.md`) calée sur le cycle crédits.
+
+---
+
 ## Difference fondamentale
 
 - **Bezy.ai**: excellent pour l'iteration rapide dans Unity (scene, prefab, inspector, UI visuelle, wiring runtime).

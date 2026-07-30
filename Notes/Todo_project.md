@@ -40,21 +40,21 @@ Convention d'IDs :
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`polish/ui-bezy`**.  
-> Priorité prochaine session : **filigrane Commerce** (art ChatGPT → import → Bezy). Commit auteur `[BZ-POLISH-009]` à planifier.
+> Layout TreeMount plein + HUD PA haut-droite livré Cursor — **playtest auteur**. Commit à planifier.
 
-### Priorité immédiate — filigrane Commerce (prochaine session)
+### Priorité immédiate — playtest layout talents + PA
 
-> Décidé session 2026-07-30 : **pas** de Bezy filigrane aujourd’hui — art d’abord via ChatGPT, puis Bezy.  
-> Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).
+> Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).  
+> Crédits Bezy : reset le **30** de chaque mois.
 
-**Ordre prochaine session :**
+**Ordre immédiat :**
 
-1. [ ] **[P0-ART-FILIGRANE-001]** Générer image filigrane Commerce (ChatGPT) — emblème soft balance + pièce/étiquette, PNG transparent 1024² ; prompt dans session 2026-07-30
-2. [ ] Import Unity (`Assets/Art/UI/Progression/` ou équiv.) — Sprite + Alpha Is Transparency
-3. [ ] **[BZ-POLISH-010]** / `[BL-INV-TALENT-001]` Bezy : Image filigrane sous `TreeMountHost` (alpha ~0.08–0.15)
-4. [ ] Playtest auteur : Inventaire → P1 Commerce (contrastes `[BZ-POLISH-009]` + filigrane lisible)
+1. [x] **[P0-ART-FILIGRANE-001]** Image filigrane Commerce — `CommerceFiligrane.png`
+2. [x] **[BZ-POLISH-010]** / `[BL-INV-TALENT-001]` Filigrane + `FondPanel` (layers fond opaque / art PreserveAspect)
+3. [x] **[CT-UI-SAFE-PA-001]** TreeMount plein cadre + HUD PA haut-droite + convention safe zone (2026-07-30 Cursor)
+4. [ ] Playtest auteur : Inventaire → P1 Commerce (fond plein, titre/Retour lisibles, PA haut-droite sans masquage)
 
-**File Bezy (après filigrane) :**
+**File Bezy (après playtest) :**
 
 1. [x] **[BZ-POLISH-009]** Contrastes talents Commerce — **Bezy Ph.1–3 OK** (2026-07-30)
 2. [ ] Suite file #11→#16
@@ -66,8 +66,11 @@ Convention d'IDs :
 - [x] **[BZ-POLISH-005]** `emptyCataloguePanel` Show/Hide
 - [x] **[BZ-POLISH-007]** `Show` punch toast récolte
 - [x] **[BZ-POLISH-008]** Open/Close soft ResourceFeedback
+- [x] **[CT-UI-SAFE-PA-001]** Runtime TreeMount offsets 0 + docs `CONVENTION_hud_pa_safe_zone.md`
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
-- [ ] Commit auteur lot session + docs (`[BZ-POLISH-009]` + notes)
+- [ ] Commit auteur lot session + docs
+
+**Réf. layout PA :** `Notes/Ui/CONVENTION_hud_pa_safe_zone.md`
 
 **Clos playtests (session 2026-07-29) — validés auteur :**
 
@@ -295,6 +298,7 @@ Convention d'IDs :
 - [x] [CT-SHOP-006] Références Inspector popup item (prefab + `ShopItemPopupView` / `CurrencyBalanceUI` wallet).
 
 ### Inventaire / wallet / runtime UI
+- [x] **[CT-UI-SAFE-PA-001]** HUD PA slot chrome haut-droite + TreeMount plein cadre + convention `Notes/Ui/CONVENTION_hud_pa_safe_zone.md` (2026-07-30). Playtest auteur.
 - [~] **[CT-INV-HALO-001]** Rework inventaire halo + grille — Ph.1–3 + playtest halo OK ; **MVP arbre Commerce OK** (2026-06-16) ; polish arbre → backlog.
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
 - [ ] [CT-INV-002] Valider qu'il n'y a plus de dépendance runtime cachée à `Inventaire.unity` (ou documenter explicitement son rôle).

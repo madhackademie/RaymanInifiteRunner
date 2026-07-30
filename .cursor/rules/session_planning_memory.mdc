@@ -14,6 +14,7 @@ alwaysApply: true
   - `Notes/Todo_project.md` (section "Prochaine session (priorite immediate)")
   - `PROJECT_LOG.md` (derniere entree datee)
 - Repondre avec la priorite la plus recente et concrete, jamais une tache generique.
+- **Credits Bezy :** reset mensuel le **30** de chaque mois (pas le 1er / pas dernier jour si ≠ 30) — rappeler en tache du jour / planning Bezy.
 - Si une tache "prochaine session" est donnee par l'utilisateur en fin de session:
   1. l'ajouter dans `Notes/Todo_project.md`,
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,

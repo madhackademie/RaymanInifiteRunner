@@ -1,5 +1,7 @@
 # File Bezy — polish semaine (overload crédits)
 
+**Crédits Bezy :** reset mensuel en dur le **30** de chaque mois (pas le 1er / pas « fin de mois » si ≠ 30). Planifier jobs lourds juste après.
+
 **Objectif :** liste de jobs **Bezy-only** (prefabs / Animator / layers / lisibilité / micro-anims).  
 **Hors scope Bezy :** génération d’images/sprites, logique C# métier (Cursor).  
 **Playtests :** batch `Notes/Todo_playtest.md` (pas prioritaire tant que file Bezy).
@@ -11,7 +13,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
-> **Priorité polish Bezy :** file **#10** ([BZ-POLISH-010] filigrane) — [BZ-POLISH-009] talents contrastes **Bezy CLOS** 2026-07-30.
+> **Priorité polish Bezy :** file **#11** ([BZ-POLISH-011] LoadingScreen) — [BZ-POLISH-010] filigrane **Bezy CLOS** 2026-07-30.
 > **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only (code jeté) ; attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`).  
 > **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
 
@@ -26,7 +28,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | ~~7~~ | ~~**[BZ-POLISH-007]**~~ | ~~Toast récolte~~ | — | — | **Bezy CLOS** 2026-07-29 + Cursor Show |
 | ~~8~~ | ~~**[BZ-POLISH-008]**~~ | ~~Popup inventaire plein~~ | — | — | **Bezy CLOS** 2026-07-29 + Cursor Open/Close |
 | ~~9~~ | ~~**[BZ-POLISH-009]**~~ | ~~Arbre talents Commerce contrastes~~ | — | — | **Bezy CLOS** 2026-07-30 — playtest auteur |
-| 10 | **[BZ-POLISH-010]** | Filigrane placeholder piste Commerce (couleur/motif UI, **pas** art final) | sous `TreeMountHost` | M | placeholders OK |
+| ~~10~~ | ~~**[BZ-POLISH-010]**~~ | ~~Filigrane Commerce~~ | — | — | **Bezy CLOS** 2026-07-30 — playtest auteur |
 | 11 | **[BZ-POLISH-011]** | LoadingScreen : layout polish barre + % (pas illustration finale) | `Bootstrap` LoadingCanvas | S | — |
 | 12 | **[BZ-POLISH-012]** | HomeScene / hub : boutons + titres lisibilité mobile | scènes hub | M | — |
 | 13 | **[BZ-POLISH-013]** | Audit layers UI global (scenes + prefabs UI) | multi | L | checklist `TODO_Bezi_audit_scene_ui_refactor` |
@@ -82,8 +84,11 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - Prompts : `Notes/Ui/PROMPTS_Bezi_talent_contrasts_009.md`
 - Suite : playtest auteur Inventaire → P1 Commerce
 
-### 10 — Filigrane `[BZ-POLISH-010]` — **PRIORITÉ Bezy**
-- Filigrane = Image plein fond alpha faible (couleur), **pas** sprite final — sous `TreeMountHost`
+### 10 — Filigrane `[BZ-POLISH-010]` — **Bezy Ph.1–2 CLOS** (2026-07-30)
+- Sprite : `CommerceFiligrane.png` + `FondPanel` opaque plein cadre ; Filigrane centré 960² PreserveAspect
+- Ordre : Backdrop → Filigrane (α 0.12) → Track_* runtime
+- Prompts : `Notes/Ui/PROMPTS_Bezi_talent_filigrane_010.md`
+- Suite : playtest auteur Inventaire → P1 Commerce
 
 ### 11–12 — Bootstrap / Home
 - Lisibilité uniquement ; art LoadingScreen = autre workflow

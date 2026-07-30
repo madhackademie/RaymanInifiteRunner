@@ -224,7 +224,10 @@ public class TalentTreeOverlayController : MonoBehaviour
     private RectTransform ResolveTreeMountHost()
     {
         if (treeMountHost != null)
+        {
+            NormalizeTreeMountHostLayout(treeMountHost);
             return treeMountHost;
+        }
 
         if (!UsesScrollRectBypass())
             return treeContentHost;
@@ -246,18 +249,34 @@ public class TalentTreeOverlayController : MonoBehaviour
         if (existing != null)
         {
             treeMountHost = existing as RectTransform;
+            NormalizeTreeMountHostLayout(treeMountHost);
             return;
         }
 
         var hostObject = new GameObject("TreeMountHost", typeof(RectTransform));
         treeMountHost = hostObject.GetComponent<RectTransform>();
         treeMountHost.SetParent(panel, false);
-        treeMountHost.anchorMin = Vector2.zero;
-        treeMountHost.anchorMax = Vector2.one;
-        treeMountHost.pivot = new Vector2(0.5f, 0.5f);
-        treeMountHost.offsetMin = new Vector2(16f, 56f);
-        treeMountHost.offsetMax = new Vector2(-16f, -56f);
+        NormalizeTreeMountHostLayout(treeMountHost);
         createdRuntimeTreeMountHost = true;
+    }
+
+    /// <summary>
+    /// Force le host a remplir OverlayPanel (evite insets residuels / instances stale).
+    /// </summary>
+    private static void NormalizeTreeMountHostLayout(RectTransform host)
+    {
+        if (host == null)
+            return;
+
+        host.anchorMin = Vector2.zero;
+        host.anchorMax = Vector2.one;
+        host.pivot = new Vector2(0.5f, 0.5f);
+        host.anchoredPosition = Vector2.zero;
+        host.sizeDelta = Vector2.zero;
+        host.offsetMin = Vector2.zero;
+        host.offsetMax = Vector2.zero;
+        host.localScale = Vector3.one;
+        host.localRotation = Quaternion.identity;
     }
 
     private Vector2 ResolveTreeContentSize()
@@ -358,8 +377,9 @@ public class TalentTreeOverlayController : MonoBehaviour
 
         if (isVisualTreeActive && UsesScrollRectBypass())
         {
+            // Fond / filigrane derriere le chrome (titre, Retour) — pas au-dessus.
             if (treeMountHost != null)
-                treeMountHost.SetAsLastSibling();
+                treeMountHost.SetAsFirstSibling();
 
             SetScrollViewVisible(false);
             return;

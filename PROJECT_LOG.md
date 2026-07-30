@@ -1,5 +1,76 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-07-30 — Layers fond + filigrane (sans déformer l’art)
+
+### Demande auteur
+- Remettre filigrane non déformé ; fond opaque séparé derrière.
+
+### Fix
+- `FondPanel` (ex-FiligraneBackdrop) : stretch plein host, Image opaque + UISprite builtin.
+- `Filigrane` : ancre centre, `960×960`, `PreserveAspect = 1`, alpha 0.14.
+
+### Playtest
+- Inventaire → P1 Commerce : fond plein + balance non étirée.
+
+---
+
+## 2026-07-30 — Fix décalage TreeMount / filigrane (Cursor)
+
+### Cause
+- Filigrane `PreserveAspect` → lettrebox (pas plein cadre).
+- Runtime `SetAsLastSibling` sur `TreeMountHost` (mauvais ordre draw).
+- `BodyPlaceholder` encore inset actif possible.
+
+### Fix
+- `PreserveAspect = 0` sur Filigrane ; BodyPlaceholder inactive + stretch 0.
+- `SetAsFirstSibling` + `NormalizeTreeMountHostLayout` à chaque resolve.
+
+### Playtest
+- Inventaire → P1 Commerce : fond/filigrane bord à bord OverlayPanel ; titre/Retour au-dessus ; PA haut-droite.
+
+---
+
+## 2026-07-30 — `[CT-UI-SAFE-PA-001]` TreeMount plein + HUD PA haut-droite
+
+### Fait (Cursor — demande auteur implement plan)
+- `TreeMountHost` sizeDelta `(0,0)` + `OverlayPanel` alpha 1 ; sibling order fond puis `TrackTitle`/`BackButton`
+- `EnsureRuntimeTreeMountHost` offsets `(0,0)`
+- `ActionPointsHudWidget` + instance `NavigationHUD` : anchors top-right, pos `(-16,-16)`
+- Doc : `Notes/Ui/CONVENTION_hud_pa_safe_zone.md` + prompts archive `PROMPTS_Bezi_hud_pa_safe_zone.md`
+
+### Suite
+1. Playtest auteur Inventaire → P1 Commerce
+2. Commit auteur
+
+---
+
+## 2026-07-30 — Mémo crédits Bezy : reset le 30 du mois
+
+### Décision / rappel
+- Les crédits Bezy se **réinitialisent en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour si ≠ 30).
+- Documenté pour rappel à chaque session : `ASSISTANT_CONTEXT.md`, `Notes/Bezi/README_bezi.md`, `WORKFLOW_PROTOCOL.md`, règles Cursor Bezy / gestion projet, `TODO_Bezy_polish_semaine.md`.
+
+### Suite session (inchangée)
+- Bezy `[BZ-POLISH-010]` Ph.2 fond opaque derrière filigrane.
+
+---
+
+## 2026-07-30 — Art filigrane Commerce importé → Bezy `[BZ-POLISH-010]`
+
+### Fait (Cursor)
+- PNG déplacé : `Assets/Art/Sprites/UI/Progression/CommerceFiligrane.png`
+- Import Sprite single + `alphaIsTransparency` (fond déjà transparent)
+- Prompts Bezy : `Notes/Ui/PROMPTS_Bezi_talent_filigrane_010.md`
+
+### Suite
+1. Bezy Ph.1 `[BZ-POLISH-010]` — Image `Filigrane` sous `TreeMountHost`
+2. Playtest auteur Inventaire → P1 Commerce
+
+### Commit
+- À faire côté **auteur**.
+
+---
+
 ## 2026-07-30 — Prochaine session = filigrane Commerce (art ChatGPT)
 
 ### Décision auteur
