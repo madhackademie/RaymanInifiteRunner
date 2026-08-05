@@ -13,14 +13,9 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
-<<<<<<< HEAD
-> **Priorité polish Bezy :** **[BZ-POLISH-002]** HUD PA suite (Refuse shake + fill conso + tooltip fade) — surface **visible**.  
+> **Priorité polish Bezy :** playtest `[BZ-POLISH-012]` puis file **#13** (`[BZ-POLISH-013]` audit layers) — HomeScene Bezy Ph.1–3 **OK** 2026-08-05.  
 > **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only (code/assets jetés) ; attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`).  
-> **Branche :** `polish/ui-bezy` — tout le polish UI/Bezy ici, pas sur `main`.  
-=======
-> **Priorité polish Bezy :** file **#11** ([BZ-POLISH-011] LoadingScreen) — [BZ-POLISH-010] filigrane **Bezy CLOS** 2026-07-30.
-> **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only (code jeté) ; attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`).  
->>>>>>> polish/ui-bezy
+> **Branche :** `main`.  
 > **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
 
 | # | ID | Job Bezy | Prefab / assets | Effort | Prérequis |
@@ -97,7 +92,9 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - Suite : playtest auteur Inventaire → P1 Commerce
 
 ### 11–12 — Bootstrap / Home
-- Lisibilité uniquement ; art LoadingScreen = autre workflow
+- **[BZ-POLISH-011]** LoadingScreen — **CLOS** Bezy Ph.1–3 + playtest OK 2026-08-05 ; prompts `PROMPTS_Bezi_loading_011.md`
+- **[BZ-POLISH-012]** HomeScene — **Bezy Ph.1–3 OK** 2026-08-05 ; prompts `PROMPTS_Bezi_home_012.md` ; playtest auteur ; **écritures scène = scène ouverte Editor**
+- Art splash Loading = `[BL-ART-006]`
 
 ### 13 — Audit layers
 - Passe Bezy ciblée par dossier prefab (pas rescans monolithe)

@@ -39,33 +39,63 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-<<<<<<< HEAD
-> Branche courante : **`polish/ui-bezy`** (depuis `main` @ `4f2d1e8` docs park monnaie).  
-> Sandbox polish Bezy / UI — **ne pas merger** tant que playtest auteur OK. Rollback : `git checkout main`.  
-> Prochain job Bezy visible : **`[BZ-POLISH-002]` HUD PA**. Wallet punch `[BZ-POLISH-015]` = park GDD §5.8 (code jeté, docs gardées).
-=======
-> Branche courante : **`polish/ui-bezy`**.  
-> Layout TreeMount plein + HUD PA haut-droite livré Cursor — **playtest auteur**. Commit à planifier.
->>>>>>> polish/ui-bezy
+> Branche courante : **`main`**.  
+> Bezy `[BZ-POLISH-012]` Ph.1–3 **livré** — **pas encore playtesté**.  
+> Wallet punch `[BZ-POLISH-015]` = PARK UX.
 
-### Priorité immédiate — playtest layout talents + PA
+### ★ Priorité prochaine session — playtest HomeScene
 
-> Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).  
-> Crédits Bezy : reset le **30** de chaque mois.
+> **ID :** `[P0-HOME-PLAY-012]` · lié `[BZ-POLISH-012]`  
+> **Référence « tâche du jour » :** ce bloc uniquement.  
+> Crédits Bezy : reset le **30** de chaque mois (prochain : **30 août**).
 
-**Ordre immédiat :**
+**À faire en ouverture de session :**
+
+1. [ ] **[P0-HOME-PLAY-012]** Playtest auteur hub HomeScene  
+   - Lancer depuis **`Bootstrap`** → Home  
+   - Titre **ACCUEIL** lisible en haut  
+   - Bouton **Commencer l'aventure** : texte grand, hit confortable, pas collé header/HUD  
+   - Clic → transition **`FirstLvl`** OK  
+2. [ ] Si playtest OK → marquer `[BZ-POLISH-012]` + `[P0-HOME-PLAY-012]` clos  
+3. [ ] Ensuite : **[BZ-POLISH-013]** audit layers (#13)  
+4. [ ] Commit auteur lot session + docs
+
+**Checklist visuelle playtest :**
+
+- [ ] Header « ACCUEIL » (48 Bold)
+- [ ] Bouton hub h≈112 / Label 36
+- [ ] Marges : sous header + au-dessus NavigationHUD
+- [ ] Pas de flash / layer KO
+
+**Clos Bezy `[BZ-POLISH-012]` (hors playtest) :**
+
+1. [x] Ph.1 `MapNodeButton` layers UI=5
+2. [x] Ph.2 bouton h=112 + Label 36 / Subtitle 22
+3. [x] Ph.3 HeaderTitle ACCUEIL + padding hub (scène ouverte requise)
+4. [ ] Playtest → **[P0-HOME-PLAY-012]** (prochaine session)
+
+**Clos `[BZ-POLISH-011]` (2026-08-05) :**
+
+1. [x] Ph.1 layers UI=5 sous LoadingCanvas
+2. [x] Ph.2 layout ProgressBarContainer (inset + track 28 + % 36)
+3. [x] Ph.3 contraste Background + SplashImage placeholder α 0.35
+4. [x] Playtest auteur Bootstrap : barre 0→100 % + % + fade — **OK**
+
+**Clos layout talents + PA (2026-08-05) :**
 
 1. [x] **[P0-ART-FILIGRANE-001]** Image filigrane Commerce — `CommerceFiligrane.png`
 2. [x] **[BZ-POLISH-010]** / `[BL-INV-TALENT-001]` Filigrane + `FondPanel` (layers fond opaque / art PreserveAspect)
 3. [x] **[CT-UI-SAFE-PA-001]** TreeMount plein cadre + HUD PA haut-droite + convention safe zone (2026-07-30 Cursor)
 4. [x] Filigrane layers `FondPanel` + art PreserveAspect **1120²** — validé auteur (2026-07-30)
-5. [ ] Playtest auteur global : Inventaire → P1 Commerce (contrastes + fond + PA haut-droite) si pas déjà couvert
+5. [x] Playtest auteur global : Inventaire → P1 Commerce (contrastes + fond + PA haut-droite) — **OK 2026-08-05**
 
-**File Bezy (après playtest) :**
+**File Bezy :**
 
 1. [x] **[BZ-POLISH-009]** Contrastes talents Commerce — **Bezy Ph.1–3 OK** (2026-07-30)
-2. [ ] Suite file #11→#16
-3. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
+2. [x] **[BZ-POLISH-011]** LoadingScreen (#11) — **Bezy + playtest OK** (2026-08-05)
+3. [x] **[BZ-POLISH-012]** HomeScene (#12) — **Bezy Ph.1–3 OK** ; playtest = `[P0-HOME-PLAY-012]` **prochaine session**
+4. [ ] **[BZ-POLISH-013]** Audit layers — après playtest Home
+5. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
 
 **Cursor (hors Bezy, quand utile) :**
 
@@ -77,6 +107,8 @@ Convention d'IDs :
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
 - [ ] Commit auteur lot session + docs
 
+**Réf. HomeScene :** `Notes/Ui/PROMPTS_Bezi_home_012.md`  
+**Réf. LoadingScreen :** `Notes/Ui/PROMPTS_Bezi_loading_011.md`  
 **Réf. layout PA :** `Notes/Ui/CONVENTION_hud_pa_safe_zone.md`
 
 **Clos playtests (session 2026-07-29) — validés auteur :**

@@ -45,7 +45,7 @@ Bezy a signalé « UI = index 4 » — **faux pour ce repo**. Vérifier `TagMana
 
 ## À aligner si encore en Default (0)
 
-- `Assets/Scenes/HomeScene.unity` — Canvas + enfants UI → **5** après chantier Header ACCUEIL
+- Assets/Scenes/HomeScene.unity — Canvas UI OK ; Header ACCUEIL via `[BZ-POLISH-012]` Ph.3 ; prefab `MapNodeButton` layers via Ph.1
 
 ---
 

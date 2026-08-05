@@ -1,5 +1,98 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-05 — Prochaine session = playtest HomeScene `[P0-HOME-PLAY-012]`
+
+### Décision auteur
+- Reporter le playtest hub Home en **priorité prochaine session** (pas traité maintenant).
+
+### Trace todo
+- [ ] **[P0-HOME-PLAY-012]** placé en tête de *Prochaine session* (`Notes/Todo_project.md`).
+- Sera la référence au prochain « tâche du jour ».
+
+### Checklist playtest (rappel)
+- Bootstrap → Home : titre **ACCUEIL** ; bouton « Commencer l'aventure » lisible / tap OK ; clic → FirstLvl ; marges header/HUD.
+
+### Après playtest OK
+1. Clos `[BZ-POLISH-012]` + `[P0-HOME-PLAY-012]`
+2. File Bezy **#13** `[BZ-POLISH-013]`
+3. Commit auteur lot session + docs
+
+### Crédits Bezy
+- Reset le **30** de chaque mois (prochain : **30 août**).
+
+---
+
+## 2026-08-05 — `[BZ-POLISH-012]` HomeScene Bezy Ph.1–3 OK
+
+### Fait (Bezy)
+- Ph.1–2 : `MapNodeButton` layers 5 + h=112 + Label 36 / Subtitle 22
+- Ph.3 : `HeaderTitle` « ACCUEIL » + padding NodesContainer 48/48/140/120 + Background `(0.07,0.07,0.12)`
+- **Blocage résolu :** scène `HomeScene` doit être **ouverte** dans l’Editor pour persister les writes Bezy
+
+### Suite (mise à jour)
+- Playtest reporté → **[P0-HOME-PLAY-012]** prochaine session (entrée ci-dessus).
+
+### Prompts
+- `Notes/Ui/PROMPTS_Bezi_home_012.md`
+
+---
+
+## 2026-08-05 — Playtest `[BZ-POLISH-011]` LoadingScreen validé
+
+### Décision auteur
+- Playtest Bootstrap (barre 0→100 %, %, fade) **OK**.
+
+### Trace
+- `[BZ-POLISH-011]` **clos** (Bezy Ph.1–3 + playtest) dans `Notes/Todo_project.md`.
+
+### Prochaine session (référence « tâche du jour »)
+1. **[BZ-POLISH-012]** HomeScene — file Bezy #12 (boutons + titres lisibilité mobile)
+2. Suite #13 audit layers
+3. Commit auteur lot session + docs
+
+### Crédits Bezy
+- Reset le **30** de chaque mois (prochain : **30 août**).
+
+---
+
+## 2026-08-05 — `[BZ-POLISH-011]` LoadingScreen Bezy Ph.1–3 OK
+
+### Fait (Bezy)
+- Ph.1 : layers UI=`5` sous `LoadingCanvas`
+- Ph.2 : `ProgressBarContainer` inset + safe bottom ; track h=28 ; `%` font 36 Bold
+- Ph.3 : Background `(0.06,0.06,0.08)` ; SplashImage placeholder α `0.35`
+- Fill toujours via `anchorMax.x` + `HorizontalGradient` ; SerializeFields intacts
+
+### Note review
+- Sprites Image encore `null` (Background / Bg / Fill) — OK Editor souvent ; build si noir → UISprite
+
+### Suite
+- Playtest auteur — **validé** (entrée suivante).
+
+### Prompts
+- `Notes/Ui/PROMPTS_Bezi_loading_011.md`
+
+---
+
+## 2026-08-05 — Playtest layout talents Commerce + PA validé
+
+### Décision auteur
+- Point 1 (playtest Inventaire → P1 Commerce : contrastes + fond/filigrane + HUD PA haut-droite) **validé**.
+
+### Trace todo
+- [x] Playtest auteur global layout talents + PA — clos dans `Notes/Todo_project.md`.
+- Conflit Git résiduel dans *Contexte Git* du todo **nettoyé** ; branche doc = **`main`**.
+
+### Prochaine session (référence « tâche du jour »)
+1. **[BZ-POLISH-011]** LoadingScreen — file Bezy #11 (layout barre + %)
+2. Suite file #12→#13
+3. Commit auteur lot polish si besoin
+
+### Crédits Bezy
+- Reset le **30** de chaque mois (prochain : **30 août**).
+
+---
+
 ## 2026-07-30 — Layers fond + filigrane (sans déformer l’art)
 
 ### Demande auteur

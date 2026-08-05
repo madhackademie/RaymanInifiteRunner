@@ -8,16 +8,18 @@
 ### Etat actuel (compact)
 - Projet Unity 6000.3.x : boot `Bootstrap` → shell `NavigationHUD` + inventaire via `UIManager`.
 - Inventaire drop + insecte Flowering + DirtBurst : **playtests validés** (2026-07-29).
-- **Arbre talents Commerce : MVP OK** — feature gelée, polish en backlog.
+- **Arbre talents Commerce** : layout + filigrane + PA haut-droite — **playtest OK** (2026-08-05).
+- **LoadingScreen** `[BZ-POLISH-011]` : Bezy + **playtest OK** (2026-08-05).
+- **HomeScene** `[BZ-POLISH-012]` : Bezy Ph.1–3 OK — **playtest auteur** à faire.
 
-### Priorités en cours (2026-07-30)
-1. Playtest auteur : talents Commerce (`[BZ-POLISH-009]`/`010`) + `[CT-UI-SAFE-PA-001]` (fond plein + PA haut-droite).
-2. Suite file Bezy **#11** LoadingScreen ; `[BZ-POLISH-015]` PARK UX.
-3. Commit auteur lot polish + layout PA.
-4. **Crédits Bezy :** reset le **30** de chaque mois.
+### Priorités en cours (2026-08-05)
+1. **Prochaine session :** `[P0-HOME-PLAY-012]` playtest HomeScene (ACCUEIL + bouton hub) — référence « tâche du jour ».
+2. Après OK : file Bezy **#13** `[BZ-POLISH-013]` ; `[BZ-POLISH-015]` PARK UX.
+3. Commit auteur lot polish + docs.
+4. **Crédits Bezy :** reset le **30** de chaque mois (prochain : **30 août**).
 
 ### Contexte Git
-- Branche : **`polish/ui-bezy`** — commit auteur à planifier.
+- Branche : **`main`**.
 
 ### Rappel « tâche du jour »
 - Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md`.
