@@ -24,7 +24,7 @@ public class SaleChannelService : MonoBehaviour
     [Tooltip("Ignore tout cooldown (playtest). Sinon durée = Neighbor Sale Cooldown Seconds.")]
     [SerializeField] private bool ignoreSaleCooldown;
 
-    private readonly Dictionary<string, long> lastSaleUtcTicksByChannel = new();
+    private readonly Dictionary<string, long> fallbackLastSaleUtcTicksByChannel = new();
 
     private void Awake()
     {
@@ -36,6 +36,10 @@ public class SaleChannelService : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    private void Start()
+    {
         LoadCooldownState();
     }
 
@@ -43,9 +47,22 @@ public class SaleChannelService : MonoBehaviour
     [ContextMenu("Debug/Clear Sale Cooldowns")]
     public void DebugClearSaleCooldowns()
     {
-        lastSaleUtcTicksByChannel.Clear();
-        SaleChannelSaveService.Delete();
-        Debug.Log("[SaleChannelService] Cooldowns vente effacés (mémoire + save).");
+        fallbackLastSaleUtcTicksByChannel.Clear();
+
+        SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
+        if (unlockService != null)
+        {
+            foreach (string channelId in new List<string>(unlockService.SharedData.LastSaleUtcTicksByChannel.Keys))
+                unlockService.SharedData.LastSaleUtcTicksByChannel.Remove(channelId);
+
+            SaleChannelSaveService.Save(unlockService.SharedData);
+        }
+        else
+        {
+            SaleChannelSaveService.Delete();
+        }
+
+        Debug.Log("[SaleChannelService] Cooldowns vente effacés.");
     }
 
     private void OnDestroy()
@@ -61,6 +78,10 @@ public class SaleChannelService : MonoBehaviour
 
     public bool IsChannelUnlocked(string channelId)
     {
+        SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
+        if (unlockService != null)
+            return unlockService.IsChannelUnlocked(channelId);
+
         return channelId == SaleChannelId.Neighbor;
     }
 
@@ -218,7 +239,7 @@ public class SaleChannelService : MonoBehaviour
             return false;
         }
 
-        RecordSuccessfulSale(channelId);
+        RecordSuccessfulSale(channelId, quantity);
         return true;
     }
 
@@ -238,45 +259,87 @@ public class SaleChannelService : MonoBehaviour
         if (string.IsNullOrWhiteSpace(title))
             return false;
 
-        if (title.Contains("Voisinage"))
+        if (title.Contains("Voisinage", StringComparison.OrdinalIgnoreCase))
         {
             channelId = SaleChannelId.Neighbor;
+            return true;
+        }
+
+        if (title.Contains("Bandouli", StringComparison.OrdinalIgnoreCase))
+        {
+            channelId = SaleChannelId.Sash;
+            return true;
+        }
+
+        if (title.Contains("Vélo", StringComparison.OrdinalIgnoreCase) ||
+            title.Contains("Velo", StringComparison.OrdinalIgnoreCase))
+        {
+            channelId = SaleChannelId.Bike;
             return true;
         }
 
         return false;
     }
 
-    private void RecordSuccessfulSale(string channelId)
+    private void RecordSuccessfulSale(string channelId, int quantitySold)
     {
         if (string.IsNullOrWhiteSpace(channelId))
             return;
 
-        lastSaleUtcTicksByChannel[channelId] = FarmTimeService.UtcNowTicks;
-        PersistCooldownState();
+        long utcTicks = FarmTimeService.UtcNowTicks;
+        SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
+        if (unlockService != null)
+        {
+            unlockService.SetLastSaleUtcTicks(channelId, utcTicks);
+            unlockService.RecordSale(channelId, quantitySold);
+        }
+        else
+        {
+            fallbackLastSaleUtcTicksByChannel[channelId] = utcTicks;
+            PersistCooldownState();
+        }
     }
 
     private void LoadCooldownState()
     {
-        lastSaleUtcTicksByChannel.Clear();
+        fallbackLastSaleUtcTicksByChannel.Clear();
 
-        if (!SaleChannelSaveService.TryLoad(out Dictionary<string, long> loaded))
+        if (SaleChannelUnlockService.Instance != null)
             return;
 
-        foreach (KeyValuePair<string, long> entry in loaded)
-            lastSaleUtcTicksByChannel[entry.Key] = entry.Value;
+        if (!SaleChannelSaveService.TryLoad(out SaleChannelPersistedData loaded))
+            return;
+
+        foreach (KeyValuePair<string, long> entry in loaded.LastSaleUtcTicksByChannel)
+            fallbackLastSaleUtcTicksByChannel[entry.Key] = entry.Value;
     }
 
     private void PersistCooldownState()
     {
-        SaleChannelSaveService.Save(lastSaleUtcTicksByChannel);
+        if (SaleChannelUnlockService.Instance != null)
+            return;
+
+        var data = new SaleChannelPersistedData();
+        foreach (KeyValuePair<string, long> entry in fallbackLastSaleUtcTicksByChannel)
+            data.LastSaleUtcTicksByChannel[entry.Key] = entry.Value;
+
+        SaleChannelSaveService.Save(data);
     }
 
     private bool TryGetLastSaleUtc(string channelId, out DateTime lastSaleUtc)
     {
         lastSaleUtc = default;
 
-        if (!lastSaleUtcTicksByChannel.TryGetValue(channelId, out long ticks) || ticks <= 0)
+        SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
+        if (unlockService != null &&
+            unlockService.TryGetLastSaleUtcTicks(channelId, out long ticks) &&
+            ticks > 0)
+        {
+            lastSaleUtc = new DateTime(ticks, DateTimeKind.Utc);
+            return true;
+        }
+
+        if (!fallbackLastSaleUtcTicksByChannel.TryGetValue(channelId, out ticks) || ticks <= 0)
             return false;
 
         lastSaleUtc = new DateTime(ticks, DateTimeKind.Utc);

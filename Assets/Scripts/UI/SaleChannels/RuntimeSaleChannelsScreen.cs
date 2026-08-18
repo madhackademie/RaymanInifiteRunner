@@ -21,6 +21,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private RectTransform bandeauxContainer;
     [SerializeField] private Image rootBackdropImage;
+    [SerializeField] private SaleChannelUnlockTooltipHost unlockTooltipHost;
 
     [Header("VFX vente")]
     [Tooltip("Prefab Bezy SaleMoneyBurst (ref Simulate / Phase 3). Runtime = burst UI Overlay.")]
@@ -39,6 +40,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     private void Awake()
     {
         ResolveBindingsIfNeeded();
+        ResolveUnlockTooltipHost();
         HookCloseButton();
         HookBandeauViews();
     }
@@ -51,6 +53,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
     private void OnDisable()
     {
+        unlockTooltipHost?.Hide();
         StopCooldownRefresh();
     }
 
@@ -64,27 +67,38 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     public void Refresh()
     {
         ApplyShellBackdrop();
-        RefreshBandeauStates();
+        RefreshBandeauStates(playUnlockableReveal: true);
     }
 
-    private void RefreshBandeauStates()
+    private void RefreshBandeauStates(bool playUnlockableReveal)
     {
         SaleChannelService service = SaleChannelService.Instance;
+        SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
+        unlockService?.RefreshProgress();
 
         foreach (SaleChannelBandeauView bandeau in bandeauViews)
         {
             if (bandeau == null)
                 continue;
 
-            if (bandeau.IsLocked)
+            if (!SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
+            {
+                bandeau.ClearProgressionState();
+                bandeau.ApplyCooldownState(false, null);
+                bandeau.ApplyLockedInteractable();
+                continue;
+            }
+
+            ApplyProgressionVisuals(bandeau, channelId, unlockService, playUnlockableReveal);
+
+            if (bandeau.IsProgressionBlockingSale)
             {
                 bandeau.ApplyCooldownState(false, null);
                 bandeau.ApplyLockedInteractable();
                 continue;
             }
 
-            if (service == null ||
-                !SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
+            if (service == null)
             {
                 bandeau.ApplyCooldownState(false, null);
                 bandeau.ApplyLockedInteractable();
@@ -103,6 +117,33 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
             bandeau.ApplyLockedInteractable();
         }
+    }
+
+    private static void ApplyProgressionVisuals(
+        SaleChannelBandeauView bandeau,
+        string channelId,
+        SaleChannelUnlockService unlockService,
+        bool playUnlockableReveal)
+    {
+        if (channelId == SaleChannelId.Neighbor || unlockService == null)
+        {
+            bandeau.ClearProgressionState();
+            return;
+        }
+
+        if (!unlockService.TryGetProgressSnapshot(channelId, out SaleChannelUnlockProgressSnapshot snapshot))
+        {
+            bandeau.ClearProgressionState();
+            return;
+        }
+
+        if (snapshot.Phase == SaleChannelProgressionPhase.Unlocked)
+        {
+            bandeau.ClearProgressionState();
+            return;
+        }
+
+        bandeau.ApplyProgressionState(snapshot, playUnlockableReveal);
     }
 
     private void StartCooldownRefreshIfNeeded()
@@ -133,32 +174,46 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             yield return wait;
 
             SaleChannelService service = SaleChannelService.Instance;
-            if (service == null)
-                continue;
+            SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
+            unlockService?.RefreshProgress();
 
-            bool anyCooldown = false;
-            foreach (SaleChannelBandeauView bandeau in bandeauViews)
+            bool keepRefreshing = unlockService != null && unlockService.HasActiveResearch();
+
+            if (service != null)
             {
-                if (bandeau == null || bandeau.IsLocked)
-                    continue;
-
-                if (!SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
-                    continue;
-
-                if (service.TryGetCooldownRemainingSeconds(channelId, out float remainingSeconds))
+                foreach (SaleChannelBandeauView bandeau in bandeauViews)
                 {
-                    anyCooldown = true;
-                    bandeau.ApplyCooldownState(
-                        true,
-                        SaleChannelCooldownFormatter.FormatRemainingSeconds(remainingSeconds));
-                }
-                else if (bandeau.IsOnCooldown)
-                {
-                    bandeau.ApplyCooldownState(false, null);
+                    if (bandeau == null)
+                        continue;
+
+                    if (!SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
+                        continue;
+
+                    ApplyProgressionVisuals(bandeau, channelId, unlockService, playUnlockableReveal: false);
+
+                    if (bandeau.IsProgressionBlockingSale)
+                    {
+                        if (bandeau.ProgressionPhase == SaleChannelProgressionPhase.ResearchInProgress)
+                            keepRefreshing = true;
+
+                        continue;
+                    }
+
+                    if (service.TryGetCooldownRemainingSeconds(channelId, out float remainingSeconds))
+                    {
+                        keepRefreshing = true;
+                        bandeau.ApplyCooldownState(
+                            true,
+                            SaleChannelCooldownFormatter.FormatRemainingSeconds(remainingSeconds));
+                    }
+                    else if (bandeau.IsOnCooldown)
+                    {
+                        bandeau.ApplyCooldownState(false, null);
+                    }
                 }
             }
 
-            if (!anyCooldown)
+            if (!keepRefreshing)
                 break;
         }
 
@@ -180,6 +235,21 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             screenPopupHost = GetComponentInChildren<ScreenPopupHost>(true);
     }
 
+    private void ResolveUnlockTooltipHost()
+    {
+        if (unlockTooltipHost != null)
+            return;
+
+        unlockTooltipHost = GetComponentInChildren<SaleChannelUnlockTooltipHost>(true);
+        if (unlockTooltipHost != null)
+            return;
+
+        Debug.LogWarning(
+            "[RuntimeSaleChannelsScreen] unlockTooltipHost absent — tooltip déblocage désactivé jusqu'au wiring Bezy. " +
+            "Voir Notes/Ui/PROMPTS_Bezi_sale_channel_unlock_ui.md",
+            this);
+    }
+
     private void HookBandeauViews()
     {
         if (bandeauxHooked || bandeauxContainer == null)
@@ -187,9 +257,35 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
         bandeauViews = bandeauxContainer.GetComponentsInChildren<SaleChannelBandeauView>(true);
         foreach (SaleChannelBandeauView bandeau in bandeauViews)
+        {
             bandeau.OnBandeauClicked += HandleBandeauClicked;
+            bandeau.OnUnlockResearchRequested += HandleUnlockResearchRequested;
+        }
 
+        WireProgressionHovers();
         bandeauxHooked = true;
+    }
+
+    private void WireProgressionHovers()
+    {
+        SaleChannelBandeauProgressionHover[] hovers =
+            bandeauxContainer.GetComponentsInChildren<SaleChannelBandeauProgressionHover>(true);
+
+        foreach (SaleChannelBandeauProgressionHover hover in hovers)
+        {
+            if (hover == null)
+                continue;
+
+            hover.ConfigureFromHierarchy(unlockTooltipHost);
+        }
+
+        if (hovers.Length == 0)
+        {
+            Debug.LogWarning(
+                "[RuntimeSaleChannelsScreen] Aucun SaleChannelBandeauProgressionHover — survol bandeau verrouillé inactif. " +
+                "Bezy : ajouter sur LockedOverlay (cf. PROMPTS_Bezi_sale_channel_unlock_ui.md).",
+                this);
+        }
     }
 
     private void UnhookBandeauViews()
@@ -199,17 +295,53 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
         foreach (SaleChannelBandeauView bandeau in bandeauViews)
         {
-            if (bandeau != null)
-                bandeau.OnBandeauClicked -= HandleBandeauClicked;
+            if (bandeau == null)
+                continue;
+
+            bandeau.OnBandeauClicked -= HandleBandeauClicked;
+            bandeau.OnUnlockResearchRequested -= HandleUnlockResearchRequested;
         }
 
         bandeauxHooked = false;
         bandeauViews = System.Array.Empty<SaleChannelBandeauView>();
     }
 
+    private void HandleUnlockResearchRequested(SaleChannelBandeauView bandeau)
+    {
+        if (bandeau == null)
+            return;
+
+        unlockTooltipHost?.Hide();
+
+        if (!SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
+        {
+            ShowFeedbackMessage("Canal de vente non reconnu.");
+            return;
+        }
+
+        SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
+        if (unlockService == null)
+        {
+            ShowFeedbackMessage("Progression canaux indisponible.");
+            return;
+        }
+
+        if (!unlockService.TryStartResearch(channelId, out string failureMessage))
+        {
+            ShowFeedbackMessage(string.IsNullOrEmpty(failureMessage)
+                ? "Recherche impossible."
+                : failureMessage);
+            return;
+        }
+
+        ShowFeedbackMessage("Recherche lancée — revenez quand le timer sera terminé.");
+        RefreshBandeauStates(playUnlockableReveal: false);
+        StartCooldownRefreshIfNeeded();
+    }
+
     private void HandleBandeauClicked(SaleChannelBandeauView bandeau)
     {
-        if (bandeau == null || bandeau.IsLocked || bandeau.IsOnCooldown)
+        if (bandeau == null || bandeau.IsProgressionBlockingSale || bandeau.IsOnCooldown)
             return;
 
         if (!SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
@@ -229,7 +361,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             service.TryGetCooldownMessage(channelId, out string cooldownMessage))
         {
             ShowFeedbackMessage(cooldownMessage);
-            RefreshBandeauStates();
+            RefreshBandeauStates(playUnlockableReveal: false);
             StartCooldownRefreshIfNeeded();
             return;
         }
@@ -277,7 +409,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
         }
 
         ShopItemPopupController popup = ResolveSellPopup();
-        // Burst sur bouton Confirmer/Valider avant Close (position encore valide).
         PlaySaleMoneyBurst(popup);
         popup?.Close();
         pendingChannelId = null;
@@ -294,7 +425,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
         if (anchor == null)
             return;
 
-        // Prefab PS gardé pour Phase 3 / Simulate ; Overlay HUD → burst UI.
         if (saleMoneyBurstPrefab == null)
         {
             Debug.LogWarning(
@@ -395,6 +525,8 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
     private void HandleCloseClicked()
     {
+        unlockTooltipHost?.Hide();
+
         if (UIManager.Instance != null)
             UIManager.Instance.HideScreen(ScreenId.SaleChannels);
     }

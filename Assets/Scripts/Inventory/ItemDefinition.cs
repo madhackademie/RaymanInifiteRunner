@@ -16,6 +16,10 @@ public class ItemDefinition : ScriptableObject
     [Header("Comportement")]
     [SerializeField] private ItemInventoryBehavior inventoryBehavior = ItemInventoryBehavior.Standard;
 
+    [Header("Filtres inventaire")]
+    [SerializeField] private ItemCategory itemCategory = ItemCategory.Material;
+    [SerializeField] private ItemGameScope gameScope = ItemGameScope.Farm;
+
     [Header("Visuals")]
     [SerializeField] private Sprite icon;
 
@@ -33,6 +37,12 @@ public class ItemDefinition : ScriptableObject
 
     /// <summary>Rôle inventaire (standard ou monnaie).</summary>
     public ItemInventoryBehavior InventoryBehavior => inventoryBehavior;
+
+    /// <summary>Catégorie pour onglets inventaire (Graines, Récoltes…).</summary>
+    public ItemCategory Category => itemCategory;
+
+    /// <summary>Univers gameplay où l'item est défini.</summary>
+    public ItemGameScope GameScope => gameScope;
 
     /// <summary>Icon displayed in inventory slots.</summary>
     public Sprite Icon => icon;

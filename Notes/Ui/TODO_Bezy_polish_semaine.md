@@ -13,7 +13,8 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
-> **Priorité polish Bezy :** playtest `[BZ-POLISH-012]` puis file **#13** (`[BZ-POLISH-013]` audit layers) — HomeScene Bezy Ph.1–3 **OK** 2026-08-05.  
+> **Priorité session (auteur 2026-08-18) :** `[P0-INV-TABS-001]` onglets inventaire Graines / Consommables — **avant** Bezy #13.  
+> **Priorité polish Bezy ensuite :** file **#13** (`[BZ-POLISH-013]` audit layers) — `[BZ-POLISH-012]` HomeScene **clos** (Bezy + playtest OK 2026-08-18).  
 > **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only (code/assets jetés) ; attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`).  
 > **Branche :** `main`.  
 > **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
@@ -39,6 +40,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | ~~17~~ | ~~**[BZ-POLISH-017]**~~ | ~~HUD Vente fond opaque~~ | — | — | **CLOS Bezy** (playtest auteur) |
 | 18 | **[BZ-POLISH-018]** | VFX pièces / billets au feedback vente (canal) | `SaleMoneyBurst` PS | M | art coin/billet (sinon Ph.1–2 placeholder) |
 | 19 | **[BZ-POLISH-019]** / **[CT-FARM-POLISH-004]** | Sparkle idle récoltable (Mature + graines) | `HarvestReadyFx` + ancre `LaitueObj` | M | Default-Particle — `PROMPTS_Bezi_harvest_ready_vfx.md` |
+| 20 | **[BZ-INV-TABS-001]** / **[P0-INV-TABS-001]** | Barre onglets inventaire farm (Graines / Conso / Récoltes / Tout) | `InventoryScreen.prefab` | M | spec `SPEC_inventaire_multiverse_hub.md` — `PROMPTS_Bezi_inventory_tabs.md` |
 
 ---
 
@@ -93,11 +95,11 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ### 11–12 — Bootstrap / Home
 - **[BZ-POLISH-011]** LoadingScreen — **CLOS** Bezy Ph.1–3 + playtest OK 2026-08-05 ; prompts `PROMPTS_Bezi_loading_011.md`
-- **[BZ-POLISH-012]** HomeScene — **Bezy Ph.1–3 OK** 2026-08-05 ; prompts `PROMPTS_Bezi_home_012.md` ; playtest auteur ; **écritures scène = scène ouverte Editor**
+- **[BZ-POLISH-012]** HomeScene — **CLOS** Bezy Ph.1–3 + playtest OK 2026-08-18 (`[P0-HOME-PLAY-012]`) ; prompts `PROMPTS_Bezi_home_012.md` ; **écritures scène = scène ouverte Editor**
 - Art splash Loading = `[BL-ART-006]`
 
 ### 13 — Audit layers
-- Passe Bezy ciblée par dossier prefab (pas rescans monolithe)
+- **[BZ-POLISH-013]** — **prochaine** ; passe Bezy ciblée par dossier prefab (pas rescans monolithe) ; checklist `TODO_Bezi_audit_scene_ui_refactor`
 
 ### 14 — Insecte Flowering `[BZ-POLISH-014]` — **Bezy P1–P3 CLOS** (2026-07-25)
 - Art : `Bee_Fly.png` · Prefabs : `Bee` + `LaitueObj/InsectPath`

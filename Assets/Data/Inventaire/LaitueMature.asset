@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
   itemId: laitue_mature
   displayName: Laitue Mature
+  inventoryBehavior: 0
+  itemCategory: 1
+  gameScope: 1
   icon: {fileID: 350555719694310779, guid: 4137567ff6bf2aa4a9b30aaffab71dd9, type: 3}
   maxStack: 99

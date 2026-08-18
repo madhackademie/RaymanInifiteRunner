@@ -40,39 +40,35 @@ Convention d'IDs :
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`main`**.  
-> Bezy `[BZ-POLISH-012]` Ph.1–3 **livré** — **pas encore playtesté**.  
-> Wallet punch `[BZ-POLISH-015]` = PARK UX.
+> `[BZ-POLISH-012]` + `[P0-HOME-PLAY-012]` — **Bezy + playtest OK** (2026-08-18).  
+> **Priorité auteur 2026-08-18 :** onglets inventaire `[P0-INV-TABS-001]`.  
+> File Bezy #13 `[BZ-POLISH-013]` reportée après. Wallet punch `[BZ-POLISH-015]` = PARK UX.
 
-### ★ Priorité prochaine session — playtest HomeScene
+### ★ Priorité prochaine session — onglets inventaire graines / consommables
 
-> **ID :** `[P0-HOME-PLAY-012]` · lié `[BZ-POLISH-012]`  
-> **Référence « tâche du jour » :** ce bloc uniquement.  
+> Décision auteur 2026-08-18 : subdiviser la **grille inventaire** (zone basse) par onglets.  
+> Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain : **30 août**).
 
-**À faire en ouverture de session :**
+**Ordre immédiat :**
 
-1. [ ] **[P0-HOME-PLAY-012]** Playtest auteur hub HomeScene  
-   - Lancer depuis **`Bootstrap`** → Home  
-   - Titre **ACCUEIL** lisible en haut  
-   - Bouton **Commencer l'aventure** : texte grand, hit confortable, pas collé header/HUD  
-   - Clic → transition **`FirstLvl`** OK  
-2. [ ] Si playtest OK → marquer `[BZ-POLISH-012]` + `[P0-HOME-PLAY-012]` clos  
-3. [ ] Ensuite : **[BZ-POLISH-013]** audit layers (#13)  
-4. [ ] Commit auteur lot session + docs
+1. [ ] **[P0-INV-TABS-001]** Onglets inventaire farm V0 — **Graines** / **Consommables** / **Récoltes** / **Tout**  
+   - Spec GDD : `Notes/GDD/SPEC_inventaire_multiverse_hub.md`  
+   - Bezy : `Notes/Ui/PROMPTS_Bezi_inventory_tabs.md` (`[BZ-INV-TABS-001]` Ph.1→3)  
+   - **Vue jeu (défaut)** : slots limités par jeu ; onglets catégorie farm.  
+   - **Vue Tout** : cross-jeu, sans limite slots jeu ; gérer / vendre / craft.  
+   - Data Cursor : `ItemCategory` + `gameScope` sur `ItemDefinition`.  
+   - UI : remplacer `filterBarPlaceholder` inactif dans `InventoryScreen`.
+2. [ ] **[P0-INV-TABS-PLAY-001]** Playtest auteur : switch onglets, stock graines vs conso, empty state par onglet
+3. [ ] **[BZ-POLISH-013]** Audit layers UI (file Bezy #13) — **après** onglets
+4. [ ] Commit auteur lot session + docs (si reste)
 
-**Checklist visuelle playtest :**
-
-- [ ] Header « ACCUEIL » (48 Bold)
-- [ ] Bouton hub h≈112 / Label 36
-- [ ] Marges : sous header + au-dessus NavigationHUD
-- [ ] Pas de flash / layer KO
-
-**Clos Bezy `[BZ-POLISH-012]` (hors playtest) :**
+**Clos `[P0-HOME-PLAY-012]` / `[BZ-POLISH-012]` (2026-08-18) :**
 
 1. [x] Ph.1 `MapNodeButton` layers UI=5
 2. [x] Ph.2 bouton h=112 + Label 36 / Subtitle 22
-3. [x] Ph.3 HeaderTitle ACCUEIL + padding hub (scène ouverte requise)
-4. [ ] Playtest → **[P0-HOME-PLAY-012]** (prochaine session)
+3. [x] Ph.3 HeaderTitle ACCUEIL + padding hub
+4. [x] Playtest auteur Bootstrap → Home (ACCUEIL + bouton + FirstLvl) — **OK 2026-08-18**
 
 **Clos `[BZ-POLISH-011]` (2026-08-05) :**
 
@@ -93,8 +89,8 @@ Convention d'IDs :
 
 1. [x] **[BZ-POLISH-009]** Contrastes talents Commerce — **Bezy Ph.1–3 OK** (2026-07-30)
 2. [x] **[BZ-POLISH-011]** LoadingScreen (#11) — **Bezy + playtest OK** (2026-08-05)
-3. [x] **[BZ-POLISH-012]** HomeScene (#12) — **Bezy Ph.1–3 OK** ; playtest = `[P0-HOME-PLAY-012]` **prochaine session**
-4. [ ] **[BZ-POLISH-013]** Audit layers — après playtest Home
+3. [x] **[BZ-POLISH-012]** HomeScene (#12) — **Bezy + playtest OK** (2026-08-18)
+4. [ ] **[BZ-POLISH-013]** Audit layers — **après** `[P0-INV-TABS-001]`
 5. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
 
 **Cursor (hors Bezy, quand utile) :**
@@ -107,6 +103,7 @@ Convention d'IDs :
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
 - [ ] Commit auteur lot session + docs
 
+**Réf. onglets inventaire :** `Notes/GDD/SPEC_inventaire_multiverse_hub.md` · `Notes/Ui/PROMPTS_Bezi_inventory_tabs.md`  
 **Réf. HomeScene :** `Notes/Ui/PROMPTS_Bezi_home_012.md`  
 **Réf. LoadingScreen :** `Notes/Ui/PROMPTS_Bezi_loading_011.md`  
 **Réf. layout PA :** `Notes/Ui/CONVENTION_hud_pa_safe_zone.md`
@@ -339,6 +336,7 @@ Convention d'IDs :
 ### Inventaire / wallet / runtime UI
 - [x] **[CT-UI-SAFE-PA-001]** HUD PA slot chrome haut-droite + TreeMount plein cadre + convention `Notes/Ui/CONVENTION_hud_pa_safe_zone.md` (2026-07-30). Playtest auteur.
 - [~] **[CT-INV-HALO-001]** Rework inventaire halo + grille — Ph.1–3 + playtest halo OK ; **MVP arbre Commerce OK** (2026-06-16) ; polish arbre → backlog.
+- [ ] **[P0-INV-TABS-001]** Onglets grille **Graines** / **Consommables** — **priorité prochaine session** (2026-08-18).
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
 - [ ] [CT-INV-002] Valider qu'il n'y a plus de dépendance runtime cachée à `Inventaire.unity` (ou documenter explicitement son rôle).
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).

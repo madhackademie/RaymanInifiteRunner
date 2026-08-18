@@ -10,13 +10,12 @@
 - Inventaire drop + insecte Flowering + DirtBurst : **playtests validés** (2026-07-29).
 - **Arbre talents Commerce** : layout + filigrane + PA haut-droite — **playtest OK** (2026-08-05).
 - **LoadingScreen** `[BZ-POLISH-011]` : Bezy + **playtest OK** (2026-08-05).
-- **HomeScene** `[BZ-POLISH-012]` : Bezy Ph.1–3 OK — **playtest auteur** à faire.
+- **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
-### Priorités en cours (2026-08-05)
-1. **Prochaine session :** `[P0-HOME-PLAY-012]` playtest HomeScene (ACCUEIL + bouton hub) — référence « tâche du jour ».
-2. Après OK : file Bezy **#13** `[BZ-POLISH-013]` ; `[BZ-POLISH-015]` PARK UX.
-3. Commit auteur lot polish + docs.
-4. **Crédits Bezy :** reset le **30** de chaque mois (prochain : **30 août**).
+### Priorités en cours (2026-08-18)
+1. **[P0-INV-TABS-001]** Onglets inventaire — spec `Notes/GDD/SPEC_inventaire_multiverse_hub.md` ; Bezy `PROMPTS_Bezi_inventory_tabs.md`.
+2. Playtest `[P0-INV-TABS-PLAY-001]` ; file Bezy **#13** après.
+3. **Crédits Bezy :** reset le **30** de chaque mois (prochain : **30 août**).
 
 ### Contexte Git
 - Branche : **`main`**.

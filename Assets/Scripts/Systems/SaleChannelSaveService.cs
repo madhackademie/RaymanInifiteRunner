@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// Persistance des horodatages de vente par canal (cooldown 24 h).
+/// Persistance vente : cooldowns, stats, déblocages et recherches en cours.
 /// </summary>
 public static class SaleChannelSaveService
 {
@@ -12,9 +12,9 @@ public static class SaleChannelSaveService
 
     private static string SaveFilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
-    public static bool TryLoad(out Dictionary<string, long> lastSaleUtcTicksByChannel)
+    public static bool TryLoad(out SaleChannelPersistedData data)
     {
-        lastSaleUtcTicksByChannel = new Dictionary<string, long>();
+        data = new SaleChannelPersistedData();
 
         if (!File.Exists(SaveFilePath))
             return false;
@@ -22,19 +22,12 @@ public static class SaleChannelSaveService
         try
         {
             string json = File.ReadAllText(SaveFilePath);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
-            if (data?.channels == null)
+            SaveData raw = JsonUtility.FromJson<SaveData>(json);
+            if (raw == null)
                 return false;
 
-            foreach (ChannelRecord record in data.channels)
-            {
-                if (record == null || string.IsNullOrWhiteSpace(record.channelId) || record.lastSaleUtcTicks <= 0)
-                    continue;
-
-                lastSaleUtcTicksByChannel[record.channelId.Trim()] = record.lastSaleUtcTicks;
-            }
-
-            return lastSaleUtcTicksByChannel.Count > 0;
+            data = raw.ToRuntimeData();
+            return true;
         }
         catch (Exception e)
         {
@@ -43,26 +36,10 @@ public static class SaleChannelSaveService
         }
     }
 
-    public static void Save(IReadOnlyDictionary<string, long> lastSaleUtcTicksByChannel)
+    public static void Save(SaleChannelPersistedData data)
     {
-        var records = new List<ChannelRecord>();
-
-        if (lastSaleUtcTicksByChannel != null)
-        {
-            foreach (KeyValuePair<string, long> entry in lastSaleUtcTicksByChannel)
-            {
-                if (string.IsNullOrWhiteSpace(entry.Key) || entry.Value <= 0)
-                    continue;
-
-                records.Add(new ChannelRecord
-                {
-                    channelId = entry.Key,
-                    lastSaleUtcTicks = entry.Value,
-                });
-            }
-        }
-
-        string json = JsonUtility.ToJson(new SaveData { channels = records }, prettyPrint: true);
+        SaveData raw = SaveData.FromRuntimeData(data ?? new SaleChannelPersistedData());
+        string json = JsonUtility.ToJson(raw, prettyPrint: true);
 
         try
         {
@@ -84,6 +61,112 @@ public static class SaleChannelSaveService
     private class SaveData
     {
         public List<ChannelRecord> channels = new();
+        public List<string> unlockedChannelIds = new();
+        public List<StatRecord> channelStats = new();
+        public List<ResearchRecord> activeResearch = new();
+
+        public static SaveData FromRuntimeData(SaleChannelPersistedData data)
+        {
+            var save = new SaveData();
+
+            foreach (KeyValuePair<string, long> entry in data.LastSaleUtcTicksByChannel)
+            {
+                if (string.IsNullOrWhiteSpace(entry.Key) || entry.Value <= 0)
+                    continue;
+
+                save.channels.Add(new ChannelRecord
+                {
+                    channelId = entry.Key,
+                    lastSaleUtcTicks = entry.Value,
+                });
+            }
+
+            foreach (string channelId in data.UnlockedChannelIds)
+            {
+                if (!string.IsNullOrWhiteSpace(channelId))
+                    save.unlockedChannelIds.Add(channelId);
+            }
+
+            foreach (KeyValuePair<string, SaleChannelStatBlock> entry in data.StatsByChannel)
+            {
+                if (entry.Value == null || string.IsNullOrWhiteSpace(entry.Key))
+                    continue;
+
+                save.channelStats.Add(new StatRecord
+                {
+                    channelId = entry.Key,
+                    saleCount = entry.Value.SaleCount,
+                    itemsSold = entry.Value.ItemsSold,
+                });
+            }
+
+            foreach (KeyValuePair<string, long> entry in data.ResearchEndUtcTicksByChannel)
+            {
+                if (string.IsNullOrWhiteSpace(entry.Key) || entry.Value <= 0)
+                    continue;
+
+                save.activeResearch.Add(new ResearchRecord
+                {
+                    channelId = entry.Key,
+                    researchEndUtcTicks = entry.Value,
+                });
+            }
+
+            return save;
+        }
+
+        public SaleChannelPersistedData ToRuntimeData()
+        {
+            var data = new SaleChannelPersistedData();
+
+            if (channels != null)
+            {
+                foreach (ChannelRecord record in channels)
+                {
+                    if (record == null || string.IsNullOrWhiteSpace(record.channelId) || record.lastSaleUtcTicks <= 0)
+                        continue;
+
+                    data.LastSaleUtcTicksByChannel[record.channelId.Trim()] = record.lastSaleUtcTicks;
+                }
+            }
+
+            if (unlockedChannelIds != null)
+            {
+                foreach (string channelId in unlockedChannelIds)
+                {
+                    if (!string.IsNullOrWhiteSpace(channelId))
+                        data.UnlockedChannelIds.Add(channelId.Trim());
+                }
+            }
+
+            if (channelStats != null)
+            {
+                foreach (StatRecord record in channelStats)
+                {
+                    if (record == null || string.IsNullOrWhiteSpace(record.channelId))
+                        continue;
+
+                    data.StatsByChannel[record.channelId.Trim()] = new SaleChannelStatBlock
+                    {
+                        SaleCount = Mathf.Max(0, record.saleCount),
+                        ItemsSold = Mathf.Max(0, record.itemsSold),
+                    };
+                }
+            }
+
+            if (activeResearch != null)
+            {
+                foreach (ResearchRecord record in activeResearch)
+                {
+                    if (record == null || string.IsNullOrWhiteSpace(record.channelId) || record.researchEndUtcTicks <= 0)
+                        continue;
+
+                    data.ResearchEndUtcTicksByChannel[record.channelId.Trim()] = record.researchEndUtcTicks;
+                }
+            }
+
+            return data;
+        }
     }
 
     [Serializable]
@@ -92,4 +175,40 @@ public static class SaleChannelSaveService
         public string channelId;
         public long lastSaleUtcTicks;
     }
+
+    [Serializable]
+    private class StatRecord
+    {
+        public string channelId;
+        public int saleCount;
+        public int itemsSold;
+    }
+
+    [Serializable]
+    private class ResearchRecord
+    {
+        public string channelId;
+        public long researchEndUtcTicks;
+    }
+}
+
+/// <summary>
+/// Bloc stats vente par canal (persisté).
+/// </summary>
+[Serializable]
+public class SaleChannelStatBlock
+{
+    public int SaleCount;
+    public int ItemsSold;
+}
+
+/// <summary>
+/// Données runtime persistées pour les canaux de vente.
+/// </summary>
+public class SaleChannelPersistedData
+{
+    public Dictionary<string, long> LastSaleUtcTicksByChannel { get; } = new();
+    public HashSet<string> UnlockedChannelIds { get; } = new();
+    public Dictionary<string, SaleChannelStatBlock> StatsByChannel { get; } = new();
+    public Dictionary<string, long> ResearchEndUtcTicksByChannel { get; } = new();
 }

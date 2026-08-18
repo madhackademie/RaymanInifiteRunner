@@ -18,6 +18,8 @@ public class InventoryUI : MonoBehaviour
     [Tooltip("Identifiant popup détail item / drop (binding Inventory).")]
     [SerializeField] private string itemDetailPopupId = PopupId.InventoryItemDetail;
 
+    private InventoryFilterTabBar.TabId activeFilterTab = InventoryFilterTabBar.TabId.Seeds;
+    private InventoryFilterTabBar boundFilterTabBar;
     private readonly List<InventorySlotUI> spawnedSlots = new();
     private bool hasWarnedAboutNestedSlotPrefab;
     private bool hasWarnedAboutLegacyViewportMask;
@@ -34,7 +36,36 @@ public class InventoryUI : MonoBehaviour
         if (playerInventory != null)
             playerInventory.OnInventoryChanged -= Refresh;
 
+        UnhookFilterTabBar();
         UnhookDropHandler();
+    }
+
+    /// <summary>Lie la barre d'onglets inventaire (Bezy + Cursor).</summary>
+    public void BindFilterTabBar(InventoryFilterTabBar tabBar)
+    {
+        UnhookFilterTabBar();
+
+        boundFilterTabBar = tabBar;
+        if (boundFilterTabBar == null)
+            return;
+
+        boundFilterTabBar.TabChanged += HandleFilterTabChanged;
+        ApplyFilterTab(boundFilterTabBar.ActiveTab);
+    }
+
+    /// <summary>Applique un onglet filtre et rafraîchit la grille.</summary>
+    public void ApplyFilterTab(InventoryFilterTabBar.TabId tabId)
+    {
+        activeFilterTab = tabId;
+        Refresh();
+    }
+
+    /// <summary>Réinitialise l'onglet par défaut à l'ouverture de l'écran.</summary>
+    public void ResetFilterTabToDefault()
+    {
+        activeFilterTab = InventoryFilterTabBar.TabId.Seeds;
+        boundFilterTabBar?.SelectTab(activeFilterTab, notify: false);
+        Refresh();
     }
 
     /// <summary>
@@ -159,8 +190,49 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < spawnedSlots.Count; i++)
         {
             InventorySlot data = i < slots.Count ? slots[i] : null;
-            spawnedSlots[i].Refresh(data);
+            InventorySlot visible = IsVisibleInFilter(data, activeFilterTab) ? data : null;
+            spawnedSlots[i].Refresh(visible);
         }
+    }
+
+    private static bool IsVisibleInFilter(InventorySlot slot, InventoryFilterTabBar.TabId tab)
+    {
+        if (slot == null || slot.IsEmpty || slot.Item == null)
+            return true;
+
+        if (slot.Item.InventoryBehavior == ItemInventoryBehavior.Currency)
+            return false;
+
+        if (tab == InventoryFilterTabBar.TabId.All)
+            return true;
+
+        ItemCategory expected = TabToCategory(tab);
+        return slot.Item.Category == expected;
+    }
+
+    private static ItemCategory TabToCategory(InventoryFilterTabBar.TabId tab)
+    {
+        return tab switch
+        {
+            InventoryFilterTabBar.TabId.Seeds => ItemCategory.Seed,
+            InventoryFilterTabBar.TabId.Consumables => ItemCategory.Consumable,
+            InventoryFilterTabBar.TabId.Harvests => ItemCategory.Harvest,
+            _ => ItemCategory.Material
+        };
+    }
+
+    private void HandleFilterTabChanged(InventoryFilterTabBar.TabId tabId)
+    {
+        ApplyFilterTab(tabId);
+    }
+
+    private void UnhookFilterTabBar()
+    {
+        if (boundFilterTabBar == null)
+            return;
+
+        boundFilterTabBar.TabChanged -= HandleFilterTabChanged;
+        boundFilterTabBar = null;
     }
 
     // ── Popup détail / drop ───────────────────────────────────────────────────

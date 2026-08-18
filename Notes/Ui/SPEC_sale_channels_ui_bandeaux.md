@@ -120,3 +120,24 @@ Cursor fournira `SaleChannelBandeauView.cs` minimal (clic → event) **après** 
 | Bezy | **Phase 4–5** — `CooldownOverlay` + `CooldownLabel` sur prefab bandeau (`PROMPTS_Bezi_sale_channels.md`) |
 | Debug | `ignoreSaleCooldown` sur `SaleChannelService` (Inspector) |
 | Playtest | **[P0-SALE-PLAY-004]** — vendre → overlay + timer → attendre / simuler 24 h → revendre |
+
+---
+
+## 8) Déblocage progression — Bandoulière / Vélo (2026-08-18)
+
+**Ownership :** logique + scripts = **Cursor** ; tooltip, hover, polish bandeau = **Bezy** (`Notes/Ui/PROMPTS_Bezi_sale_channel_unlock_ui.md`).
+
+| Sujet | Owner | Détail |
+|-------|-------|--------|
+| Conditions + compteurs vente | Cursor | `SaleChannelUnlockService`, SO `Assets/Data/SaleChannels/Unlock_*.asset` |
+| Recherche timer + coût or | Cursor | persistance `sale_channels.json` (stats + research) |
+| Tooltip conditions / coût | **Bezy** | `SaleChannelUnlockTooltip` sur `SaleChannelsScreen` |
+| Survol bandeau verrouillé | **Bezy** | `SaleChannelBandeauProgressionHover` sur `LockedOverlay` |
+| Pulse « Prêt ! » | Cursor (code LockIcon) + **Bezy** optionnel (`UnlockableFxAnchor`) |
+| `channelId` instances bandeaux | **Bezy** | `voisinage` / `bandouliere` / `velo_marchand` |
+
+**États bandeau (progression, distinct du cooldown 24 h) :**
+- `Locked` — overlay + « Bientôt » + tooltip progrès
+- `Unlockable` — overlay + « Prêt ! » + pulse cadenas à l’ouverture UI
+- `ResearchInProgress` — overlay + timer recherche
+- `Unlocked` — overlay off, canal utilisable (soumis au cooldown vente)

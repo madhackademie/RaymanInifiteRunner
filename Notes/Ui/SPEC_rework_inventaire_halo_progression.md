@@ -126,6 +126,7 @@ Jusque-là, le halo UI reste une **intention visuelle + navigation vers arbres**
 
 Docs inventaire actuelles :
 
+- `Notes/GDD/SPEC_inventaire_multiverse_hub.md` — modèle multiverse, vues jeu / Tout, craft, market
 - `Notes/Ui/NOTE_inventory_wallet_upgrade.md`
 - `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
 

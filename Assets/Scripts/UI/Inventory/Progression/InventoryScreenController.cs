@@ -15,21 +15,27 @@ public class InventoryScreenController : MonoBehaviour
 
     [Header("Filtres (phase 2)")]
     [SerializeField] private GameObject filterBarPlaceholder;
+    [SerializeField] private InventoryUI inventoryUI;
 
     [SerializeField] private float inventoryDimAlphaWhenTreeOpen = 0.35f;
 
+    private InventoryFilterTabBar filterTabBar;
     private bool wired;
 
     private void Awake()
     {
         ResolveScreenDimmer();
+        ResolveFilterModules();
         WireModules();
     }
 
     private void OnEnable()
     {
         if (filterBarPlaceholder != null)
-            filterBarPlaceholder.SetActive(false);
+            filterBarPlaceholder.SetActive(true);
+
+        ResolveFilterModules();
+        inventoryUI?.ResetFilterTabToDefault();
 
         SetInventoryBodyDim(0f);
     }
@@ -112,5 +118,17 @@ public class InventoryScreenController : MonoBehaviour
         inventoryBodyCanvasGroup.alpha = dimmed ? inventoryDimAlphaWhenTreeOpen : 1f;
         inventoryBodyCanvasGroup.interactable = !dimmed;
         inventoryBodyCanvasGroup.blocksRaycasts = !dimmed;
+    }
+
+    private void ResolveFilterModules()
+    {
+        if (filterTabBar == null && filterBarPlaceholder != null)
+            filterTabBar = filterBarPlaceholder.GetComponent<InventoryFilterTabBar>();
+
+        if (inventoryUI == null)
+            inventoryUI = GetComponentInChildren<InventoryUI>(true);
+
+        if (inventoryUI != null && filterTabBar != null)
+            inventoryUI.BindFilterTabBar(filterTabBar);
     }
 }

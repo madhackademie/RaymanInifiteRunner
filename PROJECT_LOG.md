@@ -1,5 +1,69 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-18 — Spec inventaire multiverse + prompts Bezy onglets
+
+### Décisions auteur (GDD)
+- Stock **unique** ; onglets = vues filtrées **par défaut** (pas de double sac silencieux).
+- **Vue jeu** : défaut, **slots limités** par jeu.
+- **Vue Tout** : cross-jeu, **sans limite** slots jeu — gérer / vendre / craft depuis n’importe où.
+- Transfert manuel entre sacs : **possible plus tard**, pas flux défaut.
+- **Craft cross-jeu** : toujours autorisé.
+- **Équipement équipé** : propre au jeu où porté.
+- **Utiliser** item : situationnel / metadata par jeu — **TBD**, pas V0.
+- **Market** : filtres riches — **TBD**.
+
+### Livrables docs
+- `Notes/GDD/SPEC_inventaire_multiverse_hub.md` (nouveau)
+- `Notes/Ui/PROMPTS_Bezi_inventory_tabs.md` — Bezy `[BZ-INV-TABS-001]` Ph.1→3
+
+### Suite immédiate
+1. Bezy Ph.1 barre onglets `InventoryScreen.prefab`
+2. Cursor : `InventoryFilterTabBar.cs` + `ItemCategory` + filtre `InventoryUI`
+3. Playtest `[P0-INV-TABS-PLAY-001]`
+
+---
+
+## 2026-08-18 — Prochaine session = onglets inventaire `[P0-INV-TABS-001]`
+
+### Décision auteur
+- Subdiviser l’inventaire (grille basse) avec des **onglets** : **Graines** vs **Consommables** (anti-fourmi, test eau, etc.).
+- Remplace `[BZ-POLISH-013]` comme référence « tâche du jour ».
+
+### Trace todo
+- [ ] **[P0-INV-TABS-001]** + playtest **[P0-INV-TABS-PLAY-001]** en tête de *Prochaine session* (`Notes/Todo_project.md`).
+- Sera la référence au prochain « tâche du jour ».
+
+### Intention (pas encore implémenté)
+- Data : catégorie item (aujourd’hui `ItemDefinition` = Standard / Currency seulement).
+- UI : `filterBarPlaceholder` inactif dans `InventoryScreen` — barre onglets (Bezy) + filtre grille (Cursor).
+- À trancher en session : onglet **Récoltes** (laitue / prod) en 3ᵉ, ou pas.
+
+### Ensuite
+1. File Bezy **#13** `[BZ-POLISH-013]` audit layers
+2. Commit auteur lot session + docs si besoin
+
+### Crédits Bezy
+- Reset le **30** de chaque mois (prochain : **30 août**).
+
+---
+
+## 2026-08-18 — Playtest HomeScene `[P0-HOME-PLAY-012]` validé
+
+### Décision auteur
+- Playtest hub Home (ACCUEIL + bouton + FirstLvl) **OK** — « tout roule ».
+
+### Trace
+- [x] `[P0-HOME-PLAY-012]` + `[BZ-POLISH-012]` **clos** dans `Notes/Todo_project.md`.
+
+### Prochaine session (référence « tâche du jour »)
+1. **[BZ-POLISH-013]** Audit layers UI — file Bezy #13
+2. Commit auteur lot session + docs si besoin
+
+### Crédits Bezy
+- Reset le **30** de chaque mois (prochain : **30 août**).
+
+---
+
 ## 2026-08-05 — Prochaine session = playtest HomeScene `[P0-HOME-PLAY-012]`
 
 ### Décision auteur
@@ -13,7 +77,7 @@
 - Bootstrap → Home : titre **ACCUEIL** ; bouton « Commencer l'aventure » lisible / tap OK ; clic → FirstLvl ; marges header/HUD.
 
 ### Après playtest OK
-1. Clos `[BZ-POLISH-012]` + `[P0-HOME-PLAY-012]`
+1. Clos `[BZ-POLISH-012]` + `[P0-HOME-PLAY-012]` — **fait 2026-08-18**
 2. File Bezy **#13** `[BZ-POLISH-013]`
 3. Commit auteur lot session + docs
 

@@ -122,7 +122,7 @@ Done = Save. List Canvas children order + HeaderTitle fontSize + NodesContainer 
 - [x] Sibling order Canvas : Background → HeaderTitle → NodesContainer
 - [x] Padding L/R 48 · Top 140 · Bottom 120 · spacing 20
 - [x] Background `(0.07,0.07,0.12)` ; `nodesContainer` + `nodeButtonPrefab` refs OK
-- [ ] Playtest auteur → **[P0-HOME-PLAY-012]** (priorité prochaine session)
+- [x] Playtest auteur → **[P0-HOME-PLAY-012]** — **OK 2026-08-18**
 
 ---
 

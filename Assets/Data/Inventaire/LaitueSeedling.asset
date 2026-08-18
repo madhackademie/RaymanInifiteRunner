@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
   itemId: laitue_seed
   displayName: Laitue Seedling
+  inventoryBehavior: 0
+  itemCategory: 0
+  gameScope: 1
   icon: {fileID: 8997401980803306944, guid: de09412c8bb7a8b449a75c0217588b17, type: 3}
   maxStack: 99
