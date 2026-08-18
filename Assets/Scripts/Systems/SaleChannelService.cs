@@ -132,6 +132,9 @@ public class SaleChannelService : MonoBehaviour
     {
         popupData = null;
 
+        if (channelId != SaleChannelId.Neighbor)
+            return false;
+
         if (!IsChannelUnlocked(channelId))
             return false;
 
@@ -169,6 +172,9 @@ public class SaleChannelService : MonoBehaviour
 
     public bool CanSell(string channelId, int quantity)
     {
+        if (channelId != SaleChannelId.Neighbor)
+            return false;
+
         if (!IsChannelUnlocked(channelId) || quantity <= 0)
             return false;
 
@@ -203,7 +209,13 @@ public class SaleChannelService : MonoBehaviour
             return false;
         }
 
-        if (quantity <= 0 || quantity > neighborMaxQuantityPerSale)
+        if (quantity <= 0 || channelId != SaleChannelId.Neighbor)
+        {
+            failureMessage = "Canal de vente non pris en charge.";
+            return false;
+        }
+
+        if (quantity > neighborMaxQuantityPerSale)
         {
             failureMessage = $"Quantité invalide (max {neighborMaxQuantityPerSale}).";
             return false;
@@ -348,10 +360,7 @@ public class SaleChannelService : MonoBehaviour
 
     private float GetCooldownSeconds(string channelId)
     {
-        if (channelId == SaleChannelId.Neighbor)
-            return neighborSaleCooldownSeconds;
-
-        return NeighborSaleCooldownSeconds;
+        return neighborSaleCooldownSeconds;
     }
 
     private ItemDefinition ResolveSellItem()

@@ -41,9 +41,11 @@ public sealed class ShopItemPopupView : MonoBehaviour
     [SerializeField] private TMP_Text descriptionText;
 
     [Header("Quantity / Price")]
+    [SerializeField] private GameObject quantityRowRoot;
     [SerializeField] private TMP_Text quantityText;
     [SerializeField] private TMP_InputField quantityInputField;
     [SerializeField] private TMP_Text confirmButtonText;
+    [SerializeField] private GameObject primaryConfirmButtonRoot;
 
     [Header("Buttons")]
     [SerializeField] private Button minusButton;
@@ -181,9 +183,25 @@ public sealed class ShopItemPopupView : MonoBehaviour
         }
 
         int value = Mathf.Max(0, totalPrice);
-        confirmButtonText.text = flowMode == ShopItemPopupFlowMode.Sell
-            ? $"Vendre {value}"
-            : $"Acheter {value}";
+        confirmButtonText.text = flowMode switch
+        {
+            ShopItemPopupFlowMode.Sell => $"Vendre {value}",
+            ShopItemPopupFlowMode.Research => "Lancer la recherche",
+            _ => $"Acheter {value}"
+        };
+    }
+
+    public void SetQuantityControlsVisible(bool visible)
+    {
+        ResolveQuantityRowIfNeeded();
+
+        if (quantityRowRoot != null)
+            quantityRowRoot.SetActive(visible);
+
+        if (primaryConfirmButtonRoot != null)
+            primaryConfirmButtonRoot.SetActive(visible);
+        else if (confirmButton != null)
+            confirmButton.gameObject.SetActive(visible);
     }
 
     public void SetConfirmMessageForFlow(ShopItemPopupFlowMode flowMode)
@@ -195,6 +213,7 @@ public sealed class ShopItemPopupView : MonoBehaviour
         {
             ShopItemPopupFlowMode.Sell => DefaultSellConfirmMessage,
             ShopItemPopupFlowMode.Drop => DefaultDropConfirmMessage,
+            ShopItemPopupFlowMode.Research => DefaultConfirmMessage,
             _ => DefaultConfirmMessage
         };
     }
@@ -220,6 +239,12 @@ public sealed class ShopItemPopupView : MonoBehaviour
 
         if (maxButton != null)
             maxButton.interactable = interactable;
+
+        if (confirmPurchaseButton != null)
+            confirmPurchaseButton.interactable = interactable;
+
+        if (confirmCancelButton != null)
+            confirmCancelButton.interactable = interactable;
     }
 
     public void ShowConfirmOverlay(
@@ -230,13 +255,27 @@ public sealed class ShopItemPopupView : MonoBehaviour
         if (confirmOverlayRoot == null)
             return;
 
-        SetConfirmMessageForFlow(flowMode);
+        if (flowMode == ShopItemPopupFlowMode.Research)
+        {
+            if (confirmMessageText != null)
+            {
+                confirmMessageText.text =
+                    $"Voulez-vous lancer la recherche et payer {Mathf.Max(0, totalPrice)} gold ?";
+            }
+        }
+        else
+        {
+            SetConfirmMessageForFlow(flowMode);
+        }
 
         if (confirmTotalText != null)
         {
-            confirmTotalText.text = flowMode == ShopItemPopupFlowMode.Drop
-                ? $"Quantité : {Mathf.Max(1, quantity)}"
-                : $"Total : {Mathf.Max(0, totalPrice)}";
+            confirmTotalText.text = flowMode switch
+            {
+                ShopItemPopupFlowMode.Drop => $"Quantité : {Mathf.Max(1, quantity)}",
+                ShopItemPopupFlowMode.Research => $"Coût : {Mathf.Max(0, totalPrice)} gold",
+                _ => $"Total : {Mathf.Max(0, totalPrice)}"
+            };
         }
 
         if (flowMode == ShopItemPopupFlowMode.Drop)
@@ -619,5 +658,18 @@ public sealed class ShopItemPopupView : MonoBehaviour
         PlayerInventory inventory = PlayerInventory.Instance;
         if (inventory?.ItemDatabase?.PrimaryCurrency != null)
             walletBalance.SetCurrencyItem(inventory.ItemDatabase.PrimaryCurrency);
+    }
+
+    private void ResolveQuantityRowIfNeeded()
+    {
+        if (quantityRowRoot != null)
+            return;
+
+        Transform quantityRow = transform.Find("Root/QuantityRow");
+        if (quantityRow != null)
+            quantityRowRoot = quantityRow.gameObject;
+
+        if (primaryConfirmButtonRoot == null && confirmButton != null)
+            primaryConfirmButtonRoot = confirmButton.gameObject;
     }
 }

@@ -72,6 +72,17 @@ public class SaleChannelUnlockService : MonoBehaviour
         Debug.Log("[SaleChannelUnlockService] Progression canaux réinitialisée.");
     }
 
+    /// <summary>Remet le bandeau vélo en état verrouillé (déblocage + recherche + cooldown effacés).</summary>
+    [ContextMenu("Debug/Reset Velo Bandeau (verrouillé)")]
+    public void DebugResetVeloBandeau()
+    {
+        persistedData.UnlockedChannelIds.Remove(SaleChannelId.Bike);
+        persistedData.ResearchEndUtcTicksByChannel.Remove(SaleChannelId.Bike);
+        persistedData.LastSaleUtcTicksByChannel.Remove(SaleChannelId.Bike);
+        PersistProgress();
+        Debug.Log("[SaleChannelUnlockService] Bandeau vélo réinitialisé — canal verrouillé.");
+    }
+
     public bool IsChannelUnlocked(string channelId)
     {
         if (string.IsNullOrWhiteSpace(channelId))
@@ -110,6 +121,25 @@ public class SaleChannelUnlockService : MonoBehaviour
             SaleChannelUnlockUiCopy.BuildStatusLabel(phase, researchRemainingSeconds),
             phase == SaleChannelProgressionPhase.Unlockable);
 
+        return true;
+    }
+
+    public bool TryGetResearchLaunchPresentation(
+        string channelId,
+        out string displayName,
+        out int costGold,
+        out float durationSeconds)
+    {
+        displayName = null;
+        costGold = 0;
+        durationSeconds = 0f;
+
+        if (!definitionByChannelId.TryGetValue(channelId, out SaleChannelUnlockDefinition definition))
+            return false;
+
+        displayName = definition.DisplayName;
+        costGold = definition.ResearchCostGold;
+        durationSeconds = ResolveResearchDurationSeconds(definition);
         return true;
     }
 

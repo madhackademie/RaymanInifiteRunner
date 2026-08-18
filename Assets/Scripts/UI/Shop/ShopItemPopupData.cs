@@ -43,5 +43,7 @@ public enum ShopItemPopupFlowMode
 {
     Purchase,
     Sell,
-    Drop
+    Drop,
+    /// <summary>Confirmation lancement recherche déblocage canal de vente.</summary>
+    Research
 }

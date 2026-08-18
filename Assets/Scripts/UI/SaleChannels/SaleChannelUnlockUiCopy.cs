@@ -125,6 +125,8 @@ public static class SaleChannelUnlockUiCopy
         return channelId ?? "?";
     }
 
+    public static string FormatDuration(float seconds) => FormatResearchDuration(seconds);
+
     private static string FormatResearchDuration(float seconds)
     {
         if (seconds >= 3600f)

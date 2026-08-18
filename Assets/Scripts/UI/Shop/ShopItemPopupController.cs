@@ -14,6 +14,7 @@ public sealed class ShopItemPopupController : MonoBehaviour
     private ShopItemPopupFlowMode flowMode = ShopItemPopupFlowMode.Purchase;
 
     public event Action<ShopItemPopupData, int, int> PurchaseRequested;
+    public event Action Closed;
 
     /// <summary>Ancre burst monnaie (bouton Confirmer / Valider du popup).</summary>
     public RectTransform ResolveMoneyBurstAnchor()
@@ -46,8 +47,12 @@ public sealed class ShopItemPopupController : MonoBehaviour
         view.SetItemVisuals(data);
         view.SetConfirmMessageForFlow(flowMode);
         view.SetWalletVisible(flowMode != ShopItemPopupFlowMode.Drop);
+        view.SetQuantityControlsVisible(flowMode != ShopItemPopupFlowMode.Research);
         view.Show();
         Refresh();
+
+        if (flowMode == ShopItemPopupFlowMode.Research && view.HasConfirmOverlay)
+            view.ShowConfirmOverlay(ComputeTotalPrice(), flowMode, currentQuantity);
     }
 
     public void Close()
@@ -58,6 +63,8 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
         if (view != null)
             view.Hide();
+
+        Closed?.Invoke();
     }
 
     private void HandlePlusClicked()
@@ -146,6 +153,12 @@ public sealed class ShopItemPopupController : MonoBehaviour
 
     private void HandleConfirmCancelClicked()
     {
+        if (flowMode == ShopItemPopupFlowMode.Research)
+        {
+            Close();
+            return;
+        }
+
         view?.HideConfirmOverlay();
     }
 
@@ -188,7 +201,20 @@ public sealed class ShopItemPopupController : MonoBehaviour
         if (flowMode == ShopItemPopupFlowMode.Sell || flowMode == ShopItemPopupFlowMode.Drop)
             return CanConfirmOwnedQuantity();
 
+        if (flowMode == ShopItemPopupFlowMode.Research)
+            return CanConfirmResearch(totalPrice);
+
         return CanConfirmPurchase(totalPrice);
+    }
+
+    private bool CanConfirmResearch(int totalPrice)
+    {
+        PlayerInventory inventory = PlayerInventory.Instance;
+        ItemDefinition currency = inventory?.ItemDatabase?.PrimaryCurrency;
+        if (inventory == null || currency == null)
+            return false;
+
+        return InventoryCurrencyAccount.HasSufficientFunds(inventory, currency, totalPrice);
     }
 
     private bool CanConfirmOwnedQuantity()

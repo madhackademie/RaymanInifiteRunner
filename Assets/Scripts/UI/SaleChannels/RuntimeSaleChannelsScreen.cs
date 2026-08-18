@@ -31,10 +31,12 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     private SaleChannelBandeauView[] bandeauViews = System.Array.Empty<SaleChannelBandeauView>();
     private bool bandeauxHooked;
     private bool sellPopupHandlerWired;
+    private bool sellPopupClosedHandlerWired;
     private ShopItemPopupController sellPopupInstance;
     private ResourceFeedbackPopupUI resourceFeedbackPopupInstance;
     private ScreenPopupHost screenPopupHost;
     private string pendingChannelId;
+    private string pendingResearchChannelId;
     private Coroutine cooldownRefreshRoutine;
 
     private void Awake()
@@ -326,6 +328,75 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             return;
         }
 
+        if (!unlockService.TryGetProgressSnapshot(channelId, out SaleChannelUnlockProgressSnapshot snapshot)
+            || !snapshot.CanStartResearch)
+        {
+            ShowFeedbackMessage("Conditions de recherche non remplies.");
+            return;
+        }
+
+        if (!TryOpenResearchConfirmPopup(channelId, unlockService))
+        {
+            ShowFeedbackMessage("Confirmation recherche indisponible.");
+        }
+    }
+
+    private bool TryOpenResearchConfirmPopup(string channelId, SaleChannelUnlockService unlockService)
+    {
+        if (!unlockService.TryGetResearchLaunchPresentation(
+                channelId,
+                out string displayName,
+                out int costGold,
+                out float durationSeconds))
+        {
+            return false;
+        }
+
+        ShopItemPopupController popup = ResolveSellPopup();
+        if (popup == null)
+            return false;
+
+        EnsureSellPopupWired(popup);
+        pendingResearchChannelId = channelId;
+        pendingChannelId = null;
+
+        PlayerInventory inventory = PlayerInventory.Instance;
+        Sprite icon = inventory?.ItemDatabase?.PrimaryCurrency?.Icon;
+        string durationLabel = SaleChannelUnlockUiCopy.FormatDuration(durationSeconds);
+
+        var popupData = new ShopItemPopupData(
+            itemId: $"research.{channelId}",
+            displayName: displayName,
+            rarityLabel: "Recherche",
+            description: $"Durée estimée : {durationLabel}",
+            icon: icon,
+            unitPrice: costGold,
+            minQuantity: 1,
+            maxQuantity: 1);
+
+        if (!popup.gameObject.activeSelf)
+            popup.gameObject.SetActive(true);
+
+        popup.transform.SetAsLastSibling();
+        popup.Open(popupData, ShopItemPopupFlowMode.Research);
+        return true;
+    }
+
+    private void HandleResearchConfirmed()
+    {
+        if (string.IsNullOrEmpty(pendingResearchChannelId))
+            return;
+
+        string channelId = pendingResearchChannelId;
+        pendingResearchChannelId = null;
+
+        SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
+        if (unlockService == null)
+        {
+            ShowFeedbackMessage("Progression canaux indisponible.");
+            return;
+        }
+
         if (!unlockService.TryStartResearch(channelId, out string failureMessage))
         {
             ShowFeedbackMessage(string.IsNullOrEmpty(failureMessage)
@@ -334,6 +405,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             return;
         }
 
+        ResolveSellPopup()?.Close();
         ShowFeedbackMessage("Recherche lancée — revenez quand le timer sera terminé.");
         RefreshBandeauStates(playUnlockableReveal: false);
         StartCooldownRefreshIfNeeded();
@@ -383,6 +455,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
         EnsureSellPopupWired(popup);
         pendingChannelId = channelId;
+        pendingResearchChannelId = null;
 
         if (!popup.gameObject.activeSelf)
             popup.gameObject.SetActive(true);
@@ -393,6 +466,12 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
     private void HandleSellRequested(ShopItemPopupData data, int quantity, int totalGain)
     {
+        if (!string.IsNullOrEmpty(pendingResearchChannelId))
+        {
+            HandleResearchConfirmed();
+            return;
+        }
+
         if (data == null || string.IsNullOrEmpty(pendingChannelId))
             return;
 
@@ -464,20 +543,44 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
     private void EnsureSellPopupWired(ShopItemPopupController popup)
     {
-        if (popup == null || sellPopupHandlerWired)
+        if (popup == null)
             return;
 
-        popup.PurchaseRequested += HandleSellRequested;
-        sellPopupHandlerWired = true;
+        if (!sellPopupHandlerWired)
+        {
+            popup.PurchaseRequested += HandleSellRequested;
+            sellPopupHandlerWired = true;
+        }
+
+        if (!sellPopupClosedHandlerWired)
+        {
+            popup.Closed += HandleSellPopupClosed;
+            sellPopupClosedHandlerWired = true;
+        }
+    }
+
+    private void HandleSellPopupClosed()
+    {
+        pendingResearchChannelId = null;
+        pendingChannelId = null;
     }
 
     private void UnhookSellPopupHandler()
     {
-        if (!sellPopupHandlerWired || sellPopupInstance == null)
+        if (sellPopupInstance == null)
             return;
 
-        sellPopupInstance.PurchaseRequested -= HandleSellRequested;
-        sellPopupHandlerWired = false;
+        if (sellPopupHandlerWired)
+        {
+            sellPopupInstance.PurchaseRequested -= HandleSellRequested;
+            sellPopupHandlerWired = false;
+        }
+
+        if (sellPopupClosedHandlerWired)
+        {
+            sellPopupInstance.Closed -= HandleSellPopupClosed;
+            sellPopupClosedHandlerWired = false;
+        }
     }
 
     private ResourceFeedbackPopupUI ResolveResourceFeedbackPopup()
