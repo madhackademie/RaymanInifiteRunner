@@ -67,7 +67,9 @@ public static class SaleChannelUnlockUiCopy
         }
 
         builder.AppendLine();
-        builder.AppendLine($"Coût recherche : {definition.ResearchCostGold} or");
+        bool canAffordResearch = walletGold >= definition.ResearchCostGold;
+        builder.AppendLine(
+            $"{FormatCheck(canAffordResearch)} Coût recherche : {definition.ResearchCostGold} or (en poche : {walletGold})");
         builder.AppendLine(
             $"Durée : {FormatResearchDuration(definition.ResearchDurationSeconds)}");
 

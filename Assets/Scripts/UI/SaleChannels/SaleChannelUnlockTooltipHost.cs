@@ -15,8 +15,6 @@ public class SaleChannelUnlockTooltipHost : MonoBehaviour
     [SerializeField] private Vector2 screenOffset = new Vector2(0f, 24f);
     [SerializeField] private CanvasGroup panelCanvasGroup;
 
-    private bool isShown;
-
     private void Awake()
     {
         ResolveRefsIfNeeded();
@@ -25,7 +23,7 @@ public class SaleChannelUnlockTooltipHost : MonoBehaviour
 
     private void OnDisable()
     {
-        isShown = false;
+        HideImmediate();
     }
 
     public void Show(SaleChannelUnlockProgressSnapshot snapshot, RectTransform anchor)
@@ -34,7 +32,6 @@ public class SaleChannelUnlockTooltipHost : MonoBehaviour
             return;
 
         ResolveRefsIfNeeded();
-        isShown = true;
 
         if (titleLabel != null)
             titleLabel.text = snapshot.TooltipTitle;
@@ -52,7 +49,6 @@ public class SaleChannelUnlockTooltipHost : MonoBehaviour
 
     public void Hide()
     {
-        isShown = false;
         HideImmediate();
     }
 

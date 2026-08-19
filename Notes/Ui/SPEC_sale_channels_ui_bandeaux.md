@@ -131,10 +131,11 @@ Cursor fournira `SaleChannelBandeauView.cs` minimal (clic → event) **après** 
 |-------|-------|--------|
 | Conditions + compteurs vente | Cursor | `SaleChannelUnlockService`, SO `Assets/Data/SaleChannels/Unlock_*.asset` |
 | Recherche timer + coût or | Cursor | persistance `sale_channels.json` (stats + research) |
-| Tooltip conditions / coût | **Bezy** | `SaleChannelUnlockTooltip` sur `SaleChannelsScreen` |
-| Survol bandeau verrouillé | **Bezy** | `SaleChannelBandeauProgressionHover` sur `LockedOverlay` |
-| Pulse « Prêt ! » | Cursor (code LockIcon) + **Bezy** optionnel (`UnlockableFxAnchor`) |
-| `channelId` instances bandeaux | **Bezy** | `voisinage` / `bandouliere` / `velo_marchand` |
+| Tooltip conditions / coût | **Bezy** ✅ Ph.1 | `SaleChannelUnlockTooltip` sur `SaleChannelsScreen` |
+| Survol bandeau verrouillé | **Bezy** ✅ Ph.2 | `SaleChannelBandeauProgressionHover` sur `LockedOverlay` |
+| Pulse « Prêt ! » | Cursor ✅ + **Bezy** ✅ Ph.3–4 | pulse `LockIcon` ; sparkle plein bandeau Overlay — **playtest OK 2026-08-19** |
+| `channelId` instances bandeaux | **Bezy** ✅ Ph.2 | `voisinage` / `bandouliere` / `velo_marchand` |
+| Playtest déblocage | auteur ✅ 2026-08-19 | tooltip + recherche + confirmation — voir `PROMPTS_Bezi_sale_channel_unlock_ui.md` |
 
 **États bandeau (progression, distinct du cooldown 24 h) :**
 - `Locked` — overlay + « Bientôt » + tooltip progrès

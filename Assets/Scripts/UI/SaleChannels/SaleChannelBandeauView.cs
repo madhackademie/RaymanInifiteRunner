@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class SaleChannelBandeauView : MonoBehaviour
 {
     private const string IsOnCooldownAnimatorBool = "IsOnCooldown";
+    private const string UnlockableFxAnchorName = "UnlockableFxAnchor";
 
     private static readonly Color IllustrationActiveColor = Color.white;
     private static readonly Color IllustrationCooldownColor = new(0.55f, 0.55f, 0.55f, 1f);
@@ -24,6 +25,7 @@ public class SaleChannelBandeauView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleLabel;
     [SerializeField] private Image[] starImages = new Image[5];
     [SerializeField] private GameObject lockedOverlay;
+    [SerializeField] private GameObject unlockableFxAnchor;
     [SerializeField] private Image illustrationImage;
     [SerializeField] private string channelId;
 
@@ -51,6 +53,7 @@ public class SaleChannelBandeauView : MonoBehaviour
     private TextMeshProUGUI statusLabel;
     private RectTransform lockIconRect;
     private Coroutine unlockablePulseRoutine;
+    private readonly System.Collections.Generic.List<Coroutine> unlockableSparkleRoutines = new();
     private SaleChannelUnlockProgressSnapshot progressSnapshot;
 
     private void Awake()
@@ -74,9 +77,17 @@ public class SaleChannelBandeauView : MonoBehaviour
             cooldownCanvasGroup.alpha = 1f;
     }
 
+    private void OnDisable()
+    {
+        StopUnlockableSparkles();
+        StopUnlockablePulse();
+        ResetLockIconScale();
+    }
+
     private void OnDestroy()
     {
         StopUnlockablePulse();
+        StopUnlockableSparkles();
 
         if (bandeauButton != null)
             bandeauButton.onClick.RemoveListener(HandleBandeauClicked);
@@ -119,6 +130,8 @@ public class SaleChannelBandeauView : MonoBehaviour
             };
         }
 
+        ApplyUnlockableFx(ProgressionPhase == SaleChannelProgressionPhase.Unlockable);
+
         if (ProgressionPhase == SaleChannelProgressionPhase.Unlockable)
         {
             if (playUnlockableReveal)
@@ -143,6 +156,7 @@ public class SaleChannelBandeauView : MonoBehaviour
         if (lockedOverlay != null)
             lockedOverlay.SetActive(false);
 
+        ApplyUnlockableFx(false);
         StopUnlockablePulse();
         ResetLockIconScale();
         ApplyInteractableState();
@@ -272,6 +286,61 @@ public class SaleChannelBandeauView : MonoBehaviour
             if (label != null)
                 statusLabel = label.GetComponent<TextMeshProUGUI>();
         }
+
+        if (unlockableFxAnchor == null)
+        {
+            Transform fx = lockedOverlay.transform.Find(UnlockableFxAnchorName);
+            if (fx != null)
+                unlockableFxAnchor = fx.gameObject;
+        }
+    }
+
+    private void ApplyUnlockableFx(bool visible)
+    {
+        ResolveProgressionRefs();
+        if (unlockableFxAnchor == null)
+            return;
+
+        RectTransform surface = unlockableFxAnchor.transform as RectTransform;
+        if (!visible)
+        {
+            StopUnlockableSparkles();
+            if (unlockableFxAnchor.activeSelf)
+                unlockableFxAnchor.SetActive(false);
+            return;
+        }
+
+        if (!unlockableFxAnchor.activeSelf)
+            unlockableFxAnchor.SetActive(true);
+
+        if (unlockableSparkleRoutines.Count > 0)
+            return;
+
+        Sprite sprite = ResolveSparkleSprite(surface);
+        SaleChannelUnlockableSparkleVfx.StartOn(this, surface, sprite, unlockableSparkleRoutines);
+    }
+
+    private void StopUnlockableSparkles()
+    {
+        RectTransform surface = unlockableFxAnchor != null
+            ? unlockableFxAnchor.transform as RectTransform
+            : null;
+        SaleChannelUnlockableSparkleVfx.Stop(this, unlockableSparkleRoutines, surface);
+    }
+
+    private static Sprite ResolveSparkleSprite(RectTransform surface)
+    {
+        if (surface == null)
+            return null;
+
+        Image[] images = surface.GetComponentsInChildren<Image>(true);
+        for (int i = 0; i < images.Length; i++)
+        {
+            if (images[i] != null && images[i].sprite != null)
+                return images[i].sprite;
+        }
+
+        return null;
     }
 
     private void ApplyInteractableState()

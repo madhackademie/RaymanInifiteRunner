@@ -184,17 +184,17 @@ public class ActionPointsHudView : MonoBehaviour
     {
         int totalMinutes = consumedPoints * minutesPerPoint;
         if (totalMinutes <= 0)
-            return "≈ 0 min de travail effectué";
+            return "~ 0 min de travail effectué";
 
         if (totalMinutes < 60)
-            return $"≈ {totalMinutes} min de travail effectué";
+            return $"~ {totalMinutes} min de travail effectué";
 
         int hours = totalMinutes / 60;
         int minutes = totalMinutes % 60;
         if (minutes == 0)
-            return $"≈ {hours} h de travail effectué";
+            return $"~ {hours} h de travail effectué";
 
-        return $"≈ {hours} h {minutes} min de travail effectué";
+        return $"~ {hours} h {minutes} min de travail effectué";
     }
 
     private static ActionPointFatigueTier ResolveFatigueTier(int consumedPoints)

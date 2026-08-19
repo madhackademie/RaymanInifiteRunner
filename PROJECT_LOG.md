@@ -1,5 +1,95 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-19 — Bezy Ph.4 unlock bandeau (stretch ancre)
+
+### Review Cursor
+- `UnlockableFxAnchor` : stretch-fill `LockedOverlay`, **1er sibling**.
+- `SparkleImageSecondary` : retiré.
+- `SparkleImage` : conservé (sprite source) — **forcé inactif** (Bezy l’avait laissé actif + stretch, flash plein bandeau).
+
+### Hook Cursor
+- Inchangé : `SaleChannelUnlockableSparkleVfx` sur toute la surface en « Prêt ! ».
+
+### Playtest auteur
+- Sparkle animé sur **toute la surface** du bandeau Vélo « Prêt ! » — **OK 2026-08-19**.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-19 — Prochaine session = rand ★1 + polish étoiles 3 bandeaux
+
+### Décision auteur
+- **[P0-SALE-QTY-RAND-001]** (déjà indiqué, rappel) : après fin timer, **rand 1–3 salades** au ★1.
+- Enchaîner polish **3 bandeaux vente** : système d’étoiles + images + tooltip **valeur palier courant / suivant**.
+- Tooltip : **hover rangée d’étoiles** (recommandé / acté pour la prochaine session) — pas tooltip général sur tout le bandeau.
+
+### Trace todo
+- Ordre *Prochaine session* : RAND → playtest RAND → `[P0-SALE-STAR-001]` → `[P0-SALE-STAR-UI-001]` → playtest étoiles.
+- **Référence « tâche du jour » :** `[P0-SALE-QTY-RAND-001]` en premier, puis polish étoiles.
+- Onglets inventaire `[P0-INV-TABS-001]` après ce lot vente.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-19 — Prochaine session = random 1–3 salades ★1 `[P0-SALE-QTY-RAND-001]`
+
+### Décision auteur
+- Déblocage vélo : **25 salades** écoulées = OK (plus de ventes, pas baisser le seuil).
+- **★1 bandeau** : une fois le **timer / cooldown** terminé, quantité **aléatoire entre 1 et 3 salades** (remplace le plafond fixe 2).
+- Étoiles 2+ : plus tard.
+
+### Trace todo
+- [ ] **[P0-SALE-QTY-RAND-001]** + playtest **[P0-SALE-QTY-RAND-PLAY-001]** en tête de *Prochaine session* (`Notes/Todo_project.md`).
+- Sera la référence au prochain « tâche du jour ».
+- Onglets inventaire `[P0-INV-TABS-001]` restent ensuite.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-19 — Hook sparkle déblocage bandeau (`UnlockableFxAnchor`)
+
+### Fait
+- Bezy Ph.3 livrée : `UnlockableFxAnchor` + sparkles sous `LockedOverlay`.
+- Cursor : `SaleChannelBandeauView` active l’ancre **uniquement** en état « Prêt ! » (`Unlockable`) ; Find path une fois puis cache.
+- Docs : `PROMPTS_Bezi_sale_channel_unlock_ui.md`, `Notes/Todo_project.md` `[P0-SALE-BEZI-UNLOCK-003]`, spec §8.
+
+### Playtest auteur
+- HUD → Vente → bandeau Vélo « Prêt ! » : sparkle visible + pulse cadenas.
+- Autres états (Bientôt / recherche / débloqué) : sparkle off.
+
+### Suite
+- **[P0-INV-TABS-001]** onglets inventaire (priorité prochaine session).
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-19 — Playtest déblocage canaux vente OK + doc Bezy unlock
+
+### Fait
+- Playtest auteur **[P0-SALE-PLAY-005]** validé : tooltip hover, état « Prêt ! », confirmation recherche, timer déblocage.
+- Docs mises à jour : `PROMPTS_Bezi_sale_channel_unlock_ui.md` (Ph.1–2 clos, checklist cochée, prompt Ph.3 prêt).
+- `Notes/Todo_project.md` : tâches unlock Cursor + Bezy Ph.1–2 + playtest clos ; Ph.3 sparkle optionnel `[P0-SALE-BEZI-UNLOCK-003]`.
+
+### Reste Bezy vente (non bloquant)
+- **[P0-SALE-BEZI-UNLOCK-003]** sparkle `UnlockableFxAnchor` sur bandeau (optionnel).
+- **[BZ-POLISH-018]** Ph.3 VFX pièces — bloqué art `Assets/Art/Sprites/VFX/Sale/`.
+
+### Suite (priorité inchangée)
+- **[P0-INV-TABS-001]** onglets inventaire (prochaine session).
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
 ## 2026-08-18 — Spec inventaire multiverse + prompts Bezy onglets
 
 ### Décisions auteur (GDD)

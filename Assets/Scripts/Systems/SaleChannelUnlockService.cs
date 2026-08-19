@@ -76,10 +76,16 @@ public class SaleChannelUnlockService : MonoBehaviour
     [ContextMenu("Debug/Reset Velo Bandeau (verrouillé)")]
     public void DebugResetVeloBandeau()
     {
+        EnsurePersistedDataReady();
+
         persistedData.UnlockedChannelIds.Remove(SaleChannelId.Bike);
         persistedData.ResearchEndUtcTicksByChannel.Remove(SaleChannelId.Bike);
         persistedData.LastSaleUtcTicksByChannel.Remove(SaleChannelId.Bike);
         PersistProgress();
+
+        RuntimeSaleChannelsScreen screen = FindFirstObjectByType<RuntimeSaleChannelsScreen>(FindObjectsInactive.Include);
+        screen?.Refresh();
+
         Debug.Log("[SaleChannelUnlockService] Bandeau vélo réinitialisé — canal verrouillé.");
     }
 
@@ -286,8 +292,17 @@ public class SaleChannelUnlockService : MonoBehaviour
             persistedData = new SaleChannelPersistedData();
     }
 
+    private void EnsurePersistedDataReady()
+    {
+        if (persistedData != null)
+            return;
+
+        LoadProgress();
+    }
+
     private void PersistProgress()
     {
+        EnsurePersistedDataReady();
         SaleChannelSaveService.Save(persistedData);
     }
 
@@ -357,9 +372,6 @@ public class SaleChannelUnlockService : MonoBehaviour
             return false;
 
         if (definition.RequiredWalletGold > 0 && walletGold < definition.RequiredWalletGold)
-            return false;
-
-        if (definition.ResearchCostGold > 0 && walletGold < definition.ResearchCostGold)
             return false;
 
         return true;

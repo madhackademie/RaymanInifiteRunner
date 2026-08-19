@@ -240,7 +240,7 @@ Les **étoiles roses** (★) sont l’**upgrade du bandeau / canal dans son ense
 
 | Étoile | État du canal | Conditions pour monter (*exemple ★1 → ★2*) | Récompense du palier |
 |--------|---------------|---------------------------------------------|----------------------|
-| **★1** | **1 voisin** acheteur ; plafond **2 salades** par cycle / livraison | — (départ) | Premier écoulement local |
+| **★1** | **1 voisin** acheteur ; à la **fin du cooldown**, quantité **aléatoire 1–3 salades** pour le cycle suivant (`[P0-SALE-QTY-RAND-001]`, 2026-08-19). Proto actuel = plafond fixe 2. | — (départ) | Premier écoulement local |
 | **★2** | Extension capacité / offre | **5 ventes** passées par ce canal **+** **50 salades** écoulées au total **+** **2 000** gold *(monnaie à définir)* | **Au choix** (ou cumul partiel **TBD**) : **+1 voisin** **ou** **3 salades** / voisin *(6 salades max pour 2 voisins)* **ou** vente d’**autres légumes** plus rentables |
 | **★3** | *TBD* | *TBD* (ventes + volume + monnaie) | *TBD* — élargissement entourage / produits |
 | **★4** | *TBD* | *TBD* | *TBD* — préparation poisson / système |
@@ -248,10 +248,12 @@ Les **étoiles roses** (★) sont l’**upgrade du bandeau / canal dans son ense
 
 **Notes de design (voisinage) :**
 
+- **★1 (2026-08-19) :** après fin du timer canal, **rand 1–3 salades** pour le prochain cycle — tâche `[P0-SALE-QTY-RAND-001]`.
 - Les compteurs (**5 ventes**, **50 salades**, **2 000 gold**) sont des **valeurs de travail** pour ★2 — à équilibrer en playtest.
 - La montée d’étoile est **spécifique au canal** : progresser le voisinage ne débloque pas automatiquement le vélo.
 - L’UI affiche la **prochaine étoile** grisée + barre de progression (ventes / salades / gold) sur le bandeau concerné.
 - Les **5 étoiles roses** au sommet du bandeau = lecture immédiate du niveau du canal.
+- **Tooltip palier (2026-08-19, proposé) :** **survol de la rangée d’étoiles** — valeurs / boost **lvl courant** + **lvl suivant**. Pas un tooltip sur tout le bandeau (conflit clic vente + tooltip déblocage cadenas). Tâche `[P0-SALE-STAR-UI-001]`.
 
 #### Autres bandeaux (bandoulière, vélo…)
 
