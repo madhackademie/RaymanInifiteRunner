@@ -139,6 +139,19 @@ Cursor fournira `SaleChannelBandeauView.cs` minimal (clic → event) **après** 
 
 **États bandeau (progression, distinct du cooldown 24 h) :**
 - `Locked` — overlay + « Bientôt » + tooltip progrès
-- `Unlockable` — overlay + « Prêt ! » + pulse cadenas à l’ouverture UI
+- `Unlockable` — overlay + « Prêt ! » + pulse cadenas à l’ouverture UI + sparkle plein bandeau
 - `ResearchInProgress` — overlay + timer recherche
 - `Unlocked` — overlay off, canal utilisable (soumis au cooldown vente)
+
+### Convention — tout nouveau bandeau (2026-08-19)
+
+**Même logique que Bandoulière / Vélo** (playtest sparkle OK). Ne pas créer un bandeau one-off.
+
+Checklist obligatoire :
+1. **Instance** de `Assets/Prefabs/Ui/SaleChannels/SaleChannelBandeauView.prefab` (pas un duplicata débranché).
+2. `channelId` Inspector : constante `SaleChannelId` (ex. prochain canal).
+3. SO `Assets/Data/SaleChannels/Unlock_<Canal>.asset` + entrée dans `SaleChannelUnlockService.unlockDefinitions`.
+4. Hérite tout seul : overlay locked, tooltip hover, « Prêt ! », sparkle Overlay, cooldown 24 h, rangée ★ (polish `[P0-SALE-STAR-*]`).
+5. Bezy : wiring `channelId` + illustration uniquement. Cursor : id + SO + conditions. **Pas de ParticleSystem monde** (HUD Overlay).
+
+Réf. : `Notes/Todo_project.md` `[BL-SALE-BANDEAU-TPL-001]`.

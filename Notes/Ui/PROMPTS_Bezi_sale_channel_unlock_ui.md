@@ -146,6 +146,8 @@ Save prefab. List what changed. STOP.
 
 **Livré :** `UnlockableFxAnchor` stretch-fill `LockedOverlay`, **premier sibling** (derrière cadenas / label) ; `SparkleImageSecondary` retiré ; `SparkleImage` conservé (sprite source, inactif).
 
+**Réutiliser** cette logique sur **tous** les bandeaux suivants (même prefab). Voir spec §8 *Convention* + `[BL-SALE-BANDEAU-TPL-001]`.
+
 ---
 
 ## Phase 4 — spec archive (référence)

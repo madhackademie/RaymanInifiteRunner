@@ -337,6 +337,7 @@ Convention d'IDs :
 - [x] **[P0-SALE-PLAY-005]** Playtest déblocage bandoulière / vélo (tooltip, « Prêt ! », recherche) — **OK 2026-08-19**.
 - [x] **[P0-SALE-BEZI-UNLOCK-003]** Bezy déblocage Ph.3 — sparkle `UnlockableFxAnchor` + hook Cursor (2026-08-19).
 - [x] **[P0-SALE-BEZI-UNLOCK-004]** Bezy déblocage Ph.4 — ancre stretch + sparkle plein bandeau — **playtest OK** (2026-08-19).
+- [ ] **[BL-SALE-BANDEAU-TPL-001]** **Règle durable** : le **dernier** bandeau (vélo) **et tout nouveau canal** réutilisent **la même** logique / prefab (`SaleChannelBandeauView` + unlock + sparkle Overlay + cooldown + étoiles). Spec §8 *Convention*. Ne pas forker un bandeau visuel.
 - [ ] **[P0-SALE-QTY-RAND-001]** Après cooldown, quantité **rand 1–3** salades au bandeau **★1** — **prochaine session** (2026-08-19).
 - [ ] **[P0-SALE-STAR-001]** Logique étoiles 1–5 + persist (3 canaux).
 - [ ] **[P0-SALE-STAR-UI-001]** Images étoiles + tooltip hover rangée ★ (courant / next).

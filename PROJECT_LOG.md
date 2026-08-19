@@ -12,6 +12,7 @@
 
 ### Playtest auteur
 - Sparkle animé sur **toute la surface** du bandeau Vélo « Prêt ! » — **OK 2026-08-19**.
+- **Règle :** même logique unlock/sparkle/cooldown/★ sur le dernier bandeau **et les prochains** — `[BL-SALE-BANDEAU-TPL-001]`, spec §8.
 
 ### Crédits Bezy
 - Reset mensuel le **30 août** (prochain).
