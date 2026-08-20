@@ -139,6 +139,52 @@ Done = Save. Confirm all 4 Button refs assigned + filterBarPlaceholder wired. ST
 
 ---
 
+## Phase 4 — Highlight onglet actif — **CLOS Cursor** (Bezy maintenance, 2026-08-20)
+
+**Livré :** `SelectedHighlight` barre 4 px sous chaque onglet ; fonds idle uns ; wiring `InventoryFilterTabBar.selectedHighlight*`.
+
+**Problème :** seul **Tout** paraît actif (fond plus clair en dur). Pas de feedback sur Graines / Consommables / Récoltes.
+
+**Cursor déjà prêt :** `InventoryFilterTabBar` toggle `selectedHighlight*` au clic (défaut Graines).
+
+**Prérequis Editor :** ouvrir `InventoryScreen.prefab` en mode Prefab avant Bezy.
+
+### Prompt copier-coller Bezy (Phase 4 ONLY)
+
+```
+[BZ-INV-TABS-001] Phase 4 ONLY — selected tab highlight. Wait success. STOP after save.
+
+Do NOT rescan whole project. Do NOT create C# scripts. Do NOT edit halo, InventoryPanel, TalentTreeOverlay.
+
+Prefab ONLY: Assets/Prefabs/Ui/InventoryScreen.prefab
+Open InventoryScreen.prefab first. Layer UI = 5.
+
+Problem: TabButton_All root Image is permanently brighter (0.24,0.24,0.32) so "Tout" always looks selected.
+
+On EACH TabButton_Seeds / Consumables / Harvests / All:
+1) Root Image idle color SAME for all 4: RGB(0.12,0.12,0.16) a=0.9
+2) Add child SelectedHighlight (INACTIVE by default):
+   - RectTransform stretch-fill parent (anchors 0,0-1,1, offsets 0)
+   - Image: raycast OFF, color RGB(0.45,0.42,0.28) a=0.55 (warm selected)
+   - Optional 4px bottom bar instead of full fill is OK
+   - Last sibling (above Label is OK if Label still readable; if not, put Highlight behind Label)
+3) Label stays white, raycast OFF, font 22-24 bold.
+
+Wire InventoryFilterTabBar on InventoryFilterBar:
+- selectedHighlightSeeds → TabButton_Seeds/SelectedHighlight
+- selectedHighlightConsumables → TabButton_Consumables/SelectedHighlight
+- selectedHighlightHarvests → TabButton_Harvests/SelectedHighlight
+- selectedHighlightAll → TabButton_All/SelectedHighlight
+
+Keep existing tabSeeds/tabConsumables/tabHarvests/tabAll Button refs.
+
+Do NOT add OnClick events. Do NOT add Animator. Do NOT Simulate.
+
+Save prefab. List what changed. STOP.
+```
+
+---
+
 ## Suite Cursor (hors Bezy)
 
 1. Enum `ItemCategory` + champ sur `ItemDefinition`

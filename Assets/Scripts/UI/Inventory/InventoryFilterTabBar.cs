@@ -27,6 +27,12 @@ public class InventoryFilterTabBar : MonoBehaviour
     [SerializeField] private Button tabHarvests;
     [SerializeField] private Button tabAll;
 
+    [Header("Selected highlight (Bezy Ph.4)")]
+    [SerializeField] private GameObject selectedHighlightSeeds;
+    [SerializeField] private GameObject selectedHighlightConsumables;
+    [SerializeField] private GameObject selectedHighlightHarvests;
+    [SerializeField] private GameObject selectedHighlightAll;
+
     /// <summary>Onglet sélectionné ; défaut = premier onglet jeu (Graines).</summary>
     public TabId ActiveTab { get; private set; } = TabId.Seeds;
 
@@ -39,6 +45,7 @@ public class InventoryFilterTabBar : MonoBehaviour
         WireTab(tabConsumables, TabId.Consumables);
         WireTab(tabHarvests, TabId.Harvests);
         WireTab(tabAll, TabId.All);
+        ApplySelectedVisual();
     }
 
     /// <summary>Force une barre compacte (évite l'étirement vertical du layout).</summary>
@@ -85,6 +92,7 @@ public class InventoryFilterTabBar : MonoBehaviour
     public void SelectTab(TabId tabId, bool notify = true)
     {
         ActiveTab = tabId;
+        ApplySelectedVisual();
         if (notify)
             TabChanged?.Invoke(tabId);
     }
@@ -95,5 +103,22 @@ public class InventoryFilterTabBar : MonoBehaviour
             return;
 
         button.onClick.AddListener(() => SelectTab(tabId));
+    }
+
+    private void ApplySelectedVisual()
+    {
+        SetHighlight(selectedHighlightSeeds, ActiveTab == TabId.Seeds);
+        SetHighlight(selectedHighlightConsumables, ActiveTab == TabId.Consumables);
+        SetHighlight(selectedHighlightHarvests, ActiveTab == TabId.Harvests);
+        SetHighlight(selectedHighlightAll, ActiveTab == TabId.All);
+    }
+
+    private static void SetHighlight(GameObject highlight, bool visible)
+    {
+        if (highlight == null)
+            return;
+
+        if (highlight.activeSelf != visible)
+            highlight.SetActive(visible);
     }
 }
