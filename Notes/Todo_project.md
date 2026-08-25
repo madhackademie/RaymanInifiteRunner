@@ -39,12 +39,11 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`main`**.  
-> **Priorité auteur 2026-08-19 :**  
-> 1) random quantité ★1 `[P0-SALE-QTY-RAND-001]`  
-> 2) polish 3 bandeaux vente (étoiles + images + tooltip palier) `[P0-SALE-STAR-001]`  
-> Onglets inventaire `[P0-INV-TABS-001]` ensuite.  
-> File Bezy #13 `[BZ-POLISH-013]` reportée après. Wallet punch `[BZ-POLISH-015]` = PARK UX.
+> Branche courante : **`feature/sale-bandeaux`**.  
+> **Prochaine session (priorité #1) :** playtest `[P0-SALE-STAR-PLAY-001]` — hover ★, 3 jauges, fill live, clic bandeau = vente.  
+> Ensuite : `[P0-SALE-QTY-RAND-001]` (Cursor, 0 crédit Bezy) → onglets inventaire.  
+> Clos session 2026-08-25 : jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` OK.  
+> Crédits Bezy : reset le **30 août**. File `#13` après onglets. Wallet punch = PARK UX.
 
 ### ★ Priorité prochaine session — vente : rand ★1 puis polish étoiles bandeaux
 
@@ -53,24 +52,26 @@ Convention d'IDs :
 > - Enchaîner : **finir / polish les 3 bandeaux** (voisinage, bandoulière, vélo) — **système d’étoiles** + **images** + tooltip **valeur palier courant / palier suivant**.  
 > Tooltip : **survol de la rangée d’étoiles** (pas tout le bandeau) — le bandeau reste clic vente / recherche ; le tooltip déblocage reste sur l’overlay cadenas.  
 > Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).  
-> Crédits Bezy : reset le **30** de chaque mois (prochain : **30 août**).
+> Crédits Bezy : reset le **30** de chaque mois (prochain : **30 août**).  
+> Prompts Bezy étoiles : `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–3 livrées**. Playtest auteur ensuite.
 
-**Ordre immédiat :**
+**Ordre prochaine session :**
 
-1. [ ] **[P0-SALE-QTY-RAND-001]** Vente voisinage ★1 — après cooldown, **rand 1–3 salades** (cap popup + `SaleChannelService`)  
-   - Aujourd’hui : `neighborMaxQuantityPerSale = 2` fixe.  
-   - Cible : à la **fin du timer**, tirer 1–3 pour le prochain cycle (persister le roll).  
+1. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte `50/2000` + fill live ; clic bandeau = vente ; tooltip sous ★  
+   - Checklist : voisinage débloqué, vendre 1× si besoin compteurs, hover rangée ★ (pas cadenas).
+2. [ ] **[P0-SALE-QTY-RAND-001]** Vente voisinage ★1 — après cooldown, **rand 1–3 salades** (cap popup + `SaleChannelService`)  
    - GDD : `Notes/GDD/SPEC_vente_production_boucle_jeu.md` §2.9
-2. [ ] **[P0-SALE-QTY-RAND-PLAY-001]** Playtest : vendre → fin cooldown → quantité proposée 1, 2 ou 3
-3. [ ] **[P0-SALE-STAR-001]** Logique étoiles 1–5 par canal (`SaleChannelStarProgression`) — palier persisté, compteurs ventes / volume / gold, récompenses ★1 (rand 1–3 déjà ci-dessus)
-4. [ ] **[P0-SALE-STAR-UI-001]** Polish visuel **3 bandeaux** — images étoiles pleines/vides + tooltip **hover rangée ★**  
-   - Contenu tooltip : boost / valeurs **lvl courant** + **lvl suivant**  
-   - Bezy : hiérarchie hover sur `Stars` (pas overlay cadenas) ; Cursor : copy + binding  
-   - Recycle `SaleChannelUnlockTooltip` si possible, ou panneau dédié si collision hover
-5. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : ★ visibles, tooltip courant/next, clic bandeau toujours vente
-6. [ ] **[P0-INV-TABS-001]** Onglets inventaire farm V0 — après vente
-7. [ ] **[BZ-POLISH-013]** Audit layers UI — après onglets
-8. [ ] Commit auteur lot session + docs (si reste)
+3. [ ] **[P0-SALE-QTY-RAND-PLAY-001]** Playtest : vendre → fin cooldown → quantité proposée 1, 2 ou 3
+4. [ ] **[P0-INV-TABS-001]** Onglets inventaire farm V0 — après vente
+5. [ ] **[BZ-POLISH-013]** Audit layers UI — après onglets
+6. [ ] Commit auteur lot session + docs (si reste)
+
+**Clos session 2026-08-25 (vente / étoiles) :**
+
+1. [x] **[P0-SALE-STAR-BARS-001]** Jauges tooltip ★ — Bezy Ph.1–2 + Cursor fill/wiring
+2. [x] **[P0-SALE-STAR-PROGRESS-001]** Compteurs tooltip `current/required`
+3. [x] **[P0-SALE-STAR-UI-001]** Bezy Ph.1–4 tooltip ★ + hover
+4. [ ] **[P0-SALE-STAR-001]** Upgrade réel ★2+ (backlog proche)
 
 **Clos `[P0-HOME-PLAY-012]` / `[BZ-POLISH-012]` (2026-08-18) :**
 
@@ -112,6 +113,7 @@ Convention d'IDs :
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
 - [ ] Commit auteur lot session + docs
 
+**Réf. étoiles bandeaux :** `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` · GDD §2.9  
 **Réf. onglets inventaire :** `Notes/GDD/SPEC_inventaire_multiverse_hub.md` · `Notes/Ui/PROMPTS_Bezi_inventory_tabs.md`  
 **Réf. HomeScene :** `Notes/Ui/PROMPTS_Bezi_home_012.md`  
 **Réf. LoadingScreen :** `Notes/Ui/PROMPTS_Bezi_loading_011.md`  
@@ -339,8 +341,10 @@ Convention d'IDs :
 - [x] **[P0-SALE-BEZI-UNLOCK-004]** Bezy déblocage Ph.4 — ancre stretch + sparkle plein bandeau — **playtest OK** (2026-08-19).
 - [ ] **[BL-SALE-BANDEAU-TPL-001]** **Règle durable** : le **dernier** bandeau (vélo) **et tout nouveau canal** réutilisent **la même** logique / prefab (`SaleChannelBandeauView` + unlock + sparkle Overlay + cooldown + étoiles). Spec §8 *Convention*. Ne pas forker un bandeau visuel.
 - [ ] **[P0-SALE-QTY-RAND-001]** Après cooldown, quantité **rand 1–3** salades au bandeau **★1** — **prochaine session** (2026-08-19).
-- [ ] **[P0-SALE-STAR-001]** Logique étoiles 1–5 + persist (3 canaux).
-- [ ] **[P0-SALE-STAR-UI-001]** Images étoiles + tooltip hover rangée ★ (courant / next).
+- [ ] **[P0-SALE-STAR-001]** Logique étoiles 1–5 + persist (3 canaux) — upgrade réel.
+- [x] **[P0-SALE-STAR-PROGRESS-001]** Tooltip ★ compteurs live (2026-08-25).
+- [x] **[P0-SALE-STAR-BARS-001]** Jauges tooltip ★ + texte overlay — Bezy Ph.1–2 + Cursor fill/wiring (2026-08-25).
+- [x] **[P0-SALE-STAR-UI-001]** Images étoiles + tooltip hover rangée ★ — Bezy Ph.1–3 OK 2026-08-25.
 - [ ] **[P0-SALE-STAR-PLAY-001]** Playtest polish 3 bandeaux.
 - [ ] **[P0-SALE-PLAY-004]** Playtest timer canal — **batch** `Notes/Todo_playtest.md`.
 

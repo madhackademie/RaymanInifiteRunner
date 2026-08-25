@@ -251,7 +251,7 @@ public class SaleChannelService : MonoBehaviour
             return false;
         }
 
-        RecordSuccessfulSale(channelId, quantity);
+        RecordSuccessfulSale(channelId, quantity, totalGain);
         return true;
     }
 
@@ -293,7 +293,7 @@ public class SaleChannelService : MonoBehaviour
         return false;
     }
 
-    private void RecordSuccessfulSale(string channelId, int quantitySold)
+    private void RecordSuccessfulSale(string channelId, int quantitySold, int goldEarned)
     {
         if (string.IsNullOrWhiteSpace(channelId))
             return;
@@ -303,7 +303,7 @@ public class SaleChannelService : MonoBehaviour
         if (unlockService != null)
         {
             unlockService.SetLastSaleUtcTicks(channelId, utcTicks);
-            unlockService.RecordSale(channelId, quantitySold);
+            unlockService.RecordSale(channelId, quantitySold, goldEarned);
         }
         else
         {

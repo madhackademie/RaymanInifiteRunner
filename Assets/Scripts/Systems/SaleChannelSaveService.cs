@@ -97,6 +97,7 @@ public static class SaleChannelSaveService
                     channelId = entry.Key,
                     saleCount = entry.Value.SaleCount,
                     itemsSold = entry.Value.ItemsSold,
+                    goldEarned = entry.Value.GoldEarned,
                 });
             }
 
@@ -150,6 +151,7 @@ public static class SaleChannelSaveService
                     {
                         SaleCount = Mathf.Max(0, record.saleCount),
                         ItemsSold = Mathf.Max(0, record.itemsSold),
+                        GoldEarned = Mathf.Max(0, record.goldEarned),
                     };
                 }
             }
@@ -182,6 +184,7 @@ public static class SaleChannelSaveService
         public string channelId;
         public int saleCount;
         public int itemsSold;
+        public int goldEarned;
     }
 
     [Serializable]
@@ -200,6 +203,7 @@ public class SaleChannelStatBlock
 {
     public int SaleCount;
     public int ItemsSold;
+    public int GoldEarned;
 }
 
 /// <summary>

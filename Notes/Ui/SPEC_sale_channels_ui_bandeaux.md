@@ -155,3 +155,26 @@ Checklist obligatoire :
 5. Bezy : wiring `channelId` + illustration uniquement. Cursor : id + SO + conditions. **Pas de ParticleSystem monde** (HUD Overlay).
 
 Réf. : `Notes/Todo_project.md` `[BL-SALE-BANDEAU-TPL-001]`.
+
+---
+
+## 9) Étoiles bandeau + tooltip palier (2026-08-25)
+
+**Tâche :** `[P0-SALE-STAR-UI-001]` — prompts `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md`.
+
+| Sujet | Owner | Détail |
+|-------|-------|--------|
+| Hiérarchie tooltip `SaleChannelStarTooltip` | **Bezy** Ph.1 | Panneau dédié (pas `SaleChannelUnlockTooltip`) |
+| ★ pleines/vides + hit hover sur `Stars` | **Bezy** Ph.2 | Image alpha 0.01 raycast ON sur `Stars` ; Star1–5 raycast OFF |
+| Wiring `SaleChannelStarHover` + host | **Bezy** Ph.3 | Champs vides hover = resolve runtime |
+| Copy palier + `ApplyStarFill` | Cursor | ★ visuelles 1/5 jusqu’à `[P0-SALE-STAR-001]` ; tooltip ★2 = compteurs live |
+| Compteurs tooltip ★ | Cursor | `SaleChannelStarUiCopy` : ventes / salades / **or gagné sur le canal** (`current/required`) |
+| Jauges dans le tooltip | **Bezy** `[P0-SALE-STAR-BARS-001]` | 3 barres Image Filled + TMP overlay ; fill runtime Cursor |
+
+Hover **uniquement** sur la rangée `Stars`. Clic étoiles → transmis au bandeau (vente / recherche). Tooltip cadenas inchangé sur `LockedOverlay`.
+
+**Lecture progression ★1 → ★2 (GDD §2.9, valeurs de travail) :**
+- Ventes : `SaleCount` / 5
+- Salades écoulées : `ItemsSold` / 50
+- Or gagné **via ce canal** (pas le wallet) : `GoldEarned` / 2000
+- L’upgrade réel (★2 accordée) reste `[P0-SALE-STAR-001]`.

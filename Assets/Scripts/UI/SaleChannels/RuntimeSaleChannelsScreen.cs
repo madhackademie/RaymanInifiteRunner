@@ -22,6 +22,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     [SerializeField] private RectTransform bandeauxContainer;
     [SerializeField] private Image rootBackdropImage;
     [SerializeField] private SaleChannelUnlockTooltipHost unlockTooltipHost;
+    [SerializeField] private SaleChannelStarTooltipHost starTooltipHost;
 
     [Header("VFX vente")]
     [Tooltip("Prefab Bezy SaleMoneyBurst (ref Simulate / Phase 3). Runtime = burst UI Overlay.")]
@@ -43,6 +44,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     {
         ResolveBindingsIfNeeded();
         ResolveUnlockTooltipHost();
+        ResolveStarTooltipHost();
         HookCloseButton();
         HookBandeauViews();
     }
@@ -56,6 +58,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     private void OnDisable()
     {
         unlockTooltipHost?.Hide();
+        starTooltipHost?.Hide();
         StopCooldownRefresh();
     }
 
@@ -74,6 +77,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
     private void RefreshBandeauStates(bool playUnlockableReveal)
     {
+        starTooltipHost?.Hide();
         SaleChannelService service = SaleChannelService.Instance;
         SaleChannelUnlockService unlockService = SaleChannelUnlockService.Instance;
         unlockService?.RefreshProgress();
@@ -92,6 +96,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             }
 
             ApplyProgressionVisuals(bandeau, channelId, unlockService, playUnlockableReveal);
+            bandeau.ApplyStarFill(bandeau.IsProgressionBlockingSale ? 0 : 1);
 
             if (bandeau.IsProgressionBlockingSale)
             {
@@ -252,6 +257,21 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             this);
     }
 
+    private void ResolveStarTooltipHost()
+    {
+        if (starTooltipHost != null)
+            return;
+
+        starTooltipHost = GetComponentInChildren<SaleChannelStarTooltipHost>(true);
+        if (starTooltipHost != null)
+            return;
+
+        Debug.LogWarning(
+            "[RuntimeSaleChannelsScreen] starTooltipHost absent — tooltip étoiles inactif jusqu'au wiring Bezy. " +
+            "Voir Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md",
+            this);
+    }
+
     private void HookBandeauViews()
     {
         if (bandeauxHooked || bandeauxContainer == null)
@@ -265,6 +285,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
         }
 
         WireProgressionHovers();
+        WireStarHovers();
         bandeauxHooked = true;
     }
 
@@ -286,6 +307,31 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             Debug.LogWarning(
                 "[RuntimeSaleChannelsScreen] Aucun SaleChannelBandeauProgressionHover — survol bandeau verrouillé inactif. " +
                 "Bezy : ajouter sur LockedOverlay (cf. PROMPTS_Bezi_sale_channel_unlock_ui.md).",
+                this);
+        }
+    }
+
+    private void WireStarHovers()
+    {
+        if (bandeauxContainer == null)
+            return;
+
+        SaleChannelStarHover[] hovers =
+            bandeauxContainer.GetComponentsInChildren<SaleChannelStarHover>(true);
+
+        foreach (SaleChannelStarHover hover in hovers)
+        {
+            if (hover == null)
+                continue;
+
+            hover.ConfigureFromHierarchy(starTooltipHost);
+        }
+
+        if (hovers.Length == 0)
+        {
+            Debug.LogWarning(
+                "[RuntimeSaleChannelsScreen] Aucun SaleChannelStarHover — survol étoiles inactif. " +
+                "Bezy : ajouter sur Stars (cf. PROMPTS_Bezi_sale_channel_stars.md).",
                 this);
         }
     }

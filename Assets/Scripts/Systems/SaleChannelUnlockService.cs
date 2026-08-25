@@ -48,6 +48,7 @@ public class SaleChannelUnlockService : MonoBehaviour
         Instance = this;
         CacheDefinitions();
         LoadProgress();
+        BackfillGoldFromItemsIfMissing();
         EnsureDefaultUnlocks();
         FinalizeCompletedResearch(forcePersist: false);
     }
@@ -218,8 +219,9 @@ public class SaleChannelUnlockService : MonoBehaviour
         PersistProgress();
     }
 
-    public void RecordSale(string channelId, int quantitySold)
+    public void RecordSale(string channelId, int quantitySold, int goldEarned)
     {
+        EnsurePersistedDataReady();
         if (string.IsNullOrWhiteSpace(channelId) || quantitySold <= 0)
             return;
 
@@ -231,7 +233,27 @@ public class SaleChannelUnlockService : MonoBehaviour
 
         stats.SaleCount += 1;
         stats.ItemsSold += quantitySold;
+        stats.GoldEarned += Mathf.Max(0, goldEarned);
         PersistProgress();
+    }
+
+    public bool TryGetChannelStats(string channelId, out int saleCount, out int itemsSold, out int goldEarned)
+    {
+        saleCount = 0;
+        itemsSold = 0;
+        goldEarned = 0;
+
+        EnsurePersistedDataReady();
+        if (string.IsNullOrWhiteSpace(channelId))
+            return false;
+
+        if (!persistedData.StatsByChannel.TryGetValue(channelId, out SaleChannelStatBlock stats) || stats == null)
+            return false;
+
+        saleCount = Mathf.Max(0, stats.SaleCount);
+        itemsSold = Mathf.Max(0, stats.ItemsSold);
+        goldEarned = Mathf.Max(0, stats.GoldEarned);
+        return true;
     }
 
     public void RefreshProgress()
@@ -290,6 +312,28 @@ public class SaleChannelUnlockService : MonoBehaviour
             persistedData = loaded;
         else
             persistedData = new SaleChannelPersistedData();
+    }
+
+    /// <summary>
+    /// Saves antérieurs à GoldEarned : estime 15 or / salade (prix V0 voisinage).
+    /// </summary>
+    private void BackfillGoldFromItemsIfMissing()
+    {
+        const int v0GoldPerItem = 15;
+        bool dirty = false;
+
+        foreach (KeyValuePair<string, SaleChannelStatBlock> entry in persistedData.StatsByChannel)
+        {
+            SaleChannelStatBlock stats = entry.Value;
+            if (stats == null || stats.GoldEarned > 0 || stats.ItemsSold <= 0)
+                continue;
+
+            stats.GoldEarned = stats.ItemsSold * v0GoldPerItem;
+            dirty = true;
+        }
+
+        if (dirty)
+            PersistProgress();
     }
 
     private void EnsurePersistedDataReady()

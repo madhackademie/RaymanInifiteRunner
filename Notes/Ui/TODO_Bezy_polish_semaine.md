@@ -13,10 +13,10 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
-> **Priorité session (auteur 2026-08-18) :** `[P0-INV-TABS-001]` onglets inventaire Graines / Consommables — **avant** Bezy #13.  
-> **Priorité polish Bezy ensuite :** file **#13** (`[BZ-POLISH-013]` audit layers) — `[BZ-POLISH-012]` HomeScene **clos** (Bezy + playtest OK 2026-08-18).  
-> **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only (code/assets jetés) ; attendre GDD §5.8 (`NOTE_affichage_monnaie_hud.md`).  
-> **Branche :** `main`.  
+> **Priorité session (auteur 2026-08-25) :** `[P0-SALE-STAR-BARS-001]` jauges tooltip ★ — **Ph.1 maintenant** (`PROMPTS_Bezi_sale_channel_star_bars.md`) avant reset **30 août**.  
+> `[P0-SALE-STAR-UI-001]` Ph.1–4 **OK**. Onglets inventaire `[P0-INV-TABS-001]` Bezy Ph.1–4 déjà livrées. File **#13** après.  
+> **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only ; attendre GDD §5.8.  
+> **Branche :** `feature/sale-bandeaux`.  
 > **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
 
 | # | ID | Job Bezy | Prefab / assets | Effort | Prérequis |
@@ -41,6 +41,8 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 18 | **[BZ-POLISH-018]** | VFX pièces / billets au feedback vente (canal) | `SaleMoneyBurst` PS | M | art coin/billet (sinon Ph.1–2 placeholder) |
 | 19 | **[BZ-POLISH-019]** / **[CT-FARM-POLISH-004]** | Sparkle idle récoltable (Mature + graines) | `HarvestReadyFx` + ancre `LaitueObj` | M | Default-Particle — `PROMPTS_Bezi_harvest_ready_vfx.md` |
 | 20 | **[BZ-INV-TABS-001]** / **[P0-INV-TABS-001]** | Barre onglets inventaire farm (Graines / Conso / Récoltes / Tout) | `InventoryScreen.prefab` | M | spec `SPEC_inventaire_multiverse_hub.md` — `PROMPTS_Bezi_inventory_tabs.md` |
+| 21 | **[P0-SALE-STAR-UI-001]** | Étoiles 3 bandeaux + tooltip palier hover `Stars` | `SaleChannelBandeauView` + `SaleChannelsScreen` | M | `PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–4 OK** |
+| 22 | **[P0-SALE-STAR-BARS-001]** | 3 jauges tooltip ★ + texte overlay | `SaleChannelsScreen` | S | `PROMPTS_Bezi_sale_channel_star_bars.md` — **Ph.1 maintenant** |
 
 ---
 

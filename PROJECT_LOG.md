@@ -1,5 +1,228 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-25 — Fin session : playtest ★ reporté prochaine session
+
+### Décision auteur
+- `[P0-SALE-STAR-PLAY-001]` **prochaine session #1** (pas ce soir).
+
+### Livré cette session
+- Compteurs tooltip ★ (`current/required`, or canal).
+- Jauges Bezy Ph.1–2 + fill/wiring Cursor `[P0-SALE-STAR-BARS-001]`.
+
+### Prochaine session
+1. Playtest hover ★ : 3 jauges, texte in-bar, fill live, clic vente OK.
+2. `[P0-SALE-QTY-RAND-001]` rand 1–3 salades.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Bezy Ph.2 jauges tooltip ★ OK (+ fix fill Cursor)
+
+### Bezy
+- LayoutElement h=22, Track/Fill/Label stretch, TMP overlay, couleurs OK.
+- **Limite API :** `fillMethod` / `fillAmount` / `fillOrigin` rejetés → Radial360 par défaut.
+
+### Cursor (patch prefab YAML)
+- Fill Horizontal Left : SalesBar 0.4, ItemsBar 0.5, GoldBar 0.25.
+- **Ph.3 wiring** aussi fait côté Cursor (host + 3 `SaleChannelStarProgressBarView`).
+
+### Playtest
+- `[P0-SALE-STAR-PLAY-001]` → **prochaine session** (décision auteur fin session).
+
+---
+
+## 2026-08-25 — Bezy Ph.1 jauges tooltip ★ OK
+
+### Review Cursor
+- `NextBlock` : NextTitle → SalesBar / ItemsBar / GoldBar → NextBody
+- Track / Fill / Label ×3, RectTransform only, layer 5
+- Host `salesBar`/`itemsBar`/`goldBar` encore vides → **Ph.2 puis Ph.3**
+
+### Suite
+- Bezy **Ph.2 maintenant** (`PROMPTS_Bezi_sale_channel_star_bars.md`)
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Prompts Bezy jauges tooltip ★ `[P0-SALE-STAR-BARS-001]`
+
+### Demande
+- Barres de progression dans le tooltip, texte `50/2000` **à l’intérieur**.
+
+### Cursor
+- Scripts : `SaleChannelStarProgressBarView` + rows snapshot (fill runtime).
+- Fallback texte si Bezy pas encore câblé.
+- Prompts Ph.1–3 : `Notes/Ui/PROMPTS_Bezi_sale_channel_star_bars.md` (< 3500 car.).
+
+### Bezy
+- **Ph.1 maintenant** (shell RectTransform only). Attendre succès avant Ph.2.
+- Prefab : `SaleChannelsScreen` uniquement. Pas le bandeau.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Progression ★ dans le tooltip (current/required)
+
+### Demande
+- Le joueur ne voyait pas s’il était à 50 or ou 1999 / 2000.
+
+### Cursor
+- Persist `GoldEarned` par canal (`sale_channels.json`).
+- `RecordSale(channelId, qty, gold)` depuis `TrySell`.
+- Tooltip ★ : `○ Or gagné : 50/2000` (style cadenas).
+- Or = **gagné via ce canal**, pas le wallet (le shop peut faire baisser l’or en poche).
+- Seuils GDD §2.9 : 5 ventes, 50 salades, 2000 or. Upgrade ★2 toujours `[P0-SALE-STAR-001]`.
+
+### Playtest
+- Hover ★ voisinage : ventes / salades / or en `current/required`.
+- Saves déjà existantes : or estimé à 15 × salades écoulées (prix V0), puis tracking réel à chaque vente.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain). Pas de job Bezy.
+
+---
+
+## 2026-08-25 — Annuler recherche + doublon croix
+
+### Cause
+- `SetConfirmInteractable(false)` (or 285 < 300) désactivait aussi **Annuler**.
+- Croix sous la carte + Annuler overlay = même sortie en flux Recherche.
+
+### Cursor
+- Annuler toujours cliquable.
+- Croix masquée tant que `ConfirmOverlay` est visible.
+
+### Pas Bezy
+- Wiring prefab déjà OK ; pas de prompt.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Tooltip palier off si bandeau actif
+
+### Demande
+- Désactiver le tooltip ★ une fois le bandeau **vendable**. Pas un job Bezy (état runtime, 1 prefab).
+
+### Cursor
+- `AllowsStarTooltip` : uniquement en **cooldown**.
+- Bandeau actif : raycast `Stars` off + pas de Show. Clic = vente.
+- Overlay cadenas : tooltip déblocage inchangé.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Bezy Ph.4 tooltip étoiles sous les ★ OK
+
+### Review Cursor
+- `SaleChannelStarTooltip` pivot (0.5, 1), inactif.
+- Host : `screenOffset` (0, -16), `canvasEdgePadding` 12.
+- Tooltip cadenas inchangé.
+
+### Suite auteur
+- Playtest hover ★ : panneau **sous** la rangée, entier à l’écran ; clic bandeau = vente.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Tooltip étoiles hors écran → clamp + Bezy Ph.4
+
+### Playtest
+- Panneau palier collé en haut, titre coupé par le bord écran.
+
+### Cursor
+- `SaleChannelStarTooltipHost` : rebuild layout + **clamp** dans le parent canvas (padding 12).
+
+### Bezy
+- Ph.4 : pivot haut + `screenOffset` (0, -16) pour coller le panneau **sous** les ★.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Bezy Ph.3 étoiles bandeaux OK
+
+### Review Cursor
+- `SaleChannelStarHover` sur `Stars` (refs vides).
+- `SaleChannelStarTooltipHost` câblé (panel + 4 TMP + NextBlock + CanvasGroup).
+- `RuntimeSaleChannelsScreen.starTooltipHost` assigné.
+- `starImages[5]` + hover cadenas inchangés.
+- 4 TMP : LiberationSans + orthographic UI.
+
+### Suite auteur
+- Playtest `[P0-SALE-STAR-PLAY-001]` : hover ★ voisinage → tooltip courant/next ; clic bandeau = vente ; hover cadenas ≠ tooltip étoiles.
+- Puis rand ★1 `[P0-SALE-QTY-RAND-001]` (Cursor).
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Bezy Ph.2 étoiles bandeaux OK
+
+### Review Cursor (YAML, capture plein écran ignoré)
+- `Stars` : Image α 0.01 raycast ON ; Star1 rose, Star2–5 grises, raycast OFF, 5 enfants.
+- `SaleChannelStarTooltip` : panneau dark α 0.94, 320 px, pivot bas, CanvasGroup no raycast, VLG + CSF.
+- Unlock tooltip / LockedOverlay intacts.
+
+### Nit (Ph.3)
+- 4 TMP du tooltip : `fontAsset` vide + `isOrthographic=0` — copier police unlock TitleLabel.
+
+### Suite
+- Envoyer **Ph.3** wiring + fix TMP.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Bezy Ph.1 étoiles bandeaux OK
+
+### Review Cursor
+- `SaleChannelStarTooltip` inactif, layer 5, dernier sibling racine `SaleChannelsScreen`.
+- Hiérarchie : CurrentBlock (CurrentTitle/Body) + NextBlock (NextTitle/Body) — RectTransform only.
+- Tooltip cadenas + prefab bandeau intacts.
+
+### Suite
+- Envoyer **Ph.2** (`PROMPTS_Bezi_sale_channel_stars.md`) — visuels ★ + panneau tooltip.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
+## 2026-08-25 — Prompts Bezy étoiles bandeaux `[P0-SALE-STAR-UI-001]`
+
+### Fait
+- Prompts phasés : `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` (Ph.1 shell tooltip / Ph.2 visuels / Ph.3 wiring).
+- Panneau **dédié** `SaleChannelStarTooltip` (pas recycle cadenas — collision hover).
+- Scripts Cursor prêts pour Ph.3 : `SaleChannelStarHover`, `SaleChannelStarTooltipHost`, `SaleChannelStarUiCopy`, hook `RuntimeSaleChannelsScreen` + `ApplyStarFill` sur le bandeau.
+
+### Décision
+- Brûler crédits Bezy **avant reset 30 août** : envoyer **Ph.1 seulement**, attendre succès.
+- Rand ★1 `[P0-SALE-QTY-RAND-001]` reste Cursor, en parallèle.
+
+### Prochaine étape
+- Auteur : coller Ph.1 Bezy (prefab `SaleChannelsScreen` ouvert).
+- Puis Ph.2 → Ph.3 → playtest `[P0-SALE-STAR-PLAY-001]`.
+
+### Crédits Bezy
+- Reset mensuel le **30 août** (prochain).
+
+---
+
 ## 2026-08-19 — Bezy Ph.4 unlock bandeau (stretch ancre)
 
 ### Review Cursor

@@ -243,8 +243,9 @@ public sealed class ShopItemPopupView : MonoBehaviour
         if (confirmPurchaseButton != null)
             confirmPurchaseButton.interactable = interactable;
 
+        // Annuler / croix overlay : toujours cliquable (même si or insuffisant).
         if (confirmCancelButton != null)
-            confirmCancelButton.interactable = interactable;
+            confirmCancelButton.interactable = true;
     }
 
     public void ShowConfirmOverlay(
@@ -285,12 +286,27 @@ public sealed class ShopItemPopupView : MonoBehaviour
 
         confirmOverlayRoot.SetActive(true);
         confirmOverlayRoot.transform.SetAsLastSibling();
+        SetCloseButtonVisible(false);
     }
 
     public void HideConfirmOverlay()
     {
+        HideConfirmOverlay(restoreCloseButton: true);
+    }
+
+    private void HideConfirmOverlay(bool restoreCloseButton)
+    {
         if (confirmOverlayRoot != null)
             confirmOverlayRoot.SetActive(false);
+
+        if (restoreCloseButton)
+            SetCloseButtonVisible(true);
+    }
+
+    private void SetCloseButtonVisible(bool visible)
+    {
+        if (closeButton != null)
+            closeButton.gameObject.SetActive(visible);
     }
 
     /// <summary>
@@ -367,7 +383,7 @@ public sealed class ShopItemPopupView : MonoBehaviour
         if (isTransitioning && !isVisible)
             return;
 
-        HideConfirmOverlay();
+        HideConfirmOverlay(restoreCloseButton: false);
         ResetDropTrashVisuals();
         isVisible = false;
         ApplyCanvasGroupInteractable(false);

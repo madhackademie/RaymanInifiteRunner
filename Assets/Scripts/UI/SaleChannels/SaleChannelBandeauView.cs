@@ -12,6 +12,7 @@ public class SaleChannelBandeauView : MonoBehaviour
 {
     private const string IsOnCooldownAnimatorBool = "IsOnCooldown";
     private const string UnlockableFxAnchorName = "UnlockableFxAnchor";
+    private const int DefaultFilledStarCount = 1;
 
     private static readonly Color IllustrationActiveColor = Color.white;
     private static readonly Color IllustrationCooldownColor = new(0.55f, 0.55f, 0.55f, 1f);
@@ -19,6 +20,8 @@ public class SaleChannelBandeauView : MonoBehaviour
     private static readonly Color IllustrationUnlockableColor = new(0.95f, 0.92f, 0.75f, 1f);
     private static readonly Color LockIconDefaultColor = Color.white;
     private static readonly Color LockIconUnlockableColor = new(1f, 0.86f, 0.35f, 1f);
+    private static readonly Color StarFilledColor = new(0.95f, 0.35f, 0.55f, 1f);
+    private static readonly Color StarEmptyColor = new(0.45f, 0.45f, 0.48f, 1f);
 
     [Header("Bindings UI (prefab)")]
     [SerializeField] private Button bandeauButton;
@@ -49,12 +52,19 @@ public class SaleChannelBandeauView : MonoBehaviour
     public bool CanStartUnlockResearch => ProgressionPhase == SaleChannelProgressionPhase.Unlockable;
     public bool IsProgressionBlockingSale => ShowsProgressionOverlay;
 
+    /// <summary>
+    /// Tooltip palier ★ dès que le canal est débloqué (vente ou cooldown).
+    /// Overlay cadenas = tooltip déblocage uniquement.
+    /// </summary>
+    public bool AllowsStarTooltip => !ShowsProgressionOverlay;
+
     private Image lockIconImage;
     private TextMeshProUGUI statusLabel;
     private RectTransform lockIconRect;
     private Coroutine unlockablePulseRoutine;
     private readonly System.Collections.Generic.List<Coroutine> unlockableSparkleRoutines = new();
     private SaleChannelUnlockProgressSnapshot progressSnapshot;
+    private int filledStarCount = DefaultFilledStarCount;
 
     private void Awake()
     {
@@ -174,6 +184,32 @@ public class SaleChannelBandeauView : MonoBehaviour
             return;
 
         OnUnlockResearchRequested?.Invoke(this);
+    }
+
+    public void ForwardBandeauClick()
+    {
+        HandleBandeauClicked();
+    }
+
+    public void ApplyStarFill(int filledCount)
+    {
+        filledStarCount = Mathf.Clamp(filledCount, 0, starImages != null ? starImages.Length : 0);
+
+        if (starImages == null)
+            return;
+
+        for (int i = 0; i < starImages.Length; i++)
+        {
+            if (starImages[i] == null)
+                continue;
+
+            starImages[i].color = i < filledStarCount ? StarFilledColor : StarEmptyColor;
+        }
+    }
+
+    public SaleChannelStarTierSnapshot GetStarTooltipSnapshot()
+    {
+        return SaleChannelStarUiCopy.Build(DisplayTitle, ChannelId, filledStarCount);
     }
 
     public void PlayUnlockableReveal()
@@ -345,11 +381,31 @@ public class SaleChannelBandeauView : MonoBehaviour
 
     private void ApplyInteractableState()
     {
-        if (bandeauButton == null)
+        if (bandeauButton != null)
+        {
+            bool canOpenSale = !IsProgressionBlockingSale && !IsOnCooldown;
+            bandeauButton.interactable = canOpenSale || CanStartUnlockResearch;
+        }
+
+        ApplyStarHoverHit();
+    }
+
+    private void ApplyStarHoverHit()
+    {
+        Image hit = ResolveStarsHitImage();
+        if (hit == null)
             return;
 
-        bool canOpenSale = !IsProgressionBlockingSale && !IsOnCooldown;
-        bandeauButton.interactable = canOpenSale || CanStartUnlockResearch;
+        hit.raycastTarget = AllowsStarTooltip;
+    }
+
+    private Image ResolveStarsHitImage()
+    {
+        if (starImages == null || starImages.Length == 0 || starImages[0] == null)
+            return null;
+
+        Transform stars = starImages[0].transform.parent;
+        return stars != null ? stars.GetComponent<Image>() : null;
     }
 
     private void HandleBandeauClicked()

@@ -253,7 +253,7 @@ Les **étoiles roses** (★) sont l’**upgrade du bandeau / canal dans son ense
 - La montée d’étoile est **spécifique au canal** : progresser le voisinage ne débloque pas automatiquement le vélo.
 - L’UI affiche la **prochaine étoile** grisée + barre de progression (ventes / salades / gold) sur le bandeau concerné.
 - Les **5 étoiles roses** au sommet du bandeau = lecture immédiate du niveau du canal.
-- **Tooltip palier (2026-08-19, proposé) :** **survol de la rangée d’étoiles** — valeurs / boost **lvl courant** + **lvl suivant**. Pas un tooltip sur tout le bandeau (conflit clic vente + tooltip déblocage cadenas). Tâche `[P0-SALE-STAR-UI-001]`.
+- **Tooltip palier (2026-08-25) :** **survol de la rangée d’étoiles** — palier courant + **compteurs live** vers ★2 (`50/2000` or, etc.). Or = **gagné sur ce canal**, pas le wallet. Panneau `SaleChannelStarTooltip`. Tâches `[P0-SALE-STAR-UI-001]` + `[P0-SALE-STAR-PROGRESS-001]`.
 
 #### Autres bandeaux (bandoulière, vélo…)
 

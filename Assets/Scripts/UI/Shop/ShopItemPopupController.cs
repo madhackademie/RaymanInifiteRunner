@@ -132,9 +132,9 @@ public sealed class ShopItemPopupController : MonoBehaviour
             return;
 
         int totalPrice = ComputeTotalPrice();
-        // Garde l’overlay visible jusqu’au emit pour que l’ancre VFX (bouton Confirmer) reste lisible.
+        // Overlay reste jusqu'à Close() (succès) pour l'ancre VFX.
+        // Pas de HideConfirmOverlay ici : ça réaffichait la croix pendant le fade.
         TryEmitAfterOptionalDropTrash(totalPrice);
-        view?.HideConfirmOverlay();
     }
 
     private void TryEmitAfterOptionalDropTrash(int totalPrice)

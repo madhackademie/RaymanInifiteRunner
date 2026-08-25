@@ -12,13 +12,16 @@
 - **LoadingScreen** `[BZ-POLISH-011]` : Bezy + **playtest OK** (2026-08-05).
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
-### Priorités en cours (2026-08-18)
-1. **[P0-INV-TABS-001]** Onglets inventaire — spec `Notes/GDD/SPEC_inventaire_multiverse_hub.md` ; Bezy `PROMPTS_Bezi_inventory_tabs.md`.
-2. Playtest `[P0-INV-TABS-PLAY-001]` ; file Bezy **#13** après.
-3. **Crédits Bezy :** reset le **30** de chaque mois (prochain : **30 août**).
+### Priorités prochaine session
+1. **[P0-SALE-STAR-PLAY-001]** Playtest hover ★ : 3 jauges + texte + fill live (reporté fin session 2026-08-25).
+2. **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 — Cursor.
+3. Onglets inventaire `[P0-INV-TABS-001]` ; file Bezy **#13** après.
+
+### Clos session 2026-08-25 (vente)
+- Jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` + compteurs `[P0-SALE-STAR-PROGRESS-001]` + UI étoiles Bezy.
 
 ### Contexte Git
-- Branche : **`main`**.
+- Branche : **`feature/sale-bandeaux`**.
 
 ### Rappel « tâche du jour »
 - Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md`.
