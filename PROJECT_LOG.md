@@ -1,5 +1,22 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-26 — Playtest ★ : layout barres cassé → fix Cursor
+
+### Symptôme (capture auteur)
+- Texte `Ventes/Salades/Or` déborde à gauche du panneau.
+- Pas de mini-barres visibles (Track/Fill existaient mais conteneurs 100×100).
+
+### Fix Cursor
+- `NextBlock` + 3 barres : stretch largeur tooltip, hauteur 22.
+- VLG `ChildForceExpandWidth`, `LayoutElement.flexibleWidth`.
+- Labels barres : overflow Masking + marge 4 px.
+- `SaleChannelStarTooltipHost` : rebuild layout barres au Show.
+
+### Suite
+- Re-playtest `[P0-SALE-STAR-PLAY-001]`. Bezy Ph.5 optionnel seulement si encore KO.
+
+---
+
 ## 2026-08-25 — Fin session : playtest ★ reporté prochaine session
 
 ### Décision auteur

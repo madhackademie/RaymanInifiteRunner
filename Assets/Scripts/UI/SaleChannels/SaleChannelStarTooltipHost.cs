@@ -38,17 +38,17 @@ public class SaleChannelStarTooltipHost : MonoBehaviour
             return;
 
         ResolveRefsIfNeeded();
-        ApplyCopy(snapshot);
         panelRoot.SetActive(true);
 
         if (panelCanvasGroup != null)
             panelCanvasGroup.alpha = 1f;
 
+        ApplyCopy(snapshot, applyBars: false);
+
         Canvas.ForceUpdateCanvases();
-        if (nextBodyLabel != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(nextBodyLabel.rectTransform);
-        if (panelRect != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(panelRect);
+        RebuildBarLayouts(salesBar, itemsBar, goldBar, nextBlockRoot != null ? nextBlockRoot.transform as RectTransform : null, panelRect);
+
+        ApplyBarProgress(snapshot);
 
         PositionNearAnchor(anchor);
     }
@@ -58,7 +58,7 @@ public class SaleChannelStarTooltipHost : MonoBehaviour
         HideImmediate();
     }
 
-    private void ApplyCopy(SaleChannelStarTierSnapshot snapshot)
+    private void ApplyCopy(SaleChannelStarTierSnapshot snapshot, bool applyBars = true)
     {
         if (currentTitleLabel != null)
             currentTitleLabel.text = snapshot.CurrentTitle;
@@ -68,12 +68,8 @@ public class SaleChannelStarTooltipHost : MonoBehaviour
             nextTitleLabel.text = snapshot.NextTitle;
 
         bool hasBars = salesBar != null && itemsBar != null && goldBar != null;
-        if (hasBars)
-        {
-            salesBar.Apply(snapshot.Sales);
-            itemsBar.Apply(snapshot.Items);
-            goldBar.Apply(snapshot.Gold);
-        }
+        if (applyBars && hasBars)
+            ApplyBarProgress(snapshot);
 
         if (nextBodyLabel != null)
             nextBodyLabel.text = hasBars ? snapshot.RewardText : snapshot.NextBody;
@@ -81,6 +77,44 @@ public class SaleChannelStarTooltipHost : MonoBehaviour
         bool showNext = hasBars || !string.IsNullOrWhiteSpace(snapshot.NextBody);
         if (nextBlockRoot != null)
             nextBlockRoot.SetActive(showNext);
+    }
+
+    private void ApplyBarProgress(SaleChannelStarTierSnapshot snapshot)
+    {
+        if (salesBar != null)
+            salesBar.Apply(snapshot.Sales);
+        if (itemsBar != null)
+            itemsBar.Apply(snapshot.Items);
+        if (goldBar != null)
+            goldBar.Apply(snapshot.Gold);
+    }
+
+    private static void RebuildBarLayouts(
+        SaleChannelStarProgressBarView sales,
+        SaleChannelStarProgressBarView items,
+        SaleChannelStarProgressBarView gold,
+        RectTransform nextBlock,
+        RectTransform panel)
+    {
+        if (nextBlock != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(nextBlock);
+
+        RebuildBarLayout(sales);
+        RebuildBarLayout(items);
+        RebuildBarLayout(gold);
+
+        if (panel != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(panel);
+    }
+
+    private static void RebuildBarLayout(SaleChannelStarProgressBarView bar)
+    {
+        if (bar == null)
+            return;
+
+        RectTransform barRect = bar.transform as RectTransform;
+        if (barRect != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(barRect);
     }
 
     private void HideImmediate()

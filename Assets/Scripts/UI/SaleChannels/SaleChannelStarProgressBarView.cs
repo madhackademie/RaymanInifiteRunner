@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Barre Image Filled + label overlay (texte dans la jauge). Wiring Bezy.
+/// Barre Track + Fill + label overlay. Progression via ancres du Fill (fiable sans sprite UI).
 /// </summary>
 public class SaleChannelStarProgressBarView : MonoBehaviour
 {
@@ -18,8 +18,17 @@ public class SaleChannelStarProgressBarView : MonoBehaviour
         if (fillImage == null)
             return;
 
-        int required = Mathf.Max(0, row.Required);
-        int current = Mathf.Max(0, row.Current);
-        fillImage.fillAmount = required <= 0 ? 1f : Mathf.Clamp01((float)current / required);
+        float ratio = row.Required <= 0
+            ? 1f
+            : Mathf.Clamp01((float)row.Current / row.Required);
+
+        fillImage.type = Image.Type.Simple;
+
+        RectTransform fillRect = fillImage.rectTransform;
+        fillRect.anchorMin = Vector2.zero;
+        fillRect.anchorMax = new Vector2(ratio, 1f);
+        fillRect.pivot = new Vector2(0f, 0.5f);
+        fillRect.anchoredPosition = Vector2.zero;
+        fillRect.sizeDelta = Vector2.zero;
     }
 }

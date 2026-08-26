@@ -15,5 +15,5 @@ MonoBehaviour:
   itemId: euro
   displayName: Euro
   inventoryBehavior: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 7595e70b39ce41b3bb106292de5ef0b4, type: 3}
   maxStack: 999999
