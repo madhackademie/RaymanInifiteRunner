@@ -20,6 +20,8 @@ Le joueur fait évoluer **son installation sur place** (biofiltre, bassin poisso
 
 > **À ne pas confondre** avec la progression **joueur** (halo inventaire, arbres globaux) : voir `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` et `ProgressionTrackId`. Ici = **métier ferme local** par scène.
 
+**Prestige / génération** (reconstruire le biofiltre : nettoyage + upgrade, grille vide) : autre couche, **pas** un respec des nœuds — `Notes/GDD/SPEC_prestige_generation_systemes.md`.
+
 ---
 
 ## 2. Glossaire
@@ -40,7 +42,7 @@ Le joueur fait évoluer **son installation sur place** (biofiltre, bassin poisso
 
 | Document | Lien |
 |----------|------|
-| `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` | **Maturité passive** du système (cycles salade, temps réel) pour **gater** cultures avancées. La présente spec ajoute une couche **active** (points, choix joueur, onglets). Les deux doivent **partager le même identifiant d’instance** et la même save. |
+| `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` | **Étoiles biofiltre** (★1 = XP 240 + 50 salades + 100 germinations + 50 graines) + gating fruits. La présente spec = nœuds / points / onglets. **Même `systemInstanceId`**. Ne pas dupliquer les bonus d’étoile dans les nœuds. |
 | `Notes/Ui/SPEC_rework_inventaire_halo_progression.md` | Progression **globale** joueur (commerce, culture, etc.). Synergies possibles (ex. talent inventaire « +5 % vitesse croissance biofiltre ») mais **UI séparée**. |
 | `Notes/Farm/SYSTEMES_carte_mentale.md` | Ancrage code : `BiofiltreManager`, `PlantGrow`, `FarmPersistenceCoordinator`, UI `SeedSelectionUI` / `HarvestPanelUI`. |
 | `Notes/Ui/popup_generique.md` | Si le panneau est modal : nouveau `PopupId` + binding pour `ScreenId.FirstLvl` (ou overlay scène dédié — cf. §6). |
@@ -64,7 +66,7 @@ Le joueur fait évoluer **son installation sur place** (biofiltre, bassin poisso
         ▼
 [Panneau progression système — reste en scène, pas de changement SceneNavigator]
         │
-        ├── Onglet Biofiltre   (grille, cycles, germination, limaces, rendement plantes…)
+        ├── Onglet Biofiltre   (étoiles ★ + jauges, nœuds, germination, limaces, rendement…)
         ├── Onglet Poisson     (alimentation, densité, qualité eau, bonus indirect plantes…)
         └── Onglet Techno      (pompes, capteurs, automatisation, anti-aléa transverses…)
         │
@@ -139,8 +141,9 @@ Les valeurs doivent être **data-driven** (ScriptableObject ou table par nœud),
 
 | Aléa | Impact typique | Onglet le plus logique |
 |------|----------------|------------------------|
-| Limaces | Perte partielle ou totale récolte / plante | Biofiltre |
-| Faible germination | Stade bloqué ou plante perdue | Biofiltre |
+| Limaces | Perte partielle / totale ; raids **nuit** + **pluie** | Slot secondaire anti-slug (`SPEC_biofiltre_slots_shields.md`) |
+| Souris / oiseaux / fourmis / moisissure | TBD | Slots secondaires 2–5 |
+| Faible germination | Stade bloqué ou plante perdue | Biofiltre (nœuds) |
 | Eau instable | Malus croissance toutes plantes | Poisson + Techno |
 | Maladie poisson | Malus indirect long terme | Poisson |
 | Panne pompe | Pause croissance jusqu’à réparation | Techno |
@@ -240,7 +243,8 @@ La progression **ne se partage pas** entre fermes sauf décision produit explici
 
 - [ ] Le **niveau système** et la **maturité passive** (10 cycles salade) fusionnent-ils en un seul compteur ou restent-ils séparés ?
 - [ ] Les **points** sont-ils **un pool global** par panneau ou **par onglet** ?
-- [ ] Respec / reset des nœuds (oui/non, coût) ?
+- [ ] Respec / reset des **nœuds** (oui/non, coût) ? **Distinct** du prestige installation (`SPEC_prestige_generation_systemes.md`).
+- [ ] Où placer le bouton **Reconstruire** (même panneau onglet Biofiltre vs world) ?
 - [ ] Le panneau est-il **popup** (`ScreenPopupHost`) ou **panel** enfant du canvas `FirstLvl` ?
 - [ ] Faut-il afficher le **niveau système** dans le HUD en permanence ?
 - [ ] Lien avec **économie** : les upgrades affectent-elles aussi les prix shop/market de ce biome ?
@@ -264,3 +268,4 @@ La progression **ne se partage pas** entre fermes sauf décision produit explici
 
 - Entrée backlog : **`[BL-GDD-005]`** — Progression système aquaponique par scène (panneau 3 onglets, points, anti-aléas).
 - Lié à **`[BL-GDD-003]`** (XP joueur + maturité biofiltre) : implémenter ou fusionner les modèles de save en même temps si possible.
+- Prestige / génération : **`[BL-GDD-006]`** — `SPEC_prestige_generation_systemes.md` (même `systemInstanceId`).

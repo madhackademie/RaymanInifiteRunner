@@ -254,6 +254,7 @@ Les **étoiles roses** (★) sont l’**upgrade du bandeau / canal dans son ense
 - L’UI affiche la **prochaine étoile** grisée + barre de progression (ventes / salades / gold) sur le bandeau concerné.
 - Les **5 étoiles roses** au sommet du bandeau = lecture immédiate du niveau du canal.
 - **Tooltip palier (2026-08-25) :** **survol de la rangée d’étoiles** — palier courant + **compteurs live** vers ★2 (`50/2000` or, etc.). Or = **gagné sur ce canal**, pas le wallet. Panneau `SaleChannelStarTooltip`. Tâches `[P0-SALE-STAR-UI-001]` + `[P0-SALE-STAR-PROGRESS-001]`.
+- **Pas les étoiles biofiltre** : autre instance, autres compteurs — `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` §3.
 
 #### Autres bandeaux (bandoulière, vélo…)
 
@@ -330,6 +331,7 @@ Même logique **1–5 étoiles**, récompenses adaptées au tier (capacité kg, 
 - [ ] ★5 : détail des **7 personnes** entourage (PNJ nommés, slots, types d’offres).
 - [ ] Étoiles **bandoulière / vélo** : calquer le modèle voisinage.
 - [ ] Durée accès PNJ après **pub** ; boost **ami** win/win (% et récompense passive).
+- [ ] **Prestige canal (horizon)** : relance **après** la courbe ★5, pas à ★3 — `Notes/GDD/SPEC_prestige_generation_systemes.md` §7.
 
 ### 5.7 Talents halo Commerce
 

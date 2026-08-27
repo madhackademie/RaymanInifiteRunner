@@ -69,6 +69,15 @@ mono_crash.*
 # Builds
 *.apk
 *.aab
+# Dossier custom (Build/ et Builds/ ne matchent pas BuildAndroid/)
+/[Bb]uildAndroid/
+*_BurstDebugInformation_DoNotShip/
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+
+# Scènes auto Unity après crash / recovery (pas du gameplay)
+/[Aa]ssets/_Recovery/
+/[Aa]ssets/_Recovery.meta
+
 *.unitypackage
 *.unitypackage.meta
 *.app

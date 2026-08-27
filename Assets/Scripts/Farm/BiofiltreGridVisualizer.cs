@@ -23,6 +23,13 @@ public class BiofiltreGridVisualizer : MonoBehaviour
     [Tooltip("Sorting order for cell sprites.")]
     [SerializeField] private int cellSortingOrder = 0;
 
+    [Header("Bed (planter container)")]
+    [Tooltip("Visual skin only. Swap this to change wood/IBC art without moving the grid.")]
+    [SerializeField] private BiofiltreBedSkin bedSkin;
+
+    [Tooltip("Sorting order for the planter sprite (below cell overlays).")]
+    [SerializeField] private int bedSortingOrder = -1;
+
     /// <summary>Fired when any cell in this biofiltre is clicked.</summary>
     public event Action<BiofiltreCell> OnCellClicked;
 
@@ -32,6 +39,7 @@ public class BiofiltreGridVisualizer : MonoBehaviour
     private GridManager gridManager;
     private BiofiltreCell[,] cells;
     private Sprite runtimeSquareSprite;
+    private SpriteRenderer bedRenderer;
 
     private void Awake()
     {
@@ -97,6 +105,8 @@ public class BiofiltreGridVisualizer : MonoBehaviour
                 cells[col, row] = cell;
             }
         }
+
+        PlaceBedSprite();
     }
 
     /// <summary>Destroys all generated cell GameObjects.</summary>
@@ -147,6 +157,61 @@ public class BiofiltreGridVisualizer : MonoBehaviour
     {
         OnCellClicked?.Invoke(cell);
         Debug.Log($"[BiofiltreGridVisualizer] '{gameObject.name}' — cell clicked: {cell.GridCoordinates}");
+    }
+
+    /// <summary>
+    /// Draws the bed skin behind the grid. Culture area stays the GridManager rectangle.
+    /// </summary>
+    private void PlaceBedSprite()
+    {
+        if (bedSkin == null || !bedSkin.TryGetLayout(out _, out Vector2 innerSize, out Vector2 pivotToInner))
+        {
+            if (bedRenderer != null)
+                bedRenderer.gameObject.SetActive(false);
+            return;
+        }
+
+        SpriteRenderer bed = GetOrCreateBedRenderer();
+        bed.sprite = bedSkin.Sprite;
+        bed.sortingOrder = bedSortingOrder;
+        bed.gameObject.SetActive(true);
+        FitBedToGrid(bed, innerSize, pivotToInner);
+    }
+
+    private void FitBedToGrid(SpriteRenderer bed, Vector2 innerSize, Vector2 pivotToInner)
+    {
+        Vector2 gridSize = new Vector2(
+            gridManager.Columns * gridManager.CellSizeWorld.x,
+            gridManager.Rows * gridManager.CellSizeWorld.y
+        );
+        Vector2 origin = gridManager.WorldOrigin;
+        Vector2 gridCenter = new Vector2(origin.x + gridSize.x * 0.5f, origin.y - gridSize.y * 0.5f);
+        Vector3 scale = new Vector3(gridSize.x / innerSize.x, gridSize.y / innerSize.y, 1f);
+        bed.transform.localScale = scale;
+        bed.transform.position = new Vector3(
+            gridCenter.x - pivotToInner.x * scale.x,
+            gridCenter.y - pivotToInner.y * scale.y,
+            0f
+        );
+    }
+
+    private SpriteRenderer GetOrCreateBedRenderer()
+    {
+        if (bedRenderer != null)
+            return bedRenderer;
+
+        Transform existing = transform.Find("BedSprite");
+        GameObject bedObject = existing != null
+            ? existing.gameObject
+            : new GameObject("BedSprite");
+
+        if (existing == null)
+            bedObject.transform.SetParent(transform, worldPositionStays: false);
+
+        if (!bedObject.TryGetComponent(out bedRenderer))
+            bedRenderer = bedObject.AddComponent<SpriteRenderer>();
+
+        return bedRenderer;
     }
 
     // ── Procedural fallback sprite ────────────────────────────────────────────

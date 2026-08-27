@@ -13,9 +13,9 @@
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
 ### Priorités prochaine session
-1. **[P0-SALE-STAR-PLAY-001]** Playtest hover ★ : 3 jauges + texte + fill live (reporté fin session 2026-08-25).
-2. **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 — Cursor.
-3. Onglets inventaire `[P0-INV-TABS-001]` ; file Bezy **#13** après.
+1. **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades / sprites laitue dans le biofiltre (auteur 2026-08-27).
+2. **[P0-FARM-PLANT-TOUCH-001]** Pose tactile — NRE `Mouse.current` (`PlantPlacementPreview`).
+3. Playtest vente ★ `[P0-SALE-STAR-PLAY-001]` reporté ; puis rand salades / onglets.
 
 ### Clos session 2026-08-25 (vente)
 - Jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` + compteurs `[P0-SALE-STAR-PROGRESS-001]` + UI étoiles Bezy.

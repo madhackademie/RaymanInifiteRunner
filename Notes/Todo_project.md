@@ -40,12 +40,30 @@ Convention d'IDs :
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`feature/sale-bandeaux`**.  
-> **Prochaine session (priorité #1) :** playtest `[P0-SALE-STAR-PLAY-001]` — hover ★, 3 jauges, fill live, clic bandeau = vente.  
-> Ensuite : `[P0-SALE-QTY-RAND-001]` (Cursor, 0 crédit Bezy) → onglets inventaire.  
-> Clos session 2026-08-25 : jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` OK.  
+> **Prochaine session (priorité #1) :** `[P0-FARM-SPRITE-ALPHA-001]` fond noir salades / sprites laitue dans le biofiltre.  
+> Ensuite : pose tactile mobile `[P0-FARM-PLANT-TOUCH-001]` (NRE `Mouse.current`) ; playtest vente reporté.  
 > Crédits Bezy : reset le **30 août**. File `#13` après onglets. Wallet punch = PARK UX.
 
-### ★ Priorité prochaine session — vente : rand ★1 puis polish étoiles bandeaux
+### ★ Priorité prochaine session — fond noir sprites laitue (biofiltre)
+
+> Décision auteur 2026-08-27 (fin session playtest Android) :  
+> Corriger le **fond noir** sur les **salades** et les **autres sprites de laitue** dans le biofiltre (stades plante + icônes salade).  
+> Piste : import PNG (Alpha Is Transparency / sprite) — `Assets/Art/Sprites/Plantes/Laitue/`.  
+> Playtest mobile a aussi révélé un NRE pose (`PlantPlacementPreview` / `Mouse.current`) : **après** le fond noir.
+
+**Ordre prochaine session :**
+
+1. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (tous stades)  
+   - Dossier : `Assets/Art/Sprites/Plantes/Laitue/`  
+   - Playtest FirstLvl : graine → seedling, plus de rectangle noir.
+2. [ ] **[P0-FARM-PLANT-TOUCH-001]** Pose laitue tactile — `PlantPlacementPreview` NRE `Mouse.current` null (logcat 2026-08-27)
+3. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte + fill live (reporté)
+4. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+5. [ ] **[P0-INV-TABS-001]** Onglets inventaire farm V0
+6. [ ] **[BZ-POLISH-013]** Audit layers UI — après onglets
+7. [ ] Commit auteur lot session + docs (si reste)
+
+### ★ Vente : rand ★1 puis polish étoiles bandeaux (reporté)
 
 > Décision auteur 2026-08-19 :  
 > - Après **fin du timer / cooldown**, quantité **aléatoire 1–3 salades** au **★1** (aujourd’hui plafond fixe 2).  
@@ -55,16 +73,7 @@ Convention d'IDs :
 > Crédits Bezy : reset le **30** de chaque mois (prochain : **30 août**).  
 > Prompts Bezy étoiles : `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–3 livrées**. Playtest auteur ensuite.
 
-**Ordre prochaine session :**
-
-1. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte `50/2000` + fill live ; clic bandeau = vente ; tooltip sous ★  
-   - Checklist : voisinage débloqué, vendre 1× si besoin compteurs, hover rangée ★ (pas cadenas).
-2. [ ] **[P0-SALE-QTY-RAND-001]** Vente voisinage ★1 — après cooldown, **rand 1–3 salades** (cap popup + `SaleChannelService`)  
-   - GDD : `Notes/GDD/SPEC_vente_production_boucle_jeu.md` §2.9
-3. [ ] **[P0-SALE-QTY-RAND-PLAY-001]** Playtest : vendre → fin cooldown → quantité proposée 1, 2 ou 3
-4. [ ] **[P0-INV-TABS-001]** Onglets inventaire farm V0 — après vente
-5. [ ] **[BZ-POLISH-013]** Audit layers UI — après onglets
-6. [ ] Commit auteur lot session + docs (si reste)
+Backlog vente (déjà dans l’ordre ci-dessus, items 3–5) : `[P0-SALE-STAR-PLAY-001]`, `[P0-SALE-QTY-RAND-001]`, `[P0-SALE-QTY-RAND-PLAY-001]`.
 
 **Clos session 2026-08-25 (vente / étoiles) :**
 
@@ -432,9 +441,11 @@ Convention d'IDs :
 ### GDD / design
 - [ ] [BL-GDD-001] Esquisser le GDD MVP (concept, boucle, scope).
 - [ ] [BL-GDD-002] Spécifier le temps de ferme (`lastUtc -> delta`, plafond offline).
-- [ ] [BL-GDD-003] Formaliser la progression XP joueur + maturité biofiltre.
+- [ ] [BL-GDD-003] XP joueur (halo) **vs** XP / **étoiles biofiltre** — spec `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`. ★1 (travail) : 240 XP, 50 récoltes salade, 100 germinations, 50 graines ; cadence 3–5 j / 2–3 sessions de 5–7 min. Chiffres à playtester. Germinations tentées vs réussies : ouvert.
 - [ ] [BL-GDD-004] [OPTIONNEL] Collecter 2-3 références UI et noter ce qui est repris/évité.
 - [ ] [BL-GDD-005] Progression système aquaponique par scène (`FirstLvl+`) — spec `SPEC_progression_systeme_aquaponique_par_niveau.md` (panneau onglets, points, anti-aléas).
+- [ ] [BL-GDD-006] Prestige / génération par système — spec `Notes/GDD/SPEC_prestige_generation_systemes.md` (portes biofiltre ★3 **ou** ★5 ; grille vide ; G1 +5 % croissance ; G2 media +5 % qty). **Pas** un wipe global.
+- [ ] [BL-GDD-007] Slots & shields biofiltre — spec `Notes/GDD/SPEC_biofiltre_slots_shields.md` (5 secondaires, 3 primaires ; anti-slug 4 niv. ; serre voile / bâche bulles / géodésique ; monnaie paliers TBD : prestige / ★ / or).
 
 ### Workflow / documentation
 - [ ] [BL-DOC-001] Documenter les règles projet (style, conventions AI/notes, organisation dossiers).

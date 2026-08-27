@@ -289,3 +289,36 @@ Tooltip stays INACTIVE. Do not edit unlock tooltip or bandeau.
 
 Done = Save. Confirm sprite path on GoldBar/Icon only. STOP.
 ```
+
+---
+
+### Phase 6.4 — Rebrancher GoldBar sur chemin canonique (hors Dump)
+
+**Sprite canonique :** `Assets/Art/Sprites/UI/Currency/GoldBill.png`  
+**Ne plus utiliser :** `Assets/Art/Assets Store Dump/billet-poulpe-lowpoly-violet.png`
+
+```
+[P0-SALE-STAR-BARS-002] Phase 6.4 ONLY — swap GoldBar icon sprite to canonical path. Wait success. STOP after save.
+
+Do not rescan whole project. Do not modify C#. No Simulate.
+Do NOT change SalesBar/Icon or ItemsBar/Icon. Do NOT touch Track/Fill/Label.
+
+File ONLY:
+- Assets/Prefabs/Ui/SaleChannelsScreen.prefab
+
+Scope ONLY: GoldBar/Icon Image under SaleChannelStarTooltip/NextBlock.
+
+On GoldBar/Icon Image ONLY:
+- Set Source Image sprite = Assets/Art/Sprites/UI/Currency/GoldBill.png
+- Keep Preserve Aspect = true, Color white alpha 1, raycastTarget = false
+- Keep LayoutElement 18x18 and RectTransform stretch
+
+Do NOT reference Assets/Art/Assets Store Dump/ anymore.
+
+Done = Save. Confirm new sprite path GoldBill.png on GoldBar/Icon. STOP.
+```
+
+**Checklist review Ph.6.4 (Cursor)** — **OK Bezy 2026-08-27**
+- [x] GoldBar/Icon → `GoldBill.png` (guid `7595e70b…`)
+- [x] Plus aucune ref Dump `b512d8…` sur GoldBar
+- [ ] Playtest hover ★ : billet sans fond blanc si PNG OK `[P0-SALE-STAR-PLAY-002]`

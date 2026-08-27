@@ -23,7 +23,9 @@ Ce fichier est le **hub d’accueil** quand ces notes seront retranscrites ou im
 |---------|----------------------------------|--------|
 | **`Notes/GDD/Inbox_gdd.md`** | Brouillon GDD : états plantes (6 stades), salade vs tomate, Farm City, mini-Trello 15 min/jour, IA Google casual farm | **Partiellement transcrit** — à relire / compléter depuis tablette |
 | **`Notes/Ui/SPEC_rework_inventaire_halo_progression.md`** | Vision UI halo (XP centre, talents acheteur / vendeur), §4 renvoie ici | Spec UI — règles métier **après** import notes |
-| **`Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`** | XP joueur, maturité biofiltre (~10 cycles salade), gating cultures fruits | Spec partielle — à aligner avec notes tablette |
+| **`Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`** | XP **système** + **étoiles biofiltre** (★1 : 240 XP, 50 salades, 100 germinations, 50 graines ; cadence 3–5 j) | Vision 2026-08-27 — chiffres playtest |
+| **`Notes/GDD/SPEC_prestige_generation_systemes.md`** | Prestige **par système** (G1 +5 % croissance, G2 media +5 % qty ; grille vide) | Vision 2026-08-27 |
+| **`Notes/GDD/SPEC_biofiltre_slots_shields.md`** | Prestige ★3 → slot **secondaire** ; ★5 → slot **primaire** ; shields (anti-slug 4 niv., serre 3 niv.) | Vision 2026-08-27 |
 | **`Notes/References/REFERENCES_jeux_inspiration.md`** | Veille jeux idle / cozy farm — alimente idées, pas engagement prod | Référence externe |
 | **`Notes/GDD/SPEC_vente_production_boucle_jeu.md`** | Vente des récoltes (boucle économie) — gap code, questions UX/prix, carnet veille §6 | Spec GDD — **2026-06-10** |
 | **`Notes/Inbox_features.md`** | Vrac features sans priorité (vide pour l’instant) | Destination possible post-session |

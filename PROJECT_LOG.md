@@ -1,5 +1,106 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-27 — Fin session : prochaine prio fond noir laitue biofiltre
+
+### Objectifs / playtest Android
+- Premier Build And Run sur Samsung SM-A137F (ARMv7). Premier build ~2 h (IL2CPP × 2 archi).
+- Pose laitue en erreur sur mobile.
+
+### Changements (non commit — auteur)
+- `ProjectSettings` : Target Architectures **ARMv7 + ARM64** (le A13 est 32 bits).
+- Logs `adb logcat -s Unity` : NRE `PlantPlacementPreview.UpdateGhostPosition` (`Mouse.current` null).
+
+### Décision prochaine session (auteur)
+- **Priorité #1 :** `[P0-FARM-SPRITE-ALPHA-001]` fond noir sur salades + sprites laitue dans le biofiltre.
+- Puis `[P0-FARM-PLANT-TOUCH-001]` pose tactile. Vente ★ playtest reporté.
+
+### Prochaines étapes
+1. Alpha / import sprites `Assets/Art/Sprites/Plantes/Laitue/`
+2. Input tactile `PlantPlacementPreview`
+3. Cette tâche est la référence « tâche du jour » au prochain bootstrap.
+
+---
+
+## 2026-08-27 — Reco ★4 : pas de lock wait-★5 + éclats
+
+- Ne pas forcer ★5 si le joueur est à ★4 (endgame trop long, bloque le focus).
+- Reco : secondaire dès ★3 **y compris ★4** ; primaire seulement à ★5.
+- Reward des ★ extra : **éclats** = nombre d’étoiles tuées (3/4/5) pour shields.
+- **Pas acté** — à valider auteur. Spec §1.2 `SPEC_biofiltre_slots_shields.md`.
+
+---
+
+## 2026-08-27 — Prestige : kill des étoiles (★3 et ★5)
+
+- **Acté :** tout prestige **tue les ★**, porte 3 ou 5. Pas de checkpoint.
+- Intention : **focus / theorycraft** joueur (défenses vs serre vs hybride).
+- Slots déjà ouverts **se gardent**. Spec `SPEC_biofiltre_slots_shields.md` §1.
+
+---
+
+## 2026-08-27 — GDD slots / shields biofiltre (prestige ★3 ou ★5)
+
+### Décision auteur
+- **Soit** prestige **★3** → ouvre **1 slot secondaire** (5 : slug, souris, oiseau, fourmis, moisissure).
+- **Soit** prestige **★5** → ouvre **1 slot primaire** (3 : serre + 2 TBD). Choix par génération (étoiles reset).
+- Shields à **niveaux**. Anti-slug : (1) graines consommable, clignote si vide, 1 graine ≈ 5 limaces, raids **nuit + pluie** ; (2) barrière cuivre −50 % ; (3) cuivre électrifié −75 % ; (4) nématodes consommable, 90 % tant qu’actif.
+- Serre : voile de forçage → bâche à bulles → géodésique.
+- Monnaie des paliers : prochains prestiges **ou** étoiles-monnaie **ou** or — **ouvert**.
+
+### Doc
+- `Notes/GDD/SPEC_biofiltre_slots_shields.md`
+- Prestige §6 mis à jour (plus « prestige seulement à ★5 »)
+- Backlog `[BL-GDD-007]`
+
+---
+
+## 2026-08-27 — Correction GDD : récolte salade XOR graines
+
+- Une plante ne donne **pas** salade puis graines. Choix unique (Mature **ou** Seedling).
+- ★1 : 50 salades + 50 graines = **100 plants** ; 100 germinations ≈ une pose par plant récolté.
+- Spec `SPEC_progression_xp_joueur_et_biofiltre.md` §3.2 corrigée.
+
+---
+
+## 2026-08-27 — GDD étoiles biofiltre (★1) + cadence
+
+### Décision auteur
+- Le biofiltre a aussi un **système d’étoiles** (grammaire bandeaux), **avant** le prestige.
+- **★1** (valeurs de travail, playtest) — **toutes** requises :
+  1. XP système **240** (note « 80 × 4 » : 80×4=320 ≠ 240 → doc retient 240 = 80×3 j, variante 320 ouverte)
+  2. Récoltes **salade** **50**
+  3. **Germinations** **100** (réussies vs tentées : **ouvert**, reco V0 = tentées + 2 compteurs save)
+  4. **Graines récoltées** **50**
+- Cadence cible : **3–5 jours**, **2–3 sessions/j** de **5–7 min** (voire moins). Recaler les nombres, pas la croissance plantes.
+- **Correction (même session) :** une plante = **soit** salade **soit** graines (`maxHarvestCount = 1`). 50+50 = **100 récoltes**, pas 50 doubles cycles. 100 germinations ≈ 1:1 avec ces 100 plantes. Le joueur doit splitter.
+
+### Doc
+- `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` §3
+- Prestige reste **après** la courbe ★ (`SPEC_prestige_generation_systemes.md` §6)
+- Backlog `[BL-GDD-003]`
+
+---
+
+## 2026-08-27 — GDD prestige / génération par système
+
+### Décision auteur
+- Prestige **local** (biofiltre, plus tard bandeaux), **pas** un reset de tout le jeu.
+- Prestige = **nettoyage + upgrade**. Grille biofiltre **obligatoirement vide** ; sinon **message bloquant** (pas d’arrachage forcé).
+- **G1** : +5 % **croissance** seulement (isolation / habillage). **Pas** de quantité.
+- **G2** : media meilleure qualité (qualité d’eau **quand** fishtank) **+** +5 % **quantité**. Évite un rush trop fort trop tôt.
+- **Cap** vitesse / générations à calibrer plus tard (anti spam salade en 2 s).
+- Bandeaux : horizon, relance **après** courbe ★5 (pas à ★3).
+
+### Doc
+- Spec : `Notes/GDD/SPEC_prestige_generation_systemes.md`
+- Backlog : `[BL-GDD-006]`
+- Liens : maturité biofiltre, panneau aquaponique, vente §2.9 / §5.6
+
+### Hors scope session
+- Pas de code. Priorité playtest vente inchangée.
+
+---
+
 ## 2026-08-26 — Playtest ★ : layout barres cassé → fix Cursor
 
 ### Symptôme (capture auteur)
