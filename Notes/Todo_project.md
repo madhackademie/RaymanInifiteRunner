@@ -39,29 +39,33 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/sale-bandeaux`**.  
-> **Prochaine session (priorité #1) :** `[P0-FARM-SPRITE-ALPHA-001]` fond noir salades / sprites laitue dans le biofiltre.  
-> Ensuite : pose tactile mobile `[P0-FARM-PLANT-TOUCH-001]` (NRE `Mouse.current`) ; playtest vente reporté.  
+> Branche courante : **`feature/sale-bandeaux`** (à revalider au bootstrap).  
+> **Prochaine session (priorité #1) :** `[P0-FARM-BIOFILTRE-CLEAN-001]` — doublon cuve biofiltre + simplifier le chantier visuel (sans toucher aux plantes).  
+> **Priorité #2 :** `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente (3 bandeaux, hover ★ → jauges + texte).  
 > Crédits Bezy : reset le **30 août**. File `#13` après onglets. Wallet punch = PARK UX.
 
-### ★ Priorité prochaine session — fond noir sprites laitue (biofiltre)
+### ★ Priorité prochaine session — biofiltre (cuve doublon)
 
-> Décision auteur 2026-08-27 (fin session playtest Android) :  
-> Corriger le **fond noir** sur les **salades** et les **autres sprites de laitue** dans le biofiltre (stades plante + icônes salade).  
-> Piste : import PNG (Alpha Is Transparency / sprite) — `Assets/Art/Sprites/Plantes/Laitue/`.  
-> Playtest mobile a aussi révélé un NRE pose (`PlantPlacementPreview` / `Mouse.current`) : **après** le fond noir.
+> Décision auteur 2026-08-29 (fin session) :  
+> Réparer le **doublon cuve** (1 seul `BedSprite` en Play, 0 en édition ; pas de superposition gizmo + runtime).  
+> **Ne pas toucher aux plantes** (prefabs, sorting, placement).  
+> Pistes : hiérarchie Play (`BedSprite` ×1), menu **Rayman → Farm → Nettoyer sélection biofiltre**, `bedScale` / skin IBC sur prefab `Biofiltre`.  
+> Simplifier si besoin : moins de rustines Editor (`BiofiltreEditorCleanup`, gizmo `BiofiltreBedScenePreview`).
 
 **Ordre prochaine session :**
 
-1. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (tous stades)  
-   - Dossier : `Assets/Art/Sprites/Plantes/Laitue/`  
-   - Playtest FirstLvl : graine → seedling, plus de rectangle noir.
-2. [ ] **[P0-FARM-PLANT-TOUCH-001]** Pose laitue tactile — `PlantPlacementPreview` NRE `Mouse.current` null (logcat 2026-08-27)
-3. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte + fill live (reporté)
-4. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
-5. [ ] **[P0-INV-TABS-001]** Onglets inventaire farm V0
-6. [ ] **[BZ-POLISH-013]** Audit layers UI — après onglets
-7. [ ] Commit auteur lot session + docs (si reste)
+1. [ ] **[P0-FARM-BIOFILTRE-CLEAN-001]** Cuve biofiltre — 1 sprite, pas de doublon ; playtest FirstLvl  
+2. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte + fill live  
+3. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)  
+4. [ ] **[P0-FARM-PLANT-TOUCH-001]** Pose laitue tactile — `Mouse.current` null mobile (reporté)  
+5. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)  
+6. [ ] Commit auteur lot session + docs (si reste)
+
+### ★ Reporté — fond noir sprites laitue (biofiltre)
+
+> Décision auteur 2026-08-27 (playtest Android) :  
+> Corriger le **fond noir** sur les **salades** et les **autres sprites de laitue** dans le biofiltre (stades plante + icônes salade).  
+> Piste : import PNG (Alpha Is Transparency / sprite) — `Assets/Art/Sprites/Plantes/Laitue/`.
 
 ### ★ Vente : rand ★1 puis polish étoiles bandeaux (reporté)
 

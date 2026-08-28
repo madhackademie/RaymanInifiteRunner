@@ -12,7 +12,7 @@ public class SaleChannelBandeauView : MonoBehaviour
 {
     private const string IsOnCooldownAnimatorBool = "IsOnCooldown";
     private const string UnlockableFxAnchorName = "UnlockableFxAnchor";
-    private const int DefaultFilledStarCount = 1;
+    private const int DefaultFilledStarCount = 0;
 
     private static readonly Color IllustrationActiveColor = Color.white;
     private static readonly Color IllustrationCooldownColor = new(0.55f, 0.55f, 0.55f, 1f);
@@ -20,13 +20,11 @@ public class SaleChannelBandeauView : MonoBehaviour
     private static readonly Color IllustrationUnlockableColor = new(0.95f, 0.92f, 0.75f, 1f);
     private static readonly Color LockIconDefaultColor = Color.white;
     private static readonly Color LockIconUnlockableColor = new(1f, 0.86f, 0.35f, 1f);
-    private static readonly Color StarFilledColor = new(0.95f, 0.35f, 0.55f, 1f);
-    private static readonly Color StarEmptyColor = new(0.45f, 0.45f, 0.48f, 1f);
 
     [Header("Bindings UI (prefab)")]
     [SerializeField] private Button bandeauButton;
     [SerializeField] private TextMeshProUGUI titleLabel;
-    [SerializeField] private Image[] starImages = new Image[5];
+    [SerializeField] private UiStarRowView starRow;
     [SerializeField] private GameObject lockedOverlay;
     [SerializeField] private GameObject unlockableFxAnchor;
     [SerializeField] private Image illustrationImage;
@@ -193,18 +191,17 @@ public class SaleChannelBandeauView : MonoBehaviour
 
     public void ApplyStarFill(int filledCount)
     {
-        filledStarCount = Mathf.Clamp(filledCount, 0, starImages != null ? starImages.Length : 0);
+        int capacity = starRow != null
+            ? Mathf.Max(1, starRow.SlotCapacity)
+            : UiStarRowView.PrestigeStarCapacity;
 
-        if (starImages == null)
+        filledStarCount = Mathf.Clamp(filledCount, 0, capacity);
+
+        if (starRow == null)
             return;
 
-        for (int i = 0; i < starImages.Length; i++)
-        {
-            if (starImages[i] == null)
-                continue;
-
-            starImages[i].color = i < filledStarCount ? StarFilledColor : StarEmptyColor;
-        }
+        starRow.SetVisibleSlotCount(capacity);
+        starRow.SetFilledCount(filledStarCount);
     }
 
     public SaleChannelStarTierSnapshot GetStarTooltipSnapshot()
@@ -401,10 +398,10 @@ public class SaleChannelBandeauView : MonoBehaviour
 
     private Image ResolveStarsHitImage()
     {
-        if (starImages == null || starImages.Length == 0 || starImages[0] == null)
+        if (starRow == null)
             return null;
 
-        Transform stars = starImages[0].transform.parent;
+        Transform stars = starRow.transform.parent;
         return stars != null ? stars.GetComponent<Image>() : null;
     }
 

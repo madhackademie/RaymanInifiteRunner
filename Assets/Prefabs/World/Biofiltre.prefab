@@ -137,7 +137,13 @@ MonoBehaviour:
   gridContainer: {fileID: 3135300073428666767}
   plantsContainer: {fileID: 1435362054150908269}
   cellSprite: {fileID: 0}
-  cellSortingOrder: 0
+  cellSortingOrder: 1
+  showGridOnlyDuringPlacement: 1
+  bedSkin: {fileID: 11400000, guid: 3b9d6f2e5c8a4b0e9d1f4a7c2b6e9d53, type: 2}
+  bedScale: 1.24
+  bedOffset: {x: 0, y: 0}
+  bedSortingOrder: -10
+  plantSortingOrder: 5
 --- !u!114 &8494675260759893494
 MonoBehaviour:
   m_ObjectHideFlags: 0

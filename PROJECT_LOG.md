@@ -1,5 +1,31 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-29 — Fin session : biofiltre doublon cuve + prio tooltip ★ vente
+
+### Objectifs session
+- Biofiltre visuel : cuve IBC 3/4, grille feedback pose uniquement, sorting bac / grille / plantes.
+- Fix Inspector `SerializedObjectNotCreatableException` après Play Mode.
+
+### Changements (non commit — auteur)
+- `BiofiltreGridVisualizer` : `EnsureBedSprite` séparé de `GenerateGrid` ; grille masquée hors mode pose.
+- `BiofiltreEditorCleanup` : garde sélection Inspector (Play exit).
+- `BiofiltreBedScenePreview` : gizmo édition cuve (ne pas superposer si `BedSprite` traîne).
+- Erreurs compile CS0103 / CS0122 corrigées (fusion Editor, pas d’appel runtime → Editor).
+
+### Problème ouvert
+- **Doublon cuve** visible en jeu / Scene — auteur investiguera (1× `BedSprite` attendu en Play).
+- **Contrainte auteur : ne pas toucher aux plantes** (prefabs, sorting, placement).
+
+### Prochaine session (priorité immédiate — auteur)
+1. **[P0-FARM-BIOFILTRE-CLEAN-001]** Réparer doublon cuve + simplifier le chantier biofiltre (sans plantes).
+2. **[P0-SALE-STAR-PLAY-001]** Playtest tooltip étoiles bandeaux vente (hover ★ → jauges + texte).
+
+### Prochaines étapes reportées
+- `[P0-FARM-SPRITE-ALPHA-001]` fond noir laitue
+- `[P0-FARM-PLANT-TOUCH-001]` pose tactile mobile
+
+---
+
 ## 2026-08-27 — Fin session : prochaine prio fond noir laitue biofiltre
 
 ### Objectifs / playtest Android

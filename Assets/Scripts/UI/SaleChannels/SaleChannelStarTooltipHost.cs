@@ -13,6 +13,8 @@ public class SaleChannelStarTooltipHost : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentBodyLabel;
     [SerializeField] private TextMeshProUGUI nextTitleLabel;
     [SerializeField] private TextMeshProUGUI nextBodyLabel;
+    [SerializeField] private UiStarRowView currentStarRow;
+    [SerializeField] private UiStarRowView nextStarRow;
     [SerializeField] private SaleChannelStarProgressBarView salesBar;
     [SerializeField] private SaleChannelStarProgressBarView itemsBar;
     [SerializeField] private SaleChannelStarProgressBarView goldBar;
@@ -74,9 +76,27 @@ public class SaleChannelStarTooltipHost : MonoBehaviour
         if (nextBodyLabel != null)
             nextBodyLabel.text = hasBars ? snapshot.RewardText : snapshot.NextBody;
 
+        ApplyStarRows(snapshot);
+
         bool showNext = hasBars || !string.IsNullOrWhiteSpace(snapshot.NextBody);
         if (nextBlockRoot != null)
             nextBlockRoot.SetActive(showNext);
+    }
+
+    private void ApplyStarRows(SaleChannelStarTierSnapshot snapshot)
+    {
+        if (currentStarRow != null)
+        {
+            currentStarRow.SetVisibleSlotCount(UiStarRowView.PrestigeStarCapacity);
+            currentStarRow.SetFilledCount(snapshot.FilledStarCount);
+        }
+
+        if (nextStarRow != null)
+        {
+            int nextFilled = Mathf.Clamp(snapshot.FilledStarCount + 1, 0, UiStarRowView.PrestigeStarCapacity);
+            nextStarRow.SetVisibleSlotCount(UiStarRowView.PrestigeStarCapacity);
+            nextStarRow.SetFilledCount(nextFilled);
+        }
     }
 
     private void ApplyBarProgress(SaleChannelStarTierSnapshot snapshot)

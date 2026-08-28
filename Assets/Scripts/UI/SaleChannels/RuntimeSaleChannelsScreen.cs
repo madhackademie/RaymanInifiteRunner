@@ -96,7 +96,7 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
             }
 
             ApplyProgressionVisuals(bandeau, channelId, unlockService, playUnlockableReveal);
-            bandeau.ApplyStarFill(bandeau.IsProgressionBlockingSale ? 0 : 1);
+            bandeau.ApplyStarFill(0);
 
             if (bandeau.IsProgressionBlockingSale)
             {

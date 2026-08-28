@@ -2,45 +2,33 @@
 
 **Prefab cible :** `Assets/Prefabs/World/Biofiltre.prefab`  
 **Script (ne pas modifier) :** `Assets/Scripts/Farm/BiofiltreGridVisualizer.cs`  
-**Skins (ne pas régénérer l’art) :**
-- **À brancher (IBC) :** `Assets/Data/Ferme/BiofiltreBed_Ibc3Quart.asset`
-- **Swap possible (bois) :** `Assets/Data/Ferme/BiofiltreBed_Bois3Quart.asset`
-- **Ne pas** assigner un sprite PNG brut sur le visualizer
+**Skins (sprite only) :**
+- IBC : `Assets/Data/Ferme/BiofiltreBed_Ibc3Quart.asset`
+- Bois : `Assets/Data/Ferme/BiofiltreBed_Bois3Quart.asset`
 
-**Règle métier :** `GridManager` (colonnes / lignes / cell size / origin) **ne change pas**. Les deux skins partagent le même `innerRect` (zone d’argile mesurée) : `x=0.129 y=0.376 w=0.737 h=0.485`. Swap bois ↔ IBC sans bouger l’aire de culture.
+**Règle :** la grille ne grandit pas en jeu. Un skin = un sprite. Échelle / offset sur le visualizer (`bedScale` 1 = largeur sprite = largeur grille, `bedOffset`).
 
-**Règles Bezy :** ne pas rescanner tout le projet ; pas de nouveaux scripts C# ; pas de Canvas UI ; pas de nouvel enfant hiérarchie (`BedSprite` est créé au runtime). World layer default, **pas** layer 5.  
-**Ne pas** demander Simulate / Play Mode. Fin : `Save. List what changed. STOP.`
-
-**Playtest auteur après Bezy :** FirstLvl — overlays de cellules sur l’argile. Si le cadre mange des cases : tuner `innerRect` **sur le skin SO**, jamais la grille.
+**Règles Bezy :** ne pas rescanner tout le projet ; pas de scripts C# ; pas de Canvas ; pas d’enfant `BedSprite` (créé au runtime).  
+Fin : `Save. List what changed. STOP.`
 
 ---
 
-## Historique
-
-- **Cursor 2026-08-27 :** sprites + C# — **OK**
-- **Cursor 2026-08-27 :** wiring prefab retiré (propriété Bezy)
-- **Cursor 2026-08-27 :** IBC recalé caméra bois + `BiofiltreBedSkin` (grille invariante)
-- **Phase 1 Bezy :** wiring Inspector — à faire
-
----
-
-## Phase 1 — Wire Bed Skin (copier-coller Bezy)
+## Phase 1 — Wire Bed Skin
 
 ```
-[BZ-FARM-BED-001] Phase 1 ONLY — wire Biofiltre bed SKIN. Do not start any other phase.
+[BZ-FARM-BED-001] Phase 1 ONLY — wire Biofiltre bed SKIN.
 
-Do NOT rescan whole project. Do NOT create scripts. Do NOT regenerate art. Do NOT create UI Canvas. Do NOT add child GameObjects. Do NOT touch PlantingDirtBurst, LaitueObj, or UI prefabs.
+Do NOT rescan whole project. Do NOT create scripts. Do NOT regenerate art. Do NOT add child GameObjects.
 
 OPEN prefab: Assets/Prefabs/World/Biofiltre.prefab
 
-On the ROOT component BiofiltreGridVisualizer (script already there):
+On ROOT BiofiltreGridVisualizer:
 - Bed Skin = Assets/Data/Ferme/BiofiltreBed_Ibc3Quart.asset
+- Bed Scale = 1
+- Bed Offset = 0, 0
 - Bed Sorting Order = -1
 
-Do NOT change GridManager (columns, rows, cell size, origin).
-Do NOT assign a raw PNG on Bed Skin.
-Do NOT change BiofiltreManager, PlantPlacementPreview, gridContainer, or plantsContainer.
+Do NOT change GridManager.
 
-Save prefab. List Bed Skin asset name + Bed Sorting Order. STOP.
+Save prefab. List field values. STOP.
 ```

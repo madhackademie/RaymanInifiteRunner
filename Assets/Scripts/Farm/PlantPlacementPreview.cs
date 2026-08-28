@@ -114,6 +114,9 @@ public class PlantPlacementPreview : MonoBehaviour
         if (ghostRenderer != null)
             ghostRenderer.sprite = plantDefinition.spriteSeedling;
 
+        if (gridManager.TryGetComponent(out BiofiltreGridVisualizer visualizer))
+            visualizer.ApplyPlantDrawOrder(ghostInstance);
+
         // Disable all colliders so the ghost does not interfere with raycasts
         foreach (Collider2D col in ghostInstance.GetComponentsInChildren<Collider2D>(true))
             col.enabled = false;
@@ -218,6 +221,8 @@ public class PlantPlacementPreview : MonoBehaviour
 
     private void Cleanup()
     {
+        biofiltreManager?.OnPlacementPreviewEnded();
+
         if (ghostInstance != null)
             Destroy(ghostInstance);
 

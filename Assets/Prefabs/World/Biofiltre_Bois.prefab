@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7466309678139502958
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4419733880535363005, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5171608283822144346, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: bedSkin
+      value: 
+      objectReference: {fileID: 11400000, guid: 2a8c5e1d4f7b4a9e8c0d3f6a1b5e8c42, type: 2}
+    - target: {fileID: 7776529302815179675, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
+      propertyPath: m_Name
+      value: Biofiltre_Bois
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}

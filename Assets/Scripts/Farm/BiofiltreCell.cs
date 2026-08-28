@@ -40,8 +40,10 @@ public class BiofiltreCell : MonoBehaviour, IPointerClickHandler
     /// <summary>Updates the cell tint to reflect its occupied / empty state.</summary>
     public void SetVisualState(bool occupied)
     {
-        if (spriteRenderer != null)
-            spriteRenderer.color = occupied ? ColorOccupied : ColorEmpty;
+        if (spriteRenderer == null || !spriteRenderer.enabled)
+            return;
+
+        spriteRenderer.color = occupied ? ColorOccupied : ColorEmpty;
     }
 
     public void OnPointerClick(PointerEventData eventData)

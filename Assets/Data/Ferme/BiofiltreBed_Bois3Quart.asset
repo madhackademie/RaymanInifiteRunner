@@ -13,4 +13,3 @@ MonoBehaviour:
   m_Name: BiofiltreBed_Bois3Quart
   m_EditorClassIdentifier: Assembly-CSharp::BiofiltreBedSkin
   sprite: {fileID: 21300000, guid: f1d47a8c2e9b4c6a9d03f5b8e1a47c29, type: 3}
-  innerRect: {x: 0.129, y: 0.376, width: 0.737, height: 0.485}

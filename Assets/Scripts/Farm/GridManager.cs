@@ -42,16 +42,45 @@ public class GridManager : MonoBehaviour
     private Vector2 _cellSizeWorld;
     private Vector2 _worldOrigin;
 
-    public int Columns => _columns;
-    public int Rows => _rows;
+    public int Columns
+    {
+        get
+        {
+            EnsureLayoutForEditor();
+            return _columns;
+        }
+    }
+
+    public int Rows
+    {
+        get
+        {
+            EnsureLayoutForEditor();
+            return _rows;
+        }
+    }
 
     /// <summary>Cell extent in world units (X = width, Y = height along grid rows).</summary>
-    public Vector2 CellSizeWorld => _cellSizeWorld;
+    public Vector2 CellSizeWorld
+    {
+        get
+        {
+            EnsureLayoutForEditor();
+            return _cellSizeWorld;
+        }
+    }
 
     /// <summary>Uniform cell size when width == height; otherwise Max for quick probes.</summary>
-    public float CellSizeUniform => Mathf.Max(_cellSizeWorld.x, _cellSizeWorld.y);
+    public float CellSizeUniform => Mathf.Max(CellSizeWorld.x, CellSizeWorld.y);
 
-    public Vector2 WorldOrigin => _worldOrigin;
+    public Vector2 WorldOrigin
+    {
+        get
+        {
+            EnsureLayoutForEditor();
+            return _worldOrigin;
+        }
+    }
 
     private void Awake()
     {
@@ -64,6 +93,14 @@ public class GridManager : MonoBehaviour
         }
 
         Grid = new GridData(_columns, _rows);
+    }
+
+    private void EnsureLayoutForEditor()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+            ResolveLayout(out _columns, out _rows, out _cellSizeWorld, out _worldOrigin);
+#endif
     }
 
     private void ResolveLayout(out int columns, out int rows, out Vector2 cellSizeWorld, out Vector2 worldOrigin)
@@ -196,7 +233,7 @@ public class GridManager : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         ResolveLayout(out int cols, out int rows, out Vector2 cellSz, out Vector2 origin);
 

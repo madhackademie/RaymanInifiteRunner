@@ -6,12 +6,11 @@ using UnityEngine;
 /// </summary>
 public static class SaleChannelStarUiCopy
 {
-    private const int DefaultFilledStars = 1;
     private const string RewardText = "Récompense : +1 voisin / volume / autres légumes (TBD)";
 
     public static SaleChannelStarTierSnapshot Build(string channelTitle, string channelId, int filledStarCount)
     {
-        int filled = filledStarCount > 0 ? filledStarCount : DefaultFilledStars;
+        int filled = Mathf.Clamp(filledStarCount, 0, UiStarRowView.PrestigeStarCapacity);
         TryGetCounters(channelId, out int saleCount, out int itemsSold, out int goldEarned);
 
         var sales = new SaleChannelStarProgressRow(
@@ -24,9 +23,9 @@ public static class SaleChannelStarUiCopy
         return new SaleChannelStarTierSnapshot(
             channelTitle,
             filled,
-            "★1 — Palier actuel",
-            "1 voisin · 1–3 salades après cooldown",
-            "★2 — Palier suivant",
+            "Palier actuel",
+            filled > 0 ? "1 voisin · 1–3 salades après cooldown" : "Canal débloqué — aucune étoile gagnée",
+            "Palier suivant",
             BuildFallbackBody(sales, items, gold),
             RewardText,
             sales,

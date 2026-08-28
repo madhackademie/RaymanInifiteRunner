@@ -77,7 +77,9 @@ public class BiofiltreManager : MonoBehaviour
 
     private void Start()
     {
+        visualizer.EnsureBedSprite();
         visualizer.GenerateGrid();
+        SetGridLinesVisible(false);
 
         RegisterFarmPopupBindingsIfPossible();
         WarmUpSeedSelectionPopup();
@@ -160,10 +162,28 @@ public class BiofiltreManager : MonoBehaviour
             host.TryHidePopup(PopupId.FarmSeedSelection);
     }
 
-    /// <summary>Cache le popup graines au démarrage du mode preview.</summary>
+    /// <summary>Cache le popup graines et affiche la grille de feedback au démarrage du mode preview.</summary>
     internal void OnPlacementPreviewStarted()
     {
         HideFarmSeedSelectionPopup();
+        visualizer.SetGridVisualVisible(true);
+        SetGridLinesVisible(true);
+    }
+
+    /// <summary>Masque la grille de feedback quand la preview de pose se termine.</summary>
+    internal void OnPlacementPreviewEnded()
+    {
+        if (visualizer != null)
+            visualizer.SetGridVisualVisible(false);
+        SetGridLinesVisible(false);
+    }
+
+    private void SetGridLinesVisible(bool visible)
+    {
+        if (!TryGetComponent(out GridLinesRenderer gridLines))
+            return;
+
+        gridLines.enabled = visible;
     }
 
     /// <summary>
@@ -377,6 +397,7 @@ public class BiofiltreManager : MonoBehaviour
             visualizer.PlantsContainer
         );
         instance.name = $"{plantDefinition.displayName}_{anchor}";
+        visualizer.ApplyPlantDrawOrder(instance);
 
         if (instance.TryGetComponent(out PlantGrow plantGrow))
             plantGrow.SetStage(PlantGrow.GrowthStage.Graine);
