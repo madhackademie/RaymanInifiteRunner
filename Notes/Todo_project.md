@@ -39,22 +39,25 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/sale-bandeaux`** (à revalider au bootstrap).  
+> Branche courante : **`feature/sale-bandeaux`** (`8da822b`, à revalider au bootstrap).  
+> État remote (2026-08-29) : 4 commits d'avance sur `main` (`480a679`), 0 de retard → merge fast-forward possible ; **aucune PR ouverte**. La copie des docs de suivi restée sur `main` est **périmée**.  
 > **Prochaine session (priorité #1) :** `[P0-FARM-BIOFILTRE-CLEAN-001]` — doublon cuve biofiltre + simplifier le chantier visuel (sans toucher aux plantes).  
 > **Priorité #2 :** `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente (3 bandeaux, hover ★ → jauges + texte).  
 > Crédits Bezy : reset le **30 août**. File `#13` après onglets. Wallet punch = PARK UX.
 
-### ★ Priorité prochaine session — biofiltre (cuve doublon)
+### ★ Priorité prochaine session — biofiltre (chantier bed skin annulé)
 
-> Décision auteur 2026-08-29 (fin session) :  
-> Réparer le **doublon cuve** (1 seul `BedSprite` en Play, 0 en édition ; pas de superposition gizmo + runtime).  
-> **Ne pas toucher aux plantes** (prefabs, sorting, placement).  
-> Pistes : hiérarchie Play (`BedSprite` ×1), menu **Rayman → Farm → Nettoyer sélection biofiltre**, `bedScale` / skin IBC sur prefab `Biofiltre`.  
-> Simplifier si besoin : moins de rustines Editor (`BiofiltreEditorCleanup`, gizmo `BiofiltreBedScenePreview`).
+> Décision auteur 2026-08-29 (2ᵉ passe) :  
+> **Annuler tout le chantier « bed skin » biofiltre** plutôt que de réparer le doublon cuve — code trop buggé / générateur d'erreurs.  
+> Référence de retour : **`main` (`480a679`)**, et **pas** le commit précédent `54ebd3a` (qui contient déjà le `BedSprite` fautif via `transform.Find`).  
+> **Ne pas toucher aux plantes** (prefabs, sorting, placement) — respecté : seules les métas d'import laitue du commit restent.  
+> Supprimé : `BiofiltreBedSkin`, assets `BiofiltreBed_*`, prefab `Biofiltre_Bois`, 3 scripts Editor (`BiofiltreEditorCleanup`, `BiofiltreBedScenePreview`, `BiofiltreBedSkinEditor`), grille masquée hors pose, `ApplyPlantDrawOrder`.  
+> Conservé : sprites `Assets/Art/Sprites/Farm/Biofiltre/` (art réutilisable, plus référencé).  
+> **Régression connue réintroduite** (état `main`) : `GenerateGrid()` appelé 2× au démarrage (`BiofiltreGridVisualizer.Start` + `BiofiltreManager.Start`) → double `ClearGrid` (erreur Inspector *Object at index 0 is null* si une cellule est sélectionnée en Play). À traiter proprement si le bac est réattaqué.
 
 **Ordre prochaine session :**
 
-1. [ ] **[P0-FARM-BIOFILTRE-CLEAN-001]** Cuve biofiltre — 1 sprite, pas de doublon ; playtest FirstLvl  
+1. [x] **[P0-FARM-BIOFILTRE-CLEAN-001]** Chantier bed skin **annulé** — retour à l'état `main` ; playtest FirstLvl à refaire  
 2. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte + fill live  
 3. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)  
 4. [ ] **[P0-FARM-PLANT-TOUCH-001]** Pose laitue tactile — `Mouse.current` null mobile (reporté)  

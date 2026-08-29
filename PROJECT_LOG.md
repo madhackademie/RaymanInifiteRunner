@@ -1,5 +1,57 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-29 — Sync doc : branche de travail `feature/sale-bandeaux`
+
+### Contexte
+- Revue des branches : seules `main` (`480a679`) et `feature/sale-bandeaux` (`8da822b`) existent sur le remote.
+- La feature est **4 commits d'avance / 0 de retard** sur `main` → merge fast-forward possible. Aucune PR ouverte.
+- Les docs de suivi de `main` sont **périmées** (elles annoncent encore `main` comme branche courante).
+
+### Changements (non commit — auteur)
+- `.cursor/rules/project_management_session_protocol.mdc` § 5 : mémoire branche + priorités passées de mai 2026 à l'état 2026-08-29.
+- `.cursor/rules/session_planning_memory.mdc` : même mise à jour (branche + `[P0-FARM-BIOFILTRE-CLEAN-001]` / `[P0-SALE-STAR-PLAY-001]`).
+- `Notes/Todo_project.md` § *Contexte Git* : ajout de l'état remote (avance/retard, PR, doc `main` périmée).
+
+---
+
+## 2026-08-29 — Rollback : chantier « bed skin » biofiltre annulé
+
+### Décision auteur
+- Le code biofiltre du dernier commit (`8da822b`) est **trop buggé** (doublon cuve, erreurs Inspector) → **tout annuler** au lieu de réparer.
+- Référence de retour retenue : **`main` (`480a679`)**, **pas** `54ebd3a` : le commit précédent contient déjà le `BedSprite` fautif (`transform.Find` ignore les enfants inactifs → création en double). Revenir à `54ebd3a` aurait gardé le bug.
+- Le travail **étoiles / bandeaux de vente** du même commit est **intégralement conservé**.
+
+### Fichiers remis à l'état `main`
+- `BiofiltreGridVisualizer.cs` (bed sprite, `SetGridVisualVisible`, `ApplyPlantDrawOrder`, rustines Editor de sélection)
+- `BiofiltreManager.cs` (`EnsureBedSprite`, toggle `GridLinesRenderer`, `OnPlacementPreviewEnded`)
+- `BiofiltreCell.cs`, `GridManager.cs` (getters `EnsureLayoutForEditor`, `OnDrawGizmosSelected`), `PlantPlacementPreview.cs`
+- `Assets/Prefabs/World/Biofiltre.prefab`, `Assets/Scenes/FirstLvl.unity` (`GridLinesRenderer` réactivé)
+
+### Fichiers supprimés
+- `Assets/Scripts/Data/BiofiltreBedSkin.cs`
+- `Assets/Editor/BiofiltreEditorCleanup.cs`, `BiofiltreBedScenePreview.cs`, `BiofiltreBedSkinEditor.cs`
+- `Assets/Data/Ferme/BiofiltreBed_Ibc3Quart.asset`, `BiofiltreBed_Bois3Quart.asset`
+- `Assets/Prefabs/World/Biofiltre_Bois.prefab`
+
+### Conservé volontairement
+- Sprites `Assets/Art/Sprites/Farm/Biofiltre/` (art réutilisable, désormais sans référence).
+- Métas d'import laitue (`maxTextureSize` 1024) — contrainte auteur « ne pas toucher aux plantes ».
+- Tooltip raccourci de `PlantDefinition.spriteWorldOffset` (commentaire seul).
+
+### Vérifications
+- Diff vs `main` sur tout le périmètre biofiltre : **vide**.
+- Aucune référence orpheline (`BiofiltreBedSkin`, `EnsureBedSprite`, `BedSprite`, …) ni GUID cassé dans `Assets/`.
+- Aucun autre commit de la branche ne touchait ces fichiers → rien d'autre écrasé.
+
+### Régression connue réintroduite (état `main`)
+- `GenerateGrid()` est appelé **2×** au démarrage (`BiofiltreGridVisualizer.Start` + `BiofiltreManager.Start`) → double `ClearGrid`, erreur Inspector *« Object at index 0 is null »* si une cellule est sélectionnée en Play. Assumé : c'est l'état d'avant chantier.
+
+### Prochaine session
+1. Playtest FirstLvl pour valider le retour à l'état `main` (biofiltre + pose laitue).
+2. `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente.
+
+---
+
 ## 2026-08-29 — Fin session : biofiltre doublon cuve + prio tooltip ★ vente
 
 ### Objectifs session

@@ -19,6 +19,7 @@ alwaysApply: true
   1. l'ajouter dans `Notes/Todo_project.md`,
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
+- Branche de travail courante: **`feature/sale-bandeaux`** (`8da822b`, 2026-08-29) — pas `main`.
 - Priorite courante connue (a revalider via docs a chaque session):
- - [P0-FARM-BUG-001] popup graines empty + slot (2026-05-22).
- - [~] [P0-FARM-PLAY-001] playtest graines apres fix.
+ - [P0-FARM-BIOFILTRE-CLEAN-001] chantier bed skin biofiltre **annule** (revert etat `main`, 2026-08-29) — playtest FirstLvl a refaire.
+ - [P0-SALE-STAR-PLAY-001] playtest tooltip etoiles bandeaux vente.

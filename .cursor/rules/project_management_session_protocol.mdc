@@ -44,8 +44,13 @@ Quand l'utilisateur indique la fin de session ou demande de journaliser:
 
 ## 5) Priorite courante connue (memoire active)
 
-Branche courante documentee: **`main`** (`b82eec0`, fin session 2026-05-19).
+Branche courante documentee: **`feature/sale-bandeaux`** (`8da822b`, fin session 2026-08-29).
+- 4 commits d'avance sur `main`, 0 de retard (merge fast-forward possible).
+- Aucune PR ouverte pour cette branche.
+- `main` (`480a679`) porte une copie **perimee** des docs de suivi : lire la version de la branche feature.
 
 Priorite immediate actuelle:
-- [P0-FARM-BUG-001] popup graines message empty + slot apres achat shop (2026-05-22).
-- [~] [P0-FARM-PLAY-001] playtest graines a reprendre apres fix.
+- [P0-FARM-BIOFILTRE-CLEAN-001] **annule** : chantier bed skin biofiltre revert a l'etat `main` (2026-08-29). Reste a playtester FirstLvl.
+- [P0-SALE-STAR-PLAY-001] playtest tooltip etoiles des 3 bandeaux vente (hover ★ -> jauges + texte).
+
+Reportes: [P0-FARM-SPRITE-ALPHA-001] fond noir laitue, [P0-FARM-PLANT-TOUCH-001] pose tactile mobile, [P0-SALE-QTY-RAND-001] rand 1-3 salades ★1.
