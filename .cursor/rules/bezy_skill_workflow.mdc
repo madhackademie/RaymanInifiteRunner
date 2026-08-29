@@ -1,0 +1,17 @@
+---
+description: Rappeler le skill Bezy à l'ouverture et préparer un job prêt à lancer
+alwaysApply: true
+---
+
+# Skill Bezy — prod à l'ouverture
+
+Chemin de prod UI : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` (slash `/prefab-ui-3phases`).
+
+À chaque bootstrap / « tâche du jour » :
+
+1. Rappeler crédits Bezy (reset le **30**).
+2. Proposer un **bloc de lancement prêt** : Task ID, chemin `Assets/Prefabs/Ui/…`, phase 1|2|3, fichier `PROMPTS_Bezi_*.md`.
+3. Si le prompt manque : le rédiger tout de suite (3 phases, &lt; 3500 car., une phase par appel).
+4. **Peu de temps auteur ≠ skip Bezy.** Cursor prépare ; l’auteur lance 2–5 min dans Unity (Prefab Mode), playtest plus tard.
+
+Ne pas relancer Workspace Rules / GitHub MCP comme chaîne principale (branche `cursor/bezi-workspace-rules-skill-76a4` supprimée).

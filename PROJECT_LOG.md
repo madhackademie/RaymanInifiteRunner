@@ -1,5 +1,23 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-29 — Workflow skill Bezy + suppression branche Workspace Rules
+
+### Décision auteur
+- Peu de temps Unity → les crédits Bezy ne se consomment pas. Le **skill** `/prefab-ui-3phases` est le chemin de prod (Cursor prépare, auteur lance 2–5 min).
+- Abandon de la chaîne « Workspace Rules + GitHub MCP » (brouillon cloud).
+
+### Changements (non commit — auteur)
+- `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — note d’ouverture / recette de lancement.
+- Rappels bootstrap : `ASSISTANT_CONTEXT.md`, `WORKFLOW_PROTOCOL.md`, `.cursor/rules/bezy_skill_workflow.mdc` (+ mises à jour `bezy_execution_phases.mdc`, protocoles session).
+- Branche remote `cursor/bezi-workspace-rules-skill-76a4` + PR draft #14 fermées/supprimées (contenu skill déjà sur `main` via `7a61b3f`).
+
+### Prochaine session
+- Relire `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` à l’ouverture.
+- Cursor propose un bloc `/prefab-ui-3phases` prêt (file Bezy `#13` ou job UI suivant).
+- Playtest `[P0-SALE-STAR-PLAY-001]` + FirstLvl post-rollback.
+
+---
+
 ## 2026-08-29 — Miroir repo du skill Bezi `/prefab-ui-3phases`
 
 ### Contexte

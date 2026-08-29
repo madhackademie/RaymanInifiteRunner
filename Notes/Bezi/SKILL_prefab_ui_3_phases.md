@@ -6,6 +6,8 @@
 
 Cette note est le **miroir Git** du skill installé (Cursor / GitHub). Bezi exécute la copie AppData. Si les deux divergent, aligner depuis ce fichier vers Bezi (prompt : « update skill prefab-ui-3phases from Notes/Bezi/SKILL_prefab_ui_3_phases.md ») ou l’inverse.
 
+**Workflow prod (peu de temps) :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — Cursor prépare le prompt, l’auteur lance `/prefab-ui-3phases` Phase N.
+
 **Mise à jour :** 2026-08-29 — draft validé + inserts Prefab Mode Ph.1–2 (recommandé) et never-unpack `UiStarRow` / `UiStarSlot`.
 
 Smoke test : `/prefab-ui-3phases` doit demander Task ID + chemin `Assets/Prefabs/Ui/` + phase, puis **STOP** si ce n’est pas un job réel.

@@ -15,11 +15,12 @@ alwaysApply: true
   - `PROJECT_LOG.md` (derniere entree datee)
 - Repondre avec la priorite la plus recente et concrete, jamais une tache generique.
 - **Credits Bezy :** reset mensuel le **30** de chaque mois (pas le 1er / pas dernier jour si ≠ 30) — rappeler en tache du jour / planning Bezy.
+- **Skill Bezy (prod) :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — a l'ouverture, proposer un bloc `/prefab-ui-3phases` pret. Peu de temps auteur ≠ skip Bezy.
 - Si une tache "prochaine session" est donnee par l'utilisateur en fin de session:
   1. l'ajouter dans `Notes/Todo_project.md`,
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
-- Branche de travail courante: **`feature/sale-bandeaux`** (`8da822b`, 2026-08-29) — pas `main`.
+- Branche de travail courante: **`main`** (2026-08-29).
 - Priorite courante connue (a revalider via docs a chaque session):
  - [P0-FARM-BIOFILTRE-CLEAN-001] chantier bed skin biofiltre **annule** (revert etat `main`, 2026-08-29) — playtest FirstLvl a refaire.
  - [P0-SALE-STAR-PLAY-001] playtest tooltip etoiles bandeaux vente.

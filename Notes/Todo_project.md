@@ -39,10 +39,10 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/sale-bandeaux`** (`8da822b`, à revalider au bootstrap).  
-> État remote (2026-08-29) : 4 commits d'avance sur `main` (`480a679`), 0 de retard → merge fast-forward possible ; **aucune PR ouverte**. La copie des docs de suivi restée sur `main` est **périmée**.  
-> **Prochaine session (priorité #1) :** `[P0-FARM-BIOFILTRE-CLEAN-001]` — doublon cuve biofiltre + simplifier le chantier visuel (sans toucher aux plantes).  
-> **Priorité #2 :** `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente (3 bandeaux, hover ★ → jauges + texte).  
+> Branche courante : **`main`** (à revalider au bootstrap).  
+> **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
+> **Prochaine session (priorité #1) :** `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente (3 bandeaux, hover ★ → jauges + texte).  
+> **Priorité #2 :** playtest FirstLvl après rollback biofiltre (`[P0-FARM-BIOFILTRE-CLEAN-001]` annulé).  
 > Crédits Bezy : reset le **30 août**. File `#13` après onglets. Wallet punch = PARK UX.
 
 ### ★ Priorité prochaine session — biofiltre (chantier bed skin annulé)

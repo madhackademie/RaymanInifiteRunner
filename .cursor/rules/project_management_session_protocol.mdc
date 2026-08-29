@@ -24,6 +24,7 @@ Verifier aussi la branche Git (`git branch --show-current` ou `git status -sb`) 
 - Ne jamais inventer une "tache du jour".
 - **Si la branche courante n'est pas `main` :** commencer la reponse par un rappel explicite du type *« Tu es sur la branche feature `…` — le travail en cours est … »* (nom de branche = sortie Git ou bloc *Contexte Git* du todo).
 - **Credits Bezy :** rappeler que le reset mensuel est le **30 de chaque mois** (pas le 1er, pas le dernier jour si ≠ 30) — sources `ASSISTANT_CONTEXT.md`, `Notes/Bezi/README_bezi.md`.
+- **Skill Bezy (prod) :** rappeler `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` et proposer un bloc `/prefab-ui-3phases` pret (Task ID + prefab + phase). Peu de temps auteur ≠ skip Bezy.
 - Repondre avec la priorite la plus recente, concrete et actionnable, basee sur les documents.
 - Si plusieurs priorites existent, proposer un ordre clair (1, 2, 3) avec la priorite immediate en premier.
 - Si les sources se contredisent, le dire explicitement et demander validation.
@@ -44,10 +45,9 @@ Quand l'utilisateur indique la fin de session ou demande de journaliser:
 
 ## 5) Priorite courante connue (memoire active)
 
-Branche courante documentee: **`feature/sale-bandeaux`** (`8da822b`, fin session 2026-08-29).
-- 4 commits d'avance sur `main`, 0 de retard (merge fast-forward possible).
-- Aucune PR ouverte pour cette branche.
-- `main` (`480a679`) porte une copie **perimee** des docs de suivi : lire la version de la branche feature.
+Branche courante documentee: **`main`** (2026-08-29, apres merge vente + rollback biofiltre + skill Bezy).
+- Workflow Bezy prod : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` (`/prefab-ui-3phases`).
+- Branche brouillon Workspace Rules **supprimee** : `cursor/bezi-workspace-rules-skill-76a4`.
 
 Priorite immediate actuelle:
 - [P0-FARM-BIOFILTRE-CLEAN-001] **annule** : chantier bed skin biofiltre revert a l'etat `main` (2026-08-29). Reste a playtester FirstLvl.

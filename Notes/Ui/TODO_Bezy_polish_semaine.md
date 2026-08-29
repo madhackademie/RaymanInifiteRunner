@@ -2,6 +2,8 @@
 
 **Crédits Bezy :** reset mensuel en dur le **30** de chaque mois (pas le 1er / pas « fin de mois » si ≠ 30). Planifier jobs lourds juste après.
 
+**Skill prod (peu de temps) :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — Cursor rédige le prompt, auteur lance `/prefab-ui-3phases` (2–5 min / phase). Ne pas skip Bezy faute de temps.
+
 **Objectif :** liste de jobs **Bezy-only** (prefabs / Animator / layers / lisibilité / micro-anims).  
 **Hors scope Bezy :** génération d’images/sprites, logique C# métier (Cursor).  
 **Playtests :** batch `Notes/Todo_playtest.md` (pas prioritaire tant que file Bezy).
@@ -16,7 +18,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 > **Priorité session (auteur 2026-08-25) :** `[P0-SALE-STAR-BARS-001]` jauges tooltip ★ — **Ph.1 maintenant** (`PROMPTS_Bezi_sale_channel_star_bars.md`) avant reset **30 août**.  
 > `[P0-SALE-STAR-UI-001]` Ph.1–4 **OK**. Onglets inventaire `[P0-INV-TABS-001]` Bezy Ph.1–4 déjà livrées. File **#13** après.  
 > **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only ; attendre GDD §5.8.  
-> **Branche :** `feature/sale-bandeaux`.  
+> **Branche :** `main`. Workflow skill : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`.
 > **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
 
 | # | ID | Job Bezy | Prefab / assets | Effort | Prérequis |

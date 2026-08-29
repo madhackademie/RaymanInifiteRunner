@@ -12,6 +12,7 @@ Pour toute demande de gestion de projet (tache du jour, priorite, prochaine sess
 - verifier la branche Git courante (`git branch --show-current` ou `git status -sb`),
 - **rappeler en tete de reponse** si l'on n'est pas sur `main` : nom de la branche feature/rework + lien avec la priorite (`Notes/Todo_project.md` bloc *Contexte Git*),
 - **rappeler les credits Bezy** : reset en dur le **30 de chaque mois** (pas le 1er / pas le dernier jour si ≠ 30) — detail `ASSISTANT_CONTEXT.md` + `Notes/Bezi/README_bezi.md`,
+- **rappeler le skill Bezy** : chemin de prod UI = `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — proposer un bloc `/prefab-ui-3phases` prêt (Task ID + prefab + phase). Ne pas reporter Bezy « faute de temps »,
 - repondre uniquement avec la priorite la plus recente issue des docs,
 - ne jamais inventer une tache generique.
 

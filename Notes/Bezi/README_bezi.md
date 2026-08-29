@@ -198,9 +198,12 @@ Doc : [Using Threads](https://docs.bezi.com/fundamentals/threads)
 
 | Fichier | Usage |
 |---------|--------|
+| `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` | **Chemin de prod** (peu de temps auteur) — lu à chaque ouverture de projet |
 | `Notes/Bezi/SKILL_prefab_ui_3_phases.md` | Miroir Git du skill `/prefab-ui-3phases` (install runtime = AppData Bezi) |
 
-**Chaîne Cursor → Bezy :** Cursor commit les `PROMPTS_Bezi_*.md` ; dans Bezi, `@` le prompt local (même dossier Unity) puis `/prefab-ui-3phases` Phase N. GitHub MCP optionnel (lire une autre branche / un PR sans checkout).
+**Chaîne Cursor → Bezy :** Cursor rédige les `PROMPTS_Bezi_*.md` (même hors Unity) ; dans Bezi, `@` le prompt local puis `/prefab-ui-3phases` Phase N. L’auteur ne fait que lancer (2–5 min / phase).
+
+**Abandonné :** branche `cursor/bezi-workspace-rules-skill-76a4` (Workspace Rules + GitHub MCP comme chaîne principale). Le `@` local + le skill suffisent.
 
 **Limite :** Bezi n’expose pas d’API pour que Cursor déclenche Bezi en autonomie. Doc : https://docs.bezi.com/context/mcp.md
 
