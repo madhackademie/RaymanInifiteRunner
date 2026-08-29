@@ -132,6 +132,7 @@ Si le prestige ★3 donne déjà le slot **avec** graines anti-slug niv.1 : le c
 - Slot **ouvert, consommable vide** : **clignote** (anti-slug graines / nématodes). Fail **visible**, pas silencieux.
 - Slot **ouvert, permanent** : icône stable + % protection.
 - Pose / upgrade shield : panneau système onglet Biofiltre (même host que `[BL-GDD-005]`) — **Bezy** plus tard, pas d’instanciation popup hors pipeline.
+- **HUD world V0** (chrome ★ + rangées cadenas, pas le métier prestige) : brief `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md` · prompts Bezy `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`. Réutilise `UiStarRow` existant.
 
 Ne **pas** dupliquer les nœuds « anti-limaces » du panneau aquaponique : les **shields** sont la défense V0 ; les nœuds = autre couche ou à fusionner plus tard.
 
@@ -169,4 +170,5 @@ Ids stables (`HazardId` / `ShieldId`) pour limaces, souris, oiseaux, fourmis, mo
 | Prestige, G1/G2, grille vide | `Notes/GDD/SPEC_prestige_generation_systemes.md` |
 | Étoiles biofiltre ★1… | `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` |
 | Aléas / nœuds | `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md` §5.4 |
-| Tâches | `Notes/Todo_project.md` — `[BL-GDD-007]` |
+| Tâches | `Notes/Todo_project.md` — `[BL-GDD-007]` · HUD `[P0-FARM-BIOHUD-001]` |
+| HUD / Bezy | `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md` · `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md` |

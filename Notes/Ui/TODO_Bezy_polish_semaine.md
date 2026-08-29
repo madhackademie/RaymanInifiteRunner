@@ -45,6 +45,9 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 20 | **[BZ-INV-TABS-001]** / **[P0-INV-TABS-001]** | Barre onglets inventaire farm (Graines / Conso / Récoltes / Tout) | `InventoryScreen.prefab` | M | spec `SPEC_inventaire_multiverse_hub.md` — `PROMPTS_Bezi_inventory_tabs.md` |
 | 21 | **[P0-SALE-STAR-UI-001]** | Étoiles 3 bandeaux + tooltip palier hover `Stars` | `SaleChannelBandeauView` + `SaleChannelsScreen` | M | `PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–4 OK** |
 | 22 | **[P0-SALE-STAR-BARS-001]** | 3 jauges tooltip ★ + texte overlay | `SaleChannelsScreen` | S | `PROMPTS_Bezi_sale_channel_star_bars.md` — **Ph.1 maintenant** |
+| 23 | **[BZ-FARM-BIOHUD-PRIM-001]** | Atome + rangée slots **primaires** biofiltre (N=3 cadenas) | `UiBiofiltrePrimarySlot` + Row | M | `PROMPTS_Bezi_biofiltre_hud_slots.md` — après `[P0-FARM-BIOHUD-001]` C# |
+| 24 | **[BZ-FARM-BIOHUD-SEC-001]** | Atome + rangée slots **secondaires** (N=5) | `UiBiofiltreSecondarySlot` + Row | M | même fichier prompts |
+| 25 | **[BZ-FARM-BIOHUD-HOST-001]** | HUD world `BiofiltreHud` (neste `UiStarRow` + 2 rows) | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | M | après jobs 23–24 |
 
 ---
 

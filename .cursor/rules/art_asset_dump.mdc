@@ -1,0 +1,23 @@
+---
+description: Toute création artistique (IA, concept, dump) va dans Assets Store Dump
+alwaysApply: true
+---
+
+# Art — dépôt brut = Asset Dump
+
+Dossier unique : `Assets/Art/Assets Store Dump/`
+
+## Où écrire
+
+- **Toujours ici** : images générées (Cursor / autre IA), concepts, refs store, mocks, rendus Blender non validés, captures à retravailler.
+- Sous-dossier thématique s’il existe déjà (`ElementProd/Biofiltre/`, `Ui/`, `Plantes/`, `Poisson/`, …). Sinon créer un sous-dossier clair, pas la racine Dump.
+- **Jamais** déposer une création brute dans `Assets/Art/Sprites/`, `Assets/Prefabs/`, ou une scène.
+
+## Promo vers le jeu
+
+`Assets/Art/Sprites/` (et prefabs) = art **validé auteur** seulement.  
+Ne pas brancher un fichier Dump sur un prefab / `PlantDefinition` / UI runtime tant que l’auteur ne l’a pas promu.
+
+## Assistant
+
+Si tu génères ou importes de l’art : enregistrer sous Dump, donner le chemin, ne pas « ranger » dans Sprites tout seul.

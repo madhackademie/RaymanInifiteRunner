@@ -15,15 +15,15 @@
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
 ### Priorités prochaine session
-1. **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades / sprites laitue dans le biofiltre (auteur 2026-08-27).
-2. **[P0-FARM-PLANT-TOUCH-001]** Pose tactile — NRE `Mouse.current` (`PlantPlacementPreview`).
-3. Playtest vente ★ `[P0-SALE-STAR-PLAY-001]` reporté ; puis rand salades / onglets.
+1. **[P0-FARM-IBC-GRID-001]** Scale le sprite IBC pour qu’il accepte la grille (grille = source de vérité, pas l’inverse). Dump `Cuve_IBC_3quart_carre_parfait.png`.
+2. Playtest vente ★ `[P0-SALE-STAR-PLAY-001]`.
+3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-FARM-PLANT-TOUCH-001]`, `[P0-SALE-QTY-RAND-001]`.
 
 ### Clos session 2026-08-25 (vente)
 - Jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` + compteurs `[P0-SALE-STAR-PROGRESS-001]` + UI étoiles Bezy.
 
 ### Contexte Git
-- Branche : **`main`**.
+- Branche : **`feature/rework-biofiltre-grid`**.
 
 ### Rappel « tâche du jour »
 - Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md`.

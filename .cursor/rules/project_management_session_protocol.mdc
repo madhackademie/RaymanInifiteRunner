@@ -45,12 +45,12 @@ Quand l'utilisateur indique la fin de session ou demande de journaliser:
 
 ## 5) Priorite courante connue (memoire active)
 
-Branche courante documentee: **`main`** (2026-08-29, apres merge vente + rollback biofiltre + skill Bezy).
+Branche courante documentee: **`feature/rework-biofiltre-grid`** (2026-08-29).
 - Workflow Bezy prod : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` (`/prefab-ui-3phases`).
 - Branche brouillon Workspace Rules **supprimee** : `cursor/bezi-workspace-rules-skill-76a4`.
 
 Priorite immediate actuelle:
-- [P0-FARM-BIOFILTRE-CLEAN-001] **annule** : chantier bed skin biofiltre revert a l'etat `main` (2026-08-29). Reste a playtester FirstLvl.
+- [P0-FARM-IBC-GRID-001] scale le sprite IBC pour qu'il accepte la grille (grille inchangee). Dump `Cuve_IBC_3quart_carre_parfait.png`.
 - [P0-SALE-STAR-PLAY-001] playtest tooltip etoiles des 3 bandeaux vente (hover ★ -> jauges + texte).
 
 Reportes: [P0-FARM-SPRITE-ALPHA-001] fond noir laitue, [P0-FARM-PLANT-TOUCH-001] pose tactile mobile, [P0-SALE-QTY-RAND-001] rand 1-3 salades ★1.

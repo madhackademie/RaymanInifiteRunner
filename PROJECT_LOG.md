@@ -1,5 +1,47 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-29 — Brief agent VM : HUD slots biofiltre (étoiles déjà là)
+
+### Décision auteur
+- Mockup `Assets/Art/Mocup/biofiltreInterface_1.png` : HUD world sur chaque biofiltre (★ + slots primaires + slots secondaires).
+- **Ne pas recréer** le système d’étoiles (`UiStarSlot` / `UiStarRow`) — le nested dans le HUD.
+- Deux prefab-familles **sur le modèle ★** : N slots **verrouillés** (primaire 3, secondaire 5).
+- Même HUD pour **tous** les biofiltres, **recalé** (systèmes non carrés, tailles différentes).
+- Prefabs + art = Bezy skill `/prefab-ui-3phases`. Agent VM = C# + promo Dump→Sprites **slots UI seulement** (pas la cuve IBC).
+
+### Docs (non commit — auteur)
+- `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md` — prompt collable overnight.
+- `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md` — jobs PRIM / SEC / HOST (phases < 3500 car.).
+- IDs : `[P0-FARM-BIOHUD-001]`, `[BZ-FARM-BIOHUD-PRIM-001]`, `[BZ-FARM-BIOHUD-SEC-001]`, `[BZ-FARM-BIOHUD-HOST-001]`.
+
+### Hors scope brief
+- `[P0-FARM-IBC-GRID-001]` (tâche auteur lendemain).
+- Métier prestige / shields / save (`[BL-GDD-007]` reste design).
+- Bed skin (chantier annulé). Prefabs YAML = Bezy seulement.
+
+---
+
+## 2026-08-29 — Art IBC 3/4 + priorité demain = grille dans le carré
+
+### Objectif
+- Sprite cuve IBC (mockup) en vue face avant, **dessus = carré parfait (4 angles 90°)**.
+
+### Livré (Dump, non promu)
+- `Assets/Art/Assets Store Dump/ElementProd/Biofiltre/Cuve_IBC_3quart_carre_parfait.png`
+- Réf : `Planteur_carre_3quart` (composition) + `Assets/Art/Mocup/biofiltreInterface_1.png` (IBC).
+- Projection **oblique** (pas de perspective) pour garder le carré.
+
+### Décision auteur (prochaine session)
+- **[P0-FARM-IBC-GRID-001]** : demain, caler le sprite IBC sur la grille. Référence « tâche du jour ».
+- **Contrainte :** le sprite se **redimensionne** pour **accepter** la grille (`GridManager` inchangé). Pas l’inverse (on ne déforme pas cellules / pas / dimensions grille pour l’art).
+- Branche : `feature/rework-biofiltre-grid`.
+
+### Hors scope ce soir
+- Promo Dump → `Sprites/`.
+- Wiring runtime / bed skin (chantier précédent annulé).
+
+---
+
 ## 2026-08-29 — Workflow skill Bezy + suppression branche Workspace Rules
 
 ### Décision auteur

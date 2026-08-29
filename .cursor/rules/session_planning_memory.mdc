@@ -20,7 +20,7 @@ alwaysApply: true
   1. l'ajouter dans `Notes/Todo_project.md`,
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
-- Branche de travail courante: **`main`** (2026-08-29).
+- Branche de travail courante: **`feature/rework-biofiltre-grid`** (2026-08-29).
 - Priorite courante connue (a revalider via docs a chaque session):
- - [P0-FARM-BIOFILTRE-CLEAN-001] chantier bed skin biofiltre **annule** (revert etat `main`, 2026-08-29) — playtest FirstLvl a refaire.
+ - [P0-FARM-IBC-GRID-001] scale le sprite IBC pour qu'il accepte la grille (pas l'inverse).
  - [P0-SALE-STAR-PLAY-001] playtest tooltip etoiles bandeaux vente.

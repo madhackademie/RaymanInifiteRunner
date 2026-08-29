@@ -39,13 +39,50 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`main`** (à revalider au bootstrap).  
+> Branche courante : **`feature/rework-biofiltre-grid`** (à revalider au bootstrap).  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
-> **Prochaine session (priorité #1) :** `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente (3 bandeaux, hover ★ → jauges + texte).  
-> **Priorité #2 :** playtest FirstLvl après rollback biofiltre (`[P0-FARM-BIOFILTRE-CLEAN-001]` annulé).  
-> Crédits Bezy : reset le **30 août**. File `#13` après onglets. Wallet punch = PARK UX.
+> **Prochaine session (priorité #1) :** `[P0-FARM-IBC-GRID-001]` scale le sprite IBC pour qu’il **accepte la grille** (la grille ne bouge pas).  
+> **Priorité #2 :** `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente.  
+> **Agent VM (nuit, parallèle) :** HUD slots biofiltre — coller `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`. Bezy : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`.  
+> Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 août**). File `#13` après onglets. Wallet punch = PARK UX.
 
-### ★ Priorité prochaine session — biofiltre (chantier bed skin annulé)
+### ★ Priorité prochaine session — grille dans cuve IBC
+
+> Décision auteur 2026-08-29 (fin de session) :  
+> Sprite Dump **`Cuve_IBC_3quart_carre_parfait.png`** (dessus = carré 90°, face avant IBC du mockup).  
+> **Travail de demain :** caler le sprite IBC sur la grille existante.  
+> **Contrainte (source de vérité = grille) :** le sprite doit **pouvoir être redimensionné** pour **accepter** la grille (`GridManager` : `Columns` × `Rows` × `CellSizeWorld`). **Pas l’inverse** : on ne change pas la taille / le pas / le nombre de cellules pour coller à l’art. Même logique que les cellules (`BiofiltreGridVisualizer` scale déjà chaque sprite cellule sur `cellSize`).  
+> Réf art : `Assets/Art/Assets Store Dump/ElementProd/Biofiltre/Cuve_IBC_3quart_carre_parfait.png`  
+> Réf mockup IBC : `Assets/Art/Mocup/biofiltreInterface_1.png`  
+> Réf grille existante : `Planteur_carre_vue_grille.png`, `biofiltre_ibc_oblique_grille.png`.  
+> Ne pas promouvoir Dump → `Sprites/` sans OK auteur.
+
+**Ordre prochaine session :**
+
+1. [ ] **[P0-FARM-IBC-GRID-001]** Scale sprite IBC pour qu’il accepte la grille (grille inchangée)
+2. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte + fill live
+3. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
+4. [ ] **[P0-FARM-PLANT-TOUCH-001]** Pose laitue tactile — `Mouse.current` null mobile (reporté)
+5. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+
+### ★ Prêt agent VM (nuit) — HUD slots primaire / secondaire
+
+> Décision auteur 2026-08-29 : mockup `Assets/Art/Mocup/biofiltreInterface_1.png`.  
+> Les **étoiles existent déjà** (`UiStarSlot` / `UiStarRow`) — les **neste** dans le HUD, ne pas recréer.  
+> Deux familles **comme le modèle ★** : rangée N slots **verrouillés** (primaire N=3, secondaire N=5, GDD `[BL-GDD-007]`).  
+> HUD **world** lié à **tous** les biofiltres ; **recalage par instance** (grilles non carrées, tailles différentes).  
+> Prefabs + art = **Bezy** `/prefab-ui-3phases`. Agent VM = C# + promo **uniquement** les 2 atlas slots UI Dump→Sprites (pas la cuve IBC).  
+> Prompt collable : `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`  
+> Prompts skill : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
+
+1. [ ] **[P0-FARM-BIOHUD-001]** Cursor/VM : scripts vues + binder + `GetWorldRect` + promo art `Sprites/UI/Biofiltre/`
+2. [ ] **[BZ-FARM-BIOHUD-PRIM-001]** Bezy : `UiBiofiltrePrimarySlot` + Row (3 nested) — Ph.1–5
+3. [ ] **[BZ-FARM-BIOHUD-SEC-001]** Bezy : `UiBiofiltreSecondarySlot` + Row (5 nested) — Ph.1–5
+4. [ ] **[BZ-FARM-BIOHUD-HOST-001]** Bezy : `BiofiltreHud.prefab` (World Space + nested ★ + 2 rows)
+5. [ ] Assigner `hudPrefab` sur l’instance biofiltre (Inspector, World — hors skill Ui)
+6. [ ] Playtest auteur FirstLvl (après Bezy) — hors prompt Bezy
+
+### ★ Biofiltre — chantier bed skin annulé (contexte, 2026-08-29)
 
 > Décision auteur 2026-08-29 (2ᵉ passe) :  
 > **Annuler tout le chantier « bed skin » biofiltre** plutôt que de réparer le doublon cuve — code trop buggé / générateur d'erreurs.  
@@ -53,16 +90,8 @@ Convention d'IDs :
 > **Ne pas toucher aux plantes** (prefabs, sorting, placement) — respecté : seules les métas d'import laitue du commit restent.  
 > Supprimé : `BiofiltreBedSkin`, assets `BiofiltreBed_*`, prefab `Biofiltre_Bois`, 3 scripts Editor (`BiofiltreEditorCleanup`, `BiofiltreBedScenePreview`, `BiofiltreBedSkinEditor`), grille masquée hors pose, `ApplyPlantDrawOrder`.  
 > Conservé : sprites `Assets/Art/Sprites/Farm/Biofiltre/` (art réutilisable, plus référencé).  
-> **Régression connue réintroduite** (état `main`) : `GenerateGrid()` appelé 2× au démarrage (`BiofiltreGridVisualizer.Start` + `BiofiltreManager.Start`) → double `ClearGrid` (erreur Inspector *Object at index 0 is null* si une cellule est sélectionnée en Play). À traiter proprement si le bac est réattaqué.
-
-**Ordre prochaine session :**
-
-1. [x] **[P0-FARM-BIOFILTRE-CLEAN-001]** Chantier bed skin **annulé** — retour à l'état `main` ; playtest FirstLvl à refaire  
-2. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte + fill live  
-3. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)  
-4. [ ] **[P0-FARM-PLANT-TOUCH-001]** Pose laitue tactile — `Mouse.current` null mobile (reporté)  
-5. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)  
-6. [ ] Commit auteur lot session + docs (si reste)
+> **Régression connue réintroduite** (état `main`) : `GenerateGrid()` appelé 2× au démarrage (`BiofiltreGridVisualizer.Start` + `BiofiltreManager.Start`) → double `ClearGrid` (erreur Inspector *Object at index 0 is null* si une cellule est sélectionnée en Play). À traiter proprement si le bac est réattaqué.  
+> Statut : `[P0-FARM-BIOFILTRE-CLEAN-001]` **annulé / clos**. Ordre session = section IBC ci-dessus.
 
 ### ★ Reporté — fond noir sprites laitue (biofiltre)
 
@@ -452,7 +481,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 3–5) : `[P0-SALE-STAR-PL
 - [ ] [BL-GDD-004] [OPTIONNEL] Collecter 2-3 références UI et noter ce qui est repris/évité.
 - [ ] [BL-GDD-005] Progression système aquaponique par scène (`FirstLvl+`) — spec `SPEC_progression_systeme_aquaponique_par_niveau.md` (panneau onglets, points, anti-aléas).
 - [ ] [BL-GDD-006] Prestige / génération par système — spec `Notes/GDD/SPEC_prestige_generation_systemes.md` (portes biofiltre ★3 **ou** ★5 ; grille vide ; G1 +5 % croissance ; G2 media +5 % qty). **Pas** un wipe global.
-- [ ] [BL-GDD-007] Slots & shields biofiltre — spec `Notes/GDD/SPEC_biofiltre_slots_shields.md` (5 secondaires, 3 primaires ; anti-slug 4 niv. ; serre voile / bâche bulles / géodésique ; monnaie paliers TBD : prestige / ★ / or).
+- [ ] [BL-GDD-007] Slots & shields biofiltre — spec `Notes/GDD/SPEC_biofiltre_slots_shields.md` (5 secondaires, 3 primaires ; anti-slug 4 niv. ; serre voile / bâche bulles / géodésique ; monnaie paliers TBD : prestige / ★ / or). HUD world V0 (vues + prefabs Bezy, pas le métier prestige) : `[P0-FARM-BIOHUD-001]` / `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`.
 
 ### Workflow / documentation
 - [ ] [BL-DOC-001] Documenter les règles projet (style, conventions AI/notes, organisation dossiers).
