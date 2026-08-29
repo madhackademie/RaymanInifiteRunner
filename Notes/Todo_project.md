@@ -118,6 +118,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 3–5) : `[P0-SALE-STAR-PL
 3. [x] **[BZ-POLISH-012]** HomeScene (#12) — **Bezy + playtest OK** (2026-08-18)
 4. [ ] **[BZ-POLISH-013]** Audit layers — **après** `[P0-INV-TABS-001]`
 5. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
+6. [ ] **[BZ-FARM-BED-002]** Bac biofiltre vue 3/4 — Ph.1 enfant `Bed`, Ph.2 `SpriteRenderer` ; **bloqué** tant que l'art n'est pas redécoupé (`[CT-FARM-BED-ART-001]`)
 
 **Cursor (hors Bezy, quand utile) :**
 
@@ -127,8 +128,13 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 3–5) : `[P0-SALE-STAR-PL
 - [x] **[BZ-POLISH-008]** Open/Close soft ResourceFeedback
 - [x] **[CT-UI-SAFE-PA-001]** Runtime TreeMount offsets 0 + docs `CONVENTION_hud_pa_safe_zone.md`
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
+- [ ] **[CT-FARM-BED-ART-001]** Redécouper l'art du bac biofiltre (surface 1000², flanc avant 180 px, pivot custom) — spec `Notes/Farm/SPEC_biofiltre_skin_3quart.md`
+- [~] **[CT-FARM-CANOPEE-001]** Canopée plantes + clic grille sans collider — code et art placeholder livrés, **playtest Unity à faire** (spec `Notes/Farm/SPEC_canopee_plantes_footprint.md`)
+- [ ] **[CT-FARM-CANOPEE-002]** Trancher salade **1×1 répété** vs 2×2 avant l'art définitif
 - [ ] Commit auteur lot session + docs
 
+**Réf. bac biofiltre 3/4 :** `Notes/Farm/SPEC_biofiltre_skin_3quart.md` (grille carrée conservée, art collé)  
+**Réf. canopée plantes :** `Notes/Farm/SPEC_canopee_plantes_footprint.md` (sprite = footprint, PPU 256, zéro collider)  
 **Réf. étoiles bandeaux :** `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` · GDD §2.9  
 **Réf. onglets inventaire :** `Notes/GDD/SPEC_inventaire_multiverse_hub.md` · `Notes/Ui/PROMPTS_Bezi_inventory_tabs.md`  
 **Réf. HomeScene :** `Notes/Ui/PROMPTS_Bezi_home_012.md`  

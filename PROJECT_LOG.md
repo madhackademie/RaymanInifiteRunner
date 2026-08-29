@@ -1,5 +1,62 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-29 — Canopée de plante + clic grille sans collider
+
+### Problème
+- Art plante actuel = rendu **3/4 avec ombre cuite** : deux points de vue contradictoires sur une grille vue de dessus.
+- Voir toute la plante n'a pas de sens dans un bac vu du dessus — on ne voit que le haut.
+
+### Décisions auteur
+- Passer en **canopée vue de dessus** (une tuile = un sprite), convention du farming mobile.
+- **Cellules carrées conservées**, aucune modification des maths de grille.
+- **Aucun collider, aucune physique** dans le chemin de clic.
+- Footprint multi-cellules conservé pour les grandes plantes (pied de tomate).
+
+### Livré
+- Art placeholder : canopées laitue Baby / Growing / Mature (1×1) et tomate Mature (2×2), ombre de contact cuite.
+- Convention : sprite de N×M cellules = (N×256)×(M×256) px, **PPU 256** fixé dans le `.meta`.
+- `FarmPointerInput` : lecture pointeur souris + tactile unifiée (corrige la NRE `Mouse.current` null sur mobile, `[P0-FARM-PLANT-TOUCH-001]`).
+- `FarmGridPointerInput` : clic résolu par calcul, **100 `BoxCollider2D` supprimés** sur une grille 10×10.
+- `PlantDefinition.GetFootprintCenterOffset` : centrage automatique du sprite sur le rectangle du footprint (neutre en 1×1).
+- `PlantHarvestInteractor` perd son `IPointerClickHandler` : un seul chemin popup par cas d'usage.
+
+### Constat de rendu (comparaison hors Unity)
+- La canopée est cohérente avec le substrat ; l'ancien sprite 3/4 ne l'est pas.
+- Sans ombre de contact, les canopées font autocollant → ombre douce cuite dans l'art.
+- Un sprite qui ne dépasse pas son footprint rend **tout tri par Y inutile**.
+
+### À faire côté Unity (manuel)
+1. Ajouter `FarmGridPointerInput` sur la racine du prefab `Biofiltre` — sinon plus aucun clic grille.
+2. Retirer le `Collider2D` des prefabs de plante et le `Physics2DRaycaster` de la caméra.
+3. Brancher les sprites de canopée sur `Laitue.asset`.
+4. Playtest : `Notes/Farm/SPEC_canopee_plantes_footprint.md` § checklist.
+
+### Question ouverte
+- Salade en **1×1 répété** plutôt qu'en 2×2 ? Dans Hay Day / Township la densité vient de la répétition d'amas d'une tuile. À trancher avant l'art définitif.
+
+---
+
+## 2026-08-29 — Spec : bac biofiltre vue 3/4 (art collé, grille carrée)
+
+### Décision auteur
+- Reprise du bac biofiltre **par l'art uniquement**. Cellules **carrées conservées** (`cellSize = 1`) pour la perf et la simplicité de la logique.
+- Compression verticale de la grille (facteur k) **écartée** : l'illusion de volume vient du dessin, pas de la géométrie.
+
+### Technique retenue
+- Projection oblique, « triche Zelda » : sol en plan, flancs en élévation, **hors du rectangle de grille** (aucune existence logique).
+- Clé artistique : face **intérieure** de la lèvre arrière, face **extérieure** du flanc avant.
+- **Un seul sprite** (enfant `Bed`), pas de découpe avant/arrière : une plante ne pousse pas sur un mur, donc elle ne peut pas masquer le flanc avant. Qu'elle recouvre la lèvre arrière est normal et souhaitable.
+- Alignement sans code : PNG à surface intérieure 1000², PPU 100, **pivot custom** au centre de cette surface, enfant à `localPosition (5, -5)`.
+
+### Doc
+- `Notes/Farm/SPEC_biofiltre_skin_3quart.md` — géométrie, hiérarchie prefab, ordres de tri, règles anti-régression, prompts Bezy Ph.1–2.
+- Tickets ouverts : `[CT-FARM-BED-ART-001]` (redécoupe art, Cursor/auteur) et `[BZ-FARM-BED-002]` (Bezy, bloqué tant que l'art n'est pas prêt).
+
+### Garde-fous repris du rollback
+- Aucun GameObject de bac créé au runtime, pas de `transform.Find`, pas de ScriptableObject skin, pas de script Editor ni de gizmo, pas de collider sur le bac.
+
+---
+
 ## 2026-08-29 — Sync doc : branche de travail `feature/sale-bandeaux`
 
 ### Contexte
