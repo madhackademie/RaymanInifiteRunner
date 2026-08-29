@@ -1,10 +1,9 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
-/// Spawns a ghost preview of a plant that follows the mouse snapped to the grid.
-/// Tints green when the footprint is valid, red when invalid.
-/// Left-click confirms placement; right-click or Escape cancels.
+/// Fantôme de pose qui suit le pointeur, aimanté à la grille.
+/// Vert quand le footprint est plaçable, rouge sinon.
+/// Appui principal = pose ; clic droit ou Échap = annulation.
 /// </summary>
 [DefaultExecutionOrder(-100)]
 public class PlantPlacementPreview : MonoBehaviour
@@ -72,21 +71,21 @@ public class PlantPlacementPreview : MonoBehaviour
 
         UpdateGhostPosition();
 
-        bool leftPressed  = Mouse.current.leftButton.wasPressedThisFrame;
-        bool rightPressed = Mouse.current.rightButton.wasPressedThisFrame;
-        bool escapePressed = Keyboard.current.escapeKey.wasPressedThisFrame;
+        bool confirmPressed = FarmPointerInput.TryGetPrimaryPress(out _, out int pointerId) &&
+                              !FarmPointerInput.IsOverUi(pointerId);
+        bool cancelPressed  = FarmPointerInput.WasCancelPressed();
 
-        if (leftPressed || rightPressed || escapePressed)
+        if (confirmPressed || cancelPressed)
             biofiltreManager.SuppressFarmPointerUiUntilPointerRelease();
 
-        if (leftPressed)
+        if (confirmPressed)
         {
             if (currentlyValid)
                 ConfirmPlacement();
             else
-                Cancel(); // left-click on invalid red position = deselect
+                Cancel(); // appui sur une position invalide (rouge) = désélection
         }
-        else if (rightPressed || escapePressed)
+        else if (cancelPressed)
         {
             Cancel();
         }
@@ -130,13 +129,19 @@ public class PlantPlacementPreview : MonoBehaviour
 
     private void UpdateGhostPosition()
     {
-        Vector2 mouseWorld = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        // En tactile la position n'existe que pendant l'appui : sans doigt posé,
+        // le fantôme reste sur sa dernière cellule au lieu de sauter à l'origine.
+        if (!FarmPointerInput.TryGetScreenPosition(out Vector2 screenPosition))
+            return;
 
-        // Use the footprint's geometric center (in world units) for mouse-to-cell tracking.
-        // spriteWorldOffset is a purely visual offset for the sprite pivot and must NOT be used
-        // here — it can exceed one cell in magnitude and break the floor-based WorldToGrid calculation.
-        Vector2 footprintCenter = ComputeFootprintCenterWorldOffset();
-        Vector2Int hoveredCell = gridManager.WorldToGrid(mouseWorld - footprintCenter);
+        Vector2 pointerWorld = mainCamera.ScreenToWorldPoint(screenPosition);
+
+        // Le suivi curseur → cellule se fait sur le centre géométrique du footprint.
+        // spriteWorldOffset est un décalage purement visuel : l'inclure ici casserait
+        // le WorldToGrid, qui travaille par troncature.
+        Vector2 cellSize = gridManager.CellSizeWorld;
+        Vector2Int hoveredCell = gridManager.WorldToGrid(
+            pointerWorld - plantDefinition.GetFootprintCenterOffset(cellSize));
 
         if (hoveredCell != currentCell)
         {
@@ -144,35 +149,11 @@ public class PlantPlacementPreview : MonoBehaviour
             currentlyValid = biofiltreManager.CanPlace(currentCell, plantDefinition);
         }
 
-        // Place the ghost transform at the sprite pivot position (anchor center + visual offset)
-        Vector2 snapPos = gridManager.GridToWorldCenter(currentCell) + plantDefinition.spriteWorldOffset;
+        Vector2 snapPos = plantDefinition.GetSpriteWorldPosition(
+            gridManager.GridToWorldCenter(currentCell), cellSize);
         ghostInstance.transform.position = new Vector3(snapPos.x, snapPos.y, 0f);
 
         ApplyTint(currentlyValid ? ColorValid : ColorInvalid);
-    }
-
-    /// <summary>
-    /// Returns the world-space offset from the anchor cell center to the geometric center
-    /// of the footprint. Used to keep the footprint centered under the mouse cursor.
-    /// </summary>
-    private Vector2 ComputeFootprintCenterWorldOffset()
-    {
-        Vector2Int[] footprint = plantDefinition.footprint;
-        Vector2 cellSize = gridManager.CellSizeWorld;
-
-        float sumCol = 0f;
-        float sumRow = 0f;
-        foreach (Vector2Int cell in footprint)
-        {
-            sumCol += cell.x;
-            sumRow += cell.y;
-        }
-
-        float centerCol = sumCol / footprint.Length;
-        float centerRow = sumRow / footprint.Length;
-
-        // Convert grid-cell offset to world-space offset (rows increase downward → negate Y)
-        return new Vector2(centerCol * cellSize.x, -centerRow * cellSize.y);
     }
 
     private void ApplyTint(Color color)

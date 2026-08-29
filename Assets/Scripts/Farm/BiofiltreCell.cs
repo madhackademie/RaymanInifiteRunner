@@ -1,23 +1,20 @@
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 /// <summary>
-/// Represents a single clickable cell of a biofiltre grid.
-/// Fires OnCellClicked when the player clicks this cell.
+/// Cellule visuelle d'une grille de biofiltre : coordonnées + teinte d'occupation.
 /// </summary>
+/// <remarks>
+/// Ne gère plus le clic : il est résolu par calcul dans <see cref="FarmGridPointerInput"/>,
+/// sans collider ni physique.
+/// </remarks>
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(BoxCollider2D))]
-public class BiofiltreCell : MonoBehaviour, IPointerClickHandler
+public class BiofiltreCell : MonoBehaviour
 {
     private static readonly Color ColorEmpty    = new Color(0.30f, 0.75f, 0.40f, 0.25f);
     private static readonly Color ColorOccupied = new Color(0.20f, 0.55f, 0.30f, 0.50f);
 
     /// <summary>Column / row coordinates of this cell in its parent grid.</summary>
     public Vector2Int GridCoordinates { get; private set; }
-
-    /// <summary>Fired when the player clicks this cell. Passes itself as argument.</summary>
-    public event Action<BiofiltreCell> OnCellClicked;
 
     private SpriteRenderer spriteRenderer;
 
@@ -42,13 +39,5 @@ public class BiofiltreCell : MonoBehaviour, IPointerClickHandler
     {
         if (spriteRenderer != null)
             spriteRenderer.color = occupied ? ColorOccupied : ColorEmpty;
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button != PointerEventData.InputButton.Left)
-            return;
-
-        OnCellClicked?.Invoke(this);
     }
 }

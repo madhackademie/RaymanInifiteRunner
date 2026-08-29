@@ -87,8 +87,8 @@ public class PlantDefinition : ScriptableObject
     [Tooltip("Relative offsets from the placement origin. Must always include (0,0).")]
     public Vector2Int[] footprint = { Vector2Int.zero };
 
-    [Tooltip("World-space offset applied to the sprite GameObject after placement. " +
-             "Use this to align sprites whose pivot does not match the anchor cell center.")]
+    [Tooltip("Réglage fin ajouté au centrage automatique sur le footprint. " +
+             "Laisser à zéro pour un sprite de canopée au pivot centré.")]
     public Vector2 spriteWorldOffset = Vector2.zero;
 
     /// <summary>Returns all absolute grid cells occupied by this plant given a placement origin.</summary>
@@ -96,6 +96,41 @@ public class PlantDefinition : ScriptableObject
     {
         foreach (Vector2Int offset in footprint)
             yield return origin + offset;
+    }
+
+    /// <summary>
+    /// Décalage monde entre le centre de la cellule d'ancrage et le centre géométrique
+    /// du footprint. Une canopée 2×2 posée en (0,0) doit être centrée en (+0.5, -0.5).
+    /// </summary>
+    /// <remarks>
+    /// Les lignes croissent vers le bas, d'où le Y négatif. Un footprint 1×1 renvoie zéro,
+    /// ce qui laisse les plantes existantes inchangées.
+    /// </remarks>
+    public Vector2 GetFootprintCenterOffset(Vector2 cellSizeWorld)
+    {
+        if (footprint == null || footprint.Length == 0)
+            return Vector2.zero;
+
+        float sumCol = 0f;
+        float sumRow = 0f;
+        foreach (Vector2Int offset in footprint)
+        {
+            sumCol += offset.x;
+            sumRow += offset.y;
+        }
+
+        return new Vector2(
+            sumCol / footprint.Length * cellSizeWorld.x,
+            -sumRow / footprint.Length * cellSizeWorld.y
+        );
+    }
+
+    /// <summary>
+    /// Position monde du sprite pour une ancre donnée : centre du footprint plus réglage fin.
+    /// </summary>
+    public Vector2 GetSpriteWorldPosition(Vector2 anchorCenterWorld, Vector2 cellSizeWorld)
+    {
+        return anchorCenterWorld + GetFootprintCenterOffset(cellSizeWorld) + spriteWorldOffset;
     }
 
     /// <summary>
