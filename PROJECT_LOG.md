@@ -1,5 +1,21 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-29 — Miroir repo du skill Bezi `/prefab-ui-3phases`
+
+### Contexte
+- Skill installé et smoke-testé dans Bezi (demande Task ID + chemin `Assets/Prefabs/Ui/` + phase, sans mutation).
+- Copie runtime Bezi : `%AppData%\Roaming\com.bezi.app\skills\prefab-ui-3phases\SKILL.md` (hors Git).
+
+### Livré
+- `Notes/Bezi/SKILL_prefab_ui_3_phases.md` — miroir Git du skill validé (inserts Prefab Mode Ph.1–2 + never-unpack nested).
+- `Notes/Bezi/README_bezi.md` — section setup intégrations.
+
+### Hors scope
+- Your Rules Bezi (collage UI, pas un fichier repo sur `main`).
+- GitHub MCP (skip : `@` local suffit).
+
+---
+
 ## 2026-08-29 — Sync doc : branche de travail `feature/sale-bandeaux`
 
 ### Contexte
