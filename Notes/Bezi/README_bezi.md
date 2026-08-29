@@ -194,6 +194,19 @@ Doc : [Using Threads](https://docs.bezi.com/fundamentals/threads)
 - **Cursor** : bon pour architecture, gros refactors, fichiers Markdown du repo (`Notes/`, `PROJECT_LOG.md`, etc.).
 - Cette note sert de **référence rapide** sans remplacer la doc officielle.
 
+### Setup Bezi (intégrations — 2026-08-29)
+
+Brouillons prêts à installer dans Bezi :
+
+| Fichier | Usage |
+|---------|--------|
+| `Notes/Bezi/BEZI_WORKSPACE_RULES.md` | Bloc à coller dans **Workspace Settings → Your Rules** |
+| `Notes/Bezi/SKILL_prefab_ui_3_phases.md` | Instructions pour créer le skill `/prefab-ui-3phases` |
+
+**Chaîne Cursor → Bezy sans copier-coller :** brancher le **GitHub MCP** sur Bezi (lecture repo) + Rules ci-dessus. Cursor commit les `PROMPTS_Bezi_*.md` ; tu lances Bezi avec « lis le prompt sur main ».
+
+**Limite :** Bezi n'expose pas d'API pour que Cursor déclenche Bezi en autonomie. Doc : https://docs.bezi.com/context/mcp.md , https://docs.bezi.com/acp.md
+
 ---
 
 ## Convention data - Item Shop
