@@ -1,5 +1,21 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-29 — Agent VM : scripts HUD slots biofiltre (C# + art promo)
+
+### Livré (branche `cursor/biofiltre-hud-slots-vm-957c`)
+- Art promu : `Assets/Art/Sprites/UI/Biofiltre/slotBiofiltrePrimaire.png`, `slotBiofiltreSecondaire.png` (nouveaux GUID, slices `_0`/`_1`/`_2`).
+- Scripts : `Assets/Scripts/UI/BiofiltreHud/` — `BiofiltreSlotVisualState`, `UiBiofiltreSlotView`, `UiBiofiltreSlotRowView`, `BiofiltreHudView`, `BiofiltreHudBinder`.
+- `GridManager.GetWorldRect()` — AABB monde grille (origine bas-gauche).
+- Binder : offsets normalisés + extra monde par instance ; warning fail-closed si `hudPrefab` null.
+- **Pas de prefab** YAML (Bezy : `[BZ-FARM-BIOHUD-PRIM-001]` → SEC → HOST).
+
+### Suite
+- Bezy Ph.1–3 via `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`.
+- Assigner `hudPrefab` sur l’instance biofiltre (Inspector) après `BiofiltreHud.prefab`.
+- Playtest FirstLvl auteur (après Bezy).
+
+---
+
 ## 2026-08-29 — Brief agent VM : HUD slots biofiltre (étoiles déjà là)
 
 ### Décision auteur

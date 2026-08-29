@@ -75,7 +75,7 @@ Convention d'IDs :
 > Prompt collable : `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`  
 > Prompts skill : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 
-1. [ ] **[P0-FARM-BIOHUD-001]** Cursor/VM : scripts vues + binder + `GetWorldRect` + promo art `Sprites/UI/Biofiltre/`
+1. [x] **[P0-FARM-BIOHUD-001]** Cursor/VM : scripts vues + binder + `GetWorldRect` + promo art `Sprites/UI/Biofiltre/` (2026-08-29 agent VM)
 2. [ ] **[BZ-FARM-BIOHUD-PRIM-001]** Bezy : `UiBiofiltrePrimarySlot` + Row (3 nested) — Ph.1–5
 3. [ ] **[BZ-FARM-BIOHUD-SEC-001]** Bezy : `UiBiofiltreSecondarySlot` + Row (5 nested) — Ph.1–5
 4. [ ] **[BZ-FARM-BIOHUD-HOST-001]** Bezy : `BiofiltreHud.prefab` (World Space + nested ★ + 2 rows)

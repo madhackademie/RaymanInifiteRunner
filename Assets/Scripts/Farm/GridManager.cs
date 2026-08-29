@@ -53,6 +53,19 @@ public class GridManager : MonoBehaviour
 
     public Vector2 WorldOrigin => _worldOrigin;
 
+    /// <summary>
+    /// AABB monde de la grille entière. Origine Rect = coin bas-gauche ;
+    /// width = Columns × cell X, height = Rows × cell Y.
+    /// </summary>
+    public Rect GetWorldRect()
+    {
+        ResolveLayout(out int cols, out int rows, out Vector2 cellSz, out Vector2 origin);
+
+        float width = cols * cellSz.x;
+        float height = rows * cellSz.y;
+        return new Rect(origin.x, origin.y - height, width, height);
+    }
+
     private void Awake()
     {
         ResolveLayout(out _columns, out _rows, out _cellSizeWorld, out _worldOrigin);
