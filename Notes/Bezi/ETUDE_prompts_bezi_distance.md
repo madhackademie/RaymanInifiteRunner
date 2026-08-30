@@ -9,6 +9,7 @@
 
 **Fichiers opérationnels liés :**
 - File d’attente : `Notes/Bezi/BEZY_QUEUE.md`
+- Install FRITZ!Box + WoL + Parsec : `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md`
 - Câblage IBC/grille/HUD : `Notes/Farm/CABLAGE_biofiltre_ibc_grille_bezi.md`
 
 **Références internes :**
