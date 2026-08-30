@@ -86,13 +86,9 @@ public class BiofiltreGridVisualizer : MonoBehaviour
                 float scaleY   = cellSize.y * ppu / spriteToUse.rect.height;
                 cellObj.transform.localScale = new Vector3(scaleX, scaleY, 1f);
 
-                // Collider: size 1×1 in local space → world size = cellSize after scale
-                BoxCollider2D box = cellObj.AddComponent<BoxCollider2D>();
-                box.size = Vector2.one;
-
+                // Pas de collider : clic résolu par FarmGridPointerInput (ScreenToWorld → WorldToGrid).
                 BiofiltreCell cell = cellObj.AddComponent<BiofiltreCell>();
                 cell.Initialize(coords);
-                cell.OnCellClicked += HandleCellClicked;
 
                 cells[col, row] = cell;
             }
@@ -143,10 +139,17 @@ public class BiofiltreGridVisualizer : MonoBehaviour
         }
     }
 
-    private void HandleCellClicked(BiofiltreCell cell)
+    /// <summary>
+    /// Point d'entrée du clic grille, appelé par <see cref="FarmGridPointerInput"/>.
+    /// </summary>
+    public void NotifyCellClicked(Vector2Int coords)
     {
+        BiofiltreCell cell = GetCell(coords);
+        if (cell == null)
+            return;
+
         OnCellClicked?.Invoke(cell);
-        Debug.Log($"[BiofiltreGridVisualizer] '{gameObject.name}' — cell clicked: {cell.GridCoordinates}");
+        Debug.Log($"[BiofiltreGridVisualizer] '{gameObject.name}' — cell clicked: {coords}");
     }
 
     // ── Procedural fallback sprite ────────────────────────────────────────────

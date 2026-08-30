@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Bridges the biofiltre grid and the planting UI.
@@ -97,8 +96,7 @@ public class BiofiltreManager : MonoBehaviour
     {
         if (awaitingPlacementPointerRelease)
         {
-            bool pressed = Mouse.current != null && Mouse.current.leftButton.isPressed;
-            if (!pressed)
+            if (!FarmPointerInput.IsPrimaryHeld())
             {
                 // Relâchement détecté : le clic (OnPointerClick) est livré sur cette frame.
                 // On conserve la suppression encore quelques frames de grâce.

@@ -1,13 +1,12 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using System;
 
 /// <summary>
-/// Attached to a plant GameObject. On click, ouvre le popup récolte via <see cref="ScreenPopupHost"/>.
+/// Attaché à une plante posée : récolte et popup via <see cref="BiofiltreManager"/>.
+/// Le clic arrive par la grille (<see cref="FarmGridPointerInput"/>), pas par collider.
 /// </summary>
 [RequireComponent(typeof(PlantGrow))]
-[RequireComponent(typeof(Collider2D))]
-public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
+public class PlantHarvestInteractor : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private ItemDatabase itemDatabase;
@@ -76,36 +75,7 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
         onPlantRemoved = callback;
     }
 
-    // ── IPointerClickHandler ──────────────────────────────────────────────────
-
-    /// <summary>
-    /// Ouvre le popup d'info plante (nécessite Physics2DRaycaster sur la caméra).
-    /// </summary>
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (biofiltreManager != null && biofiltreManager.ShouldSuppressFarmPointerUi)
-            return;
-
-        TryHarvest();
-    }
-
-    /// <summary>
-    /// Ouvre le popup d'info pour cette plante, peu importe son stade.
-    /// </summary>
-    public void TryHarvest()
-    {
-        if (!TryOpenHarvestPopup())
-        {
-            Debug.LogWarning(
-                "[PlantHarvestInteractor] Popup récolte introuvable. " +
-                $"Vérifiez ScreenPopupHost + binding ({ScreenId.FirstLvlFarm}, {PopupId.FarmPlantHarvest}).",
-                this);
-        }
-    }
-
-    /// <summary>
-    /// Appelé par HarvestPanelUI quand le joueur confirme la récolte.
-    /// </summary>
+    // ── Harvest ───────────────────────────────────────────────────────────────
     public void ConfirmHarvest()
     {
         HarvestStageConfig? config = GetCurrentHarvestConfig();
@@ -210,20 +180,6 @@ public class PlantHarvestInteractor : MonoBehaviour, IPointerClickHandler
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
-
-    private bool TryOpenHarvestPopup()
-    {
-        ScreenPopupHost host = ResolvePopupHost();
-        if (host == null)
-            return false;
-
-        if (!host.TryShowPopup(PopupId.FarmPlantHarvest, out HarvestPanelUI panel))
-            return false;
-
-        panel.InjectFarmPopupHost(host);
-        panel.Open(this, plantGrow, ResolveDefinition());
-        return true;
-    }
 
     private ScreenPopupHost ResolvePopupHost()
     {
