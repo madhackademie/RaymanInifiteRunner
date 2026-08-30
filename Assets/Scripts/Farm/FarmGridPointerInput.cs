@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Résout les clics grille par calcul : écran → monde → colonne/ligne.
-/// Pas de collider ni de raycast physique (style grille CodeMonkey).
+/// Clic grille oldschool : écran → monde → (col, row) via <see cref="GridManager"/>.
+/// Aucun collider, aucun raycast physique — modèle CodeMonkey.
 /// </summary>
 [RequireComponent(typeof(GridManager))]
 [RequireComponent(typeof(BiofiltreGridVisualizer))]
@@ -40,6 +40,7 @@ public class FarmGridPointerInput : MonoBehaviour
             visualizer.NotifyCellClicked(coords);
     }
 
+    /// <summary>Screen → world → cellule (délègue au mapper orthogonal ou iso du GridManager).</summary>
     private bool TryResolveCell(Vector2 screenPosition, out Vector2Int coords)
     {
         coords = default;
@@ -48,9 +49,8 @@ public class FarmGridPointerInput : MonoBehaviour
         if (camera == null)
             return false;
 
-        Vector3 world = camera.ScreenToWorldPoint(screenPosition);
-        coords = gridManager.WorldToGrid(world);
-        return gridManager.IsInBounds(coords);
+        Vector2 world = camera.ScreenToWorldPoint(screenPosition);
+        return gridManager.TryWorldToCell(world, out coords);
     }
 
     private Camera ResolveCamera()

@@ -32,6 +32,10 @@ public class GridManager : MonoBehaviour
     [Tooltip("Used when Origin From Transform is false and Use Scriptable Config is false.")]
     [SerializeField] private Vector2 instanceWorldOrigin = Vector2.zero;
 
+    [Header("Coordinate projection")]
+    [Tooltip("Orthogonal = carrés (actuel). Isometric = losanges — prêt pour rework visuel iso.")]
+    [SerializeField] private GridCoordinateMode coordinateMode = GridCoordinateMode.Orthogonal;
+
     public GridData Grid { get; private set; }
 
     // Maps any occupied cell to the root GameObject of the plant that occupies it.
@@ -41,9 +45,13 @@ public class GridManager : MonoBehaviour
     private int _rows;
     private Vector2 _cellSizeWorld;
     private Vector2 _worldOrigin;
+    private IGridCoordinateMapper _coordinateMapper;
 
     public int Columns => _columns;
     public int Rows => _rows;
+
+    /// <summary>Mode de projection actif (orthogonal ou isométrique).</summary>
+    public GridCoordinateMode CoordinateMode => coordinateMode;
 
     /// <summary>Cell extent in world units (X = width, Y = height along grid rows).</summary>
     public Vector2 CellSizeWorld => _cellSizeWorld;
@@ -77,7 +85,11 @@ public class GridManager : MonoBehaviour
         }
 
         Grid = new GridData(_columns, _rows);
+        _coordinateMapper = GridCoordinateMapperFactory.Create(coordinateMode, BuildLayoutSnapshot());
     }
+
+    private GridLayoutSnapshot BuildLayoutSnapshot() =>
+        new(_worldOrigin, _cellSizeWorld, _columns, _rows);
 
     private void ResolveLayout(out int columns, out int rows, out Vector2 cellSizeWorld, out Vector2 worldOrigin)
     {
@@ -119,32 +131,24 @@ public class GridManager : MonoBehaviour
     /// Converts a grid cell (col, row) to the world position of its top-left corner.
     /// Row 0 is the topmost row; rows increase downward (Y decreases in world space).
     /// </summary>
-    public Vector2 GridToWorld(Vector2Int cell)
-    {
-        return _worldOrigin + new Vector2(
-            cell.x * _cellSizeWorld.x,
-            -cell.y * _cellSizeWorld.y
-        );
-    }
+    public Vector2 GridToWorld(Vector2Int cell) =>
+        _coordinateMapper.CellToWorldTopLeft(cell);
 
-    /// <summary>
-    /// Converts a grid cell to the world position of its center.
-    /// </summary>
-    public Vector2 GridToWorldCenter(Vector2Int cell)
-    {
-        return GridToWorld(cell) + new Vector2(_cellSizeWorld.x * 0.5f, -_cellSizeWorld.y * 0.5f);
-    }
+    /// <summary>Converts a grid cell to the world position of its center.</summary>
+    public Vector2 GridToWorldCenter(Vector2Int cell) =>
+        _coordinateMapper.CellToWorldCenter(cell);
 
     /// <summary>
     /// Converts a world position to the grid cell (floor). May be out of bounds — use IsInBounds.
     /// </summary>
-    public Vector2Int WorldToGrid(Vector2 worldPos)
+    public Vector2Int WorldToGrid(Vector2 worldPos) =>
+        _coordinateMapper.WorldToCell(worldPos);
+
+    /// <summary>Écran/monde → cellule si dans les limites (clic grille oldschool).</summary>
+    public bool TryWorldToCell(Vector2 worldPosition, out Vector2Int cell)
     {
-        Vector2 local = worldPos - _worldOrigin;
-        return new Vector2Int(
-            Mathf.FloorToInt(local.x / _cellSizeWorld.x),
-            Mathf.FloorToInt(-local.y / _cellSizeWorld.y)
-        );
+        cell = WorldToGrid(worldPosition);
+        return IsInBounds(cell);
     }
 
     // ── Convenience wrappers (delegates to GridData) ──────────────────────────
@@ -212,43 +216,73 @@ public class GridManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         ResolveLayout(out int cols, out int rows, out Vector2 cellSz, out Vector2 origin);
+        var snapshot = new GridLayoutSnapshot(origin, cellSz, cols, rows);
+        IGridCoordinateMapper mapper = GridCoordinateMapperFactory.Create(coordinateMode, snapshot);
 
         for (int col = 0; col < cols; col++)
         {
             for (int row = 0; row < rows; row++)
             {
-                Vector2Int cell    = new Vector2Int(col, row);
-                Vector2    topLeft = origin + new Vector2(col * cellSz.x, -row * cellSz.y);
+                Vector2Int cell     = new(col, row);
                 bool       occupied = Grid != null && Grid.IsInBounds(cell) && Grid.IsOccupied(cell);
 
-                Color fillColor = occupied
+                Color fillColor    = occupied
                     ? new Color(1f, 0.2f, 0.2f, 0.4f)
                     : new Color(0f, 1f, 0.4f, 0.15f);
-
                 Color outlineColor = new Color(0f, 1f, 0.4f, 0.5f);
 
-                // Inset the fill slightly so the outline stays visible
-                float inset = 0.025f;
-                Vector3[] fillCorners =
-                {
-                    new Vector3(topLeft.x + inset,            topLeft.y - inset,            0f),
-                    new Vector3(topLeft.x + cellSz.x - inset, topLeft.y - inset,            0f),
-                    new Vector3(topLeft.x + cellSz.x - inset, topLeft.y - cellSz.y + inset, 0f),
-                    new Vector3(topLeft.x + inset,            topLeft.y - cellSz.y + inset, 0f),
-                };
-
-                Vector3[] outlineCorners =
-                {
-                    new Vector3(topLeft.x,            topLeft.y,            0f),
-                    new Vector3(topLeft.x + cellSz.x, topLeft.y,            0f),
-                    new Vector3(topLeft.x + cellSz.x, topLeft.y - cellSz.y, 0f),
-                    new Vector3(topLeft.x,            topLeft.y - cellSz.y, 0f),
-                };
-
-                UnityEditor.Handles.DrawSolidRectangleWithOutline(fillCorners,    fillColor,    Color.clear);
-                UnityEditor.Handles.DrawSolidRectangleWithOutline(outlineCorners, Color.clear,  outlineColor);
+                if (coordinateMode == GridCoordinateMode.Isometric)
+                    DrawIsoCellGizmo(mapper, cell, cellSz, fillColor, outlineColor);
+                else
+                    DrawOrthoCellGizmo(mapper, cell, cellSz, fillColor, outlineColor);
             }
         }
+    }
+
+    private static void DrawOrthoCellGizmo(
+        IGridCoordinateMapper mapper, Vector2Int cell, Vector2 cellSz,
+        Color fillColor, Color outlineColor)
+    {
+        Vector2 topLeft = mapper.CellToWorldTopLeft(cell);
+        float inset = 0.025f;
+
+        Vector3[] fillCorners =
+        {
+            new(topLeft.x + inset,            topLeft.y - inset,            0f),
+            new(topLeft.x + cellSz.x - inset, topLeft.y - inset,            0f),
+            new(topLeft.x + cellSz.x - inset, topLeft.y - cellSz.y + inset, 0f),
+            new(topLeft.x + inset,            topLeft.y - cellSz.y + inset, 0f),
+        };
+
+        Vector3[] outlineCorners =
+        {
+            new(topLeft.x,            topLeft.y,            0f),
+            new(topLeft.x + cellSz.x, topLeft.y,            0f),
+            new(topLeft.x + cellSz.x, topLeft.y - cellSz.y, 0f),
+            new(topLeft.x,            topLeft.y - cellSz.y, 0f),
+        };
+
+        UnityEditor.Handles.DrawSolidRectangleWithOutline(fillCorners, fillColor, Color.clear);
+        UnityEditor.Handles.DrawSolidRectangleWithOutline(outlineCorners, Color.clear, outlineColor);
+    }
+
+    private static void DrawIsoCellGizmo(
+        IGridCoordinateMapper mapper, Vector2Int cell, Vector2 cellSz,
+        Color fillColor, Color outlineColor)
+    {
+        Vector2 center = mapper.CellToWorldCenter(cell);
+        float hw = cellSz.x * 0.5f;
+        float hh = cellSz.y * 0.5f;
+
+        Vector3[] corners =
+        {
+            new(center.x,     center.y + hh, 0f),
+            new(center.x + hw, center.y,     0f),
+            new(center.x,     center.y - hh, 0f),
+            new(center.x - hw, center.y,     0f),
+        };
+
+        UnityEditor.Handles.DrawSolidRectangleWithOutline(corners, fillColor, outlineColor);
     }
 #endif
 }
