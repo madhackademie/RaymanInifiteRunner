@@ -42,7 +42,6 @@ Convention d'IDs :
 > Branche courante : **`feature/rework-biofiltre-grid`** (à revalider au bootstrap).  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
 > **Prochaine session (priorité #1) :** `[P0-FARM-IBC-GRID-001]` scale le sprite IBC pour qu’il **accepte la grille** (la grille ne bouge pas).  
-> **Priorité #2 :** `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente.  
 > **Agent VM (nuit, parallèle) :** HUD slots biofiltre — coller `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`. Bezy : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`.  
 > Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 août**). File `#13` après onglets. Wallet punch = PARK UX.
 
@@ -60,10 +59,13 @@ Convention d'IDs :
 **Ordre prochaine session :**
 
 1. [ ] **[P0-FARM-IBC-GRID-001]** Scale sprite IBC pour qu’il accepte la grille (grille inchangée)
-2. [ ] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → 3 jauges + texte + fill live
-3. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
-4. [ ] **[P0-FARM-PLANT-TOUCH-001]** Pose laitue tactile — `Mouse.current` null mobile (reporté)
-5. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+2. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
+3. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+
+**Clos playtest grille rework (2026-08-30, branche `feature/rework-biofiltre-grid`) :**
+
+1. [x] **[P0-FARM-GRID-PLAY-001]** Grille sans colliders + clics coordonnées + pose/récolte + pause/recall persistance — **OK auteur**
+2. [x] **[P0-FARM-PLANT-TOUCH-001]** Pose tactile — `FarmPointerInput` souris + touch — **OK** (même playtest)
 
 ### ★ Prêt agent VM (nuit) — HUD slots primaire / secondaire
 
@@ -80,7 +82,7 @@ Convention d'IDs :
 3. [ ] **[BZ-FARM-BIOHUD-SEC-001]** Bezy : `UiBiofiltreSecondarySlot` + Row (5 nested) — Ph.1–5
 4. [ ] **[BZ-FARM-BIOHUD-HOST-001]** Bezy : `BiofiltreHud.prefab` (World Space + nested ★ + 2 rows)
 5. [ ] Assigner `hudPrefab` sur l’instance biofiltre (Inspector, World — hors skill Ui)
-6. [ ] Playtest auteur FirstLvl (après Bezy) — hors prompt Bezy
+6. [ ] Playtest HUD world FirstLvl (après Bezy HOST) — grille/clics déjà validés `[P0-FARM-GRID-PLAY-001]`
 
 ### ★ Biofiltre — chantier bed skin annulé (contexte, 2026-08-29)
 
@@ -90,7 +92,7 @@ Convention d'IDs :
 > **Ne pas toucher aux plantes** (prefabs, sorting, placement) — respecté : seules les métas d'import laitue du commit restent.  
 > Supprimé : `BiofiltreBedSkin`, assets `BiofiltreBed_*`, prefab `Biofiltre_Bois`, 3 scripts Editor (`BiofiltreEditorCleanup`, `BiofiltreBedScenePreview`, `BiofiltreBedSkinEditor`), grille masquée hors pose, `ApplyPlantDrawOrder`.  
 > Conservé : sprites `Assets/Art/Sprites/Farm/Biofiltre/` (art réutilisable, plus référencé).  
-> **Régression connue réintroduite** (état `main`) : `GenerateGrid()` appelé 2× au démarrage (`BiofiltreGridVisualizer.Start` + `BiofiltreManager.Start`) → double `ClearGrid` (erreur Inspector *Object at index 0 is null* si une cellule est sélectionnée en Play). À traiter proprement si le bac est réattaqué.  
+> **Régression `main` (corrigée sur `feature/rework-biofiltre-grid`)** : `GenerateGrid()` n’est plus appelé 2× — seul `BiofiltreManager.Start` génère la grille.
 > Statut : `[P0-FARM-BIOFILTRE-CLEAN-001]` **annulé / clos**. Ordre session = section IBC ci-dessus.
 
 ### ★ Reporté — fond noir sprites laitue (biofiltre)
@@ -107,16 +109,17 @@ Convention d'IDs :
 > Tooltip : **survol de la rangée d’étoiles** (pas tout le bandeau) — le bandeau reste clic vente / recherche ; le tooltip déblocage reste sur l’overlay cadenas.  
 > Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain : **30 août**).  
-> Prompts Bezy étoiles : `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–3 livrées**. Playtest auteur ensuite.
+> Prompts Bezy étoiles : `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–3 livrées**. Playtest auteur **OK 2026-08-30**.
 
-Backlog vente (déjà dans l’ordre ci-dessus, items 3–5) : `[P0-SALE-STAR-PLAY-001]`, `[P0-SALE-QTY-RAND-001]`, `[P0-SALE-QTY-RAND-PLAY-001]`.
+Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAND-001]`, `[P0-SALE-QTY-RAND-PLAY-001]`.
 
 **Clos session 2026-08-25 (vente / étoiles) :**
 
 1. [x] **[P0-SALE-STAR-BARS-001]** Jauges tooltip ★ — Bezy Ph.1–2 + Cursor fill/wiring
 2. [x] **[P0-SALE-STAR-PROGRESS-001]** Compteurs tooltip `current/required`
 3. [x] **[P0-SALE-STAR-UI-001]** Bezy Ph.1–4 tooltip ★ + hover
-4. [ ] **[P0-SALE-STAR-001]** Upgrade réel ★2+ (backlog proche)
+4. [x] **[P0-SALE-STAR-PLAY-001]** Playtest 3 bandeaux : hover ★ → jauges + texte + fill live — **OK 2026-08-30**
+5. [ ] **[P0-SALE-STAR-001]** Upgrade réel ★2+ (backlog proche)
 
 **Clos `[P0-HOME-PLAY-012]` / `[BZ-POLISH-012]` (2026-08-18) :**
 
@@ -390,7 +393,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 3–5) : `[P0-SALE-STAR-PL
 - [x] **[P0-SALE-STAR-PROGRESS-001]** Tooltip ★ compteurs live (2026-08-25).
 - [x] **[P0-SALE-STAR-BARS-001]** Jauges tooltip ★ + texte overlay — Bezy Ph.1–2 + Cursor fill/wiring (2026-08-25).
 - [x] **[P0-SALE-STAR-UI-001]** Images étoiles + tooltip hover rangée ★ — Bezy Ph.1–3 OK 2026-08-25.
-- [ ] **[P0-SALE-STAR-PLAY-001]** Playtest polish 3 bandeaux.
+- [x] **[P0-SALE-STAR-PLAY-001]** Playtest polish 3 bandeaux — **OK 2026-08-30**.
 - [ ] **[P0-SALE-PLAY-004]** Playtest timer canal — **batch** `Notes/Todo_playtest.md`.
 
 ### Shop — polish restant

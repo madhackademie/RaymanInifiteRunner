@@ -23,4 +23,3 @@ alwaysApply: true
 - Branche de travail courante: **`feature/rework-biofiltre-grid`** (2026-08-29).
 - Priorite courante connue (a revalider via docs a chaque session):
  - [P0-FARM-IBC-GRID-001] scale le sprite IBC pour qu'il accepte la grille (pas l'inverse).
- - [P0-SALE-STAR-PLAY-001] playtest tooltip etoiles bandeaux vente.
