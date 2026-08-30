@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 5171608283822144346}
   - component: {fileID: 8494675260759893494}
   - component: {fileID: 8494675260759893495}
+  - component: {fileID: 8494675260759893496}
   m_Layer: 0
   m_Name: Biofiltre
   m_TagString: Untagged
@@ -169,3 +170,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0477617d9ce997f47aa92742887a7d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantPlacementPreview
+--- !u!114 &8494675260759893496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776529302815179675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68772bbfe091e5490f5bf3a7bc7c0ab5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FarmGridPointerInput
+  worldCamera: {fileID: 0}

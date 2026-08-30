@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
-/// Spawns a ghost preview of a plant that follows the mouse snapped to the grid.
-/// Tints green when the footprint is valid, red when invalid.
-/// Left-click confirms placement; right-click or Escape cancels.
+/// Fantôme de pose aimanté à la grille. Vert = valide, rouge = invalide.
+/// Appui principal = pose ; clic droit ou Échap = annulation.
 /// </summary>
 [DefaultExecutionOrder(-100)]
 public class PlantPlacementPreview : MonoBehaviour
@@ -72,21 +70,21 @@ public class PlantPlacementPreview : MonoBehaviour
 
         UpdateGhostPosition();
 
-        bool leftPressed  = Mouse.current.leftButton.wasPressedThisFrame;
-        bool rightPressed = Mouse.current.rightButton.wasPressedThisFrame;
-        bool escapePressed = Keyboard.current.escapeKey.wasPressedThisFrame;
+        bool confirmPressed = FarmPointerInput.TryGetPrimaryPress(out _, out int pointerId) &&
+                              !FarmPointerInput.IsOverUi(pointerId);
+        bool cancelPressed  = FarmPointerInput.WasCancelPressed();
 
-        if (leftPressed || rightPressed || escapePressed)
+        if (confirmPressed || cancelPressed)
             biofiltreManager.SuppressFarmPointerUiUntilPointerRelease();
 
-        if (leftPressed)
+        if (confirmPressed)
         {
             if (currentlyValid)
                 ConfirmPlacement();
             else
-                Cancel(); // left-click on invalid red position = deselect
+                Cancel();
         }
-        else if (rightPressed || escapePressed)
+        else if (cancelPressed)
         {
             Cancel();
         }
@@ -130,7 +128,10 @@ public class PlantPlacementPreview : MonoBehaviour
 
     private void UpdateGhostPosition()
     {
-        Vector2 mouseWorld = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        if (!FarmPointerInput.TryGetScreenPosition(out Vector2 screenPosition))
+            return;
+
+        Vector2 mouseWorld = mainCamera.ScreenToWorldPoint(screenPosition);
 
         // Use the footprint's geometric center (in world units) for mouse-to-cell tracking.
         // spriteWorldOffset is a purely visual offset for the sprite pivot and must NOT be used
