@@ -200,6 +200,8 @@ Doc : [Using Threads](https://docs.bezi.com/fundamentals/threads)
 |---------|--------|
 | `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` | **Chemin de prod** (peu de temps auteur) — lu à chaque ouverture de projet |
 | `Notes/Bezi/SKILL_prefab_ui_3_phases.md` | Miroir Git du skill `/prefab-ui-3phases` (install runtime = AppData Bezi) |
+| `Notes/Bezi/ETUDE_prompts_bezi_distance.md` | **Note de référence (à voir)** : distance, file, stack vocal casque BT, limites API/CLI Bezy |
+| `Notes/Bezi/BEZY_QUEUE.md` | File d’attente phases Bezy à exécuter dans Unity |
 
 **Chaîne Cursor → Bezy :** Cursor rédige les `PROMPTS_Bezi_*.md` (même hors Unity) ; dans Bezi, `@` le prompt local puis `/prefab-ui-3phases` Phase N. L’auteur ne fait que lancer (2–5 min / phase).
 

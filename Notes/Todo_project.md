@@ -12,6 +12,7 @@ Références de détail :
 - Cloud services : `Notes/Ui/SPEC_services_inventory_market_cloud.md`
 - Navigation scènes : `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
 - Farm : `Notes/Farm/SYSTEMES_carte_mentale.md`
+- **Câblage IBC + grille + Bezy (biofiltre)** : `Notes/Farm/CABLAGE_biofiltre_ibc_grille_bezi.md`
 - Playtests batch : `Notes/Todo_playtest.md`
 - File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
 - Journal : `PROJECT_LOG.md`
