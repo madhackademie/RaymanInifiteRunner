@@ -38,14 +38,10 @@ public class BiofiltreGridVisualizer : MonoBehaviour
         gridManager = GetComponent<GridManager>();
     }
 
-    private void Start()
-    {
-        GenerateGrid();
-    }
-
     /// <summary>
     /// (Re)generates all cell GameObjects under <see cref="gridContainer"/>.
     /// Destroys any previously generated cells first.
+    /// Appelé une fois par <see cref="BiofiltreManager.Start"/> (pas ici : double ClearGrid).
     /// </summary>
     public void GenerateGrid()
     {
