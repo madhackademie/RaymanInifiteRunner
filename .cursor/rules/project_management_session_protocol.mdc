@@ -54,6 +54,9 @@ Branche courante documentee: **`feature/rework-biofiltre-grid`** (2026-08-29).
 
 Priorite immediate actuelle:
 - [P0-FARM-IBC-GRID-001] scale le sprite IBC pour qu'il accepte la grille (grille inchangee). Dump `Cuve_IBC_3quart_carre_parfait.png`.
-- [P0-SALE-STAR-PLAY-001] playtest tooltip etoiles des 3 bandeaux vente (hover ★ -> jauges + texte).
 
-Reportes: [P0-FARM-SPRITE-ALPHA-001] fond noir laitue, [P0-FARM-PLANT-TOUCH-001] pose tactile mobile, [P0-SALE-QTY-RAND-001] rand 1-3 salades ★1.
+Reportes: [P0-FARM-SPRITE-ALPHA-001] fond noir laitue, [P0-SALE-QTY-RAND-001] rand 1-3 salades ★1.
+
+Clos: [P0-SALE-STAR-PLAY-001] playtest tooltip etoiles 3 bandeaux vente — OK 2026-08-30.
+Clos: [P0-FARM-GRID-PLAY-001] grille sans colliders + clics + pose/recolte + pause/recall — OK 2026-08-30 (feature/rework-biofiltre-grid).
+Clos: [P0-FARM-PLANT-TOUCH-001] pose tactile — OK 2026-08-30 (meme playtest).

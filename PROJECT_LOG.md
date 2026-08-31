@@ -1,5 +1,34 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-30 — Playtest grille biofiltre validé (rework sans colliders)
+
+### Décision auteur
+- `[P0-FARM-GRID-PLAY-001]` **clos** : grille + clics coordonnées + pose/récolte + pause/recall persistance **fonctionnels** sur `feature/rework-biofiltre-grid`.
+- `[P0-FARM-PLANT-TOUCH-001]` **clos** — même playtest (tactile via `FarmPointerInput`).
+- Playtest HUD world FirstLvl reporté **après** jobs Bezy HOST (grille déjà OK).
+
+### Changements (docs)
+- `Notes/Todo_project.md`, `ASSISTANT_CONTEXT.md`, règles session — statuts `[x]`, note régression `GenerateGrid` 2× corrigée sur la feature.
+
+### Prochaine session
+- `[P0-FARM-IBC-GRID-001]` (câbler `BiofiltreIbcSpriteFitter` sur prefab).
+
+---
+
+## 2026-08-30 — Playtest vente étoiles validé
+
+### Décision auteur
+- `[P0-SALE-STAR-PLAY-001]` **clos** : playtest des 3 bandeaux (voisinage, bandoulière, vélo) — hover ★ → jauges + texte + fill live **fonctionnel**.
+
+### Changements (docs)
+- `Notes/Todo_project.md` — statut `[x]`, retiré des priorités immédiates.
+- `ASSISTANT_CONTEXT.md`, règles session — mémoire alignée.
+
+### Prochaine session
+- `[P0-FARM-IBC-GRID-001]` (branche `feature/rework-biofiltre-grid`).
+
+---
+
 ## 2026-08-29 — Agent VM : scripts HUD slots biofiltre (C# + art promo)
 
 ### Livré (branche `cursor/biofiltre-hud-slots-vm-957c`)

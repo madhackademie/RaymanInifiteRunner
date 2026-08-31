@@ -17,11 +17,15 @@
 
 ### Priorités prochaine session
 1. **[P0-FARM-IBC-GRID-001]** Scale le sprite IBC pour qu’il accepte la grille (grille = source de vérité, pas l’inverse). Dump `Cuve_IBC_3quart_carre_parfait.png`.
-2. Playtest vente ★ `[P0-SALE-STAR-PLAY-001]`.
-3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-FARM-PLANT-TOUCH-001]`, `[P0-SALE-QTY-RAND-001]`.
+2. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
 
-### Clos session 2026-08-25 (vente)
+### Clos grille rework (2026-08-30)
+- `[P0-FARM-GRID-PLAY-001]` — grille sans colliders, clics, pose/récolte, pause/recall persistance **OK** (`feature/rework-biofiltre-grid`).
+- `[P0-FARM-PLANT-TOUCH-001]` — tactile inclus dans le même playtest.
+
+### Clos session 2026-08-25 / 2026-08-30 (vente)
 - Jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` + compteurs `[P0-SALE-STAR-PROGRESS-001]` + UI étoiles Bezy.
+- Playtest 3 bandeaux ★ `[P0-SALE-STAR-PLAY-001]` — **OK 2026-08-30** (hover ★ → jauges + texte + fill live).
 
 ### Contexte Git
 - Branche : **`feature/rework-biofiltre-grid`**.
