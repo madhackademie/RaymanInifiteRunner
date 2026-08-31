@@ -32,6 +32,7 @@ public class BiofiltreGridVisualizer : MonoBehaviour
     private GridManager gridManager;
     private BiofiltreCell[,] cells;
     private Sprite runtimeSquareSprite;
+    private Sprite runtimeDiamondSprite;
 
     private void Awake()
     {
@@ -59,7 +60,7 @@ public class BiofiltreGridVisualizer : MonoBehaviour
 
         cells = new BiofiltreCell[columns, rows];
 
-        Sprite spriteToUse = cellSprite != null ? cellSprite : GetOrCreateSquareSprite();
+        Sprite spriteToUse = ResolveCellSprite();
 
         for (int col = 0; col < columns; col++)
         {
@@ -72,17 +73,15 @@ public class BiofiltreGridVisualizer : MonoBehaviour
                 cellObj.transform.SetParent(gridContainer, worldPositionStays: false);
                 cellObj.transform.position = worldCenter;
 
-                // Scale the sprite to exactly match the cell size in world units
                 SpriteRenderer sr = cellObj.AddComponent<SpriteRenderer>();
                 sr.sprite       = spriteToUse;
-                sr.sortingOrder = cellSortingOrder;
+                sr.sortingOrder = cellSortingOrder + col + row;
 
-                float ppu      = spriteToUse.pixelsPerUnit;
-                float scaleX   = cellSize.x * ppu / spriteToUse.rect.width;
-                float scaleY   = cellSize.y * ppu / spriteToUse.rect.height;
+                float ppu = spriteToUse.pixelsPerUnit;
+                float scaleX = cellSize.x * ppu / spriteToUse.rect.width;
+                float scaleY = cellSize.y * ppu / spriteToUse.rect.height;
                 cellObj.transform.localScale = new Vector3(scaleX, scaleY, 1f);
 
-                // Pas de collider : clic résolu par FarmGridPointerInput (ScreenToWorld → WorldToGrid).
                 BiofiltreCell cell = cellObj.AddComponent<BiofiltreCell>();
                 cell.Initialize(coords);
 
@@ -150,6 +149,14 @@ public class BiofiltreGridVisualizer : MonoBehaviour
 
     // ── Procedural fallback sprite ────────────────────────────────────────────
 
+    private Sprite ResolveCellSprite()
+    {
+        if (gridManager.CoordinateMode == GridCoordinateMode.Isometric)
+            return GetOrCreateDiamondSprite();
+
+        return cellSprite != null ? cellSprite : GetOrCreateSquareSprite();
+    }
+
     private Sprite GetOrCreateSquareSprite()
     {
         if (runtimeSquareSprite != null)
@@ -175,5 +182,38 @@ public class BiofiltreGridVisualizer : MonoBehaviour
         );
 
         return runtimeSquareSprite;
+    }
+
+    private Sprite GetOrCreateDiamondSprite()
+    {
+        if (runtimeDiamondSprite != null)
+            return runtimeDiamondSprite;
+
+        const int size = 32;
+        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, mipChain: false)
+        {
+            filterMode = FilterMode.Bilinear,
+            wrapMode   = TextureWrapMode.Clamp
+        };
+
+        float center = (size - 1) * 0.5f;
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float nx = (x - center) / center;
+                float ny = (y - center) / center;
+                bool inside = Mathf.Abs(nx) + Mathf.Abs(ny) <= 1.02f;
+                tex.SetPixel(x, y, inside ? Color.white : Color.clear);
+            }
+        }
+
+        tex.Apply();
+        runtimeDiamondSprite = Sprite.Create(
+            tex,
+            new Rect(0, 0, size, size),
+            new Vector2(0.5f, 0.5f),
+            pixelsPerUnit: size);
+        return runtimeDiamondSprite;
     }
 }

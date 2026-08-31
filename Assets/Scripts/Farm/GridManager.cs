@@ -33,8 +33,11 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Vector2 instanceWorldOrigin = Vector2.zero;
 
     [Header("Coordinate projection")]
-    [Tooltip("Orthogonal = carrés (actuel). Isometric = losanges — prêt pour rework visuel iso.")]
+    [Tooltip("Orthogonal = carrés. Isometric = losanges 2:1 (hauteur cellule = largeur × 0.5 si taille uniforme).")]
     [SerializeField] private GridCoordinateMode coordinateMode = GridCoordinateMode.Orthogonal;
+
+    /// <summary>Ratio hauteur/largeur d'une cellule iso en taille uniforme (losange jeu classique).</summary>
+    private const float IsometricHeightRatio = 0.5f;
 
     public GridData Grid { get; private set; }
 
@@ -62,16 +65,30 @@ public class GridManager : MonoBehaviour
     public Vector2 WorldOrigin => _worldOrigin;
 
     /// <summary>
-    /// AABB monde de la grille entière. Origine Rect = coin bas-gauche ;
-    /// width = Columns × cell X, height = Rows × cell Y.
+    /// AABB monde de la grille entière (coin bas-gauche).
+    /// Orthogonal : rectangle cols×rows. Isometric : enveloppe des losanges.
     /// </summary>
     public Rect GetWorldRect()
     {
-        ResolveLayout(out int cols, out int rows, out Vector2 cellSz, out Vector2 origin);
+        IGridCoordinateMapper mapper = GetOrCreateMapper(out int cols, out int rows);
+        Vector2[] corners = new Vector2[4];
+        float minX = float.MaxValue;
+        float minY = float.MaxValue;
+        float maxX = float.MinValue;
+        float maxY = float.MinValue;
 
-        float width = cols * cellSz.x;
-        float height = rows * cellSz.y;
-        return new Rect(origin.x, origin.y - height, width, height);
+        EncapsulateCell(mapper, new Vector2Int(0, 0), corners, ref minX, ref minY, ref maxX, ref maxY);
+        EncapsulateCell(mapper, new Vector2Int(cols - 1, 0), corners, ref minX, ref minY, ref maxX, ref maxY);
+        EncapsulateCell(mapper, new Vector2Int(0, rows - 1), corners, ref minX, ref minY, ref maxX, ref maxY);
+        EncapsulateCell(mapper, new Vector2Int(cols - 1, rows - 1), corners, ref minX, ref minY, ref maxX, ref maxY);
+
+        return Rect.MinMaxRect(minX, minY, maxX, maxY);
+    }
+
+    /// <summary>4 coins monde de la cellule, winding horaire.</summary>
+    public void GetCellWorldCorners(Vector2Int cell, Vector2[] corners)
+    {
+        GetOrCreateMapper(out _, out _).GetCellCorners(cell, corners);
     }
 
     private void Awake()
@@ -122,6 +139,46 @@ public class GridManager : MonoBehaviour
             worldOrigin = originFromTransform
                 ? (Vector2)transform.position + originOffset
                 : instanceWorldOrigin + originOffset;
+        }
+
+        if (coordinateMode == GridCoordinateMode.Isometric && IsUniformCellSize(cellSizeWorld))
+            cellSizeWorld = new Vector2(cellSizeWorld.x, cellSizeWorld.x * IsometricHeightRatio);
+    }
+
+    private static bool IsUniformCellSize(Vector2 cellSizeWorld) =>
+        Mathf.Abs(cellSizeWorld.x - cellSizeWorld.y) < 0.001f;
+
+    private IGridCoordinateMapper GetOrCreateMapper(out int cols, out int rows)
+    {
+        if (_coordinateMapper != null)
+        {
+            cols = _columns;
+            rows = _rows;
+            return _coordinateMapper;
+        }
+
+        ResolveLayout(out cols, out rows, out Vector2 cellSz, out Vector2 origin);
+        return GridCoordinateMapperFactory.Create(
+            coordinateMode,
+            new GridLayoutSnapshot(origin, cellSz, cols, rows));
+    }
+
+    private static void EncapsulateCell(
+        IGridCoordinateMapper mapper,
+        Vector2Int cell,
+        Vector2[] corners,
+        ref float minX,
+        ref float minY,
+        ref float maxX,
+        ref float maxY)
+    {
+        mapper.GetCellCorners(cell, corners);
+        for (int i = 0; i < 4; i++)
+        {
+            minX = Mathf.Min(minX, corners[i].x);
+            minY = Mathf.Min(minY, corners[i].y);
+            maxX = Mathf.Max(maxX, corners[i].x);
+            maxY = Mathf.Max(maxY, corners[i].y);
         }
     }
 

@@ -1,7 +1,7 @@
 # le protocole d'ouverture et fermeture du fichier IA/Github
 
 ## --1--
-Mise a jour github **avant tout travail** (gate d'ouverture, meme moment que le rappel credits Bezy).
+Mise a jour github **avant tout travail** (gate d'**ouverture de session**, pas a chaque chat Cursor — tampon `.cursor/session_pull_ok`).
 
 L'auteur execute (l'assistant colle la commande, ne la lance pas) :
 
@@ -11,7 +11,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1
 
 One-liner : `git fetch --all --prune; git status -sb; git pull`
 
-Puis dire a Cursor : **pull ok**. Tant que ce n'est pas confirme : **aucun prompt** (Bezy, VM, Cursor, metier).
+Puis dire a Cursor : **pull ok**. Tant que ce n'est pas confirme **dans cette session** : **aucun prompt** (Bezy, VM, Cursor, metier). Les chats suivants **de la meme session** lisent le tampon et n'attendent pas un 2e pull. Une 2e session le meme jour (autre machine, « on reprend », apres le journal) = nouveau pull.
 
 Detail : @GIT_HELPER.md [git helper](GIT_HELPER.md) § --1--, regle `.cursor/rules/session_git_sync.mdc`.
 

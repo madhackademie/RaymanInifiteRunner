@@ -110,6 +110,9 @@ InitTestScene*.unity*
 # Secrets locaux (tokens PAT, etc.) — jamais sur Git
 /secrets/*.txt
 
+# Tampon pull Git local (session Cursor, pas versionné)
+/.cursor/session_pull_ok
+
 # TMP — régénéré localement par Unity (évite conflits Git)
 Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
 Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset.meta

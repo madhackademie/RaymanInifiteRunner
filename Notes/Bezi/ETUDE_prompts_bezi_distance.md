@@ -416,7 +416,7 @@ Pour que Cursor mappe ta voix vers la file sans ambiguïté :
 
 Exemple :
 
-> « Bezy, task BZ-FARM-BIOHUD-PRIM-001, prefab PrimarySlotRow, phase 4, branche feature rework biofiltre grid. »
+> « Bezy, task BZ-FARM-BIOHUD-PRIM-001, prefab PrimarySlotRow, phase 1, branche feature rework biofiltre grid. »
 
 Cursor doit alors : mettre à jour `PROMPTS_Bezi_*.md` si besoin, ajouter une ligne dans `BEZY_QUEUE.md`, fournir le bloc `/prefab-ui-3phases` copiable.
 

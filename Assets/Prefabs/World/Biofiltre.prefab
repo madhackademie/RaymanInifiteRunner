@@ -121,8 +121,8 @@ MonoBehaviour:
   instanceCellWidth: 1
   instanceCellHeight: 1
   originFromTransform: 1
-  originOffset: {x: 0, y: 0}
   instanceWorldOrigin: {x: 0, y: 0}
+  coordinateMode: 1
 --- !u!114 &5171608283822144346
 MonoBehaviour:
   m_ObjectHideFlags: 0

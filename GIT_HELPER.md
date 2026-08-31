@@ -205,7 +205,7 @@ Si une branche locale affiche `[origin/...: gone]` : la branche distante n'exist
 
 ## --1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
 
-**Gate d'ouverture** (avec le rappel credits Bezy) : l'auteur lance le script, l'assistant **attend** « pull ok » **avant tout prompt, tout court**.
+**Gate d'ouverture de session** (pas chaque chat, pas un seul pull/jour) : tampon `.cursor/session_pull_ok`. Skip seulement si la **meme session** est encore `open`. Nouvelle session le meme jour (journal, autre machine, « on reprend ») = pull. Garde-fou : tampon `open` d'un autre jour = zombie. L'auteur lance le script ; l'assistant **attend** « pull ok » **avant tout prompt**.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1

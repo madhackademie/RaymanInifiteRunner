@@ -5,9 +5,33 @@ alwaysApply: true
 
 # Sync Git en ouverture de session
 
-À **chaque nouveau chat** (premier message), et à chaque bootstrap / « tâche du jour » / « on reprend ».
+Gate **par session de travail**, pas par chat Cursor, **pas par jour calendaire**.
+
+Une **session** = de « pull ok » jusqu’à fermeture explicite. Plusieurs chats **dans la même session** ne re-bloquent pas. Plusieurs sessions **le même jour** (fixe / portable / téléphone, pause, 2e bloc) = **un pull par session**.
 
 Même moment que le rappel crédits Bezy (reset le **30**).
+
+Tampon **local machine** (gitignored, ne traverse pas Git ni les autres PC) : `.cursor/session_pull_ok`
+
+## 0) Premier message d’un chat — lire le tampon, puis le type de demande
+
+Lire `.cursor/session_pull_ok` **avant** de coller la commande pull.
+
+### Toujours gate (nouvelle session), même si le tampon est `open`
+
+L’auteur dit un de : **tâche du jour** · **on reprend** · **nouvelle session** · **bootstrap session** · **je change de machine**.
+
+### Sinon — tampon
+
+| Tampon | Action |
+|--------|--------|
+| `status: open` et `opened_at` = **aujourd’hui** | **Même session** (nouveau chat) → ne pas re-bloquer |
+| `status: closed` ou fichier absent | **Nouvelle session** → gate §1–2 |
+| `status: open` mais `opened_at` **≠ aujourd’hui** | **Garde-fou** (journal oublié / session zombie) → gate §1–2 |
+
+Le garde-fou « date » n’autorise **pas** un seul pull/jour : il ne rattrape que les tampons restés `open` après minuit. Deux sessions le **même** jour passent par `closed` ou par les mots-clés ci-dessus.
+
+Ne pas relancer le gate en **milieu** de conversation déjà synchro.
 
 ## 1) Rappeler (auteur execute, pas l’assistant)
 
@@ -28,4 +52,23 @@ Tant que l’auteur n’a pas confirmé (`pull ok`, `c’est fait`, sortie du sc
 - **Aucun prompt** : ni Bezy, ni agent VM, ni travail Cursor, ni réponse métier à la demande.
 - OK uniquement : 1 ligne crédits Bezy + coller la commande + **STOP**.
 
-Ne pas re-bloquer en milieu de conversation déjà synchro. Ne pas lancer `git pull` / le script à la place de l’auteur.
+Ne pas lancer `git pull` / le script à la place de l’auteur.
+
+## 3) Après « pull ok »
+
+Écrire / écraser `.cursor/session_pull_ok` :
+
+```
+status: open
+opened_at: YYYY-MM-DDTHH:MM
+confirmed_by: auteur
+note: pull ok — session en cours
+```
+
+## 4) Fermer la session
+
+- « Mets à jour le journal » → `status: closed` (garder `opened_at`).
+- Prochain chat, autre machine, ou mot-clé §0 → gate §1.
+
+90 % des cas : 1 session = 1 jour (fermeture le soir + garde-fou minuit).  
+10 % : 2e session le même jour = journal **ou** « on reprend » / « nouvelle session » → nouveau pull.

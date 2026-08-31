@@ -1,5 +1,51 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-08-31 — Note icônes quotidiennes + gate Git par session
+
+### Décisions
+- Prompt générique icônes UI + file quotidienne : `Notes/Art/PROMPT_generation_icones.md` (Dump, pas promo auto).
+- Gate pull Git = **par session de travail**, plus par chat **ni par jour** : tampon local `.cursor/session_pull_ok` (gitignored, une machine = une session). Fermeture = journal. 2e session le même jour = « on reprend » / tâche du jour / autre PC. Garde-fou : tampon `open` d’un autre jour = zombie → re-pull.
+
+### Prochaine session (inchangée)
+- `[P0-FARM-IBC-GRID-001]` auteur Inspector IBC.
+- Bezy : `[BZ-FARM-BIOHUD-HOST-001]` Phase 1.
+
+---
+
+## 2026-08-31 — Fin session : skill HUD slots (PRIM clos, SEC row P3 en attente)
+
+### Objectif
+- Suivi `/prefab-ui-3phases` sur `feature/rework-biofiltre-grid` (pas de Phase 4 skill : un cycle 1–3 par prefab).
+
+### Livré Bezy (review Cursor YAML)
+- `[BZ-FARM-BIOHUD-PRIM-001]` **clos** : `UiBiofiltrePrimarySlotRow` (Slot1–3 nested, view wired). Polish optionnel : HLG spacing 4 / 224 au lieu de 8 / 240.
+- `[BZ-FARM-BIOHUD-SEC-001]` atome **clos** : `UiBiofiltreSecondarySlot` (Images + SlotView wired). Polish : sizeDelta encore 72×80 (nested row override 48×48).
+- Rangée secondaire : Ph.1–3 **OK** (`slots[5]` Secondary1–5, `visibleSlotCount=5`). Polish : HLG spacing 10 (spec 6).
+
+### Décision auteur (fin de session)
+- Suite Bezy : **`[BZ-FARM-BIOHUD-HOST-001]`** (`BiofiltreHud.prefab` Ph.1–3). Puis assignation `hudPrefab` auteur + playtest HUD world.
+- Priorité #1 prochaine session reste **`[P0-FARM-IBC-GRID-001]`** (Inspector, pas Bezy).
+
+### Prochaine session (référence « tâche du jour »)
+1. `[P0-FARM-IBC-GRID-001]` auteur : `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC`.
+2. Bezy : **`[BZ-FARM-BIOHUD-HOST-001]` Phase 1** — `Notes/Bezi/BEZY_QUEUE.md` + `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`.
+3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
+
+---
+
+## 2026-08-31 — Prochaine session : assignation IBC auteur (pas Bezy)
+
+### Décision auteur
+- L’assignation `BiofiltreIbcSpriteFitter` / `ibcSprite` sur `Biofiltre.prefab` (World) est **auteur Inspector**, pas Bezy.
+- Sprite runtime déjà promu : `Assets/Art/Sprites/Farm/Biofiltre/Cuve_IBC.png` (Dump `Cuve_IBC_deck_carre_plus_face.png`).
+
+### Prochaine session (référence « tâche du jour »)
+- **[P0-FARM-IBC-GRID-001]** Prefab Mode `Biofiltre` → Add Component `BiofiltreIbcSpriteFitter` → `ibcSprite` = `Cuve_IBC` → Play Mode alignement deck ↔ grille.
+- Bezy (parallèle, skill) : `[BZ-FARM-BIOHUD-SEC-001]` — `Notes/Bezi/BEZY_QUEUE.md`.
+- Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
+
+---
+
 ## 2026-08-30 — Playtest grille biofiltre validé (rework sans colliders)
 
 ### Décision auteur

@@ -16,7 +16,10 @@
 - `Assets/Scripts/UI/BiofiltreHud/BiofiltreHudView.cs`
 - `Assets/Scripts/UI/Stars/UiStarRowView.cs` (host seulement)
 
-**Ordre jobs :** PRIM-001 (slot Ph.1–3, row Ph.4–5) → SEC-001 (idem) → HOST-001 (Ph.1–3).  
+**Skill `/prefab-ui-3phases` = uniquement Phase 1 (hierarchy), 2 (components), 3 (wiring).**  
+Chaque **prefab** relance un cycle 1→2→3. Il n’y a **pas** de Phase 4/5 côté skill.
+
+**Ordre jobs :** PRIM-001 slot (Ph.1–3, **livré**) → PRIM-001 **row** (nouveau cycle Ph.1–3) → SEC-001 slot puis row → HOST-001 (Ph.1–3).  
 **Un job / une phase / un appel skill.** Prefab Mode ouvert recommandé ; **obligatoire** Ph.3.
 
 **Crédits Bezy :** reset **30** de chaque mois.
@@ -27,7 +30,7 @@
 
 **Prefabs :**  
 `Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlot.prefab`  
-`Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlotRow.prefab` (après Ph.3)
+`Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlotRow.prefab` (nouveau cycle 1–3, après slot Ph.3)
 
 Sprites : `slotBiofiltrePrimaire_0` Slot · `_1` Fill · `_2` Lock  
 (`Assets/Art/Sprites/UI/Biofiltre/slotBiofiltrePrimaire.png`)
@@ -110,10 +113,14 @@ Keep LayoutElement + Images. m_Layer: 5.
 Done = Save. Confirm three Image refs assigned. STOP.
 ```
 
-### Phase 4 — Shell rangée primaire (N=3)
+### Rangée primaire — nouveau cycle skill (même Task ID, autre prefab)
+
+Slot atome **clos** (Ph.1–3). Relancer `/prefab-ui-3phases` sur `UiBiofiltrePrimarySlotRow.prefab` : **Phase 1**, pas 4.
+
+### Phase 1 — Shell rangée primaire (N=3)
 
 ```
-[BZ-FARM-BIOHUD-PRIM-001] Phase 4 ONLY — UiBiofiltrePrimarySlotRow shell. Wait success. STOP after save.
+[BZ-FARM-BIOHUD-PRIM-001] Phase 1 ONLY — UiBiofiltrePrimarySlotRow shell. Wait success. STOP after save.
 
 Do not rescan whole project. Do not modify C#. No Simulate.
 Do NOT recreate UiBiofiltrePrimarySlot. Do NOT unpack nested prefabs.
@@ -128,43 +135,67 @@ Nest THREE Prefab Instances of
 Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlot.prefab
 Names: Primary1, Primary2, Primary3 (left to right).
 
-On root: HorizontalLayoutGroup spacing 8, childAlignment MiddleLeft,
-childControlWidth=false, childControlHeight=false,
-childForceExpandWidth=false, childForceExpandHeight=false
-RectTransform: anchors middle-left, pivot 0,0.5, sizeDelta ~240 x 80
+Root RectTransform: anchors middle-left, pivot 0,0.5, sizeDelta 240 x 80.
+Keep nested size 72x80.
 
-No extra Images/scripts this phase. Keep nested size 72x80.
+No Image / TMP / LayoutGroup / Button / Animator / Canvas / scripts this phase.
+Hierarchy + nested instances only.
 
-Done = Save. List 3 nested instance names. STOP.
+Done = Save. List 3 nested instance names + root sizeDelta. STOP.
 ```
 
-### Phase 5 — Wire rangée primaire
+### Phase 2 — Layout rangée primaire
 
 ```
-[BZ-FARM-BIOHUD-PRIM-001] Phase 5 ONLY — wire UiBiofiltreSlotRowView primary. Wait success. STOP after save.
+[BZ-FARM-BIOHUD-PRIM-001] Phase 2 ONLY — PrimarySlotRow HorizontalLayoutGroup. Wait success. STOP after save.
 
 Do not rescan whole project. Do not modify C#. No Simulate. Do not unpack nested.
 
 File ONLY:
 - Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlotRow.prefab
 
-Script already exists:
-- Assets/Scripts/UI/BiofiltreHud/UiBiofiltreSlotRowView.cs
+On root: HorizontalLayoutGroup spacing 8, childAlignment MiddleLeft,
+childControlWidth=false, childControlHeight=false,
+childForceExpandWidth=false, childForceExpandHeight=false
 
-On root: add UiBiofiltreSlotRowView
-- slots array size 3 → Primary1…Primary3 UiBiofiltreSlotView (order)
-- visibleSlotCount = 3 if the field exists
+Set root sizeDelta to 240 x 80 (fits 3x72 + 2x8). Do not rename children
+(keep Slot1, Slot2, Slot3 left to right). Do not unpack.
 
-m_Layer: 5.
+No extra Images/scripts. Keep nested size 72x80. m_Layer: 5.
 
-Done = Save. Confirm slots[3] wired. STOP.
+Done = Save. List HLG spacing + childAlignment + root sizeDelta. STOP.
+```
+
+### Phase 3 — Wire rangée primaire
+
+```
+[BZ-FARM-BIOHUD-PRIM-001] Phase 3 ONLY — wire UiBiofiltreSlotRowView primary. Wait success. STOP after save.
+
+Do not rescan whole project. Do not modify C#. No Simulate. Do not unpack nested.
+Prefab Mode REQUIRED.
+
+File ONLY:
+- Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlotRow.prefab
+
+UiBiofiltreSlotRowView is ALREADY on the root. Do NOT add a second copy.
+Script: Assets/Scripts/UI/BiofiltreHud/UiBiofiltreSlotRowView.cs
+
+On the EXISTING UiBiofiltreSlotRowView:
+- slots array size 3 → Slot1, Slot2, Slot3 UiBiofiltreSlotView (left to right)
+- keep visibleSlotCount = 3
+- keep stateOnStart Locked
+
+On existing HorizontalLayoutGroup: set spacing 8 (not 4).
+Root sizeDelta 240 x 80. Keep childControl/forceExpand false. m_Layer: 5.
+
+Done = Save. Confirm slots[3] assigned + HLG spacing 8. STOP.
 ```
 
 **Checklist review PRIM (Cursor)**
 - [ ] Slot 72×80, Slot/Fill/Lock, layer 5
 - [ ] Sprites `_0` `_1` `_2` (Sprites/UI/Biofiltre, pas Dump)
 - [ ] Fill inactive, Lock active
-- [ ] Row 3 nested, HLG spacing 8, view wired
+- [x] Row 3 nested, view wired Slot1–3 (HLG spacing 4 / 224 — polish optionnel 8 / 240)
 
 ---
 
@@ -213,6 +244,7 @@ File ONLY:
 - Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlot.prefab
 
 Root LayoutElement preferred/min 48 x 48.
+Root sizeDelta MUST be 48 x 48 (fix if currently 72 x 80).
 
 Slot Image: slotBiofiltreSecondaire_0 from
 Assets/Art/Sprites/UI/Biofiltre/slotBiofiltreSecondaire.png
@@ -224,7 +256,7 @@ Lock Image: slotBiofiltreSecondaire_2. Preserve Aspect, raycast OFF. ACTIVE.
 
 m_Layer: 5.
 
-Done = Save. List sprites + Fill inactive. STOP.
+Done = Save. List sprites + Fill inactive + root sizeDelta 48x48. STOP.
 ```
 
 ### Phase 3 — Wire atome secondaire
@@ -232,66 +264,106 @@ Done = Save. List sprites + Fill inactive. STOP.
 ```
 [BZ-FARM-BIOHUD-SEC-001] Phase 3 ONLY — wire UiBiofiltreSlotView on secondary. Wait success. STOP after save.
 
-Do not rescan whole project. Do not modify C#. No Simulate.
+Do not rescan whole project. Do not modify C#. No Simulate. Prefab Mode REQUIRED.
 
 File ONLY:
 - Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlot.prefab
 
-Reuse Assets/Scripts/UI/BiofiltreHud/UiBiofiltreSlotView.cs (same as primary, do not duplicate script).
+UiBiofiltreSlotView is ALREADY on the root. Do NOT add a second copy.
+Reuse Assets/Scripts/UI/BiofiltreHud/UiBiofiltreSlotView.cs (do not duplicate).
 
-Root: add UiBiofiltreSlotView — slotImage/fillImage/lockImage → Slot/Fill/Lock Images.
-Fill inactive, Lock active. m_Layer: 5.
+On the EXISTING UiBiofiltreSlotView (refs are currently None / fileID 0 — MUST assign, not skip):
+- slotImage → Slot Image
+- fillImage → Fill Image
+- lockImage → Lock Image
+Keep Fill inactive, Lock active, stateOnStart Locked.
 
-Done = Save. Confirm refs. STOP.
+Root sizeDelta MUST be 48 x 48 (not 72 x 80).
+LayoutElement min/preferred MUST be 48 x 48 (not 72 x 80).
+m_Layer: 5.
+
+Save prefab (Ctrl+S). Done = list the three assigned Image names + sizeDelta. STOP.
 ```
 
-### Phase 4 — Shell rangée secondaire (N=5)
+### Rangée secondaire — nouveau cycle skill (après slot Ph.3)
+
+Même mapping que le primaire : **Phase 1** (shell), **Phase 2** (HLG), **Phase 3** (wire). Pas de Phase 4/5.
+
+### Phase 1 — Shell rangée secondaire (N=5)
 
 ```
-[BZ-FARM-BIOHUD-SEC-001] Phase 4 ONLY — UiBiofiltreSecondarySlotRow shell. Wait success. STOP after save.
+[BZ-FARM-BIOHUD-SEC-001] Phase 1 PATCH only — do NOT rebuild from scratch. Wait success. STOP after save.
 
 Do not rescan whole project. Do not modify C#. No Simulate. Do not unpack.
+Do NOT delete the prefab. Do NOT recreate the root.
 
-Create NEW prefab ONLY:
+File ONLY (already exists):
 - Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab
 
-Root: UiBiofiltreSecondarySlotRow, m_Layer: 5.
+Current state (keep root): 3 nested Slot1, Slot2, Slot3. Root sizeDelta 224x80.
 
-Nest FIVE instances of
-Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlot.prefab
-Names: Secondary1 … Secondary5.
+Change ONLY this:
+1) Rename nested: Slot1→Secondary1, Slot2→Secondary2, Slot3→Secondary3.
+2) Add TWO more nested Prefab Instances of
+   Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlot.prefab
+   named Secondary4 and Secondary5 (right of Secondary3). Sibling order
+   Secondary1 … Secondary5 left to right.
+3) Root sizeDelta 280 x 48 (keep anchors middle-left, pivot 0,0.5, layer 5).
+4) Each nested sizeDelta 48 x 48 (not 72x80).
 
-Root HorizontalLayoutGroup spacing 6, MiddleLeft,
-childControl/forceExpand all false.
-sizeDelta ~280 x 48, anchors middle-left, pivot 0,0.5.
+No LayoutGroup / Image / script this phase.
 
-Done = Save. List 5 nested names. STOP.
+Done = Save. List 5 names + root sizeDelta. STOP.
 ```
 
-### Phase 5 — Wire rangée secondaire
+### Phase 2 — Layout rangée secondaire
 
 ```
-[BZ-FARM-BIOHUD-SEC-001] Phase 5 ONLY — wire UiBiofiltreSlotRowView secondary. Wait success. STOP after save.
+[BZ-FARM-BIOHUD-SEC-001] Phase 2 ONLY — SecondarySlotRow HorizontalLayoutGroup. Wait success. STOP after save.
 
 Do not rescan whole project. Do not modify C#. No Simulate. Do not unpack.
 
 File ONLY:
 - Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab
 
-Reuse UiBiofiltreSlotRowView.cs (do not create a second row script).
+On root: HorizontalLayoutGroup spacing 6, childAlignment MiddleLeft,
+childControlWidth=false, childControlHeight=false,
+childForceExpandWidth=false, childForceExpandHeight=false
 
-Root: add UiBiofiltreSlotRowView
-- slots[5] → Secondary1…5 UiBiofiltreSlotView
-- visibleSlotCount = 5 if field exists
+m_Layer: 5. No extra Images/scripts. Do NOT add UiBiofiltreSlotRowView yet.
 
-m_Layer: 5.
+Done = Save. List HLG spacing + childAlignment. STOP.
+```
 
-Done = Save. Confirm slots[5]. STOP.
+### Phase 3 — Wire rangée secondaire
+
+```
+[BZ-FARM-BIOHUD-SEC-001] Phase 3 ONLY — wire UiBiofiltreSlotRowView secondary. Wait success. STOP after save.
+
+Do not rescan whole project. Do not modify C#. No Simulate. Do not unpack.
+Prefab Mode REQUIRED.
+
+File ONLY:
+- Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab
+
+UiBiofiltreSlotRowView is ALREADY on the root. Do NOT add a second copy.
+Reuse Assets/Scripts/UI/BiofiltreHud/UiBiofiltreSlotRowView.cs
+
+On the EXISTING UiBiofiltreSlotRowView:
+- slots array size 5 → Secondary1, Secondary2, Secondary3, Secondary4, Secondary5
+  (left to right, each child's UiBiofiltreSlotView)
+- visibleSlotCount MUST be 5 (currently 3 — fix it)
+- keep stateOnStart Locked
+
+On existing HorizontalLayoutGroup: set spacing 6 (currently 10).
+Keep childControl/forceExpand false. Root sizeDelta 280 x 48. m_Layer: 5.
+
+Done = Save. Confirm slots[5] assigned + visibleSlotCount 5 + spacing 6. STOP.
 ```
 
 **Checklist review SEC (Cursor)**
-- [ ] 48×48, 5 nested, sprites secondaires Sprites/ pas Dump
-- [ ] Même `UiBiofiltreSlotView` / `UiBiofiltreSlotRowView` que le primaire
+- [x] 48×48 nested, 5 Secondary1–5, sprites Sprites/ pas Dump
+- [x] Même `UiBiofiltreSlotView` / `UiBiofiltreSlotRowView` que le primaire (spacing HLG 10)
 
 ---
 
@@ -394,14 +466,11 @@ Done = Save. Confirm 3 view refs. STOP.
 
 ```
 /prefab-ui-3phases
-Task ID: [BZ-FARM-BIOHUD-PRIM-001]
-Prefab: Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlot.prefab
+Task ID: [BZ-FARM-BIOHUD-HOST-001]
+Prefab: Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab
 Phase: 1
 ```
 
-Après Ph.3 slot : même Task ID, Prefab `UiBiofiltrePrimarySlotRow.prefab`, Phase 4 puis 5.
-
-Puis SEC-001 (slot Phase 1–3, row 4–5).  
-Puis HOST-001 Phases 1–3, Prefab `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab`.
+SEC-001 **clos** (atome + row). HOST = **nouveau cycle** Phase 1.
 
 `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md` à chaque appel.

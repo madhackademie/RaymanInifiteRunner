@@ -3,7 +3,7 @@
 **Branche :** `feature/rework-biofiltre-grid`  
 **Dernière mise à jour :** 2026-08-30  
 **Statut playtest grille :** `[P0-FARM-GRID-PLAY-001]` clos — clics, pose, récolte, pause/recall OK  
-**Statut IBC visuel :** `[P0-FARM-IBC-GRID-001]` ouvert — script prêt, prefab pas encore câblé  
+**Statut IBC visuel :** `[P0-FARM-IBC-GRID-001]` ouvert — grille iso 2:1 branchée ; sprite cuve iso (dessus losange) manquant  
 **Statut HUD Bezy :** partiel — atome primaire livré ; row + secondaire + host à faire
 
 Ce document centralise **qui fait quoi**, **où brancher quoi dans l’Inspector**, et **l’ordre Bezy** pour ne pas reposer la question à chaque session.
@@ -109,9 +109,13 @@ Valeurs typiques sur le prefab (à ne **pas** changer pour coller à l’art IBC
 | `instanceColumns` / `instanceRows` | ex. `10` × `10` |
 | `instanceCellSize` | ex. `1` |
 | `originFromTransform` | `true` — origine = position du transform biofiltre |
-| `coordinateMode` | `Orthogonal` (iso prêt en code, visuel carré) |
+| `coordinateMode` | **`Isometric`** (losanges 2:1). Orthogonal reste dispo dans l’Inspector. |
+
+**Iso 2:1 :** si taille de cellule uniforme, `GridManager` applique `hauteur = largeur × 0.5` (losange jeu classique). Ne pas changer `Columns` / `Rows` / `CellSize` pour coller à l’art.
 
 **Règle produit :** la grille est la **source de vérité**. L’art IBC se redimensionne pour l’accueillir, pas l’inverse.
+
+**Art IBC iso :** le dessus plantable doit être un **losange 2:1** (pas le carré 3/4 actuel `Cuve_IBC_3quart_carre_parfait.png`). Nouveau sprite → Dump, promo auteur, puis `BiofiltreIbcSpriteFitter.ibcSprite`.
 
 ---
 
@@ -176,14 +180,14 @@ deckNormalized = Rect(0.0266, 0.4483, 0.9446, 0.5232)
 
 ### Procédure de câblage (auteur Unity)
 
-1. **Promouvoir l’art** (avec OK auteur) :
-   - Source Dump : `Assets/Art/Assets Store Dump/ElementProd/Biofiltre/`
-   - Cible recommandée : `Assets/Art/Sprites/Farm/Biofiltre/Cuve_IBC_deck_carre_plus_face.png` (+ `.meta` nouveau GUID)
-   - **Ne pas** référencer le Dump depuis le prefab ou les scripts.
+1. **Promouvoir l’art** (fait 2026-08-31) :
+   - Source Dump : `Cuve_IBC_deck_carre_plus_face.png` (reste dans Dump)
+   - Runtime : `Assets/Art/Sprites/Farm/Biofiltre/Cuve_IBC.png` (GUID `c8f3e21a4b7d4e9c8a6f0d5e1b3947c2`)
+   - **Ne pas** référencer le Dump depuis le prefab.
 
 2. **Sur `Biofiltre.prefab`** :
    - Add Component → `BiofiltreIbcSpriteFitter`
-   - `ibcSprite` → sprite promu ci-dessus
+   - `ibcSprite` → `Cuve_IBC` (`Sprites/Farm/Biofiltre/Cuve_IBC.png`)
    - `sortingOrder` → `-1` (sous les cellules/plantes, au-dessus du fond scène si besoin)
    - `deckNormalized` → laisser défaut ou ajuster après playtest
 
@@ -261,9 +265,9 @@ Assets/Art/Sprites/UI/Biofiltre/slotBiofiltreSecondaire.png  (idem)
 ```
 Assets/Prefabs/Ui/Common/
 ├── UiBiofiltrePrimarySlot.prefab          ✅ livré (Ph.1–3 Bezy)
-├── UiBiofiltrePrimarySlotRow.prefab       ❌ à faire (Ph.4–5)
-├── UiBiofiltreSecondarySlot.prefab        ❌ à faire (Ph.1–3)
-└── UiBiofiltreSecondarySlotRow.prefab     ❌ à faire (Ph.4–5)
+├── UiBiofiltrePrimarySlotRow.prefab       ✅ livré (Ph.1–3, spacing 4)
+├── UiBiofiltreSecondarySlot.prefab        ✅ livré (Ph.1–3, size 72×80 resté)
+└── UiBiofiltreSecondarySlotRow.prefab     ✅ livré (Ph.1–3, spacing 10)
 
 Assets/Prefabs/Ui/Common/                  (réutilisés, existants)
 ├── UiStarSlot.prefab
@@ -320,9 +324,9 @@ Tailles : primaire **72×80**, secondaire **48×48**.
 | Étape | Task ID | Prefab | Phases | Statut |
 |-------|---------|--------|--------|--------|
 | 1 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlot.prefab` | 1 → 2 → 3 | ✅ |
-| 2 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlotRow.prefab` | 4 → 5 | ❌ |
-| 3 | `[BZ-FARM-BIOHUD-SEC-001]` | `UiBiofiltreSecondarySlot.prefab` | 1 → 2 → 3 | ❌ |
-| 4 | `[BZ-FARM-BIOHUD-SEC-001]` | `UiBiofiltreSecondarySlotRow.prefab` | 4 → 5 | ❌ |
+| 2 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlotRow.prefab` | 1 → 2 → 3 | ✅ |
+| 3 | `[BZ-FARM-BIOHUD-SEC-001]` | `UiBiofiltreSecondarySlot.prefab` | 1 → 2 → 3 | ✅ |
+| 4 | `[BZ-FARM-BIOHUD-SEC-001]` | `UiBiofiltreSecondarySlotRow.prefab` | 1 → 2 → 3 | ✅ |
 | 5 | `[BZ-FARM-BIOHUD-HOST-001]` | `BiofiltreHud.prefab` | 1 → 2 → 3 | ❌ |
 | 6 | **Auteur** | `Biofiltre.prefab` | Add `BiofiltreHudBinder` + assign `hudPrefab` | ❌ |
 | 7 | **Auteur** | FirstLvl playtest | HUD world après HOST | ❌ |
@@ -331,9 +335,9 @@ Tailles : primaire **72×80**, secondaire **48×48**.
 
 ```
 /prefab-ui-3phases
-Task ID: [BZ-FARM-BIOHUD-PRIM-001]
-Prefab: Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlotRow.prefab
-Phase: 4
+Task ID: [BZ-FARM-BIOHUD-HOST-001]
+Prefab: Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab
+Phase: 1
 ```
 
 Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
@@ -364,7 +368,7 @@ Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 
 ### Cuve IBC — `[P0-FARM-IBC-GRID-001]`
 
-- [ ] Sprite promu dans `Sprites/Farm/Biofiltre/`
+- [x] Sprite promu dans `Sprites/Farm/Biofiltre/` (`Cuve_IBC.png`, 2026-08-31)
 - [ ] `BiofiltreIbcSpriteFitter` sur `Biofiltre.prefab`
 - [ ] `ibcSprite` assigné
 - [ ] Playtest alignement deck ↔ grille
@@ -372,8 +376,9 @@ Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 ### HUD Bezy — `[BZ-FARM-BIOHUD-*]`
 
 - [x] `UiBiofiltrePrimarySlot.prefab` (Ph.1–3)
-- [ ] `UiBiofiltrePrimarySlotRow.prefab` (Ph.4–5)
-- [ ] `UiBiofiltreSecondarySlot.prefab` + Row
+- [x] `UiBiofiltrePrimarySlotRow.prefab` (Ph.1–3, 2026-08-31 ; spacing 4 resté)
+- [x] `UiBiofiltreSecondarySlot.prefab` (Ph.1–3, 2026-08-31 ; size 72×80 resté)
+- [x] `UiBiofiltreSecondarySlotRow.prefab` (Ph.1–3, 2026-08-31 ; spacing 10 resté)
 - [ ] `BiofiltreHud.prefab` (HOST)
 - [ ] `BiofiltreHudBinder` + `hudPrefab` sur instance biofiltre
 - [ ] Playtest HUD world (`[P0-FARM-GRID-PLAY-001]` grille déjà OK)

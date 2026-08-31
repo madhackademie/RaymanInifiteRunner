@@ -1,0 +1,88 @@
+Je vais noté ici toutes les idées dans un seul bloc et demander à cursor d'en faire le tri. il devra supprimer les éléments prompt
+une fois trié dans la doc MVP.md (minimal viable product). Et dans ce meme dossier il y aura un stock de prompt 
+définit par branche/feature qui pourra etre pris pour lancer les commandes cursor a distance par VM.
+
+---prompt---Analyse MVP
+Je voudrais une analyse brut simple des features minimum qu'il faut a notre jeu 
+pour avoir un hoock correct et un interet immersif. pour cela tu dois :
+"me définir quel lvl minimum visé avant de commercialisé le jeu et le contenu relatif a ce lvl
+ainsi que les features minimum et le dashboard liée. pour cette analyse l'objectif est
+d'avoir un joueur qui se connect 2 a 3 fois par jour pour 5 a 10 min de gameplay. Il doit vouloir
+revenir pour récuperer sont farm et avancer vers ces objectifs d'upgrade.
+Ce prompt devra etre relancer toute les 2 semaines pour revoir le context avec l'ajout des nouvelles idées. Tu est en droit 
+de mettre a jour les autres doc et analysé l'ensemble du projet pour completer/questionné les doublons d'idées.
+Créer une note et une todo daté pour suivre ce control récurent. 
+
+---prompt---lvl minimum max
+La question ici est de trouver un équilibre entre la quantité de contenu a produire avec une évolution progresive
+de la durée et le maintient du fun. En gros je veux produire le moin de contenu possible (d'ou l'intégration de presige)
+et avoir le plus de rétention player possible. Je jette mes idées soumis à ta critique basé sur ce qui se fait 
+à l'heure actuelle sur le marché mobile casual. J'imagine mettre un palier au lvl 10 qui débloquera les poissons
+dans le fishtank (qui ne sera que décoratif dans les premiers jours de jeu entre 7 a 10 je dirais) Cette durée 
+correspond à un des élements de la question trop court trop long (il faudra voir pour mettre ne place l'analytique unity) et
+les test agents unity.
+donc je reprends lvl 10 (on parle par system/map scindé en fishtank/biofiltre sachant qu'une map représente un ensemble
+aquaponique).
+    ->nb de plante par lvl (avoir un mix qui donne un beau rendu dans le jeu) mon idée est 3.
+        ->palier pour débloquer des new plantes ?(lvl 3-5-7-10)?
+            ->comment équilibré ? 
+                ->taux germination % (taux de germination selon qualité graine, aléa fourmis, oiseau) modificateur recherche + shield
+                ->taux récolte finale (surement défini a 100% par graine germé minus les infinités d'aléa (rat,oiseau,fourmi,slug)) idem 
+                modificateur recherche, lvl & shield.
+                ->quantité récolté X etat plante/fruits Y etat graines
+                ->duré de cycle seconde (pour chaque état)
+                ->valeur de base en vente plante/graines (trop chère jeu dure et long et vice-versa)
+    ->nb de feature minimal requise pour la boucle et le fun ? (il y aura une liste en forme de prompt pour 
+    toutes les features prévue)
+        je vais liseter ce qui me s'emble le minimum :
+            ->achat (graine et consomable)
+            ->vente
+            ->inventaire
+            ->plantation/recolte
+            ->lvl biofiltre (les poissons et tous le biome uniquement si le jeu fait du chiffre) (il y a 1 lvl biofitre par map)
+            ->recherche (pour forcer le joueur à plante récolter gagné/investir pour gagné plus plus vite)
+            ->prestige (pour garder le joueur a travailler sur ces biofiltre à l'infini)
+            ->gestion fishtank et qualité eau circuit (bonus malus production légume et poisson) ()
+        Je vais lister ici certain éléments soumis aux votes qui me s'emble intéressant :
+            ->atelier (création éléments DIY pour débloquer wormbox, hotbin, serre,minéralisation,filtre,nid, etc)
+                ->system de lvl ?prestige? (vitesse de fabrication, qualité obtenu, rareté sur rand ?)
+            ->system de génération d'electricité/chauffage en autonomie (panneau solaire,batterie,biogaz/génerateur)
+            ->quete quotdienne,hebdo,mensuel (retribution new monaie (boulon? avec market dédier pour achat techno,robo,DIY(bois,arduino,) et mega recompence tous les 3 mois pour la rention maximum
+            et payer les joueurs qui sont endurant),paquet de graines commun(quotdienne),unco(hebdo) a rare(mensuel))
+            ->system dédier de repro (actif apres bcp de prestige fishtank et que sur poisson 3 à max étoile)
+                ->améliorable par itération et lvl up selection des géniteurs (poids = quantité d'oeufs si repro réussi etoil = qualité alevin + taux fécondation (40% cap max)) puis :: 
+                    -> basic oeuf bac oxygène (adanat repro ref) taux eclosion réduit cap max 25% sur oeufs fécondé
+                    -> jar mc donalds cap max 50%
+                    -> bac de tri (taux de survie l'arvaire )
+                        -> gicleur/skimmers avec clay pour troubler l'eau(moin de prédation) calmer les poissons (a vérifier) cassé le film de gras en surface + 5%
+                        -> system UV +5%
+                    -> DIY arduino ou achat module suivi température couplé chauffage (vitesse de croissance ++)
+            ->market mutliplayer (graines, alevins,production DIY, etc)
+    ->nb d'éléments UI/dashboard player minimum 
+        ->monaies
+        ->consomation electrique (incidence sur cout d'exploitation + image écologique négative => malus prix vente 
+        certaines oportunité vente/quetes inaccésible )
+        ->consomation eau (minéralisation, recyclage/filtration boue) idem a electricité mais moin grave 
+        ->production nourriture (vers composte, farine, bsf) réduction consomation farine poisson idem image écoresponsable
+        + réduction achat granulé plus grand bénénfice (pas de vue direct sur le dashboard) mais profil alimentaire avec carrence
+        besoin d'achat granulé régulier pour profil alimentaire complet.
+    -> stat pour achivement (steam ?) et leaderboard compétition.
+
+--prompt-- data et équilibrage
+au vue des éléments déja cité ont as besoins de 15 plantes minimum si on retiens mes valeurs. Quel est selon toi
+le modèle mathématique pour faire évoluer les temps de récoltes selon le lvl de la plante ? Toujours pour garder 
+cette équilibre fun/quantité de travail à fournir.
+donne moi les données qui te paraisse juste pour chaque palier de plante (lvl1-3-5-7-10) :
+    -> 3 plantes qui te parraissent cohérentes pour chaque palier (soit 15 au total) (à feuille principalement mais tu es libre de faire tes recherche)
+    il faudrait qu'elle soit complémentaire en terme de rendu (si que des salades c'est lait) par exemple salade,swis chard,basilic les tomates et légumes racine
+    se débloque plus tard par la découverte de sabloponie et maturation du biofiltre || minéralisation des boues pour les fruits gourmants (tomates)
+    -> les valeurs de temps de culture par état et leurs prix de vente individuel
+    -> valeurs communes par palier ? ou petites différences 
+    -> doit on modifier les taux de germination, finalisation ? ou commun pour tout les lvls ?
+hormis les quetes qui cible toutes la palette quel raison pour un joueur de planter toutes les plantes ?
+
+
+
+
+
+

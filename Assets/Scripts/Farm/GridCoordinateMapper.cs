@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary>Projection monde ↔ cellule. Orthogonal = actuel ; Isometric = losanges (futur).</summary>
+/// <summary>Projection monde ↔ cellule. Orthogonal = carrés ; Isometric = losanges 2:1.</summary>
 public enum GridCoordinateMode
 {
     Orthogonal = 0,
@@ -33,6 +33,9 @@ public interface IGridCoordinateMapper
     Vector2Int WorldToCell(Vector2 worldPosition);
     Vector2      CellToWorldTopLeft(Vector2Int cell);
     Vector2      CellToWorldCenter(Vector2Int cell);
+
+    /// <summary>4 coins en winding horaire (longueur ≥ 4).</summary>
+    void GetCellCorners(Vector2Int cell, Vector2[] corners);
 }
 
 /// <summary>Grille rectangulaire : Floor sur X/Y local (row 0 en haut).</summary>
@@ -61,11 +64,20 @@ public sealed class OrthogonalGridCoordinateMapper : IGridCoordinateMapper
 
     public Vector2 CellToWorldCenter(Vector2Int cell) =>
         CellToWorldTopLeft(cell) + new Vector2(_cellSize.x * 0.5f, -_cellSize.y * 0.5f);
+
+    public void GetCellCorners(Vector2Int cell, Vector2[] corners)
+    {
+        Vector2 topLeft = CellToWorldTopLeft(cell);
+        corners[0] = topLeft;
+        corners[1] = topLeft + new Vector2(_cellSize.x, 0f);
+        corners[2] = topLeft + new Vector2(_cellSize.x, -_cellSize.y);
+        corners[3] = topLeft + new Vector2(0f, -_cellSize.y);
+    }
 }
 
 /// <summary>
-/// Grille en losanges (vue isométrique 2D). Formules standard col/row ↔ monde.
-/// Le visuel des cellules (BiofiltreGridVisualizer) reste carré tant qu'il n'est pas adapté.
+/// Grille en losanges (vue isométrique 2D, diagonales = cellSize).
+/// Origine = sommet nord de la cellule (0,0).
 /// </summary>
 public sealed class IsometricGridCoordinateMapper : IGridCoordinateMapper
 {
@@ -82,13 +94,12 @@ public sealed class IsometricGridCoordinateMapper : IGridCoordinateMapper
 
     public Vector2Int WorldToCell(Vector2 worldPosition)
     {
+        // Origine locale = centre de (0,0), pas le sommet nord.
         float localX = worldPosition.x - _origin.x;
-        float localY = worldPosition.y - _origin.y;
-
-        float colF = (localX / _halfWidth + localY / _halfHeight) * 0.5f;
-        float rowF = (localY / _halfHeight - localX / _halfWidth) * 0.5f;
-
-        return new Vector2Int(Mathf.FloorToInt(colF), Mathf.FloorToInt(rowF));
+        float localY = worldPosition.y - (_origin.y - _halfHeight);
+        float colF = (localX / _halfWidth - localY / _halfHeight) * 0.5f;
+        float rowF = (-localY / _halfHeight - localX / _halfWidth) * 0.5f;
+        return new Vector2Int(Mathf.RoundToInt(colF), Mathf.RoundToInt(rowF));
     }
 
     public Vector2 CellToWorldTopLeft(Vector2Int cell)
@@ -100,8 +111,17 @@ public sealed class IsometricGridCoordinateMapper : IGridCoordinateMapper
 
     public Vector2 CellToWorldCenter(Vector2Int cell)
     {
-        Vector2 topLeft = CellToWorldTopLeft(cell);
-        return topLeft + new Vector2(0f, -_halfHeight);
+        Vector2 north = CellToWorldTopLeft(cell);
+        return north + new Vector2(0f, -_halfHeight);
+    }
+
+    public void GetCellCorners(Vector2Int cell, Vector2[] corners)
+    {
+        Vector2 center = CellToWorldCenter(cell);
+        corners[0] = center + new Vector2(0f, _halfHeight);
+        corners[1] = center + new Vector2(_halfWidth, 0f);
+        corners[2] = center + new Vector2(0f, -_halfHeight);
+        corners[3] = center + new Vector2(-_halfWidth, 0f);
     }
 }
 

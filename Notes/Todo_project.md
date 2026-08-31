@@ -18,6 +18,7 @@ Références de détail :
 - File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
 - Journal : `PROJECT_LOG.md`
 - Guide utilisateur (suivi) : `Notes/GUIDE_suivi_projet.md`
+- **Icônes UI quotidiennes** : `Notes/Art/PROMPT_generation_icones.md`
 
 ---
 
@@ -42,26 +43,27 @@ Convention d'IDs :
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`feature/rework-biofiltre-grid`** (à revalider au bootstrap).  
-> **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt, tout court**.  
+> **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt**. Tampon `.cursor/session_pull_ok` : les chats **de la même session** ne re-bloquent pas. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
-> **Prochaine session (priorité #1) :** `[P0-FARM-IBC-GRID-001]` scale le sprite IBC pour qu’il **accepte la grille** (la grille ne bouge pas).  
-> **Agent VM (nuit, parallèle) :** HUD slots biofiltre — coller `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`. Bezy : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`.  
-> Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 août**). File `#13` après onglets. Wallet punch = PARK UX.
+> **Prochaine session (priorité #1) :** `[P0-FARM-IBC-GRID-001]` **auteur Inspector (pas Bezy)** — Add `BiofiltreIbcSpriteFitter` sur `Biofiltre.prefab` + `ibcSprite` = `Cuve_IBC`.  
+> **Bezy (même session ou parallèle) :** **`[BZ-FARM-BIOHUD-HOST-001]` Phase 1** `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab`. SEC-001 **clos**.  
+> Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 septembre**). File `#13` après onglets. Wallet punch = PARK UX.
 
 ### ★ Priorité prochaine session — grille dans cuve IBC
 
-> Décision auteur 2026-08-29 (fin de session) :  
-> Sprite Dump **`Cuve_IBC_3quart_carre_parfait.png`** (dessus = carré 90°, face avant IBC du mockup).  
-> **Travail de demain :** caler le sprite IBC sur la grille existante.  
+> Décision auteur 2026-08-31 : viser une **vue isométrique** (losange 2:1) — plus lisible que le 3/4 ortho.  
+> Sprite Dump **`Cuve_IBC_3quart_carre_parfait.png`** = dessus **carré** → **ne colle pas** sur une grille iso. Il faut un IBC **dessus losange 2:1** (Dump, puis promo).  
+> Grille : `GridManager.coordinateMode = Isometric` sur `Biofiltre.prefab`. Ne pas changer cols/rows pour l’art.  
 > **Contrainte (source de vérité = grille) :** le sprite doit **pouvoir être redimensionné** pour **accepter** la grille (`GridManager` : `Columns` × `Rows` × `CellSizeWorld`). **Pas l’inverse** : on ne change pas la taille / le pas / le nombre de cellules pour coller à l’art. Même logique que les cellules (`BiofiltreGridVisualizer` scale déjà chaque sprite cellule sur `cellSize`).  
-> Réf art : `Assets/Art/Assets Store Dump/ElementProd/Biofiltre/Cuve_IBC_3quart_carre_parfait.png`  
+> Réf art runtime : `Assets/Art/Sprites/Farm/Biofiltre/Cuve_IBC.png` (promo Dump `Cuve_IBC_deck_carre_plus_face.png`, 2026-08-31).  
+> Réf Dump : `Assets/Art/Assets Store Dump/ElementProd/Biofiltre/Cuve_IBC_deck_carre_plus_face.png`  
 > Réf mockup IBC : `Assets/Art/Mocup/biofiltreInterface_1.png`  
 > Réf grille existante : `Planteur_carre_vue_grille.png`, `biofiltre_ibc_oblique_grille.png`.  
 > Ne pas promouvoir Dump → `Sprites/` sans OK auteur.
 
 **Ordre prochaine session :**
 
-1. [ ] **[P0-FARM-IBC-GRID-001]** Scale sprite IBC pour qu’il accepte la grille (grille inchangée)
+1. [ ] **[P0-FARM-IBC-GRID-001]** **Auteur (pas Bezy)** : Prefab Mode `Biofiltre` → Add Component `BiofiltreIbcSpriteFitter` → `ibcSprite` = `Cuve_IBC` (`Sprites/Farm/Biofiltre/Cuve_IBC.png`) → Play Mode alignement deck ↔ grille
 2. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
 3. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
 
@@ -81,9 +83,9 @@ Convention d'IDs :
 > Prompts skill : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 
 1. [x] **[P0-FARM-BIOHUD-001]** Cursor/VM : scripts vues + binder + `GetWorldRect` + promo art `Sprites/UI/Biofiltre/` (2026-08-29 agent VM)
-2. [ ] **[BZ-FARM-BIOHUD-PRIM-001]** Bezy : `UiBiofiltrePrimarySlot` + Row (3 nested) — Ph.1–5
-3. [ ] **[BZ-FARM-BIOHUD-SEC-001]** Bezy : `UiBiofiltreSecondarySlot` + Row (5 nested) — Ph.1–5
-4. [ ] **[BZ-FARM-BIOHUD-HOST-001]** Bezy : `BiofiltreHud.prefab` (World Space + nested ★ + 2 rows)
+2. [x] **[BZ-FARM-BIOHUD-PRIM-001]** Bezy : slot + row `UiBiofiltrePrimarySlotRow` — **clos** 2026-08-31 (spacing HLG 4, polish optionnel)
+3. [x] **[BZ-FARM-BIOHUD-SEC-001]** Bezy : slot + row `UiBiofiltreSecondarySlotRow` — **clos** 2026-08-31 (HLG spacing 10, polish optionnel 6)
+4. [ ] **[BZ-FARM-BIOHUD-HOST-001]** Bezy **prochain job skill** : `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` Ph.1 — nested ★ + 2 rows. Prompt : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 5. [ ] Assigner `hudPrefab` sur l’instance biofiltre (Inspector, World — hors skill Ui)
 6. [ ] Playtest HUD world FirstLvl (après Bezy HOST) — grille/clics déjà validés `[P0-FARM-GRID-PLAY-001]`
 

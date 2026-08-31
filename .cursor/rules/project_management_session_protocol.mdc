@@ -19,14 +19,14 @@ Objectif: retrouver la priorite reelle de la session en cours, sans invention.
 
 Verifier aussi la branche Git (`git branch --show-current` ou `git status -sb`) et le bloc **Contexte Git** dans `Notes/Todo_project.md`.
 
-**Gate pull (auteur) :** coller `powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` en meme temps que le rappel credits Bezy. **Aucun prompt** tant que « pull ok » n'est pas confirme (`.cursor/rules/session_git_sync.mdc`).
+**Gate pull (auteur) :** par **session** (tampon `.cursor/session_pull_ok`), pas par chat, pas « un pull max par jour ». Nouvelle session (journal ferme, autre machine, « on reprend » / tâche du jour) → coller `powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` + credits Bezy. **Aucun prompt** tant que « pull ok » (`.cursor/rules/session_git_sync.mdc`).
 
 ## 2) Regle de reponse (anti-bruit)
 
 - Ne jamais inventer une "tache du jour".
 - **Si la branche courante n'est pas `main` :** commencer la reponse par un rappel explicite du type *« Tu es sur la branche feature `…` — le travail en cours est … »* (nom de branche = sortie Git ou bloc *Contexte Git* du todo).
 - **Credits Bezy :** rappeler que le reset mensuel est le **30 de chaque mois** (pas le 1er, pas le dernier jour si ≠ 30) — sources `ASSISTANT_CONTEXT.md`, `Notes/Bezi/README_bezi.md`.
-- **Pull Git (ouverture, meme moment) :** coller `powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` et **STOP** — **aucun prompt** (Bezy, VM, Cursor, metier) tant que l'auteur n'a pas confirme « pull ok ». Ne pas executer le script a sa place. Regle : `.cursor/rules/session_git_sync.mdc`.
+- **Pull Git (ouverture de session, pas chaque chat) :** lire `.cursor/session_pull_ok`. Skip seulement si `open` **et** meme session (pas les mots-cles nouvelle session). Plusieurs sessions le meme jour = nouveau pull. Regle : `.cursor/rules/session_git_sync.mdc`.
 - **Skill Bezy (prod) :** rappeler `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` et proposer un bloc `/prefab-ui-3phases` pret (Task ID + prefab + phase) **apres** confirmation du pull. Peu de temps auteur ≠ skip Bezy.
 - Repondre avec la priorite la plus recente, concrete et actionnable, basee sur les documents.
 - Si plusieurs priorites existent, proposer un ordre clair (1, 2, 3) avec la priorite immediate en premier.
@@ -44,6 +44,7 @@ Si l'utilisateur donne/modifie une tache de prochaine session:
 Quand l'utilisateur indique la fin de session ou demande de journaliser:
 - proposer "Mets a jour le journal" si necessaire,
 - enregistrer objectifs, changements, decisions, problemes/solutions, prochaines etapes,
+- passer `.cursor/session_pull_ok` a `status: closed` (prochain chat = nouveau gate pull),
 - **ne pas committer** les docs : rappeler a l'auteur de `git add` / `git commit` / `git push` (cf. `.cursor/rules/git_commits_user_only.mdc`).
 
 ## 5) Priorite courante connue (memoire active)
@@ -53,7 +54,7 @@ Branche courante documentee: **`feature/rework-biofiltre-grid`** (2026-08-29).
 - Branche brouillon Workspace Rules **supprimee** : `cursor/bezi-workspace-rules-skill-76a4`.
 
 Priorite immediate actuelle:
-- [P0-FARM-IBC-GRID-001] scale le sprite IBC pour qu'il accepte la grille (grille inchangee). Dump `Cuve_IBC_3quart_carre_parfait.png`.
+- [P0-FARM-IBC-GRID-001] auteur Inspector (pas Bezy) : Add `BiofiltreIbcSpriteFitter` sur `Biofiltre.prefab` + `ibcSprite` = `Cuve_IBC`, playtest deck ↔ grille.
 
 Reportes: [P0-FARM-SPRITE-ALPHA-001] fond noir laitue, [P0-SALE-QTY-RAND-001] rand 1-3 salades ★1.
 

@@ -57,11 +57,7 @@ public class GridLinesRenderer : MonoBehaviour
 
         int     cols     = gridManager.Columns;
         int     rows     = gridManager.Rows;
-        Vector2 cellSize = gridManager.CellSizeWorld;
-        Vector2 origin   = gridManager.WorldOrigin;
-
-        float totalWidth  = cols * cellSize.x;
-        float totalHeight = rows * cellSize.y;
+        Vector2[] corners = new Vector2[4];
 
         lineMaterial.SetPass(0);
 
@@ -69,20 +65,19 @@ public class GridLinesRenderer : MonoBehaviour
         GL.Begin(GL.LINES);
         GL.Color(lineColor);
 
-        // Vertical lines (col 0 … cols inclusive)
-        for (int col = 0; col <= cols; col++)
+        for (int col = 0; col < cols; col++)
         {
-            float x = origin.x + col * cellSize.x;
-            GL.Vertex3(x, origin.y,               0f);
-            GL.Vertex3(x, origin.y - totalHeight,  0f);
-        }
-
-        // Horizontal lines (row 0 … rows inclusive)
-        for (int row = 0; row <= rows; row++)
-        {
-            float y = origin.y - row * cellSize.y;
-            GL.Vertex3(origin.x,              y, 0f);
-            GL.Vertex3(origin.x + totalWidth, y, 0f);
+            for (int row = 0; row < rows; row++)
+            {
+                gridManager.GetCellWorldCorners(new Vector2Int(col, row), corners);
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 a = corners[i];
+                    Vector2 b = corners[(i + 1) % 4];
+                    GL.Vertex3(a.x, a.y, 0f);
+                    GL.Vertex3(b.x, b.y, 0f);
+                }
+            }
         }
 
         GL.End();

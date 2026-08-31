@@ -9,7 +9,7 @@ alwaysApply: true
 
 - **L'utilisateur s'occupe des commits et des push** (delais, autorisations, hooks, controle du message).
 - L'assistant **ne lance pas** `git commit`, `git push`, ni merge vers remote **sauf demande explicite** dans le message utilisateur (ex. « commit », « push », « merge la branche »).
-- **Ouverture de session :** l'auteur lance le pull (`scripts/session-git-sync.ps1`) ; l'assistant **ne l'execute pas** et ne lance **aucun prompt** (Bezy, VM, Cursor, metier) tant que « pull ok » (`.cursor/rules/session_git_sync.mdc`).
+- **Ouverture de session (pas chaque chat) :** tampon `.cursor/session_pull_ok` ; sinon l'auteur lance le pull (`scripts/session-git-sync.ps1`) ; l'assistant **ne l'execute pas**. 2e session le meme jour = nouveau pull. Regle : `.cursor/rules/session_git_sync.mdc`.
 
 ## Ce que l'assistant fait quand meme
 

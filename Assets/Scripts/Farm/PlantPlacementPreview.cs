@@ -159,21 +159,12 @@ public class PlantPlacementPreview : MonoBehaviour
     private Vector2 ComputeFootprintCenterWorldOffset()
     {
         Vector2Int[] footprint = plantDefinition.footprint;
-        Vector2 cellSize = gridManager.CellSizeWorld;
-
-        float sumCol = 0f;
-        float sumRow = 0f;
+        Vector2 originCenter = gridManager.GridToWorldCenter(Vector2Int.zero);
+        Vector2 sum = Vector2.zero;
         foreach (Vector2Int cell in footprint)
-        {
-            sumCol += cell.x;
-            sumRow += cell.y;
-        }
+            sum += gridManager.GridToWorldCenter(cell);
 
-        float centerCol = sumCol / footprint.Length;
-        float centerRow = sumRow / footprint.Length;
-
-        // Convert grid-cell offset to world-space offset (rows increase downward → negate Y)
-        return new Vector2(centerCol * cellSize.x, -centerRow * cellSize.y);
+        return (sum / footprint.Length) - originCenter;
     }
 
     private void ApplyTint(Color color)

@@ -1,7 +1,7 @@
 ## Assistant Context — RaymanInifiteRunner
 
 ### Rappel Bezy — crédits + skill prod (chaque session)
-- **Ouverture :** l’auteur pull la branche **avant tout prompt, tout court** (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` puis « pull ok »). L’assistant ne lance ni le script ni aucun prompt (Bezy, VM, Cursor, métier) avant confirmation. Règle : `.cursor/rules/session_git_sync.mdc`.
+- **Ouverture de session (pas chaque chat, pas un pull max/jour) :** tampon `.cursor/session_pull_ok`. Nouvelle session = absent / closed / autre machine / « on reprend » / tâche du jour → pull (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` puis « pull ok »). Garde-fou : tampon `open` d’un autre jour = zombie. Règle : `.cursor/rules/session_git_sync.mdc`.
 - Les **crédits Bezy se réinitialisent en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour du mois si ≠ 30).
 - Ex. : reset le **30 juillet**, **30 août**, **30 septembre**… (février : confirmer comportement abonnement si 30 absent).
 - Planifier les jobs Bezy lourds **juste après le 30** ; éviter de laisser le stock mourir en fin de cycle.
@@ -16,8 +16,9 @@
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
 ### Priorités prochaine session
-1. **[P0-FARM-IBC-GRID-001]** Scale le sprite IBC pour qu’il accepte la grille (grille = source de vérité, pas l’inverse). Dump `Cuve_IBC_3quart_carre_parfait.png`.
-2. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
+1. **[P0-FARM-IBC-GRID-001]** Auteur Inspector (pas Bezy) : `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` sur `Biofiltre.prefab`, puis playtest deck ↔ grille.
+2. Bezy HUD : **`[BZ-FARM-BIOHUD-HOST-001]`** Phase 1 `BiofiltreHud.prefab` (SEC-001 clos).
+3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
 
 ### Clos grille rework (2026-08-30)
 - `[P0-FARM-GRID-PLAY-001]` — grille sans colliders, clics, pose/récolte, pause/recall persistance **OK** (`feature/rework-biofiltre-grid`).

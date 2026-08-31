@@ -15,7 +15,7 @@ alwaysApply: true
   - `PROJECT_LOG.md` (derniere entree datee)
 - Repondre avec la priorite la plus recente et concrete, jamais une tache generique.
 - **Credits Bezy :** reset mensuel le **30** de chaque mois (pas le 1er / pas dernier jour si ≠ 30) — rappeler en tache du jour / planning Bezy.
-- **Pull Git (ouverture) :** meme moment que Bezy — l'auteur lance `powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` ; **aucun prompt** tant que « pull ok ». Regle : `.cursor/rules/session_git_sync.mdc`.
+- **Pull Git (ouverture de session, pas chaque chat ni une fois par jour) :** tampon `.cursor/session_pull_ok`. Nouvelle session (closed, autre machine, « on reprend » / tâche du jour) = gate. Garde-fou : tampon `open` d’un autre jour = zombie → gate. Regle : `.cursor/rules/session_git_sync.mdc`.
 - **Skill Bezy (prod) :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — a l'ouverture, proposer un bloc `/prefab-ui-3phases` pret **apres** le pull. Peu de temps auteur ≠ skip Bezy.
 - Si une tache "prochaine session" est donnee par l'utilisateur en fin de session:
   1. l'ajouter dans `Notes/Todo_project.md`,
@@ -23,4 +23,4 @@ alwaysApply: true
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
 - Branche de travail courante: **`feature/rework-biofiltre-grid`** (2026-08-29).
 - Priorite courante connue (a revalider via docs a chaque session):
- - [P0-FARM-IBC-GRID-001] scale le sprite IBC pour qu'il accepte la grille (pas l'inverse).
+ - [P0-FARM-IBC-GRID-001] auteur Inspector (pas Bezy) : BiofiltreIbcSpriteFitter + ibcSprite = Cuve_IBC.

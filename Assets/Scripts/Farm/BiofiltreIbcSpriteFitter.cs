@@ -23,7 +23,7 @@ public class BiofiltreIbcSpriteFitter : MonoBehaviour
 
     [SerializeField] private int sortingOrder = DefaultSortingOrder;
 
-    [Tooltip("Dessus plantable en UV sprite 0–1, origine bas-gauche.")]
+    [Tooltip("Dessus plantable en UV sprite 0–1, origine bas-gauche. En iso : AABB du losange de billes.")]
     [SerializeField] private Rect deckNormalized = DefaultDeckNormalized;
 
     private GridManager gridManager;
