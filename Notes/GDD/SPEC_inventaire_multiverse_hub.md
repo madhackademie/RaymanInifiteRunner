@@ -184,6 +184,7 @@ flowchart LR
 
 - Recette : `RecipeDefinition` (SO) — output item, ingrédients, `preferredGameScope` (filtre UI, **pas** blocage).
 - **V0** : atelier **non implémenté** — spec posée pour aligner onglets + catégories items.
+- **Vision détaillée** (atelier aquaponique, quêtes livraison, cuisine phase 2) : `Notes/GDD/SPEC_craft_atelier_aquaponique.md`.
 
 ---
 
