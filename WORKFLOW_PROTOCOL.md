@@ -1,7 +1,19 @@
 # le protocole d'ouverture et fermeture du fichier IA/Github
 
 ## --1--
-Mise a jour github commande : cf @GIT_HELPER.md [git helper](GIT_HELPER.md)
+Mise a jour github **avant tout travail** (gate d'ouverture, meme moment que le rappel credits Bezy).
+
+L'auteur execute (l'assistant colle la commande, ne la lance pas) :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1
+```
+
+One-liner : `git fetch --all --prune; git status -sb; git pull`
+
+Puis dire a Cursor : **pull ok**. Tant que ce n'est pas confirme : **aucun prompt** (Bezy, VM, Cursor, metier).
+
+Detail : @GIT_HELPER.md [git helper](GIT_HELPER.md) § --1--, regle `.cursor/rules/session_git_sync.mdc`.
 
 ## --2--
 Faire lire a cursor le PROJECT_LOG [journal](PROJECT_LOG.md)
@@ -12,7 +24,8 @@ Pour toute demande de gestion de projet (tache du jour, priorite, prochaine sess
 - verifier la branche Git courante (`git branch --show-current` ou `git status -sb`),
 - **rappeler en tete de reponse** si l'on n'est pas sur `main` : nom de la branche feature/rework + lien avec la priorite (`Notes/Todo_project.md` bloc *Contexte Git*),
 - **rappeler les credits Bezy** : reset en dur le **30 de chaque mois** (pas le 1er / pas le dernier jour si ≠ 30) — detail `ASSISTANT_CONTEXT.md` + `Notes/Bezi/README_bezi.md`,
-- **rappeler le skill Bezy** : chemin de prod UI = `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — proposer un bloc `/prefab-ui-3phases` prêt (Task ID + prefab + phase). Ne pas reporter Bezy « faute de temps »,
+- **rappeler le pull Git** (meme moment) : coller `scripts/session-git-sync.ps1` et attendre « pull ok » avant tout prompt (`.cursor/rules/session_git_sync.mdc`),
+- **rappeler le skill Bezy** : chemin de prod UI = `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — proposer un bloc `/prefab-ui-3phases` prêt (Task ID + prefab + phase) **apres** le pull. Ne pas reporter Bezy « faute de temps »,
 - repondre uniquement avec la priorite la plus recente issue des docs,
 - ne jamais inventer une tache generique.
 

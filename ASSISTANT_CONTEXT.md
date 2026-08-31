@@ -1,6 +1,7 @@
 ## Assistant Context — RaymanInifiteRunner
 
 ### Rappel Bezy — crédits + skill prod (chaque session)
+- **Ouverture :** l’auteur pull la branche **avant tout prompt, tout court** (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` puis « pull ok »). L’assistant ne lance ni le script ni aucun prompt (Bezy, VM, Cursor, métier) avant confirmation. Règle : `.cursor/rules/session_git_sync.mdc`.
 - Les **crédits Bezy se réinitialisent en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour du mois si ≠ 30).
 - Ex. : reset le **30 juillet**, **30 août**, **30 septembre**… (février : confirmer comportement abonnement si 30 absent).
 - Planifier les jobs Bezy lourds **juste après le 30** ; éviter de laisser le stock mourir en fin de cycle.

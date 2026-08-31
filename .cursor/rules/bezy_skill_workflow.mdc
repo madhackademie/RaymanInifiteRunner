@@ -9,9 +9,10 @@ Chemin de prod UI : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` (slash `/prefab-ui-
 
 À chaque bootstrap / « tâche du jour » :
 
-1. Rappeler crédits Bezy (reset le **30**).
-2. Proposer un **bloc de lancement prêt** : Task ID, chemin `Assets/Prefabs/Ui/…`, phase 1|2|3, fichier `PROMPTS_Bezi_*.md`.
-3. Si le prompt manque : le rédiger tout de suite (3 phases, &lt; 3500 car., une phase par appel).
-4. **Peu de temps auteur ≠ skip Bezy.** Cursor prépare ; l’auteur lance 2–5 min dans Unity (Prefab Mode), playtest plus tard.
+1. Rappeler crédits Bezy (reset le **30**) **et** le pull de branche (commande `scripts/session-git-sync.ps1`).
+2. **Gate :** aucun prompt (Bezy, VM, Cursor, métier) tant que l’auteur n’a pas confirmé « pull ok » (règle `.cursor/rules/session_git_sync.mdc`).
+3. Après le pull : proposer un **bloc de lancement prêt** : Task ID, chemin `Assets/Prefabs/Ui/…`, phase 1|2|3, fichier `PROMPTS_Bezi_*.md`.
+4. Si le prompt manque : le rédiger tout de suite (3 phases, &lt; 3500 car., une phase par appel).
+5. **Peu de temps auteur ≠ skip Bezy.** Cursor prépare ; l’auteur lance 2–5 min dans Unity (Prefab Mode), playtest plus tard.
 
 Ne pas relancer Workspace Rules / GitHub MCP comme chaîne principale (branche `cursor/bezi-workspace-rules-skill-76a4` supprimée).

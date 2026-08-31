@@ -6,6 +6,7 @@ alwaysApply: true
 
 - Reset mensuel **en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour du mois si ≠ 30).
 - Rappeler au planning de jobs Bezy / « tâche du jour » ; détail : `ASSISTANT_CONTEXT.md`, `Notes/Bezi/README_bezi.md`.
+- **Même moment :** pull de branche par l’auteur (`scripts/session-git-sync.ps1`) — **aucun prompt** (Bezy ou autre) avant « pull ok » (`.cursor/rules/session_git_sync.mdc`).
 - **Prod / peu de temps :** chemin unique = skill `/prefab-ui-3phases`. Note : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`.
 - À chaque ouverture : proposer un bloc de lancement (Task ID + `Assets/Prefabs/Ui/…` + phase). Cursor rédige le `PROMPTS_Bezi_*.md` **avant** que l’auteur ouvre Unity. Ne pas skip Bezy « faute de temps ».
 

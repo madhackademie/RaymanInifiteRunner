@@ -205,6 +205,20 @@ Si une branche locale affiche `[origin/...: gone]` : la branche distante n'exist
 
 ## --1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
 
+**Gate d'ouverture** (avec le rappel credits Bezy) : l'auteur lance le script, l'assistant **attend** « pull ok » **avant tout prompt, tout court**.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1
+```
+
+Script : `scripts/session-git-sync.ps1` (fetch `--prune` + status + pull). One-liner equivalent :
+
+```bash
+git fetch --all --prune; git status -sb; git pull
+```
+
+Si le script echoue, reprendre a la main ci-dessous.
+
 Pour savoir s’il y a des changements à récupérer depuis GitHub, puis mettre à jour ton dossier, fais :
 
 1) Vérifier s’il y a des commits à récupérer (sans rien modifier)

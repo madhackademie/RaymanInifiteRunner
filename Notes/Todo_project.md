@@ -40,6 +40,7 @@ Convention d'IDs :
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`feature/rework-biofiltre-grid`** (à revalider au bootstrap).  
+> **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt, tout court**.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
 > **Prochaine session (priorité #1) :** `[P0-FARM-IBC-GRID-001]` scale le sprite IBC pour qu’il **accepte la grille** (la grille ne bouge pas).  
 > **Priorité #2 :** `[P0-SALE-STAR-PLAY-001]` playtest tooltip étoiles bandeaux vente.  
