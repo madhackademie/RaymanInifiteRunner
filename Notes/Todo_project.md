@@ -487,6 +487,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [BL-GDD-005] Progression système aquaponique par scène (`FirstLvl+`) — spec `SPEC_progression_systeme_aquaponique_par_niveau.md` (panneau onglets, points, anti-aléas).
 - [ ] [BL-GDD-006] Prestige / génération par système — spec `Notes/GDD/SPEC_prestige_generation_systemes.md` (portes biofiltre ★3 **ou** ★5 ; grille vide ; G1 +5 % croissance ; G2 media +5 % qty). **Pas** un wipe global.
 - [ ] [BL-GDD-007] Slots & shields biofiltre — spec `Notes/GDD/SPEC_biofiltre_slots_shields.md` (5 secondaires, 3 primaires ; anti-slug 4 niv. ; serre voile / bâche bulles / géodésique ; monnaie paliers TBD : prestige / ★ / or). HUD world V0 (vues + prefabs Bezy, pas le métier prestige) : `[P0-FARM-BIOHUD-001]` / `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`.
+- [ ] [BL-GDD-008] Atelier craft aquaponique + quêtes livraison — spec `Notes/GDD/SPEC_craft_atelier_aquaponique.md` (bacs DWC particulier/pro, `CraftService`, `ScreenId.Craft` ; cuisine phase 2). Branche cible : `feature/craft-aquaponic-workshop`.
 
 ### Workflow / documentation
 - [ ] [BL-DOC-001] Documenter les règles projet (style, conventions AI/notes, organisation dossiers).
