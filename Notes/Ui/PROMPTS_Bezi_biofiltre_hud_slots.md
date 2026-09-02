@@ -417,16 +417,19 @@ Do not rescan whole project. Do not modify C#. No Simulate. Do not unpack nested
 File ONLY:
 - Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab
 
+Root currently has a Transform (not RectTransform). Adding Canvas MUST
+convert it to RectTransform: anchors center, pivot 0.5/0.5, sizeDelta 800 x 600.
+
 On root BiofiltreHud:
-- Canvas: Render Mode World Space. Plane Distance ignore. Sorting Order 20.
-- CanvasScaler: World — leave default dynamic pixels if present; do not switch to Overlay.
-- GraphicRaycaster: yes (slots may be clickable later).
+- Canvas: Render Mode World Space. Sorting Order 20.
+- CanvasScaler: keep World / default dynamic pixels. Do NOT set Overlay.
+- GraphicRaycaster: yes.
 
-Do NOT add panel Image full-bleed (HUD chrome = the nested rows only).
-Do NOT edit nested slot/star prefab assets.
-m_Layer: 5 on root + mounts.
+Keep nested children named PrimaryRow, StarRow, SecondaryRow as-is.
+Do NOT add mounts. Do NOT add BiofiltreHudView (Phase 3).
+Do NOT add panel Image. m_Layer: 5.
 
-Done = Save. List Canvas renderMode + sortingOrder. STOP.
+Done = Save. List Canvas renderMode + sortingOrder + root sizeDelta. STOP.
 ```
 
 ### Phase 3 — Wire BiofiltreHudView
@@ -435,29 +438,31 @@ Done = Save. List Canvas renderMode + sortingOrder. STOP.
 [BZ-FARM-BIOHUD-HOST-001] Phase 3 ONLY — wire BiofiltreHudView. Wait success. STOP after save.
 
 Do not rescan whole project. Do not modify C#. No Simulate. Do not unpack nested.
+Prefab Mode REQUIRED.
 
 File ONLY:
 - Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab
 
-Script already exists:
+Canvas World Space is ALREADY on root. Do NOT add a second Canvas.
+Script already exists (reuse, do not recreate):
 - Assets/Scripts/UI/BiofiltreHud/BiofiltreHudView.cs
 
 On root: add BiofiltreHudView
-- starRow → StarMount/StarRow UiStarRowView
-- primaryRow → PrimaryMount/PrimarySlotRow UiBiofiltreSlotRowView
-- secondaryRow → SecondaryMount/SecondarySlotRow UiBiofiltreSlotRowView
+- starRow → child StarRow UiStarRowView
+- primaryRow → child PrimaryRow UiBiofiltreSlotRowView
+- secondaryRow → child SecondaryRow UiBiofiltreSlotRowView
+previewStarFilled = 1, previewStarVisible = 5 if those fields exist.
 
-If preview fields exist: star filledOnStart 1 / visible 5; leave slot rows locked.
+Also fix root: Canvas sortingOrder 20 (currently 0), sizeDelta 800 x 600 (currently 100x100).
+Keep GraphicRaycaster. m_Layer: 5. No OnClick. Do not edit Biofiltre.prefab (World).
 
-m_Layer: 5. Do not add OnClick. Do not edit Assets/Prefabs/World/Biofiltre.prefab.
-
-Done = Save. Confirm 3 view refs. STOP.
+Done = Save. Confirm 3 view refs + sortingOrder 20 + sizeDelta 800x600. STOP.
 ```
 
 **Checklist review HOST (Cursor)**
-- [ ] Nested StarRow + 2 slot rows, not unpacked
-- [ ] Canvas World Space, layer 5
-- [ ] `BiofiltreHudView` câblé
+- [x] Nested StarRow + 2 slot rows, not unpacked
+- [x] Canvas World Space, layer 5 (sorting 0 / size 100×100 polish)
+- [x] `BiofiltreHudView` câblé StarRow / PrimaryRow / SecondaryRow
 - [ ] Lien `hudPrefab` sur instance biofiltre = **manuel auteur** (World prefab hors skill)
 
 ---

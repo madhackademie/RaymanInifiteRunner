@@ -1,5 +1,18 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-02 — Bezy HOST HUD biofiltre clos
+
+### Livré
+- `[BZ-FARM-BIOHUD-HOST-001]` Ph.1–3 : `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` — Canvas World Space, nested PrimaryRow / StarRow / SecondaryRow (pas unpack), `BiofiltreHudView` câblé (preview ★ 1/5).
+- Polish optionnel : `sortingOrder` 0 (spec 20), `sizeDelta` 100×100 (spec 800×600) — le binder scale à la grille.
+
+### Suite (plus de skill Bezy sur ce chantier)
+- Auteur : Add `BiofiltreHudBinder` sur `Biofiltre` + `hudPrefab` = `BiofiltreHud`.
+- Playtest HUD world FirstLvl.
+- Priorité #1 inchangée : `[P0-FARM-IBC-GRID-001]` Inspector IBC.
+
+---
+
 ## 2026-08-31 — Note icônes quotidiennes + gate Git par session
 
 ### Décisions

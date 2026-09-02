@@ -196,6 +196,22 @@ public class GridManager : MonoBehaviour
         _coordinateMapper.CellToWorldCenter(cell);
 
     /// <summary>
+    /// Geometric world center of a footprint (average of occupied cell centers).
+    /// A 1×1 footprint equals <see cref="GridToWorldCenter"/>.
+    /// </summary>
+    public Vector2 GetFootprintWorldCenter(Vector2Int anchor, Vector2Int[] footprint)
+    {
+        if (footprint == null || footprint.Length == 0)
+            return GridToWorldCenter(anchor);
+
+        Vector2 sum = Vector2.zero;
+        for (int i = 0; i < footprint.Length; i++)
+            sum += GridToWorldCenter(anchor + footprint[i]);
+
+        return sum / footprint.Length;
+    }
+
+    /// <summary>
     /// Converts a world position to the grid cell (floor). May be out of bounds — use IsInBounds.
     /// </summary>
     public Vector2Int WorldToGrid(Vector2 worldPos) =>

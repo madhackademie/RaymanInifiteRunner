@@ -17,7 +17,7 @@
 
 ### Priorités prochaine session
 1. **[P0-FARM-IBC-GRID-001]** Auteur Inspector (pas Bezy) : `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` sur `Biofiltre.prefab`, puis playtest deck ↔ grille.
-2. Bezy HUD : **`[BZ-FARM-BIOHUD-HOST-001]`** Phase 1 `BiofiltreHud.prefab` (SEC-001 clos).
+2. HUD : **`[BZ-FARM-BIOHUD-HOST-001]` clos.** Auteur : `BiofiltreHudBinder` + `hudPrefab` = `BiofiltreHud` (pas Bezy).
 3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
 
 ### Clos grille rework (2026-08-30)

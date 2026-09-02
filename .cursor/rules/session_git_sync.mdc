@@ -54,9 +54,9 @@ Tant que l’auteur n’a pas confirmé (`pull ok`, `c’est fait`, sortie du sc
 
 Ne pas lancer `git pull` / le script à la place de l’auteur.
 
-## 3) Après « pull ok »
+## 3) Après « pull ok » — écriture **obligatoire tout de suite**
 
-Écrire / écraser `.cursor/session_pull_ok` :
+Les chats **ne partagent pas** l’historique. Le tampon fichier est **le seul signal**. Dès « pull ok » (ou skip), **écrire / écraser** `.cursor/session_pull_ok` **avant** toute autre réponse métier. Oublier cette écriture = le chat suivant re-gate.
 
 ```
 status: open

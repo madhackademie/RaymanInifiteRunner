@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 8494675260759893494}
   - component: {fileID: 8494675260759893495}
   - component: {fileID: 8494675260759893496}
+  - component: {fileID: 7120944831028475613}
   m_Layer: 0
   m_Name: Biofiltre
   m_TagString: Untagged
@@ -122,7 +123,7 @@ MonoBehaviour:
   instanceCellHeight: 1
   originFromTransform: 1
   instanceWorldOrigin: {x: 0, y: 0}
-  coordinateMode: 1
+  coordinateMode: 0
 --- !u!114 &5171608283822144346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,3 +184,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmGridPointerInput
   worldCamera: {fileID: 0}
+--- !u!114 &7120944831028475613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776529302815179675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4b8c1d27a9f4c6e8b5d0a3f1c7e92a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BiofiltreIbcSpriteFitter
+  ibcSprite: {fileID: 21300000, guid: c8f3e21a4b7d4e9c8a6f0d5e1b3947c2, type: 3}
+  sortingOrder: -1
+  deckNormalized:
+    serializedVersion: 2
+    x: 0.0266
+    y: 0.4483
+    width: 0.9446
+    height: 0.5232

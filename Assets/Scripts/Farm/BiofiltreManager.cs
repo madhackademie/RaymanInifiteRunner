@@ -366,8 +366,8 @@ public class BiofiltreManager : MonoBehaviour
             }
         }
 
-        Vector2 worldCenter   = gridManager.GridToWorldCenter(anchor);
-        Vector2 spawnPosition = worldCenter + plantDefinition.spriteWorldOffset;
+        Vector2 footprintCenter = gridManager.GetFootprintWorldCenter(anchor, plantDefinition.footprint);
+        Vector2 spawnPosition   = footprintCenter + plantDefinition.spriteWorldOffset;
         GameObject instance   = Instantiate(
             plantPrefab,
             spawnPosition,

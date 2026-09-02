@@ -18,7 +18,7 @@ Références de détail :
 - File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
 - Journal : `PROJECT_LOG.md`
 - Guide utilisateur (suivi) : `Notes/GUIDE_suivi_projet.md`
-- **Icônes UI quotidiennes** : `Notes/Art/PROMPT_generation_icones.md`
+- **Backlog art (Dump → Sprites)** : `Notes/Art/PROMPT_generation_icones.md`
 
 ---
 
@@ -46,7 +46,7 @@ Convention d'IDs :
 > **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt**. Tampon `.cursor/session_pull_ok` : les chats **de la même session** ne re-bloquent pas. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
 > **Prochaine session (priorité #1) :** `[P0-FARM-IBC-GRID-001]` **auteur Inspector (pas Bezy)** — Add `BiofiltreIbcSpriteFitter` sur `Biofiltre.prefab` + `ibcSprite` = `Cuve_IBC`.  
-> **Bezy (même session ou parallèle) :** **`[BZ-FARM-BIOHUD-HOST-001]` Phase 1** `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab`. SEC-001 **clos**.  
+> **Bezy HUD :** `[BZ-FARM-BIOHUD-HOST-001]` **clos**. Plus de job skill sur ce chantier. Suite = Inspector `BiofiltreHudBinder` + `hudPrefab`.  
 > Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 septembre**). File `#13` après onglets. Wallet punch = PARK UX.
 
 ### ★ Priorité prochaine session — grille dans cuve IBC
@@ -63,7 +63,7 @@ Convention d'IDs :
 
 **Ordre prochaine session :**
 
-1. [ ] **[P0-FARM-IBC-GRID-001]** **Auteur (pas Bezy)** : Prefab Mode `Biofiltre` → Add Component `BiofiltreIbcSpriteFitter` → `ibcSprite` = `Cuve_IBC` (`Sprites/Farm/Biofiltre/Cuve_IBC.png`) → Play Mode alignement deck ↔ grille
+1. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` sur `Biofiltre.prefab` (2026-09-02) — **playtest alignement deck ↔ grille à valider auteur**
 2. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
 3. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
 
@@ -85,8 +85,8 @@ Convention d'IDs :
 1. [x] **[P0-FARM-BIOHUD-001]** Cursor/VM : scripts vues + binder + `GetWorldRect` + promo art `Sprites/UI/Biofiltre/` (2026-08-29 agent VM)
 2. [x] **[BZ-FARM-BIOHUD-PRIM-001]** Bezy : slot + row `UiBiofiltrePrimarySlotRow` — **clos** 2026-08-31 (spacing HLG 4, polish optionnel)
 3. [x] **[BZ-FARM-BIOHUD-SEC-001]** Bezy : slot + row `UiBiofiltreSecondarySlotRow` — **clos** 2026-08-31 (HLG spacing 10, polish optionnel 6)
-4. [ ] **[BZ-FARM-BIOHUD-HOST-001]** Bezy **prochain job skill** : `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` Ph.1 — nested ★ + 2 rows. Prompt : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
-5. [ ] Assigner `hudPrefab` sur l’instance biofiltre (Inspector, World — hors skill Ui)
+4. [x] **[BZ-FARM-BIOHUD-HOST-001]** Bezy : `BiofiltreHud.prefab` Ph.1–3 — **clos** 2026-09-02 (sorting 0 / size 100×100 polish optionnel)
+5. [ ] **Auteur (pas Bezy)** : Add `BiofiltreHudBinder` sur instance `Biofiltre` + `hudPrefab` = `BiofiltreHud`
 6. [ ] Playtest HUD world FirstLvl (après Bezy HOST) — grille/clics déjà validés `[P0-FARM-GRID-PLAY-001]`
 
 ### ★ Biofiltre — chantier bed skin annulé (contexte, 2026-08-29)

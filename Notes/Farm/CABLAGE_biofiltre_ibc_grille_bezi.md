@@ -26,7 +26,7 @@ flowchart TB
         BM[BiofiltreManager]
         PPP[PlantPlacementPreview]
         FPI[FarmGridPointerInput]
-        IBC[BiofiltreIbcSpriteFitter — à ajouter]
+        IBC[BiofiltreIbcSpriteFitter]
         BHB[BiofiltreHudBinder — à ajouter]
         Grid[Transform Grid]
         Plants[Transform Plants]
@@ -274,7 +274,7 @@ Assets/Prefabs/Ui/Common/                  (réutilisés, existants)
 └── UiStarRow.prefab                       ← ne pas recréer
 
 Assets/Prefabs/Ui/Farm/
-└── BiofiltreHud.prefab                    ❌ à faire (HOST Ph.1–3)
+└── BiofiltreHud.prefab                    ✅ livré (HOST Ph.1–3, 2026-09-02)
 ```
 
 ### Hiérarchie `BiofiltreHud.prefab` (cible Bezy)
@@ -327,7 +327,7 @@ Tailles : primaire **72×80**, secondaire **48×48**.
 | 2 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlotRow.prefab` | 1 → 2 → 3 | ✅ |
 | 3 | `[BZ-FARM-BIOHUD-SEC-001]` | `UiBiofiltreSecondarySlot.prefab` | 1 → 2 → 3 | ✅ |
 | 4 | `[BZ-FARM-BIOHUD-SEC-001]` | `UiBiofiltreSecondarySlotRow.prefab` | 1 → 2 → 3 | ✅ |
-| 5 | `[BZ-FARM-BIOHUD-HOST-001]` | `BiofiltreHud.prefab` | 1 → 2 → 3 | ❌ |
+| 5 | `[BZ-FARM-BIOHUD-HOST-001]` | `BiofiltreHud.prefab` | 1 → 2 → 3 | ✅ |
 | 6 | **Auteur** | `Biofiltre.prefab` | Add `BiofiltreHudBinder` + assign `hudPrefab` | ❌ |
 | 7 | **Auteur** | FirstLvl playtest | HUD world après HOST | ❌ |
 
@@ -369,8 +369,8 @@ Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 ### Cuve IBC — `[P0-FARM-IBC-GRID-001]`
 
 - [x] Sprite promu dans `Sprites/Farm/Biofiltre/` (`Cuve_IBC.png`, 2026-08-31)
-- [ ] `BiofiltreIbcSpriteFitter` sur `Biofiltre.prefab`
-- [ ] `ibcSprite` assigné
+- [x] `BiofiltreIbcSpriteFitter` sur `Biofiltre.prefab` (2026-09-02)
+- [x] `ibcSprite` assigné (`Cuve_IBC.png`)
 - [ ] Playtest alignement deck ↔ grille
 
 ### HUD Bezy — `[BZ-FARM-BIOHUD-*]`
@@ -379,7 +379,7 @@ Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 - [x] `UiBiofiltrePrimarySlotRow.prefab` (Ph.1–3, 2026-08-31 ; spacing 4 resté)
 - [x] `UiBiofiltreSecondarySlot.prefab` (Ph.1–3, 2026-08-31 ; size 72×80 resté)
 - [x] `UiBiofiltreSecondarySlotRow.prefab` (Ph.1–3, 2026-08-31 ; spacing 10 resté)
-- [ ] `BiofiltreHud.prefab` (HOST)
+- [x] `BiofiltreHud.prefab` (HOST Ph.1–3, 2026-09-02)
 - [ ] `BiofiltreHudBinder` + `hudPrefab` sur instance biofiltre
 - [ ] Playtest HUD world (`[P0-FARM-GRID-PLAY-001]` grille déjà OK)
 

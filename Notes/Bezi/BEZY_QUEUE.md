@@ -30,20 +30,17 @@
 | [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab` | 1 | idem | idem | 5 nested Secondary1–5, 280×48, nested 48×48 |
 | [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab` | 2 | idem | idem | HLG OK ; spacing 10 ; SlotRowView slots vides count=3 |
 | [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab` | 3 | idem | idem | slots[5] Secondary1–5 ; count=5 ; spacing 10 resté |
-| [ ] | `[BZ-FARM-BIOHUD-HOST-001]` | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | 1–3 | idem | idem | HOST world canvas |
+| [x] | `[BZ-FARM-BIOHUD-HOST-001]` | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | 1 | idem | idem | Nested PrimaryRow/StarRow/SecondaryRow ; pas de mounts ; Transform |
+| [x] | `[BZ-FARM-BIOHUD-HOST-001]` | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | 2 | idem | idem | Canvas World Space ; sorting 0 / size 100 — fixer en Ph.3 |
+| [x] | `[BZ-FARM-BIOHUD-HOST-001]` | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | 3 | idem | idem | HudView wired Star/Primary/Secondary ; sorting 0 / 100×100 resté |
 
 ---
 
 ## Bloc de lancement (copier dans Bezy)
 
-```
-/prefab-ui-3phases
-Task ID: [BZ-FARM-BIOHUD-HOST-001]
-Prefab: Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab
-Phase: 1
-```
+**File HUD slots vide.** Plus de `/prefab-ui-3phases` sur ce chantier.
 
-Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
+Suite **auteur Inspector** : `BiofiltreHudBinder` + `hudPrefab` = `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` sur l’instance biofiltre. Playtest hors prompt Bezy.
 
 ---
 
@@ -51,7 +48,7 @@ Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 
 | Task ID | Prefab | Phase | Date | Commit / note |
 |---------|--------|-------|------|----------------|
-| `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlot.prefab` | 1–3 | 2026-08-30 | commit auteur `38f5dae` |
+| `[BZ-FARM-BIOHUD-HOST-001]` | `BiofiltreHud.prefab` | 1–3 | 2026-09-02 | Canvas World + HudView wired ; sorting 0 / 100×100 resté |
 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlotRow.prefab` | 1 | 2026-08-31 | nested Slot1–3, sizeDelta 224×80 |
 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlotRow.prefab` | 2 | 2026-08-31 | HLG MiddleLeft ; spacing 4 (à passer à 8 en Ph.3) |
 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlotRow.prefab` | 3 | 2026-08-31 | slots[3] wired Slot1–3 ; spacing 4 / 224 resté |

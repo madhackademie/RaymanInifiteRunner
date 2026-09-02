@@ -18,6 +18,8 @@ Dossier unique : `Assets/Art/Assets Store Dump/`
 `Assets/Art/Sprites/` (et prefabs) = art **validé auteur** seulement.  
 Ne pas brancher un fichier Dump sur un prefab / `PlantDefinition` / UI runtime tant que l’auteur ne l’a pas promu.
 
+Liste unique de ce qu’il reste à produire : `Notes/Art/PROMPT_generation_icones.md` (miroir Dump → dossier Sprites correspondant).
+
 ## Assistant
 
 Si tu génères ou importes de l’art : enregistrer sous Dump, donner le chemin, ne pas « ranger » dans Sprites tout seul.

@@ -1,13 +1,47 @@
-# Génération d’icônes UI — prompt générique + file quotidienne
+# Backlog art — création (Dump) → validation → Sprites
 
-**Création :** 2026-08-31  
-**Usage :** 1 icône / jour (~15 min) — coller le prompt, déposer le PNG dans le Dump, ne pas promouvoir tout seul.
+**Création :** 2026-08-31 · **MAJ :** 2026-09-02  
+**Source unique** de tout l’art à produire (icônes UI, stades monde, IBC, fishtank, bandeaux…).  
+**Usage :** 1 asset / jour (~15 min) — générer → Dump → **après OK auteur** copier dans le dossier `Sprites/` de la ligne.
 
-> Ce prompt sert les **icônes UI** (inventaire, shop, slots, halo, craft).  
-> Il ne sert **pas** les sprites monde (stades plante sur la grille, cuve IBC, fishtank). Pipeline monde = autre brief.
+## Flux (toujours le même)
 
-Dump (brut) : `Assets/Art/Assets Store Dump/` — sous-dossier thématique, jamais la racine.  
-Promo runtime : `Assets/Art/Sprites/` **uniquement après OK auteur**. Règle : `.cursor/rules/art_asset_dump.mdc`.
+```
+Cette note (à générer)
+    → PNG dans Assets/Art/Assets Store Dump/…  (statut : en dump)
+    → OK auteur
+    → copie dans Assets/Art/Sprites/…          (statut : promu)
+```
+
+- **Jamais** coller un brut Dump sur un prefab / `PlantDefinition` / UI. Règle : `.cursor/rules/art_asset_dump.mdc`.
+- Ne **pas** dupliquer la liste dans `Notes/Todo_project.md` (sauf chantier code, ID `P0-*` / `BL-*`).
+
+### Où ajouter un élément
+
+**Ici, §3** : nouvelle ligne dans la vague (A–H icônes, **W monde**).
+
+Colonnes mini : `#` · Objet FR · Prompt objet · Dump · **Promo Sprites** · Statut `à générer`.
+
+### Miroir Dump → Sprites (après validation)
+
+Le sous-dossier Dump annonce déjà la cible. Promo = copier vers le chemin `Sprites/` de la colonne (créer le dossier s’il n’existe pas).
+
+| Dump (brut) | Promo (validé) |
+|-------------|----------------|
+| `…/Dump/Ui/Items/` | `Assets/Art/Sprites/UI/Inventory/` |
+| `…/Dump/Ui/Halo/` | `Assets/Art/Sprites/UI/Progression/` |
+| `…/Dump/Ui/Shields/` | `Assets/Art/Sprites/UI/Biofiltre/` |
+| `…/Dump/Ui/Craft/` | `Assets/Art/Sprites/UI/Craft/` |
+| `…/Dump/Ui/Currency/` | `Assets/Art/Sprites/UI/Currency/` |
+| `…/Dump/Ui/Quests/` | `Assets/Art/Sprites/UI/Quests/` |
+| `…/Dump/Ui/Dashboard/` | `Assets/Art/Sprites/UI/Dashboard/` |
+| `…/Dump/Ui/Nav/` | `Assets/Art/Sprites/UI/` |
+| `…/Dump/Ui/` (nav générique) | `Assets/Art/Sprites/UI/` |
+| `…/Dump/Plantes/<Nom>/` | `Assets/Art/Sprites/Plantes/<Nom>/` |
+| `…/Dump/ElementProd/Biofiltre/` | `Assets/Art/Sprites/Farm/Biofiltre/` |
+| `…/Dump/Poisson/` | `Assets/Art/Sprites/Farm/Poisson/` |
+
+Le **§1** est le prompt **icône UI** (fond blanc). Les lignes monde (vague W) peuvent utiliser un autre prompt : le noter dans la colonne Prompt.
 
 ---
 
@@ -45,15 +79,17 @@ A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors
 2. Coller le prompt + objet anglais (colonne *Prompt objet*).
 3. Sauver le PNG dans le Dump indiqué.
 4. Dans ce fichier : passer la ligne en `en dump` + noter le nom de fichier.
-5. Promo `Sprites/` = session auteur dédiée, pas le soir même « parce que c’est joli ».
+5. **Après OK auteur** : copier le PNG vers le dossier **Promo Sprites** du tableau (miroir § ci-dessus). Statut `promu`. Pas de promo « parce que c’est joli » sans OK.
 
-Hors file : si une session code a besoin d’une icône **tout de suite**, la faire ce jour-là et **remonter** la ligne en tête.
+Hors file : si une session code a besoin d’un asset **tout de suite**, le faire ce jour-là et **remonter** la ligne en tête.
 
 ---
 
-## 3) File des icônes (ordre quotidien)
+## 3) File unique (ordre quotidien)
 
 Statut dans **cette** note seulement (`à générer` / `en dump` / `promu`). Les tâches projet restent dans `Notes/Todo_project.md`.
+
+Colonne **Promo** = dossier `Sprites/` après validation (voir miroir en tête de note).
 
 ### Vague A — boucle ferme actuelle (priorité)
 
@@ -148,29 +184,76 @@ Cible GDD : **15 plantes**, 3 par palier (lvl 1 / 3 / 5 / 7 / 10). Laitue + toma
 
 | # | Objet FR | Prompt objet | Dump | Statut | Fichier |
 |---|----------|--------------|------|--------|---------|
-| G1 | Boulon (monnaie quête) | `a large rustic metal bolt token` | `Dump/Ui/Currency/` | à générer | |
+| G1 | Boulon wallet | → **H9** (ne pas dupliquer) | `Dump/Ui/Currency/` | alias H9 | |
 | G2 | Paquet graines commun (daily) | `a common brown seed bundle tied with twine` | `Dump/Ui/Quests/` | à générer | |
 | G3 | Paquet graines uncommon (hebdo) | `a uncommon green-ribbon seed bundle` | `Dump/Ui/Quests/` | à générer | |
 | G4 | Paquet graines rare (mensuel) | `a rare gold-ribbon seed bundle` | `Dump/Ui/Quests/` | à générer | |
 | G5 | Icône Atelier (nav) | `a wooden workbench with a hammer` | `Dump/Ui/` | à générer | |
-| G6 | Icône Quêtes (nav) | `a wooden clipboard with a checkmark` | `Dump/Ui/` | à générer | |
+| G6 | Icône Quêtes (nav) | → **H4** (onglet parent) | `Dump/Ui/` | alias H4 | |
 
-Déjà en Dump (ne pas regénérer tant que non validé) : `IconeMarket.png`, `IconePlay.png`, `IconeInventaire.png`.
+Déjà en Dump (ne pas regénérer tant que non validé) : `IconeMarket.png`, `IconePlay.png`, `IconeInventaire.png` → promo cible `Sprites/UI/` après OK.
+
+### Vague H — onglets HUD / dashboard / wallets (auteur 2026-09-02)
+
+Prompt §1 (icône fond blanc). Quêtes : **1 onglet parent + 3 sous-classes** (daily / weekly / monthly).
+
+| # | Objet FR | Prompt objet | Dump | Promo Sprites | Statut | Fichier |
+|---|----------|--------------|------|---------------|--------|---------|
+| H1 | Onglet Multiverse | prompt dédié ci-dessous (panier + vaisseau + runner + poulpe) | `Dump/Ui/Nav/` | `Sprites/UI/` | à générer | |
+| H2 | Éclair consommation électricité | `a bright lightning bolt for electricity usage` | `Dump/Ui/Dashboard/` | `Sprites/UI/Dashboard/` | à générer | |
+| H3 | Goutte consommation eau | `a single water droplet for water usage` | `Dump/Ui/Dashboard/` | `Sprites/UI/Dashboard/` | à générer | |
+| H4 | Onglet Quêtes (parent) | `a wooden quest board or clipboard tab icon` | `Dump/Ui/Quests/` | `Sprites/UI/Quests/` | à générer | |
+| H5 | Quêtes daily (sous-classe) | `a wooden daily quest icon with a small sun` | `Dump/Ui/Quests/` | `Sprites/UI/Quests/` | à générer | |
+| H6 | Quêtes weekly (sous-classe) | `a wooden weekly quest icon with a seven-day calendar` | `Dump/Ui/Quests/` | `Sprites/UI/Quests/` | à générer | |
+| H7 | Quêtes monthly (sous-classe) | `a wooden monthly quest icon with a full moon calendar` | `Dump/Ui/Quests/` | `Sprites/UI/Quests/` | à générer | |
+| H8 | Onglet shop monnaie quêtes | `a wooden special shop stall tab icon with a metal bolt coin` | `Dump/Ui/Nav/` | `Sprites/UI/` | à générer | |
+| H9 | Boulon (monnaie quête, wallet) | `a large rustic metal bolt token for a wallet currency icon` | `Dump/Ui/Currency/` | `Sprites/UI/Currency/` | à générer | |
+
+H9 = icône wallet (à côté du billet or A6). H8 = **onglet** du shop qui dépense des boulons, pas la monnaie elle-même.
+
+#### Prompt ChatGPT — H1 Onglet Multiverse (coller tel quel)
+
+**Dans ChatGPT :** joindre en référence `Assets/Art/Assets Store Dump/poulpe-lowpoly.png` (bleu ; variante violette : `poulpe-lowpoly-violet.png` si tu veux coller au billet). Puis coller :
+
+```
+A 2D casual mobile game icon of a multiverse hub emblem, cartoon style, vibrant colors, isolated on a white background. Made with thick rustic light brown wooden textures, thick outlines, smooth shading, cozy farming game aesthetic, high quality UI asset.
+
+Use the attached image as the EXACT character reference for the mini octopus. Copy its low-poly faceted body, big round head, short stubby tentacles, large glossy black eyes with white glints, and small round mouth with pink inner ring. Do not redesign the octopus. Do not turn the octopus into wood. Keep it recognizable as the same mascot.
+
+COMPOSITION (strict):
+- Square icon, white background only, no scenery, no text, no UI bars.
+- CENTER: the mini octopus mascot.
+- Around it: exactly THREE satellite objects.
+- The octopus and the three satellites all occupy the SAME visual space (equal bounding-box size, equal visual weight). None is bigger than the others.
+- Place the three satellites in a balanced triangle around the center (one top, one bottom-left, one bottom-right), with even gaps. Do not overlap the octopus.
+
+THE THREE SATELLITES (same size as the octopus):
+1) A rustic light-brown wooden basket containing lettuce, a carrot, and a trout (farm harvest, not a landscape).
+2) A cute cartoon 2D mobile-shooter spaceship (the ship only, no stars field, no battle scene).
+3) A cute cartoon infinite-runner character, simple bonhomme in a running pose, side view (the character only, no road, no city).
+
+Keep the wooden rustic texture on the basket and as a cozy farm-game finish on the ship and runner, but the octopus stays low-poly like the reference. Thick outlines, smooth shading, high quality UI asset, readable at small mobile-tab size.
+```
+
+Sortie : `Dump/Ui/Nav/Icone_OngletMultiverse_YYYYMMDD.png`.
+
+### Vague W — monde (même liste, autre brief visuel)
+
+Même fichier, **pas** le prompt icône §1 par défaut. Détail pose plante : `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md`. IBC : `Notes/Farm/CABLAGE_biofiltre_ibc_grille_bezi.md`.
+
+| # | Objet FR | Prompt / brief | Dump | Promo Sprites | Statut | Fichier |
+|---|----------|----------------|------|---------------|--------|---------|
+| W1 | Cuve IBC dessus losange 2:1 | brief iso grille (pas icône) | `Dump/ElementProd/Biofiltre/` | `Sprites/Farm/Biofiltre/` | à générer | |
+| W2 | Stades laitue monde (fix alpha) | import / détourage — `[P0-FARM-SPRITE-ALPHA-001]` | `Dump/Plantes/Laitue/` | `Sprites/Plantes/Laitue/` | à générer | |
+| W3 | Stades tomate monde (canopée) | 7 stades grille | `Dump/Plantes/Tomate/` | `Sprites/Plantes/Tomate/` | à générer | |
+| W4 | Illustrations bandeaux vente | scène, pas icon | `Dump/Ui/` | `Sprites/UI/` | à générer | |
+| W5 | Fishtank / poissons jouables | ~lvl 10 | `Dump/Poisson/` | `Sprites/Farm/Poisson/` | à générer | |
+
+Ajouter ici toute ligne monde (nouveau stade plante, bac, insecte, VFX still, etc.).
 
 ---
 
-## 4) Hors scope de ce prompt
-
-| Asset | Pourquoi | Où |
-|-------|----------|----|
-| Stades plante monde (graine → seedling) | Vue grille / iso, pas icône isolée | Autre brief ; protocole `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md` |
-| Cuve IBC / deck iso 2:1 | Contrainte grille, pas icône | `Notes/Farm/CABLAGE_biofiltre_ibc_grille_bezi.md` |
-| Illustrations bandeaux vente | Scène, pas icon | Concepts Dump `Ui/ConceptVeloMarchand*.png` etc. |
-| Poissons / fishtank jouables | Cible ~lvl 10 | Plus tard, brief dédié |
-
----
-
-## 5) Prochaines 7 icônes (copie rapide)
+## 4) Prochaines 7 lignes (copie rapide)
 
 Ordre immédiat :
 

@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(GridManager))]
 public class BiofiltreIbcSpriteFitter : MonoBehaviour
 {
+    private const float MinDeckUvSize = 0.01f;
     private const int DefaultSortingOrder = -1;
     private const string RuntimeChildName = "IbcSprite";
 
@@ -69,10 +70,14 @@ public class BiofiltreIbcSpriteFitter : MonoBehaviour
 
     private void ApplyFit(Rect worldRect)
     {
-        Rect deckPixels = GetDeckPixelRect(ibcSprite, deckNormalized);
+        Rect deckUv = ResolveDeckUv();
+        Rect deckPixels = GetDeckPixelRect(ibcSprite, deckUv);
         if (deckPixels.width < 1f || deckPixels.height < 1f)
         {
-            Debug.LogWarning("[BiofiltreIbcSpriteFitter] deckNormalized invalide.", this);
+            Debug.LogWarning(
+                "[BiofiltreIbcSpriteFitter] deckNormalized invalide — sprite.rect="
+                + ibcSprite.rect + " uv=" + deckUv,
+                this);
             return;
         }
 
@@ -91,6 +96,14 @@ public class BiofiltreIbcSpriteFitter : MonoBehaviour
 
         spriteRenderer.sprite = ibcSprite;
         spriteRenderer.sortingOrder = sortingOrder;
+    }
+
+    private Rect ResolveDeckUv()
+    {
+        if (deckNormalized.width >= MinDeckUvSize && deckNormalized.height >= MinDeckUvSize)
+            return deckNormalized;
+
+        return DefaultDeckNormalized;
     }
 
     private static Rect GetDeckPixelRect(Sprite sprite, Rect deckUv)

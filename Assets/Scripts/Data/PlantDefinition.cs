@@ -87,8 +87,8 @@ public class PlantDefinition : ScriptableObject
     [Tooltip("Relative offsets from the placement origin. Must always include (0,0).")]
     public Vector2Int[] footprint = { Vector2Int.zero };
 
-    [Tooltip("World-space offset applied to the sprite GameObject after placement. " +
-             "Use this to align sprites whose pivot does not match the anchor cell center.")]
+    [Tooltip("World-space offset applied after placing the sprite on the footprint center. " +
+             "Use this only if the sprite pivot does not match the visual center.")]
     public Vector2 spriteWorldOffset = Vector2.zero;
 
     /// <summary>Returns all absolute grid cells occupied by this plant given a placement origin.</summary>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,10 +8,12 @@ using UnityEngine;
 [DefaultExecutionOrder(-100)]
 public class PlantPlacementPreview : MonoBehaviour
 {
-    private static readonly Color ColorValid   = new Color(0.3f, 1f, 0.4f, 0.6f);
+    private static readonly Color ColorValid   = new Color(0.3f, 1f, 0.4f, 0.75f);
     private static readonly Color ColorInvalid = new Color(1f, 0.2f, 0.2f, 0.6f);
+    private const int GhostSortingOrder = 50;
 
     private GridManager      gridManager;
+    private BiofiltreGridVisualizer visualizer;
     private BiofiltreManager biofiltreManager;
     private PlantDefinition  plantDefinition;
     private GameObject       plantPrefab;
@@ -23,6 +26,7 @@ public class PlantPlacementPreview : MonoBehaviour
     private Vector2Int       currentCell;
     private bool             currentlyValid;
     private Camera           mainCamera;
+    private readonly List<Vector2Int> previewedCells = new();
 
     // ── Initialisation ────────────────────────────────────────────────────────
 
@@ -43,6 +47,7 @@ public class PlantPlacementPreview : MonoBehaviour
         seedItem         = seed;
         originCell       = origin;
         gridManager      = grid;
+        visualizer       = manager.GetComponent<BiofiltreGridVisualizer>();
         biofiltreManager = manager;
         mainCamera       = Camera.main;
 
@@ -53,6 +58,7 @@ public class PlantPlacementPreview : MonoBehaviour
             currentCell = resolvedAnchor;
 
         currentlyValid = biofiltreManager.CanPlace(currentCell, plantDefinition);
+        RefreshFootprintPreview();
         enabled = true;
     }
 
@@ -112,6 +118,9 @@ public class PlantPlacementPreview : MonoBehaviour
         if (ghostRenderer != null)
             ghostRenderer.sprite = plantDefinition.spriteSeedling;
 
+        foreach (SpriteRenderer sr in ghostInstance.GetComponentsInChildren<SpriteRenderer>(true))
+            sr.sortingOrder = GhostSortingOrder;
+
         // Disable all colliders so the ghost does not interfere with raycasts
         foreach (Collider2D col in ghostInstance.GetComponentsInChildren<Collider2D>(true))
             col.enabled = false;
@@ -143,13 +152,45 @@ public class PlantPlacementPreview : MonoBehaviour
         {
             currentCell    = hoveredCell;
             currentlyValid = biofiltreManager.CanPlace(currentCell, plantDefinition);
+            RefreshFootprintPreview();
         }
 
-        // Place the ghost transform at the sprite pivot position (anchor center + visual offset)
-        Vector2 snapPos = gridManager.GridToWorldCenter(currentCell) + plantDefinition.spriteWorldOffset;
+        // Sprite sits on the footprint geometric center; spriteWorldOffset is a pivot tweak only.
+        Vector2 snapPos = gridManager.GetFootprintWorldCenter(currentCell, plantDefinition.footprint)
+                          + plantDefinition.spriteWorldOffset;
         ghostInstance.transform.position = new Vector3(snapPos.x, snapPos.y, 0f);
 
         ApplyTint(currentlyValid ? ColorValid : ColorInvalid);
+    }
+
+    private void RefreshFootprintPreview()
+    {
+        ClearFootprintPreview();
+        if (plantDefinition == null || visualizer == null)
+            return;
+
+        foreach (Vector2Int cell in plantDefinition.GetOccupiedCells(currentCell))
+        {
+            BiofiltreCell bioCell = visualizer.GetCell(cell);
+            if (bioCell == null)
+                continue;
+
+            bioCell.SetPlacementPreview(currentlyValid);
+            previewedCells.Add(cell);
+        }
+    }
+
+    private void ClearFootprintPreview()
+    {
+        for (int i = 0; i < previewedCells.Count; i++)
+        {
+            Vector2Int cell = previewedCells[i];
+            BiofiltreCell bioCell = visualizer != null ? visualizer.GetCell(cell) : null;
+            if (bioCell != null && gridManager != null)
+                bioCell.SetVisualState(!gridManager.IsCellFree(cell));
+        }
+
+        previewedCells.Clear();
     }
 
     /// <summary>
@@ -158,13 +199,8 @@ public class PlantPlacementPreview : MonoBehaviour
     /// </summary>
     private Vector2 ComputeFootprintCenterWorldOffset()
     {
-        Vector2Int[] footprint = plantDefinition.footprint;
-        Vector2 originCenter = gridManager.GridToWorldCenter(Vector2Int.zero);
-        Vector2 sum = Vector2.zero;
-        foreach (Vector2Int cell in footprint)
-            sum += gridManager.GridToWorldCenter(cell);
-
-        return (sum / footprint.Length) - originCenter;
+        return gridManager.GetFootprintWorldCenter(Vector2Int.zero, plantDefinition.footprint)
+               - gridManager.GridToWorldCenter(Vector2Int.zero);
     }
 
     private void ApplyTint(Color color)
@@ -191,7 +227,11 @@ public class PlantPlacementPreview : MonoBehaviour
         // Tant qu'il reste des graines : garder la preview active pour enchaîner
         // les plantations (le ghost continue de suivre la souris).
         if (!noSeedsLeft)
+        {
+            currentlyValid = biofiltreManager.CanPlace(currentCell, plantDefinition);
+            RefreshFootprintPreview();
             return;
+        }
 
         // Dernière graine consommée : fermer la preview et ré-ouvrir la sélection
         // de graines en état vide ("plus de graines"), que le joueur fermera lui-même.
@@ -210,6 +250,8 @@ public class PlantPlacementPreview : MonoBehaviour
 
     private void Cleanup()
     {
+        ClearFootprintPreview();
+
         if (ghostInstance != null)
             Destroy(ghostInstance);
 
@@ -219,6 +261,7 @@ public class PlantPlacementPreview : MonoBehaviour
         plantPrefab      = null;
         seedItem         = null;
         gridManager      = null;
+        visualizer       = null;
         biofiltreManager = null;
         originCell       = null;
         enabled          = false;
