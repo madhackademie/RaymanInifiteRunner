@@ -45,16 +45,16 @@ Convention d'IDs :
 > Branche courante : **`feature/rework-biofiltre-grid`** (à revalider au bootstrap).  
 > **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt**. Tampon `.cursor/session_pull_ok` : les chats **de la même session** ne re-bloquent pas. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
-> **Prochaine session (priorité #1) :** `[P0-FARM-IBC-GRID-001]` **auteur Inspector (pas Bezy)** — Add `BiofiltreIbcSpriteFitter` sur `Biofiltre.prefab` + `ibcSprite` = `Cuve_IBC`.  
-> **Bezy HUD :** `[BZ-FARM-BIOHUD-HOST-001]` **clos**. Plus de job skill sur ce chantier. Suite = Inspector `BiofiltreHudBinder` + `hudPrefab`.  
+> **Prochaine session (priorité #1) :** auteur Inspector (pas Bezy) — Add `BiofiltreHudBinder` sur `Biofiltre.prefab` + `hudPrefab` = `BiofiltreHud`. Playtest HUD world FirstLvl.  
+> **Bezy HUD :** `[BZ-FARM-BIOHUD-HOST-001]` **clos**. Plus de job skill sur ce chantier.  
+> **IBC :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (playtest deck ↔ grille OK, grille **carrée**).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 septembre**). File `#13` après onglets. Wallet punch = PARK UX.
 
 ### ★ Priorité prochaine session — grille dans cuve IBC
 
-> Décision auteur 2026-08-31 : viser une **vue isométrique** (losange 2:1) — plus lisible que le 3/4 ortho.  
-> Sprite Dump **`Cuve_IBC_3quart_carre_parfait.png`** = dessus **carré** → **ne colle pas** sur une grille iso. Il faut un IBC **dessus losange 2:1** (Dump, puis promo).  
-> Grille : `GridManager.coordinateMode = Isometric` sur `Biofiltre.prefab`. Ne pas changer cols/rows pour l’art.  
-> **Contrainte (source de vérité = grille) :** le sprite doit **pouvoir être redimensionné** pour **accepter** la grille (`GridManager` : `Columns` × `Rows` × `CellSizeWorld`). **Pas l’inverse** : on ne change pas la taille / le pas / le nombre de cellules pour coller à l’art. Même logique que les cellules (`BiofiltreGridVisualizer` scale déjà chaque sprite cellule sur `cellSize`).  
+> Décision auteur **2026-09-02** : grille **carrée** (`coordinateMode = Orthogonal`) — le sprite `Cuve_IBC` a un dessus carré ; playtest deck ↔ grille **OK**.  
+> Iso 2:1 (décision 2026-08-31) **reportée** : il faudrait un IBC dessus losange (Dump, puis promo). Ne pas changer cols/rows pour l’art.  
+> **Contrainte (source de vérité = grille) :** le sprite se redimensionne pour **accepter** la grille. **Pas l’inverse**.  
 > Réf art runtime : `Assets/Art/Sprites/Farm/Biofiltre/Cuve_IBC.png` (promo Dump `Cuve_IBC_deck_carre_plus_face.png`, 2026-08-31).  
 > Réf Dump : `Assets/Art/Assets Store Dump/ElementProd/Biofiltre/Cuve_IBC_deck_carre_plus_face.png`  
 > Réf mockup IBC : `Assets/Art/Mocup/biofiltreInterface_1.png`  
@@ -63,9 +63,11 @@ Convention d'IDs :
 
 **Ordre prochaine session :**
 
-1. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` sur `Biofiltre.prefab` (2026-09-02) — **playtest alignement deck ↔ grille à valider auteur**
-2. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
-3. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+1. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée)
+2. [ ] **Auteur (pas Bezy)** : Add `BiofiltreHudBinder` sur `Biofiltre` + `hudPrefab` = `BiofiltreHud`
+3. [ ] Playtest HUD world FirstLvl
+4. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
+5. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
 
 **Clos playtest grille rework (2026-08-30, branche `feature/rework-biofiltre-grid`) :**
 

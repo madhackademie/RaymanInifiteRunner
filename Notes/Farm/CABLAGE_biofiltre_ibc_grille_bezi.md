@@ -1,10 +1,10 @@
 # Câblage biofiltre — grille, cuve IBC, HUD Bezy
 
 **Branche :** `feature/rework-biofiltre-grid`  
-**Dernière mise à jour :** 2026-08-30  
+**Dernière mise à jour :** 2026-09-02  
 **Statut playtest grille :** `[P0-FARM-GRID-PLAY-001]` clos — clics, pose, récolte, pause/recall OK  
-**Statut IBC visuel :** `[P0-FARM-IBC-GRID-001]` ouvert — grille iso 2:1 branchée ; sprite cuve iso (dessus losange) manquant  
-**Statut HUD Bezy :** partiel — atome primaire livré ; row + secondaire + host à faire
+**Statut IBC visuel :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 — grille **carrée**, deck ↔ grille OK  
+**Statut HUD Bezy :** HOST clos — reste `BiofiltreHudBinder` + playtest world
 
 Ce document centralise **qui fait quoi**, **où brancher quoi dans l’Inspector**, et **l’ordre Bezy** pour ne pas reposer la question à chaque session.
 
@@ -87,7 +87,7 @@ Biofiltre                          ← racine
 
 | Composant | Script | Statut |
 |-----------|--------|--------|
-| `BiofiltreIbcSpriteFitter` | `BiofiltreIbcSpriteFitter.cs` | **À ajouter** — `[P0-FARM-IBC-GRID-001]` |
+| `BiofiltreIbcSpriteFitter` | `BiofiltreIbcSpriteFitter.cs` | **Câblé** 2026-09-02 — playtest OK |
 | `BiofiltreHudBinder` | `BiofiltreHudBinder.cs` | **À ajouter** — après livraison `BiofiltreHud.prefab` |
 
 ### Champs Inspector importants (`BiofiltreManager`)
@@ -109,7 +109,7 @@ Valeurs typiques sur le prefab (à ne **pas** changer pour coller à l’art IBC
 | `instanceColumns` / `instanceRows` | ex. `10` × `10` |
 | `instanceCellSize` | ex. `1` |
 | `originFromTransform` | `true` — origine = position du transform biofiltre |
-| `coordinateMode` | **`Isometric`** (losanges 2:1). Orthogonal reste dispo dans l’Inspector. |
+| `coordinateMode` | **`Orthogonal`** (carrés) — validé playtest 2026-09-02. Iso 2:1 reportée (art losange manquant). |
 
 **Iso 2:1 :** si taille de cellule uniforme, `GridManager` applique `hauteur = largeur × 0.5` (losange jeu classique). Ne pas changer `Columns` / `Rows` / `CellSize` pour coller à l’art.
 
@@ -371,7 +371,7 @@ Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 - [x] Sprite promu dans `Sprites/Farm/Biofiltre/` (`Cuve_IBC.png`, 2026-08-31)
 - [x] `BiofiltreIbcSpriteFitter` sur `Biofiltre.prefab` (2026-09-02)
 - [x] `ibcSprite` assigné (`Cuve_IBC.png`)
-- [ ] Playtest alignement deck ↔ grille
+- [x] Playtest alignement deck ↔ grille (**OK** 2026-09-02, grille carrée)
 
 ### HUD Bezy — `[BZ-FARM-BIOHUD-*]`
 

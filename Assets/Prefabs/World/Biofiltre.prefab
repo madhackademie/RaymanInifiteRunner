@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 8494675260759893495}
   - component: {fileID: 8494675260759893496}
   - component: {fileID: 7120944831028475613}
+  - component: {fileID: 8137672529843776454}
   m_Layer: 0
   m_Name: Biofiltre
   m_TagString: Untagged
@@ -122,6 +123,7 @@ MonoBehaviour:
   instanceCellWidth: 1
   instanceCellHeight: 1
   originFromTransform: 1
+  originOffset: {x: 0, y: 0}
   instanceWorldOrigin: {x: 0, y: 0}
   coordinateMode: 0
 --- !u!114 &5171608283822144346
@@ -204,3 +206,24 @@ MonoBehaviour:
     y: 0.4483
     width: 0.9446
     height: 0.5232
+--- !u!114 &8137672529843776454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776529302815179675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc7b958008c54893ab5c785c6a048425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BiofiltreHudBinder
+  hudPrefab: {fileID: 1672208252424956221, guid: fe25e29f74bd72b4fb447dd5b8067a33, type: 3}
+  gridManager: {fileID: 0}
+  primaryNormalizedAnchor: {x: 0.02, y: 1.14}
+  primaryWorldOffset: {x: 0, y: 0}
+  starNormalizedAnchor: {x: 0.98, y: 1.14}
+  starWorldOffset: {x: 0, y: 0}
+  secondaryNormalizedAnchor: {x: 0.04, y: -0.18}
+  secondaryWorldOffset: {x: 0, y: 0}
+  hudWorldZ: 0

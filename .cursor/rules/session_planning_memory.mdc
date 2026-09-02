@@ -23,4 +23,4 @@ alwaysApply: true
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
 - Branche de travail courante: **`feature/rework-biofiltre-grid`** (2026-08-29).
 - Priorite courante connue (a revalider via docs a chaque session):
- - [P0-FARM-IBC-GRID-001] auteur Inspector (pas Bezy) : BiofiltreIbcSpriteFitter + ibcSprite = Cuve_IBC.
+ - Auteur Inspector (pas Bezy) : BiofiltreHudBinder + hudPrefab = BiofiltreHud, playtest HUD world.

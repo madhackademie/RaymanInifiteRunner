@@ -16,13 +16,13 @@
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
 ### Priorités prochaine session
-1. **[P0-FARM-IBC-GRID-001]** Auteur Inspector (pas Bezy) : `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` sur `Biofiltre.prefab`, puis playtest deck ↔ grille.
-2. HUD : **`[BZ-FARM-BIOHUD-HOST-001]` clos.** Auteur : `BiofiltreHudBinder` + `hudPrefab` = `BiofiltreHud` (pas Bezy).
-3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
+1. **Auteur Inspector (pas Bezy)** : `BiofiltreHudBinder` + `hudPrefab` = `BiofiltreHud` sur `Biofiltre.prefab`, puis playtest HUD world FirstLvl.
+2. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
 
-### Clos grille rework (2026-08-30)
-- `[P0-FARM-GRID-PLAY-001]` — grille sans colliders, clics, pose/récolte, pause/recall persistance **OK** (`feature/rework-biofiltre-grid`).
-- `[P0-FARM-PLANT-TOUCH-001]` — tactile inclus dans le même playtest.
+### Clos IBC + grille (2026-09-02 / 2026-08-30)
+- `[P0-FARM-IBC-GRID-001]` — cuve IBC + grille **carrée** alignées, playtest **OK** 2026-09-02.
+- `[P0-FARM-GRID-PLAY-001]` — grille sans colliders, clics, pose/récolte, pause/recall persistance **OK**.
+- `[P0-FARM-PLANT-TOUCH-001]` — tactile inclus dans le même playtest 2026-08-30.
 
 ### Clos session 2026-08-25 / 2026-08-30 (vente)
 - Jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` + compteurs `[P0-SALE-STAR-PROGRESS-001]` + UI étoiles Bezy.

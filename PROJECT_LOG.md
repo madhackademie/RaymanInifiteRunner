@@ -1,5 +1,18 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-02 — Playtest IBC / grille OK
+
+### Décision auteur
+- `[P0-FARM-IBC-GRID-001]` **clos** : la grille **correspond** à la cuve et **fonctionne** (deck ↔ 10×10, pose).
+- Grille **carrée** (`coordinateMode = Orthogonal`) conservée — l’art `Cuve_IBC` a un dessus carré. Iso 2:1 reportée (nouveau sprite losange requis).
+
+### Suite (référence « tâche du jour »)
+1. Auteur Inspector : Add `BiofiltreHudBinder` + `hudPrefab` = `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab`.
+2. Playtest HUD world FirstLvl.
+3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
+
+---
+
 ## 2026-09-02 — Bezy HOST HUD biofiltre clos
 
 ### Livré
