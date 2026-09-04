@@ -42,11 +42,12 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/rework-biofiltre-grid`** (à revalider au bootstrap).  
+> Branche courante : **`main`** (revalider au bootstrap).  
 > **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt**. Tampon `.cursor/session_pull_ok` : les chats **de la même session** ne re-bloquent pas. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
-> **Prochaine session (priorité #1) :** auteur Inspector (pas Bezy) — Add `BiofiltreHudBinder` sur `Biofiltre.prefab` + `hudPrefab` = `BiofiltreHud`. Playtest HUD world FirstLvl.  
-> **Bezy HUD :** `[BZ-FARM-BIOHUD-HOST-001]` **clos**. Plus de job skill sur ce chantier.  
+> **Prochaine session (priorité #1 Bezy) :** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` — mise en place + polish **sprites onglets**. Prompts **après** brief visuel auteur → validation → envoi Bezy. Stub : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`.  
+> **Auteur Inspector (pas Bezy) :** Add `BiofiltreHudBinder` sur `Biofiltre.prefab` + `hudPrefab` = `BiofiltreHud`. Playtest HUD world FirstLvl.  
+> **Bezy HUD :** `[BZ-FARM-BIOHUD-HOST-001]` **clos**.  
 > **IBC :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (playtest deck ↔ grille OK, grille **carrée**).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 septembre**). File `#13` après onglets. Wallet punch = PARK UX.
 
@@ -61,13 +62,22 @@ Convention d'IDs :
 > Réf grille existante : `Planteur_carre_vue_grille.png`, `biofiltre_ibc_oblique_grille.png`.  
 > Ne pas promouvoir Dump → `Sprites/` sans OK auteur.
 
+### ★ Priorité Bezy — sprites onglets HUD `[P0-TAB-SPRITES-001]`
+
+> Décision auteur **2026-09-04** : **mise en place + polish des sprites** sur les onglets, **via Bezy** (`/prefab-ui-3phases`).  
+> **Ne pas envoyer de prompt** tant que l’auteur n’a pas listé les changements visuels et que les prompts n’ont pas été **validés ensemble**.  
+> Cible probable : `NavigationHUD` (`TabAventures` / `TabInventaire` / `TabShop` / `TabVente`) — champs `Image` déjà dans `NavigationHUD.cs`. Barre inventaire (`InventoryFilterBar`) **seulement si** le brief le dit.  
+> Art : Dump → promo auteur `Sprites/UI/` **avant** Bezy (Vague H `Notes/Art/PROMPT_generation_icones.md`). Bezy = wiring / layout / polish prefab, **pas** génération d’images.  
+> Stub prompts : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` — Ph.1–3 à rédiger après le brief. File : `Notes/Bezi/BEZY_QUEUE.md`.
+
 **Ordre prochaine session :**
 
-1. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée)
-2. [ ] **Auteur (pas Bezy)** : Add `BiofiltreHudBinder` sur `Biofiltre` + `hudPrefab` = `BiofiltreHud`
-3. [ ] Playtest HUD world FirstLvl
-4. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
-5. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+1. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → Cursor rédige Ph.1–3 → **validation prompts** → Bezy wiring sprites onglets
+2. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée)
+3. [ ] **Auteur (pas Bezy)** : Add `BiofiltreHudBinder` sur `Biofiltre` + `hudPrefab` = `BiofiltreHud`
+4. [ ] Playtest HUD world FirstLvl
+5. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
+6. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
 
 **Clos playtest grille rework (2026-08-30, branche `feature/rework-biofiltre-grid`) :**
 
@@ -155,7 +165,8 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 1. [x] **[BZ-POLISH-009]** Contrastes talents Commerce — **Bezy Ph.1–3 OK** (2026-07-30)
 2. [x] **[BZ-POLISH-011]** LoadingScreen (#11) — **Bezy + playtest OK** (2026-08-05)
 3. [x] **[BZ-POLISH-012]** HomeScene (#12) — **Bezy + playtest OK** (2026-08-18)
-4. [ ] **[BZ-POLISH-013]** Audit layers — **après** `[P0-INV-TABS-001]`
+4. [ ] **[BZ-TAB-SPRITES-001]** / `[P0-TAB-SPRITES-001]` Sprites onglets HUD — **prochaine Bezy** (après brief auteur)
+5. [ ] **[BZ-POLISH-013]** Audit layers — **après** `[P0-INV-TABS-001]`
 5. [~] **[BZ-POLISH-015]** Wallet punch — **PARK UX**
 
 **Cursor (hors Bezy, quand utile) :**
@@ -169,6 +180,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] Commit auteur lot session + docs
 
 **Réf. étoiles bandeaux :** `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` · GDD §2.9  
+**Réf. sprites onglets HUD :** `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` · Vague H `Notes/Art/PROMPT_generation_icones.md`  
 **Réf. onglets inventaire :** `Notes/GDD/SPEC_inventaire_multiverse_hub.md` · `Notes/Ui/PROMPTS_Bezi_inventory_tabs.md`  
 **Réf. HomeScene :** `Notes/Ui/PROMPTS_Bezi_home_012.md`  
 **Réf. LoadingScreen :** `Notes/Ui/PROMPTS_Bezi_loading_011.md`  
@@ -415,6 +427,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 ### Inventaire / wallet / runtime UI
 - [x] **[CT-UI-SAFE-PA-001]** HUD PA slot chrome haut-droite + TreeMount plein cadre + convention `Notes/Ui/CONVENTION_hud_pa_safe_zone.md` (2026-07-30). Playtest auteur.
 - [~] **[CT-INV-HALO-001]** Rework inventaire halo + grille — Ph.1–3 + playtest halo OK ; **MVP arbre Commerce OK** (2026-06-16) ; polish arbre → backlog.
+- [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Mise en place + polish **sprites onglets** HUD (Bezy) — **priorité** ; prompts après brief auteur.
 - [ ] **[P0-INV-TABS-001]** Onglets grille **Graines** / **Consommables** — après `[P0-SALE-QTY-RAND-001]`.
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
 - [ ] [CT-INV-002] Valider qu'il n'y a plus de dépendance runtime cachée à `Inventaire.unity` (ou documenter explicitement son rôle).

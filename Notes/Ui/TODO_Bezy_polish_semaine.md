@@ -15,8 +15,8 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 
 ## Ordre suggéré (semaine)
 
-> **Priorité session (auteur 2026-08-25) :** `[P0-SALE-STAR-BARS-001]` jauges tooltip ★ — **Ph.1 maintenant** (`PROMPTS_Bezi_sale_channel_star_bars.md`) avant reset **30 août**.  
-> `[P0-SALE-STAR-UI-001]` Ph.1–4 **OK**. Onglets inventaire `[P0-INV-TABS-001]` Bezy Ph.1–4 déjà livrées. File **#13** après.  
+> **Priorité session (auteur 2026-09-04) :** `[BZ-TAB-SPRITES-001]` / `[P0-TAB-SPRITES-001]` — sprites onglets HUD. **Prompts après brief auteur** (`PROMPTS_Bezi_tab_sprites.md`). Ne pas envoyer tant que non validés.  
+> `[P0-SALE-STAR-UI-001]` Ph.1–4 **OK**. Onglets inventaire `[P0-INV-TABS-001]` Bezy Ph.1–4 déjà livrées. File **#13** après sprites onglets.  
 > **Park UX 2026-07-27 :** `[BZ-POLISH-015]` — docs only ; attendre GDD §5.8.  
 > **Branche :** `main`. Workflow skill : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`.
 > **Clos 2026-07-23 :** `[BZ-POLISH-001]` shop micro-form · `[BZ-POLISH-003]` EmptyState · `[BZ-POLISH-004]` bandeaux vente cooldown (fade + pulse + locked lisible).
@@ -48,6 +48,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 23 | **[BZ-FARM-BIOHUD-PRIM-001]** | Atome + rangée slots **primaires** biofiltre (N=3 cadenas) | `UiBiofiltrePrimarySlot` + Row | M | `PROMPTS_Bezi_biofiltre_hud_slots.md` — après `[P0-FARM-BIOHUD-001]` C# |
 | 24 | **[BZ-FARM-BIOHUD-SEC-001]** | Atome + rangée slots **secondaires** (N=5) | `UiBiofiltreSecondarySlot` + Row | M | même fichier prompts |
 | 25 | **[BZ-FARM-BIOHUD-HOST-001]** | HUD world `BiofiltreHud` (neste `UiStarRow` + 2 rows) | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | M | après jobs 23–24 |
+| 26 | **[BZ-TAB-SPRITES-001]** / **[P0-TAB-SPRITES-001]** | Mise en place + polish **sprites onglets** HUD | `NavigationHUD` (tabs) | M | brief auteur → `PROMPTS_Bezi_tab_sprites.md` — **ne pas envoyer avant validation** |
 
 ---
 
@@ -144,6 +145,13 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - **Texture** : `StarsParticle.png` recentré + `M_HarvestReadySparkle` (Cursor 2026-07-29)
 - **Cursor après** : hook `PlantGrow` — **OK** (2026-07-29) `HarvestReadyFxAnchor` + sync récoltable
 - Prompts : `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md`
+
+### 26 — Sprites onglets HUD `[BZ-TAB-SPRITES-001]` / `[P0-TAB-SPRITES-001]` — **EN ATTENTE BRIEF**
+- **Quoi :** mise en place + polish des **sprites** sur les onglets (Bezy wiring / layout, pas génération d’art).
+- **Cible probable :** scène `NavigationHUD` — `TabAventures` / `TabInventaire` / `TabShop` / `TabVente` (Images déjà dans `NavigationHUD.cs`).
+- **Art :** promo auteur `Sprites/UI/` (Vague H) **avant** Bezy.
+- **Gate :** l’auteur liste les changements visuels → Cursor rédige Ph.1–3 → **validation prompts** → file `BEZY_QUEUE.md`.
+- **Ne pas envoyer** tant que `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` n’a pas de phases collables validées.
 
 ---
 

@@ -1,5 +1,32 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-04 — Priorité Bezy : sprites onglets HUD
+
+### Décision auteur
+- Nouveau P0 : **mise en place + polish des sprites** sur les onglets, **à faire faire par Bezy**.
+- L’auteur fournira la liste des changements visuels ; Cursor rédigera les prompts Ph.1–3 ; **validation ensemble** avant envoi Bezy.
+
+### IDs
+- `[P0-TAB-SPRITES-001]` — suivi session / docs.
+- `[BZ-TAB-SPRITES-001]` — job Bezy `/prefab-ui-3phases`.
+
+### Cible (à figer avec le brief)
+- Probable : `NavigationHUD` (`TabAventures` / `TabInventaire` / `TabShop` / `TabVente`).
+- Barre inventaire `InventoryFilterBar` seulement si le brief le dit.
+- Art Dump → promo `Sprites/UI/` **avant** Bezy (Vague H). Bezy = wiring / polish prefab, pas génération d’images.
+
+### Docs
+- Stub prompts (ne pas envoyer) : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`
+- File : `Notes/Bezi/BEZY_QUEUE.md` · `Notes/Ui/TODO_Bezy_polish_semaine.md` job #26
+
+### Prochaine session (référence « tâche du jour »)
+1. Brief visuel auteur → prompts `[BZ-TAB-SPRITES-001]` → validation → Bezy.
+2. Auteur Inspector : `BiofiltreHudBinder` + `hudPrefab` = `BiofiltreHud`.
+3. Playtest HUD world FirstLvl.
+4. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
+
+---
+
 ## 2026-09-02 — Playtest IBC / grille OK
 
 ### Décision auteur

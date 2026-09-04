@@ -39,6 +39,7 @@ Règle :
 - Vérifier `NavigationHUD` + `MapSceneController` + `FirstLvlController` en playtest.
 - Contrôler l’unicité de `EventSystem` et l’état des Build Settings.
 - Aligner les docs historiques ("Carte") vers `HomeScene`/`Map` cible.
+- **Sprites onglets HUD** (`[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]`) : wiring Bezy après brief auteur — stub `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`. Statut : `Notes/Todo_project.md`.
 
 ### LoadingScreen
 - Intégrer l’illustration finale (poisson + arbre) dans `Bootstrap.unity`.

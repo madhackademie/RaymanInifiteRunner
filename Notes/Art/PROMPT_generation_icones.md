@@ -197,6 +197,8 @@ Déjà en Dump (ne pas regénérer tant que non validé) : `IconeMarket.png`, `I
 
 Prompt §1 (icône fond blanc). Quêtes : **1 onglet parent + 3 sous-classes** (daily / weekly / monthly).
 
+**Wiring Bezy (après promo Sprites) :** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` — stub `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`. Ne pas lancer Bezy tant que le brief visuel n’est pas validé.
+
 | # | Objet FR | Prompt objet | Dump | Promo Sprites | Statut | Fichier |
 |---|----------|--------------|------|---------------|--------|---------|
 | H1 | Onglet Multiverse | prompt dédié ci-dessous (panier + vaisseau + runner + poulpe) | `Dump/Ui/Nav/` | `Sprites/UI/` | à générer | |

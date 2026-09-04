@@ -21,26 +21,17 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
-| [x] | `[BZ-FARM-BIOHUD-PRIM-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlotRow.prefab` | 1 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md` | `feature/rework-biofiltre-grid` | Shell OK 2026-08-31 (Slot1–3 nested) |
-| [x] | `[BZ-FARM-BIOHUD-PRIM-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlotRow.prefab` | 2 | idem | idem | HLG OK ; spacing 4→8 + wire = Ph.3 |
-| [x] | `[BZ-FARM-BIOHUD-PRIM-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltrePrimarySlotRow.prefab` | 3 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md` | `feature/rework-biofiltre-grid` | slots[3] Slot1–3 OK ; spacing resté 4 |
-| [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlot.prefab` | 1 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md` | `feature/rework-biofiltre-grid` | Shell OK ; sizeDelta 72×80 → fixer 48 en Ph.2 |
-| [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlot.prefab` | 2 | idem | idem | Images `_0/_1/_2` OK ; 48×48 + wire = Ph.3 |
-| [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlot.prefab` | 3 | idem | idem | SlotView wired ; size 72×80 resté |
-| [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab` | 1 | idem | idem | 5 nested Secondary1–5, 280×48, nested 48×48 |
-| [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab` | 2 | idem | idem | HLG OK ; spacing 10 ; SlotRowView slots vides count=3 |
-| [x] | `[BZ-FARM-BIOHUD-SEC-001]` | `Assets/Prefabs/Ui/Common/UiBiofiltreSecondarySlotRow.prefab` | 3 | idem | idem | slots[5] Secondary1–5 ; count=5 ; spacing 10 resté |
-| [x] | `[BZ-FARM-BIOHUD-HOST-001]` | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | 1 | idem | idem | Nested PrimaryRow/StarRow/SecondaryRow ; pas de mounts ; Transform |
-| [x] | `[BZ-FARM-BIOHUD-HOST-001]` | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | 2 | idem | idem | Canvas World Space ; sorting 0 / size 100 — fixer en Ph.3 |
-| [x] | `[BZ-FARM-BIOHUD-HOST-001]` | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | 3 | idem | idem | HudView wired Star/Primary/Secondary ; sorting 0 / 100×100 resté |
+| [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | **NE PAS LANCER** — attendre brief visuel auteur + validation prompts |
 
 ---
 
 ## Bloc de lancement (copier dans Bezy)
 
-**File HUD slots vide.** Plus de `/prefab-ui-3phases` sur ce chantier.
+**File HUD slots vide.** Plus de `/prefab-ui-3phases` sur le chantier biofiltre.
 
-Suite **auteur Inspector** : `BiofiltreHudBinder` + `hudPrefab` = `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` sur l’instance biofiltre. Playtest hors prompt Bezy.
+**Prochaine Bezy :** `[BZ-TAB-SPRITES-001]` sprites onglets — **bloqué** tant que le brief auteur n’est pas fourni et que les Ph.1–3 de `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` ne sont pas validées.
+
+Suite **auteur Inspector** (parallèle, pas Bezy) : `BiofiltreHudBinder` + `hudPrefab` = `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` sur l’instance biofiltre. Playtest hors prompt Bezy.
 
 ---
 

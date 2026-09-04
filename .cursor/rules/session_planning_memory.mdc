@@ -21,6 +21,7 @@ alwaysApply: true
   1. l'ajouter dans `Notes/Todo_project.md`,
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
-- Branche de travail courante: **`feature/rework-biofiltre-grid`** (2026-08-29).
+- Branche de travail courante: **`main`** (2026-09-04).
 - Priorite courante connue (a revalider via docs a chaque session):
+ - Bezy `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : sprites onglets HUD — prompts apres brief auteur + validation (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`).
  - Auteur Inspector (pas Bezy) : BiofiltreHudBinder + hudPrefab = BiofiltreHud, playtest HUD world.

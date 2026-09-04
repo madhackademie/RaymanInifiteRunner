@@ -49,11 +49,12 @@ Quand l'utilisateur indique la fin de session ou demande de journaliser:
 
 ## 5) Priorite courante connue (memoire active)
 
-Branche courante documentee: **`feature/rework-biofiltre-grid`** (2026-08-29).
+Branche courante documentee: **`main`** (2026-09-04).
 - Workflow Bezy prod : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` (`/prefab-ui-3phases`).
 - Branche brouillon Workspace Rules **supprimee** : `cursor/bezi-workspace-rules-skill-76a4`.
 
 Priorite immediate actuelle:
+- Bezy `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : mise en place + polish sprites onglets HUD. Prompts apres brief visuel auteur + validation (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`).
 - Auteur Inspector (pas Bezy) : Add `BiofiltreHudBinder` sur `Biofiltre.prefab` + `hudPrefab` = `BiofiltreHud`, playtest HUD world FirstLvl.
 
 Reportes: [P0-FARM-SPRITE-ALPHA-001] fond noir laitue, [P0-SALE-QTY-RAND-001] rand 1-3 salades ★1.
