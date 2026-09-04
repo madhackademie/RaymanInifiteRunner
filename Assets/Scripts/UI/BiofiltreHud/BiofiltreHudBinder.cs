@@ -23,12 +23,13 @@ public class BiofiltreHudBinder : MonoBehaviour
     [SerializeField] private Vector2 starWorldOffset;
 
     [Header("Secondary row (face cuve, sous le gravier)")]
-    [SerializeField] private Vector2 secondaryNormalizedAnchor = new Vector2(0.04f, -0.18f);
+    [SerializeField] private Vector2 secondaryNormalizedAnchor = new Vector2(0.04f, -0.06f);
     [SerializeField] private Vector2 secondaryWorldOffset;
 
     [SerializeField] private float hudWorldZ = 0f;
 
     private BiofiltreHudView hudInstance;
+    private bool pendingRecalc;
 
     private void Awake()
     {
@@ -42,7 +43,23 @@ public class BiofiltreHudBinder : MonoBehaviour
         RecalculateHudPositions();
     }
 
+    private void OnValidate()
+    {
+        pendingRecalc = true;
+    }
+
+    private void LateUpdate()
+    {
+        if (!pendingRecalc)
+            return;
+
+        pendingRecalc = false;
+        if (hudInstance != null)
+            RecalculateHudPositions();
+    }
+
     /// <summary>Recale les widgets si la layout grille change (IBC vs futur bac).</summary>
+    [ContextMenu("Recalculate HUD Positions")]
     public void RecalculateHudPositions()
     {
         if (hudInstance == null || gridManager == null)
@@ -94,8 +111,8 @@ public class BiofiltreHudBinder : MonoBehaviour
     }
 
     /// <summary>
-    /// LookRotation face caméra inverse le X local : les rangées (pivot gauche)
-    /// s’étendaient hors écran. Scale X négatif rétablit gauche → droite.
+    /// LookRotation face caméra inverse le X local : scale X négatif rétablit gauche → droite.
+    /// Le canvas est agrandi pour couvrir deck + face avant (sinon Unity cull les widgets hors rect).
     /// </summary>
     private void FitCanvasToGrid(Rect worldRect)
     {
@@ -105,8 +122,25 @@ public class BiofiltreHudBinder : MonoBehaviour
             rowRt.rect.width > 1f)
             rowWidthPx = rowRt.rect.width;
 
-        float scale = worldRect.width * HudWidthVsGrid / rowWidthPx;
-        hudInstance.transform.localScale = new Vector3(-scale, scale, scale);
+        float absScale = worldRect.width * HudWidthVsGrid / rowWidthPx;
+        hudInstance.transform.localScale = new Vector3(-absScale, absScale, absScale);
+        ExpandCanvasToCoverTank(worldRect, absScale);
+    }
+
+    private void ExpandCanvasToCoverTank(Rect worldRect, float absScale)
+    {
+        if (hudInstance.transform is not RectTransform canvasRt)
+            return;
+
+        const float extraBelow = 0.35f;
+        const float extraAround = 0.2f;
+        float worldW = worldRect.width * (1f + extraAround);
+        float worldH = worldRect.height * (1f + extraBelow + extraAround);
+        canvasRt.sizeDelta = new Vector2(worldW / absScale, worldH / absScale);
+        canvasRt.position = new Vector3(
+            worldRect.center.x,
+            worldRect.y + worldRect.height * (0.5f - extraBelow * 0.5f),
+            hudWorldZ);
     }
 
     private void ApplyRowPivots()
@@ -143,4 +177,25 @@ public class BiofiltreHudBinder : MonoBehaviour
         float y = worldRect.y + normalizedAnchor.y * worldRect.height + worldOffset.y;
         return new Vector3(x, y, 0f);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        GridManager grid = gridManager != null ? gridManager : GetComponent<GridManager>();
+        if (grid == null)
+            return;
+
+        Rect worldRect = grid.GetWorldRect();
+        DrawAnchorGizmo(worldRect, primaryNormalizedAnchor, primaryWorldOffset, Color.yellow);
+        DrawAnchorGizmo(worldRect, starNormalizedAnchor, starWorldOffset, Color.cyan);
+        DrawAnchorGizmo(worldRect, secondaryNormalizedAnchor, secondaryWorldOffset, Color.magenta);
+    }
+
+    private static void DrawAnchorGizmo(Rect worldRect, Vector2 normalized, Vector2 worldOffset, Color color)
+    {
+        Vector3 p = NormalizedAnchorToWorld(normalized, worldOffset, worldRect);
+        UnityEditor.Handles.color = color;
+        UnityEditor.Handles.DrawSolidDisc(p, Vector3.forward, 0.12f);
+    }
+#endif
 }

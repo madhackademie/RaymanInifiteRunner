@@ -220,10 +220,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BiofiltreHudBinder
   hudPrefab: {fileID: 1672208252424956221, guid: fe25e29f74bd72b4fb447dd5b8067a33, type: 3}
   gridManager: {fileID: 0}
-  primaryNormalizedAnchor: {x: 0.02, y: 1.14}
+  primaryNormalizedAnchor: {x: -0.04, y: 1.14}
   primaryWorldOffset: {x: 0, y: 0}
-  starNormalizedAnchor: {x: 0.98, y: 1.14}
+  starNormalizedAnchor: {x: 1.01, y: 1.14}
   starWorldOffset: {x: 0, y: 0}
-  secondaryNormalizedAnchor: {x: 0.04, y: -0.18}
+  secondaryNormalizedAnchor: {x: 0, y: -0.06}
   secondaryWorldOffset: {x: 0, y: 0}
   hudWorldZ: 0

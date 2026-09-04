@@ -641,23 +641,6 @@ MonoBehaviour:
   neighborMaxQuantityPerSale: 2
   neighborSaleCooldownSeconds: 5
   ignoreSaleCooldown: 0
---- !u!114 &877250855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877250849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ac2151499f94826a9fee840d79f8874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SaleChannelUnlockService
-  unlockDefinitions:
-  - {fileID: 11400000, guid: c3d4e5f60718293a4b5c6d7e8f901234, type: 2}
-  - {fileID: 11400000, guid: d4e5f60718293a4b5c6d7e8f90123456, type: 2}
-  ignoreUnlockRequirements: 0
-  debugResearchDurationSeconds: 30
 --- !u!114 &877250853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,6 +670,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f4a2b19e3d7054a6b1c2d3e4f50617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuffManager
+--- !u!114 &877250855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877250849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac2151499f94826a9fee840d79f8874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaleChannelUnlockService
+  unlockDefinitions:
+  - {fileID: 11400000, guid: c3d4e5f60718293a4b5c6d7e8f901234, type: 2}
+  - {fileID: 11400000, guid: d4e5f60718293a4b5c6d7e8f90123456, type: 2}
+  ignoreUnlockRequirements: 0
+  debugResearchDurationSeconds: 30
 --- !u!1 &919069777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,7 +1738,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -250, y: 0}
+  m_AnchoredPosition: {x: -506, y: 861.95}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1562647022
