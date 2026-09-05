@@ -1,10 +1,10 @@
 # Câblage biofiltre — grille, cuve IBC, HUD Bezy
 
-**Branche :** `feature/rework-biofiltre-grid`  
-**Dernière mise à jour :** 2026-09-02  
-**Statut playtest grille :** `[P0-FARM-GRID-PLAY-001]` clos — clics, pose, récolte, pause/recall OK  
-**Statut IBC visuel :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 — grille **carrée**, deck ↔ grille OK  
-**Statut HUD Bezy :** HOST clos — reste `BiofiltreHudBinder` + playtest world
+**Branche :** `feature/biofiltre-isometric`  
+**Dernière mise à jour :** 2026-09-05  
+**Statut playtest grille :** `[P0-FARM-GRID-PLAY-001]` clos (ortho) — clics, pose, récolte, pause/recall OK  
+**Statut IBC visuel :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 — grille **carrée** sur `main`  
+**Statut iso :** `[P0-FARM-ISO-GRID-001]` — géométrie losange 2:1 + `IbcIso` câblé ; playtest alignement en attente
 
 Ce document centralise **qui fait quoi**, **où brancher quoi dans l’Inspector**, et **l’ordre Bezy** pour ne pas reposer la question à chaque session.
 
@@ -107,15 +107,15 @@ Valeurs typiques sur le prefab (à ne **pas** changer pour coller à l’art IBC
 |-------|--------|
 | `useScriptableConfig` | `false` |
 | `instanceColumns` / `instanceRows` | ex. `10` × `10` |
-| `instanceCellSize` | ex. `1` |
+| `instanceCellSize` | FirstLvl override **`0.55`** (2026-09-05, agrandir iso) — prefab défaut `1` |
 | `originFromTransform` | `true` — origine = position du transform biofiltre |
-| `coordinateMode` | **`Orthogonal`** (carrés) — validé playtest 2026-09-02. Iso 2:1 reportée (art losange manquant). |
+| `coordinateMode` | **`Isometric`** (losanges 2:1) — activé 2026-09-05 sur `feature/biofiltre-isometric`. `main` reste Orthogonal. |
 
 **Iso 2:1 :** si taille de cellule uniforme, `GridManager` applique `hauteur = largeur × 0.5` (losange jeu classique). Ne pas changer `Columns` / `Rows` / `CellSize` pour coller à l’art.
 
 **Règle produit :** la grille est la **source de vérité**. L’art IBC se redimensionne pour l’accueillir, pas l’inverse.
 
-**Art IBC iso :** le dessus plantable doit être un **losange 2:1** (pas le carré 3/4 actuel `Cuve_IBC_3quart_carre_parfait.png`). Nouveau sprite → Dump, promo auteur, puis `BiofiltreIbcSpriteFitter.ibcSprite`.
+**Art IBC iso :** `Assets/Art/Sprites/Farm/Biofiltre/IbcIso.png` (promo Dump `IbcIso.png`, 2026-09-05). `ibcSprite` + `deckNormalized` AABB losange de billes `(0.059, 0.5239, 0.8844, 0.441)` — playtest rotation 2:1.
 
 ---
 
@@ -170,26 +170,25 @@ Aucun `Physics2D.Raycast`, aucun collider sur les cellules.
 
 ### Deck normalisé (UV 0–1, origine bas-gauche du sprite)
 
-Valeur par défaut dans le script (mesure sur `Cuve_IBC_deck_carre_plus_face.png`) :
+Valeur par défaut dans le script (mesure AABB billes sur `IbcIso.png`, 2026-09-05) :
 
 ```
-deckNormalized = Rect(0.0266, 0.4483, 0.9446, 0.5232)
+deckNormalized = Rect(0.059, 0.5239, 0.8844, 0.441)
 ```
 
-À affiner dans l’Inspector si le sprite promu change.
+Ortho historique (`Cuve_IBC_deck_carre_plus_face.png`) : `Rect(0.0266, 0.4483, 0.9446, 0.5232)` — `main` uniquement.
 
 ### Procédure de câblage (auteur Unity)
 
-1. **Promouvoir l’art** (fait 2026-08-31) :
-   - Source Dump : `Cuve_IBC_deck_carre_plus_face.png` (reste dans Dump)
-   - Runtime : `Assets/Art/Sprites/Farm/Biofiltre/Cuve_IBC.png` (GUID `c8f3e21a4b7d4e9c8a6f0d5e1b3947c2`)
+1. **Promouvoir l’art** (fait 2026-09-05 sur `feature/biofiltre-isometric`) :
+   - Source Dump : `IbcIso.png` (reste dans Dump)
+   - Runtime : `Assets/Art/Sprites/Farm/Biofiltre/IbcIso.png`
    - **Ne pas** référencer le Dump depuis le prefab.
 
 2. **Sur `Biofiltre.prefab`** :
-   - Add Component → `BiofiltreIbcSpriteFitter`
-   - `ibcSprite` → `Cuve_IBC` (`Sprites/Farm/Biofiltre/Cuve_IBC.png`)
-   - `sortingOrder` → `-1` (sous les cellules/plantes, au-dessus du fond scène si besoin)
-   - `deckNormalized` → laisser défaut ou ajuster après playtest
+   - `ibcSprite` → `IbcIso`
+   - `sortingOrder` → `-1`
+   - `deckNormalized` → défaut iso ci-dessus, ajuster après playtest
 
 3. **Play Mode** :
    - Vérifier alignement dessus cuve ↔ rectangle grille

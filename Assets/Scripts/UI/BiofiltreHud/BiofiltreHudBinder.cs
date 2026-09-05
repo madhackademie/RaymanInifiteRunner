@@ -15,15 +15,15 @@ public class BiofiltreHudBinder : MonoBehaviour
     [SerializeField] private GridManager gridManager;
 
     [Header("Primary row (mockup IBC — override per instance)")]
-    [SerializeField] private Vector2 primaryNormalizedAnchor = new Vector2(0.02f, 1.14f);
+    [SerializeField] private Vector2 primaryNormalizedAnchor = new Vector2(0.12f, 1.08f);
     [SerializeField] private Vector2 primaryWorldOffset;
 
     [Header("Star row (pivot droite — haut-droit du deck)")]
-    [SerializeField] private Vector2 starNormalizedAnchor = new Vector2(0.98f, 1.14f);
+    [SerializeField] private Vector2 starNormalizedAnchor = new Vector2(0.88f, 1.08f);
     [SerializeField] private Vector2 starWorldOffset;
 
     [Header("Secondary row (face cuve, sous le gravier)")]
-    [SerializeField] private Vector2 secondaryNormalizedAnchor = new Vector2(0.04f, -0.06f);
+    [SerializeField] private Vector2 secondaryNormalizedAnchor = new Vector2(0.22f, -0.08f);
     [SerializeField] private Vector2 secondaryWorldOffset;
 
     [SerializeField] private float hudWorldZ = 0f;

@@ -1,5 +1,25 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-05 — Branche iso : géométrie losange 2:1
+
+### Décision auteur
+- Nouvelle branche **`feature/biofiltre-isometric`**.
+- Mettre en place la **géométrie** iso **avant** l’image IBC losange (arrivée auteur).
+
+### IDs
+- `[P0-FARM-ISO-GRID-001]` — grille `coordinateMode = Isometric` sur `Biofiltre.prefab`.
+
+### Livré
+- Prefab : `coordinateMode: 1` (Isometric). Cellules procédurales losange 2:1.
+- Clics / pose déjà via `IsometricGridCoordinateMapper` (existant).
+- Draw order plantes `col+row` (devant = sud iso).
+- Art : Dump `IbcIso.png` promu `Sprites/Farm/Biofiltre/IbcIso.png` ; `ibcSprite` + `deckNormalized` AABB billes `(0.0558, 0.5, 0.8844, 0.4761)`.
+
+### Prochaine étape
+- Playtest FirstLvl : losanges sur le deck argile, clics, pose. Ajuster `deckNormalized` si besoin.
+
+---
+
 ## 2026-09-04 — Priorité Bezy : sprites onglets HUD
 
 ### Décision auteur

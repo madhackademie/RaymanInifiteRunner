@@ -245,13 +245,36 @@ Même fichier, **pas** le prompt icône §1 par défaut. Détail pose plante : `
 
 | # | Objet FR | Prompt / brief | Dump | Promo Sprites | Statut | Fichier |
 |---|----------|----------------|------|---------------|--------|---------|
-| W1 | Cuve IBC dessus losange 2:1 | brief iso grille (pas icône) | `Dump/ElementProd/Biofiltre/` | `Sprites/Farm/Biofiltre/` | à générer | |
+| W1 | Cuve IBC dessus losange 2:1 | brief iso grille (pas icône) | `Dump/ElementProd/Biofiltre/` | `Sprites/Farm/Biofiltre/` | promu 2026-09-05 (2e passe 2:1) | `IbcIso.png` |
 | W2 | Stades laitue monde (fix alpha) | import / détourage — `[P0-FARM-SPRITE-ALPHA-001]` | `Dump/Plantes/Laitue/` | `Sprites/Plantes/Laitue/` | à générer | |
 | W3 | Stades tomate monde (canopée) | 7 stades grille | `Dump/Plantes/Tomate/` | `Sprites/Plantes/Tomate/` | à générer | |
 | W4 | Illustrations bandeaux vente | scène, pas icon | `Dump/Ui/` | `Sprites/UI/` | à générer | |
 | W5 | Fishtank / poissons jouables | ~lvl 10 | `Dump/Poisson/` | `Sprites/Farm/Poisson/` | à générer | |
 
 Ajouter ici toute ligne monde (nouveau stade plante, bac, insecte, VFX still, etc.).
+
+### W1 — recale dessus (coller avec `IbcIso.png` en référence)
+
+**Élément à modifier :** le **losange du dessus** seulement = cadre bois intérieur + billes d’argile.  
+**Ne pas** redessiner : cuve blanche, cage, palette, pieds, robinet, barres **verticales**.
+
+Grille jeu = iso **2:1** (pas l’iso 30° illustration). Angle des arêtes = **26,565°** depuis l’horizontale (`atan(0.5)`), **pas 30°**.
+
+```
+Edit this existing IBC tank illustration. Keep the white tank, metal cage, wooden pallet, black feet, and red tap unchanged. Vertical cage bars stay perfectly vertical.
+
+ONLY redraw the TOP PLANTER: the wooden rim and the clay-pebble fill.
+
+The inner opening of the wooden rim (the plantable deck) MUST be a perfect 2:1 isometric diamond:
+- width = 2 × height
+- vertices exactly North, East, South, West (same X for North and South, same Y for East and West)
+- the four rim edges parallel to a 2:1 game isometric grid (edge angle 26.565° from horizontal, NOT 30° true isometric)
+- North vertex at the top midpoint, South at the bottom midpoint of the deck, East/West at the left and right midpoints
+- clay pebbles fill that diamond only, flush to the inner wooden edge, no skew, no rotation
+- wooden rim follows the same diamond; do not rotate the top relative to the tank body
+
+Transparent or white background, same cartoon farm style, thick outlines. Output a single PNG of the full IBC, same framing as the reference.
+```
 
 ---
 

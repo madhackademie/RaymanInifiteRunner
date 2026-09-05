@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// Generates and manages the visual cell grid for a biofiltre at runtime.
-/// Each cell is a square sprite that is clickable via <see cref="BiofiltreCell"/>.
+/// Each cell is a sprite (carré ortho, losange 2:1 en iso) clickable via <see cref="BiofiltreCell"/>.
 /// Requires a <see cref="GridManager"/> on the same GameObject.
 /// </summary>
 [RequireComponent(typeof(GridManager))]
@@ -75,7 +75,7 @@ public class BiofiltreGridVisualizer : MonoBehaviour
 
                 SpriteRenderer sr = cellObj.AddComponent<SpriteRenderer>();
                 sr.sprite       = spriteToUse;
-                sr.sortingOrder = cellSortingOrder + col + row;
+                sr.sortingOrder = gridManager.GetCellDrawOrder(coords, cellSortingOrder);
 
                 float ppu = spriteToUse.pixelsPerUnit;
                 float scaleX = cellSize.x * ppu / spriteToUse.rect.width;
@@ -189,20 +189,23 @@ public class BiofiltreGridVisualizer : MonoBehaviour
         if (runtimeDiamondSprite != null)
             return runtimeDiamondSprite;
 
-        const int size = 32;
-        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, mipChain: false)
+        // Texture 2:1 : losange iso inscrit (sommets N / E / S / W).
+        const int width = 32;
+        const int height = 16;
+        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, mipChain: false)
         {
             filterMode = FilterMode.Bilinear,
             wrapMode   = TextureWrapMode.Clamp
         };
 
-        float center = (size - 1) * 0.5f;
-        for (int y = 0; y < size; y++)
+        float centerX = (width - 1) * 0.5f;
+        float centerY = (height - 1) * 0.5f;
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < size; x++)
+            for (int x = 0; x < width; x++)
             {
-                float nx = (x - center) / center;
-                float ny = (y - center) / center;
+                float nx = (x - centerX) / centerX;
+                float ny = (y - centerY) / centerY;
                 bool inside = Mathf.Abs(nx) + Mathf.Abs(ny) <= 1.02f;
                 tex.SetPixel(x, y, inside ? Color.white : Color.clear);
             }
@@ -211,9 +214,9 @@ public class BiofiltreGridVisualizer : MonoBehaviour
         tex.Apply();
         runtimeDiamondSprite = Sprite.Create(
             tex,
-            new Rect(0, 0, size, size),
+            new Rect(0, 0, width, height),
             new Vector2(0.5f, 0.5f),
-            pixelsPerUnit: size);
+            pixelsPerUnit: width);
         return runtimeDiamondSprite;
     }
 }

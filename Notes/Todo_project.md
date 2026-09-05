@@ -42,19 +42,26 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`main`** (revalider au bootstrap).  
+> Branche courante : **`feature/biofiltre-isometric`** (2026-09-05, depuis `main`).  
+> **Chantier branche :** `[P0-FARM-ISO-GRID-001]` géométrie grille losange 2:1 — art IBC losange **en attente auteur**.  
 > **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt**. Tampon `.cursor/session_pull_ok` : les chats **de la même session** ne re-bloquent pas. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
-> **Prochaine session (priorité #1 Bezy) :** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` — mise en place + polish **sprites onglets**. Prompts **après** brief visuel auteur → validation → envoi Bezy. Stub : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`.  
-> **Auteur Inspector (pas Bezy) :** Add `BiofiltreHudBinder` sur `Biofiltre.prefab` + `hudPrefab` = `BiofiltreHud`. Playtest HUD world FirstLvl.  
-> **Bezy HUD :** `[BZ-FARM-BIOHUD-HOST-001]` **clos**.  
-> **IBC :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (playtest deck ↔ grille OK, grille **carrée**).  
+> **Priorité Bezy (hors cette branche) :** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` — sprites onglets. Prompts **après** brief visuel auteur. Stub : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`.  
+> **Auteur Inspector (pas Bezy) :** `BiofiltreHudBinder` + `hudPrefab` = `BiofiltreHud` (déjà sur prefab — playtest FirstLvl).  
+> **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 septembre**). File `#13` après onglets. Wallet punch = PARK UX.
 
-### ★ Priorité prochaine session — grille dans cuve IBC
+### ★ Priorité branche — grille isométrique 2:1 `[P0-FARM-ISO-GRID-001]`
 
-> Décision auteur **2026-09-02** : grille **carrée** (`coordinateMode = Orthogonal`) — le sprite `Cuve_IBC` a un dessus carré ; playtest deck ↔ grille **OK**.  
-> Iso 2:1 (décision 2026-08-31) **reportée** : il faudrait un IBC dessus losange (Dump, puis promo). Ne pas changer cols/rows pour l’art.  
+> Décision auteur **2026-09-05** : activer la **géométrie iso** sur `feature/biofiltre-isometric` **avant** l’art.  
+> `Biofiltre.prefab` : `coordinateMode = Isometric`. Cellules losanges, clics via mapper existant.  
+> **Ne pas changer** cols / rows / cell size pour coller à l’image.  
+> Art : Dump `IbcIso.png` → promo `Sprites/Farm/Biofiltre/IbcIso.png` (2026-09-05). `deckNormalized` AABB billes à affiner au playtest.
+
+### ★ Priorité IBC ortho (contexte `main`) — grille dans cuve
+
+> Décision auteur **2026-09-02** : grille **carrée** (`coordinateMode = Orthogonal`) sur `main` — le sprite `Cuve_IBC` a un dessus carré ; playtest deck ↔ grille **OK**.  
+> Iso 2:1 : chantier **`feature/biofiltre-isometric`** (`[P0-FARM-ISO-GRID-001]`), plus reportée.  
 > **Contrainte (source de vérité = grille) :** le sprite se redimensionne pour **accepter** la grille. **Pas l’inverse**.  
 > Réf art runtime : `Assets/Art/Sprites/Farm/Biofiltre/Cuve_IBC.png` (promo Dump `Cuve_IBC_deck_carre_plus_face.png`, 2026-08-31).  
 > Réf Dump : `Assets/Art/Assets Store Dump/ElementProd/Biofiltre/Cuve_IBC_deck_carre_plus_face.png`  
@@ -72,9 +79,9 @@ Convention d'IDs :
 
 **Ordre prochaine session :**
 
-1. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → Cursor rédige Ph.1–3 → **validation prompts** → Bezy wiring sprites onglets
-2. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée)
-3. [ ] **Auteur (pas Bezy)** : Add `BiofiltreHudBinder` sur `Biofiltre` + `hudPrefab` = `BiofiltreHud`
+1. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` câblé — **playtest alignement deck ↔ losanges** en attente
+2. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → Cursor rédige Ph.1–3 → **validation prompts** → Bezy wiring sprites onglets
+3. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée, `main`)
 4. [ ] Playtest HUD world FirstLvl
 5. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
 6. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)

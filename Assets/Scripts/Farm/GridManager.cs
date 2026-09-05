@@ -29,6 +29,9 @@ public class GridManager : MonoBehaviour
 
     [SerializeField] private Vector2 originOffset = Vector2.zero;
 
+    [Tooltip("Décale la grille en cellules (sprite IBC ne suit pas). +Y = nord. Fractions OK.")]
+    [SerializeField] private Vector2 originShiftCells = Vector2.zero;
+
     [Tooltip("Used when Origin From Transform is false and Use Scriptable Config is false.")]
     [SerializeField] private Vector2 instanceWorldOrigin = Vector2.zero;
 
@@ -62,7 +65,24 @@ public class GridManager : MonoBehaviour
     /// <summary>Uniform cell size when width == height; otherwise Max for quick probes.</summary>
     public float CellSizeUniform => Mathf.Max(_cellSizeWorld.x, _cellSizeWorld.y);
 
+    /// <summary>
+    /// Ordre de dessin : plus <c>col+row</c> = plus devant (iso). Orthogonal : même formule.
+    /// </summary>
+    public int GetCellDrawOrder(Vector2Int cell, int baseOrder = 0) =>
+        baseOrder + cell.x + cell.y;
+
     public Vector2 WorldOrigin => _worldOrigin;
+
+    /// <summary>Rebuild mapper after Inspector / Scene gizmos change cell size or shift.</summary>
+    public void RebuildMapperFromInspector()
+    {
+        _coordinateMapper = null;
+        ResolveLayout(out _columns, out _rows, out _cellSizeWorld, out _worldOrigin);
+        if (_columns < 1 || _rows < 1)
+            return;
+
+        _coordinateMapper = GridCoordinateMapperFactory.Create(coordinateMode, BuildLayoutSnapshot());
+    }
 
     /// <summary>
     /// AABB monde de la grille entière (coin bas-gauche).
@@ -83,6 +103,17 @@ public class GridManager : MonoBehaviour
         EncapsulateCell(mapper, new Vector2Int(cols - 1, rows - 1), corners, ref minX, ref minY, ref maxX, ref maxY);
 
         return Rect.MinMaxRect(minX, minY, maxX, maxY);
+    }
+
+    /// <summary>
+    /// AABB pour caler le sprite IBC : même taille que la grille, sans
+    /// <see cref="originShiftCells"/> (la cuve ne suit pas le décalage).
+    /// </summary>
+    public Rect GetSpriteFitWorldRect()
+    {
+        Rect gridRect = GetWorldRect();
+        Vector2 shift = GetOriginShiftWorld();
+        return new Rect(gridRect.xMin - shift.x, gridRect.yMin - shift.y, gridRect.width, gridRect.height);
     }
 
     /// <summary>4 coins monde de la cellule, winding horaire.</summary>
@@ -141,12 +172,29 @@ public class GridManager : MonoBehaviour
                 : instanceWorldOrigin + originOffset;
         }
 
-        if (coordinateMode == GridCoordinateMode.Isometric && IsUniformCellSize(cellSizeWorld))
-            cellSizeWorld = new Vector2(cellSizeWorld.x, cellSizeWorld.x * IsometricHeightRatio);
+        if (coordinateMode == GridCoordinateMode.Isometric)
+        {
+            if (IsUniformCellSize(cellSizeWorld))
+                cellSizeWorld = new Vector2(cellSizeWorld.x, cellSizeWorld.x * IsometricHeightRatio);
+
+            // Sommet nord (0,0) au centre-haut de l'AABB, comme l'ortho (bord gauche = transform).
+            worldOrigin.x += columns * cellSizeWorld.x * 0.5f;
+        }
+
+        worldOrigin += GetOriginShiftWorld(cellSizeWorld);
     }
 
     private static bool IsUniformCellSize(Vector2 cellSizeWorld) =>
         Mathf.Abs(cellSizeWorld.x - cellSizeWorld.y) < 0.001f;
+
+    private Vector2 GetOriginShiftWorld()
+    {
+        ResolveLayout(out _, out _, out Vector2 cellSz, out _);
+        return GetOriginShiftWorld(cellSz);
+    }
+
+    private Vector2 GetOriginShiftWorld(Vector2 cellSizeWorld) =>
+        new(originShiftCells.x * cellSizeWorld.x, originShiftCells.y * cellSizeWorld.y);
 
     private IGridCoordinateMapper GetOrCreateMapper(out int cols, out int rows)
     {
@@ -296,66 +344,42 @@ public class GridManager : MonoBehaviour
         {
             for (int row = 0; row < rows; row++)
             {
-                Vector2Int cell     = new(col, row);
-                bool       occupied = Grid != null && Grid.IsInBounds(cell) && Grid.IsOccupied(cell);
-
-                Color fillColor    = occupied
-                    ? new Color(1f, 0.2f, 0.2f, 0.4f)
-                    : new Color(0f, 1f, 0.4f, 0.15f);
-                Color outlineColor = new Color(0f, 1f, 0.4f, 0.5f);
-
-                if (coordinateMode == GridCoordinateMode.Isometric)
-                    DrawIsoCellGizmo(mapper, cell, cellSz, fillColor, outlineColor);
-                else
-                    DrawOrthoCellGizmo(mapper, cell, cellSz, fillColor, outlineColor);
+                Vector2Int cell = new(col, row);
+                bool occupied = Grid != null && Grid.IsInBounds(cell) && Grid.IsOccupied(cell);
+                Color outline = occupied
+                    ? new Color(1f, 0.2f, 0.2f, 0.7f)
+                    : new Color(0f, 1f, 0.4f, 0.45f);
+                DrawCellOutlineGizmo(mapper, cell, cellSz, outline);
             }
         }
     }
 
-    private static void DrawOrthoCellGizmo(
-        IGridCoordinateMapper mapper, Vector2Int cell, Vector2 cellSz,
-        Color fillColor, Color outlineColor)
+    private void DrawCellOutlineGizmo(
+        IGridCoordinateMapper mapper, Vector2Int cell, Vector2 cellSz, Color outline)
     {
-        Vector2 topLeft = mapper.CellToWorldTopLeft(cell);
-        float inset = 0.025f;
-
-        Vector3[] fillCorners =
+        Gizmos.color = outline;
+        Vector2[] pts = new Vector2[4];
+        if (coordinateMode == GridCoordinateMode.Isometric)
         {
-            new(topLeft.x + inset,            topLeft.y - inset,            0f),
-            new(topLeft.x + cellSz.x - inset, topLeft.y - inset,            0f),
-            new(topLeft.x + cellSz.x - inset, topLeft.y - cellSz.y + inset, 0f),
-            new(topLeft.x + inset,            topLeft.y - cellSz.y + inset, 0f),
-        };
-
-        Vector3[] outlineCorners =
+            Vector2 center = mapper.CellToWorldCenter(cell);
+            float hw = cellSz.x * 0.5f;
+            float hh = cellSz.y * 0.5f;
+            pts[0] = center + new Vector2(0f, hh);
+            pts[1] = center + new Vector2(hw, 0f);
+            pts[2] = center + new Vector2(0f, -hh);
+            pts[3] = center + new Vector2(-hw, 0f);
+        }
+        else
         {
-            new(topLeft.x,            topLeft.y,            0f),
-            new(topLeft.x + cellSz.x, topLeft.y,            0f),
-            new(topLeft.x + cellSz.x, topLeft.y - cellSz.y, 0f),
-            new(topLeft.x,            topLeft.y - cellSz.y, 0f),
-        };
+            Vector2 topLeft = mapper.CellToWorldTopLeft(cell);
+            pts[0] = topLeft;
+            pts[1] = topLeft + new Vector2(cellSz.x, 0f);
+            pts[2] = topLeft + new Vector2(cellSz.x, -cellSz.y);
+            pts[3] = topLeft + new Vector2(0f, -cellSz.y);
+        }
 
-        UnityEditor.Handles.DrawSolidRectangleWithOutline(fillCorners, fillColor, Color.clear);
-        UnityEditor.Handles.DrawSolidRectangleWithOutline(outlineCorners, Color.clear, outlineColor);
-    }
-
-    private static void DrawIsoCellGizmo(
-        IGridCoordinateMapper mapper, Vector2Int cell, Vector2 cellSz,
-        Color fillColor, Color outlineColor)
-    {
-        Vector2 center = mapper.CellToWorldCenter(cell);
-        float hw = cellSz.x * 0.5f;
-        float hh = cellSz.y * 0.5f;
-
-        Vector3[] corners =
-        {
-            new(center.x,     center.y + hh, 0f),
-            new(center.x + hw, center.y,     0f),
-            new(center.x,     center.y - hh, 0f),
-            new(center.x - hw, center.y,     0f),
-        };
-
-        UnityEditor.Handles.DrawSolidRectangleWithOutline(corners, fillColor, outlineColor);
+        for (int i = 0; i < 4; i++)
+            Gizmos.DrawLine(pts[i], pts[(i + 1) % 4]);
     }
 #endif
 }

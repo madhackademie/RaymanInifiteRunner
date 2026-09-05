@@ -34,6 +34,8 @@ public class BiofiltreManager : MonoBehaviour
     [Tooltip("Délai avant Destroy du VFX (durée PS + marge).")]
     [SerializeField] private float plantingDirtBurstDestroyDelay = 2f;
 
+    private const int PlantSortingBase = 20;
+
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
     private bool hasLoadedFromSave;
@@ -376,6 +378,8 @@ public class BiofiltreManager : MonoBehaviour
         );
         instance.name = $"{plantDefinition.displayName}_{anchor}";
 
+        ApplyPlantDrawOrder(instance, plantDefinition, anchor);
+
         if (instance.TryGetComponent(out PlantGrow plantGrow))
             plantGrow.SetStage(PlantGrow.GrowthStage.Graine);
 
@@ -419,6 +423,19 @@ public class BiofiltreManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    /// <summary>Iso : la plante la plus au sud (col+row max) passe devant.</summary>
+    private void ApplyPlantDrawOrder(GameObject instance, PlantDefinition plantDefinition, Vector2Int anchor)
+    {
+        if (!instance.TryGetComponent(out SpriteRenderer plantRenderer))
+            return;
+
+        int drawOrder = PlantSortingBase;
+        foreach (Vector2Int cell in plantDefinition.GetOccupiedCells(anchor))
+            drawOrder = Mathf.Max(drawOrder, gridManager.GetCellDrawOrder(cell, PlantSortingBase));
+
+        plantRenderer.sortingOrder = drawOrder;
     }
 
     /// <summary>

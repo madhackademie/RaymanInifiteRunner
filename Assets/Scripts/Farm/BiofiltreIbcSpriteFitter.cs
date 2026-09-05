@@ -1,71 +1,65 @@
 using UnityEngine;
 
 /// <summary>
-/// Scale le sprite cuve IBC pour que le dessus plantable accepte
-/// <see cref="GridManager.GetWorldRect"/>. La grille ne change pas.
-/// Runtime only : pas d'ExecuteAlways, pas de transform.Find.
+/// Affiche la cuve IBC. Le transform de <c>IbcSprite</c> est manuel
+/// (pas de calage auto sur la surface grille / deck).
 /// </summary>
 [RequireComponent(typeof(GridManager))]
 public class BiofiltreIbcSpriteFitter : MonoBehaviour
 {
     private const float MinDeckUvSize = 0.01f;
     private const int DefaultSortingOrder = -1;
-    private const string RuntimeChildName = "IbcSprite";
+    private const float DefaultExtraScale = 1.05f;
 
-    /// <summary>
-    /// Deck = argile du carré ortho (mesure auteur, dépliage UV
-    /// <c>Cuve_IBC_deck_carre_plus_face.png</c>).
-    /// </summary>
     private static readonly Rect DefaultDeckNormalized =
-        new Rect(0.0266f, 0.4483f, 0.9446f, 0.5232f);
+        new Rect(0.059f, 0.5239f, 0.8844f, 0.441f);
 
-    [Tooltip("Sprite promu (Sprites/Farm/Biofiltre), pas le Dump.")]
+    [Tooltip("Enfant IbcSprite. Transform libre (Move / Rotate / Scale).")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
+    [Tooltip("Sprite promu (Sprites/Farm/Biofiltre/IbcIso), pas le Dump.")]
     [SerializeField] private Sprite ibcSprite;
 
     [SerializeField] private int sortingOrder = DefaultSortingOrder;
 
-    [Tooltip("Dessus plantable en UV sprite 0–1, origine bas-gauche. En iso : AABB du losange de billes.")]
+    [Tooltip("Réservé au bouton Inspector « Fit once ». Ignoré au runtime.")]
     [SerializeField] private Rect deckNormalized = DefaultDeckNormalized;
 
+    [Tooltip("Réservé au bouton Inspector « Fit once ». Ignoré au runtime.")]
+    [SerializeField] private float extraScale = DefaultExtraScale;
+
+    [Tooltip("Réservé au bouton Inspector « Fit once ». Ignoré au runtime.")]
+    [SerializeField] private float extraRotationZ;
+
     private GridManager gridManager;
-    private SpriteRenderer spriteRenderer;
 
-    private void Awake()
+    private void OnEnable()
     {
-        gridManager = GetComponent<GridManager>();
+        ApplySpriteAsset();
     }
 
-    private void Start()
+    private void ApplySpriteAsset()
     {
-        FitToGrid();
+        if (spriteRenderer == null || ibcSprite == null)
+            return;
+
+        spriteRenderer.sprite = ibcSprite;
+        spriteRenderer.sortingOrder = sortingOrder;
     }
 
-    /// <summary>Recale la cuve sur l'AABB grille courante.</summary>
+    /// <summary>
+    /// Calage optionnel deck ↔ grille. Ne pas appeler au Play / OnEnable.
+    /// </summary>
     public void FitToGrid()
     {
-        if (ibcSprite == null)
-        {
-            Debug.LogWarning(
-                "[BiofiltreIbcSpriteFitter] ibcSprite is null — cuve non affichée (fail closed).",
-                this);
+        if (ibcSprite == null || spriteRenderer == null)
             return;
-        }
 
         if (gridManager == null)
             gridManager = GetComponent<GridManager>();
 
-        EnsureRenderer();
-        ApplyFit(gridManager.GetWorldRect());
-    }
-
-    private void EnsureRenderer()
-    {
-        if (spriteRenderer != null)
-            return;
-
-        var child = new GameObject(RuntimeChildName);
-        child.transform.SetParent(transform, worldPositionStays: false);
-        spriteRenderer = child.AddComponent<SpriteRenderer>();
+        gridManager.RebuildMapperFromInspector();
+        ApplyFit(gridManager.GetSpriteFitWorldRect());
     }
 
     private void ApplyFit(Rect worldRect)
@@ -73,17 +67,12 @@ public class BiofiltreIbcSpriteFitter : MonoBehaviour
         Rect deckUv = ResolveDeckUv();
         Rect deckPixels = GetDeckPixelRect(ibcSprite, deckUv);
         if (deckPixels.width < 1f || deckPixels.height < 1f)
-        {
-            Debug.LogWarning(
-                "[BiofiltreIbcSpriteFitter] deckNormalized invalide — sprite.rect="
-                + ibcSprite.rect + " uv=" + deckUv,
-                this);
             return;
-        }
 
         float ppu = ibcSprite.pixelsPerUnit;
-        float scaleX = worldRect.width * ppu / deckPixels.width;
-        float scaleY = worldRect.height * ppu / deckPixels.height;
+        float scaleMul = extraScale > 0.01f ? extraScale : DefaultExtraScale;
+        float scaleX = worldRect.width * ppu / deckPixels.width * scaleMul;
+        float scaleY = worldRect.height * ppu / deckPixels.height * scaleMul;
         spriteRenderer.transform.localScale = new Vector3(scaleX, scaleY, 1f);
 
         Vector2 deckCenterLocal = GetDeckCenterLocalUnscaled(ibcSprite, deckPixels);
@@ -94,8 +83,11 @@ public class BiofiltreIbcSpriteFitter : MonoBehaviour
             worldCenter.y - scaledOffset.y,
             0f);
 
-        spriteRenderer.sprite = ibcSprite;
-        spriteRenderer.sortingOrder = sortingOrder;
+        spriteRenderer.transform.rotation = Quaternion.identity;
+        if (Mathf.Abs(extraRotationZ) > 0.001f)
+            spriteRenderer.transform.RotateAround(worldCenter, Vector3.forward, extraRotationZ);
+
+        ApplySpriteAsset();
     }
 
     private Rect ResolveDeckUv()

@@ -16,8 +16,8 @@
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
 ### Priorités prochaine session
-1. **Bezy** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : mise en place + polish **sprites onglets**. Brief visuel auteur → Cursor rédige Ph.1–3 (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`) → **validation prompts** → `/prefab-ui-3phases`.
-2. **Auteur Inspector (pas Bezy)** : `BiofiltreHudBinder` + `hudPrefab` = `BiofiltreHud` sur `Biofiltre.prefab`, puis playtest HUD world FirstLvl.
+1. **Branche `feature/biofiltre-isometric` :** `[P0-FARM-ISO-GRID-001]` géométrie + `IbcIso` câblé ; **playtest** alignement deck ↔ losanges.
+2. **Bezy** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : sprites onglets. Brief visuel → Ph.1–3 → validation → `/prefab-ui-3phases`.
 3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
 
 ### Clos IBC + grille (2026-09-02 / 2026-08-30)
@@ -30,7 +30,7 @@
 - Playtest 3 bandeaux ★ `[P0-SALE-STAR-PLAY-001]` — **OK 2026-08-30** (hover ★ → jauges + texte + fill live).
 
 ### Contexte Git
-- Branche : **`main`** (2026-09-04).
+- Branche : **`feature/biofiltre-isometric`** (2026-09-05, depuis `main`).
 
 ### Rappel « tâche du jour »
 - Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md`.
