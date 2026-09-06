@@ -13,6 +13,7 @@ Références de détail :
 - Navigation scènes : `Notes/Ui/GUIDE_scenes_navigation_Unity_inventaire_market.md`
 - Farm : `Notes/Farm/SYSTEMES_carte_mentale.md`
 - **Câblage IBC + grille + Bezy (biofiltre)** : `Notes/Farm/CABLAGE_biofiltre_ibc_grille_bezi.md`
+- **HUD biofiltre en dur (plus d’Instantiate)** : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`
 - **Bezy distance / stack vocal (à voir)** : `Notes/Bezi/ETUDE_prompts_bezi_distance.md` · file : `Notes/Bezi/BEZY_QUEUE.md` · install : `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md`
 - Playtests batch : `Notes/Todo_playtest.md`
 - File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
@@ -79,12 +80,14 @@ Convention d'IDs :
 
 **Ordre prochaine session :**
 
-1. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` câblé — **playtest alignement deck ↔ losanges** en attente
-2. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → Cursor rédige Ph.1–3 → **validation prompts** → Bezy wiring sprites onglets
-3. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée, `main`)
-4. [ ] Playtest HUD world FirstLvl
-5. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
-6. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+1. [ ] **[P0-FARM-BIOHUD-NEST-001]** HUD en dur dans `Biofiltre.prefab` (plus d’Instantiate Play) — note `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`
+2. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` — playtest pose manuelle sprite/grille
+3. [x] **[BZ-FARM-BIOHUD-ISO-001]** Bezy : ligne HUD haut (primary+★) iso 2:1 — Ph.1–3 livrées 2026-09-06
+4. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → validation prompts → Bezy onglets
+5. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée, `main`)
+6. [ ] Playtest HUD world FirstLvl (après NEST-001)
+7. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
+8. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
 
 **Clos playtest grille rework (2026-08-30, branche `feature/rework-biofiltre-grid`) :**
 

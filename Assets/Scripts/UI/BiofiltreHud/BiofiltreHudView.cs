@@ -10,6 +10,9 @@ public class BiofiltreHudView : MonoBehaviour
     [SerializeField] private UiBiofiltreSlotRowView primaryRow;
     [SerializeField] private UiBiofiltreSlotRowView secondaryRow;
 
+    [Tooltip("Parent iso Primary+Star (Bezy TopIsoLine). Null = pose séparée.")]
+    [SerializeField] private RectTransform topIsoLine;
+
     [Header("Preview (Inspector)")]
     [SerializeField] [Min(0)] private int previewStarFilled = 1;
     [SerializeField] [Min(1)] private int previewStarVisible = UiStarRowView.PrestigeStarCapacity;
@@ -29,6 +32,7 @@ public class BiofiltreHudView : MonoBehaviour
     public UiStarRowView StarRow => starRow;
     public UiBiofiltreSlotRowView PrimaryRow => primaryRow;
     public UiBiofiltreSlotRowView SecondaryRow => secondaryRow;
+    public RectTransform TopIsoLine => topIsoLine;
 
     private void ApplyPreview()
     {

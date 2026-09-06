@@ -21,17 +21,18 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
+| [x] | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 1 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_iso.md` | `feature/biofiltre-isometric` | TopIsoLine + reparent Primary/Star ; Secondary enfant racine |
+| [x] | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 2 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_iso.md` | `feature/biofiltre-isometric` | Skip composants : tilt+layout = binder Cursor |
+| [x] | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 3 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_iso.md` | `feature/biofiltre-isometric` | `topIsoLine` → TopIsoLine RectTransform |
 | [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | **NE PAS LANCER** — attendre brief visuel auteur + validation prompts |
 
 ---
 
 ## Bloc de lancement (copier dans Bezy)
 
-**File HUD slots vide.** Plus de `/prefab-ui-3phases` sur le chantier biofiltre.
+**File HUD iso clos** (`[BZ-FARM-BIOHUD-ISO-001]` Ph.1–3). Playtest auteur FirstLvl (hors Bezy). Ajuster `topIsoNormalizedAnchor` / `topIsoWorldOffset` sur `BiofiltreHudBinder` si le strip n’est pas pile sur le bois.
 
-**Prochaine Bezy :** `[BZ-TAB-SPRITES-001]` sprites onglets — **bloqué** tant que le brief auteur n’est pas fourni et que les Ph.1–3 de `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` ne sont pas validées.
-
-Suite **auteur Inspector** (parallèle, pas Bezy) : `BiofiltreHudBinder` + `hudPrefab` = `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` sur l’instance biofiltre. Playtest hors prompt Bezy.
+**Prochaine Bezy :** `[BZ-TAB-SPRITES-001]` sprites onglets — **bloqué** (brief visuel).
 
 ---
 
@@ -39,6 +40,9 @@ Suite **auteur Inspector** (parallèle, pas Bezy) : `BiofiltreHudBinder` + `hudP
 
 | Task ID | Prefab | Phase | Date | Commit / note |
 |---------|--------|-------|------|----------------|
+| `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 3 | 2026-09-06 | `topIsoLine` → `{fileID: 1385485198660413513}` |
+| `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 2 | 2026-09-06 | No-op Bezy OK ; tilt+layout = binder |
+| `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 1 | 2026-09-06 | TopIsoLine ; Primary+Star nested dessous ; Secondary racine |
 | `[BZ-FARM-BIOHUD-HOST-001]` | `BiofiltreHud.prefab` | 1–3 | 2026-09-02 | Canvas World + HudView wired ; sorting 0 / 100×100 resté |
 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlotRow.prefab` | 1 | 2026-08-31 | nested Slot1–3, sizeDelta 224×80 |
 | `[BZ-FARM-BIOHUD-PRIM-001]` | `UiBiofiltrePrimarySlotRow.prefab` | 2 | 2026-08-31 | HLG MiddleLeft ; spacing 4 (à passer à 8 en Ph.3) |

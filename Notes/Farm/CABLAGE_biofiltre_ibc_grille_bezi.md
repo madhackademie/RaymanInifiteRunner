@@ -227,9 +227,9 @@ Ortho historique (`Cuve_IBC_deck_carre_plus_face.png`) : `Rect(0.0266, 0.4483, 0
 | `*WorldOffset` | Ajustement fin en unités monde **par instance** biofiltre |
 | `hudWorldZ` | Plan Z du HUD world (souvent `0`) |
 
-**Comportement :**
-- `Start()` → instantiate `hudPrefab` sous le biofiltre, force `Canvas.renderMode = WorldSpace`
-- `RecalculateHudPositions()` → recale les 3 rangées si la grille change de taille
+**Comportement (obsolète 2026-09-06) :**
+- `Start()` → instantiate `hudPrefab` sous le biofiltre — **ne marche pas** pour caler à la main (objet absent en Edit, Save interdit en Play).
+- **Décision auteur :** HUD **en dur** dans `Biofiltre.prefab`, plus d’Instantiate. Note : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md` — `[P0-FARM-BIOHUD-NEST-001]`.
 
 **Fail closed :** `hudPrefab` null → warning, pas de HUD (pas de fallback caché).
 

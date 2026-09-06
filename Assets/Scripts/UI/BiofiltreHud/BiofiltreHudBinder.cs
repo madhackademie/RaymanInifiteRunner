@@ -10,20 +10,22 @@ public class BiofiltreHudBinder : MonoBehaviour
     private const int HudSortingOrder = 20;
     private const float FallbackRowWidthPixels = 280f;
     private const float HudWidthVsGrid = 0.72f;
+    /// <summary>atan(0.5) — pente iso 2:1. Primaire gauche = +, étoiles droite = −.</summary>
+    private const float Iso2To1TiltZ = 26.56505f;
 
     [SerializeField] private BiofiltreHudView hudPrefab;
     [SerializeField] private GridManager gridManager;
 
-    [Header("Primary row (mockup IBC — override per instance)")]
-    [SerializeField] private Vector2 primaryNormalizedAnchor = new Vector2(0.12f, 1.08f);
+    [Header("Primary — bande gauche cuve")]
+    [SerializeField] private Vector2 primaryNormalizedAnchor = new Vector2(0.08f, 0.48f);
     [SerializeField] private Vector2 primaryWorldOffset;
 
-    [Header("Star row (pivot droite — haut-droit du deck)")]
-    [SerializeField] private Vector2 starNormalizedAnchor = new Vector2(0.88f, 1.08f);
+    [Header("Stars — bande droite cuve")]
+    [SerializeField] private Vector2 starNormalizedAnchor = new Vector2(0.92f, 0.48f);
     [SerializeField] private Vector2 starWorldOffset;
 
-    [Header("Secondary row (face cuve, sous le gravier)")]
-    [SerializeField] private Vector2 secondaryNormalizedAnchor = new Vector2(0.22f, -0.08f);
+    [Header("Secondary — bas gauche cuve")]
+    [SerializeField] private Vector2 secondaryNormalizedAnchor = new Vector2(0.10f, 0.08f);
     [SerializeField] private Vector2 secondaryWorldOffset;
 
     [SerializeField] private float hudWorldZ = 0f;
@@ -67,9 +69,14 @@ public class BiofiltreHudBinder : MonoBehaviour
 
         Rect worldRect = gridManager.GetWorldRect();
         FitCanvasToGrid(worldRect);
+        NeutralizeTopIsoParent();
 
         PositionRow(hudInstance.PrimaryRow, primaryNormalizedAnchor, primaryWorldOffset, worldRect);
+        ApplyRowTilt(hudInstance.PrimaryRow, Iso2To1TiltZ);
+
         PositionRow(hudInstance.StarRow, starNormalizedAnchor, starWorldOffset, worldRect);
+        ApplyRowTilt(hudInstance.StarRow, -Iso2To1TiltZ);
+
         PositionRow(hudInstance.SecondaryRow, secondaryNormalizedAnchor, secondaryWorldOffset, worldRect);
     }
 
@@ -150,6 +157,24 @@ public class BiofiltreHudBinder : MonoBehaviour
         SetRightPivot(hudInstance.StarRow);
     }
 
+    private void NeutralizeTopIsoParent()
+    {
+        RectTransform line = hudInstance.TopIsoLine;
+        if (line == null)
+            return;
+
+        line.localRotation = Quaternion.identity;
+        line.anchoredPosition = Vector2.zero;
+    }
+
+    private static void ApplyRowTilt(MonoBehaviour row, float zDegrees)
+    {
+        if (row == null)
+            return;
+
+        row.transform.localRotation = Quaternion.Euler(0f, 0f, zDegrees);
+    }
+
     private static void SetLeftPivot(MonoBehaviour row)
     {
         if (row != null && row.transform is RectTransform rt)
@@ -167,8 +192,14 @@ public class BiofiltreHudBinder : MonoBehaviour
         if (row == null)
             return;
 
+        PositionTransform(row.transform, normalizedAnchor, worldOffset, worldRect);
+    }
+
+    private void PositionTransform(
+        Transform target, Vector2 normalizedAnchor, Vector2 worldOffset, Rect worldRect)
+    {
         Vector3 worldPos = NormalizedAnchorToWorld(normalizedAnchor, worldOffset, worldRect);
-        row.transform.position = new Vector3(worldPos.x, worldPos.y, hudWorldZ);
+        target.position = new Vector3(worldPos.x, worldPos.y, hudWorldZ);
     }
 
     private static Vector3 NormalizedAnchorToWorld(Vector2 normalizedAnchor, Vector2 worldOffset, Rect worldRect)
@@ -177,25 +208,4 @@ public class BiofiltreHudBinder : MonoBehaviour
         float y = worldRect.y + normalizedAnchor.y * worldRect.height + worldOffset.y;
         return new Vector3(x, y, 0f);
     }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        GridManager grid = gridManager != null ? gridManager : GetComponent<GridManager>();
-        if (grid == null)
-            return;
-
-        Rect worldRect = grid.GetWorldRect();
-        DrawAnchorGizmo(worldRect, primaryNormalizedAnchor, primaryWorldOffset, Color.yellow);
-        DrawAnchorGizmo(worldRect, starNormalizedAnchor, starWorldOffset, Color.cyan);
-        DrawAnchorGizmo(worldRect, secondaryNormalizedAnchor, secondaryWorldOffset, Color.magenta);
-    }
-
-    private static void DrawAnchorGizmo(Rect worldRect, Vector2 normalized, Vector2 worldOffset, Color color)
-    {
-        Vector3 p = NormalizedAnchorToWorld(normalized, worldOffset, worldRect);
-        UnityEditor.Handles.color = color;
-        UnityEditor.Handles.DrawSolidDisc(p, Vector3.forward, 0.12f);
-    }
-#endif
 }

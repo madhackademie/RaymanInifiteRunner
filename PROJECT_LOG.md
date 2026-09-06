@@ -1,5 +1,25 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-06 — HUD biofiltre : instantiate runtime abandonné
+
+### Décision auteur
+- Caler les rows HUD **en Play** (gizmos / cache / Save) **ne marche pas**.
+- **Préférer un HUD en dur** (enfant de `Biofiltre.prefab`) plutôt que `Instantiate` au `Start`.
+
+### IDs
+- `[P0-FARM-BIOHUD-NEST-001]` — neste `BiofiltreHud` dans le prefab World ; binder sans instantiate.
+- `[BZ-FARM-BIOHUD-ISO-001]` — TopIsoLine Ph.1–3 livrées (wiring `topIsoLine`).
+
+### Note
+- `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`
+
+### Prochaine session (référence « tâche du jour »)
+1. `[P0-FARM-BIOHUD-NEST-001]` HUD nested en dur.
+2. Playtest pose manuelle IBC + grille iso.
+3. Bezy onglets toujours bloqué (brief).
+
+---
+
 ## 2026-09-05 — Branche iso : géométrie losange 2:1
 
 ### Décision auteur
