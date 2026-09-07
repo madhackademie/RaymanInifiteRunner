@@ -35,6 +35,9 @@ public class GridManager : MonoBehaviour
     [Tooltip("Used when Origin From Transform is false and Use Scriptable Config is false.")]
     [SerializeField] private Vector2 instanceWorldOrigin = Vector2.zero;
 
+    [Tooltip("Enfant Grid : Move / Scale Unity. Null = ancien calage (transform racine + originShift).")]
+    [SerializeField] private Transform layoutTransform;
+
     [Header("Coordinate projection")]
     [Tooltip("Orthogonal = carrés. Isometric = losanges 2:1 (hauteur cellule = largeur × 0.5 si taille uniforme).")]
     [SerializeField] private GridCoordinateMode coordinateMode = GridCoordinateMode.Orthogonal;
@@ -91,18 +94,7 @@ public class GridManager : MonoBehaviour
     public Rect GetWorldRect()
     {
         IGridCoordinateMapper mapper = GetOrCreateMapper(out int cols, out int rows);
-        Vector2[] corners = new Vector2[4];
-        float minX = float.MaxValue;
-        float minY = float.MaxValue;
-        float maxX = float.MinValue;
-        float maxY = float.MinValue;
-
-        EncapsulateCell(mapper, new Vector2Int(0, 0), corners, ref minX, ref minY, ref maxX, ref maxY);
-        EncapsulateCell(mapper, new Vector2Int(cols - 1, 0), corners, ref minX, ref minY, ref maxX, ref maxY);
-        EncapsulateCell(mapper, new Vector2Int(0, rows - 1), corners, ref minX, ref minY, ref maxX, ref maxY);
-        EncapsulateCell(mapper, new Vector2Int(cols - 1, rows - 1), corners, ref minX, ref minY, ref maxX, ref maxY);
-
-        return Rect.MinMaxRect(minX, minY, maxX, maxY);
+        return ComputeAabb(mapper, cols, rows);
     }
 
     /// <summary>
@@ -172,16 +164,41 @@ public class GridManager : MonoBehaviour
                 : instanceWorldOrigin + originOffset;
         }
 
-        if (coordinateMode == GridCoordinateMode.Isometric)
-        {
-            if (IsUniformCellSize(cellSizeWorld))
-                cellSizeWorld = new Vector2(cellSizeWorld.x, cellSizeWorld.x * IsometricHeightRatio);
+        ApplyLayoutHandle(ref cellSizeWorld, ref worldOrigin, columns, rows);
+    }
 
-            // Sommet nord (0,0) au centre-haut de l'AABB, comme l'ortho (bord gauche = transform).
-            worldOrigin.x += columns * cellSizeWorld.x * 0.5f;
+    private void ApplyLayoutHandle(
+        ref Vector2 cellSizeWorld, ref Vector2 worldOrigin, int columns, int rows)
+    {
+        bool useHandle = layoutTransform != null;
+        if (useHandle)
+        {
+            float sizeMul = Mathf.Max(0.01f, Mathf.Abs(layoutTransform.lossyScale.x));
+            cellSizeWorld *= sizeMul;
+            worldOrigin = (Vector2)layoutTransform.position + originOffset;
         }
 
+        if (coordinateMode == GridCoordinateMode.Isometric && IsUniformCellSize(cellSizeWorld))
+            cellSizeWorld = new Vector2(cellSizeWorld.x, cellSizeWorld.x * IsometricHeightRatio);
+
+        if (useHandle)
+        {
+            worldOrigin = CenterOriginOnHandle(worldOrigin, cellSizeWorld, columns, rows);
+            return;
+        }
+
+        if (coordinateMode == GridCoordinateMode.Isometric)
+            worldOrigin.x += columns * cellSizeWorld.x * 0.5f;
+
         worldOrigin += GetOriginShiftWorld(cellSizeWorld);
+    }
+
+    private Vector2 CenterOriginOnHandle(Vector2 origin, Vector2 cellSize, int columns, int rows)
+    {
+        var probe = GridCoordinateMapperFactory.Create(
+            coordinateMode, new GridLayoutSnapshot(origin, cellSize, columns, rows));
+        Vector2 aabbCenter = ComputeAabb(probe, columns, rows).center;
+        return origin + (Vector2)layoutTransform.position - aabbCenter;
     }
 
     private static bool IsUniformCellSize(Vector2 cellSizeWorld) =>
@@ -209,6 +226,22 @@ public class GridManager : MonoBehaviour
         return GridCoordinateMapperFactory.Create(
             coordinateMode,
             new GridLayoutSnapshot(origin, cellSz, cols, rows));
+    }
+
+    private static Rect ComputeAabb(IGridCoordinateMapper mapper, int cols, int rows)
+    {
+        Vector2[] corners = new Vector2[4];
+        float minX = float.MaxValue;
+        float minY = float.MaxValue;
+        float maxX = float.MinValue;
+        float maxY = float.MinValue;
+
+        EncapsulateCell(mapper, new Vector2Int(0, 0), corners, ref minX, ref minY, ref maxX, ref maxY);
+        EncapsulateCell(mapper, new Vector2Int(cols - 1, 0), corners, ref minX, ref minY, ref maxX, ref maxY);
+        EncapsulateCell(mapper, new Vector2Int(0, rows - 1), corners, ref minX, ref minY, ref maxX, ref maxY);
+        EncapsulateCell(mapper, new Vector2Int(cols - 1, rows - 1), corners, ref minX, ref minY, ref maxX, ref maxY);
+
+        return Rect.MinMaxRect(minX, minY, maxX, maxY);
     }
 
     private static void EncapsulateCell(

@@ -23,5 +23,6 @@ alwaysApply: true
   3. confirmer explicitement qu'elle sera reprise au prochain "tache du jour".
 - Branche de travail courante: **`feature/biofiltre-isometric`** (2026-09-05, depuis `main`).
 - Priorite courante connue (a revalider via docs a chaque session):
- - `[P0-FARM-ISO-GRID-001]` : geometrie grille losange 2:1 en place ; art IBC losange en attente auteur.
+ - `[P0-FARM-BIOHUD-NEST-001]` **livré** 2026-09-07 : HUD nested, pose manuelle (pas de moule unique).
+ - `[P0-FARM-ISO-GRID-001]` : geometrie grille losange 2:1 en place ; playtest sprite/grille + pose rows HUD.
  - Bezy `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : sprites onglets HUD — prompts apres brief auteur + validation (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`).

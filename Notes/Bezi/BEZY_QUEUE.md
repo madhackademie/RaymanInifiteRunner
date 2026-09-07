@@ -21,18 +21,22 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
-| [x] | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 1 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_iso.md` | `feature/biofiltre-isometric` | TopIsoLine + reparent Primary/Star ; Secondary enfant racine |
-| [x] | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 2 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_iso.md` | `feature/biofiltre-isometric` | Skip composants : tilt+layout = binder Cursor |
-| [x] | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 3 | `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_iso.md` | `feature/biofiltre-isometric` | `topIsoLine` → TopIsoLine RectTransform |
+| [x] skip | `[BZ-FARM-BIOHUD-NEST-001]` | `Biofiltre.prefab` | — | Cursor a nesté 2026-09-07 | `feature/biofiltre-isometric` | Plus besoin Bezy |
 | [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | **NE PAS LANCER** — attendre brief visuel auteur + validation prompts |
 
 ---
 
 ## Bloc de lancement (copier dans Bezy)
 
-**File HUD iso clos** (`[BZ-FARM-BIOHUD-ISO-001]` Ph.1–3). Playtest auteur FirstLvl (hors Bezy). Ajuster `topIsoNormalizedAnchor` / `topIsoWorldOffset` sur `BiofiltreHudBinder` si le strip n’est pas pile sur le bois.
+```
+/prefab-ui-3phases
+Task ID: [BZ-TAB-SPRITES-001]
+Prefab: (après brief visuel)
+Phase: 1
+```
 
-**Prochaine Bezy :** `[BZ-TAB-SPRITES-001]` sprites onglets — **bloqué** (brief visuel).
+**Onglets `[BZ-TAB-SPRITES-001]` :** toujours bloqué (brief visuel).  
+**Nest HUD :** skip — Cursor 2026-09-07.
 
 ---
 

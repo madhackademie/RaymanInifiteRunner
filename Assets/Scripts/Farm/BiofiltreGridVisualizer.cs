@@ -54,40 +54,48 @@ public class BiofiltreGridVisualizer : MonoBehaviour
 
         ClearGrid();
 
-        int    columns  = gridManager.Columns;
-        int    rows     = gridManager.Rows;
+        int columns = gridManager.Columns;
+        int rows = gridManager.Rows;
         Vector2 cellSize = gridManager.CellSizeWorld;
-
         cells = new BiofiltreCell[columns, rows];
 
         Sprite spriteToUse = ResolveCellSprite();
+        float ppu = spriteToUse.pixelsPerUnit;
+        float scaleX = cellSize.x * ppu / spriteToUse.rect.width;
+        float scaleY = cellSize.y * ppu / spriteToUse.rect.height;
+        Vector3 localScale = CompensatedLocalScale(gridContainer, scaleX, scaleY);
 
         for (int col = 0; col < columns; col++)
         {
             for (int row = 0; row < rows; row++)
-            {
-                Vector2Int coords      = new Vector2Int(col, row);
-                Vector2    worldCenter = gridManager.GridToWorldCenter(coords);
-
-                GameObject cellObj = new GameObject($"Cell_{col}_{row}");
-                cellObj.transform.SetParent(gridContainer, worldPositionStays: false);
-                cellObj.transform.position = worldCenter;
-
-                SpriteRenderer sr = cellObj.AddComponent<SpriteRenderer>();
-                sr.sprite       = spriteToUse;
-                sr.sortingOrder = gridManager.GetCellDrawOrder(coords, cellSortingOrder);
-
-                float ppu = spriteToUse.pixelsPerUnit;
-                float scaleX = cellSize.x * ppu / spriteToUse.rect.width;
-                float scaleY = cellSize.y * ppu / spriteToUse.rect.height;
-                cellObj.transform.localScale = new Vector3(scaleX, scaleY, 1f);
-
-                BiofiltreCell cell = cellObj.AddComponent<BiofiltreCell>();
-                cell.Initialize(coords);
-
-                cells[col, row] = cell;
-            }
+                cells[col, row] = SpawnCell(new Vector2Int(col, row), spriteToUse, localScale);
         }
+    }
+
+    private BiofiltreCell SpawnCell(Vector2Int coords, Sprite spriteToUse, Vector3 localScale)
+    {
+        GameObject cellObj = new GameObject($"Cell_{coords.x}_{coords.y}");
+        cellObj.transform.SetParent(gridContainer, worldPositionStays: false);
+        cellObj.transform.position = gridManager.GridToWorldCenter(coords);
+        cellObj.transform.rotation = Quaternion.identity;
+        cellObj.transform.localScale = localScale;
+
+        SpriteRenderer sr = cellObj.AddComponent<SpriteRenderer>();
+        sr.sprite = spriteToUse;
+        sr.sortingOrder = gridManager.GetCellDrawOrder(coords, cellSortingOrder);
+
+        BiofiltreCell cell = cellObj.AddComponent<BiofiltreCell>();
+        cell.Initialize(coords);
+        return cell;
+    }
+
+    private static Vector3 CompensatedLocalScale(Transform parent, float scaleX, float scaleY)
+    {
+        Vector3 parentScale = parent != null ? parent.lossyScale : Vector3.one;
+        return new Vector3(
+            scaleX / Mathf.Max(0.0001f, Mathf.Abs(parentScale.x)),
+            scaleY / Mathf.Max(0.0001f, Mathf.Abs(parentScale.y)),
+            1f);
     }
 
     /// <summary>Destroys all generated cell GameObjects.</summary>

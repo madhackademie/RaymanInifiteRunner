@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8519415433040264483}
   - component: {fileID: 8121753545225840137}
   - component: {fileID: 6481175229760598849}
+  - component: {fileID: 8811223344556677001}
   m_Layer: 5
   m_Name: UiBiofiltrePrimarySlotRow
   m_TagString: Untagged
@@ -84,6 +85,23 @@ MonoBehaviour:
   - {fileID: 297397502431767761}
   visibleSlotCount: 3
   stateOnStart: 0
+--- !u!114 &8811223344556677001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600651653245348298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c1b4a27f5d4c6e9a0b1c2d3e4f5061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarp
+  bottomLeft: {x: 0, y: 0}
+  bottomRight: {x: 0, y: 0}
+  topRight: {x: 0, y: 0}
+  topLeft: {x: 0, y: 0}
+  hasCustomWarp: 0
 --- !u!1001 &4044424872868955970
 PrefabInstance:
   m_ObjectHideFlags: 0

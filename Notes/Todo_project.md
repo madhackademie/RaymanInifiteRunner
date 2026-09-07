@@ -48,7 +48,7 @@ Convention d'IDs :
 > **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt**. Tampon `.cursor/session_pull_ok` : les chats **de la même session** ne re-bloquent pas. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
 > **Priorité Bezy (hors cette branche) :** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` — sprites onglets. Prompts **après** brief visuel auteur. Stub : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`.  
-> **Auteur Inspector (pas Bezy) :** `BiofiltreHudBinder` + `hudPrefab` = `BiofiltreHud` (déjà sur prefab — playtest FirstLvl).  
+> **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows par biofiltre. Bezy nest skip.  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 septembre**). File `#13` après onglets. Wallet punch = PARK UX.
 
@@ -80,12 +80,12 @@ Convention d'IDs :
 
 **Ordre prochaine session :**
 
-1. [ ] **[P0-FARM-BIOHUD-NEST-001]** HUD en dur dans `Biofiltre.prefab` (plus d’Instantiate Play) — note `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`
+1. [x] **[P0-FARM-BIOHUD-NEST-001]** HUD nested dans `Biofiltre.prefab` (Cursor 2026-09-07, plus d’Instantiate) — pose manuelle auteur
 2. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` — playtest pose manuelle sprite/grille
 3. [x] **[BZ-FARM-BIOHUD-ISO-001]** Bezy : ligne HUD haut (primary+★) iso 2:1 — Ph.1–3 livrées 2026-09-06
 4. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → validation prompts → Bezy onglets
 5. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée, `main`)
-6. [ ] Playtest HUD world FirstLvl (après NEST-001)
+6. [ ] Pose rows HUD (Prefab Mode) + playtest FirstLvl
 7. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
 8. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
 
@@ -99,7 +99,7 @@ Convention d'IDs :
 > Décision auteur 2026-08-29 : mockup `Assets/Art/Mocup/biofiltreInterface_1.png`.  
 > Les **étoiles existent déjà** (`UiStarSlot` / `UiStarRow`) — les **neste** dans le HUD, ne pas recréer.  
 > Deux familles **comme le modèle ★** : rangée N slots **verrouillés** (primaire N=3, secondaire N=5, GDD `[BL-GDD-007]`).  
-> HUD **world** lié à **tous** les biofiltres ; **recalage par instance** (grilles non carrées, tailles différentes).  
+> HUD **world** enfant de chaque biofiltre ; **pose manuelle** (tailles différentes, pas de moule unique).  
 > Prefabs + art = **Bezy** `/prefab-ui-3phases`. Agent VM = C# + promo **uniquement** les 2 atlas slots UI Dump→Sprites (pas la cuve IBC).  
 > Prompt collable : `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`  
 > Prompts skill : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
@@ -108,8 +108,8 @@ Convention d'IDs :
 2. [x] **[BZ-FARM-BIOHUD-PRIM-001]** Bezy : slot + row `UiBiofiltrePrimarySlotRow` — **clos** 2026-08-31 (spacing HLG 4, polish optionnel)
 3. [x] **[BZ-FARM-BIOHUD-SEC-001]** Bezy : slot + row `UiBiofiltreSecondarySlotRow` — **clos** 2026-08-31 (HLG spacing 10, polish optionnel 6)
 4. [x] **[BZ-FARM-BIOHUD-HOST-001]** Bezy : `BiofiltreHud.prefab` Ph.1–3 — **clos** 2026-09-02 (sorting 0 / size 100×100 polish optionnel)
-5. [ ] **Auteur (pas Bezy)** : Add `BiofiltreHudBinder` sur instance `Biofiltre` + `hudPrefab` = `BiofiltreHud`
-6. [ ] Playtest HUD world FirstLvl (après Bezy HOST) — grille/clics déjà validés `[P0-FARM-GRID-PLAY-001]`
+5. [x] **Auteur / Cursor** : HUD nested + `BiofiltreHudBinder.hud` (2026-09-07)
+6. [ ] Pose manuelle rows + playtest HUD world FirstLvl — grille/clics déjà validés `[P0-FARM-GRID-PLAY-001]`
 
 ### ★ Biofiltre — chantier bed skin annulé (contexte, 2026-08-29)
 

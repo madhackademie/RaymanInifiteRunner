@@ -1,53 +1,58 @@
-# HUD biofiltre — pas d’instantiate runtime
+# HUD biofiltre — prefab en dur, pas de moule unique
 
-**Date :** 2026-09-06  
-**Branche :** `feature/biofiltre-isometric`  
-**Décision auteur :** l’instance HUD créée **au Play** ne permet pas de travailler.
-
----
-
-## Ce qui ne marche pas
-
-`BiofiltreHudBinder` fait `Instantiate(hudPrefab)` dans `Start()`. Conséquences :
-
-- Les rows (primaire / étoiles / secondaire) **n’existent pas en Edit**. Impossible de les bouger, tourner, scaler comme un vrai objet de scène.
-- En Play, Unity **interdit Save**. Les poignées Scene + cache « recopie à la sortie du Play » restent fragiles (facile de perdre le calage).
-- Recalcul d’ancres normalisées (`GetWorldRect`) se bat avec un placement à l’œil sur la cuve iso.
-
-**Constat playtest :** ce pipeline (instantiate + binder + gizmos Play) **ne marche pas** pour caler le HUD sur le biofiltre iso.
+**Date :** 2026-09-07  
+**Branche :** `feature/biofiltre-isometric`
 
 ---
 
-## Décision
+## Décision auteur (2026-09-07)
 
-**Préférer des prefabs / objets en dur** dans `Biofiltre.prefab` (enfants de la racine), plutôt qu’une copie runtime.
+Les biofiltres pourront avoir **des tailles différentes**. Un moule HUD unique (ancres normalisées + recale auto) n’est **pas** la cible.
 
-Cible :
+**Pour commencer :** pose **à la main** sur **ce** biofiltre (`Biofiltre.prefab`), comme `IbcSprite`. Play = ce qui est déjà posé. Plus tard, chaque instance pourra overrider les transforms des rows.
+
+---
+
+## Ce qui ne marche pas (abandonné)
+
+`Instantiate(hudPrefab)` au `Start` + gizmos Play + cache Edit :
+
+- Rows absentes en Edit.
+- Save interdit en Play.
+- Recalcul d’ancres se bat avec un calage à l’œil sur cuve iso.
+
+---
+
+## État (Cursor, 2026-09-07)
 
 ```
 Biofiltre
 ├── IbcSprite
 ├── Grid
 ├── Plants
-└── BiofiltreHud          ← nested / enfant réel (pas Instantiate)
+└── BiofiltreHud          ← nested (pas unpack)
     ├── TopIsoLine
     │   ├── PrimaryRow
     │   └── StarRow
     └── SecondaryRow
 ```
 
-L’auteur déplace les rows **en Prefab Mode ou dans la scène**, comme n’importe quel transform. Play = ce qui est déjà posé.
+- `BiofiltreHudBinder` référence l’enfant `hud` — **plus d’Instantiate**.
+- Canvas world scale instance **0.01** (800 px → ~8 u monde) — à ajuster à l’œil.
+- Play : **aucun recale** HUD / IBC (ne pas setter `renderMode` : Unity resettait scale/rotation).
+- Cellules : toujours `GridManager.GridToWorldCenter` dans `BiofiltreGridVisualizer`.
+- Gizmos cyan grille **seulement** si la racine `Biofiltre` est sélectionnée.
+
+**Bezy nest `[BZ-FARM-BIOHUD-NEST-001]` :** skip — Cursor a nesté. Prompts conservés au cas où.
 
 ---
 
-## Prochaine session (Cursor + Bezy)
+## Travail auteur (Prefab Mode)
 
-ID suivi : **`[P0-FARM-BIOHUD-NEST-001]`**
+Ouvrir `Assets/Prefabs/World/Biofiltre.prefab` :
 
-1. **Bezy** : neste `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` sous `Assets/Prefabs/World/Biofiltre.prefab` (ne pas unpack les rows). Wiring `BiofiltreHudView` inchangé.
-2. **Cursor** : `BiofiltreHudBinder` **arrête d’instancier**. Il référence l’enfant déjà là (fail closed si manquant). Plus de recopie Play → Edit.
-3. Pose à la main des 3 rows sur la cuve iso (bandes gauche / droite / bas-gauche).
+1. Sélectionner `PrimaryRow` / `StarRow` / `SecondaryRow` (pas la racine Biofiltre).
+2. Move / Rotate / Scale Unity — gauche / droite / bas-gauche sur la cuve.
+3. Sauver le prefab. Playtest FirstLvl.
 
-Ne pas relancer un job « gizmos d’ancres en Play » : abandonné.
-
-Réf. existante : `Notes/Farm/CABLAGE_biofiltre_ibc_grille_bezi.md` § HUD world.
+Ne pas unpack les nested rows.

@@ -172,18 +172,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 694416834059487525, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
-      propertyPath: instanceCellSize
-      value: 0.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 694416834059487525, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
-      propertyPath: originShiftCells.x
-      value: 0.04408056
-      objectReference: {fileID: 0}
-    - target: {fileID: 694416834059487525, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
-      propertyPath: originShiftCells.y
-      value: 0.1624746
-      objectReference: {fileID: 0}
     - target: {fileID: 7120944831028475613, guid: b1e710419b0fadb49a2e0481a66c92bf, type: 3}
       propertyPath: extraScale
       value: 1.165084

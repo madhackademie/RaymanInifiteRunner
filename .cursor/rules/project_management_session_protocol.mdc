@@ -54,8 +54,9 @@ Branche courante documentee: **`feature/biofiltre-isometric`** (2026-09-05, depu
 - Branche brouillon Workspace Rules **supprimee** : `cursor/bezi-workspace-rules-skill-76a4`.
 
 Priorite immediate actuelle:
-- `[P0-FARM-ISO-GRID-001]` sur `feature/biofiltre-isometric` : geometrie losange 2:1 en place ; art IBC losange en attente auteur.
-- Bezy `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : mise en place + polish sprites onglets HUD. Prompts apres brief visuel auteur + validation (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`).
+- Auteur Prefab Mode : poser rows HUD sur `Biofiltre` (pas de moule unique, `[P0-FARM-BIOHUD-NEST-001]` livré Cursor 2026-09-07).
+- `[P0-FARM-ISO-GRID-001]` : geometrie losange 2:1 ; playtest sprite/grille + HUD.
+- Bezy `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : sprites onglets HUD. Prompts apres brief visuel auteur + validation (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`).
 
 Reportes: [P0-FARM-SPRITE-ALPHA-001] fond noir laitue, [P0-SALE-QTY-RAND-001] rand 1-3 salades ★1.
 

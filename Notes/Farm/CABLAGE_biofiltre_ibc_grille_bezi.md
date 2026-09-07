@@ -69,8 +69,10 @@ flowchart TB
 
 ```
 Biofiltre                          ← racine
-├── Grid                           ← gridContainer (cellules générées runtime)
-└── Plants                         ← plantsContainer (instances plantes)
+├── Grid                           ← Move / Scale à la main (layout cellules)
+├── Plants
+├── IbcSprite
+└── BiofiltreHud
 ```
 
 ### Composants sur la racine (déjà présents)
@@ -213,35 +215,26 @@ Ortho historique (`Cuve_IBC_deck_carre_plus_face.png`) : `Rect(0.0266, 0.4483, 0
 | `UiBiofiltreSlotView.cs` | Atome slot (Slot / Fill / Lock images) |
 | `UiBiofiltreSlotRowView.cs` | Rangée N slots nested ; `PrimaryCapacity = 3`, `SecondaryCapacity = 5` |
 | `BiofiltreHudView.cs` | Vue HUD : `starRow` + `primaryRow` + `secondaryRow` (preview Inspector) |
-| `BiofiltreHudBinder.cs` | Instantiate + positionnement depuis `GetWorldRect()` |
+| `BiofiltreHudBinder.cs` | Référence l’enfant HUD nested ; camera world canvas seulement |
 
 ### `BiofiltreHudBinder` — câblage sur `Biofiltre.prefab`
 
 | Champ | Description |
 |-------|-------------|
-| `hudPrefab` | Référence vers `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` (**après** Bezy HOST) |
+| `hud` | Enfant nested `BiofiltreHud` (`BiofiltreHudView`) — pas un prefab à cloner |
 | `gridManager` | Auto depuis le même GameObject |
-| `primaryNormalizedAnchor` | Défaut `(0.08, 0.92)` — haut-gauche dans l’AABB |
-| `starNormalizedAnchor` | Défaut `(0.92, 0.92)` — haut-droite |
-| `secondaryNormalizedAnchor` | Défaut `(0.18, 0.22)` — bas cuve |
-| `*WorldOffset` | Ajustement fin en unités monde **par instance** biofiltre |
-| `hudWorldZ` | Plan Z du HUD world (souvent `0`) |
 
-**Comportement (obsolète 2026-09-06) :**
-- `Start()` → instantiate `hudPrefab` sous le biofiltre — **ne marche pas** pour caler à la main (objet absent en Edit, Save interdit en Play).
-- **Décision auteur :** HUD **en dur** dans `Biofiltre.prefab`, plus d’Instantiate. Note : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md` — `[P0-FARM-BIOHUD-NEST-001]`.
+**Comportement (2026-09-07) :**
+- HUD **en dur** nested sous `Biofiltre`. Plus d’Instantiate, plus d’ancres auto.
+- **Pas de moule unique** : biofiltres de tailles différentes → pose manuelle par prefab / instance.
+- Fail closed : `hud` manquant → warning, pas de HUD.
 
-**Fail closed :** `hudPrefab` null → warning, pas de HUD (pas de fallback caché).
+Note : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md` — `[P0-FARM-BIOHUD-NEST-001]` **livré Cursor** (Bezy nest skip).
 
-### Ancres normalisées (mockup `biofiltreInterface_1.png`)
+### Pose manuelle (plus d’ancres auto)
 
-Origine `(0,0)` = coin **bas-gauche** du `GetWorldRect()`, `(1,1)` = haut-droite.
-
-| Widget | Ancre défaut | Override |
-|--------|--------------|----------|
-| Slots primaires (3) | `(0.08, 0.92)` | Par instance si bac non carré |
-| Étoiles ★ (5) | `(0.92, 0.92)` | Pivot droite recommandé sur `UiStarRow` |
-| Slots secondaires (5) | `(0.18, 0.22)` | Par instance |
+Mockup `biofiltreInterface_1.png` = **intention** (primaire gauche, ★ droite, secondaire bas-gauche).  
+Les anciennes ancres normalisées sont **abandonnées**. L’auteur pose les rows en Prefab Mode.
 
 ---
 
@@ -327,8 +320,8 @@ Tailles : primaire **72×80**, secondaire **48×48**.
 | 3 | `[BZ-FARM-BIOHUD-SEC-001]` | `UiBiofiltreSecondarySlot.prefab` | 1 → 2 → 3 | ✅ |
 | 4 | `[BZ-FARM-BIOHUD-SEC-001]` | `UiBiofiltreSecondarySlotRow.prefab` | 1 → 2 → 3 | ✅ |
 | 5 | `[BZ-FARM-BIOHUD-HOST-001]` | `BiofiltreHud.prefab` | 1 → 2 → 3 | ✅ |
-| 6 | **Auteur** | `Biofiltre.prefab` | Add `BiofiltreHudBinder` + assign `hudPrefab` | ❌ |
-| 7 | **Auteur** | FirstLvl playtest | HUD world après HOST | ❌ |
+| 6 | **Cursor** | `Biofiltre.prefab` | HUD nested + binder `hud` (plus d’Instantiate) | ✅ 2026-09-07 |
+| 7 | **Auteur** | Prefab Mode + FirstLvl | Pose manuelle rows + playtest | ❌ |
 
 ### Bloc de lancement type (copier dans Bezy)
 
@@ -349,7 +342,7 @@ Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 
 | Action | Qui |
 |--------|-----|
-| Modifier `Biofiltre.prefab` (World) | **Auteur** — assignation `hudPrefab`, `BiofiltreIbcSpriteFitter` |
+| Modifier `Biofiltre.prefab` (World) | **Auteur** — pose `IbcSprite` / rows HUD ; Cursor a nesté le HUD |
 | Scripts C# | **Cursor** — déjà livrés |
 | Promouvoir art IBC Dump → Sprites | **Auteur** (OK explicite) |
 | Logique prestige, save slots, clics gameplay | **Plus tard** — hors prompts Bezy V0 |
@@ -379,8 +372,8 @@ Puis `@Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
 - [x] `UiBiofiltreSecondarySlot.prefab` (Ph.1–3, 2026-08-31 ; size 72×80 resté)
 - [x] `UiBiofiltreSecondarySlotRow.prefab` (Ph.1–3, 2026-08-31 ; spacing 10 resté)
 - [x] `BiofiltreHud.prefab` (HOST Ph.1–3, 2026-09-02)
-- [ ] `BiofiltreHudBinder` + `hudPrefab` sur instance biofiltre
-- [ ] Playtest HUD world (`[P0-FARM-GRID-PLAY-001]` grille déjà OK)
+- [x] `BiofiltreHud` nested + `BiofiltreHudBinder.hud` (2026-09-07)
+- [ ] Pose manuelle rows + playtest HUD world FirstLvl
 
 ### Merge vers `main`
 

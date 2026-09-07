@@ -1,5 +1,27 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-07 — HUD nested, pas de moule unique
+
+### Décision auteur
+- Biofiltres **possiblement de tailles différentes** → pas de moule HUD unique (ancres + recale auto).
+- **Simple pour commencer** : HUD en dur sur `Biofiltre.prefab`, pose à la main (auteur).
+
+### IDs
+- `[P0-FARM-BIOHUD-NEST-001]` **livré Cursor** — `BiofiltreHud` nested, binder sans Instantiate.
+- `[BZ-FARM-BIOHUD-NEST-001]` **skip** (Cursor a nesté).
+
+### Livré
+- Enfant nested `BiofiltreHud` (scale instance 0.01, sorting 20).
+- `BiofiltreHudBinder.hud` = vue stripped. Fail closed si manquant.
+- Gizmos grille cyan seulement si racine `Biofiltre` sélectionnée.
+
+### Prochaine session (référence « tâche du jour »)
+1. Auteur Prefab Mode : poser PrimaryRow / StarRow / SecondaryRow.
+2. Playtest FirstLvl HUD + grille iso.
+3. Bezy onglets toujours bloqué (brief).
+
+---
+
 ## 2026-09-06 — HUD biofiltre : instantiate runtime abandonné
 
 ### Décision auteur

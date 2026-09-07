@@ -16,9 +16,10 @@
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
 ### Priorités prochaine session
-1. **Branche `feature/biofiltre-isometric` :** `[P0-FARM-ISO-GRID-001]` géométrie + `IbcIso` câblé ; **playtest** alignement deck ↔ losanges.
-2. **Bezy** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : sprites onglets. Brief visuel → Ph.1–3 → validation → `/prefab-ui-3phases`.
-3. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
+1. **Auteur Prefab Mode** `Biofiltre` : poser PrimaryRow / StarRow / SecondaryRow (HUD nested, pas de moule unique).
+2. Playtest FirstLvl HUD + grille iso `[P0-FARM-ISO-GRID-001]`.
+3. **Bezy** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : sprites onglets. Brief visuel → Ph.1–3 → validation → `/prefab-ui-3phases`.
+4. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
 
 ### Clos IBC + grille (2026-09-02 / 2026-08-30)
 - `[P0-FARM-IBC-GRID-001]` — cuve IBC + grille **carrée** alignées, playtest **OK** 2026-09-02.
