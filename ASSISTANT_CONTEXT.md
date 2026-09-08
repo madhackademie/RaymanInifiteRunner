@@ -30,6 +30,9 @@
 - Jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` + compteurs `[P0-SALE-STAR-PROGRESS-001]` + UI étoiles Bezy.
 - Playtest 3 bandeaux ★ `[P0-SALE-STAR-PLAY-001]` — **OK 2026-08-30** (hover ★ → jauges + texte + fill live).
 
+### Direction art (2026-09-08)
+- Monde : **iso 2:1 cartoon**. Modèles **Township + The Tribez** (sauf champ plat). Volume = biofiltres / hydro. Prompt : `Notes/Art/PROMPT_assets_monde_iso.md`.
+
 ### Contexte Git
 - Branche : **`feature/biofiltre-isometric`** (2026-09-05, depuis `main`).
 

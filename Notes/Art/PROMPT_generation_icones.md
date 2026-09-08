@@ -1,6 +1,8 @@
 # Backlog art — création (Dump) → validation → Sprites
 
-**Création :** 2026-08-31 · **MAJ :** 2026-09-02  
+**Création :** 2026-08-31 · **MAJ :** 2026-09-08
+
+> **Direction monde (2026-09-08) :** vue **iso 2:1** + **cartoon** (polish Zombie Castaways, sans thème zombie). Prompt : `Notes/Art/PROMPT_assets_monde_iso.md`. Icônes UI (§1) restent bois rustique.  
 **Source unique** de tout l’art à produire (icônes UI, stades monde, IBC, fishtank, bandeaux…).  
 **Usage :** 1 asset / jour (~15 min) — générer → Dump → **après OK auteur** copier dans le dossier `Sprites/` de la ligne.
 
@@ -246,8 +248,8 @@ Même fichier, **pas** le prompt icône §1 par défaut. Détail pose plante : `
 | # | Objet FR | Prompt / brief | Dump | Promo Sprites | Statut | Fichier |
 |---|----------|----------------|------|---------------|--------|---------|
 | W1 | Cuve IBC dessus losange 2:1 | brief iso grille (pas icône) | `Dump/ElementProd/Biofiltre/` | `Sprites/Farm/Biofiltre/` | promu 2026-09-05 (2e passe 2:1) | `IbcIso.png` |
-| W2 | Stades laitue monde (fix alpha) | import / détourage — `[P0-FARM-SPRITE-ALPHA-001]` | `Dump/Plantes/Laitue/` | `Sprites/Plantes/Laitue/` | à générer | |
-| W3 | Stades tomate monde (canopée) | 7 stades grille | `Dump/Plantes/Tomate/` | `Sprites/Plantes/Tomate/` | à générer | |
+| W2 | Stades laitue monde (regen iso) | `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md` (charte `NOTE_graphique.md`) | `Dump/Plantes/Laitue/` | `Sprites/Plantes/Laitue/` | à générer | |
+| W3 | Stades tomate monde (iso 3/4) | même charte que W2 — 7 stades grille | `Dump/Plantes/Tomate/` | `Sprites/Plantes/Tomate/` | à générer | |
 | W4 | Illustrations bandeaux vente | scène, pas icon | `Dump/Ui/` | `Sprites/UI/` | à générer | |
 | W5 | Fishtank / poissons jouables | ~lvl 10 | `Dump/Poisson/` | `Sprites/Farm/Poisson/` | à générer | |
 

@@ -1,5 +1,28 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-08 — Direction art : iso 2:1 cartoon
+
+### Décision auteur
+- Monde : **vue iso 2:1** + **cartoon** (pas canopée).
+- **Zombie Castaways** = polish graphique aimé — **sans** le thème zombie.
+- 1re capture choux = **SpongeBob farm** (In A Jam, *un truc du genre*), pas Tribez.
+- 2e capture = **The Tribez** (village).
+- **Township + The Tribez** = modèles les plus proches. **Bémole :** eux = cultures à plat ; nous = volume biofiltre / hydro (plante sur le deck IBC).
+
+### Livré
+- `Notes/Art/NOTE_graphique.md` + `PROMPT_assets_monde_iso.md` (prompt générique).
+- Brief laitue W2 réécrit iso 3/4 cartoon.
+- Captures : `spongebob_farm_cabbage_iso.png`, `tribez_village_iso.png`.
+- Ref **My Dear Farm** (B5), **Harvest Land** (A12), **Family Farm Seaside** (A13), **Big Farm** (A9 multi). Hay Day déjà A7.
+
+### Prochaine session (référence « tâche du jour »)
+1. Auteur Prefab Mode : poser PrimaryRow / StarRow / SecondaryRow.
+2. Playtest FirstLvl HUD + grille iso.
+3. Regen laitue W2 avec le prompt iso cartoon (joindre les 2 captures).
+4. Bezy onglets toujours bloqué (brief).
+
+---
+
 ## 2026-09-07 — HUD nested, pas de moule unique
 
 ### Décision auteur

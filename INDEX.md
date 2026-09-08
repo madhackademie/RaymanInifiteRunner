@@ -60,6 +60,15 @@ Légende :
 | `Notes/GDD/SPEC_vente_production_boucle_jeu.md` | Actif | P1 | Vente production : canaux voisinage → bandoulière → vélo ; parallélisme ; proto V0 PNJ salades ; phase personnel véhicule. |
 | `Notes/GDD/SPEC_craft_atelier_aquaponique.md` | Actif | P1 | Atelier craft aquaponique (bacs DWC, kits) + quêtes livraison particuliers/pros ; cuisine en phase 2. |
 
+## Notes Art
+
+| Fichier | Statut | Priorité | Synthèse |
+|---|---|---|---|
+| `Notes/Art/NOTE_graphique.md` | Actif | P1 | Direction art monde : **iso 2:1 cartoon** (polish Zombie Castaways, sans thème zombie). |
+| `Notes/Art/PROMPT_assets_monde_iso.md` | Actif | P1 | Prompt générique assets monde (mix Zombie Castaways / Tribez / SpongeBob farm). |
+| `Notes/Art/PROMPT_generation_icones.md` | Actif | P1 | Backlog art Dump → promo Sprites (icônes UI + vague W monde). |
+| `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md` | Actif | P1 | Brief 7 stades laitue **iso 3/4 cartoon**. |
+
 ## Notes References
 
 | Fichier | Statut | Priorité | Synthèse |

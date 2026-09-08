@@ -17,6 +17,7 @@ Sommaire :
 - [C. PC / cross-platform — idle & automatisation](#c-pc--cross-platform--idle--automatisation)
 - [D. Mobile — références mécaniques voisines](#d-mobile--références-mécaniques-voisines)
 - [E. PC cozy farm — polish critters / VFX (qualité cible)](#e-pc-cozy-farm--polish-critters--vfx-qualité-cible)
+- [F. Vue iso 2:1 + cartoon (direction art 2026-09-08)](#f-vue-iso-21--cartoon-direction-art-2026-09-08)
 
 ---
 
@@ -166,7 +167,7 @@ Sommaire :
 - Feedback plantation/récolte et file d'attente de production.
 - Modèle de rétention long terme (pas à copier tel quel — plus « actif » que notre cible idle).
 
-**À observer** : UX commandes, équilibrage temps d'attente vs satisfaction, clarté inventaire.
+**À observer** : UX commandes, équilibrage temps d'attente vs satisfaction, clarté inventaire, **pose plants iso 3/4 sur losange**.
 
 ---
 
@@ -191,20 +192,20 @@ Sommaire :
 
 ### A9) Big Farm: Mobile Harvest
 
-- **Statut étude** : [ ] à voir
+- **Statut étude** : [ ] à voir — **à playtester : multiplayer / social** (cité auteur 2026-09-08)
 - **Dev / éditeur** : Goodgame Studios
 - **Plateformes** : Android / iOS
-- **Genre** : Farming casual / gestion de ferme
+- **Genre** : Farming casual / gestion de ferme **en ligne**
 - **Liens** : https://play.google.com/store/apps/details?id=com.goodgamestudios.bigfarmmobileharvest
 
-**Pitch** — Ferme à grande échelle : cultures, animaux, bâtiments, quêtes, voisinage. Progression par expansion et amélioration de la ferme plutôt qu'idle pur.
+**Pitch** — Ferme à grande échelle : cultures, animaux, bâtiments, quêtes. Jouable **avec amis / famille / farmers** : village partagé, chat, quêtes jointes, marché/échanges, communauté.
 
 **Intéressant pour nous** :
-- Gestion de ferme qui **scale** (plusieurs types de production simultanés).
+- **Multiplayer / social** : ce qu’on observe (voisinage, trade, co-op, pression sociale) — **pas** à copier tel quel sur l’aquaponie solo.
+- Gestion de ferme qui **scale** (plusieurs productions simultanées).
 - Quêtes/objectifs qui rythment la progression.
-- Référence « casual farming » européen (complément à Hay Day).
 
-**À observer** : organisation UI quand plusieurs productions tournent, priorisation des objectifs.
+**À observer** : comment le multi se greffe sur la boucle farm (aide, trade, visites), UI quand ça scale, ce qu’on **évite** (grind social, FOMO).
 
 ---
 
@@ -243,6 +244,44 @@ Sommaire :
 - Timers courts adaptés au mobile casual.
 
 **À observer** : équilibre collection vs boucle économique, rétention sans pression.
+
+---
+
+### A12) Harvest Land
+
+- **Statut étude** : [ ] à voir — **à playtester : farm + graphique** (cité auteur 2026-09-08)
+- **Dev / éditeur** : MTAG / Evo Games (`com.evogames.slavsforvk`)
+- **Plateformes** : Android / iOS
+- **Genre** : Farming / village iso cartoon (un peu de magie / combats île)
+- **Liens** : https://play.google.com/store/apps/details?id=com.evogames.slavsforvk
+
+**Pitch** — Village-ferme : cultures (blé, raisin…), animaux, bâtiments (scierie, poulailler, mines), expansion d’îles, trade, guildes. Combat/monstres = **hors scope** pour nous.
+
+**Intéressant pour nous** :
+- **Boucle farm** : planter / élevage / bâtiments de prod / expansion.
+- **Graphique** iso cartoon village (complément Tribez / Hay Day).
+- Trade / crew = secondaire (le multi se playteste surtout sur **Big Farm** A9).
+
+**À observer** : lisibilité parcelles et plants, densité village, timers, ce qu’on ignore (combat, gamble diamants).
+
+---
+
+### A13) Family Farm Seaside
+
+- **Statut étude** : [ ] à voir — **à playtester** (cité auteur 2026-09-08)
+- **Dev / éditeur** : Century Games (ex-FunPlus)
+- **Plateformes** : Android / iOS
+- **Genre** : Farming casual iso (ferme + mer)
+- **Liens** : https://play.google.com/store/apps/details?id=com.funplus.familyfarm
+
+**Pitch** — Ferme bord de mer : planter / récolter, animaux, cuisine (plats), déco, visites voisins, trade, commandes. Iso cartoon « casual farm » classique (famille Hay Day / FarmVille).
+
+**Intéressant pour nous** :
+- Pose objets / parcelles sur **losanges**, lecture mobile.
+- Chaîne **récolte → cuisine → commandes** (écho inventaire + vente).
+- Voisinage / trade = secondaire (le multi se playteste surtout sur **Big Farm** A9).
+
+**À observer** : densité ferme vs lisibilité, timers, cuisine vs vente brute, ce qu’on évite (FOMO social).
 
 ---
 
@@ -320,6 +359,26 @@ Sommaire :
 - Équilibre narration vs boucle économique farming.
 
 **À observer** : rythme des quêtes, ne pas noyer la boucle plantation/récolte.
+
+---
+
+### B5) My Dear Farm
+
+- **Statut étude** : [ ] à voir — **à playtester** (features + visuel, cité auteur 2026-09-08)
+- **Dev / éditeur** : HyperBeard
+- **Plateformes** : Android / iOS (Steam PC annoncé, pas encore live)
+- **Genre** : Farming sim cozy / déco, vue **iso** cartoon kawaii
+- **Liens** : [Play](https://play.google.com/store/apps/details?id=com.HyperBeardGames.MyDearFarm) · [App Store](https://apps.apple.com/us/app/my-dear-farm/id1590446639) · [Steam (coming)](https://store.steampowered.com/app/3937950/My_Dear_Farm/)
+
+**Pitch** — Ferme kawaii : cultiver, récolter, **vendre au marché**, custom perso/pet, **déco** (meubles, sets). Croissance aussi hors session (Steam : crops/arbres/fleurs continuent). Grille de pose libre (snap optionnel côté PC).
+
+**Intéressant pour nous** :
+- Boucle **plante → récolte → marché** (écho inventaire + canaux vente).
+- Déco / placement comme rétention (sans en faire le core aquaponie).
+- Croissance **offline** + session courte mobile.
+- Visuel iso cartoon cozy — complément Zombie Castaways / Tribez (sans copier le kawaii pastel).
+
+**À observer** (playtest) : timers, UX marché, densité déco vs lisibilité, pose sur grille, feedback récolte.
 
 ---
 
@@ -504,6 +563,94 @@ Sommaire :
 - Cohérence style art ↔ petites animations secondaires.
 
 **À observer** : densité visuelle acceptable vs lisibilité gameplay (surtout si on vise mobile plus tard).
+
+---
+
+## F. Vue iso 2:1 + cartoon (direction art 2026-09-08)
+
+> Décision auteur : monde **iso 2:1 cartoon**. Modèles les plus proches = **Township + The Tribez**.  
+> **Bémole :** eux = cultures **à plat** (terre plane). Nous = **volume** via biofiltres / hydro (plante sur le deck IBC, pas un champ).  
+> Source : `Notes/Art/NOTE_graphique.md` · prompt : `Notes/Art/PROMPT_assets_monde_iso.md`.
+
+### F0) Mix auteur (priorité visuel)
+
+| # | Jeu | Plateforme | Pourquoi | Liens / capture |
+|---|-----|------------|----------|-----------------|
+| **F0a** | **Township** (déjà F2) | Mobile | **Modèle cible** avec Tribez : ville/ferme iso cartoon. **Sauf** cultures à plat. | [Play](https://play.google.com/store/apps/details?id=com.playrix.township) |
+| **F0b** | **The Tribez: Build a Village** | Mobile / PC | **Modèle cible** avec Township. Village + props. Capture : `images/tribez_village_iso.png`. **Sauf** parcelles terre plane. | [Play](https://play.google.com/store/apps/details?id=com.gameinsight.tribez) |
+| **F0c** | **Zombie Castaways** | Mobile | Polish graphique aimé. **On reste cartoon** : pas de zombies. | [Play](https://play.google.com/store/apps/details?id=com.vizorinteractive.zombiesettlersv2) |
+| **F0i** | **SpongeBob Adventures: In A Jam** (*un truc du genre*) | Mobile | Pose têtes iso 3/4. Capture : `images/spongebob_farm_cabbage_iso.png`. **Poser sur deck IBC**, pas un champ. | [Play](https://play.google.com/store/apps/details?id=com.tiltingpoint.sbadventures) |
+| **F0d** | **My Dear Farm** (déjà B5) | Mobile · Steam bientôt | Iso cartoon cozy : farm + marché + déco. **À playtester** features. | [Play](https://play.google.com/store/apps/details?id=com.HyperBeardGames.MyDearFarm) |
+| **F0e** | **Harvest Land** (déjà A12) | Mobile | **Farm + graphique.** Village iso, parcelles, bâtiments. Combat = ignorer. | [Play](https://play.google.com/store/apps/details?id=com.evogames.slavsforvk) |
+| **F0f** | **Hay Day** (déjà A7) | Mobile | **Déjà en doc.** Playtest visuel : plants 3/4 sur losange. | [Play](https://play.google.com/store/apps/details?id=com.supercell.hayday) |
+| **F0g** | **Big Farm: Mobile Harvest** (déjà A9) | Mobile | **Multiplayer / social** (amis, village, trade, quêtes jointes). Pas le core solo. | [Play](https://play.google.com/store/apps/details?id=com.goodgamestudios.bigfarmmobileharvest) |
+| **F0h** | **Family Farm Seaside** (déjà A13) | Mobile | Ferme iso + mer, parcelles losange, cuisine/commandes. **À playtester.** | [Play](https://play.google.com/store/apps/details?id=com.funplus.familyfarm) |
+
+![SpongeBob farm — pose choux iso](images/spongebob_farm_cabbage_iso.png)
+
+*Capture auteur — pose plantes 3/4. Copyright Nickelodeon / éditeur ; veille only.*
+
+![The Tribez — village iso](images/tribez_village_iso.png)
+
+*Capture auteur — volume village/props. Copyright Game Insight ; veille only.*
+
+**À observer :** **Township + Tribez** (modèles, sauf champ plat) → SpongeBob farm (têtes 3/4 sur deck) → Harvest Land / Family Farm Seaside / My Dear Farm → Hay Day (losange) → Big Farm (multi). Zombie Castaways = polish only.
+
+**File playtest auteur** (noter ce qui est repris / évité → `Inbox_features.md` si ça devient une idée) :
+
+- [ ] **Township** — modèle cible (sauf cultures à plat)
+- [ ] **The Tribez** — modèle cible (sauf parcelles terre plane)
+- [ ] Zombie Castaways — polish visuel seulement
+- [ ] SpongeBob In A Jam — pose têtes (à greffer sur IBC)
+- [ ] **Harvest Land** — farm + graphique
+- [ ] **Family Farm Seaside** — ferme iso, parcelles, cuisine/commandes
+- [ ] **My Dear Farm** — marché, déco, timers, grille
+- [ ] Hay Day — plant sur losange (**déjà A7**)
+- [ ] **Big Farm: Mobile Harvest** — multiplayer / social
+
+### F1) Farming 2D iso — mobile / PC (priorité visuel)
+
+| # | Jeu | Plateforme | Pourquoi pour **notre** iso | Liens |
+|---|-----|------------|-----------------------------|-------|
+| **F1** | **Hay Day** (déjà A7) | Mobile | Grille losange + plants 3/4, lecture mobile. | [Play](https://play.google.com/store/apps/details?id=com.supercell.hayday) |
+| **F2** | **Township** | Mobile | Iso ville + fermes ; densité bâtiments vs lisibilité pouce. Playrix. | [Play](https://play.google.com/store/apps/details?id=com.playrix.township) |
+| **F3** | **FarmVille 2: Country Escape** | Mobile | Grille iso casual Zynga ; héritage FarmVille Flash (losanges). | [Play](https://play.google.com/store/apps/details?id=com.zynga.FarmVille2CountryEscape) |
+| **F4** | **Pocket Harvest** (déjà A8) | Mobile / PC / Switch | Pixel **iso/3/4** Kairosoft : parcelles, workers, scale ferme lisible. | [Play](https://play.google.com/store/apps/details?id=net.kairosoft.android.harvest_en) · [Steam](https://store.steampowered.com/app/2019380/Pocket_Harvest/) |
+| **F5** | **Family Farm Seaside** (déjà A13) | Mobile | Iso farm + mer ; pose sur diamants. | [Play](https://play.google.com/store/apps/details?id=com.funplus.familyfarm) |
+| **F6** | **Rusty's Retirement** (déjà C1) | PC | Idle **iso** overlay : plants + robots sur grille, proche de notre boucle. | [Steam](https://store.steampowered.com/app/2666510/Rustys_Retirement/) |
+| **F7** | **Autonauts** | PC | Iso automation farming (ouvriers) ; lisibilité d’une ferme qui tourne seule. | [Steam](https://store.steampowered.com/app/979120/Autonauts/) |
+| **F8** | **Graveyard Keeper** | PC / consoles | 2.5D iso : jardin / parcelles / craft ; profondeur + order de dessin. | [Steam](https://store.steampowered.com/app/599140/Graveyard_Keeper/) |
+| **F9** | **Littlewood** | PC / Switch | Cozy town + farm, caméra iso douce, silhouettes simples (bon pour mobile). | [Steam](https://store.steampowered.com/app/848450/Littlewood/) |
+| **F10** | **Farming Isles** | PC | Farming sim **annoncé iso** : îles / parcelles / structures. Plus rare, à checker en vidéo. | [Steam](https://store.steampowered.com/app/2987160/Farming_Isles/) |
+
+**À observer en priorité (visuel, pas la boucle) :**
+1. **Zombie Castaways** — polish cartoon iso (sans le thème).
+2. **The Tribez** — village / props.
+3. **SpongeBob farm** — pose têtes de cultures 3/4.
+4. Hay Day — plant sur losange.
+5. Pocket Harvest / Rusty's — densité et idle.
+
+**Hors cible caméra** (3/4 ortho ou 3D, pas 2D iso) : Stardew Valley, Coral Island, Dinkum, Farming Simulator. Utile polish (section E), pas pour caler la grille.
+
+Inbox GDD mentionnait **Farm City** : même famille iso casual que Township / Hay Day ; à revoir si l’entrée store est encore vivante.
+
+---
+
+### F2) Look carton / papercraft (secondaire)
+
+Cartoon d’abord (décision auteur). Ces titres = grain papier **optionnel**, pas le look principal.
+
+| # | Jeu | Plateforme | Pourquoi pour **notre** carton | Liens |
+|---|-----|------------|--------------------------------|-------|
+| **F11** | **Yoshi's Crafted World** | Switch | **Réf n°1 matière** : carton ondulé peint, scotch, objets ménagers, diorama. | [Nintendo](https://www.nintendo.com/us/store/products/yoshis-crafted-world-switch/) |
+| **F12** | **Tearaway** (Unfolded) | Vita / PS4 | Monde **papercraft** pliable ; bords papier, trous, épaisseur. | [PS](https://store.playstation.com/en-us/product/UP9000-CUSA02534_00-TEARAWAYUNFOLD01) |
+| **F13** | **Lumino City** | PC | Vraie maquette carton/papier filmée ; chaleur artisanale. | [Steam](https://store.steampowered.com/app/313010/Lumino_City/) |
+| **F14** | **Townscaper** | PC / mobile | Blocs papier, ville diorama, lecture iso. Pas farm. | [Steam](https://store.steampowered.com/app/1291340/Townscaper/) |
+| **F15** | **Islanders** | PC / mobile | Iso minimal, pièces « posées » comme un jeu de plateau. | [Steam](https://store.steampowered.com/app/1046030/Islanders/) |
+| **F16** | **Cloud Gardens** | PC / Switch | Dioramas iso + **plantes** qui envahissent ; plus proche thème ferme. | [Steam](https://store.steampowered.com/app/1372320/Cloud_Gardens/) |
+| **F17** | **Dorfromantik** | PC / Switch / mobile | Tuiles paysage **carton de jeu de société** ; campagne, pas parcelles idle. | [Steam](https://store.steampowered.com/app/1455840/Dorfromantik/) |
+
+**Combo utile :** Zombie Castaways (polish cartoon) + The Tribez (village) + SpongeBob farm (pose plant) + Yoshi Crafted World (grain papier optionnel seulement).
 
 ---
 

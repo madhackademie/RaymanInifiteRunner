@@ -19,7 +19,9 @@ Références de détail :
 - File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
 - Journal : `PROJECT_LOG.md`
 - Guide utilisateur (suivi) : `Notes/GUIDE_suivi_projet.md`
+- **Direction art (iso 2:1 cartoon)** : `Notes/Art/NOTE_graphique.md` · prompt `Notes/Art/PROMPT_assets_monde_iso.md`
 - **Backlog art (Dump → Sprites)** : `Notes/Art/PROMPT_generation_icones.md`
+- **Laitue 7 stades (sprite sheet)** : `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md`
 
 ---
 
@@ -526,7 +528,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 ### Art / assets
 - [~] [BL-ART-001] Finaliser le cycle complet de la laitue prototype.
 - [~] [BL-ART-002] Terminer le nettoyage des assets temporaires.
-- [ ] [BL-ART-003] Documenter le double procédé graphique (léger + 3D) et les critères d'usage.
+- [~] [BL-ART-003] Direction art : iso 2:1 **cartoon** (polish Zombie Castaways, sans zombie). Mix : Tribez village + SpongeBob farm pose. Prompt : `PROMPT_assets_monde_iso.md`.
 - [ ] [BL-ART-004] Centraliser un workflow 3D validé (sources -> export -> intégration).
 - [ ] [BL-ART-005] Décider la cible mobile 2D vs 3D selon playtests perf.
 - [ ] [BL-ART-006] Intégrer l'illustration LoadingScreen + QA (play + build).
