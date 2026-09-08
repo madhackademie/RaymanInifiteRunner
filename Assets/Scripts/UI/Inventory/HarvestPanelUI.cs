@@ -28,6 +28,7 @@ public class HarvestPanelUI : MonoBehaviour
     private PlantGrow currentPlantGrow;
     private PlantDefinition currentDefinition;
     private ScreenPopupHost farmPopupHost;
+    private BiofiltreManager biofiltreManager;
     private bool isOpen;
 
     // Suivi du stade rendu : les visuels (sprite, nom, rendement, boutons) ne dépendent
@@ -73,6 +74,13 @@ public class HarvestPanelUI : MonoBehaviour
             farmPopupHost = host;
     }
 
+    /// <summary>Retire la surbrillance socle à la fermeture du panneau.</summary>
+    public void InjectBiofiltreManager(BiofiltreManager manager)
+    {
+        if (manager != null)
+            biofiltreManager = manager;
+    }
+
     /// <summary>
     /// Ouvre le popup pour la plante ciblée, peu importe son stade.
     /// </summary>
@@ -99,6 +107,8 @@ public class HarvestPanelUI : MonoBehaviour
         currentTarget     = null;
         currentPlantGrow  = null;
         currentDefinition = null;
+
+        biofiltreManager?.ClearPlantSelectionHighlight();
 
         if (farmPopupHost != null)
             farmPopupHost.TryHidePopup(PopupId.FarmPlantHarvest);

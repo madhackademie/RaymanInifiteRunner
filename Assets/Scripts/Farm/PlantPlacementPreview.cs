@@ -113,10 +113,13 @@ public class PlantPlacementPreview : MonoBehaviour
 
         HideGhostInsects(ghostInstance);
 
-        // Directly assign the final-stage sprite so the ghost always shows the mature plant.
+        // Mature = meilleure lecture du footprint 2×2 iso (seedling trop haut / déborde latéralement).
         ghostRenderer = ghostInstance.GetComponent<SpriteRenderer>();
         if (ghostRenderer != null)
-            ghostRenderer.sprite = plantDefinition.spriteSeedling;
+        {
+            Sprite previewSprite = plantDefinition.spriteMature ?? plantDefinition.spriteGrowing;
+            ghostRenderer.sprite = previewSprite ?? plantDefinition.spriteSeedling;
+        }
 
         foreach (SpriteRenderer sr in ghostInstance.GetComponentsInChildren<SpriteRenderer>(true))
             sr.sortingOrder = GhostSortingOrder;
@@ -155,9 +158,8 @@ public class PlantPlacementPreview : MonoBehaviour
             RefreshFootprintPreview();
         }
 
-        // Sprite sits on the footprint geometric center; spriteWorldOffset is a pivot tweak only.
-        Vector2 snapPos = gridManager.GetFootprintWorldCenter(currentCell, plantDefinition.footprint)
-                          + plantDefinition.spriteWorldOffset;
+        // Hub iso 2×2 (sommet central) ou centre footprint + triche vue.
+        Vector2 snapPos = gridManager.GetPlantSpriteWorldPosition(currentCell, plantDefinition);
         ghostInstance.transform.position = new Vector3(snapPos.x, snapPos.y, 0f);
 
         ApplyTint(currentlyValid ? ColorValid : ColorInvalid);
@@ -186,7 +188,11 @@ public class PlantPlacementPreview : MonoBehaviour
         {
             Vector2Int cell = previewedCells[i];
             BiofiltreCell bioCell = visualizer != null ? visualizer.GetCell(cell) : null;
-            if (bioCell != null && gridManager != null)
+            if (bioCell == null)
+                continue;
+
+            bioCell.ClearTransientHighlight();
+            if (gridManager != null)
                 bioCell.SetVisualState(!gridManager.IsCellFree(cell));
         }
 

@@ -22,6 +22,7 @@ Références de détail :
 - **Direction art (iso 2:1 cartoon)** : `Notes/Art/NOTE_graphique.md` · prompt `Notes/Art/PROMPT_assets_monde_iso.md`
 - **Backlog art (Dump → Sprites)** : `Notes/Art/PROMPT_generation_icones.md`
 - **Laitue 7 stades (sprite sheet)** : `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md`
+- **Repère iso footprint 2×2** : `Notes/Todo_project.md` § `[P0-FARM-ISO-SPRITE-ANCHOR-001]`
 
 ---
 
@@ -49,7 +50,8 @@ Convention d'IDs :
 > **Chantier branche :** `[P0-FARM-ISO-GRID-001]` géométrie grille losange 2:1 — art IBC losange **en attente auteur**.  
 > **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt**. Tampon `.cursor/session_pull_ok` : les chats **de la même session** ne re-bloquent pas. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
-> **Priorité Bezy (hors cette branche) :** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` — sprites onglets. Prompts **après** brief visuel auteur. Stub : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`.  
+> **Priorité immédiate (2026-09-08) :** **Bezy** — `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` onglets HUD (brief auteur → prompts → phases).  
+> **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows par biofiltre. Bezy nest skip.  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 septembre**). File `#13` après onglets. Wallet punch = PARK UX.
@@ -82,14 +84,52 @@ Convention d'IDs :
 
 **Ordre prochaine session :**
 
-1. [x] **[P0-FARM-BIOHUD-NEST-001]** HUD nested dans `Biofiltre.prefab` (Cursor 2026-09-07, plus d’Instantiate) — pose manuelle auteur
+1. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → validation prompts → **Bezy onglets** (priorité)
 2. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` — playtest pose manuelle sprite/grille
-3. [x] **[BZ-FARM-BIOHUD-ISO-001]** Bezy : ligne HUD haut (primary+★) iso 2:1 — Ph.1–3 livrées 2026-09-06
-4. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → validation prompts → Bezy onglets
-5. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — **playtest deck ↔ grille OK** 2026-09-02 (grille carrée, `main`)
-6. [ ] Pose rows HUD (Prefab Mode) + playtest FirstLvl
-7. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
-8. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+3. [ ] **[P0-FARM-ISO-SPRITE-ANCHOR-001]** Ancrage pied laitue iso 2×2 — **reporté après Bezy** (voir § ci-dessous)
+4. [x] **[P0-FARM-BIOHUD-NEST-001]** HUD nested dans `Biofiltre.prefab` (Cursor 2026-09-07)
+5. [x] **[BZ-FARM-BIOHUD-ISO-001]** Bezy : ligne HUD haut (primary+★) iso 2:1 — Ph.1–3 livrées 2026-09-06
+6. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — playtest OK 2026-09-02
+7. [ ] Pose rows HUD (Prefab Mode) + playtest FirstLvl
+8. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
+9. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+
+### ★ Reporté — ancrage sprite laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]`
+
+> Décision auteur **2026-09-08** : pause tuning pied plante — **priorité Bezy onglets** d’abord.  
+> Footprint logique **2×2 inchangé** (4 cellules). Code en place : hub iso, clic sprite, socle vert sélection, preview `spriteMature`.  
+> Atlas : `Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png` · SO : `Assets/Data/Ferme/Laitue.asset` · prompts Bezy atlas : `Notes/Art/PROMPTS_Bezi_laitue_atlas.md`
+
+**Repère iso footprint** (offsets relatifs à l’ancre `(0,0)` — **pas de rotation** runtime) :
+
+```
+              (0,0) ★ ancre — haut / arrière écran
+             /       \
+        (0,1)         (1,0)   gauche / droite
+             \       /
+              (1,1)           bas / vers joueur
+```
+
+| Offset `(col,row)` | À l’écran | YAML `footprint` |
+|--------------------|-----------|------------------|
+| `(0,0)` ★ | Haut / arrière | `{x:0,y:0}` |
+| `(1,0)` | Droite | `{x:1,y:0}` |
+| `(0,1)` | Gauche | `{x:0,y:1}` |
+| `(1,1)` | Bas / avant | `{x:1,y:1}` |
+
+**Points d’ancrage sprite (tests) :**
+
+| Point | Description | Réglage actuel |
+|-------|-------------|----------------|
+| **Hub** | Milieu centres `(0,0)` ↔ `(1,1)` — centre du losange 4 tuiles | `GridManager.TryGetIsoFootprintHub` |
+| **Sommet SE** | Coin partagé `(1,0)` / `(1,1)` (flèche rouge bas-droite) | `isoSpriteViewOffset` sur `Laitue.asset` ou mode code à ajouter |
+
+**Checklist reprise :**
+
+1. [ ] Playtest : pivot sur hub vs sommet SE (tuner `isoSpriteViewOffset` par pas `0.02`, Y− = vers joueur)
+2. [ ] Valider preview pose + sélection (4 losanges verts) alignés avec le pied visuel
+3. [ ] Si besoin : ajouter mode ancrage `SommetSE` en code (alternative à offset manuel)
+4. [ ] Clore `[BZ-FARM-LAITUE-ATLAS-001]` si atlas wiring pas encore commité auteur
 
 **Clos playtest grille rework (2026-08-30, branche `feature/rework-biofiltre-grid`) :**
 

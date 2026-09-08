@@ -69,7 +69,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 33
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -131,15 +131,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AtlasLaitue_0
+      name: Laitue_01_Graine
       rect:
         serializedVersion: 2
         x: 59
         y: 134
         width: 154
         height: 190
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -153,15 +153,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AtlasLaitue_1
+      name: Laitue_02_Starting
       rect:
         serializedVersion: 2
         x: 233
         y: 140
         width: 292
         height: 216
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.54179275, y: 0.0056497785}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -175,15 +175,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AtlasLaitue_2
+      name: Laitue_03_Baby
       rect:
         serializedVersion: 2
         x: 538
         y: 141
         width: 287
         height: 248
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -197,15 +197,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AtlasLaitue_3
+      name: Laitue_04_Growing
       rect:
         serializedVersion: 2
-        x: 841
-        y: 139
+        x: 840
+        y: 140
         width: 313
         height: 309
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -219,15 +219,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AtlasLaitue_4
+      name: Laitue_05_Mature
       rect:
         serializedVersion: 2
-        x: 1151
+        x: 1149
         y: 129
         width: 345
         height: 332
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5459841, y: 0.007351473}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -241,15 +241,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AtlasLaitue_5
+      name: Laitue_06_Flowering
       rect:
         serializedVersion: 2
         x: 1493
         y: 128
         width: 298
         height: 441
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -263,15 +263,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: AtlasLaitue_6
+      name: Laitue_07_Seedling
       rect:
         serializedVersion: 2
         x: 1803
-        y: 128
+        y: 129
         width: 262
         height: 471
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -288,7 +288,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7d4a7fa69765b6042a683c60a8cec12d
     internalID: 0
     vertices: []
     indices: 
@@ -305,6 +305,13 @@ TextureImporter:
       AtlasLaitue_4: 168203161415380284
       AtlasLaitue_5: 2100569369381979722
       AtlasLaitue_6: -5724078450489768718
+      Laitue_01_Graine: 3438625136742301237
+      Laitue_02_Starting: 5810937463493807243
+      Laitue_03_Baby: 4604566936846532081
+      Laitue_04_Growing: 3940599319124680128
+      Laitue_05_Mature: 168203161415380284
+      Laitue_06_Flowering: 2100569369381979722
+      Laitue_07_Seedling: -5724078450489768718
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

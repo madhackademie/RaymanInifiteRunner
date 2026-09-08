@@ -49,6 +49,8 @@ public class GridManager : MonoBehaviour
 
     // Maps any occupied cell to the root GameObject of the plant that occupies it.
     private readonly Dictionary<Vector2Int, GameObject> _plantByCell = new();
+    private readonly List<GameObject> _plantHitBuffer = new();
+    private static readonly Vector2[] CellCornerBuffer = new Vector2[4];
 
     private int _columns;
     private int _rows;
@@ -293,6 +295,59 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Sommet central iso d'un footprint 2×2 standard ((0,0)…(1,1)) — point où les 4 losanges se rejoignent.
+    /// </summary>
+    public bool TryGetIsoFootprintHub(Vector2Int anchor, Vector2Int[] footprint, out Vector2 hub)
+    {
+        hub = default;
+
+        if (coordinateMode != GridCoordinateMode.Isometric || !IsStandard2x2Footprint(footprint))
+            return false;
+
+        Vector2 north = GridToWorldCenter(anchor);
+        Vector2 south = GridToWorldCenter(anchor + new Vector2Int(1, 1));
+        hub = (north + south) * 0.5f;
+        return true;
+    }
+
+    /// <summary>
+    /// Position monde du pivot sprite (hub iso 2×2 si applicable, sinon centre footprint).
+    /// </summary>
+    public Vector2 GetPlantSpriteWorldPosition(Vector2Int anchor, PlantDefinition plant)
+    {
+        if (plant == null)
+            return GridToWorldCenter(anchor);
+
+        Vector2 basePos = TryGetIsoFootprintHub(anchor, plant.footprint, out Vector2 hub)
+            ? hub
+            : GetFootprintWorldCenter(anchor, plant.GetSpritePlacementOffsets());
+
+        return basePos + plant.spriteWorldOffset + plant.isoSpriteViewOffset;
+    }
+
+    private static bool IsStandard2x2Footprint(Vector2Int[] footprint)
+    {
+        if (footprint == null || footprint.Length != 4)
+            return false;
+
+        return ContainsFootprintOffset(footprint, Vector2Int.zero) &&
+               ContainsFootprintOffset(footprint, new Vector2Int(1, 0)) &&
+               ContainsFootprintOffset(footprint, new Vector2Int(0, 1)) &&
+               ContainsFootprintOffset(footprint, new Vector2Int(1, 1));
+    }
+
+    private static bool ContainsFootprintOffset(Vector2Int[] footprint, Vector2Int offset)
+    {
+        for (int i = 0; i < footprint.Length; i++)
+        {
+            if (footprint[i] == offset)
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// Converts a world position to the grid cell (floor). May be out of bounds — use IsInBounds.
     /// </summary>
     public Vector2Int WorldToGrid(Vector2 worldPos) =>
@@ -303,6 +358,140 @@ public class GridManager : MonoBehaviour
     {
         cell = WorldToGrid(worldPosition);
         return IsInBounds(cell);
+    }
+
+    /// <summary>
+    /// Résout la cellule cliquée : priorité plante (sprite + footprint iso) puis sol.
+    /// Corrige le « clic à travers » quand le sprite déborde ou masque une autre tuile.
+    /// </summary>
+    public bool TryResolveClickTarget(Vector2 worldPosition, out Vector2Int cell)
+    {
+        if (TryResolvePlantAtWorld(worldPosition, out Vector2Int plantCell))
+        {
+            cell = plantCell;
+            return true;
+        }
+
+        return TryWorldToCell(worldPosition, out cell);
+    }
+
+    private bool TryResolvePlantAtWorld(Vector2 world, out Vector2Int cell)
+    {
+        cell = default;
+        GameObject bestPlant = null;
+        int bestDrawOrder = int.MinValue;
+
+        CollectUniquePlants(_plantHitBuffer);
+        for (int i = 0; i < _plantHitBuffer.Count; i++)
+        {
+            GameObject plant = _plantHitBuffer[i];
+            if (!TryScorePlantHit(plant, world, out int drawOrder, out Vector2Int hitCell))
+                continue;
+
+            if (drawOrder <= bestDrawOrder)
+                continue;
+
+            bestDrawOrder = drawOrder;
+            bestPlant     = plant;
+            cell          = hitCell;
+        }
+
+        return bestPlant != null;
+    }
+
+    private bool TryScorePlantHit(GameObject plant, Vector2 world, out int drawOrder, out Vector2Int cell)
+    {
+        drawOrder = int.MinValue;
+        cell      = default;
+
+        bool spriteHit = false;
+        if (plant.TryGetComponent(out SpriteRenderer spriteRenderer) && spriteRenderer.sprite != null)
+        {
+            Bounds bounds = spriteRenderer.bounds;
+            Vector3 probe = new(world.x, world.y, bounds.center.z);
+            spriteHit = bounds.Contains(probe);
+        }
+
+        bool footprintHit = TryGetPlantFootprintHit(plant, world, out Vector2Int footprintCell);
+
+        if (!spriteHit && !footprintHit)
+            return false;
+
+        drawOrder = ComputePlantDrawOrder(plant);
+        cell = footprintHit ? footprintCell : GetRepresentativePlantCell(plant);
+        return true;
+    }
+
+    private bool TryGetPlantFootprintHit(GameObject plant, Vector2 world, out Vector2Int hitCell)
+    {
+        hitCell = default;
+
+        if (!plant.TryGetComponent(out PlantPersistenceMarker marker))
+            return false;
+
+        if (!plant.TryGetComponent(out PlantDefinitionHolder holder) || holder.Definition == null)
+            return false;
+
+        if (_coordinateMapper == null)
+            return false;
+
+        Vector2Int anchor = marker.Anchor;
+        foreach (Vector2Int offset in holder.Definition.footprint)
+        {
+            Vector2Int coords = anchor + offset;
+            if (!IsInBounds(coords))
+                continue;
+
+            _coordinateMapper.GetCellCorners(coords, CellCornerBuffer);
+            if (!FarmGridHitTest.IsPointInConvexQuad(world, CellCornerBuffer))
+                continue;
+
+            hitCell = coords;
+            return true;
+        }
+
+        return false;
+    }
+
+    private int ComputePlantDrawOrder(GameObject plant)
+    {
+        if (!plant.TryGetComponent(out PlantPersistenceMarker marker) ||
+            !plant.TryGetComponent(out PlantDefinitionHolder holder) ||
+            holder.Definition == null)
+            return int.MinValue;
+
+        int maxOrder = int.MinValue;
+        foreach (Vector2Int coords in holder.Definition.GetOccupiedCells(marker.Anchor))
+            maxOrder = Mathf.Max(maxOrder, GetCellDrawOrder(coords));
+
+        return maxOrder;
+    }
+
+    private Vector2Int GetRepresentativePlantCell(GameObject plant)
+    {
+        if (plant.TryGetComponent(out PlantPersistenceMarker marker))
+            return marker.Anchor;
+
+        foreach (KeyValuePair<Vector2Int, GameObject> entry in _plantByCell)
+        {
+            if (entry.Value == plant)
+                return entry.Key;
+        }
+
+        return default;
+    }
+
+    private void CollectUniquePlants(List<GameObject> buffer)
+    {
+        buffer.Clear();
+        foreach (KeyValuePair<Vector2Int, GameObject> entry in _plantByCell)
+        {
+            GameObject plant = entry.Value;
+            if (plant == null || buffer.Contains(plant))
+                continue;
+
+            buffer.Add(plant);
+        }
     }
 
     // ── Convenience wrappers (delegates to GridData) ──────────────────────────

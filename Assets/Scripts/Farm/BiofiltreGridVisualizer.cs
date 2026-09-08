@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -33,6 +34,7 @@ public class BiofiltreGridVisualizer : MonoBehaviour
     private BiofiltreCell[,] cells;
     private Sprite runtimeSquareSprite;
     private Sprite runtimeDiamondSprite;
+    private readonly List<Vector2Int> selectionHighlightCells = new();
 
     private void Awake()
     {
@@ -140,6 +142,43 @@ public class BiofiltreGridVisualizer : MonoBehaviour
                     cell.SetVisualState(!gridManager.IsCellFree(coords));
             }
         }
+    }
+
+    /// <summary>
+    /// Illumine en vert le socle (footprint) d'une plante ciblée.
+    /// </summary>
+    public void SetFootprintSelectionHighlight(PlantDefinition plantDefinition, Vector2Int anchor)
+    {
+        ClearFootprintSelectionHighlight();
+        if (plantDefinition == null)
+            return;
+
+        foreach (Vector2Int cell in plantDefinition.GetOccupiedCells(anchor))
+        {
+            BiofiltreCell bioCell = GetCell(cell);
+            if (bioCell == null)
+                continue;
+
+            bioCell.SetSelectionHighlight(true);
+            selectionHighlightCells.Add(cell);
+        }
+    }
+
+    /// <summary>Retire la surbrillance de sélection plante.</summary>
+    public void ClearFootprintSelectionHighlight()
+    {
+        for (int i = 0; i < selectionHighlightCells.Count; i++)
+        {
+            Vector2Int cell = selectionHighlightCells[i];
+            BiofiltreCell bioCell = GetCell(cell);
+            if (bioCell != null)
+                bioCell.ClearTransientHighlight();
+
+            if (gridManager != null)
+                bioCell?.SetVisualState(!gridManager.IsCellFree(cell));
+        }
+
+        selectionHighlightCells.Clear();
     }
 
     /// <summary>

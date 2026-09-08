@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7e4f2f2c6442c6b897012b383a1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HarvestReadyFxAnchor
-  sparkleSystems: []
+  sparkleSystems:
+  - {fileID: 3613443868837162929}
 --- !u!1 &1181457250102452068
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,7 +225,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 8997401980803306944, guid: de09412c8bb7a8b449a75c0217588b17, type: 3}
+  m_Sprite: {fileID: 3438625136742301237, guid: 325a2cf84028db24d8b2f401dde4d2cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -475,6 +476,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eee2a9603e1ef2c4c9d30570d682a40e, type: 3}
+--- !u!198 &3613443868837162929 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8877371673061236017, guid: eee2a9603e1ef2c4c9d30570d682a40e, type: 3}
+  m_PrefabInstance: {fileID: 5266760260264407680}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7054900961050794743 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2954151928433125495, guid: eee2a9603e1ef2c4c9d30570d682a40e, type: 3}

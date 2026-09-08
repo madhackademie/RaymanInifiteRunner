@@ -40,7 +40,7 @@ public class FarmGridPointerInput : MonoBehaviour
             visualizer.NotifyCellClicked(coords);
     }
 
-    /// <summary>Screen → world → cellule (délègue au mapper orthogonal ou iso du GridManager).</summary>
+    /// <summary>Screen → monde → cellule (sprite / footprint iso, puis sol).</summary>
     private bool TryResolveCell(Vector2 screenPosition, out Vector2Int coords)
     {
         coords = default;
@@ -50,7 +50,7 @@ public class FarmGridPointerInput : MonoBehaviour
             return false;
 
         Vector2 world = camera.ScreenToWorldPoint(screenPosition);
-        return gridManager.TryWorldToCell(world, out coords);
+        return gridManager.TryResolveClickTarget(world, out coords);
     }
 
     private Camera ResolveCamera()

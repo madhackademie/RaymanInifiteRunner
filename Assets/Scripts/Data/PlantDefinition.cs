@@ -87,9 +87,26 @@ public class PlantDefinition : ScriptableObject
     [Tooltip("Relative offsets from the placement origin. Must always include (0,0).")]
     public Vector2Int[] footprint = { Vector2Int.zero };
 
-    [Tooltip("World-space offset applied after placing the sprite on the footprint center. " +
-             "Use this only if the sprite pivot does not match the visual center.")]
+    [Tooltip("Offsets footprint pour ancrer le sprite (moyenne des centres de cellule). " +
+             "Ignoré si hub iso 2×2 détecté. Vide = centre géométrique du footprint.")]
+    public Vector2Int[] spritePlacementOffsets = Array.Empty<Vector2Int>();
+
+    [Tooltip("Décalage monde après ancrage (pivot / hub).")]
     public Vector2 spriteWorldOffset = Vector2.zero;
+
+    [Tooltip("Triche vue iso : décalage visuel pied de plante (Y− = vers le joueur / bas écran).")]
+    public Vector2 isoSpriteViewOffset = Vector2.zero;
+
+    /// <summary>
+    /// Offsets utilisés pour positionner le sprite (pivot Bottom). Par défaut = footprint entier.
+    /// </summary>
+    public Vector2Int[] GetSpritePlacementOffsets()
+    {
+        if (spritePlacementOffsets != null && spritePlacementOffsets.Length > 0)
+            return spritePlacementOffsets;
+
+        return footprint;
+    }
 
     /// <summary>Returns all absolute grid cells occupied by this plant given a placement origin.</summary>
     public IEnumerable<Vector2Int> GetOccupiedCells(Vector2Int origin)

@@ -1,5 +1,23 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-08 — Laitue atlas + ancrage iso (pause → Bezy)
+
+### Décision auteur
+- **Priorité suivante : Bezy** onglets HUD `[P0-TAB-SPRITES-001]` — tuning pied laitue iso **reporté**.
+- Footprint laitue **2×2 conservé** (4 cellules). Repère col/row documenté dans `Notes/Todo_project.md` § `[P0-FARM-ISO-SPRITE-ANCHOR-001]`.
+
+### Livré Cursor (session)
+- Atlas `AtlasLaitue.png` promu → `Sprites/Plantes/Laitue/` ; prompts Bezy `[BZ-FARM-LAITUE-ATLAS-001]`.
+- Ciblage iso : clic via bounds sprite + footprint ; socle vert à la sélection plante.
+- Preview pose : `spriteMature` ; hub iso `TryGetIsoFootprintHub` ; champs `isoSpriteViewOffset` / `spritePlacementOffsets` sur `PlantDefinition`.
+- **En attente playtest auteur :** aligner pied visuel (hub vs sommet SE `(1,0)`/`(1,1)`).
+
+### Prochaine session
+1. **Bezy** `[BZ-TAB-SPRITES-001]` — brief onglets → prompts → phases.
+2. Reprise `[P0-FARM-ISO-SPRITE-ANCHOR-001]` après Bezy.
+
+---
+
 ## 2026-09-08 — Direction art : iso 2:1 cartoon
 
 ### Décision auteur

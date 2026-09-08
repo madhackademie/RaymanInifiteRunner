@@ -144,7 +144,10 @@ public class BiofiltreManager : MonoBehaviour
             return;
 
         if (gridManager.IsCellFree(cell.GridCoordinates))
+        {
+            ClearPlantSelectionHighlight();
             TryOpenFarmSeedSelection(cell);
+        }
         else
             TryOpenPlantPopup(cell.GridCoordinates);
     }
@@ -163,6 +166,7 @@ public class BiofiltreManager : MonoBehaviour
     /// <summary>Cache le popup graines au démarrage du mode preview.</summary>
     internal void OnPlacementPreviewStarted()
     {
+        ClearPlantSelectionHighlight();
         HideFarmSeedSelectionPopup();
     }
 
@@ -198,7 +202,13 @@ public class BiofiltreManager : MonoBehaviour
             return;
         }
 
-        TryOpenFarmPlantHarvestPopup(interactor, plantGrow, holder != null ? holder.Definition : null);
+        PlantDefinition definition = holder != null ? holder.Definition : null;
+        if (definition != null &&
+            plantObj.TryGetComponent(out PlantPersistenceMarker marker))
+            visualizer.SetFootprintSelectionHighlight(definition, marker.Anchor);
+
+        if (!TryOpenFarmPlantHarvestPopup(interactor, plantGrow, definition))
+            ClearPlantSelectionHighlight();
     }
 
     private bool TryOpenFarmPlantHarvestPopup(
@@ -227,8 +237,16 @@ public class BiofiltreManager : MonoBehaviour
     /// <summary>Ferme le popup récolte (panneau + instance lazy host).</summary>
     public void HideFarmPlantHarvestPopup()
     {
+        ClearPlantSelectionHighlight();
+
         if (TryResolveHarvestPanelUI(out HarvestPanelUI ui))
             ui.Close();
+    }
+
+    /// <summary>Retire la surbrillance verte du socle plante sélectionnée.</summary>
+    public void ClearPlantSelectionHighlight()
+    {
+        visualizer?.ClearFootprintSelectionHighlight();
     }
 
     // ── Footprint query (called by SeedSelectionUI) ───────────────────────────
@@ -368,8 +386,7 @@ public class BiofiltreManager : MonoBehaviour
             }
         }
 
-        Vector2 footprintCenter = gridManager.GetFootprintWorldCenter(anchor, plantDefinition.footprint);
-        Vector2 spawnPosition   = footprintCenter + plantDefinition.spriteWorldOffset;
+        Vector2 spawnPosition = gridManager.GetPlantSpriteWorldPosition(anchor, plantDefinition);
         GameObject instance   = Instantiate(
             plantPrefab,
             spawnPosition,
@@ -670,6 +687,7 @@ public class BiofiltreManager : MonoBehaviour
         if (host != null)
             ui.InjectFarmPopupHost(host);
 
+        ui.InjectBiofiltreManager(this);
         cachedHarvestPanelUi = ui;
     }
 
