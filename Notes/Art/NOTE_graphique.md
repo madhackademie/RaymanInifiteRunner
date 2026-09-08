@@ -106,6 +106,7 @@ Brief laitue (7 stades, iso cartoon) : `Notes/Art/PROMPT_laitue_sprite_sheet_cro
 **Do**
 - Grille 2:1 dans le brief monde (arêtes 26,565°).
 - Un objet isolé, fond transparent, silhouette cartoon chunky.
+- **Alpha serré** : bords nets, pas de halo / glow / brouillard autour du sprite (perf mobile + overdraw).
 - Même ancrage / même losange que la grille pour tout ce qui se pose **sur le deck** du biofiltre.
 
 **Don’t**
@@ -113,3 +114,15 @@ Brief laitue (7 stades, iso cartoon) : `Notes/Art/PROMPT_laitue_sprite_sheet_cro
 - Mélanger canopée top-down et iso 3/4 dans une même sheet sans l’écrire.
 - Copier un champ de terre **à plat** (Township / Tribez / Hay Day).
 - Copier le thème zombie, le sol cyan Bikini Bottom, ou le cozy wood des icônes UI sur les props monde.
+- **Glow, fog, bloom, aura, soft haze** autour du sujet ; **grandes zones alpha** en dégradé sur les bords (anti-aliasing excessif).
+
+### Alpha / perf (décision auteur 2026-09-08)
+
+| Règle | Pourquoi |
+|--------|----------|
+| Silhouette **coupée nette** (1–2 px d’anti-alias max) | Moins d’overdraw que halo transparent large |
+| **Pas** d’ombre portée en dégradé transparent autour de la plante | Préférer ombre **dans** le dessin (couleur) ou VFX séparé |
+| Recadrer au **plus près** du sujet (Sprite Editor → Trim) | Moins de pixels alpha vides dans le mesh |
+| Import Unity : **Alpha Is Transparency** + mesh tight ; éviter **Generate Mip Maps** sur UI/plantes 2D si inutile | Perf fill-rate mobile |
+
+Post-prod auteur : Photopea / GIMP → **Matting** ou niveau alpha dur ; ou Unity **Sprite Editor** trim + éventuellement **Alpha cutoff** matériel si besoin.

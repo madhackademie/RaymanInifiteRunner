@@ -39,6 +39,7 @@ STYLE LOCK (strict):
 - Camera: 2:1 game isometric (diamond width = 2x height, edge angle 26.565 degrees from horizontal). NOT 30-degree architectural iso. NOT top-down canopy / bird's eye.
 - Optional light paper-crafted edges, but the look must stay cartoon painted, not cardboard diorama.
 - Transparent background ONLY (alpha PNG). No floor tile, no grid, no UI bubbles, no text, no characters unless asked.
+- ALPHA PERF (strict): hard clean silhouette edges. NO outer glow, NO fog, NO haze, NO bloom, NO soft aura, NO large soft transparent fringe around the subject. Minimal semi-transparent pixels — only 1-2px anti-alias at most. No soft drop-shadow on transparent background.
 
 SUBJECT:
 [VOTRE OBJET ICI — one object only]

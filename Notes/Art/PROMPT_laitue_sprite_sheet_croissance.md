@@ -18,7 +18,7 @@
 | **Reprendre l’espèce + progression** des sprites **runtime actuels** (tableau §3) | Copier le low-poly facetté ou le fond noir des anciens PNG |
 | Pose iso 3/4 sur **media hydro** (billes argile), deck IBC | Champ terre plat Township, sol cyan SpongeBob |
 | **Une** laitue par frame, footprint 2×2 | Bordure pierre, grille visible, UI |
-| Fond **transparent** (alpha) | Fond noir (`[P0-FARM-SPRITE-ALPHA-001]`) |
+| Fond **transparent** (alpha) | Fond noir · **glow / brouillard / halo** autour du sujet |
 
 ---
 
@@ -117,6 +117,7 @@ STYLE LOCK (strict):
 - NO zombies, NO gore, NO grim palette.
 - Each plant sits on a tiny mound of hydroponic clay pebbles (grow media on an IBC deck), NOT flat Township dirt at ground level.
 - Transparent background ONLY. NO black, NO white, NO floor tile, NO grid, NO text.
+- ALPHA PERF (strict): hard clean silhouette on every frame. NO outer glow, NO fog, NO haze, NO bloom, NO soft aura, NO mist around the lettuce. NO soft transparent drop shadow on the background. Minimal semi-transparent pixels — at most 1-2px anti-alias on leaf edges. Shade with opaque paint inside the sprite, not with transparent halos outside.
 
 SPRITE SHEET OUTPUT (strict):
 - Exactly 7 equal square frames, ONE horizontal row, left to right, 3584 x 512 total (512 per frame).
@@ -134,6 +135,12 @@ THE 7 FRAMES must match the attached runtime reference progression:
 
 Export one PNG sprite sheet, transparent background.
 ```
+
+### Post-prod Unity (après génération)
+
+1. **Sprite Editor** → **Trim** sur chaque slice (enlever marge alpha vide).
+2. Import : **Alpha Is Transparency** ON · **Generate Mip Maps** OFF (plantes monde).
+3. Si halo résiduel : Photopea → calque alpha durci, ou seuil alpha avant import.
 
 ---
 
