@@ -1,0 +1,442 @@
+fileFormatVersion: 2
+guid: 5a6a5c9c818c7d240ac1638b72d58af1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -769164047471653593
+    second: Laitue_Runtime_Ref_7stades_0
+  - first:
+      213: 3412951449415053036
+    second: Laitue_Runtime_Ref_7stades_1
+  - first:
+      213: -2029361928177741847
+    second: Laitue_Runtime_Ref_7stades_2
+  - first:
+      213: -5758104423220773488
+    second: Laitue_Runtime_Ref_7stades_3
+  - first:
+      213: 8352444494903344663
+    second: Laitue_Runtime_Ref_7stades_4
+  - first:
+      213: -6468422948199261914
+    second: Laitue_Runtime_Ref_7stades_5
+  - first:
+      213: -7296298360866222045
+    second: Laitue_Runtime_Ref_7stades_6
+  - first:
+      213: 5058168227790935428
+    second: Laitue_Runtime_Ref_7stades_7
+  - first:
+      213: 9113636705958469019
+    second: Laitue_Runtime_Ref_7stades_8
+  - first:
+      213: -6009669370253948852
+    second: Laitue_Runtime_Ref_7stades_9
+  - first:
+      213: -5983309673268079943
+    second: Laitue_Runtime_Ref_7stades_10
+  - first:
+      213: 1779349861551019131
+    second: Laitue_Runtime_Ref_7stades_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_0
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 39
+        width: 346
+        height: 432
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72d4370cf516355f0800000000000000
+      internalID: -769164047471653593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_1
+      rect:
+        serializedVersion: 2
+        x: 647
+        y: 39
+        width: 243
+        height: 432
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ceee90ab24d3d5f20800000000000000
+      internalID: 3412951449415053036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_2
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 39
+        width: 432
+        height: 309
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ef834e041246d3e0800000000000000
+      internalID: -2029361928177741847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_3
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 39
+        width: 432
+        height: 312
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09df15ae88a1710b0800000000000000
+      internalID: -5758104423220773488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_4
+      rect:
+        serializedVersion: 2
+        x: 2091
+        y: 39
+        width: 429
+        height: 353
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71e71e4d308d9e370800000000000000
+      internalID: 8352444494903344663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_5
+      rect:
+        serializedVersion: 2
+        x: 2600
+        y: 39
+        width: 432
+        height: 352
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 629199b899b8b36a0800000000000000
+      internalID: -6468422948199261914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_6
+      rect:
+        serializedVersion: 2
+        x: 3148
+        y: 67
+        width: 361
+        height: 404
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 320dd495c475eba90800000000000000
+      internalID: -7296298360866222045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_7
+      rect:
+        serializedVersion: 2
+        x: 3217
+        y: 63
+        width: 20
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48555af2439323640800000000000000
+      internalID: 5058168227790935428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_8
+      rect:
+        serializedVersion: 2
+        x: 3267
+        y: 57
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9d9d964c442a7e70800000000000000
+      internalID: 9113636705958469019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_9
+      rect:
+        serializedVersion: 2
+        x: 3331
+        y: 53
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c48c7706c8d599ca0800000000000000
+      internalID: -6009669370253948852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_10
+      rect:
+        serializedVersion: 2
+        x: 3238
+        y: 42
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b292b79d8307fca0800000000000000
+      internalID: -5983309673268079943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Laitue_Runtime_Ref_7stades_11
+      rect:
+        serializedVersion: 2
+        x: 3296
+        y: 39
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7493ec854581b810800000000000000
+      internalID: 1779349861551019131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Laitue_Runtime_Ref_7stades_0: -769164047471653593
+      Laitue_Runtime_Ref_7stades_1: 3412951449415053036
+      Laitue_Runtime_Ref_7stades_10: -5983309673268079943
+      Laitue_Runtime_Ref_7stades_11: 1779349861551019131
+      Laitue_Runtime_Ref_7stades_2: -2029361928177741847
+      Laitue_Runtime_Ref_7stades_3: -5758104423220773488
+      Laitue_Runtime_Ref_7stades_4: 8352444494903344663
+      Laitue_Runtime_Ref_7stades_5: -6468422948199261914
+      Laitue_Runtime_Ref_7stades_6: -7296298360866222045
+      Laitue_Runtime_Ref_7stades_7: 5058168227790935428
+      Laitue_Runtime_Ref_7stades_8: 9113636705958469019
+      Laitue_Runtime_Ref_7stades_9: -6009669370253948852
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
