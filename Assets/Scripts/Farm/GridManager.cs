@@ -361,8 +361,8 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Résout la cellule cliquée : priorité plante (sprite + footprint iso) puis sol.
-    /// Corrige le « clic à travers » quand le sprite déborde ou masque une autre tuile.
+    /// Résout la cellule cliquée : priorité plante (losanges footprint iso uniquement) puis sol.
+    /// La canopée hors footprint ne bloque pas le clic (plante derrière ou cellule voisine).
     /// </summary>
     public bool TryResolveClickTarget(Vector2 worldPosition, out Vector2Int cell)
     {
@@ -404,21 +404,13 @@ public class GridManager : MonoBehaviour
         drawOrder = int.MinValue;
         cell      = default;
 
-        bool spriteHit = false;
-        if (plant.TryGetComponent(out SpriteRenderer spriteRenderer) && spriteRenderer.sprite != null)
-        {
-            Bounds bounds = spriteRenderer.bounds;
-            Vector3 probe = new(world.x, world.y, bounds.center.z);
-            spriteHit = bounds.Contains(probe);
-        }
-
-        bool footprintHit = TryGetPlantFootprintHit(plant, world, out Vector2Int footprintCell);
-
-        if (!spriteHit && !footprintHit)
+        // Footprint losanges only — sprite bounds (canopée / alpha) must not steal clicks
+        // from neighbouring cells or plants behind.
+        if (!TryGetPlantFootprintHit(plant, world, out Vector2Int footprintCell))
             return false;
 
         drawOrder = ComputePlantDrawOrder(plant);
-        cell = footprintHit ? footprintCell : GetRepresentativePlantCell(plant);
+        cell      = footprintCell;
         return true;
     }
 
@@ -465,20 +457,6 @@ public class GridManager : MonoBehaviour
             maxOrder = Mathf.Max(maxOrder, GetCellDrawOrder(coords));
 
         return maxOrder;
-    }
-
-    private Vector2Int GetRepresentativePlantCell(GameObject plant)
-    {
-        if (plant.TryGetComponent(out PlantPersistenceMarker marker))
-            return marker.Anchor;
-
-        foreach (KeyValuePair<Vector2Int, GameObject> entry in _plantByCell)
-        {
-            if (entry.Value == plant)
-                return entry.Key;
-        }
-
-        return default;
     }
 
     private void CollectUniquePlants(List<GameObject> buffer)
