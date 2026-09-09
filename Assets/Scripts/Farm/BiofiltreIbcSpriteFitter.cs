@@ -33,9 +33,38 @@ public class BiofiltreIbcSpriteFitter : MonoBehaviour
 
     private GridManager gridManager;
 
+    private void Awake()
+    {
+        ResolveSpriteRendererReference();
+    }
+
     private void OnEnable()
     {
+        ResolveSpriteRendererReference();
         ApplySpriteAsset();
+    }
+
+    /// <summary>Applique art + deck UV depuis un layout partagé (binder).</summary>
+    public void ApplyBiofiltreLayout(BiofiltreLayoutDefinition layout)
+    {
+        if (layout == null)
+            return;
+
+        ibcSprite        = layout.ibcSprite;
+        deckNormalized   = layout.deckNormalized;
+        sortingOrder     = layout.ibcSortingOrder;
+        ResolveSpriteRendererReference();
+        ApplySpriteAsset();
+    }
+
+    private void ResolveSpriteRendererReference()
+    {
+        if (spriteRenderer != null)
+            return;
+
+        Transform ibcChild = transform.Find("IbcSprite");
+        if (ibcChild != null)
+            spriteRenderer = ibcChild.GetComponent<SpriteRenderer>();
     }
 
     private void ApplySpriteAsset()

@@ -2,9 +2,11 @@
 
 **Branche :** `main` (iso mergé ; ex-`feature/biofiltre-isometric`)  
 **Dernière mise à jour :** 2026-09-09  
-**Statut playtest grille :** `[P0-FARM-GRID-PLAY-001]` clos (ortho) — clics, pose, récolte, pause/recall OK  
-**Statut IBC visuel :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 — grille **carrée** sur `main`  
-**Statut iso :** `[P0-FARM-ISO-GRID-001]` — géométrie losange 2:1 + `IbcIso` câblé ; playtest alignement en attente
+**Layout data :** `BiofiltreLayoutDefinition` + `BiofiltreLayoutBinder`  
+**Prompt art deck :** `Notes/Art/PROMPT_ibc_deck_template.md`  
+**Statut playtest grille :** `[P0-FARM-GRID-PLAY-001]` clos (ortho)  
+**Statut IBC visuel :** calage manuel `Grid` + `IbcSprite` ; `FitToGrid` = éditeur only  
+**Statut iso :** `[P0-FARM-ISO-GRID-001]` — layout SO + playtest alignement en cours
 
 Ce document centralise **qui fait quoi**, **où brancher quoi dans l’Inspector**, et **l’ordre Bezy** pour ne pas reposer la question à chaque session.
 
@@ -101,9 +103,24 @@ Biofiltre                          ← racine
 | `itemDatabase` | `ItemDatabase` projet |
 | `plantingDirtBurstPrefab` | `Assets/Prefabs/World/VFX/PlantingDirtBurst.prefab` |
 
+### `BiofiltreLayoutDefinition` (une variante = un asset)
+
+Chemin type : `Assets/Data/Ferme/BiofiltreLayout_Standard10x10.asset`
+
+| Champ | Rôle |
+|-------|------|
+| `layoutId` | Id stable save / factory map |
+| `columns` / `rows` | Taille gameplay (grand bac = **plus** de cellules) |
+| `cellSize` | Taille cellule monde (**identique** entre variantes ; scale visuel = enfant `Grid`) |
+| `ibcSprite` | Cuve promue `Sprites/Farm/Biofiltre/` |
+| `deckNormalized` | UV billes — **mesurer par sprite** (prompt + checklist `PROMPT_ibc_deck_template.md`) |
+
+`BiofiltreLayoutBinder` sur le prefab applique le SO au `GridManager` + `BiofiltreIbcSpriteFitter` avant `Awake`.  
+Les transforms `Grid` / `IbcSprite` restent le calage visuel manuel par variante de prefab.
+
 ### `GridManager` (instance biofiltre type IBC)
 
-Valeurs typiques sur le prefab (à ne **pas** changer pour coller à l’art IBC) :
+Valeurs injectées par le layout SO (ou override Inspector si binder vide) :
 
 | Champ | Valeur |
 |-------|--------|

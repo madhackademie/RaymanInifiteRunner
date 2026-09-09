@@ -84,7 +84,8 @@ Convention d'IDs :
 
 **Ordre prochaine session :**
 
-1. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → validation prompts → **Bezy onglets** (priorité)
+1. [~] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Bezy onglets HUD — 3/4 livrés ; **TabVente** dernier prompt (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`)
+1b. [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold disparu en haut `NavigationHUD` après passes Bezy onglets — **corriger plus tard** (non bloquant TabVente)
 2. [ ] **[P0-FARM-ISO-FOOTPRINT-HIT-001]** Clic plante = losanges footprint seuls (`GridManager.TryScorePlantHit`, branche `fix/farm-iso-footprint-hit`)
 3. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` — playtest pose manuelle sprite/grille
 4. [ ] **[P0-FARM-ISO-SPRITE-ANCHOR-001]** Ancrage pied laitue iso 2×2 — **reporté après footprint hit** (voir § ci-dessous)
@@ -94,11 +95,26 @@ Convention d'IDs :
 8. [ ] Pose rows HUD (Prefab Mode) + playtest FirstLvl
 9. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
 10. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+11. [ ] **[P0-FARM-PLANT-SELECT-GLOW-001]** Glow jaune/blanc sélection plante (complète socle vert footprint)
+
+### ★ Feedback sélection plante — glow silhouette `[P0-FARM-PLANT-SELECT-GLOW-001]`
+
+> **Contexte (2026-09-09) :** clic gameplay = **losanges footprint** uniquement (`[P0-FARM-ISO-FOOTPRINT-HIT-001]`). La canopée ne capture plus le clic → le joueur doit **voir** quelle plante est ciblée.  
+> **Existant :** socle vert sur les 4 cellules (`BiofiltreGridVisualizer.SetFootprintSelectionHighlight`) — **à garder**.  
+> **Manque :** halo **jaune/blanc** sur le **pourtour du sprite** (silhouette), visible même si le clic était sur le footprint sous la canopée.
+
+| Partie | Agent | Détail |
+|--------|-------|--------|
+| Prefab `LaitueObj` : enfant `SelectionGlow` + `SpriteRenderer`(s) | **Bezy** `[BZ-FARM-PLANT-SELECT-GLOW-001]` | `Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md` Ph.1–3 |
+| `PlantSelectionHighlight.cs` + hook `BiofiltreManager` | **Cursor** | Show/hide à l’ouverture/fermeture popup récolte ; sync sprite stade `PlantGrow` |
+| Playtest | **Auteur** | Clic footprint → socle vert **+** glow ; fermer popup → tout off |
+
+**Ordre :** Cursor script + spec → Bezy prefab wiring → playtest. Pas de shader custom en P0 (duplicate sprite scale + tint suffit).
 
 ### ★ Reporté — ancrage sprite laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]`
 
 > Décision auteur **2026-09-08** : pause tuning pied plante — **priorité Bezy onglets** d’abord.  
-> Footprint logique **2×2 inchangé** (4 cellules). Code en place : hub iso, clic sprite, socle vert sélection, preview `spriteMature`.  
+> Footprint logique **2×2 inchangé** (4 cellules). Code : sommet sud footprint, clic losanges, socle vert sélection, preview `spriteMature`. Glow silhouette : `[P0-FARM-PLANT-SELECT-GLOW-001]`.  
 > Atlas : `Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png` · SO : `Assets/Data/Ferme/Laitue.asset` · prompts Bezy atlas : `Notes/Art/PROMPTS_Bezi_laitue_atlas.md`
 
 **Repère iso footprint** (offsets relatifs à l’ancre `(0,0)` — **pas de rotation** runtime) :
@@ -122,8 +138,8 @@ Convention d'IDs :
 
 | Point | Description | Réglage actuel |
 |-------|-------------|----------------|
-| **Hub** | Milieu centres `(0,0)` ↔ `(1,1)` — centre du losange 4 tuiles | `GridManager.TryGetIsoFootprintHub` |
-| **Sommet SE** | Coin partagé `(1,0)` / `(1,1)` (flèche rouge bas-droite) | `isoSpriteViewOffset` sur `Laitue.asset` ou mode code à ajouter |
+| **Sommet sud (avant)** | Cellule max `col+row` du footprint → sommet sud du losange | `GridManager.TryGetFootprintFrontSouthVertex` (**livré 2026-09-09**) |
+| **Micro-triche art** | Pivot sprite / espèce | `isoSpriteViewOffset` sur `PlantDefinition` si besoin |
 
 **Checklist reprise :**
 
@@ -499,7 +515,14 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 
 ### Navigation Scene/UI
 - [ ] [CT-NAV-001] Debug complet des flux `SceneNavigator.ShowScene` (transitions concurrentes, scènes orphelines, ordre d'activation).
-- [~] [CT-NAV-002] Finaliser hub `HomeScene` + retour gameplay (croix/exit) et aligner la doc.
+- [ ] **[CT-NAV-MAP-001]** Rework écran « Accueil » → **map principale des niveaux** (décision auteur **2026-09-09**) :
+  - Ce n’est **pas** un hub Accueil statique : c’est la **carte / map principale** où le joueur choisit un niveau.
+  - Le **1er niveau** (ex. FirstLvl) **remplace** le bouton « Commencer l’aventure » — le bouton devient une **image** cliquable (node niveau).
+  - Les **niveaux suivants** s’empilent **en dessous**, ajoutés **au fur et à mesure** de leur développement (scroll vertical ou liste extensible).
+  - **Figer / ancrer la croix** de sortie des niveaux (exit lvl) — position stable, indépendante du contenu scrollé.
+  - Cible probable : `HomeScene` / hub Aventures (`MapNodeButton` existant) — Bezy prefab + Cursor navigation ; art nodes niveau = Dump → promo auteur.
+  - Lié : `[CT-NAV-002]` (retour gameplay croix/exit).
+- [~] [CT-NAV-002] Finaliser hub `HomeScene` + retour gameplay (croix/exit) et aligner la doc — **fusionner avec** `[CT-NAV-MAP-001]`.
 - [~] [CT-NAV-003] Poursuivre la migration Inventaire/Market/HUD global vers le flux cible.
 - [ ] [CT-NAV-004] Trancher et documenter le mode de chargement final UI (persistant vs sync vs async/additive).
 
@@ -549,6 +572,19 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [BL-PROTO-004] Terminer le panel Options du menu principal.
 - [ ] [BL-PROTO-005] Maintenir à jour la carte des flux système (`Notes/Farm/SYSTEMES_carte_mentale.md`).
 - [ ] [BL-QUEST-DAILY-001] Ajouter une feature de quêtes quotidiennes (missions courtes) avec récompenses en ressources + points de compétences (design, logique runtime, reset journalier UTC, UI de suivi, persistance).
+
+### Navigation — hub « Plus » (features secondaires)
+
+> Décision auteur **2026-09-09** : **ne pas** empiler Quêtes, Atelier, Mail, Social, DIY… dans la barre du bas. **5ᵉ onglet « Plus »** → écran liste verticale (boutons taille standard, scroll) pour features à l’infini.
+
+- [ ] **[BL-UI-FEATURES-HUB-001]** Écran hub **Plus** : `ScreenId.FeaturesHub` (ou `MoreMenu`) via `UIManager` — **pas** une scène dédiée si le pattern Inventory/Shop suffit. **Spec :** `Notes/Ui/SPEC_features_hub_plus.md` (variantes A/B + checklist playtest mobile).
+  - **Barre nav stable :** Aventures · Inventaire · Shop · Vente · **Plus** (5 onglets max).
+  - **Contenu :** `ScrollView` + lignes bouton (icône ~64–96 px + label TMP) — une feature = une ligne, pas un onglet nav.
+  - **Data-driven (cible) :** entrées configurables (`featureId`, `ScreenId` cible, icône, prérequis déblocage) pour ajouter Mail / Social / DIY sans retoucher `NavigationHUD`.
+  - **V1 lignes :** Quêtes (`H4`), Atelier craft (`ScreenId.Craft`, spec `SPEC_craft_atelier_aquaponique.md`), placeholders Mail / Social (désactivés ou « bientôt »).
+  - **Art onglet Plus :** `H-nav-5` dans `Notes/Art/PROMPT_generation_icones.md` (grille / « … » cartoon, même brief 128²).
+  - **Bezy :** prefab `FeaturesHubScreen` (phases shell → lignes → wiring) ; **Cursor :** `ScreenId`, navigation depuis `NavigationHUD`, registre entrées.
+  - **Hors barre :** Multiverse / runner reste sur Aventures (hub jeu) — pas dans Plus sauf décision contraire.
 
 ### GDD / design
 - [ ] [BL-GDD-001] Esquisser le GDD MVP (concept, boucle, scope).

@@ -5,7 +5,7 @@
 **Captures auteur :** `Notes/References/images/` (veille only, **pas** runtime)
 
 Coller le **§ Prompt générique** pour tout asset monde (plante, bac, décor).  
-La laitue a son brief dédié : `PROMPT_laitue_sprite_sheet_croissance.md`.
+La laitue : `PROMPT_laitue_sprite_sheet_croissance.md` · IBC / deck : `PROMPT_ibc_deck_template.md`.
 
 ---
 

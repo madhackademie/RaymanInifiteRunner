@@ -46,14 +46,18 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private Image tabShopIcon;
     [SerializeField] private Image tabSaleChannelsIcon;
 
+    [Header("Tab Selected Frame (Bezy — cadre actif, pas de tint icône)")]
+    [SerializeField] private GameObject tabAventuresSelectedFrame;
+    [SerializeField] private GameObject tabInventaireSelectedFrame;
+    [SerializeField] private GameObject tabShopSelectedFrame;
+    [SerializeField] private GameObject tabSaleChannelsSelectedFrame;
+
     [Header("Exit Button")]
     [SerializeField] private Button exitButton;
 
-    [Header("Couleurs de tab")]
-    [SerializeField] private Color colorActive      = new Color(1f,    0.78f, 0.2f,  1f);
-    [SerializeField] private Color colorActiveShop  = new Color(0.2f,  0.6f,  1f,   1f);
-    [SerializeField] private Color colorActiveSaleChannels = new Color(0.35f, 0.78f, 0.42f, 1f);
-    [SerializeField] private Color colorInactive    = new Color(0.55f, 0.55f, 0.55f, 1f);
+    [Header("Tab icon fade (sprites full color)")]
+    [SerializeField] private float iconAlphaActive = 1f;
+    [SerializeField] private float iconAlphaInactive = 0.55f;
 
     private HudMode currentMode = HudMode.Hidden;
 
@@ -311,16 +315,23 @@ public class NavigationHUD : MonoBehaviour
 
     private void RefreshTabVisuals(Tab active)
     {
-        SetIconColor(tabAventuresIcon,     active == Tab.Aventures,     colorActive);
-        SetIconColor(tabInventaireIcon,    active == Tab.Inventaire,    colorActive);
-        SetIconColor(tabShopIcon,          active == Tab.Shop,          colorActiveShop);
-        SetIconColor(tabSaleChannelsIcon,  active == Tab.SaleChannels,  colorActiveSaleChannels);
+        ApplyTabVisual(tabAventuresIcon, tabAventuresSelectedFrame, active == Tab.Aventures);
+        ApplyTabVisual(tabInventaireIcon, tabInventaireSelectedFrame, active == Tab.Inventaire);
+        ApplyTabVisual(tabShopIcon, tabShopSelectedFrame, active == Tab.Shop);
+        ApplyTabVisual(tabSaleChannelsIcon, tabSaleChannelsSelectedFrame, active == Tab.SaleChannels);
     }
 
-    private void SetIconColor(Image icon, bool isActive, Color activeColor)
+    /// <summary>Actif = cadre visible + icône pleine opacité. Inactif = pas de cadre + léger fade (pas de tint couleur).</summary>
+    private void ApplyTabVisual(Image icon, GameObject selectedFrame, bool isActive)
     {
-        if (icon != null)
-            icon.color = isActive ? activeColor : colorInactive;
+        if (selectedFrame != null)
+            selectedFrame.SetActive(isActive);
+
+        if (icon == null)
+            return;
+
+        float alpha = isActive ? iconAlphaActive : iconAlphaInactive;
+        icon.color = new Color(1f, 1f, 1f, alpha);
     }
 
     // ── Enums ─────────────────────────────────────────────────────────────────

@@ -116,6 +116,23 @@ public class GridManager : MonoBehaviour
         GetOrCreateMapper(out _, out _).GetCellCorners(cell, corners);
     }
 
+    /// <summary>
+    /// Injecte colonnes / lignes / cellSize depuis un <see cref="BiofiltreLayoutDefinition"/>.
+    /// Appelé par <see cref="BiofiltreLayoutBinder"/> avant Awake.
+    /// </summary>
+    public void ApplyBiofiltreLayout(BiofiltreLayoutDefinition layout)
+    {
+        if (layout == null)
+            return;
+
+        useScriptableConfig     = false;
+        instanceColumns         = layout.columns;
+        instanceRows            = layout.rows;
+        instanceUniformCellSize = true;
+        instanceCellSize        = layout.cellSize;
+        coordinateMode          = layout.coordinateMode;
+    }
+
     private void Awake()
     {
         ResolveLayout(out _columns, out _rows, out _cellSizeWorld, out _worldOrigin);
@@ -295,56 +312,56 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Sommet central iso d'un footprint 2×2 standard ((0,0)…(1,1)) — point où les 4 losanges se rejoignent.
+    /// Sommet sud du losange de la cellule « avant » du footprint (max col+row).
+    /// Générique 1×1, 2×2, L, etc. Orthogonal : centre de la cellule avant.
     /// </summary>
-    public bool TryGetIsoFootprintHub(Vector2Int anchor, Vector2Int[] footprint, out Vector2 hub)
+    public bool TryGetFootprintFrontSouthVertex(Vector2Int anchor, Vector2Int[] footprint, out Vector2 southVertex)
     {
-        hub = default;
+        southVertex = default;
 
-        if (coordinateMode != GridCoordinateMode.Isometric || !IsStandard2x2Footprint(footprint))
+        if (footprint == null || footprint.Length == 0 || _coordinateMapper == null)
             return false;
 
-        Vector2 north = GridToWorldCenter(anchor);
-        Vector2 south = GridToWorldCenter(anchor + new Vector2Int(1, 1));
-        hub = (north + south) * 0.5f;
+        Vector2Int frontOffset = footprint[0];
+        int maxDepth = frontOffset.x + frontOffset.y;
+        for (int i = 1; i < footprint.Length; i++)
+        {
+            int depth = footprint[i].x + footprint[i].y;
+            if (depth <= maxDepth)
+                continue;
+
+            maxDepth    = depth;
+            frontOffset = footprint[i];
+        }
+
+        Vector2Int frontCell = anchor + frontOffset;
+        if (!IsInBounds(frontCell))
+            return false;
+
+        if (coordinateMode == GridCoordinateMode.Isometric)
+        {
+            GetCellWorldCorners(frontCell, CellCornerBuffer);
+            southVertex = CellCornerBuffer[2];
+            return true;
+        }
+
+        southVertex = GridToWorldCenter(frontCell);
         return true;
     }
 
     /// <summary>
-    /// Position monde du pivot sprite (hub iso 2×2 si applicable, sinon centre footprint).
+    /// Position monde du pivot sprite (sommet sud cellule avant, sinon centre footprint).
     /// </summary>
     public Vector2 GetPlantSpriteWorldPosition(Vector2Int anchor, PlantDefinition plant)
     {
         if (plant == null)
             return GridToWorldCenter(anchor);
 
-        Vector2 basePos = TryGetIsoFootprintHub(anchor, plant.footprint, out Vector2 hub)
-            ? hub
+        Vector2 basePos = TryGetFootprintFrontSouthVertex(anchor, plant.footprint, out Vector2 southVertex)
+            ? southVertex
             : GetFootprintWorldCenter(anchor, plant.GetSpritePlacementOffsets());
 
         return basePos + plant.spriteWorldOffset + plant.isoSpriteViewOffset;
-    }
-
-    private static bool IsStandard2x2Footprint(Vector2Int[] footprint)
-    {
-        if (footprint == null || footprint.Length != 4)
-            return false;
-
-        return ContainsFootprintOffset(footprint, Vector2Int.zero) &&
-               ContainsFootprintOffset(footprint, new Vector2Int(1, 0)) &&
-               ContainsFootprintOffset(footprint, new Vector2Int(0, 1)) &&
-               ContainsFootprintOffset(footprint, new Vector2Int(1, 1));
-    }
-
-    private static bool ContainsFootprintOffset(Vector2Int[] footprint, Vector2Int offset)
-    {
-        for (int i = 0; i < footprint.Length; i++)
-        {
-            if (footprint[i] == offset)
-                return true;
-        }
-
-        return false;
     }
 
     /// <summary>

@@ -11,10 +11,11 @@ public class BiofiltreIbcSpriteFitterEditor : Editor
     {
         DrawDefaultInspector();
         EditorGUILayout.HelpBox(
-            "Sprite : enfant IbcSprite — Move / Rotate / Scale.\n" +
+            "Layout : BiofiltreLayoutDefinition (colonnes, cellSize, ibcSprite, deck UV).\n" +
+            "Sprite : enfant IbcSprite — Move / Rotate / Scale (calage visuel manuel).\n" +
             "Grille : enfant Grid — Move / Scale (contraindre les proportions).\n" +
-            "Iso 2:1 = forme des cellules, pas un auto-calage sur la cuve.\n" +
-            "Le Play ne recale plus sprite ni grille.",
+            "Iso : Fit once = point de départ AABB, pas fiable seul — playtest + calage main.\n" +
+            "Prompt art deck : Notes/Art/PROMPT_ibc_deck_template.md",
             MessageType.Info);
 
         if (GUILayout.Button("Fit sprite to grid (once)"))

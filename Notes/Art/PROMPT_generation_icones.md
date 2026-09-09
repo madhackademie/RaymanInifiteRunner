@@ -38,6 +38,7 @@ Le sous-dossier Dump annonce déjà la cible. Promo = copier vers le chemin `Spr
 | `…/Dump/Ui/Quests/` | `Assets/Art/Sprites/UI/Quests/` |
 | `…/Dump/Ui/Dashboard/` | `Assets/Art/Sprites/UI/Dashboard/` |
 | `…/Dump/Ui/Nav/` | `Assets/Art/Sprites/UI/` |
+| `…/Dump/Ui/Nav/Tabs/` | `Assets/Art/Sprites/UI/Nav/Tabs/` |
 | `…/Dump/Ui/` (nav générique) | `Assets/Art/Sprites/UI/` |
 | `…/Dump/Plantes/<Nom>/` | `Assets/Art/Sprites/Plantes/<Nom>/` |
 | `…/Dump/ElementProd/Biofiltre/` | `Assets/Art/Sprites/Farm/Biofiltre/` |
@@ -241,6 +242,103 @@ Keep the wooden rustic texture on the basket and as a cozy farm-game finish on t
 
 Sortie : `Dump/Ui/Nav/Icone_OngletMultiverse_YYYYMMDD.png`.
 
+### Vague H-nav — variantes onglets barre `NavigationHUD` (128², lisibilité)
+
+**Contexte (2026-09-09) :** les PNG actuels (`IconePlay`, `IconeInventaire`, `IconeMarket`, `GoldBill`) sont des **visuels détaillés** (~1000+ px, marges transparentes, ratios variés). En barre nav (**4 onglets × ~¼ écran × 120 px haut**), ils paraissent **petits / illisibles** même avec le layout Bezy correct.
+
+**Ce n’est pas le prompt §1 (bois rustique).** Reprendre le **style cartoon iso / diorama** des refs déjà en jeu, mais **simplifié pour bouton**.
+
+| Règle | Valeur |
+|-------|--------|
+| Canvas export | **128×128 px** carré (ou 192×192 si tu préfères, puis downscale) |
+| Sujet dans le cadre | **~85–90 %** de la hauteur/largeur utile, centré |
+| Fond | **Blanc** (détourage import Unity) |
+| Lisibilité | Formes **grosses**, peu de micro-détail, lisible à **~80 px** à l’écran |
+| Poids visuel | Les **4** icônes doivent avoir la **même taille perçue** (pas un billet minuscule à côté d’une serre géante) |
+| Ratio | Composition **carrée** — surtout **Vente** (billet en diagonale ou pile compacte, pas bandeau paysage) |
+| Wiring | Après promo → remplacer le sprite sur `Tab*/Icon` dans `NavigationHUD.unity` (Bezy ou auteur) |
+
+**Réfs visuelles (joindre à ChatGPT / générateur) :**
+
+| Onglet | Réf actuelle (ne pas recopier 1:1 — simplifier) |
+|--------|--------------------------------------------------|
+| Aventures | `Assets/Art/Sprites/UI/Inventory/IconePlay.png` |
+| Inventaire | `Assets/Art/Sprites/UI/Inventory/IconeInventaire.png` |
+| Shop | `Assets/Art/Sprites/UI/Inventory/IconeMarket.png` |
+| Vente | `Assets/Art/Sprites/UI/Currency/GoldBill.png` ou Dump `Ui/billet-poulpe-lowpoly.png` |
+
+**Import Unity (après promo) :** Sprite Mode Single · **Trim** transparent · PPU **100** · `Alpha Is Transparency` ON.
+
+| # | Onglet | Fichier Dump | Promo Sprites | Statut | Remplace sur |
+|---|--------|--------------|---------------|--------|--------------|
+| H-nav-1 | Aventures (Play / hub) | `Dump/Ui/Nav/Tabs/IconeTab_Aventures_128.png` | `Sprites/UI/Nav/Tabs/` | à générer | `TabAventures/Icon` |
+| H-nav-2 | Inventaire | `Dump/Ui/Nav/Tabs/IconeTab_Inventaire_128.png` | idem | à générer | `TabInventaire/Icon` |
+| H-nav-3 | Shop | `Dump/Ui/Nav/Tabs/IconeTab_Shop_128.png` | idem | à générer | `TabShop/Icon` |
+| H-nav-4 | Vente | `Dump/Ui/Nav/Tabs/IconeTab_Vente_128.png` | idem | à générer | `TabVente/Icon` |
+| H-nav-5 | **Plus** (hub features) | `Dump/Ui/Nav/Tabs/IconeTab_Plus_128.png` | idem | à générer | `TabPlus/Icon` (futur 5ᵉ onglet) |
+
+**Cible nav (2026-09-09) :** barre **5 onglets** fixes (4 cœur + Plus). Quêtes, Atelier, Mail, Social, DIY = **lignes** dans l’écran Plus (`[BL-UI-FEATURES-HUB-001]`), pas des onglets supplémentaires.
+
+**Prompt commun (préfixe — coller avant chaque variante) :**
+
+```
+Mobile game NAVIGATION TAB icon, casual cartoon style, vibrant colors, thick outlines, smooth shading, cozy aquaponic farm game. Square composition 128x128 pixels, subject centered, fills 85-90% of the frame, minimal empty margins, NO text, NO UI chrome, white background only. Simplify shapes for readability at 80px on screen — same visual weight as sibling tab icons. Do not add wooden rustic texture unless it is already on the reference object.
+```
+
+#### H-nav-1 — Aventures (serre / hub)
+
+Joindre `IconePlay.png`. Puis :
+
+```
+[PREFIX H-nav commun ci-dessus]
+
+Redraw a SIMPLIFIED version of the attached greenhouse geodesic dome icon: glass dome, plants inside, small blue base, tiny stairs. Keep the same identity and colors but fewer tiny details, bolder silhouette, centered, square crop, fills almost the entire 128x128 frame.
+```
+
+#### H-nav-2 — Inventaire (caisse)
+
+Joindre `IconeInventaire.png`. Puis :
+
+```
+[PREFIX H-nav commun ci-dessus]
+
+Redraw a SIMPLIFIED wooden crate icon like the reference: fish, carrot, lettuce, tools visible but chunky not tiny. Crate logo with fish+leaves on the side. Centered, square, 85-90% frame fill, readable at small size.
+```
+
+#### H-nav-3 — Shop (étal)
+
+Joindre `IconeMarket.png`. Puis :
+
+```
+[PREFIX H-nav commun ci-dessus]
+
+Redraw a SIMPLIFIED market stall icon like the reference: striped awning, shelves with seed packets and bottles, gold fish coin sign on top. Centered square composition, bold shapes, 85-90% frame fill, no wide empty sides.
+```
+
+#### H-nav-4 — Vente (billet)
+
+Joindre `GoldBill.png` ou `billet-poulpe-lowpoly.png`. Puis :
+
+```
+[PREFIX H-nav commun ci-dessus]
+
+Redraw a SIMPLIFIED banknote stack icon for a SALE tab: cute octopus face and cabbage head on the bill like the reference, held by a paper band. IMPORTANT: square composition — stack slightly rotated or compact pile so it fills 85-90% of a 128x128 frame (NOT a wide horizontal banner). Same visual size as the other three tab icons.
+```
+
+#### H-nav-5 — Plus (hub features)
+
+Pas de réf obligatoire (ou joindre une icône « menu » existante du projet). Puis :
+
+```
+[PREFIX H-nav commun ci-dessus]
+
+A simple "more features" navigation tab icon: a 2x2 grid of four rounded squares OR three horizontal dots inside a circle, cartoon style, bold thick outlines, same visual weight as the other tab icons. Centered, fills 85-90% of 128x128 frame. NO text.
+```
+
+**Après validation :** promo → Trim → remplacer sprite sur les 4 `Icon` (mini prompt Bezy ou auteur Inspector). Doc wiring : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`.
+
+**Nb d’onglets :** avec **4 onglets** la largeur cellule ≈ 25 % écran ; **5+ onglets** = icônes plus petites — prévoir regen ou barre plus haute (`NavBarContainer` 120→128 px).
+
 ### Vague W — monde (même liste, autre brief visuel)
 
 Même fichier, **pas** le prompt icône §1 par défaut. Détail pose plante : `Notes/Farm/WORKFLOW_ajouter_nouvelle_plante.md`. IBC : `Notes/Farm/CABLAGE_biofiltre_ibc_grille_bezi.md`.
@@ -284,6 +382,7 @@ Transparent or white background, same cartoon farm style, thick outlines. Output
 
 Ordre immédiat :
 
+0. **H-nav-1 → H-nav-4** — variantes onglets `NavigationHUD` 128² (après playtest layout Bezy)  
 1. A1 — graines laitue  
 2. A2 — laitue récoltée  
 3. A3 — graines tomate  

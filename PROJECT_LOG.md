@@ -1,5 +1,29 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-09 — Todo map principale niveaux (rework Accueil)
+
+### Décision auteur
+- L’écran actuel « ACCUEIL » n’est **pas** un vrai accueil : c’est la **map principale** de tous les niveaux.
+- Le bouton « Commencer l’aventure » sera remplacé par une **image** représentant le **1er niveau** ; les autres niveaux s’ajoutent **en dessous** au fil du développement.
+- **Figer la croix** de sortie des niveaux (exit lvl) — ancrage UI stable.
+
+### IDs
+- `[CT-NAV-MAP-001]` (lié `[CT-NAV-002]`)
+
+---
+
+## 2026-09-09 — Todo glow sélection plante (footprint + silhouette)
+
+### Décision auteur
+- Clic footprint seul → besoin feedback visuel **sur la plante** (glow jaune/blanc), en plus du socle vert existant.
+- **Bezy** : prefab `LaitueObj` — enfant `SelectionGlow` (`Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md`).
+- **Cursor** : `PlantSelectionHighlight.cs` + `BiofiltreManager` (à faire).
+
+### IDs
+- `[P0-FARM-PLANT-SELECT-GLOW-001]` · `[BZ-FARM-PLANT-SELECT-GLOW-001]`
+
+---
+
 ## 2026-09-09 — Docs : branche iso mergée sur `main`
 
 ### Contexte
