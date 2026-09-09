@@ -1,7 +1,7 @@
 # le protocole d'ouverture et fermeture du fichier IA/Github
 
 ## --1--
-Mise a jour github **avant tout travail** (gate d'**ouverture de session**, pas a chaque chat Cursor — tampon `.cursor/session_pull_ok`).
+Mise a jour github **avant tout travail** (gate d'**ouverture de session**, pas a chaque chat Cursor — tampon `.cursor/session_pull_ok`). Premier message : lire le tampon et comparer `opened_at` à **Today**. `open` ≠ skip. Lecture seule **aussi** gated. Détail : `.cursor/rules/session_git_sync.mdc`.
 
 L'auteur execute (l'assistant colle la commande, ne la lance pas) :
 

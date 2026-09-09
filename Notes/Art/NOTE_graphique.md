@@ -1,7 +1,7 @@
 # Note graphique — direction art monde
 
 **Création :** 2026-09-08  
-**Branche :** `feature/biofiltre-isometric`  
+**Branche :** `main` (iso 2:1 mergé)  
 **IDs :** `[BL-ART-003]` (amorcé) · grille `[P0-FARM-ISO-GRID-001]`  
 **Backlog assets :** `Notes/Art/PROMPT_generation_icones.md`  
 **Jeux de ref :** `Notes/References/REFERENCES_jeux_inspiration.md` § **F**

@@ -1,5 +1,5 @@
 ---
-description: Ouverture de session — pull auteur avant tout prompt (tous types)
+description: Premier message = Read session_pull_ok + comparer opened_at à Today. open ≠ skip. Lecture/question aussi. Zombie autre jour = gate.
 alwaysApply: true
 ---
 
@@ -7,15 +7,27 @@ alwaysApply: true
 
 Gate **par session de travail**, pas par chat Cursor, **pas par jour calendaire**.
 
-Une **session** = de « pull ok » jusqu’à fermeture explicite. Plusieurs chats **dans la même session** ne re-bloquent pas. Plusieurs sessions **le même jour** (fixe / portable / téléphone, pause, 2e bloc) = **un pull par session**.
+Une **session** = de « pull ok » jusqu’à fermeture explicite. Plusieurs chats **dans la même session** (tampon `open` **et** `opened_at` = aujourd’hui) ne re-bloquent pas. Plusieurs sessions **le même jour** = **un pull par session**.
 
 Même moment que le rappel crédits Bezy (reset le **30**).
 
-Tampon **local machine** (gitignored, ne traverse pas Git ni les autres PC) : `.cursor/session_pull_ok`
+Tampon **local machine** (gitignored) : `.cursor/session_pull_ok`
 
-## 0) Premier message d’un chat — lire le tampon, puis le type de demande
+## 0) Premier message — ACTION 1, avant tout le reste
 
-Lire `.cursor/session_pull_ok` **avant** de coller la commande pull.
+**Avant** toute réponse métier, tout autre outil, toute lecture de `Todo` / journal / code :
+
+1. `Read` `.cursor/session_pull_ok` (fichier absent = gate).
+2. Prendre la **date calendaire** de `opened_at` (`YYYY-MM-DD` seulement).
+3. La comparer à **Today** dans `<user_info>` (pas « encore ouvert hier », pas l’heure).
+4. Appliquer le tableau. Si gate → coller le script §1 + 1 ligne crédits Bezy + **STOP**.
+
+### Interdit (causes des threads ratés)
+
+- Traiter `status: open` comme skip **sans** comparer la date à Today.
+- Reporter le gate parce que la demande est **lecture seule**, question, « où en est-on », exploration code.
+- Lire d’autres fichiers / répondre métier / écrire, **puis** demander le pull.
+- Exception « seulement s’il y a une écriture » : **elle n’existe pas.** Lecture et écriture sont gated pareil. Écrire sans pull ok est **aussi** interdit.
 
 ### Toujours gate (nouvelle session), même si le tampon est `open`
 
@@ -25,13 +37,13 @@ L’auteur dit un de : **tâche du jour** · **on reprend** · **nouvelle sessio
 
 | Tampon | Action |
 |--------|--------|
-| `status: open` et `opened_at` = **aujourd’hui** | **Même session** (nouveau chat) → ne pas re-bloquer |
-| `status: closed` ou fichier absent | **Nouvelle session** → gate §1–2 |
-| `status: open` mais `opened_at` **≠ aujourd’hui** | **Garde-fou** (journal oublié / session zombie) → gate §1–2 |
+| `status: open` **et** date `opened_at` = **Today** | Même session → ne pas re-bloquer |
+| `status: closed` ou fichier absent | Nouvelle session → gate §1–2 |
+| `status: open` **et** date `opened_at` **≠ Today** | **Zombie** → gate §1–2 |
 
-Le garde-fou « date » n’autorise **pas** un seul pull/jour : il ne rattrape que les tampons restés `open` après minuit. Deux sessions le **même** jour passent par `closed` ou par les mots-clés ci-dessus.
+`open` d’un autre jour n’est **pas** une session en cours. C’est un journal oublié.
 
-Ne pas relancer le gate en **milieu** de conversation déjà synchro.
+Ne pas relancer le gate **en milieu** d’un chat déjà synchro (tampon écrit dans **ce** chat après « pull ok »).
 
 ## 1) Rappeler (auteur execute, pas l’assistant)
 
@@ -49,7 +61,8 @@ Détail : `GIT_HELPER.md` § --1--, script `scripts/session-git-sync.ps1`.
 
 Tant que l’auteur n’a pas confirmé (`pull ok`, `c’est fait`, sortie du script, ou skip explicite `déjà à jour` / `pas de pull`) :
 
-- **Aucun prompt** : ni Bezy, ni agent VM, ni travail Cursor, ni réponse métier à la demande.
+- **Aucun prompt** : ni Bezy, ni agent VM, ni travail Cursor, ni réponse métier.
+- **Aucun autre outil** que le `Read` du tampon.
 - OK uniquement : 1 ligne crédits Bezy + coller la commande + **STOP**.
 
 Ne pas lancer `git pull` / le script à la place de l’auteur.
@@ -64,6 +77,8 @@ opened_at: YYYY-MM-DDTHH:MM
 confirmed_by: auteur
 note: pull ok — session en cours
 ```
+
+`opened_at` = **maintenant** (date d’aujourd’hui), pas l’ancienne date zombie.
 
 ## 4) Fermer la session
 

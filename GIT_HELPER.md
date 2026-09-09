@@ -205,7 +205,7 @@ Si une branche locale affiche `[origin/...: gone]` : la branche distante n'exist
 
 ## --1--A CHAQUE NOUVELLE SESSION CONTROL DU COMMIT
 
-**Gate d'ouverture de session** (pas chaque chat, pas un seul pull/jour) : tampon `.cursor/session_pull_ok`. Skip seulement si la **meme session** est encore `open`. Nouvelle session le meme jour (journal, autre machine, « on reprend ») = pull. Garde-fou : tampon `open` d'un autre jour = zombie. L'auteur lance le script ; l'assistant **attend** « pull ok » **avant tout prompt**.
+**Gate d'ouverture de session** (pas chaque chat, pas un seul pull/jour) : tampon `.cursor/session_pull_ok`. Premier message = lire le tampon, comparer la date `opened_at` à **Today**. Skip seulement si `open` **et** date = aujourd'hui. `open` d'un autre jour = zombie → pull. **Pas d'exception lecture seule.** L'auteur lance le script ; l'assistant **attend** « pull ok » **avant tout prompt** (y compris question / lecture docs). Détail : `.cursor/rules/session_git_sync.mdc`.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1

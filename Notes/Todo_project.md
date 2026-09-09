@@ -46,9 +46,9 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/biofiltre-isometric`** (2026-09-05, depuis `main`).  
-> **Chantier branche :** `[P0-FARM-ISO-GRID-001]` géométrie grille losange 2:1 — art IBC losange **en attente auteur**.  
-> **Ouverture session :** pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt**. Tampon `.cursor/session_pull_ok` : les chats **de la même session** ne re-bloquent pas. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
+> Branche courante : **`main`** — chantier iso 2:1 **mergé** (ex-`feature/biofiltre-isometric`, branche supprimée).  
+> **Chantier actif :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint seul (branche `fix/farm-iso-footprint-hit` à créer).  
+> **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
 > **Priorité immédiate (2026-09-08) :** **Bezy** — `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` onglets HUD (brief auteur → prompts → phases).  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
@@ -58,15 +58,15 @@ Convention d'IDs :
 
 ### ★ Priorité branche — grille isométrique 2:1 `[P0-FARM-ISO-GRID-001]`
 
-> Décision auteur **2026-09-05** : activer la **géométrie iso** sur `feature/biofiltre-isometric` **avant** l’art.  
+> Décision auteur **2026-09-05** : activer la **géométrie iso** avant l’art — **livré sur `main`** (commits `4649dc3`, `9204a72`).  
 > `Biofiltre.prefab` : `coordinateMode = Isometric`. Cellules losanges, clics via mapper existant.  
 > **Ne pas changer** cols / rows / cell size pour coller à l’image.  
 > Art : Dump `IbcIso.png` → promo `Sprites/Farm/Biofiltre/IbcIso.png` (2026-09-05). `deckNormalized` AABB billes à affiner au playtest.
 
-### ★ Priorité IBC ortho (contexte `main`) — grille dans cuve
+### ★ Historique IBC ortho — grille carrée (avant merge iso)
 
-> Décision auteur **2026-09-02** : grille **carrée** (`coordinateMode = Orthogonal`) sur `main` — le sprite `Cuve_IBC` a un dessus carré ; playtest deck ↔ grille **OK**.  
-> Iso 2:1 : chantier **`feature/biofiltre-isometric`** (`[P0-FARM-ISO-GRID-001]`), plus reportée.  
+> Décision auteur **2026-09-02** : grille **carrée** (`coordinateMode = Orthogonal`) — sprite `Cuve_IBC`, playtest deck ↔ grille **OK** (`[P0-FARM-IBC-GRID-001]` clos).  
+> **Runtime actuel `main` :** `Biofiltre.prefab` en **Isometric** 2:1 + `IbcIso.png` (ortho conservé en référence historique / Dump).  
 > **Contrainte (source de vérité = grille) :** le sprite se redimensionne pour **accepter** la grille. **Pas l’inverse**.  
 > Réf art runtime : `Assets/Art/Sprites/Farm/Biofiltre/Cuve_IBC.png` (promo Dump `Cuve_IBC_deck_carre_plus_face.png`, 2026-08-31).  
 > Réf Dump : `Assets/Art/Assets Store Dump/ElementProd/Biofiltre/Cuve_IBC_deck_carre_plus_face.png`  
@@ -85,14 +85,15 @@ Convention d'IDs :
 **Ordre prochaine session :**
 
 1. [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Brief visuel auteur → validation prompts → **Bezy onglets** (priorité)
-2. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` — playtest pose manuelle sprite/grille
-3. [ ] **[P0-FARM-ISO-SPRITE-ANCHOR-001]** Ancrage pied laitue iso 2×2 — **reporté après Bezy** (voir § ci-dessous)
-4. [x] **[P0-FARM-BIOHUD-NEST-001]** HUD nested dans `Biofiltre.prefab` (Cursor 2026-09-07)
-5. [x] **[BZ-FARM-BIOHUD-ISO-001]** Bezy : ligne HUD haut (primary+★) iso 2:1 — Ph.1–3 livrées 2026-09-06
-6. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — playtest OK 2026-09-02
-7. [ ] Pose rows HUD (Prefab Mode) + playtest FirstLvl
-8. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
-9. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
+2. [ ] **[P0-FARM-ISO-FOOTPRINT-HIT-001]** Clic plante = losanges footprint seuls (`GridManager.TryScorePlantHit`, branche `fix/farm-iso-footprint-hit`)
+3. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` — playtest pose manuelle sprite/grille
+4. [ ] **[P0-FARM-ISO-SPRITE-ANCHOR-001]** Ancrage pied laitue iso 2×2 — **reporté après footprint hit** (voir § ci-dessous)
+5. [x] **[P0-FARM-BIOHUD-NEST-001]** HUD nested dans `Biofiltre.prefab` (Cursor 2026-09-07)
+6. [x] **[BZ-FARM-BIOHUD-ISO-001]** Bezy : ligne HUD haut (primary+★) iso 2:1 — Ph.1–3 livrées 2026-09-06
+7. [x] **[P0-FARM-IBC-GRID-001]** `BiofiltreIbcSpriteFitter` + `ibcSprite` = `Cuve_IBC` — playtest OK 2026-09-02
+8. [ ] Pose rows HUD (Prefab Mode) + playtest FirstLvl
+9. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
+10. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
 
 ### ★ Reporté — ancrage sprite laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]`
 

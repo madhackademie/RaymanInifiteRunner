@@ -1,7 +1,7 @@
 # Prompts Bezy — atlas laitue → `Laitue.asset` `[BZ-FARM-LAITUE-ATLAS-001]`
 
 **Statut :** prêt à lancer  
-**Branche :** `feature/biofiltre-isometric`  
+**Branche :** `main` (ex-`feature/biofiltre-isometric`)  
 **Hors skill UI** : import texture + wiring `ScriptableObject` (pas de prefab).
 
 **Atlas (promu auteur) :** `Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png`  

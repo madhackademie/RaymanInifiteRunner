@@ -1,7 +1,7 @@
 # Câblage biofiltre — grille, cuve IBC, HUD Bezy
 
-**Branche :** `feature/biofiltre-isometric`  
-**Dernière mise à jour :** 2026-09-05  
+**Branche :** `main` (iso mergé ; ex-`feature/biofiltre-isometric`)  
+**Dernière mise à jour :** 2026-09-09  
 **Statut playtest grille :** `[P0-FARM-GRID-PLAY-001]` clos (ortho) — clics, pose, récolte, pause/recall OK  
 **Statut IBC visuel :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 — grille **carrée** sur `main`  
 **Statut iso :** `[P0-FARM-ISO-GRID-001]` — géométrie losange 2:1 + `IbcIso` câblé ; playtest alignement en attente
@@ -111,7 +111,7 @@ Valeurs typiques sur le prefab (à ne **pas** changer pour coller à l’art IBC
 | `instanceColumns` / `instanceRows` | ex. `10` × `10` |
 | `instanceCellSize` | FirstLvl override **`0.55`** (2026-09-05, agrandir iso) — prefab défaut `1` |
 | `originFromTransform` | `true` — origine = position du transform biofiltre |
-| `coordinateMode` | **`Isometric`** (losanges 2:1) — activé 2026-09-05 sur `feature/biofiltre-isometric`. `main` reste Orthogonal. |
+| `coordinateMode` | **`Isometric`** (losanges 2:1) — sur `main` depuis merge iso 2026-09-05. Ortho historique : `Cuve_IBC` / Dump carré. |
 
 **Iso 2:1 :** si taille de cellule uniforme, `GridManager` applique `hauteur = largeur × 0.5` (losange jeu classique). Ne pas changer `Columns` / `Rows` / `CellSize` pour coller à l’art.
 
@@ -182,7 +182,7 @@ Ortho historique (`Cuve_IBC_deck_carre_plus_face.png`) : `Rect(0.0266, 0.4483, 0
 
 ### Procédure de câblage (auteur Unity)
 
-1. **Promouvoir l’art** (fait 2026-09-05 sur `feature/biofiltre-isometric`) :
+1. **Promouvoir l’art** (fait 2026-09-05, mergé sur `main`) :
    - Source Dump : `IbcIso.png` (reste dans Dump)
    - Runtime : `Assets/Art/Sprites/Farm/Biofiltre/IbcIso.png`
    - **Ne pas** référencer le Dump depuis le prefab.

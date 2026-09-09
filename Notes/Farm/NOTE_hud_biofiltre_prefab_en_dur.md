@@ -1,7 +1,7 @@
 # HUD biofiltre — prefab en dur, pas de moule unique
 
 **Date :** 2026-09-07  
-**Branche :** `feature/biofiltre-isometric`
+**Branche :** `main` (iso mergé)
 
 ---
 

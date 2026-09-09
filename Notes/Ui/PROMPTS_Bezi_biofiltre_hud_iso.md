@@ -2,7 +2,7 @@
 
 **Skill :** `/prefab-ui-3phases` — `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`  
 **Prefab :** `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab`  
-**Branche :** `feature/biofiltre-isometric`  
+**Branche :** `main` (livré, ex-`feature/biofiltre-isometric`)  
 **Succès Bezy :** `Save. List what changed. STOP.` — **pas** de Simulate / Play Mode.
 
 La rangée **secondaire** (5 cadenas bleus, face cuve) **ne change pas**.  

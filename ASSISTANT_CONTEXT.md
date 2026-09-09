@@ -1,7 +1,7 @@
 ## Assistant Context — RaymanInifiteRunner
 
 ### Rappel Bezy — crédits + skill prod (chaque session)
-- **Ouverture de session (pas chaque chat, pas un pull max/jour) :** tampon `.cursor/session_pull_ok`. Nouvelle session = absent / closed / autre machine / « on reprend » / tâche du jour → pull (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` puis « pull ok »). Garde-fou : tampon `open` d’un autre jour = zombie. Règle : `.cursor/rules/session_git_sync.mdc`.
+- **Ouverture de session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Zombie / closed / absent / « on reprend » / tâche du jour → pull (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` puis « pull ok »). **Pas d’exception lecture seule.** Règle : `.cursor/rules/session_git_sync.mdc`.
 - Les **crédits Bezy se réinitialisent en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour du mois si ≠ 30).
 - Ex. : reset le **30 juillet**, **30 août**, **30 septembre**… (février : confirmer comportement abonnement si 30 absent).
 - Planifier les jobs Bezy lourds **juste après le 30** ; éviter de laisser le stock mourir en fin de cycle.
@@ -34,7 +34,7 @@
 - Monde : **iso 2:1 cartoon**. Modèles **Township + The Tribez** (sauf champ plat). Volume = biofiltres / hydro. Prompt : `Notes/Art/PROMPT_assets_monde_iso.md`.
 
 ### Contexte Git
-- Branche : **`feature/biofiltre-isometric`** (2026-09-05, depuis `main`).
+- Branche : **`main`** — iso 2:1 mergé (ex-`feature/biofiltre-isometric`, branche supprimée locale + remote).
 
 ### Rappel « tâche du jour »
 - Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md`.

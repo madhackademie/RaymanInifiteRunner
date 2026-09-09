@@ -21,7 +21,7 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
-| [x] skip | `[BZ-FARM-BIOHUD-NEST-001]` | `Biofiltre.prefab` | — | Cursor a nesté 2026-09-07 | `feature/biofiltre-isometric` | Plus besoin Bezy |
+| [x] skip | `[BZ-FARM-BIOHUD-NEST-001]` | `Biofiltre.prefab` | — | Cursor a nesté 2026-09-07 | `main` | Plus besoin Bezy |
 | [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | **NE PAS LANCER** — attendre brief visuel auteur + validation prompts |
 
 ---

@@ -4,7 +4,7 @@
 **Charte art :** `Notes/Art/NOTE_graphique.md`  
 **Base prompt monde :** `Notes/Art/PROMPT_assets_monde_iso.md`  
 **Cible code :** `PlantDefinition` laitue (`Assets/Data/Ferme/Laitue.asset`) — pattern **Leafy**  
-**Footprint jeu :** 2×2 cellules · grille **iso 2:1** (`feature/biofiltre-isometric`)  
+**Footprint jeu :** 2×2 cellules · grille **iso 2:1** (`main`)  
 **Backlog :** `Notes/Art/PROMPT_generation_icones.md` → **W2**
 
 ---

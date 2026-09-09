@@ -1,5 +1,36 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-09 — Docs : branche iso mergée sur `main`
+
+### Contexte
+- `feature/biofiltre-isometric` **supprimée** (local + remote) — travail iso déjà sur `main` (`4649dc3`, `9204a72`, `Biofiltre.prefab` `coordinateMode = Isometric`).
+- Docs / règles Cursor mises à jour : branche courante = **`main`**.
+
+### Prochain chantier code (auteur)
+- Branche à créer : `fix/farm-iso-footprint-hit` — clic plante **footprint losange seul** (retirer `spriteRenderer.bounds` dans `TryScorePlantHit`).
+
+### Prochaine session (inchangée)
+1. Bezy `[BZ-TAB-SPRITES-001]` — brief onglets → prompts → phases.
+2. `[P0-FARM-ISO-FOOTPRINT-HIT-001]` puis reprise `[P0-FARM-ISO-SPRITE-ANCHOR-001]`.
+
+---
+
+## 2026-09-09 — Gate pull durci (pas d’exception lecture)
+
+### Décision auteur
+- Deux threads ont sauté la question pull : tampon `open` traité comme skip **sans** comparer `opened_at` à Today.
+- **Pas** d’exception « seulement s’il y a une écriture ». Lecture / question / « où en est-on » = gated pareil.
+
+### Règle
+- Source : `.cursor/rules/session_git_sync.mdc` — ACTION 1 = `Read` tampon + date vs Today. `open` ≠ skip.
+- Miroirs : `WORKFLOW_PROTOCOL.md`, `GIT_HELPER.md`, `ASSISTANT_CONTEXT.md`, règles session/Bezy.
+
+### Prochaine session (inchangée)
+1. Bezy `[BZ-TAB-SPRITES-001]` — brief onglets → prompts → phases.
+2. Reprise `[P0-FARM-ISO-SPRITE-ANCHOR-001]` après Bezy.
+
+---
+
 ## 2026-09-08 — Laitue atlas + ancrage iso (pause → Bezy)
 
 ### Décision auteur
@@ -86,7 +117,7 @@
 ## 2026-09-05 — Branche iso : géométrie losange 2:1
 
 ### Décision auteur
-- Nouvelle branche **`feature/biofiltre-isometric`**.
+- Branche **`feature/biofiltre-isometric`** (mergée sur `main`, branche supprimée ensuite).
 - Mettre en place la **géométrie** iso **avant** l’image IBC losange (arrivée auteur).
 
 ### IDs

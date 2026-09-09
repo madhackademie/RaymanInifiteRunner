@@ -3,7 +3,7 @@
 **Skill :** `/prefab-ui-3phases` — `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`  
 **Prefab cible :** `Assets/Prefabs/World/Biofiltre.prefab`  
 **Nested :** `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab`  
-**Branche :** `feature/biofiltre-isometric`  
+**Branche :** `main` (livré, ex-`feature/biofiltre-isometric`)  
 **Succès :** `Save. List what changed. STOP.` — **pas** de Simulate / Play Mode.
 
 **Pourquoi :** instantiate au Play **ne marche pas** (rows invisibles en Edit, Save interdit en Play). Note : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`.
