@@ -267,25 +267,29 @@ Mobile game bottom navigation GLYPH icon, single object only, casual fantasy sto
 | # | Fichier Dump | Symbole |
 |---|--------------|---------|
 | H-nav-1 | `IconeTab_Aventures_glyph.png` | Small greenhouse dome OR play/run hub emblem (simple) |
-| H-nav-2 | `IconeTab_Inventaire_glyph.png` | Backpack OR wooden crate (mockup: backpack) |
+| H-nav-2 | `IconeTab_Inventaire_glyph.png` | Sac à dos + testeur pH (LCD) + fanes carotte (mockup) |
 | H-nav-3 | `IconeTab_Shop_glyph.png` | Market stall awning, minimal |
 | H-nav-4 | `IconeTab_Vente_glyph.png` | Coin stack or single banknote square, octopus+cabbage motif tiny |
 | H-nav-5 | `IconeTab_Plus_glyph.png` | 2x2 grid of rounded squares |
 
 Promo : `Assets/Art/Sprites/UI/Nav/Tabs/` — PPU **100**, Trim, assign on `Tab*/Icon`.
 
-#### H-nav-2 — Inventaire (mockup glyphe sac à dos)
+#### H-nav-2 — Inventaire (mockup glyphe sac à dos + tech + loot)
 
-**Dans ChatGPT / générateur :** joindre en option `Assets/Art/Assets Store Dump/Ui/IconeInventaire.png` (identité ferme : poisson + légumes) et `Assets/Art/Assets Store Dump/Ui/Nav/ref_mockup_tabs_actif_zoom.png` (silhouette sac actif). Puis coller :
+**Thème auteur :** inventaire = **RPG loot** (récolte) + **tech aquaponie** (mesure pH / EC — ici testeur pH lisible).
+
+**Dans ChatGPT / générateur :** joindre en option `Assets/Art/Assets Store Dump/Ui/Nav/ref_mockup_tabs_actif_zoom.png` (silhouette sac actif). Puis coller :
 
 ```
-Mobile game bottom navigation GLYPH icon, single object only, casual fantasy stone-bar UI style like Clash-style menus but aquaponic farm theme. Bold thick silhouette, vibrant saturated colors, smooth cartoon shading, thick outline. Square canvas 256x256, subject fills 90% of frame, transparent background, NO text, NO frame, NO scene, NO isometric diorama — one readable symbol only.
+Mobile game bottom navigation GLYPH icon, casual fantasy stone-bar UI style like Clash-style menus but aquaponic farm theme. Bold thick silhouette, vibrant saturated colors, smooth cartoon shading, thick outline. Square canvas 256x256, composition fills 90% of frame, transparent background, NO text, NO outer frame, NO landscape scene, NO isometric diorama — one centered icon composition only.
 
-SUBJECT: a chunky cartoon adventure BACKPACK (mockup choice — NOT a wooden crate, NOT a landscape). Front view or slight 3/4, two shoulder straps visible as simple thick shapes, main flap closed, cozy farm-game colors (teal, orange, brown leather accents).
+CORE: a chunky cartoon adventure BACKPACK, front or slight 3/4, two thick shoulder straps, main body centered, cozy farm-game colors (teal pack, orange/brown leather accents). NOT a wooden crate.
 
-Optional tiny identity badge on the flap (keep minimal): a small fish + leaf emblem inspired by the reference crate logo — one combined patch only, not separate items floating around.
+TWO SIDE POCKETS (strict, readable at 72px):
+1) LEFT pocket (viewer left): a handheld pH meter probe sticking OUT of the pocket — chunky cartoon style, yellow or gray body, clear LCD screen showing a simple numeric readout (e.g. "7.0" or pH bars), NO tiny unreadable digits.
+2) RIGHT pocket (viewer right): LARGE wilted carrot tops / feathery carrot leaves (🥕 greens) sticking OUT of the pocket — noticeably big, about half the visual height of the backpack flap area, slightly droopy "inventory loot" look, bright orange carrot tips peeking if needed.
 
-Same visual weight as sibling nav glyphs (serre, étal, billet, grille). Readable at 72px on a dark stone bottom bar. Inactive gray tint will be applied in Unity — export FULL COLOR only, one PNG.
+Keep all elements attached to the backpack (nothing floating detached). Same visual weight as sibling nav glyphs. Inactive gray tint applied in Unity — export FULL COLOR only, one PNG.
 ```
 
 **Sortie Dump :** `Assets/Art/Assets Store Dump/Ui/Nav/Tabs/IconeTab_Inventaire_glyph.png`  

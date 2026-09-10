@@ -27,7 +27,7 @@
 | # | Onglet | Label actif (FR) | Symbole icône (simple) |
 |---|--------|------------------|-------------------------|
 | 1 | Aventures | `Aventures` | Serre / play (hub ferme) |
-| 2 | Inventaire | `Inventaire` | Sac ou caisse (mockup : sac) |
+| 2 | Inventaire | `Inventaire` | Sac à dos : testeur pH (LCD) + fanes carotte sortant des poches |
 | 3 | Shop | `Shop` | Étaloir / boutique |
 | 4 | Vente | `Vente` | Billet / pièces (carré) |
 | 5 | Plus | `Plus` | Grille 2×2 ou « … » |
