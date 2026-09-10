@@ -45,6 +45,8 @@ LaitueObj
 
 **STOP.** Save. List changes.
 
+**Livré Bezy 2026-09-10** — `SelectionGlow` + `GlowOuter` + `GlowInner` sur `LaitueObj.prefab`.
+
 ---
 
 ## Phase 2 — Composants glow
@@ -64,6 +66,8 @@ Option acceptable : **2** enfants `GlowOuter` (jaune, scale 1.10) + `GlowInner` 
 
 **STOP.** Save. List changes.
 
+**Livré Bezy 2026-09-10** — Outer jaune order -2 scale 1.12 ; Inner blanc order -1 scale 1.05 ; sprites vides.
+
 ---
 
 ## Phase 3 — Wiring
@@ -76,6 +80,8 @@ Option acceptable : **2** enfants `GlowOuter` (jaune, scale 1.10) + `GlowInner` 
 3. `SelectionGlow` **désactivé** dans le prefab.
 
 **STOP.** Save. List SerializeField bindings.
+
+**Livré Bezy 2026-09-10** — wiring OK. **Visuel contour** : géré par **Cursor** `PlantSelectionHighlight` (4 offsets blancs) ; enfants Bezy `GlowOuter`/`GlowInner` désactivés au runtime (évite effet fantôme).
 
 ---
 

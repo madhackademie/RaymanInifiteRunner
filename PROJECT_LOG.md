@@ -1,5 +1,73 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-10 — Farm : glow sélection plante + bake deck (session soir)
+
+### Livré / validé auteur
+- **`[P0-FARM-DECK-SHAPE-BAKE-001]`** : `deckShapeUv`, bake B sur biofiltre standard 10×10 — playtest OK (warning bake ignoré).
+- **`[P0-FARM-PLANT-SELECT-GLOW-001]`** : Bezy `[BZ-FARM-PLANT-SELECT-GLOW-001]` Ph.1–3 sur `LaitueObj` ; Cursor `PlantSelectionHighlight` + sélection unique ; shader silhouette blanc `Farm/SpriteSelectionSilhouette` ; tuning fin (scale ~1,012, offset ~0,004). Playtest OK.
+
+### Prochaine session farm (référence)
+1. `[CT-FARM-BAKE-RECT-001]` — grand biofiltre rect + bake B.
+2. `[BZ-FARM-HARVEST-READY-VFX-002]` — particules récolte plus grosses (Bezy).
+3. Backlog cercle : `[BL-FARM-DECK-CIRCLE-MASK-001]`.
+
+### Fichiers clés
+- `Assets/Scripts/Farm/PlantSelectionHighlight.cs`
+- `Assets/Shaders/Farm/SpriteSelectionSilhouette.shader`
+- `Notes/Farm/NOTE_deck_shape_bake_b.md`
+
+---
+
+## 2026-09-10 — Playtest : vente sans salade + wallet disparu
+
+### Rapport auteur
+- File playtest **close** (« c’est tout ce que j’ai observé »).
+- Impression de **pouvoir vendre sans salade** — **pas vérifié** avec le wallet (lui aussi disparu).
+- À tranchant au fix : **vente infinie** sans stock **ou** condition manquante côté UI (pas de salade → pas de bouton **ou** popup « pas assez de salade »).
+
+### IDs
+- `[P0-SALE-NO-STOCK-001]` — gate vente 0 stock + UX bouton vs popup.
+- `[P0-NAV-WALLET-REG-001]` — wallet HUD disparu, **reproduit** ; bloque la vérif gold.
+
+### État code (pas un fix)
+- `SaleChannelService.TryBuildSellPopupData` / `TrySell` / `CanSell` **refusent** déjà si `Count(laitue_mature) < qty` (message UI : « Aucune laitue mature à vendre pour ce canal. »).
+- `SaleChannelBandeauView.ApplyInteractableState` : bandeau **cliquable** dès que canal débloqué et pas en cooldown — **pas** de check stock. Donc le bouton reste accessible à 0 salade.
+- Playtest à faire : 0 `laitue_mature` → clic bandeau → le feedback s’affiche-t-il ? le popup vente s’ouvre-t-il ? `TrySell` crédite-t-il quand même (vente infinie) ? gold visible seulement après restauration wallet.
+
+### UX à trancher (auteur)
+- A) bandeau **non interactable** si stock 0
+- B) bandeau cliquable + popup / feedback « pas assez de salade »
+
+---
+
+## 2026-09-10 — Régressions playtest FirstLvl (HUD / croix / IBC)
+
+### Rapport auteur
+- En **FirstLvl**, la barre d’onglets HUD **reste visible** alors qu’elle doit **s’effacer** ; sortie du niveau par la **croix rouge**.
+- Une fois dans FirstLvl, la **croix bouge selon la taille** Game view — **à valider sur mobile**.
+- Le sprite **IBC déborde** de l’écran ; la croix **change de place** avec le cadrage.
+
+### IDs (Todo)
+- `[P0-NAV-HUD-EXITONLY-001]` — `NavBarContainer` encore actif en FirstLvl (attendu : `HudMode.ExitOnly`).
+- `[P0-NAV-EXIT-ANCHOR-001]` — ancrage croix instable (lié `[CT-NAV-MAP-001]` « figer la croix »).
+- `[P0-FARM-IBC-OVERFLOW-001]` — IBC hors cadre + croix qui suit le cadrage.
+
+File **close** dans `Notes/Todo_project.md` § *Playtest régressions 2026-09-10* (auteur : plus d’items de ce playtest).
+
+### Pistes vs `main` (pas une autre branche — régressions **sur `main`**)
+
+On n’a pas un delta `feature/*` vs `main`. Les suspects sont les **passes récentes déjà mergées / locales sur `main`** :
+
+1. **Bezy onglets** `[BZ-TAB-SPRITES-001]` + **HUD PA ×2** `[BZ-AP-HUD-SCALE-001]` — `NavigationHUD.unity` + `NavigationHUD.cs` (NavBar 128 px, sprites, widget PA).
+2. **Croix** : `ExitButtonContainer` ancré **centre canvas** `(0.5, 0.5)` avec offset `(-506, 861.95)` (taille ~80). Conçu pour une rés. proche `1080×1920`. CanvasScaler match `0.5` + Game view **Free Aspect** → la croix **dérive**. Fix probable : ancres **haut-gauche** `(0,1)` + petit padding, pas un offset centre.
+3. **`ApplyMode` early-return** : `currentMode` démarre à `Hidden` **sans** `SetActive` ; le YAML a `NavBarContainer` **actif**. Si `ApplyMode(Hidden)` est le premier appel, la nav **reste affichée**.
+4. **IBC iso** `[P0-FARM-ISO-GRID-001]` : `IbcIso` + `BiofiltreIbcSpriteFitter` calé sur la **grille** (pas la caméra). Pas de letterbox. Un overflow monde + une croix UI mal ancrée = « la croix change de place » quand on recadre.
+
+### Hors scope ce message
+Pas de fix code — file todo uniquement. Suite : l’auteur envoie les bugs suivants du playtest.
+
+---
+
 ## 2026-09-10 — Bezy HUD PA ×2 `[BZ-AP-HUD-SCALE-001]`
 
 ### Décision auteur

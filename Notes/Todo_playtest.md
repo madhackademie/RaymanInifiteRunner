@@ -142,6 +142,21 @@ Ex. budget 160, remaining 0 → HUD **160 / 160**.
 
 ---
 
+## Batch G — Régressions playtest 2026-09-10 (HUD / croix / IBC / vente)
+
+**IDs :** `[P0-NAV-HUD-EXITONLY-001]` · `[P0-NAV-EXIT-ANCHOR-001]` · `[P0-FARM-IBC-OVERFLOW-001]` · `[P0-NAV-WALLET-REG-001]` · `[P0-SALE-NO-STOCK-001]`  
+**Statut :** `Notes/Todo_project.md` § *Playtest régressions 2026-09-10*. Play depuis **Bootstrap**. Game view : **Free Aspect** + une cible **mobile** (ex. 1080×1920 et 16:9).
+
+- [ ] FirstLvl : **onglets bas masqués** (mode ExitOnly) ; seule la **croix rouge** pour sortir
+- [ ] Croix **fixe** coin écran (pas de dérive si on change Scale / aspect)
+- [ ] IBC **entièrement dans le cadre** (ou cadrage caméra documenté) ; croix ne saute pas
+- [ ] Retour croix → HomeScene → onglets HUD reviennent
+- [ ] Wallet gold **visible** en haut `NavigationHUD` (après Bezy onglets)
+- [ ] **0** `laitue_mature` en inventaire → **pas de vente** (bandeau off **ou** popup « pas assez de salade ») ; pas de gold / pas de cooldown si refus
+- [ ] Avec salades : vente décrémente le stock ; gold visible (wallet ou burst)
+
+---
+
 ## Batch E — HUD PA polish `[BZ-POLISH-002]` (après Bezy Ph.1–3)
 
 > À faire **après** livraison Bezy Refuse / Fill / Tooltip fade + hooks Cursor éventuels.
@@ -163,6 +178,7 @@ Ex. budget 160, remaining 0 → HUD **160 / 160**.
 
 ## Ordre suggéré session batch QA
 
+0. **Batch G** — régressions FirstLvl HUD / croix / IBC (playtest 2026-09-10)  
 1. **Cheatsheet** : localiser `ActionPointService` + `PlayerInventory` + `SaleChannelService` en Play  
 2. **Batch A** (§1–4) — PA  
 3. **Batch C** — graines empty  

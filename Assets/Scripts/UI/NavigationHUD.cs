@@ -87,8 +87,9 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private float activeTabLabelOutlineWidth = 0.28f;
 
     [Header("Tab actif — cadre SelectedFrame (englobe l’icône zoomée)")]
-    [SerializeField] private Vector2 activeTabFrameSizeDeltaAdd = new Vector2(-22f, -92f);
-    [SerializeField] private float activeTabFrameActivePosY = 34f;
+    [Tooltip("Ajout au sizeDelta repos (stretch). Valeurs positives = cadre PLUS grand.")]
+    [SerializeField] private Vector2 activeTabFrameSizeDeltaExpand = new Vector2(20f, 105f);
+    [SerializeField] private float activeTabFrameActivePosY = 38f;
 
     private Vector2 tabAventuresIconLiftRestPosition;
     private Vector2 tabAventuresIconRestAnchoredPosition;
@@ -457,7 +458,7 @@ public class NavigationHUD : MonoBehaviour
         }
 
         frameRect.anchoredPosition = tabAventuresSelectedFrameRestPosition + new Vector2(0f, activeTabFrameActivePosY);
-        frameRect.sizeDelta = tabAventuresSelectedFrameRestSizeDelta + activeTabFrameSizeDeltaAdd;
+        frameRect.sizeDelta = tabAventuresSelectedFrameRestSizeDelta + activeTabFrameSizeDeltaExpand;
     }
 
     /// <summary>Onglets sans IconLift/Glow : N&B inactif, couleur actif, label TMP seulement si actif.</summary>

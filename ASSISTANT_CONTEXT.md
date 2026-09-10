@@ -16,11 +16,12 @@
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
 ### Priorités prochaine session
-1. Playtest HUD PA ×2 `[P0-AP-HUD-SCALE-001]` (Bezy Ph.1–3 OK). Puis **Bezy** TabVente `[BZ-TAB-SPRITES-001]` ou sparkle récolte Ph.5.
-2. **Auteur Prefab Mode** `Biofiltre` : poser PrimaryRow / StarRow / SecondaryRow (HUD nested, pas de moule unique).
-3. Playtest FirstLvl HUD + grille iso `[P0-FARM-ISO-GRID-001]`.
-4. **Bezy** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : TabVente dernier prompt.
-5. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
+1. Playtest régressions 2026-09-10 : HUD `[P0-NAV-HUD-EXITONLY-001]`, croix `[P0-NAV-EXIT-ANCHOR-001]`, IBC `[P0-FARM-IBC-OVERFLOW-001]`, wallet `[P0-NAV-WALLET-REG-001]`, vente 0 stock `[P0-SALE-NO-STOCK-001]`.
+2. Playtest HUD PA ×2 `[P0-AP-HUD-SCALE-001]` (Bezy Ph.1–3 OK). Puis **Bezy** TabVente `[BZ-TAB-SPRITES-001]` ou sparkle récolte Ph.5.
+3. **Auteur Prefab Mode** `Biofiltre` : poser PrimaryRow / StarRow / SecondaryRow (HUD nested, pas de moule unique).
+4. Playtest FirstLvl HUD + grille iso `[P0-FARM-ISO-GRID-001]`.
+5. **Bezy** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : TabVente dernier prompt.
+6. Reportés : `[P0-FARM-SPRITE-ALPHA-001]`, `[P0-SALE-QTY-RAND-001]`.
 
 ### Clos IBC + grille (2026-09-02 / 2026-08-30)
 - `[P0-FARM-IBC-GRID-001]` — cuve IBC + grille **carrée** alignées, playtest **OK** 2026-09-02.

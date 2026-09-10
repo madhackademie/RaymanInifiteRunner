@@ -50,7 +50,7 @@ Convention d'IDs :
 > **Chantier actif :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint seul (branche `fix/farm-iso-footprint-hit` à créer).  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
-> **Priorité immédiate (2026-09-10) :** HUD PA ×2 **Bezy Ph.1–3 OK** — playtest. Puis TabVente / farm.  
+> **Priorité immédiate (2026-09-10) :** playtest régressions FirstLvl HUD / croix / IBC (`[P0-NAV-HUD-EXITONLY-001]`). HUD PA ×2 playtest. Puis TabVente / farm.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows par biofiltre. Bezy nest skip.  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
@@ -84,6 +84,27 @@ Convention d'IDs :
 > Art : Dump → promo auteur `Sprites/UI/` **avant** Bezy (Vague H `Notes/Art/PROMPT_generation_icones.md`). Bezy = wiring / layout / polish prefab, **pas** génération d’images.  
 > Stub prompts : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` — Ph.1–3 à rédiger après le brief. File : `Notes/Bezi/BEZY_QUEUE.md`.
 
+### ★ Playtest régressions 2026-09-10 (auteur — file close)
+
+> Captures Game view **Free Aspect** : onglets bas encore visibles sur le biofiltre ; `ExitButtonContainer` = croix rouge.  
+> File **fermée** par l’auteur (« c’est tout ce que j’ai observé ») — rouverture si nouveau playtest.  
+> Détail suspects : `PROJECT_LOG.md` 2026-09-10 — *Régressions playtest FirstLvl* + *vente sans salade*.  
+> On est **déjà sur `main`** : pas un écart de branche, ce sont des changements **récents sur `main`** (Bezy HUD + iso IBC).
+
+1. [ ] **[P0-NAV-HUD-EXITONLY-001]** En **FirstLvl**, la barre d’onglets (`NavBarContainer`) **reste visible** alors qu’elle doit **s’effacer** (mode `ExitOnly`). Sortie du niveau = **croix rouge** uniquement.
+2. [ ] **[P0-NAV-EXIT-ANCHOR-001]** Une fois dans FirstLvl, la **croix bouge selon la taille** Game view / aspect — **à valider sur mobile**. Lié `[CT-NAV-MAP-001]` (figer la croix).
+3. [ ] **[P0-FARM-IBC-OVERFLOW-001]** Sprite **IBC déborde** de l’écran ; la croix **change de place** avec le cadrage (même cause aspect / ancrage que 2).
+4. [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold **disparu** en haut `NavigationHUD` (Bezy onglets) — **reproduit** ce playtest. Empêche de vérifier le gold de la vente. Déjà listé item 1b ci-dessous.
+5. [ ] **[P0-SALE-NO-STOCK-001]** Impression de **vendre sans salade** (non vérifié wallet). Playtest : 0 `laitue_mature` en inventaire → vente bloquée. **UX à trancher :** bouton bandeau **off** *ou* popup « pas assez de salade ».
+
+**Suspects (code / scène, à confirmer au fix) :**
+
+- Bezy onglets `[BZ-TAB-SPRITES-001]` + HUD PA ×2 `[BZ-AP-HUD-SCALE-001]` ont retouché `NavigationHUD.unity` / `NavigationHUD.cs`.
+- `ExitButtonContainer` : ancres **centre** `(0.5, 0.5)` + offset pixels `(-506, 861.95)` — **pas** coin haut-gauche. CanvasScaler `1080×1920` match `0.5` → la croix dérive en Free Aspect / mobile.
+- `NavigationHUD.ApplyMode` : `if (currentMode == mode) return` alors que le YAML a `NavBarContainer` **actif** par défaut (`currentMode` part de `Hidden` sans sync `SetActive`).
+- IBC : `IbcIso` + `BiofiltreIbcSpriteFitter` calé sur la **grille** (pas la caméra) ; pas de letterbox caméra FirstLvl.
+- Vente : `SaleChannelService` **a déjà** `Count(laitue_mature)` (`TryBuildSellPopupData` / `TrySell` → « Aucune laitue mature… »). Le **bandeau reste cliquable** sans check stock (`ApplyInteractableState`). À playtester : le feedback s’affiche-t-il ? le popup vente s’ouvre-t-il quand même ? `TrySell` passe-t-il (vente infinie) ?
+
 ### ★ Bezy immédiat — HUD PA ×2 `[P0-AP-HUD-SCALE-001]`
 
 > **Décision auteur 2026-09-10** (capture `240 / 240`) : agrandir **2×** le widget PA.  
@@ -93,18 +114,22 @@ Convention d'IDs :
 1. [x] **[P0-AP-HUD-SCALE-001]** / **[BZ-AP-HUD-SCALE-001]** HUD PA ×2 Bezy Ph.1–3 (layout + TMP + instance `NavigationHUD`)
 2. [ ] Playtest HUD PA ×2 (hors Bezy)
 
-### ★ Prochaine session farm — 2026-09-10 (auteur)
+### ★ Prochaine session farm (référence auteur)
 
-1. [ ] **[CT-FARM-BAKE-RECT-001]** Tester **bake B** sur un biofiltre **rectangulaire plus grand** (dupliquer layout SO + prefab ou variante) → vérifier génération `columns`/`rows` + playtest grille.
-2. [ ] **[P0-FARM-PLANT-FEEDBACK-001]** Feedback plante (deux points) :
-   - [ ] **[BZ-FARM-HARVEST-READY-VFX-002]** Sparkle récolte **Mature + Seedling** trop faible → **particules plus grosses** (Bezy) — `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` Phase 5.
-   - [ ] **[P0-FARM-PLANT-SELECT-GLOW-001]** **Contour / cible** au clic (jaune, blanc ou variante) — confirmer que le clic est pris + plante visible ; socle vert **conservé**. Cursor `PlantSelectionHighlight.cs` → Bezy `LaitueObj` (`PROMPTS_Bezi_plant_selection_glow.md`).
-3. **Backlog (plus tard) :** `[BL-FARM-DECK-CIRCLE-MASK-001]` deck rond terrasse/promo — `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md`.
+**Clos playtest 2026-09-10 soir :**
+- [x] **`[P0-FARM-DECK-SHAPE-BAKE-001]`** bake B standard 10×10 (warning min col/row OK ignoré).
+- [x] **`[P0-FARM-PLANT-SELECT-GLOW-001]`** — Bezy `LaitueObj` Ph.1–3 + Cursor `PlantSelectionHighlight` + shader `Farm/SpriteSelectionSilhouette` ; silhouette blanche fine (défaut scale **1,012**, offset **0,004**). Tuning fin sur prefab si besoin.
+
+**Ordre prochaine session farm :**
+1. [ ] **[CT-FARM-BAKE-RECT-001]** Bake B sur biofiltre **rect plus grand** (dupliquer layout SO + variante prefab).
+2. [ ] **[BZ-FARM-HARVEST-READY-VFX-002]** Sparkle récolte Mature + Seedling plus lisible (Bezy Ph.5 — `PROMPTS_Bezi_harvest_ready_vfx.md`).
+3. **Backlog :** `[BL-FARM-DECK-CIRCLE-MASK-001]` — `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md`.
 
 **Ordre prochaine session (autres chantiers) :**
 
+0. [ ] Playtest régressions 2026-09-10 : HUD / croix / IBC + wallet + vente sans stock (voir § ci-dessus)
 1. [~] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Bezy onglets HUD — 3/4 livrés ; **TabVente** dernier prompt (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`)
-1b. [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold disparu en haut `NavigationHUD` après passes Bezy onglets — **corriger plus tard** (non bloquant TabVente)
+1b. [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold disparu en haut `NavigationHUD` après passes Bezy onglets — **reproduit playtest 2026-09-10** (bloque vérif gold vente)
 2. [ ] **[P0-FARM-ISO-FOOTPRINT-HIT-001]** Clic plante = losanges footprint seuls (`GridManager.TryScorePlantHit`, branche `fix/farm-iso-footprint-hit`)
 3. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` — playtest pose manuelle sprite/grille
 4. [ ] **[P0-FARM-ISO-SPRITE-ANCHOR-001]** Ancrage pied laitue iso 2×2 — **reporté après footprint hit** (voir § ci-dessous)
@@ -114,7 +139,7 @@ Convention d'IDs :
 8. [ ] Pose rows HUD (Prefab Mode) + playtest FirstLvl
 9. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
 10. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
-11. [ ] **[P0-FARM-PLANT-SELECT-GLOW-001]** Glow jaune/blanc sélection plante (complète socle vert footprint)
+11. [x] **[P0-FARM-PLANT-SELECT-GLOW-001]** Silhouette blanche sélection — playtest OK 2026-09-10
 12. [x] **[P0-FARM-DECK-SHAPE-BAKE-001]** Shape UV + bake B — playtest OK 2026-09-10 (10×10, warning min col/row ignoré). Suite = masque plantable (C)
 
 ### ★ Deck shape UV + bake grille (B) `[P0-FARM-DECK-SHAPE-BAKE-001]` — clos playtest 2026-09-10
@@ -129,15 +154,13 @@ Convention d'IDs :
 **A — Sparkle récoltable (2 stades)** `[BZ-FARM-HARVEST-READY-VFX-002]`  
 > Mature + Seedling (`HarvestReadyFx` / `PlantGrow.SyncHarvestReadyFxForStage`) : effet **trop faible** en jeu → passe Bezy : **taille particules** (et si besoin rate/size over lifetime). Prompt Phase 5 : `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md`.
 
-**B — Glow cible au clic** `[P0-FARM-PLANT-SELECT-GLOW-001]`  
-> **Contexte :** clic = footprint seul ; le joueur doit **voir la cible** (clic bien pris).  
-> **Existant :** socle vert footprint — **garder**.  
-> **Manque :** contour **jaune / blanc** (ou teinte validée) sur la **silhouette** plante.
+**B — Glow cible au clic** `[P0-FARM-PLANT-SELECT-GLOW-001]` — **clos 2026-09-10**  
+> Shader `Assets/Shaders/Farm/SpriteSelectionSilhouette.shader` (alpha → couleur unie). `PlantSelectionHighlight` : une cible active, socle vert conservé. Réglages : `silhouetteLocalScale` / `silhouetteLocalOffset` sur `LaitueObj`.
 
 | Partie | Agent | Détail |
 |--------|-------|--------|
-| Prefab `LaitueObj` : enfant `SelectionGlow` + `SpriteRenderer`(s) | **Bezy** `[BZ-FARM-PLANT-SELECT-GLOW-001]` | `Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md` Ph.1–3 |
-| `PlantSelectionHighlight.cs` + hook `BiofiltreManager` | **Cursor** | **Livré 2026-09-10** — show/hide popup récolte ; sync stade `PlantGrow` ; fallback runtime si pas de prefab Bezy |
+| Prefab `LaitueObj` : enfant `SelectionGlow` + `SpriteRenderer`(s) | **Bezy** `[BZ-FARM-PLANT-SELECT-GLOW-001]` | **Livré 2026-09-10** Ph.1–3 |
+| `PlantSelectionHighlight.cs` + hook `BiofiltreManager` | **Cursor** | **Livré 2026-09-10** — playtest auteur |
 | Playtest | **Auteur** | Clic footprint → socle vert **+** glow ; fermer popup → tout off |
 
 **Ordre :** Cursor script + spec → Bezy prefab wiring → playtest. Pas de shader custom en P0 (duplicate sprite scale + tint suffit).
@@ -515,6 +538,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [x] **[P0-SALE-STAR-BARS-001]** Jauges tooltip ★ + texte overlay — Bezy Ph.1–2 + Cursor fill/wiring (2026-08-25).
 - [x] **[P0-SALE-STAR-UI-001]** Images étoiles + tooltip hover rangée ★ — Bezy Ph.1–3 OK 2026-08-25.
 - [x] **[P0-SALE-STAR-PLAY-001]** Playtest polish 3 bandeaux — **OK 2026-08-30**.
+- [ ] **[P0-SALE-NO-STOCK-001]** 0 salade en inventaire → **pas de vente** (playtest 2026-09-10, non vérifié gold). Trancher : bandeau **désactivé** *ou* popup « pas assez de salade ». Service a déjà le gate `Count` ; UI bandeau encore cliquable. Lié wallet `[P0-NAV-WALLET-REG-001]`.
 - [ ] **[P0-SALE-PLAY-004]** Playtest timer canal — **batch** `Notes/Todo_playtest.md`.
 
 ### Shop — polish restant
@@ -529,6 +553,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 ### Inventaire / wallet / runtime UI
 - [x] **[CT-UI-SAFE-PA-001]** HUD PA slot chrome haut-droite + TreeMount plein cadre + convention `Notes/Ui/CONVENTION_hud_pa_safe_zone.md` (2026-07-30). Playtest auteur.
 - [~] **[CT-INV-HALO-001]** Rework inventaire halo + grille — Ph.1–3 + playtest halo OK ; **MVP arbre Commerce OK** (2026-06-16) ; polish arbre → backlog.
+- [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold disparu en haut `NavigationHUD` après Bezy onglets — **reproduit 2026-09-10**. Bloque vérif `[P0-SALE-NO-STOCK-001]`.
 - [ ] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Mise en place + polish **sprites onglets** HUD (Bezy) — **priorité** ; prompts après brief auteur.
 - [ ] **[P0-INV-TABS-001]** Onglets grille **Graines** / **Consommables** — après `[P0-SALE-QTY-RAND-001]`.
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
@@ -536,6 +561,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).
 
 ### Ferme — polish & UI
+- [ ] **[P0-FARM-IBC-OVERFLOW-001]** Sprite IBC iso déborde l’écran ; croix HUD suit le cadrage (playtest 2026-09-10, Game view Free Aspect). Lié `[P0-NAV-EXIT-ANCHOR-001]`.
 - [x] **[CT-FARM-UI-001]** Prefab **`SeedSelectionUI`** EmptyState — Bezy Ph.1–3 OK (2026-07-23). Playtest → `Notes/Todo_playtest.md` Batch C / `[P0-FARM-BUG-001]`.
 - [x] **[CT-FARM-POLISH-002]** / `[P0-FARM-INSECT-PLAY-001]` Insecte Flowering — runtime + playtest **OK** (2026-07-29). Spec `Notes/Farm/SPEC_insecte_flowering.md`.
 - [x] **[CT-FARM-POLISH-003]** / **[BZ-POLISH-016]** VFX plantation DirtBurst — P1–P3 + hooks + playtest **[P0-FARM-VFX-PLAY-002]** **OK** (2026-07-29).
@@ -548,11 +574,13 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 
 ### Navigation Scene/UI
 - [ ] [CT-NAV-001] Debug complet des flux `SceneNavigator.ShowScene` (transitions concurrentes, scènes orphelines, ordre d'activation).
+- [ ] **[P0-NAV-HUD-EXITONLY-001]** FirstLvl : `NavBarContainer` doit se masquer (`ExitOnly`) — playtest 2026-09-10, onglets encore visibles.
+- [ ] **[P0-NAV-EXIT-ANCHOR-001]** Croix `ExitButtonContainer` : ancrer **haut-gauche** (plus offset centre `-506 / 861.95`) — valider **mobile**. Lié `[CT-NAV-MAP-001]`.
 - [ ] **[CT-NAV-MAP-001]** Rework écran « Accueil » → **map principale des niveaux** (décision auteur **2026-09-09**) :
   - Ce n’est **pas** un hub Accueil statique : c’est la **carte / map principale** où le joueur choisit un niveau.
   - Le **1er niveau** (ex. FirstLvl) **remplace** le bouton « Commencer l’aventure » — le bouton devient une **image** cliquable (node niveau).
   - Les **niveaux suivants** s’empilent **en dessous**, ajoutés **au fur et à mesure** de leur développement (scroll vertical ou liste extensible).
-  - **Figer / ancrer la croix** de sortie des niveaux (exit lvl) — position stable, indépendante du contenu scrollé.
+  - **Figer / ancrer la croix** de sortie des niveaux (exit lvl) — position stable, indépendante du contenu scrollé. **Reproduit 2026-09-10** → ticket concret `[P0-NAV-EXIT-ANCHOR-001]`.
   - Cible probable : `HomeScene` / hub Aventures (`MapNodeButton` existant) — Bezy prefab + Cursor navigation ; art nodes niveau = Dump → promo auteur.
   - Lié : `[CT-NAV-002]` (retour gameplay croix/exit).
 - [~] [CT-NAV-002] Finaliser hub `HomeScene` + retour gameplay (croix/exit) et aligner la doc — **fusionner avec** `[CT-NAV-MAP-001]`.
