@@ -295,6 +295,72 @@ Keep all elements attached to the backpack (nothing floating detached). Same vis
 **Sortie Dump :** `Assets/Art/Assets Store Dump/Ui/Nav/Tabs/IconeTab_Inventaire_glyph.png`  
 **Promo après OK auteur :** `Assets/Art/Sprites/UI/Nav/Tabs/IconeTab_Inventaire_glyph.png` → sprite sur `TabInventaire/Icon` (`NavigationHUD.unity`).
 
+#### H-nav-2 — passes de correction (mix **tech + oldschool**)
+
+**Workflow ChatGPT / générateur :**  
+1. Joindre **ton PNG actuel** (résultat à corriger).  
+2. Joindre **`Assets/Art/Assets Store Dump/Ui/IconeInventaire.png`** (identité oldschool : bois clair, logo poisson+feuilles, testeur pH LCD « pH 7.2 », outils, truite, carotte/laitue, shading cartoon épais).  
+3. Option barre nav : **`Dump/Ui/Nav/ref_mockup_tabs_actif_zoom.png`** ou **`Dump/ElementsReflexionsImages/MockupOngletInventaireBas_1.jpg`** (lisibilité glyphe).  
+4. Une passe à la fois ; **Save** entre chaque.
+
+**Passe A — ancrer le rendu oldschool (sans changer la composition si elle est déjà bonne)**
+
+```
+Edit the ATTACHED current inventory tab icon. Use the SECOND attached image (wooden crate inventory icon) ONLY as style reference — do NOT turn the result back into a crate.
+
+KEEP from your current image: backpack layout, side pockets, pH probe position, large carrot tops, overall silhouette.
+
+RESTYLE to match the reference crate icon's OLD-SCHOOL game art:
+- Same cozy cartoon farming RPG look: soft gradients, thick dark outlines, slightly glossy highlights like hand-painted mobile UI.
+- Warm light wood / leather accents on the backpack (similar warmth to the reference wooden crate planks).
+- Small carved or stamped emblem on the backpack flap: fish silhouette + two leaves like the reference crate logo (simple, bold, not tiny).
+
+Do NOT add hammer, screwdriver, trout, or lettuce unless already in your image — focus on backpack + pH + carrot greens only.
+
+Output: square 256x256, TRANSPARENT background, full color, readable at 72px on a dark stone nav bar.
+```
+
+**Passe B — tech aquaponie (pH / EC lisible, même famille que la ref)**
+
+```
+Edit the ATTACHED inventory tab icon (latest version). Style reference: attached IconeInventaire.png pH meter ONLY.
+
+UPGRADE the pH tester sticking out of the left pocket:
+- Match the reference meter: white and blue plastic body, chunky probe, glowing blue LCD.
+- Screen must show clear readable text: "pH 7.2" OR "7.2" with a tiny water droplet icon — NO blurry micro-digits.
+- Optional subtle second line "EC" or a small bar graph under pH if it stays readable at 72px (aquaponic tech + RPG inventory vibe).
+
+Keep backpack and LARGE wilted carrot tops in the right pocket unchanged in position. Thick outlines, old-school shading from pass A. Transparent background, 256x256.
+```
+
+**Passe C — fanes carotte « loot RPG » (taille + oldschool)**
+
+```
+Edit the ATTACHED inventory tab icon. Reference: IconeInventaire.png carrot and MockupOngletInventaireBas_1 inventory slot.
+
+RIGHT pocket: enlarge feathery carrot tops so they are BIG — about 40–50% of the icon height, drooping out of the pocket like harvested loot (slightly wilted but still vivid green and orange tips).
+
+Paint them with the same bold cartoon style as the reference carrot (thick leaves, saturated color, not flat vector).
+
+LEFT pocket pH meter unchanged. Backpack emblem fish+leaves visible. Transparent 256x256, no text labels, no scene.
+```
+
+**Passe D — nettoyage glyphe barre (si trop détaillé / trop iso)**
+
+```
+Edit the ATTACHED inventory tab icon. Target: bottom navigation GLYPH like Clash-style stone bar tabs — NOT a full isometric diorama.
+
+Simplify: remove extra props, depth, and ground shadow. Front-facing backpack, bold silhouette, fewer inner lines.
+Keep ONLY: backpack + pH LCD meter (left pocket) + large carrot fronds (right pocket) + fish/leaves emblem on flap.
+Same old-school painted look and colors as IconeInventaire reference. 90% frame fill, transparent background, 256x256.
+```
+
+**Si la génération est encore une caisse :** remplacer la passe A par :
+
+```
+Replace the wooden crate with an adventure BACKPACK while keeping the EXACT visual identity of the attached IconeInventaire.png (colors, outlines, pH meter design, carrot quality, fish+leaves logo on the flap). pH meter out of LEFT pocket, LARGE carrot tops out of RIGHT pocket. Transparent 256x256 nav glyph.
+```
+
 ---
 
 ### Vague H-nav (archive 2026-09-09) — iso simplifié
