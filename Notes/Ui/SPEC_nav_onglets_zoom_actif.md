@@ -12,8 +12,8 @@
 
 | État | Comportement visuel |
 |------|---------------------|
-| **Inactif** | Icône **simple**, **grisée**, remplit la **case** de la barre pierre ; pas de label ; pas de halo ; même taille pour les 5 onglets. |
-| **Actif** | Icône **couleur**, **zoom** (~1,2–1,35×), **dépasse** vers le haut de la barre ; **lueur** chaude derrière ; **cadre or** sur la case ; **label** (TMP) sous l’icône, jaune/or, gras. |
+| **Inactif** | Icône **désaturée (N&B)** via material `NavTabIconGrayscale` ; pas de label TMP ; pas de glow ; glyphe seul dans le PNG. |
+| **Actif** | Icône **couleur pleine** (material UI par défaut) ; **zoom** + lift ; **glow** jaune-or ; **label TMP** sous l’icône (jaune, gras) — **jamais** de texte/cadre dans le PNG. |
 | **Press** | Conserver `NavTab` animator (léger squash) — ne pas remplacer par rotation / carousel. |
 
 **Abandonne** pour ce chantier : cadre actif seul sans zoom (livraison Bezy 2026-09-09) ; icônes iso diorama détaillées en barre.

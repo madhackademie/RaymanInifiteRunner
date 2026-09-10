@@ -15,15 +15,15 @@
 | Anchors | top-right `(1, 1)` |
 | Pivot | `(1, 1)` |
 | Position | `anchoredPosition ≈ (-16, -16)` |
-| Taille | `≈ 240 × 60` |
+| Taille | **cible `[BZ-AP-HUD-SCALE-001]` : `480 × 120`** (avant : `240 × 60`) |
 | Layer | UI = 5 |
 
 ## Zone réservée (ne pas y placer titres / CTA critiques)
 
 Rectangle approximatif depuis le coin haut-droit du canvas shell :
 
-- largeur **≥ 256** (240 + marge 16)
-- hauteur **≥ 76** (60 + marge 16)
+- largeur **≥ 496** (480 + marge 16) — avant Bezy scale : 256 (240 + 16)
+- hauteur **≥ 136** (120 + marge 16) — avant Bezy scale : 76 (60 + 16)
 
 Les overlays / écrans (inventaire, shop, ferme, talents) doivent composer **autour** :
 

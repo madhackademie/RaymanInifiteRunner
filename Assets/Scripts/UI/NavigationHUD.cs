@@ -56,22 +56,45 @@ public class NavigationHUD : MonoBehaviour
     [Header("Tab Aventures — mockup zoom (pilote Bezy 2026-09-10)")]
     [SerializeField] private RectTransform tabAventuresIconLift;
     [SerializeField] private GameObject tabAventuresGlow;
+    [SerializeField] private GameObject tabAventuresLavaBackdrop;
     [SerializeField] private TextMeshProUGUI tabAventuresLabel;
+
+    [Header("Tab Inventaire — label (mockup TMP sous l’icône)")]
+    [SerializeField] private TextMeshProUGUI tabInventaireLabel;
 
     [Header("Exit Button")]
     [SerializeField] private Button exitButton;
 
+    [Header("Tab icon — inactif N&B / actif couleur")]
+    [SerializeField] private Material inactiveTabGrayscaleMaterial;
+
     [Header("Tab icon fade (sprites full color)")]
     [SerializeField] private float iconAlphaActive = 1f;
-    [SerializeField] private float iconAlphaInactive = 0.55f;
+    [SerializeField] private float iconAlphaInactive = 0.85f;
 
-    [Header("Tab Aventures — zoom actif")]
-    [SerializeField] private float activeTabIconScale = 1.3f;
-    [SerializeField] private float activeTabIconLiftY = 18f;
+    [Header("Tab mockup zoom actif")]
+    [SerializeField] private Material activeTabGlowMaterial;
+    [SerializeField] private Material activeTabLavaMaterial;
+    [SerializeField] private bool useActiveTabLavaBackdrop;
+    [SerializeField] private float activeTabIconScale = 1.87f;
+    [SerializeField] private float activeTabIconLiftY = 48f;
+    [SerializeField] private float activeTabIconLocalOffsetY = 33f;
+    [SerializeField] private float activeTabGlowAlpha = 0.42f;
+    [SerializeField] private float activeTabGlowSize = 108f;
     [SerializeField] private float inactiveTabIconGray = 0.5f;
-    [SerializeField] private Color activeTabLabelColor = new Color(1f, 0.92f, 0.2f, 1f);
+    [SerializeField] private Color activeTabLabelColor = new Color(1f, 0.78f, 0.2f, 1f);
+    [SerializeField] private float activeTabLabelFontSize = 31f;
+    [SerializeField] private float activeTabLabelOutlineWidth = 0.28f;
+
+    [Header("Tab actif — cadre SelectedFrame (englobe l’icône zoomée)")]
+    [SerializeField] private Vector2 activeTabFrameSizeDeltaAdd = new Vector2(-22f, -92f);
+    [SerializeField] private float activeTabFrameActivePosY = 34f;
 
     private Vector2 tabAventuresIconLiftRestPosition;
+    private Vector2 tabAventuresIconRestAnchoredPosition;
+    private Vector2 tabAventuresSelectedFrameRestPosition;
+    private Vector2 tabAventuresSelectedFrameRestSizeDelta;
+    private static Sprite uiWhiteSprite;
     private HudMode currentMode = HudMode.Hidden;
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -88,6 +111,23 @@ public class NavigationHUD : MonoBehaviour
 
         if (tabAventuresIconLift != null)
             tabAventuresIconLiftRestPosition = tabAventuresIconLift.anchoredPosition;
+
+        if (tabAventuresIcon != null)
+            tabAventuresIconRestAnchoredPosition = tabAventuresIcon.rectTransform.anchoredPosition;
+
+        if (tabAventuresSelectedFrame != null)
+        {
+            RectTransform frameRect = tabAventuresSelectedFrame.GetComponent<RectTransform>();
+            if (frameRect != null)
+            {
+                tabAventuresSelectedFrameRestPosition = frameRect.anchoredPosition;
+                tabAventuresSelectedFrameRestSizeDelta = frameRect.sizeDelta;
+            }
+        }
+
+        ConfigureAventuresTabFxHierarchy();
+        ApplyNavTabLabelStyle(tabAventuresLabel);
+        ApplyNavTabLabelStyle(tabInventaireLabel);
 
         if (tabAventuresButton != null)
             tabAventuresButton.onClick.AddListener(OnTabAventuresClicked);
@@ -332,21 +372,22 @@ public class NavigationHUD : MonoBehaviour
     private void RefreshTabVisuals(Tab active)
     {
         ApplyAventuresTabVisual(active == Tab.Aventures);
-        ApplyTabVisual(tabInventaireIcon, tabInventaireSelectedFrame, active == Tab.Inventaire);
-        ApplyTabVisual(tabShopIcon, tabShopSelectedFrame, active == Tab.Shop);
-        ApplyTabVisual(tabSaleChannelsIcon, tabSaleChannelsSelectedFrame, active == Tab.SaleChannels);
+        ApplyStandardTabVisual(tabInventaireIcon, tabInventaireSelectedFrame, tabInventaireLabel, active == Tab.Inventaire);
+        ApplyStandardTabVisual(tabShopIcon, tabShopSelectedFrame, null, active == Tab.Shop);
+        ApplyStandardTabVisual(tabSaleChannelsIcon, tabSaleChannelsSelectedFrame, null, active == Tab.SaleChannels);
     }
 
     /// <summary>Mockup nav : inactif gris ; actif = zoom, lueur, label, couleurs pleines.</summary>
     private void ApplyAventuresTabVisual(bool isActive)
     {
-        // Ancien cadre 4 bordures : désactivé pour ce pilote (lueur + zoom à la place).
-        if (tabAventuresSelectedFrame != null)
-            tabAventuresSelectedFrame.SetActive(false);
-
         bool hasSprite = tabAventuresIcon != null && tabAventuresIcon.sprite != null;
 
         bool showActiveFx = isActive && hasSprite;
+
+        ApplyAventuresSelectedFrameLayout(showActiveFx);
+
+        if (tabAventuresLavaBackdrop != null)
+            tabAventuresLavaBackdrop.SetActive(useActiveTabLavaBackdrop && showActiveFx);
 
         if (tabAventuresGlow != null)
         {
@@ -355,7 +396,11 @@ public class NavigationHUD : MonoBehaviour
             {
                 Image glowImage = tabAventuresGlow.GetComponent<Image>();
                 if (glowImage != null)
-                    glowImage.color = new Color(activeTabLabelColor.r, activeTabLabelColor.g, activeTabLabelColor.b, 0.45f);
+                {
+                    if (activeTabGlowMaterial != null)
+                        glowImage.material = activeTabGlowMaterial;
+                    glowImage.color = new Color(activeTabLabelColor.r, activeTabLabelColor.g, activeTabLabelColor.b, activeTabGlowAlpha);
+                }
             }
         }
 
@@ -363,7 +408,7 @@ public class NavigationHUD : MonoBehaviour
         {
             tabAventuresLabel.gameObject.SetActive(showActiveFx);
             if (showActiveFx)
-                tabAventuresLabel.color = activeTabLabelColor;
+                ApplyNavTabLabelStyle(tabAventuresLabel);
         }
 
         if (tabAventuresIconLift != null)
@@ -381,33 +426,180 @@ public class NavigationHUD : MonoBehaviour
         float iconScale = isActive && hasSprite ? activeTabIconScale : 1f;
         iconRect.localScale = new Vector3(iconScale, iconScale, 1f);
 
+        float iconOffsetY = isActive && hasSprite ? activeTabIconLocalOffsetY : 0f;
+        iconRect.anchoredPosition = tabAventuresIconRestAnchoredPosition + new Vector2(0f, iconOffsetY);
+
         if (!hasSprite)
         {
             tabAventuresIcon.color = new Color(1f, 1f, 1f, 0f);
             return;
         }
 
+        ApplyNavTabIconAppearance(tabAventuresIcon, isActive, hasSprite);
+    }
+
+    private void ApplyAventuresSelectedFrameLayout(bool showActiveFx)
+    {
+        if (tabAventuresSelectedFrame == null)
+            return;
+
+        tabAventuresSelectedFrame.SetActive(showActiveFx);
+
+        RectTransform frameRect = tabAventuresSelectedFrame.GetComponent<RectTransform>();
+        if (frameRect == null)
+            return;
+
+        if (!showActiveFx)
+        {
+            frameRect.anchoredPosition = tabAventuresSelectedFrameRestPosition;
+            frameRect.sizeDelta = tabAventuresSelectedFrameRestSizeDelta;
+            return;
+        }
+
+        frameRect.anchoredPosition = tabAventuresSelectedFrameRestPosition + new Vector2(0f, activeTabFrameActivePosY);
+        frameRect.sizeDelta = tabAventuresSelectedFrameRestSizeDelta + activeTabFrameSizeDeltaAdd;
+    }
+
+    /// <summary>Onglets sans IconLift/Glow : N&B inactif, couleur actif, label TMP seulement si actif.</summary>
+    private void ApplyStandardTabVisual(Image icon, GameObject selectedFrame, TextMeshProUGUI label, bool isActive)
+    {
+        bool hasSprite = icon != null && icon.sprite != null;
+        bool showActive = isActive && hasSprite;
+
+        if (selectedFrame != null)
+            selectedFrame.SetActive(showActive);
+        if (label != null)
+        {
+            label.gameObject.SetActive(showActive);
+            if (showActive)
+                ApplyNavTabLabelStyle(label);
+        }
+
+        ApplyNavTabIconAppearance(icon, isActive, hasSprite);
+    }
+
+    private void ConfigureAventuresTabFxHierarchy()
+    {
+        if (tabAventuresGlow != null && tabAventuresIconLift != null)
+        {
+            RectTransform glowRect = tabAventuresGlow.transform as RectTransform;
+            if (glowRect != null && glowRect.parent != tabAventuresIconLift)
+            {
+                glowRect.SetParent(tabAventuresIconLift, false);
+                glowRect.SetAsFirstSibling();
+            }
+
+            if (glowRect != null)
+            {
+                glowRect.anchorMin = new Vector2(0.5f, 0.5f);
+                glowRect.anchorMax = new Vector2(0.5f, 0.5f);
+                glowRect.pivot = new Vector2(0.5f, 0.5f);
+                glowRect.anchoredPosition = new Vector2(0f, 8f);
+                glowRect.sizeDelta = new Vector2(activeTabGlowSize, activeTabGlowSize);
+            }
+
+            Image glowImage = tabAventuresGlow.GetComponent<Image>();
+            if (glowImage != null)
+            {
+                glowImage.raycastTarget = false;
+                glowImage.sprite = GetUiWhiteSprite();
+                if (activeTabGlowMaterial != null)
+                    glowImage.material = activeTabGlowMaterial;
+            }
+        }
+
+        if (!useActiveTabLavaBackdrop && tabAventuresLavaBackdrop != null)
+            tabAventuresLavaBackdrop.SetActive(false);
+
+        if (useActiveTabLavaBackdrop && tabAventuresLavaBackdrop == null && tabAventuresButton != null && activeTabLavaMaterial != null)
+        {
+            GameObject lavaGo = new GameObject("ActiveLava", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            lavaGo.layer = 5;
+            RectTransform lavaRect = lavaGo.GetComponent<RectTransform>();
+            lavaRect.SetParent(tabAventuresButton.transform, false);
+            lavaRect.SetSiblingIndex(1);
+
+            lavaRect.anchorMin = new Vector2(0f, 0f);
+            lavaRect.anchorMax = new Vector2(1f, 0f);
+            lavaRect.pivot = new Vector2(0.5f, 0f);
+            lavaRect.anchoredPosition = new Vector2(0f, 0f);
+            lavaRect.sizeDelta = new Vector2(0f, 78f);
+
+            Image lavaImage = lavaGo.GetComponent<Image>();
+            lavaImage.raycastTarget = false;
+            lavaImage.sprite = GetUiWhiteSprite();
+            lavaImage.material = activeTabLavaMaterial;
+            lavaImage.color = Color.white;
+
+            tabAventuresLavaBackdrop = lavaGo;
+            tabAventuresLavaBackdrop.SetActive(false);
+        }
+        else if (tabAventuresLavaBackdrop != null)
+        {
+            Image lavaImage = tabAventuresLavaBackdrop.GetComponent<Image>();
+            if (lavaImage != null)
+            {
+                lavaImage.raycastTarget = false;
+                if (lavaImage.sprite == null)
+                    lavaImage.sprite = GetUiWhiteSprite();
+                if (activeTabLavaMaterial != null)
+                    lavaImage.material = activeTabLavaMaterial;
+            }
+        }
+    }
+
+    private void ApplyNavTabLabelStyle(TextMeshProUGUI label)
+    {
+        if (label == null)
+            return;
+
+        label.color = activeTabLabelColor;
+        label.fontSize = activeTabLabelFontSize;
+        label.outlineWidth = activeTabLabelOutlineWidth;
+        label.outlineColor = Color.black;
+        label.fontStyle = FontStyles.Bold;
+    }
+
+    private static Sprite GetUiWhiteSprite()
+    {
+        if (uiWhiteSprite != null)
+            return uiWhiteSprite;
+
+        Texture2D tex = Texture2D.whiteTexture;
+        uiWhiteSprite = Sprite.Create(tex, new Rect(0f, 0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100f);
+        return uiWhiteSprite;
+    }
+
+    /// <summary>Inactif = désaturation (material). Actif = couleurs sprite (material par défaut).</summary>
+    private void ApplyNavTabIconAppearance(Image icon, bool isActive, bool hasSprite)
+    {
+        if (icon == null)
+            return;
+
+        if (!hasSprite)
+        {
+            icon.material = null;
+            icon.color = new Color(1f, 1f, 1f, 0f);
+            return;
+        }
+
         if (isActive)
         {
-            tabAventuresIcon.color = new Color(1f, 1f, 1f, iconAlphaActive);
+            icon.material = null;
+            icon.color = new Color(1f, 1f, 1f, iconAlphaActive);
+            return;
+        }
+
+        if (inactiveTabGrayscaleMaterial != null)
+        {
+            icon.material = inactiveTabGrayscaleMaterial;
+            icon.color = new Color(1f, 1f, 1f, iconAlphaInactive);
             return;
         }
 
         float gray = inactiveTabIconGray;
-        tabAventuresIcon.color = new Color(gray, gray, gray, iconAlphaInactive);
-    }
-
-    /// <summary>Actif = cadre visible + icône pleine opacité. Inactif = pas de cadre + léger fade (pas de tint couleur).</summary>
-    private void ApplyTabVisual(Image icon, GameObject selectedFrame, bool isActive)
-    {
-        if (selectedFrame != null)
-            selectedFrame.SetActive(isActive);
-
-        if (icon == null)
-            return;
-
-        float alpha = isActive ? iconAlphaActive : iconAlphaInactive;
-        icon.color = new Color(1f, 1f, 1f, alpha);
+        icon.material = null;
+        icon.color = new Color(gray, gray, gray, iconAlphaInactive);
     }
 
     // ── Enums ─────────────────────────────────────────────────────────────────

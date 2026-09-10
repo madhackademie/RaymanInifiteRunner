@@ -80,44 +80,130 @@ Target: TabAventures ONLY. Do NOT modify TabInventaire, TabShop, TabVente.
 Save. List hierarchy. STOP.
 ```
 
-### Phase 2 — Composants visuels
+### Phase 2 — Composants visuels (legacy Knob — remplacé par `[BZ-TAB-SPRITES-002]`)
+
+Voir section **Mockup FX glow + lave** ci-dessous.
+
+### Phase 3 — Wiring minimal (2026-09-10) — compléter avec `[BZ-TAB-SPRITES-002]` Phase 3
+
+---
+
+## Mockup FX glow + lave — TabAventures `[BZ-TAB-SPRITES-002]`
+
+**Prérequis :** Phase 1 hiérarchie OK (`IconLift`, `Glow`, `Label`). Materials Cursor : `Assets/Materials/UI/NavTabSoftGlow.mat`, `NavTabLavaBackdrop.mat`, `NavTabIconGrayscale.mat`.  
+**Spec :** `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`  
+**Une phase par appel.** Succès = Save + liste. **STOP. Pas Simulate.**
+
+### Phase 2 — Composants + hiérarchie FX
 
 ```
-[BZ-TAB-SPRITES-001] PILOT TabAventures — PHASE 2 components ONLY. Phase 1 must be done. STOP after Save.
+[BZ-TAB-SPRITES-002] TabAventures mockup FX — PHASE 2 components ONLY. STOP after Save.
 
-OPEN NavigationHUD.unity. Layer UI = 5. File ONLY this scene. TabAventures ONLY.
+OPEN Assets/Scenes/NavigationHUD.unity first. m_Layer = 5 on all UI.
+Do NOT rescan project. Do NOT edit .cs. File ONLY this scene. TabAventures ONLY.
 
-1) Glow: Add Image. Use default UI Sprite (Knob) or soft circle. Color RGB(1, 0.78, 0.2) alpha 0.35. Raycast OFF. GameObject INACTIVE by default.
+1) Child ORDER under TabAventures:
+   SelectedFrame (keep, default OFF)
+   ActiveLava (CREATE if missing)
+   IconLift (existing)
+   Label (existing)
 
-2) Icon (under IconLift): Image white, Preserve Aspect ON, Raycast OFF. Stretch anchors (0,0)-(1,1), sizeDelta -8,-8. Do NOT replace author sprite.
+2) ActiveLava: OPTIONAL (Cursor `useActiveTabLavaBackdrop` = false by default). Prefer **cadre** not fond plein.
+   If created: same as before but GO always OFF unless auteur demande lave.
 
-3) Label: Add or enable TextMeshProUGUI. Text "Aventures". Font size 22, bold, color RGB(1, 0.78, 0.2). Anchor bottom center of tab, height ~22, width stretch with 4px side padding. GameObject INACTIVE by default. Raycast OFF.
+2b) SelectedFrame: 4 borders gold 3px — **ON when tab active** (script toggles). Pas de Image fill sur le slot.
 
-4) SelectedFrame: keep gold borders 3px, inactive by default. No color tint on Icon.
+3) MOVE Glow under IconLift as FIRST child (TabAventures/IconLift/Glow, before Icon).
+   Glow RT: anchor center, pivot center, pos(0,6), sizeDelta 148x148.
+   Image: UISprite white, Material = Assets/Materials/UI/NavTabSoftGlow.mat,
+   color RGB(1,0.88,0.22) alpha 0.72, Raycast OFF, GO OFF by default.
 
-5) NavBarContainer: set RectTransform height from 120 to 128 if safe (sizeDelta y=128). Only if no layout break.
+4) IconLift/Icon: stretch (0,0)-(1,1), sizeDelta(-8,-34), Preserve Aspect ON, white, Raycast OFF. KEEP author sprite.
 
-Save. List components. STOP. No Simulate.
+5) Label TMP: text "Aventures", anchor bottom stretch, pivot(0.5,0), pos(0,12), height 30,
+   font 24 bold, face RGB(1,0.92,0.2), Outline black ~0.28, Raycast OFF, GO OFF by default.
+
+6) SelectedFrame: keep but OFF by default (Cursor désactive legacy cadre). No RectMask2D on NavBarContainer.
+
+Save. List paths. STOP. No Play Mode.
 ```
 
-### Phase 3 — Wiring Inspector — **livré 2026-09-10**
-
-Cursor : champs `tabAventuresIconLift` / `Glow` / `Label` + logique zoom dans `NavigationHUD.cs` (câblage scène sur `HUDRoot`).
+### Phase 3 — Wiring HUDRoot
 
 ```
-[BZ-TAB-SPRITES-001] PILOT TabAventures — PHASE 3 wiring ONLY. STOP after Save.
+[BZ-TAB-SPRITES-002] TabAventures — PHASE 3 wiring ONLY. Phase 2 done. STOP.
 
-OPEN NavigationHUD.unity. Do NOT edit C#. TabAventures ONLY.
+OPEN NavigationHUD.unity. Do NOT edit C#. HUDRoot + TabAventures only.
 
-On HUDRoot NavigationHUD component, wire EXISTING fields only:
-- tabAventuresIcon → TabAventures/IconLift/Icon (Image)
-- tabAventuresSelectedFrame → TabAventures/SelectedFrame
+NavigationHUD on HUDRoot — wire:
+tabAventuresButton → TabAventures Button
+tabAventuresIcon → TabAventures/IconLift/Icon (Image)
+tabAventuresSelectedFrame → TabAventures/SelectedFrame
+tabAventuresIconLift → TabAventures/IconLift (RectTransform)
+tabAventuresGlow → TabAventures/IconLift/Glow
+tabAventuresLavaBackdrop → TabAventures/ActiveLava
+tabAventuresLabel → TabAventures/Label (TMP)
+activeTabGlowMaterial → Assets/Materials/UI/NavTabSoftGlow.mat
+activeTabLavaMaterial → Assets/Materials/UI/NavTabLavaBackdrop.mat
+inactiveTabGrayscaleMaterial → Assets/Materials/UI/NavTabIconGrayscale.mat (if empty)
 
-Do NOT add new script fields. Do NOT wire Glow, IconLift, or Label to NavigationHUD (Cursor will add SerializeFields later).
+Do NOT change lift/scale numbers unless fields empty. KEEP Animator NavTab + OnClick.
 
-KEEP tabAventuresButton → TabAventures Button. KEEP Animator + NavTab controller.
+Save. List refs. STOP.
+```
 
-Save. List wired references. STOP.
+---
+
+## TabInventaire — copie patron mockup `[BZ-TAB-INVENTAIRE-MOCKUP-001]`
+
+**Prérequis :** glyphe sac **sans texte ni cadre** dans le PNG (`Sprites/UI/Nav/Tabs/`).  
+**Cursor :** wiring glow/lift Inventaire dans `NavigationHUD.cs` **après** Bezy P1–P3 (champs à ajouter).
+
+### Phase 1 — Hiérarchie
+
+```
+[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 1 hierarchy ONLY. STOP.
+
+OPEN NavigationHUD.unity. m_Layer 5. TabInventaire ONLY. Do NOT edit C#.
+
+Mirror TabAventures structure:
+SelectedFrame (keep) → CREATE ActiveLava → CREATE IconLift → Label (reuse or create).
+
+MOVE Icon to TabInventaire/IconLift/Icon. KEEP sprite on Image.
+
+IconLift: stretch fill, pos 0, sizeDelta 0. Glow empty RT under IconLift later (phase 2). Label sibling last.
+
+Save. List hierarchy. STOP.
+```
+
+### Phase 2 — Composants (copie Aventures)
+
+```
+[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 2 components. P1 done. STOP.
+
+OPEN NavigationHUD.unity. TabInventaire ONLY. Copy numeric/layout from TabAventures/ActiveLava, IconLift/Glow, Label.
+
+ActiveLava + Glow materials: NavTabLavaBackdrop.mat, NavTabSoftGlow.mat (same paths as Aventures).
+Label text "Inventaire", same TMP style (24 bold, yellow, black outline).
+Icon sizeDelta (-8,-34). All FX GO OFF by default.
+
+Save. STOP. No Simulate.
+```
+
+### Phase 3 — Wiring (champs existants)
+
+```
+[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 3 wiring. STOP.
+
+OPEN NavigationHUD.unity. Do NOT edit C#.
+
+HUDRoot NavigationHUD:
+tabInventaireButton, tabInventaireIcon → IconLift/Icon,
+tabInventaireSelectedFrame, tabInventaireLabel → Label TMP.
+
+Do NOT wire Glow/Lava/IconLift yet (Cursor SerializeFields next).
+
+Save. List refs. STOP.
 ```
 
 ---

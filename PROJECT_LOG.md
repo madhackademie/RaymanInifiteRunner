@@ -1,5 +1,27 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-10 — Bezy HUD PA ×2 `[BZ-AP-HUD-SCALE-001]`
+
+### Décision auteur
+- Capture widget PA (`240 / 240`) trop petit → **agrandir 2×** via Bezy (prefab + instance `NavigationHUD`).
+- Cible : `ActionPointsHudWidget` **240×60 → 480×120** (icône 32→64, barre 6→12, labels 18/12 → 36/24).
+- Ancres inchangées : haut-droite, `(-16, -16)`.
+
+### Prep Cursor
+- Prompts 3 phases : `Notes/Ui/PROMPTS_Bezi_action_points_scale.md`
+- File : `Notes/Bezi/BEZY_QUEUE.md` — **lancer Ph.1**
+- Convention safe zone mise à jour (496×136)
+
+### IDs
+- `[P0-AP-HUD-SCALE-001]` · `[BZ-AP-HUD-SCALE-001]`
+
+### Prochaine étape
+1. Auteur Unity : `/prefab-ui-3phases` Phase 1 sur `ActionPointsHudWidget.prefab`
+2. Cursor review YAML → Ph.2 TMP → Ph.3 scène
+3. Playtest lisibilité (hors prompt Bezy)
+
+---
+
 ## 2026-09-09 — Todo map principale niveaux (rework Accueil)
 
 ### Décision auteur

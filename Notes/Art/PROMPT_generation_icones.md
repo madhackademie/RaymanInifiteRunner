@@ -256,7 +256,7 @@ Sortie : `Dump/Ui/Nav/Icone_OngletMultiverse_YYYYMMDD.png`.
 | Sujet | **Un seul symbole**, silhouette **épaisse**, **~90 %** du cadre |
 | Style | Casual mobile, bordures lisibles, couleurs **vives** (état actif) ; lisible à **72 px** |
 | Inactif en jeu | Gris via Unity — **ne pas** générer une version grise séparée en V1 |
-| Pas de texte | Aucun mot sur le PNG (labels = TMP runtime) |
+| Pas de texte | **Aucun mot sur le PNG** — pas « Inventaire », pas cadre or : labels + glow = **Unity** (TMP sous l’icône, `Glow` actif seulement) |
 
 **Prompt commun (glyphe barre) :**
 

@@ -48,7 +48,8 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 23 | **[BZ-FARM-BIOHUD-PRIM-001]** | Atome + rangée slots **primaires** biofiltre (N=3 cadenas) | `UiBiofiltrePrimarySlot` + Row | M | `PROMPTS_Bezi_biofiltre_hud_slots.md` — après `[P0-FARM-BIOHUD-001]` C# |
 | 24 | **[BZ-FARM-BIOHUD-SEC-001]** | Atome + rangée slots **secondaires** (N=5) | `UiBiofiltreSecondarySlot` + Row | M | même fichier prompts |
 | 25 | **[BZ-FARM-BIOHUD-HOST-001]** | HUD world `BiofiltreHud` (neste `UiStarRow` + 2 rows) | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | M | après jobs 23–24 |
-| 26 | **[BZ-TAB-SPRITES-001]** / **[P0-TAB-SPRITES-001]** | Mise en place + polish **sprites onglets** HUD | `NavigationHUD` (tabs) | M | brief auteur → `PROMPTS_Bezi_tab_sprites.md` — **ne pas envoyer avant validation** |
+| 26 | **[BZ-TAB-SPRITES-001]** / **[P0-TAB-SPRITES-001]** | Mise en place + polish **sprites onglets** HUD | `NavigationHUD` (tabs) | M | TabVente dernier prompt — `PROMPTS_Bezi_tab_sprites.md` |
+| 27 | **[BZ-AP-HUD-SCALE-001]** / **[P0-AP-HUD-SCALE-001]** | HUD PA **×2** (240×60 → 480×120) | `ActionPointsHudWidget.prefab` | S | **LANCER Ph.1** — `PROMPTS_Bezi_action_points_scale.md` |
 
 ---
 
@@ -63,6 +64,12 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - **Fill conso** : `SpendPulse` path `ProgressBar/BarFill` scale punch — OK
 - **Tooltip** : layer 5 + CanvasGroup + FadeIn/Out 0.12 s — OK
 - **Suite Cursor :** hooks `Refuse` + fade tooltip — **OK** (2026-07-29) ; playtest Batch E
+
+### 27 — HUD PA ×2 `[BZ-AP-HUD-SCALE-001]` — **LANCER Ph.1** (2026-09-10)
+- Prefab : `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
+- Cible : **480 × 120** (×2 vs 240 × 60) — layout puis TMP puis instance `NavigationHUD`
+- Prompts : `Notes/Ui/PROMPTS_Bezi_action_points_scale.md`
+- Ancres inchangées haut-droite `(-16, -16)`
 
 ### 3 — EmptyState pulse `[BZ-POLISH-003]` — CLOS
 - Livré Ph.1–3 (2026-07-23).

@@ -112,6 +112,7 @@ public class PlantPlacementPreview : MonoBehaviour
             grow.enabled = false;
 
         HideGhostInsects(ghostInstance);
+        HideGhostSelectionGlow(ghostInstance);
 
         // Mature = meilleure lecture du footprint 2×2 iso (seedling trop haut / déborde latéralement).
         ghostRenderer = ghostInstance.GetComponent<SpriteRenderer>();
@@ -136,6 +137,16 @@ public class PlantPlacementPreview : MonoBehaviour
 
         foreach (InsectPathFollower follower in ghostRoot.GetComponentsInChildren<InsectPathFollower>(true))
             follower.enabled = false;
+    }
+
+    private static void HideGhostSelectionGlow(GameObject ghostRoot)
+    {
+        if (ghostRoot.TryGetComponent(out PlantSelectionHighlight highlight))
+            highlight.enabled = false;
+
+        Transform glow = ghostRoot.transform.Find("SelectionGlow");
+        if (glow != null)
+            glow.gameObject.SetActive(false);
     }
 
     private void UpdateGhostPosition()

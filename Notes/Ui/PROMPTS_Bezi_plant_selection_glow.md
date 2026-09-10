@@ -2,7 +2,7 @@
 
 **Task ID :** `[BZ-FARM-PLANT-SELECT-GLOW-001]` · **P0 :** `[P0-FARM-PLANT-SELECT-GLOW-001]`  
 **Prefab :** `Assets/Prefabs/World/Plantes/LaitueObj.prefab` (modèle pour toutes plantes monde)  
-**Script Cursor (après Ph.3) :** `PlantSelectionHighlight.cs` — Bezy **ne** code pas la logique.  
+**Script Cursor :** `Assets/Scripts/Farm/PlantSelectionHighlight.cs` + hooks `BiofiltreManager` / `PlantGrow` — **livré 2026-09-10**. Bezy **ne** code pas la logique.  
 **Contexte :** clic = losanges footprint seuls ; le joueur doit **voir la cible** (feedback « clic pris » + quelle plante est sélectionnée). **Socle vert footprint = garder** en complément.
 
 ---
@@ -20,9 +20,12 @@
 ## Cible visuelle
 
 - Halo **jaune → blanc** autour de la **silhouette** du sprite plante (pas seulement le footprint).
-- Glow **derrière** la plante (`sortingOrder` &lt; sprite principal) ou contour lisible mobile.
-- `SetActive(false)` par défaut — activé par code à la sélection.
+- **Ne pas** ressembler au **fantôme de pose** (semi-transparent blanc = preview) : effet **cible / sélection** lisible (double couche Outer jaune + Inner blanc recommandé).
+- Glow **derrière** la plante (`sortingOrder` &lt; sprite principal) ; alpha modéré sur les renderers glow.
+- `SelectionGlow` **inactive** dans le prefab — seul `PlantSelectionHighlight` l’active au clic récolte.
 - Pas de Simulate / playtest dans le prompt Bezy.
+
+**Playtest Cursor OK 2026-09-10** — fallback runtime trop « clone fantôme » ; Bezy remplace par prefab câblé.
 
 ---
 
@@ -53,7 +56,8 @@ Sur `GlowSprite` :
 | `SpriteRenderer.sprite` | **vide** (runtime = même sprite que la plante) |
 | `SpriteRenderer.color` | jaune `(1, 0.92, 0.2, 0.75)` ou blanc `(1,1,1,0.6)` — teinte lisible sur fond IBC |
 | `SpriteRenderer.sortingOrder` | **−1** vs sprite plante principal (glow derrière) |
-| `localScale` | `(1.08, 1.08, 1)` — léger grossissement pour effet contour |
+| `GlowOuter` scale | `(1.12, 1.12, 1)` jaune `(1, 0.92, 0.2, 0.55)` |
+| `GlowInner` scale | `(1.05, 1.05, 1)` blanc `(1,1,1,0.45)` — **pas** un 2e sprite opaque plein |
 | Layer | même que plante (Default sauf convention projet) |
 
 Option acceptable : **2** enfants `GlowOuter` (jaune, scale 1.10) + `GlowInner` (blanc, scale 1.04) si un seul renderer est trop plat.

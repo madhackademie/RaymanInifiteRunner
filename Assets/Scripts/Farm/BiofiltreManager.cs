@@ -42,6 +42,7 @@ public class BiofiltreManager : MonoBehaviour
     private bool runtimeInitialized;
     private SeedSelectionUI cachedSeedSelectionUi;
     private HarvestPanelUI cachedHarvestPanelUi;
+    private PlantSelectionHighlight activePlantSelectionHighlight;
 
     // Suppression du clic de placement : le clic confirmant la pose est livré par
     // l'EventSystem au relâchement (souvent une frame plus tard que l'instanciation
@@ -203,9 +204,15 @@ public class BiofiltreManager : MonoBehaviour
         }
 
         PlantDefinition definition = holder != null ? holder.Definition : null;
+
+        // Une seule sélection : footprint + silhouette (remplace l’ancienne cible).
+        ClearPlantSelectionHighlight();
+
         if (definition != null &&
             plantObj.TryGetComponent(out PlantPersistenceMarker marker))
             visualizer.SetFootprintSelectionHighlight(definition, marker.Anchor);
+
+        SetPlantSilhouetteHighlight(plantObj);
 
         if (!TryOpenFarmPlantHarvestPopup(interactor, plantGrow, definition))
             ClearPlantSelectionHighlight();
@@ -243,10 +250,44 @@ public class BiofiltreManager : MonoBehaviour
             ui.Close();
     }
 
-    /// <summary>Retire la surbrillance verte du socle plante sélectionnée.</summary>
+    /// <summary>Retire socle vert footprint + contour silhouette sur toutes les plantes.</summary>
     public void ClearPlantSelectionHighlight()
     {
         visualizer?.ClearFootprintSelectionHighlight();
+        DeactivateAllPlantSilhouetteHighlights();
+        activePlantSelectionHighlight = null;
+    }
+
+    /// <summary>Une seule silhouette active : désactive les autres puis active la cible.</summary>
+    private void SetPlantSilhouetteHighlight(GameObject plantObj)
+    {
+        DeactivateAllPlantSilhouetteHighlights();
+        activePlantSelectionHighlight = null;
+
+        if (plantObj == null)
+            return;
+
+        PlantSelectionHighlight highlight = plantObj.GetComponent<PlantSelectionHighlight>();
+        if (highlight == null)
+            highlight = plantObj.AddComponent<PlantSelectionHighlight>();
+
+        highlight.SetHighlightActive(true);
+        activePlantSelectionHighlight = highlight;
+    }
+
+    private void DeactivateAllPlantSilhouetteHighlights()
+    {
+        if (visualizer?.PlantsContainer == null)
+        {
+            activePlantSelectionHighlight?.SetHighlightActive(false);
+            return;
+        }
+
+        foreach (Transform child in visualizer.PlantsContainer)
+        {
+            if (child.TryGetComponent(out PlantSelectionHighlight highlight))
+                highlight.SetHighlightActive(false);
+        }
     }
 
     // ── Footprint query (called by SeedSelectionUI) ───────────────────────────

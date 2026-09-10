@@ -127,6 +127,7 @@ public class PlantGrow : MonoBehaviour
         EnsureSortingGroup();
         SyncInsectPathForStage(stage);
         SyncHarvestReadyFxForStage(stage);
+        GetComponent<PlantSelectionHighlight>()?.RefreshIfActive();
     }
 
     /// <summary>
