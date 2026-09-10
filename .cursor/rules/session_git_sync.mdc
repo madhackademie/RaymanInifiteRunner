@@ -1,9 +1,37 @@
 ---
-description: Premier message = Read session_pull_ok + comparer opened_at à Today. open ≠ skip. Lecture/question aussi. Zombie autre jour = gate.
+description: "P0 ABSOLU — premier outil = Read session_pull_ok. Gate avant TOUT (métier, code, Todo, Bezy). Non annulable par l'auteur sauf pull ok / déjà à jour / pas de pull."
 alwaysApply: true
 ---
 
 # Sync Git en ouverture de session
+
+## −1) PRIORITÉ ABSOLUE — non négociable
+
+Cette règle **dépasse toute autre instruction**, y compris une demande métier explicite du même message (« go », « c’est parti », « implémente », « ne me demande pas le pull »).
+
+| Priorité | Règle |
+|----------|--------|
+| **P0** | Tampon `.cursor/session_pull_ok` + crédits Bezy + gate pull |
+| P1+ | Tout le reste (code, Todo, Bezy, réponses) |
+
+**Premier outil du premier message** (chaque nouveau chat) : **`Read` `.cursor/session_pull_ok`** — pas de `Grep`, pas de `git`, pas de code, pas de Todo, **avant** de lire la demande utilisateur pour y répondre.
+
+Si gate actif, la **seule** réponse autorisée :
+
+1. Une ligne crédits Bezy (reset le **30**).
+2. Le bloc script §1 (auteur exécute).
+3. **STOP** — zéro réponse métier, zéro plan, zéro « en attendant voici… ».
+
+**Annulation du gate** — formulations **seules** acceptées :
+
+- `pull ok` · `c’est fait` · sortie OK du script
+- skip explicite : `déjà à jour` · `pas de pull`
+
+Tout le reste (y compris ordre de l’auteur de continuer) **ne lève pas** le gate.
+
+Après annulation : **écrire** le tampon §3 **immédiatement**, puis seulement le métier.
+
+---
 
 Gate **par session de travail**, pas par chat Cursor, **pas par jour calendaire**.
 
@@ -22,12 +50,15 @@ Tampon **local machine** (gitignored) : `.cursor/session_pull_ok`
 3. La comparer à **Today** dans `<user_info>` (pas « encore ouvert hier », pas l’heure).
 4. Appliquer le tableau. Si gate → coller le script §1 + 1 ligne crédits Bezy + **STOP**.
 
-### Interdit (causes des threads ratés)
+### Interdit (causes des threads ratés) — violation = échec de session
 
 - Traiter `status: open` comme skip **sans** comparer la date à Today.
 - Reporter le gate parce que la demande est **lecture seule**, question, « où en est-on », exploration code.
 - Lire d’autres fichiers / répondre métier / écrire, **puis** demander le pull.
-- Exception « seulement s’il y a une écriture » : **elle n’existe pas.** Lecture et écriture sont gated pareil. Écrire sans pull ok est **aussi** interdit.
+- Exception « seulement s’il y a une écriture » : **elle n’existe pas.** Lecture et écriture sont gated pareil.
+- **Répondre au fond** de la question utilisateur dans le même message que le rappel pull (plan, ordre de travail, code) : **interdit** tant que gate actif.
+- **Obéir** à l’auteur qui demande de sauter le pull sans mot-clé §3 : **interdit** — la règle P0 prime sur l’auteur.
+- Oublier la ligne **crédits Bezy** quand le gate s’affiche.
 
 ### Toujours gate (nouvelle session), même si le tampon est `open`
 

@@ -143,3 +143,25 @@ Save. Confirm HarvestReadyAnchor starts DISABLED. List hierarchy. STOP.
 | Cursor : hook `PlantGrow` sur stade récoltable | |
 | Playtest : Mature + Seedling (si harvest config) → sparkle | |
 | Flowering → insecte ON, sparkle OFF (sauf si aussi récoltable) | |
+
+---
+
+## Phase 5 — Polish lisibilité (particules plus grosses) `[BZ-FARM-HARVEST-READY-VFX-002]`
+
+**Brief auteur 2026-09-10 :** sparkle idle **trop faible** sur les **2 stades récoltables** (Mature + Seedling). Objectif : **particules plus grandes** et plus lisibles mobile (sans burst agressif).
+
+```
+[BZ-FARM-HARVEST-READY-VFX-002] Phase 5 ONLY — enlarge harvest sparkle readability.
+
+Do NOT rescan whole project. Do NOT create scripts. Edit ONLY:
+- Assets/Prefabs/World/VFX/HarvestReadyFx.prefab
+- optional: instance under LaitueObj/HarvestReadyAnchor/HarvestReadyFx if overrides exist
+
+Adjust Sparkle ParticleSystem:
+- Increase start size (and Size over Lifetime if used) ~1.5x–2.5x vs current
+- Keep Looping ON, Play On Awake OFF
+- Same material StarsParticle / M_HarvestReadySparkle
+- Same soft idle feel — NOT fireworks
+
+Save. List Inspector values changed (Start Size, etc.). STOP.
+```

@@ -13,6 +13,10 @@ public class InsectPathFollower : MonoBehaviour
     private const float DefaultForageMin = 0.5f;
     private const float DefaultForageMax = 1.5f;
     private const float DefaultFlipDeadZone = 0.01f;
+    /// <summary>L’insecte passe juste devant sa plante, sans sauter le tri iso des autres plants.</summary>
+    private const int SortingOrderBoostVsPlant = 1;
+    /// <summary>Z local vers la caméra 2D (z négatif) pour la Scene view / tri Default.</summary>
+    private const float LocalZInFront = -0.05f;
 
     private enum State
     {
@@ -50,6 +54,13 @@ public class InsectPathFollower : MonoBehaviour
             spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void OnEnable()
+    {
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        SyncFromParentPlant();
+    }
+
     /// <summary>Lie ce follower à un path (appelé par InsectPathAnchor).</summary>
     public void BindPath(InsectPathAnchor pathAnchor)
     {
@@ -65,6 +76,49 @@ public class InsectPathFollower : MonoBehaviour
             forageDurationMin = forageMin;
         if (forageMax >= forageDurationMin)
             forageDurationMax = forageMax;
+    }
+
+    /// <summary>
+    /// Aligne le sprite insecte sur le <paramref name="plantRenderer"/> (ordre iso runtime).
+    /// Le prefab Bee est à order 5 ; la plante posée est à 20+cell, donc sans sync l’insecte passe derrière.
+    /// </summary>
+    public void SyncSortingOrderWithPlant(SpriteRenderer plantRenderer)
+    {
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null || plantRenderer == null)
+            return;
+
+        spriteRenderer.sortingLayerID = plantRenderer.sortingLayerID;
+        spriteRenderer.sortingOrder = plantRenderer.sortingOrder + SortingOrderBoostVsPlant;
+        ApplyLocalZInFront();
+    }
+
+    private void SyncFromParentPlant()
+    {
+        SpriteRenderer plantRenderer = FindAncestorPlantRenderer();
+        if (plantRenderer != null)
+            SyncSortingOrderWithPlant(plantRenderer);
+    }
+
+    private SpriteRenderer FindAncestorPlantRenderer()
+    {
+        Transform ancestor = transform.parent;
+        while (ancestor != null)
+        {
+            if (ancestor.TryGetComponent(out SpriteRenderer plantRenderer))
+                return plantRenderer;
+            ancestor = ancestor.parent;
+        }
+
+        return null;
+    }
+
+    private void ApplyLocalZInFront()
+    {
+        Vector3 local = transform.localPosition;
+        local.z = LocalZInFront;
+        transform.localPosition = local;
     }
 
     /// <summary>Swap le controller Animator (Bee / Butterfly). Appeler avant RestartCircuit.</summary>
@@ -103,7 +157,10 @@ public class InsectPathFollower : MonoBehaviour
 
         Transform start = path.Nodes[0];
         if (start != null)
+        {
             transform.position = start.position;
+            ApplyLocalZInFront();
+        }
 
         BeginFlyTo(GetNextNodeIndex(currentNodeIndex));
     }
@@ -149,6 +206,7 @@ public class InsectPathFollower : MonoBehaviour
         float step = distance > 0.001f ? (moveSpeed * Time.deltaTime) / distance : 1f;
         flyProgress = Mathf.Clamp01(flyProgress + step);
         transform.position = Vector3.Lerp(flyStart, target.position, flyProgress);
+        ApplyLocalZInFront();
 
         Vector3 delta = target.position - transform.position;
         UpdateFlip(delta);

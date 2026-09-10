@@ -54,7 +54,7 @@ MonoBehaviour:
   - stage: 3
     durationSeconds: 1
   - stage: 4
-    durationSeconds: 250
+    durationSeconds: 1
   - stage: 5
     durationSeconds: 350
   - stage: 6

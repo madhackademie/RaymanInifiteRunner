@@ -12,7 +12,8 @@
 | Couche | Qui décide | Stable sur toute la carte |
 |--------|------------|---------------------------|
 | **Gameplay** | `BiofiltreLayoutDefinition` : `columns`, `rows`, `cellSize` | Même `cellSize` partout (ex. `1` × scale enfant `Grid` `0.55`) |
-| **Art IBC** | 1 sprite + `deckNormalized` **par variante** de bac | Grand bac = **nouveau PNG**, pas des cellules géantes |
+| **Art IBC** | 1 sprite + `deckShapeUv` (quad UV) **par variante** | Grand bac = **nouveau PNG** ; `deckNormalized` = legacy Fit once |
+| **Taille grille** | Bake B sur prefab (`BiofiltreLayoutBinder`) | `columns` / `rows` depuis le quad — `cellSize` inchangé |
 | **Calage visuel** | Transforms enfants `Grid` + `IbcSprite` sur le prefab | Une fois par variante (Prefab Mode) |
 | **Plantes** | `PlantDefinition.footprint` variable + ancrage code | Même règle tous bacs |
 

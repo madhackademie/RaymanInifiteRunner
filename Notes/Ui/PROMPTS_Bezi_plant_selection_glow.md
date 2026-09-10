@@ -3,7 +3,7 @@
 **Task ID :** `[BZ-FARM-PLANT-SELECT-GLOW-001]` · **P0 :** `[P0-FARM-PLANT-SELECT-GLOW-001]`  
 **Prefab :** `Assets/Prefabs/World/Plantes/LaitueObj.prefab` (modèle pour toutes plantes monde)  
 **Script Cursor (après Ph.3) :** `PlantSelectionHighlight.cs` — Bezy **ne** code pas la logique.  
-**Contexte :** clic = losanges footprint seuls ; canopée transparente au clic → le joueur doit **voir** quelle plante est ciblée.
+**Contexte :** clic = losanges footprint seuls ; le joueur doit **voir la cible** (feedback « clic pris » + quelle plante est sélectionnée). **Socle vert footprint = garder** en complément.
 
 ---
 

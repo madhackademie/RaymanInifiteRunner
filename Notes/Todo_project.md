@@ -76,13 +76,23 @@ Convention d'IDs :
 
 ### ★ Priorité Bezy — sprites onglets HUD `[P0-TAB-SPRITES-001]`
 
+> **MAJ 2026-09-10 :** mockup auteur — **5 glyphes simples** (remplissent la case) + **actif = zoom / lueur / label** (`Notes/Ui/SPEC_nav_onglets_zoom_actif.md`). Art : `PROMPT_generation_icones.md` § **H-nav mockup 2026-09-10**. Anciens PNG iso = remplacés après promo Dump.
+>
 > Décision auteur **2026-09-04** : **mise en place + polish des sprites** sur les onglets, **via Bezy** (`/prefab-ui-3phases`).  
 > **Ne pas envoyer de prompt** tant que l’auteur n’a pas listé les changements visuels et que les prompts n’ont pas été **validés ensemble**.  
 > Cible probable : `NavigationHUD` (`TabAventures` / `TabInventaire` / `TabShop` / `TabVente`) — champs `Image` déjà dans `NavigationHUD.cs`. Barre inventaire (`InventoryFilterBar`) **seulement si** le brief le dit.  
 > Art : Dump → promo auteur `Sprites/UI/` **avant** Bezy (Vague H `Notes/Art/PROMPT_generation_icones.md`). Bezy = wiring / layout / polish prefab, **pas** génération d’images.  
 > Stub prompts : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` — Ph.1–3 à rédiger après le brief. File : `Notes/Bezi/BEZY_QUEUE.md`.
 
-**Ordre prochaine session :**
+### ★ Prochaine session farm — 2026-09-10 (auteur)
+
+1. [ ] **[CT-FARM-BAKE-RECT-001]** Tester **bake B** sur un biofiltre **rectangulaire plus grand** (dupliquer layout SO + prefab ou variante) → vérifier génération `columns`/`rows` + playtest grille.
+2. [ ] **[P0-FARM-PLANT-FEEDBACK-001]** Feedback plante (deux points) :
+   - [ ] **[BZ-FARM-HARVEST-READY-VFX-002]** Sparkle récolte **Mature + Seedling** trop faible → **particules plus grosses** (Bezy) — `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` Phase 5.
+   - [ ] **[P0-FARM-PLANT-SELECT-GLOW-001]** **Contour / cible** au clic (jaune, blanc ou variante) — confirmer que le clic est pris + plante visible ; socle vert **conservé**. Cursor `PlantSelectionHighlight.cs` → Bezy `LaitueObj` (`PROMPTS_Bezi_plant_selection_glow.md`).
+3. **Backlog (plus tard) :** `[BL-FARM-DECK-CIRCLE-MASK-001]` deck rond terrasse/promo — `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md`.
+
+**Ordre prochaine session (autres chantiers) :**
 
 1. [~] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Bezy onglets HUD — 3/4 livrés ; **TabVente** dernier prompt (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`)
 1b. [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold disparu en haut `NavigationHUD` après passes Bezy onglets — **corriger plus tard** (non bloquant TabVente)
@@ -96,12 +106,24 @@ Convention d'IDs :
 9. [ ] **[P0-FARM-SPRITE-ALPHA-001]** Fond noir salades + sprites laitue biofiltre (reporté)
 10. [ ] **[P0-SALE-QTY-RAND-001]** Rand 1–3 salades ★1 (Cursor)
 11. [ ] **[P0-FARM-PLANT-SELECT-GLOW-001]** Glow jaune/blanc sélection plante (complète socle vert footprint)
+12. [x] **[P0-FARM-DECK-SHAPE-BAKE-001]** Shape UV + bake B — playtest OK 2026-09-10 (10×10, warning min col/row ignoré). Suite = masque plantable (C)
 
-### ★ Feedback sélection plante — glow silhouette `[P0-FARM-PLANT-SELECT-GLOW-001]`
+### ★ Deck shape UV + bake grille (B) `[P0-FARM-DECK-SHAPE-BAKE-001]` — clos playtest 2026-09-10
 
-> **Contexte (2026-09-09) :** clic gameplay = **losanges footprint** uniquement (`[P0-FARM-ISO-FOOTPRINT-HIT-001]`). La canopée ne capture plus le clic → le joueur doit **voir** quelle plante est ciblée.  
-> **Existant :** socle vert sur les 4 cellules (`BiofiltreGridVisualizer.SetFootprintSelectionHighlight`) — **à garder**.  
-> **Manque :** halo **jaune/blanc** sur le **pourtour du sprite** (silhouette), visible même si le clic était sur le footprint sous la canopée.
+> **Contexte (2026-09-10) :** `deckShapeUv` + bake B sur `BiofiltreLayoutBinder`. Playtest auteur OK ; warning « dépasse (0,0) » accepté (quad/Grid déjà bons en jeu).  
+> **Backlog cercle / promo terrasse :** `[BL-FARM-DECK-CIRCLE-MASK-001]` — `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md` (pas tout de suite).
+
+### ★ Feedback plante — récolte + cible clic `[P0-FARM-PLANT-FEEDBACK-001]`
+
+> **Priorité session 2026-09-10** (avec bake rect grand).
+
+**A — Sparkle récoltable (2 stades)** `[BZ-FARM-HARVEST-READY-VFX-002]`  
+> Mature + Seedling (`HarvestReadyFx` / `PlantGrow.SyncHarvestReadyFxForStage`) : effet **trop faible** en jeu → passe Bezy : **taille particules** (et si besoin rate/size over lifetime). Prompt Phase 5 : `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md`.
+
+**B — Glow cible au clic** `[P0-FARM-PLANT-SELECT-GLOW-001]`  
+> **Contexte :** clic = footprint seul ; le joueur doit **voir la cible** (clic bien pris).  
+> **Existant :** socle vert footprint — **garder**.  
+> **Manque :** contour **jaune / blanc** (ou teinte validée) sur la **silhouette** plante.
 
 | Partie | Agent | Détail |
 |--------|-------|--------|
@@ -561,6 +583,10 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [BL-AUD-003] Audit doc global projet + consolidation des notes obsolètes.
 - [ ] [BL-AUD-004] Passe commentaires FR ciblée sur scripts complexes (`Assets/Scripts/**`).
 
+### Ferme — grille / deck (plus tard)
+
+- [ ] **[BL-FARM-DECK-CIRCLE-MASK-001]** Biofiltre **circulaire** (modèle terrasse / promo t’aireau) : grille rect bakée + **masque** cellules hors cercle. Spec : `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md`. **Après** bake rect grand validé.
+
 ### Ferme — QoL monétisé (plus tard)
 
 - [ ] **[BL-FARM-HARVEST-ALL-001]** Bouton **récolte en un clic** sur la grille biofiltre : simuler le clic + validation de récolte sur **chaque** objet récoltable de la grille (accélération joueur). **Gate monétisation** (à trancher) : vision pub récompensée **ou** monnaie produite via pubs **ou** pass NoPub. Spec GDD + UI + service harvest batch — **pas avant** fondation monétisation / ads.
@@ -572,6 +598,10 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [BL-PROTO-004] Terminer le panel Options du menu principal.
 - [ ] [BL-PROTO-005] Maintenir à jour la carte des flux système (`Notes/Farm/SYSTEMES_carte_mentale.md`).
 - [ ] [BL-QUEST-DAILY-001] Ajouter une feature de quêtes quotidiennes (missions courtes) avec récompenses en ressources + points de compétences (design, logique runtime, reset journalier UTC, UI de suivi, persistance).
+
+### Navigation — polish cadre actif onglets (backlog)
+
+- [ ] **[BL-UI-NAV-TAB-FRAME-001]** **Cadre bois actif** par onglet nav (élément UI activable/désactivable) — remplace ou complète le **Glow** Knob V0. Motif : **truite centrée en haut** du cadre (identité aquaponie), style pierre/bois cohérent mockup. **Bezy** : prefab `TabActiveWoodFrame` + wiring `NavigationHUD` ; **art** : sprite 9-slice ou overlay Dump → promo. Spec : `Notes/Ui/SPEC_nav_onglets_zoom_actif.md` § polish cadre.
 
 ### Navigation — hub « Plus » (features secondaires)
 

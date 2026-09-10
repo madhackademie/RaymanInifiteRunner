@@ -244,9 +244,43 @@ Sortie : `Dump/Ui/Nav/Icone_OngletMultiverse_YYYYMMDD.png`.
 
 ### Vague H-nav — variantes onglets barre `NavigationHUD` (128², lisibilité)
 
-**Contexte (2026-09-09) :** les PNG actuels (`IconePlay`, `IconeInventaire`, `IconeMarket`, `GoldBill`) sont des **visuels détaillés** (~1000+ px, marges transparentes, ratios variés). En barre nav (**4 onglets × ~¼ écran × 120 px haut**), ils paraissent **petits / illisibles** même avec le layout Bezy correct.
+> **MAJ 2026-09-10 — direction mockup auteur :** icônes **glyphes simples** (pas diorama iso), remplissent la case ; **gris = tint Unity** ; **actif = zoom + lueur + label** (spec `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`). Les prompts **H-nav mockup** ci-dessous **remplacent** le style « iso simplifié » pour la barre. Garder les anciennes refs uniquement pour l’**identité** du symbole (serre, sac, étal, billet, plus).
 
-**Ce n’est pas le prompt §1 (bois rustique).** Reprendre le **style cartoon iso / diorama** des refs déjà en jeu, mais **simplifié pour bouton**.
+#### H-nav mockup 2026-09-10 — 5 glyphes barre (priorité art onglets)
+
+**Réf visuelle :** mockups auteur → `Dump/Ui/Nav/ref_mockup_tabs_inactif.png` / `ref_mockup_tabs_actif_zoom.png`.
+
+| Règle | Valeur |
+|-------|--------|
+| Export | **256×256** PNG, fond **transparent** (pas blanc opaque) |
+| Sujet | **Un seul symbole**, silhouette **épaisse**, **~90 %** du cadre |
+| Style | Casual mobile, bordures lisibles, couleurs **vives** (état actif) ; lisible à **72 px** |
+| Inactif en jeu | Gris via Unity — **ne pas** générer une version grise séparée en V1 |
+| Pas de texte | Aucun mot sur le PNG (labels = TMP runtime) |
+
+**Prompt commun (glyphe barre) :**
+
+```
+Mobile game bottom navigation GLYPH icon, single object only, casual fantasy stone-bar UI style like Clash-style menus but aquaponic farm theme. Bold thick silhouette, vibrant saturated colors, smooth cartoon shading, thick outline. Square canvas 256x256, subject fills 90% of frame, transparent background, NO text, NO frame, NO scene, NO isometric diorama — one readable symbol only.
+```
+
+| # | Fichier Dump | Symbole |
+|---|--------------|---------|
+| H-nav-1 | `IconeTab_Aventures_glyph.png` | Small greenhouse dome OR play/run hub emblem (simple) |
+| H-nav-2 | `IconeTab_Inventaire_glyph.png` | Backpack OR wooden crate (mockup: backpack) |
+| H-nav-3 | `IconeTab_Shop_glyph.png` | Market stall awning, minimal |
+| H-nav-4 | `IconeTab_Vente_glyph.png` | Coin stack or single banknote square, octopus+cabbage motif tiny |
+| H-nav-5 | `IconeTab_Plus_glyph.png` | 2x2 grid of rounded squares |
+
+Promo : `Assets/Art/Sprites/UI/Nav/Tabs/` — PPU **100**, Trim, assign on `Tab*/Icon`.
+
+---
+
+### Vague H-nav (archive 2026-09-09) — iso simplifié
+
+**Contexte :** les PNG actuels (`IconePlay`, `IconeInventaire`, `IconeMarket`, `GoldBill`) sont des **visuels détaillés** (~1000+ px). **Remplacés** par glyphes mockup ci-dessus pour la barre.
+
+**Ce n’est pas le prompt §1 (bois rustique).** Ancienne piste : cartoon iso / diorama simplifié — **ne plus utiliser pour la nav**.
 
 | Règle | Valeur |
 |-------|--------|

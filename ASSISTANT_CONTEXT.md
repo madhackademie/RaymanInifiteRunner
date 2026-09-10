@@ -1,12 +1,12 @@
 ## Assistant Context — RaymanInifiteRunner
 
 ### Rappel Bezy — crédits + skill prod (chaque session)
-- **Ouverture de session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Zombie / closed / absent / « on reprend » / tâche du jour → pull (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` puis « pull ok »). **Pas d’exception lecture seule.** Règle : `.cursor/rules/session_git_sync.mdc`.
+- **P0 ABSOLU (chaque chat) :** premier outil = `Read` `.cursor/session_pull_ok`. Gate **non annulable** par l'auteur. Si gate : crédits Bezy + script pull + **STOP** avant tout metier. Règle : `.cursor/rules/session_git_sync.mdc` (priorité absolue).
 - Les **crédits Bezy se réinitialisent en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour du mois si ≠ 30).
 - Ex. : reset le **30 juillet**, **30 août**, **30 septembre**… (février : confirmer comportement abonnement si 30 absent).
 - Planifier les jobs Bezy lourds **juste après le 30** ; éviter de laisser le stock mourir en fin de cycle.
-- **Peu de temps auteur ≠ skip Bezy.** Chemin de prod : skill `/prefab-ui-3phases` — Cursor prépare le prompt, l’auteur lance 2–5 min dans Unity. Note : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`.
-- À l’ouverture : proposer un **bloc de lancement prêt** (Task ID + prefab + phase) pour le prochain job de la file.
+- **Peu de temps auteur ≠ skip Bezy.** Chemin de prod : skill `/prefab-ui-3phases` — Cursor prépare le prompt, l'auteur lance 2–5 min dans Unity. Note : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`.
+- À l'ouverture : proposer un **bloc de lancement prêt** (Task ID + prefab + phase) pour le prochain job de la file.
 
 ### Etat actuel (compact)
 - Projet Unity 6000.3.x : boot `Bootstrap` → shell `NavigationHUD` + inventaire via `UIManager`.

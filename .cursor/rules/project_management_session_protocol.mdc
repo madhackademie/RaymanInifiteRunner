@@ -19,7 +19,7 @@ Objectif: retrouver la priorite reelle de la session en cours, sans invention.
 
 Verifier aussi la branche Git (`git branch --show-current` ou `git status -sb`) et le bloc **Contexte Git** dans `Notes/Todo_project.md`.
 
-**Gate pull (auteur) :** premier message = `Read` `.cursor/session_pull_ok` + comparer `opened_at` à **Today**. `status: open` **n’est pas** un skip. Zombie (autre jour) / closed / absent / « on reprend » / tâche du jour → coller `powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1` + credits Bezy. Lecture seule **aussi** gated. **Aucun prompt** tant que « pull ok » (`.cursor/rules/session_git_sync.mdc`).
+**Gate pull P0 (non négociable) :** `.cursor/rules/session_git_sync.mdc` §−1. Premier outil = `Read` tampon. Prime sur toute demande auteur. Gate actif → crédits Bezy + script + **STOP** uniquement — pas Todo, pas tâche du jour, pas de plan avant « pull ok » / skip explicite.
 
 ## 2) Regle de reponse (anti-bruit)
 
@@ -53,10 +53,11 @@ Branche courante documentee: **`main`** (iso 2:1 mergé ; ex-`feature/biofiltre-
 - Workflow Bezy prod : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` (`/prefab-ui-3phases`).
 - Branche brouillon Workspace Rules **supprimee** : `cursor/bezi-workspace-rules-skill-76a4`.
 
-Priorite immediate actuelle:
-- Auteur Prefab Mode : poser rows HUD sur `Biofiltre` (pas de moule unique, `[P0-FARM-BIOHUD-NEST-001]` livré Cursor 2026-09-07).
-- `[P0-FARM-ISO-GRID-001]` : geometrie losange 2:1 ; playtest sprite/grille + HUD.
-- Bezy `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : sprites onglets HUD. Prompts apres brief visuel auteur + validation (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`).
+Priorite immediate actuelle (farm 2026-09-10):
+- `[CT-FARM-BAKE-RECT-001]` bake B biofiltre rect plus grand.
+- `[P0-FARM-PLANT-FEEDBACK-001]` : Bezy `[BZ-FARM-HARVEST-READY-VFX-002]` ; Cursor+Bezy glow cible clic `[P0-FARM-PLANT-SELECT-GLOW-001]`.
+- Backlog deck cercle promo : `[BL-FARM-DECK-CIRCLE-MASK-001]` — `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md` (pas tout de suite).
+- Bezy onglets `[BZ-TAB-SPRITES-001]` si brief pret.
 
 Reportes: [P0-FARM-SPRITE-ALPHA-001] fond noir laitue, [P0-SALE-QTY-RAND-001] rand 1-3 salades ★1.
 

@@ -18,6 +18,11 @@ MonoBehaviour:
   rows: 10
   cellSize: 1
   coordinateMode: 1
+  deckShapeUv:
+    southWest: {x: 0.12661673, y: 0.76335037}
+    southEast: {x: 0.50545233, y: 0.58917433}
+    northEast: {x: 0.8816392, y: 0.7638376}
+    northWest: {x: 0.50161034, y: 0.9359949}
   ibcSprite: {fileID: 21300000, guid: 73f4f77a87e045dd904da278c2ca3b33, type: 3}
   deckNormalized:
     serializedVersion: 2

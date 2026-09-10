@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Définition partagée d'un biofiltre : grille gameplay + art IBC (deck UV).
+/// Définition partagée d'un biofiltre : grille gameplay + art IBC.
 /// Une variante = un asset (petit 10×10, grand 24×18, etc.) avec la même cellSize canonique.
 /// Le calage visuel Grid / IbcSprite reste sur le prefab (transforms enfants).
 /// </summary>
@@ -23,13 +23,32 @@ public class BiofiltreLayoutDefinition : ScriptableObject
 
     public GridCoordinateMode coordinateMode = GridCoordinateMode.Isometric;
 
+    [Header("Deck shape (UV)")]
+    [Tooltip("Quad logique sur le sprite IBC (UV 0–1, bas-gauche). Bake B → columns/rows.")]
+    public BiofiltreDeckShapeUv deckShapeUv;
+
     [Header("IBC art")]
     [Tooltip("Sprite promu Sprites/Farm/Biofiltre/, pas le Dump.")]
     public Sprite ibcSprite;
 
-    [Tooltip("Zone billes plantables en UV 0–1 (origine bas-gauche du sprite). Mesurer par asset.")]
+    [Tooltip("Legacy : bouton Fit once seulement. Préférer deckShapeUv + bake sur le prefab.")]
     public Rect deckNormalized = new Rect(0.059f, 0.5239f, 0.8844f, 0.441f);
 
     [Header("IBC display")]
     public int ibcSortingOrder = -1;
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (!deckShapeUv.IsValid() && deckNormalized.width > 0.01f && deckNormalized.height > 0.01f)
+            deckShapeUv.SetFromNormalizedRect(deckNormalized);
+    }
+
+    [ContextMenu("Sync deck shape from deckNormalized rect")]
+    private void SyncShapeFromLegacyRect()
+    {
+        deckShapeUv.SetFromNormalizedRect(deckNormalized);
+        UnityEditor.EditorUtility.SetDirty(this);
+    }
+#endif
 }

@@ -15,8 +15,8 @@ alwaysApply: true
   - `PROJECT_LOG.md` (derniere entree datee)
 - Repondre avec la priorite la plus recente et concrete, jamais une tache generique.
 - **Credits Bezy :** reset mensuel le **30** de chaque mois (pas le 1er / pas dernier jour si ≠ 30) — rappeler en tache du jour / planning Bezy.
-- **Pull Git (premier message de chaque chat) :** `Read` `.cursor/session_pull_ok` **avant** tout le reste. Comparer la date `opened_at` à **Today**. `open` ≠ skip. Zombie (autre jour) / closed / absent = gate. **Pas d’exception lecture seule.** Regle : `.cursor/rules/session_git_sync.mdc`.
-- **Skill Bezy (prod) :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — a l'ouverture, proposer un bloc `/prefab-ui-3phases` pret **apres** le pull. Peu de temps auteur ≠ skip Bezy.
+- **P0 ABSOLU — pull + Bezy (chaque nouveau chat) :** premier outil = `Read` `.cursor/session_pull_ok`. Gate **non annulable** par l'auteur. Si gate : crédits Bezy + script + **STOP** (zero metier). Regle : `.cursor/rules/session_git_sync.mdc` section priorite absolue.
+- **Skill Bezy (prod) :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — bloc `/prefab-ui-3phases` **apres** pull ok + tampon ecrit. Peu de temps auteur ≠ skip Bezy.
 - Si une tache "prochaine session" est donnee par l'utilisateur en fin de session:
   1. l'ajouter dans `Notes/Todo_project.md`,
   2. l'ajouter dans la nouvelle entree de `PROJECT_LOG.md`,

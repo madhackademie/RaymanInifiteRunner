@@ -23,7 +23,8 @@
 |--------|---------|--------|-------|-------------|---------|-------|
 | [x] skip | `[BZ-FARM-BIOHUD-NEST-001]` | `Biofiltre.prefab` | — | Cursor a nesté 2026-09-07 | `main` | Plus besoin Bezy |
 | [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | **NE PAS LANCER** — attendre brief visuel auteur + validation prompts |
-| [ ] | `[BZ-FARM-PLANT-SELECT-GLOW-001]` | `LaitueObj.prefab` | 1–3 | `Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md` | `fix/farm-iso-footprint-hit` ou `main` | **Après** Cursor `PlantSelectionHighlight.cs` — halo jaune/blanc sélection |
+| [ ] | `[BZ-FARM-HARVEST-READY-VFX-002]` | `HarvestReadyFx.prefab` | 5 | `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` | `main` | Particules récolte Mature+Seedling **plus grosses** (lisibilité) |
+| [ ] | `[BZ-FARM-PLANT-SELECT-GLOW-001]` | `LaitueObj.prefab` | 1–3 | `Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md` | `main` | **Après** Cursor `PlantSelectionHighlight.cs` — contour cible jaune/blanc |
 
 ---
 
@@ -37,7 +38,8 @@ Phase: 1
 ```
 
 **Onglets `[BZ-TAB-SPRITES-001]` :** toujours bloqué (brief visuel).  
-**Glow plante `[BZ-FARM-PLANT-SELECT-GLOW-001]` :** lancer **après** script Cursor `PlantSelectionHighlight.cs`.  
+**Sparkle récolte `[BZ-FARM-HARVEST-READY-VFX-002]` :** Phase 5 — peut partir sans attendre Cursor.  
+**Glow cible `[BZ-FARM-PLANT-SELECT-GLOW-001]` :** lancer **après** script Cursor `PlantSelectionHighlight.cs`.  
 **Nest HUD :** skip — Cursor 2026-09-07.
 
 ---

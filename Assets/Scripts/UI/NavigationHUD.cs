@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,6 +53,11 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private GameObject tabShopSelectedFrame;
     [SerializeField] private GameObject tabSaleChannelsSelectedFrame;
 
+    [Header("Tab Aventures — mockup zoom (pilote Bezy 2026-09-10)")]
+    [SerializeField] private RectTransform tabAventuresIconLift;
+    [SerializeField] private GameObject tabAventuresGlow;
+    [SerializeField] private TextMeshProUGUI tabAventuresLabel;
+
     [Header("Exit Button")]
     [SerializeField] private Button exitButton;
 
@@ -59,6 +65,13 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private float iconAlphaActive = 1f;
     [SerializeField] private float iconAlphaInactive = 0.55f;
 
+    [Header("Tab Aventures — zoom actif")]
+    [SerializeField] private float activeTabIconScale = 1.3f;
+    [SerializeField] private float activeTabIconLiftY = 18f;
+    [SerializeField] private float inactiveTabIconGray = 0.5f;
+    [SerializeField] private Color activeTabLabelColor = new Color(1f, 0.92f, 0.2f, 1f);
+
+    private Vector2 tabAventuresIconLiftRestPosition;
     private HudMode currentMode = HudMode.Hidden;
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -72,6 +85,9 @@ public class NavigationHUD : MonoBehaviour
         }
 
         Instance = this;
+
+        if (tabAventuresIconLift != null)
+            tabAventuresIconLiftRestPosition = tabAventuresIconLift.anchoredPosition;
 
         if (tabAventuresButton != null)
             tabAventuresButton.onClick.AddListener(OnTabAventuresClicked);
@@ -315,10 +331,70 @@ public class NavigationHUD : MonoBehaviour
 
     private void RefreshTabVisuals(Tab active)
     {
-        ApplyTabVisual(tabAventuresIcon, tabAventuresSelectedFrame, active == Tab.Aventures);
+        ApplyAventuresTabVisual(active == Tab.Aventures);
         ApplyTabVisual(tabInventaireIcon, tabInventaireSelectedFrame, active == Tab.Inventaire);
         ApplyTabVisual(tabShopIcon, tabShopSelectedFrame, active == Tab.Shop);
         ApplyTabVisual(tabSaleChannelsIcon, tabSaleChannelsSelectedFrame, active == Tab.SaleChannels);
+    }
+
+    /// <summary>Mockup nav : inactif gris ; actif = zoom, lueur, label, couleurs pleines.</summary>
+    private void ApplyAventuresTabVisual(bool isActive)
+    {
+        // Ancien cadre 4 bordures : désactivé pour ce pilote (lueur + zoom à la place).
+        if (tabAventuresSelectedFrame != null)
+            tabAventuresSelectedFrame.SetActive(false);
+
+        bool hasSprite = tabAventuresIcon != null && tabAventuresIcon.sprite != null;
+
+        bool showActiveFx = isActive && hasSprite;
+
+        if (tabAventuresGlow != null)
+        {
+            tabAventuresGlow.SetActive(showActiveFx);
+            if (showActiveFx)
+            {
+                Image glowImage = tabAventuresGlow.GetComponent<Image>();
+                if (glowImage != null)
+                    glowImage.color = new Color(activeTabLabelColor.r, activeTabLabelColor.g, activeTabLabelColor.b, 0.45f);
+            }
+        }
+
+        if (tabAventuresLabel != null)
+        {
+            tabAventuresLabel.gameObject.SetActive(showActiveFx);
+            if (showActiveFx)
+                tabAventuresLabel.color = activeTabLabelColor;
+        }
+
+        if (tabAventuresIconLift != null)
+        {
+            tabAventuresIconLift.localScale = Vector3.one;
+
+            float liftY = isActive && hasSprite ? activeTabIconLiftY : 0f;
+            tabAventuresIconLift.anchoredPosition = tabAventuresIconLiftRestPosition + new Vector2(0f, liftY);
+        }
+
+        if (tabAventuresIcon == null)
+            return;
+
+        RectTransform iconRect = tabAventuresIcon.rectTransform;
+        float iconScale = isActive && hasSprite ? activeTabIconScale : 1f;
+        iconRect.localScale = new Vector3(iconScale, iconScale, 1f);
+
+        if (!hasSprite)
+        {
+            tabAventuresIcon.color = new Color(1f, 1f, 1f, 0f);
+            return;
+        }
+
+        if (isActive)
+        {
+            tabAventuresIcon.color = new Color(1f, 1f, 1f, iconAlphaActive);
+            return;
+        }
+
+        float gray = inactiveTabIconGray;
+        tabAventuresIcon.color = new Color(gray, gray, gray, iconAlphaInactive);
     }
 
     /// <summary>Actif = cadre visible + icône pleine opacité. Inactif = pas de cadre + léger fade (pas de tint couleur).</summary>

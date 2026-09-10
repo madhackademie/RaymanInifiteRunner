@@ -1,6 +1,6 @@
 # Prompts Bezy — sprites onglets HUD `[BZ-TAB-SPRITES-001]`
 
-**Statut :** pilotes en cours — onglets 1–3 livrés, **TabVente** = dernier prompt ci-dessous.
+**Statut :** **pivot 2026-09-10** — mockup zoom actif + glyphes simples (`Notes/Ui/SPEC_nav_onglets_zoom_actif.md`). Anciens pilotes iso = référence hiérarchie seulement ; **nouvelle passe Bezy** après promo sprites H-nav mockup.
 
 ### Régression connue (2026-09-09)
 
@@ -29,13 +29,14 @@ Tant que les blocs Phase ci-dessous sont vides : **aucun envoi Bezy**.
 
 ---
 
-## Cible (à figer avec le brief)
+## Cible (mockup 2026-09-10)
 
-**Probable — NavigationHUD** (scène `Assets/Scenes/NavigationHUD.unity`) :
+**NavigationHUD** — **5 onglets** (4 + `TabPlus` quand présent) :
 
-- `TabAventures` / `TabInventaire` / `TabShop` / `TabVente`
-- Images déjà exposées dans `Assets/Scripts/UI/NavigationHUD.cs` (`tabAventuresIcon`, etc.)
-- Press existant `[BZ-POLISH-006]` : `NavTab.controller` — **ne pas casser** sans consigne.
+- Hiérarchie : `SelectedFrame` + **`Glow`** + **`IconLift`** + `Icon` + **`Label`** (TMP, actif seulement)
+- Spec complète : `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`
+- Scripts : Cursor étend `NavigationHUD` (`IconLift`, glow, label) — Bezy **ne modifie pas** le C#
+- Press `[BZ-POLISH-006]` `NavTab.controller` — **ne pas casser**
 
 **Optionnel — barre inventaire** (`InventoryScreen` / `InventoryFilterBar`) : uniquement si le brief auteur le demande. Ne pas mélanger HUD nav et filtres inventaire dans le même prompt.
 
@@ -45,7 +46,83 @@ Tant que les blocs Phase ci-dessous sont vides : **aucun envoi Bezy**.
 
 ---
 
-## Phase 1 — Shell / hiérarchie sprites
+## Pilote mockup zoom — TabAventures (Play) — 2026-09-10
+
+**Prérequis auteur :** glyphe Play assigné sur `TabAventures/Icon` (promo `Sprites/UI/Nav/Tabs/`).  
+**Spec :** `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`  
+**Une phase par appel Bezy.** Succès = Save + liste changements. **STOP. Pas Simulate.**
+
+### Phase 1 — Hiérarchie seule
+
+```
+[BZ-TAB-SPRITES-001] PILOT TabAventures mockup zoom — PHASE 1 hierarchy ONLY. Wait success. STOP.
+
+OPEN Assets/Scenes/NavigationHUD.unity first. Layer UI = 5.
+Do NOT rescan whole project. Do NOT edit C#. File ONLY this scene.
+
+Target: TabAventures ONLY. Do NOT modify TabInventaire, TabShop, TabVente.
+
+1) Under TabAventures, ensure child ORDER (first to last):
+   SelectedFrame (keep)
+   Glow (CREATE empty GameObject + RectTransform)
+   IconLift (CREATE empty GameObject + RectTransform)
+   Label (reuse existing Label child if present; else CREATE empty)
+
+2) MOVE existing "Icon" GameObject to be child of IconLift (path: TabAventures/IconLift/Icon).
+   KEEP the sprite already assigned on Icon Image (author placed glyph). Do NOT change sprite.
+
+3) IconLift RectTransform: anchors min (0,0) max (1,1), pivot (0.5,0.5), anchoredPosition 0,0, sizeDelta 0,0, scale 1,1,1. No Image component yet.
+
+4) Glow RectTransform: anchor center (0.5,0.5), pivot (0.5,0.5), sizeDelta 100x100, anchoredPosition (0, 8). No Image yet.
+
+5) Do NOT add RectMask2D to NavBarContainer. KEEP Button, Animator NavTab, SelectedFrame borders, OnClick OnTabAventuresClicked.
+
+Save. List hierarchy. STOP.
+```
+
+### Phase 2 — Composants visuels
+
+```
+[BZ-TAB-SPRITES-001] PILOT TabAventures — PHASE 2 components ONLY. Phase 1 must be done. STOP after Save.
+
+OPEN NavigationHUD.unity. Layer UI = 5. File ONLY this scene. TabAventures ONLY.
+
+1) Glow: Add Image. Use default UI Sprite (Knob) or soft circle. Color RGB(1, 0.78, 0.2) alpha 0.35. Raycast OFF. GameObject INACTIVE by default.
+
+2) Icon (under IconLift): Image white, Preserve Aspect ON, Raycast OFF. Stretch anchors (0,0)-(1,1), sizeDelta -8,-8. Do NOT replace author sprite.
+
+3) Label: Add or enable TextMeshProUGUI. Text "Aventures". Font size 22, bold, color RGB(1, 0.78, 0.2). Anchor bottom center of tab, height ~22, width stretch with 4px side padding. GameObject INACTIVE by default. Raycast OFF.
+
+4) SelectedFrame: keep gold borders 3px, inactive by default. No color tint on Icon.
+
+5) NavBarContainer: set RectTransform height from 120 to 128 if safe (sizeDelta y=128). Only if no layout break.
+
+Save. List components. STOP. No Simulate.
+```
+
+### Phase 3 — Wiring Inspector — **livré 2026-09-10**
+
+Cursor : champs `tabAventuresIconLift` / `Glow` / `Label` + logique zoom dans `NavigationHUD.cs` (câblage scène sur `HUDRoot`).
+
+```
+[BZ-TAB-SPRITES-001] PILOT TabAventures — PHASE 3 wiring ONLY. STOP after Save.
+
+OPEN NavigationHUD.unity. Do NOT edit C#. TabAventures ONLY.
+
+On HUDRoot NavigationHUD component, wire EXISTING fields only:
+- tabAventuresIcon → TabAventures/IconLift/Icon (Image)
+- tabAventuresSelectedFrame → TabAventures/SelectedFrame
+
+Do NOT add new script fields. Do NOT wire Glow, IconLift, or Label to NavigationHUD (Cursor will add SerializeFields later).
+
+KEEP tabAventuresButton → TabAventures Button. KEEP Animator + NavTab controller.
+
+Save. List wired references. STOP.
+```
+
+---
+
+## Phase 1 — Shell / hiérarchie sprites (legacy — autres onglets)
 
 ```
 (à rédiger après brief auteur — ne pas envoyer)

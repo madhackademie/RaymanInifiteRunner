@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -123,8 +124,36 @@ public class PlantGrow : MonoBehaviour
         stageTimer = 0f;
         currentStageDuration = plantDefinition.GetDuration(stage);
         WarnIfStageHasZeroDurationButNotTerminal(stage);
+        EnsureSortingGroup();
         SyncInsectPathForStage(stage);
         SyncHarvestReadyFxForStage(stage);
+    }
+
+    /// <summary>
+    /// URP 2D : sans SortingGroup, le sprite plante (ex. order 26) passe devant l’abeille enfant.
+    /// </summary>
+    public void RefreshChildFxSorting()
+    {
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        EnsureSortingGroup();
+        CacheInsectPath();
+        insectPath?.InsectFollower?.SyncSortingOrderWithPlant(spriteRenderer);
+    }
+
+    private void EnsureSortingGroup()
+    {
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+            return;
+
+        SortingGroup group = GetComponent<SortingGroup>();
+        if (group == null)
+            group = gameObject.AddComponent<SortingGroup>();
+
+        group.sortingLayerID = spriteRenderer.sortingLayerID;
+        group.sortingOrder = spriteRenderer.sortingOrder;
     }
 
 #if UNITY_EDITOR
@@ -185,6 +214,7 @@ public class PlantGrow : MonoBehaviour
         }
 
         insectPath.SetPathActive(true, runtimeKind);
+        insectPath.InsectFollower?.SyncSortingOrderWithPlant(spriteRenderer);
     }
 
     private void SyncHarvestReadyFxForStage(GrowthStage stage)

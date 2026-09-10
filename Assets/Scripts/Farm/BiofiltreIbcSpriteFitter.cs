@@ -67,6 +67,15 @@ public class BiofiltreIbcSpriteFitter : MonoBehaviour
             spriteRenderer = ibcChild.GetComponent<SpriteRenderer>();
     }
 
+#if UNITY_EDITOR
+    /// <summary>Référence IBC pour gizmos / bake shape (éditeur).</summary>
+    public SpriteRenderer EditorGetSpriteRenderer()
+    {
+        ResolveSpriteRendererReference();
+        return spriteRenderer;
+    }
+#endif
+
     private void ApplySpriteAsset()
     {
         if (spriteRenderer == null || ibcSprite == null)

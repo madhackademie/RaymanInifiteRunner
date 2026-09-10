@@ -453,6 +453,9 @@ public class BiofiltreManager : MonoBehaviour
             drawOrder = Mathf.Max(drawOrder, gridManager.GetCellDrawOrder(cell, PlantSortingBase));
 
         plantRenderer.sortingOrder = drawOrder;
+
+        if (instance.TryGetComponent(out PlantGrow plantGrow))
+            plantGrow.RefreshChildFxSorting();
     }
 
     /// <summary>
