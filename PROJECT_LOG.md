@@ -9,16 +9,18 @@
 
 ### Prep Cursor
 - Prompts 3 phases : `Notes/Ui/PROMPTS_Bezi_action_points_scale.md`
-- File : `Notes/Bezi/BEZY_QUEUE.md` — **lancer Ph.1**
-- Convention safe zone mise à jour (496×136)
+- Convention safe zone : 480×120, zone réservée 496×136
+
+### Livré Bezy 2026-09-10
+- Ph.1 layout prefab · Ph.2 TMP + tooltip · Ph.3 instance `NavigationHUD` **480×120** (plus d’override 240×60)
+- Ancres haut-droite `(-16, -16)` conservées ; layer 5
 
 ### IDs
 - `[P0-AP-HUD-SCALE-001]` · `[BZ-AP-HUD-SCALE-001]`
 
 ### Prochaine étape
-1. Auteur Unity : `/prefab-ui-3phases` Phase 1 sur `ActionPointsHudWidget.prefab`
-2. Cursor review YAML → Ph.2 TMP → Ph.3 scène
-3. Playtest lisibilité (hors prompt Bezy)
+1. Playtest auteur : lisibilité `240 / 240`, barre 3 zones, tooltip hover, overlap wallet/onglets
+2. File Bezy suivante : TabVente `[BZ-TAB-SPRITES-001]` ou sparkle `[BZ-FARM-HARVEST-READY-VFX-002]` Ph.5
 
 ---
 

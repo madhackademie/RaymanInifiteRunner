@@ -50,7 +50,7 @@ Convention d'IDs :
 > **Chantier actif :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint seul (branche `fix/farm-iso-footprint-hit` à créer).  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
-> **Priorité immédiate (2026-09-10) :** **Bezy** — `[P0-AP-HUD-SCALE-001]` HUD PA ×2. TabVente onglets ensuite.  
+> **Priorité immédiate (2026-09-10) :** HUD PA ×2 **Bezy Ph.1–3 OK** — playtest. Puis TabVente / farm.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows par biofiltre. Bezy nest skip.  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
@@ -88,9 +88,10 @@ Convention d'IDs :
 
 > **Décision auteur 2026-09-10** (capture `240 / 240`) : agrandir **2×** le widget PA.  
 > Prefab `ActionPointsHudWidget` : **240×60 → 480×120**. Prompts : `Notes/Ui/PROMPTS_Bezi_action_points_scale.md`.  
-> Lancer **Phase 1** maintenant (`/prefab-ui-3phases`). Playtest après Ph.3.
+> **Bezy Ph.1–3 livrées 2026-09-10.** Playtest auteur (lisibilité + tooltip + overlap wallet/onglets).
 
-1. [ ] **[P0-AP-HUD-SCALE-001]** / **[BZ-AP-HUD-SCALE-001]** HUD PA ×2 (layout → TMP → instance `NavigationHUD`)
+1. [x] **[P0-AP-HUD-SCALE-001]** / **[BZ-AP-HUD-SCALE-001]** HUD PA ×2 Bezy Ph.1–3 (layout + TMP + instance `NavigationHUD`)
+2. [ ] Playtest HUD PA ×2 (hors Bezy)
 
 ### ★ Prochaine session farm — 2026-09-10 (auteur)
 
@@ -261,7 +262,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 
 **File Bezy :**
 
-0. [ ] **[BZ-AP-HUD-SCALE-001]** / `[P0-AP-HUD-SCALE-001]` HUD PA ×2 — **lancer Ph.1** (`PROMPTS_Bezi_action_points_scale.md`)
+0. [x] **[BZ-AP-HUD-SCALE-001]** / `[P0-AP-HUD-SCALE-001]` HUD PA ×2 — Bezy Ph.1–3 OK 2026-09-10 (playtest auteur)
 1. [x] **[BZ-POLISH-009]** Contrastes talents Commerce — **Bezy Ph.1–3 OK** (2026-07-30)
 2. [x] **[BZ-POLISH-011]** LoadingScreen (#11) — **Bezy + playtest OK** (2026-08-05)
 3. [x] **[BZ-POLISH-012]** HomeScene (#12) — **Bezy + playtest OK** (2026-08-18)
@@ -561,7 +562,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 ### Points d'action (économie temps joueur)
 - [~] **[P0-AP-CODE-001]** V0 — `ActionPointService` + save + planter = 1 PA (Cursor, 2026-06).
 - [x] **[P0-AP-UI-001]** HUD Bezy + `ActionPointsHudView` — Ph.3 + Ph.5 SpendPulse OK (2026-07-23).
-- [ ] **[P0-AP-HUD-SCALE-001]** / **[BZ-AP-HUD-SCALE-001]** HUD PA **×2** (240×60 → 480×120) — Bezy Ph.1–3 (`PROMPTS_Bezi_action_points_scale.md`).
+- [x] **[P0-AP-HUD-SCALE-001]** / **[BZ-AP-HUD-SCALE-001]** HUD PA **×2** (240×60 → 480×120) — Bezy Ph.1–3 OK 2026-09-10 ; playtest auteur.
 - [~] **[P0-AP-CODE-002]** Hooks récolte + vente — récolte OK ; vente `[ ]`.
 - [ ] **[P0-AP-PLAY-001]** Playtest V0 — **batch** `Notes/Todo_playtest.md`.
 - [ ] **[CT-AP-DESIGN-001]** **Prochaine session design** — réévaluer base PA + régénération progressive + malus fatigue (>10 h). Voir § *Prochaine session — design PA* en tête de fichier.

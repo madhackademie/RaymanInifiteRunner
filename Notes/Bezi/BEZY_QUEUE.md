@@ -22,8 +22,7 @@
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
 | [x] skip | `[BZ-FARM-BIOHUD-NEST-001]` | `Biofiltre.prefab` | — | Cursor a nesté 2026-09-07 | `main` | Plus besoin Bezy |
-| [ ] | `[BZ-AP-HUD-SCALE-001]` | `ActionPointsHudWidget.prefab` | 1 | `Notes/Ui/PROMPTS_Bezi_action_points_scale.md` | `main` | **LANCER** — HUD PA ×2 (240×60 → 480×120) |
-| [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | TabVente dernier prompt — après scale PA si besoin |
+| [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | TabVente dernier prompt |
 | [ ] | `[BZ-FARM-HARVEST-READY-VFX-002]` | `HarvestReadyFx.prefab` | 5 | `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` | `main` | Particules récolte Mature+Seedling **plus grosses** (lisibilité) |
 | [ ] | `[BZ-FARM-PLANT-SELECT-GLOW-001]` | `LaitueObj.prefab` | 1–3 | `Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md` | `main` | Cursor script **OK** — remplacer fallback runtime par `SelectionGlow` prefab |
 
@@ -33,12 +32,12 @@
 
 ```
 /prefab-ui-3phases
-Task ID: [BZ-AP-HUD-SCALE-001]
-Prefab: Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab
-Phase: 1
+Task ID: [BZ-TAB-SPRITES-001]
+Prefab: (TabVente — voir PROMPTS_Bezi_tab_sprites.md)
+Phase: (dernier prompt)
 ```
 
-**HUD PA ×2 `[BZ-AP-HUD-SCALE-001]` :** **lancer Ph.1** — `@Notes/Ui/PROMPTS_Bezi_action_points_scale.md`.  
+**HUD PA ×2 `[BZ-AP-HUD-SCALE-001]` :** Ph.1–3 **OK** 2026-09-10 — playtest auteur.  
 **Onglets `[BZ-TAB-SPRITES-001]` :** TabVente dernier prompt.  
 **Sparkle récolte `[BZ-FARM-HARVEST-READY-VFX-002]` :** Phase 5 — peut partir sans attendre Cursor.  
 **Glow cible `[BZ-FARM-PLANT-SELECT-GLOW-001]` :** Cursor livré — Bezy Ph.1–3 pour visuel prefab (jaune/blanc, scale).  
@@ -50,6 +49,7 @@ Phase: 1
 
 | Task ID | Prefab | Phase | Date | Commit / note |
 |---------|--------|-------|------|----------------|
+| `[BZ-AP-HUD-SCALE-001]` | `ActionPointsHudWidget` + `NavigationHUD` | 1–3 | 2026-09-10 | 480×120, fonts ×2, instance scène OK — playtest auteur |
 | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 3 | 2026-09-06 | `topIsoLine` → `{fileID: 1385485198660413513}` |
 | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 2 | 2026-09-06 | No-op Bezy OK ; tilt+layout = binder |
 | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 1 | 2026-09-06 | TopIsoLine ; Primary+Star nested dessous ; Secondary racine |

@@ -15,7 +15,7 @@
 | Anchors | top-right `(1, 1)` |
 | Pivot | `(1, 1)` |
 | Position | `anchoredPosition ≈ (-16, -16)` |
-| Taille | **cible `[BZ-AP-HUD-SCALE-001]` : `480 × 120`** (avant : `240 × 60`) |
+| Taille | **`480 × 120`** (`[BZ-AP-HUD-SCALE-001]` livré 2026-09-10 ; avant : `240 × 60`) |
 | Layer | UI = 5 |
 
 ## Zone réservée (ne pas y placer titres / CTA critiques)

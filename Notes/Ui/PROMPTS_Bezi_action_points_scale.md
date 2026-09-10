@@ -46,6 +46,8 @@ REQUIRED (exact 2x values):
 Save. List root sizeDelta, Icon preferred 64, ProgressBar height, Row padding. STOP.
 ```
 
+**Statut :** livrée 2026-09-10 — racine 480×120, Row padding 20 / spacing 16 / sizeDelta (0,-12) pos (0,6), Icon 64, barre 12, TextColumn spacing 4, layer 5.
+
 ---
 
 ## Phase 2 — TMP + tooltip (prefab only)
@@ -54,6 +56,7 @@ Save. List root sizeDelta, Icon preferred 64, ProgressBar height, Row padding. S
 [BZ-AP-HUD-SCALE-001] Phase 2 ONLY — TMP + tooltip x2. Wait success. STOP after save.
 
 PREREQ: Phase 1 saved. Do not rescan whole project. Do not modify C#. Do not add/rename GOs. Auto-size OFF.
+Save PREFAB only. Do NOT save any scene. Do NOT open Save/Don't Save dialog.
 
 File ONLY:
 - Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab
@@ -72,6 +75,8 @@ Keep colors, wiring ActionPointsHudView, Animator Spend/Refuse. Keep FatigueTool
 Save. List the 4 font sizes + tooltip padding + screenOffset. STOP.
 ```
 
+**Statut :** livrée 2026-09-10 — Points 36, Subtitle 24, Title 22, Body 20, tooltip padding 16/12 spacing 6, PreferredWidth 360, screenOffset (0,24), panel inactive, wiring OK.
+
 ---
 
 ## Phase 3 — Instance scène NavigationHUD
@@ -79,7 +84,7 @@ Save. List the 4 font sizes + tooltip padding + screenOffset. STOP.
 ```
 [BZ-AP-HUD-SCALE-001] Phase 3 ONLY — scene instance sizeDelta 480x120. Wait success. STOP after save.
 
-PREREQ: open Assets/Scenes/NavigationHUD.unity in Editor before running.
+PREREQ: Assets/Scenes/NavigationHUD.unity MUST already be open. Dismiss any Save/Don't Save dialog BEFORE starting. Then mutate. Then Save the SCENE (this phase needs scene save).
 Do not rescan whole project. Do not modify C#. Layer 5. Keep top-right. Do not move wallet or tabs.
 
 Files:
@@ -91,8 +96,10 @@ REQUIRED:
 2) NavigationHUD instance: sizeDelta x=480 y=120 (replace old 240/60 overrides)
 3) Instance anchoredPosition stays (-16,-16)
 
-Save. List prefab + scene sizeDelta. STOP.
+Save scene. List prefab + scene sizeDelta. STOP.
 ```
+
+**Statut :** livrée 2026-09-10 — instance `NavigationHUD` `sizeDelta` 480×120, position `(-16, -16)`, ancres haut-droite, layer 5. Prefab toujours 480×120.
 
 ---
 
