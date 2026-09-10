@@ -274,6 +274,23 @@ Mobile game bottom navigation GLYPH icon, single object only, casual fantasy sto
 
 Promo : `Assets/Art/Sprites/UI/Nav/Tabs/` — PPU **100**, Trim, assign on `Tab*/Icon`.
 
+#### H-nav-2 — Inventaire (mockup glyphe sac à dos)
+
+**Dans ChatGPT / générateur :** joindre en option `Assets/Art/Assets Store Dump/Ui/IconeInventaire.png` (identité ferme : poisson + légumes) et `Assets/Art/Assets Store Dump/Ui/Nav/ref_mockup_tabs_actif_zoom.png` (silhouette sac actif). Puis coller :
+
+```
+Mobile game bottom navigation GLYPH icon, single object only, casual fantasy stone-bar UI style like Clash-style menus but aquaponic farm theme. Bold thick silhouette, vibrant saturated colors, smooth cartoon shading, thick outline. Square canvas 256x256, subject fills 90% of frame, transparent background, NO text, NO frame, NO scene, NO isometric diorama — one readable symbol only.
+
+SUBJECT: a chunky cartoon adventure BACKPACK (mockup choice — NOT a wooden crate, NOT a landscape). Front view or slight 3/4, two shoulder straps visible as simple thick shapes, main flap closed, cozy farm-game colors (teal, orange, brown leather accents).
+
+Optional tiny identity badge on the flap (keep minimal): a small fish + leaf emblem inspired by the reference crate logo — one combined patch only, not separate items floating around.
+
+Same visual weight as sibling nav glyphs (serre, étal, billet, grille). Readable at 72px on a dark stone bottom bar. Inactive gray tint will be applied in Unity — export FULL COLOR only, one PNG.
+```
+
+**Sortie Dump :** `Assets/Art/Assets Store Dump/Ui/Nav/Tabs/IconeTab_Inventaire_glyph.png`  
+**Promo après OK auteur :** `Assets/Art/Sprites/UI/Nav/Tabs/IconeTab_Inventaire_glyph.png` → sprite sur `TabInventaire/Icon` (`NavigationHUD.unity`).
+
 ---
 
 ### Vague H-nav (archive 2026-09-09) — iso simplifié
