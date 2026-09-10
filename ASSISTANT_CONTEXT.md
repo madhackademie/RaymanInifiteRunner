@@ -16,7 +16,7 @@
 - **HomeScene** `[BZ-POLISH-012]` / `[P0-HOME-PLAY-012]` : Bezy + **playtest OK** (2026-08-18).
 
 ### Priorités prochaine session
-1. **Bezy** `[P0-AP-HUD-SCALE-001]` / `[BZ-AP-HUD-SCALE-001]` : HUD PA ×2 (`ActionPointsHudWidget` 480×120) — `PROMPTS_Bezi_action_points_scale.md` Ph.1.
+1. Playtest HUD PA ×2 `[P0-AP-HUD-SCALE-001]` (Bezy Ph.1–3 OK). Puis **Bezy** TabVente `[BZ-TAB-SPRITES-001]` ou sparkle récolte Ph.5.
 2. **Auteur Prefab Mode** `Biofiltre` : poser PrimaryRow / StarRow / SecondaryRow (HUD nested, pas de moule unique).
 3. Playtest FirstLvl HUD + grille iso `[P0-FARM-ISO-GRID-001]`.
 4. **Bezy** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` : TabVente dernier prompt.
