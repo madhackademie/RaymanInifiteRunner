@@ -25,7 +25,7 @@ Pour toute demande de gestion de projet (tache du jour, priorite, prochaine sess
 - **rappeler en tete de reponse** si l'on n'est pas sur `main` : nom de la branche feature/rework + lien avec la priorite (`Notes/Todo_project.md` bloc *Contexte Git*),
 - **rappeler les credits Bezy** : reset en dur le **30 de chaque mois** (pas le 1er / pas le dernier jour si ≠ 30) — detail `ASSISTANT_CONTEXT.md` + `Notes/Bezi/README_bezi.md`,
 - **rappeler le pull Git** (meme moment) : coller `scripts/session-git-sync.ps1` et attendre « pull ok » avant tout prompt (`.cursor/rules/session_git_sync.mdc`),
-- **rappeler le skill Bezy** : chemin de prod UI = `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — proposer un bloc `/prefab-ui-3phases` prêt (Task ID + prefab + phase) **apres** le pull. Ne pas reporter Bezy « faute de temps »,
+- **rappeler le skill Bezy** : chemin de prod = `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — bloc `/prefab-ui-3phases` (prefab) **ou** thread C# simple + `@Notes/Bezi/RULES_bezy_code.md` **apres** le pull. Ne pas reporter Bezy « faute de temps ». C# transform/vue ≠ Cursor,
 - repondre uniquement avec la priorite la plus recente issue des docs,
 - ne jamais inventer une tache generique.
 

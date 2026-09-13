@@ -156,38 +156,91 @@ Save. List refs. STOP.
 
 ## TabInventaire — copie patron mockup `[BZ-TAB-INVENTAIRE-MOCKUP-001]`
 
-**Prérequis :** glyphe sac **sans texte ni cadre** dans le PNG (`Sprites/UI/Nav/Tabs/`).  
+**Prérequis — art validé :** `Assets/Art/Sprites/UI/Inventory/InventaireIconeBagPack.png` sur `TabInventaire/IconLift/Icon` (promu depuis Dump 2026-09-13). Glyphe **sans texte** dans le PNG ; label TMP « Inventaire ».  
 **Cursor :** wiring glow/lift Inventaire dans `NavigationHUD.cs` **après** Bezy P1–P3 (champs à ajouter).
 
-### Phase 1 — Hiérarchie
+### Correctifs layout cadre — anti-débord écran / coupe haut (2026-09-13)
+
+**P1 ne touche pas** au `RectTransform` de `SelectedFrame` (repos inchangé).
+
+| Onglet | `SelectedFrame` repos (scene) | Note |
+|--------|-------------------------------|------|
+| TabAventures | `anchoredPosition (10, 0)`, `sizeDelta (-4, -4)` | Correctif Bezy bord **gauche** écran — **ne pas copier +10** sur les autres onglets. |
+| TabInventaire / TabShop | `(0, 0)` | Garder tel quel en P1–P2 sauf demande auteur. |
+| TabVente | `(0, 0)` → cible wood **`-10` en X** repos seulement (`[BZ-NAV-WOOD-FRAME-001]` P2). | Évite débord **droite**. |
+
+**Actif (runtime Cursor, pas Bezy mockup P2) :** `NavigationHUD` — `activeTabFrameActivePosY` **52.5**, `activeTabFrameSizeDeltaExpand` **(20, 105)** sur le `SelectedFrame` quand l’onglet est actif (cadre monte + grandit pour englober zoom/glow sans couper le haut).
+
+**Bezy — règles communes :**
+- **Jamais** `RectMask2D` sur `NavBarContainer` (128 px haut) — sinon coupe icône zoomée / bois.
+- `WoodFrame` (bois P2) : stretch dans `SelectedFrame`, **Preserve Aspect ON**, raycast OFF ; pas d’agrandissement manuel qui dépasse la safe zone latérale.
+- P2 mockup : copier **IconLift / Glow / Label / Icon** depuis `TabAventures` (chiffres identiques), pas le **+10 X** du `SelectedFrame` Aventures.
+
+### Phase 1 — Hiérarchie (validé 2026-09-13 — prêt à coller)
 
 ```
-[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 1 hierarchy ONLY. STOP.
+[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 1 hierarchy ONLY. Wait success. STOP.
 
-OPEN NavigationHUD.unity. m_Layer 5. TabInventaire ONLY. Do NOT edit C#.
+OPEN Assets/Scenes/NavigationHUD.unity first. m_Layer = 5 on all new UI.
+Do NOT rescan whole project. Do NOT edit .cs. File ONLY this scene.
+Reference READ-ONLY: TabAventures (patron). Target: TabInventaire ONLY.
+Do NOT modify TabAventures, TabShop, TabVente.
 
-Mirror TabAventures structure:
-SelectedFrame (keep) → CREATE ActiveLava → CREATE IconLift → Label (reuse or create).
+Current TabInventaire: SelectedFrame + Icon (direct child) + Label (inactive). No IconLift yet.
 
-MOVE Icon to TabInventaire/IconLift/Icon. KEEP sprite on Image.
+1) Child ORDER under TabInventaire (first to last):
+   SelectedFrame (keep)
+   ActiveLava (CREATE empty RectTransform — no Image yet)
+   IconLift (CREATE empty RectTransform)
+   Label (reuse existing; keep inactive)
 
-IconLift: stretch fill, pos 0, sizeDelta 0. Glow empty RT under IconLift later (phase 2). Label sibling last.
+2) MOVE existing Icon GameObject → TabInventaire/IconLift/Icon.
+   KEEP sprite InventaireIconeBagPack.png (path above). Do NOT change sprite.
 
-Save. List hierarchy. STOP.
+3) IconLift RT: anchors min (0,0) max (1,1), pivot (0.5,0.5), anchoredPosition 0,0, sizeDelta 0,0, scale 1,1,1. No Image.
+
+4) Under IconLift CREATE empty child Glow (RectTransform only — Image in Phase 2). Glow = first sibling before Icon.
+
+5) ActiveLava RT: copy anchor/pivot/size from TabAventures/ActiveLava if present; else stretch like Aventures sibling #2. No Image yet.
+
+6) KEEP Button, Animator NavTab, OnClick OnTabInventaireClicked. No RectMask2D on NavBarContainer.
+
+7) DO NOT change TabInventaire/SelectedFrame RectTransform (stay anchoredPosition 0,0 sizeDelta -4,-4).
+
+Save. List final hierarchy paths. STOP. No Play Mode.
 ```
 
-### Phase 2 — Composants (copie Aventures)
+### Phase 2 — Composants (copie Aventures) — prêt après P1 OK
 
 ```
-[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 2 components. P1 done. STOP.
+[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 2 components ONLY. P1 done. STOP.
 
-OPEN NavigationHUD.unity. TabInventaire ONLY. Copy numeric/layout from TabAventures/ActiveLava, IconLift/Glow, Label.
+OPEN Assets/Scenes/NavigationHUD.unity first. m_Layer 5. TabInventaire ONLY.
+Reference TabAventures READ-ONLY. Do NOT edit .cs. No RectMask2D on NavBarContainer.
 
-ActiveLava + Glow materials: NavTabLavaBackdrop.mat, NavTabSoftGlow.mat (same paths as Aventures).
-Label text "Inventaire", same TMP style (24 bold, yellow, black outline).
-Icon sizeDelta (-8,-34). All FX GO OFF by default.
+SPRITE LOCK (mandatory): TabInventaire/IconLift/Icon Image → ONLY
+Assets/Art/Sprites/UI/Inventory/InventaireIconeBagPack.png
+Do NOT use IconeInventaire.png or any other sprite.
 
-Save. STOP. No Simulate.
+DO NOT change TabInventaire/SelectedFrame (keep anchoredPosition 0,0 sizeDelta -4,-4).
+DO NOT copy TabAventures SelectedFrame +10 X.
+
+1) TabInventaire/IconLift/Glow — ADD Image if missing. Match TabAventures/IconLift/Glow:
+   RT anchor center (0.5,0.5), pivot center, pos (0,8), sizeDelta 108x108.
+   Image: UISprite white, Material Assets/Materials/UI/NavTabSoftGlow.mat,
+   color RGB(1,0.78,0.2) alpha 0.4, Preserve Aspect ON, Raycast OFF. GO OFF default.
+
+2) TabInventaire/IconLift/Icon: stretch (0,0)-(1,1), sizeDelta (-8,-38), Preserve Aspect ON, white, Raycast OFF.
+   Sprite MUST stay Assets/Art/Sprites/UI/Inventory/InventaireIconeBagPack.png — do NOT reassign.
+
+3) TabInventaire/Label TMP: text "Inventaire". Copy TabAventures/Label RT: bottom stretch, pivot (0.5,0), pos (0,10), height 32.
+   fontSize 31, Bold, face RGB(1,0.78,0.2), Outline black width ~0.28, Raycast OFF, GO OFF default.
+
+4) TabInventaire/ActiveLava: GO OFF (no Image required). Border children on SelectedFrame: leave as-is, OFF when inactive (script later).
+
+5) All mockup FX (Glow, Label, ActiveLava) OFF by default.
+
+Save. List paths changed. STOP. No Play Mode.
 ```
 
 ### Phase 3 — Wiring (champs existants)
@@ -237,7 +290,7 @@ Save. List refs. STOP.
 | Onglet | Sprite | Statut |
 |--------|--------|--------|
 | `TabAventures` | `IconePlay.png` | OK pilote |
-| `TabInventaire` | `IconeInventaire.png` | OK pilote |
+| `TabInventaire` | `InventaireIconeBagPack.png` (`Sprites/UI/Inventory/`) | OK mockup 2026-09-13 |
 | `TabShop` | `IconeMarket.png` | OK pilote |
 | `TabVente` | `GoldBill.png` (V0 — remplacer par `IconeVente.png` quand promu) | **prompt ci-dessous** |
 

@@ -44,12 +44,25 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ Nav HUD onglets mockup zoom — 2026-09-13
+
+**Décision :** pas de `[BZ-NAV-WOOD-FRAME-001]` P2 (bois ×3 onglets) avant mockup complet Inventaire / Shop / Vente.
+
+**Ordre :**
+1. [ ] **[BZ-TAB-INVENTAIRE-MOCKUP-001]** Bezy P1→P3 (patron `TabAventures`) — prompt P1 : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`
+2. [ ] **[BZ-TAB-SHOP-MOCKUP-001]** puis **[BZ-TAB-VENTE-MOCKUP-001]** (même pipeline, prompts à rédiger après Inventaire)
+3. [ ] **[BZ-NAV-TAB-MOCKUP-CODE-001]** Bezy C# simple : généraliser `NavigationHUD` (`ApplyNavTabMockupVisual` — zoom, glow, label, expand `SelectedFrame`) pour 4 onglets — prompt + `@Notes/Bezi/RULES_bezy_code.md` (pas Cursor)
+4. [ ] Playtest navigation 4 onglets (mockup actif/inactif)
+5. [ ] **[BZ-NAV-WOOD-FRAME-001]** P2 : `cadreBoisFinal.png` sur les 4 `SelectedFrame` ; **TabVente** repos `SelectedFrame` **X = -10** seulement (pas +10 Aventures)
+
+**Déjà livré :** `TabAventures` mockup + Wood P1 sur Aventures (`WoodFrame`, bordures or OFF). Spec : `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`.
+
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`main`** — chantier iso 2:1 **mergé** (ex-`feature/biofiltre-isometric`, branche supprimée).  
 > **Chantier actif :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint seul (branche `fix/farm-iso-footprint-hit` à créer).  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
-> **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases`. Cursor prépare le prompt ; l’auteur lance 2–5 min.  
+> **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
 > **Priorité immédiate (2026-09-10) :** playtest régressions FirstLvl HUD / croix / IBC (`[P0-NAV-HUD-EXITONLY-001]`). HUD PA ×2 playtest. Puis TabVente / farm.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows par biofiltre. Bezy nest skip.  

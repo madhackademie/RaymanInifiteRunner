@@ -3,7 +3,7 @@
 **Usage :** Cursor remplit les lignes `[ ]` (prep async). L’auteur exécute dans Unity + Bezy, puis passe en `[x]`.
 
 **Étude complète :** `Notes/Bezi/ETUDE_prompts_bezi_distance.md`  
-**Skill :** `/prefab-ui-3phases` — `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`  
+**Skill :** `/prefab-ui-3phases` (prefab) · C# simple : `@Notes/Bezi/RULES_bezy_code.md` — `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`  
 **Prompts détaillés :** `Notes/Ui/PROMPTS_Bezi_*.md`
 
 ---

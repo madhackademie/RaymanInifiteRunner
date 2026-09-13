@@ -5,7 +5,7 @@
 - Les **crédits Bezy se réinitialisent en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour du mois si ≠ 30).
 - Ex. : reset le **30 juillet**, **30 août**, **30 septembre**… (février : confirmer comportement abonnement si 30 absent).
 - Planifier les jobs Bezy lourds **juste après le 30** ; éviter de laisser le stock mourir en fin de cycle.
-- **Peu de temps auteur ≠ skip Bezy.** Chemin de prod : skill `/prefab-ui-3phases` — Cursor prépare le prompt, l'auteur lance 2–5 min dans Unity. Note : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`.
+- **Peu de temps auteur ≠ skip Bezy.** Prefab : skill `/prefab-ui-3phases`. C# simple (transforms, vues) : thread Bezy + `@Notes/Bezi/RULES_bezy_code.md`. Cursor ne code pas le visuel « pour aller plus vite ». Notes : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`, `.cursor/rules/bezy_delegate_simple_code.mdc`.
 - À l'ouverture : proposer un **bloc de lancement prêt** (Task ID + prefab + phase) pour le prochain job de la file.
 
 ### Etat actuel (compact)
@@ -40,7 +40,7 @@
 
 ### Rappel « tâche du jour »
 - Lire `Notes/Todo_project.md` § *Prochaine session* + `PROJECT_LOG.md`.
-- Workflow Bezy prod : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`
+- Workflow Bezy prod : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` · C# simple : `Notes/Bezi/RULES_bezy_code.md`
 - Layout PA : `Notes/Ui/CONVENTION_hud_pa_safe_zone.md`
 
 ### Références talent tree

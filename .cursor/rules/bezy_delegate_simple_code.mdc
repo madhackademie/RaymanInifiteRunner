@@ -1,0 +1,37 @@
+---
+description: Déléguer à Bezy le C# simple (transforms, vues) — économiser les crédits Cursor
+alwaysApply: true
+---
+
+# Délégation Bezy — C# simple + terrain Unity
+
+Objectif auteur : **consommer Bezy en priorité**, Cursor seulement pour l’architecture et les prompts.
+
+## Cursor NE DOIT PAS implémenter (écrire un prompt Bezy à la place)
+
+- `Transform` / `RectTransform` (position, scale, sizeDelta, anchors, pivot, offset)
+- États visuels d’une vue : sprite, couleur, glow, TMP, `SetActive`, `CanvasGroup`
+- Copier un pattern visuel d’un objet vers N autres (ex. mockup onglet)
+- `SerializeField` + cache `Awake`/`OnEnable` sur un view existant
+- Layout (spacing, padding) via code ou Inspector
+- Wrappers `Animator.SetBool` / `SetTrigger` sans logique métier
+- Tweaks d’une méthode view existante qui ne fait que du visuel
+
+Réflexe : si ça se joue dans Unity (scène, prefab, Inspector, transform), **c’est Bezy**. Cursor rédige `Notes/Ui/PROMPTS_Bezi_*.md` + `@Notes/Bezi/RULES_bezy_code.md`.
+
+## Cursor PEUT implémenter
+
+- Services, interfaces, persistance, cloud
+- `SceneNavigator` / `UIManager` / pipeline popup (`PopupId`, bindings, host)
+- Refactors multi-fichiers, dette, docs (`Notes/`, `PROJECT_LOG.md`)
+- Specs, constantes, prompts Bezy, revue `git diff` après Bezy
+
+Tâche mixte : Cursor fait **uniquement** la part architecture ; la part transform/vue part en prompt Bezy. Ne pas « en profiter » pour coder le visuel ici.
+
+Exception : l’auteur dit explicitement « sans Bezy » / « fais le C# toi-même ».
+
+## Job C# Bezy (pas le skill 3 phases)
+
+`/prefab-ui-3phases` = prefab/hiérarchie/wiring **sans** C#.  
+C# simple = **nouveau thread** Bezy, `@` le prompt + `@Notes/Bezi/RULES_bezy_code.md`.  
+Fin : `Save. List what changed. STOP.` — pas de Simulate.

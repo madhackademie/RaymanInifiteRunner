@@ -8,6 +8,8 @@ Cette note est le **miroir Git** du skill installé (Cursor / GitHub). Bezi exé
 
 **Workflow prod (peu de temps) :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — Cursor prépare le prompt, l’auteur lance `/prefab-ui-3phases` Phase N.
 
+**Hors scope de ce skill :** C# (même simple). Jobs view/transform = thread Bezy + `@Notes/Bezi/RULES_bezy_code.md` (pas ce slash).
+
 **Mise à jour :** 2026-08-29 — draft validé + inserts Prefab Mode Ph.1–2 (recommandé) et never-unpack `UiStarRow` / `UiStarSlot`.
 
 Smoke test : `/prefab-ui-3phases` doit demander Task ID + chemin `Assets/Prefabs/Ui/` + phase, puis **STOP** si ce n’est pas un job réel.

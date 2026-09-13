@@ -1,5 +1,44 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-13 — Délégation Bezy élargie (C# simple)
+
+### Décision auteur
+- Trop de crédits **Cursor**, pas assez **Bezy**.
+- Bezy exécute aussi le **C# simple** : Transform / RectTransform, états visuels, view glue.
+- Cursor = architecture, services, prompts, revue. Interdit de coder le visuel « pour aller plus vite ».
+
+### Mise en place
+- Règles Bezy à `@` : `Notes/Bezi/RULES_bezy_code.md`
+- Règle Cursor : `.cursor/rules/bezy_delegate_simple_code.mdc`
+- Skill `/prefab-ui-3phases` reste **sans C#**. Job C# = nouveau thread Bezy.
+- Todo : `[BZ-NAV-TAB-MOCKUP-CODE-001]` (ex-`P0-NAV-TAB-MOCKUP-CODE-001`) passe **Bezy**, pas Cursor.
+
+### Prochaine action (inchangée hors ce split)
+1. Bezy P1 Inventaire si pas encore lancé.
+2. Puis P2–P3 Inventaire ; le C# mockup 4 onglets = prompt Bezy après.
+
+---
+
+## 2026-09-13 — Nav HUD : suite mockup onglets (bootstrap session)
+
+### Décision priorité
+- Reporter **`[BZ-NAV-WOOD-FRAME-001]` P2** (cadre bois sur Shop/Inventaire/Vente) jusqu’à mockup zoom **complet** sur les 3 onglets restants.
+- Ordre : Bezy **Inventaire** (`[BZ-TAB-INVENTAIRE-MOCKUP-001]` P1→P3) → Shop → Vente → Cursor généralisation `NavigationHUD` → playtest 4 onglets → bois P2 (`cadreBoisFinal.png`, **TabVente** `SelectedFrame` repos **X = -10**).
+
+### Livré / rappel
+- **TabAventures** : mockup zoom, glow, label or + contour, N&B inactif ; Wood P1 `SelectedFrame/WoodFrame`.
+- Prompt Inventaire P1 validé dans `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`.
+
+### Prochaine action
+1. Lancer Bezy P1 Inventaire (Unity : ouvrir `NavigationHUD.unity` avant l’appel).
+2. Après Inventaire P2–P3 : Bezy C# `[BZ-NAV-TAB-MOCKUP-CODE-001]` (`ApplyNavTabMockupVisual`) — pas Cursor.
+
+### Suite 2026-09-13 (même session)
+- [x] **`[BZ-TAB-INVENTAIRE-MOCKUP-001]` P1** — hiérarchie `TabInventaire` (SelectedFrame → ActiveLava → IconLift/Glow/Icon → Label) ; `SelectedFrame` repos **(0,0)** conservé.
+- [ ] P2 composants (copie chiffres `TabAventures`) → P3 wiring partiel → Cursor mockup C#.
+
+---
+
 ## 2026-09-10 — Farm : glow sélection plante + bake deck (session soir)
 
 ### Livré / validé auteur

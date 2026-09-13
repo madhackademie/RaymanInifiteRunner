@@ -18,10 +18,11 @@ Objectif: utiliser les deux assistants comme un **binome complementaire** pour a
 - **Cursor/Codex**: excellent pour architecture, refactor, fiabilite, documentation, roadmap, quality gate.
 
 Regle simple:
-- **Visuel / scene / prefab / branchements inspector** -> Bezy en premier (**prefabs = Bezy par defaut**, sauf contre-indication explicite de l'auteur).
-- **Structure / dette technique / persistance / cloud / clean code** -> Codex en premier.
+- **Visuel / scene / prefab / inspector / C# transform-vue** -> Bezy en premier (**prefabs + C# simple = Bezy par defaut**).
+- **Structure / services / persistance / cloud / clean code metier** -> Codex en premier.
 
-Regle Cursor : `.cursor/rules/bezi_prefab_ownership.mdc` — l'assistant code ne cree pas les prefabs UI sans instruction contraire.
+Regle Cursor : `.cursor/rules/bezi_prefab_ownership.mdc` + `.cursor/rules/bezy_delegate_simple_code.mdc`.  
+C# Bezy : `@Notes/Bezi/RULES_bezy_code.md`.
 
 ---
 
@@ -30,15 +31,15 @@ Regle Cursor : `.cursor/rules/bezi_prefab_ownership.mdc` — l'assistant code ne
 ### Bezy.ai (execution terrain)
 - mise en place d'ecrans, panels, prefabs
 - branchements Unity (SerializeField, references, hierarchie)
-- iteration gameplay rapide (playtest immediate)
+- **C# simple** : Transform / RectTransform, etats visuels, view glue (`RULES_bezy_code.md`)
 - polish visuel de base
 
 ### Codex (consolidation)
 - design des services (`IInventoryService`, `IMarketService`)
-- separation des responsabilites (UI/vue vs logique vs data)
-- refactor propre + suppression code mort
+- separation des responsabilites (logique vs data) — **pas** le C# view/transform
+- refactor metier + suppression code mort
 - persistance JSON/cloud-ready + garde-fous
-- mise a jour des logs/todos/docs + check coherence globale
+- prompts Bezy + revue diff + logs/todos/docs
 
 ---
 
@@ -190,8 +191,8 @@ Doc : [Using Threads](https://docs.bezi.com/fundamentals/threads)
 
 ## Lien avec ce repo (Cursor + notes)
 
-- **Bezi** : contexte Unity en direct, bon pour générer / ajuster dans l’éditeur avec `@` sur les objets.
-- **Cursor** : bon pour architecture, gros refactors, fichiers Markdown du repo (`Notes/`, `PROJECT_LOG.md`, etc.).
+- **Bezi** : contexte Unity en direct — prefabs, Inspector, **et C# simple** (`@Notes/Bezi/RULES_bezy_code.md`).
+- **Cursor** : architecture, services, gros refactors métier, Markdown (`Notes/`, `PROJECT_LOG.md`), **prompts** Bezy.
 - Cette note sert de **référence rapide** sans remplacer la doc officielle.
 
 ### Setup Bezi (intégrations — 2026-08-29)
@@ -199,6 +200,7 @@ Doc : [Using Threads](https://docs.bezi.com/fundamentals/threads)
 | Fichier | Usage |
 |---------|--------|
 | `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` | **Chemin de prod** (peu de temps auteur) — lu à chaque ouverture de projet |
+| `Notes/Bezi/RULES_bezy_code.md` | **Règles C# Bezy** — à `@` sur tout job view/transform |
 | `Notes/Bezi/SKILL_prefab_ui_3_phases.md` | Miroir Git du skill `/prefab-ui-3phases` (install runtime = AppData Bezi) |
 | `Notes/Bezi/ETUDE_prompts_bezi_distance.md` | **Note de référence (à voir)** : distance, file, stack vocal casque BT, limites API/CLI Bezy |
 | `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md` | Install FRITZ!Box + Windows WoL + Parsec (réveil PC à distance) |
