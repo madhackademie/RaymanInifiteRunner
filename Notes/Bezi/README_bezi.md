@@ -24,6 +24,8 @@ Regle simple:
 Regle Cursor : `.cursor/rules/bezi_prefab_ownership.mdc` + `.cursor/rules/bezy_delegate_simple_code.mdc`.  
 C# Bezy : `@Notes/Bezi/RULES_bezy_code.md`.
 
+**Workspace Rules Bezy.ai (UI Bezy)** : copier le bloc depuis `Notes/Bezi/WORKSPACE_RULES_paste_in_bezi.md` — **pas** l’ancienne règle « Cursor fournit tout le C# ».
+
 ---
 
 ## Repartition conseillee (projet actuel)

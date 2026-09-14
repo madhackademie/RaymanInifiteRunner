@@ -40,18 +40,21 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private Button tabInventaireButton;
     [SerializeField] private Button tabShopButton;
     [SerializeField] private Button tabSaleChannelsButton;
+    [SerializeField] private Button tabMoreOptionButton;
 
     [Header("Tab Icons")]
     [SerializeField] private Image tabAventuresIcon;
     [SerializeField] private Image tabInventaireIcon;
     [SerializeField] private Image tabShopIcon;
     [SerializeField] private Image tabSaleChannelsIcon;
+    [SerializeField] private Image tabMoreOptionIcon;
 
     [Header("Tab Selected Frame (Bezy — cadre actif, pas de tint icône)")]
     [SerializeField] private GameObject tabAventuresSelectedFrame;
     [SerializeField] private GameObject tabInventaireSelectedFrame;
     [SerializeField] private GameObject tabShopSelectedFrame;
     [SerializeField] private GameObject tabSaleChannelsSelectedFrame;
+    [SerializeField] private GameObject tabMoreOptionSelectedFrame;
 
     [Header("Tab Aventures — mockup zoom (pilote Bezy 2026-09-10)")]
     [SerializeField] private RectTransform tabAventuresIconLift;
@@ -64,6 +67,24 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private GameObject tabInventaireGlow;
     [SerializeField] private GameObject tabInventaireLavaBackdrop;
     [SerializeField] private TextMeshProUGUI tabInventaireLabel;
+
+    [Header("Tab Shop — mockup zoom (même pipeline que Aventures)")]
+    [SerializeField] private RectTransform tabShopIconLift;
+    [SerializeField] private GameObject tabShopGlow;
+    [SerializeField] private GameObject tabShopLavaBackdrop;
+    [SerializeField] private TextMeshProUGUI tabShopLabel;
+
+    [Header("Tab Vente — mockup zoom (même pipeline que Aventures)")]
+    [SerializeField] private RectTransform tabSaleChannelsIconLift;
+    [SerializeField] private GameObject tabSaleChannelsGlow;
+    [SerializeField] private GameObject tabSaleChannelsLavaBackdrop;
+    [SerializeField] private TextMeshProUGUI tabSaleChannelsLabel;
+
+    [Header("Tab MoreOption — hub Plus (même pipeline, sprite optionnel)")]
+    [SerializeField] private RectTransform tabMoreOptionIconLift;
+    [SerializeField] private GameObject tabMoreOptionGlow;
+    [SerializeField] private GameObject tabMoreOptionLavaBackdrop;
+    [SerializeField] private TextMeshProUGUI tabMoreOptionLabel;
 
     [Header("Exit Button")]
     [SerializeField] private Button exitButton;
@@ -96,6 +117,9 @@ public class NavigationHUD : MonoBehaviour
 
     private NavTabMockupRest tabAventuresMockupRest;
     private NavTabMockupRest tabInventaireMockupRest;
+    private NavTabMockupRest tabShopMockupRest;
+    private NavTabMockupRest tabSaleChannelsMockupRest;
+    private NavTabMockupRest tabMoreOptionMockupRest;
     private static Sprite uiWhiteSprite;
 
     private struct NavTabMockupRest
@@ -137,17 +161,41 @@ public class NavigationHUD : MonoBehaviour
             tabInventaireIcon,
             tabInventaireIconLift,
             tabInventaireSelectedFrame);
+        tabShopMockupRest = CaptureNavTabMockupRest(
+            tabShopIcon,
+            tabShopIconLift,
+            tabShopSelectedFrame);
+        tabSaleChannelsMockupRest = CaptureNavTabMockupRest(
+            tabSaleChannelsIcon,
+            tabSaleChannelsIconLift,
+            tabSaleChannelsSelectedFrame);
+        tabMoreOptionMockupRest = CaptureNavTabMockupRest(
+            tabMoreOptionIcon,
+            tabMoreOptionIconLift,
+            tabMoreOptionSelectedFrame);
 
         ConfigureNavTabGlowHierarchy(tabAventuresIconLift, tabAventuresGlow);
         ConfigureNavTabGlowHierarchy(tabInventaireIconLift, tabInventaireGlow);
+        ConfigureNavTabGlowHierarchy(tabShopIconLift, tabShopGlow);
+        ConfigureNavTabGlowHierarchy(tabSaleChannelsIconLift, tabSaleChannelsGlow);
+        ConfigureNavTabGlowHierarchy(tabMoreOptionIconLift, tabMoreOptionGlow);
 
         if (!useActiveTabLavaBackdrop && tabAventuresLavaBackdrop != null)
             tabAventuresLavaBackdrop.SetActive(false);
         if (!useActiveTabLavaBackdrop && tabInventaireLavaBackdrop != null)
             tabInventaireLavaBackdrop.SetActive(false);
+        if (!useActiveTabLavaBackdrop && tabShopLavaBackdrop != null)
+            tabShopLavaBackdrop.SetActive(false);
+        if (!useActiveTabLavaBackdrop && tabSaleChannelsLavaBackdrop != null)
+            tabSaleChannelsLavaBackdrop.SetActive(false);
+        if (!useActiveTabLavaBackdrop && tabMoreOptionLavaBackdrop != null)
+            tabMoreOptionLavaBackdrop.SetActive(false);
 
         ApplyNavTabLabelStyle(tabAventuresLabel);
         ApplyNavTabLabelStyle(tabInventaireLabel);
+        ApplyNavTabLabelStyle(tabShopLabel);
+        ApplyNavTabLabelStyle(tabSaleChannelsLabel);
+        ApplyNavTabLabelStyle(tabMoreOptionLabel);
 
         if (tabAventuresButton != null)
             tabAventuresButton.onClick.AddListener(OnTabAventuresClicked);
@@ -157,6 +205,8 @@ public class NavigationHUD : MonoBehaviour
             tabShopButton.onClick.AddListener(OnTabShopClicked);
         if (tabSaleChannelsButton != null)
             tabSaleChannelsButton.onClick.AddListener(OnTabSaleChannelsClicked);
+        if (tabMoreOptionButton != null)
+            tabMoreOptionButton.onClick.AddListener(OnTabMoreOptionClicked);
         if (exitButton != null)
             exitButton.onClick.AddListener(OnExitClicked);
 
@@ -184,6 +234,8 @@ public class NavigationHUD : MonoBehaviour
             tabShopButton.onClick.RemoveListener(OnTabShopClicked);
         if (tabSaleChannelsButton != null)
             tabSaleChannelsButton.onClick.RemoveListener(OnTabSaleChannelsClicked);
+        if (tabMoreOptionButton != null)
+            tabMoreOptionButton.onClick.RemoveListener(OnTabMoreOptionClicked);
         if (exitButton != null)
             exitButton.onClick.RemoveListener(OnExitClicked);
     }
@@ -263,6 +315,33 @@ public class NavigationHUD : MonoBehaviour
     }
 
     /// <summary>
+    /// Onglet Plus / MoreOption. Ouvre FeaturesHub s'il est bindé ; sinon sélectionne l'onglet (V0 sans écran).
+    /// </summary>
+    public void OnTabMoreOptionClicked()
+    {
+        if (IsSceneTransitionBlocking())
+            return;
+
+        SetTabsInteractable(false);
+        HideOtherModalScreens(ScreenId.FeaturesHub);
+
+        if (UIManager.Instance != null &&
+            UIManager.Instance.HasScreen(ScreenId.FeaturesHub) &&
+            UIManager.Instance.TryShowScreen(ScreenId.FeaturesHub))
+        {
+            RefreshTabVisuals(Tab.MoreOption);
+            SetTabsInteractable(true);
+            return;
+        }
+
+        Debug.LogWarning(
+            "[NavigationHUD] Ecran FeaturesHub introuvable dans UIManager. " +
+            "TabMoreOption actif sans hub (V0). Bind le prefab plus tard.");
+        RefreshTabVisuals(Tab.MoreOption);
+        SetTabsInteractable(true);
+    }
+
+    /// <summary>
     /// En mode exit-only : notifie la scène gameplay pour qu'elle gère le retour.
     /// En mode nav bar : sans effet (les tabs gèrent la navigation).
     /// </summary>
@@ -293,6 +372,8 @@ public class NavigationHUD : MonoBehaviour
             tabShopButton.interactable = interactable;
         if (tabSaleChannelsButton != null)
             tabSaleChannelsButton.interactable = interactable;
+        if (tabMoreOptionButton != null)
+            tabMoreOptionButton.interactable = interactable;
     }
 
     private SceneNavigator boundNavigator;
@@ -373,6 +454,15 @@ public class NavigationHUD : MonoBehaviour
                       UIManager.Instance.IsScreenVisible(ScreenId.Shop);
         bool onSaleChannels = UIManager.Instance != null &&
                               UIManager.Instance.IsScreenVisible(ScreenId.SaleChannels);
+        bool onMoreOption = UIManager.Instance != null &&
+                            UIManager.Instance.HasScreen(ScreenId.FeaturesHub) &&
+                            UIManager.Instance.IsScreenVisible(ScreenId.FeaturesHub);
+
+        if (onMoreOption)
+        {
+            RefreshTabVisuals(Tab.MoreOption);
+            return;
+        }
 
         if (onSaleChannels)
         {
@@ -393,8 +483,13 @@ public class NavigationHUD : MonoBehaviour
     {
         ApplyNavTabMockupVisual(BuildAventuresMockupRefs(), tabAventuresMockupRest, active == Tab.Aventures);
         ApplyNavTabMockupVisual(BuildInventaireMockupRefs(), tabInventaireMockupRest, active == Tab.Inventaire);
-        ApplyStandardTabVisual(tabShopIcon, tabShopSelectedFrame, null, active == Tab.Shop);
-        ApplyStandardTabVisual(tabSaleChannelsIcon, tabSaleChannelsSelectedFrame, null, active == Tab.SaleChannels);
+        ApplyNavTabMockupVisual(BuildShopMockupRefs(), tabShopMockupRest, active == Tab.Shop);
+        ApplyNavTabMockupVisual(BuildSaleChannelsMockupRefs(), tabSaleChannelsMockupRest, active == Tab.SaleChannels);
+        ApplyNavTabMockupVisual(
+            BuildMoreOptionMockupRefs(),
+            tabMoreOptionMockupRest,
+            active == Tab.MoreOption,
+            allowActiveWithoutSprite: true);
     }
 
     private NavTabMockupRefs BuildAventuresMockupRefs()
@@ -420,6 +515,45 @@ public class NavigationHUD : MonoBehaviour
             Glow = tabInventaireGlow,
             LavaBackdrop = tabInventaireLavaBackdrop,
             Label = tabInventaireLabel
+        };
+    }
+
+    private NavTabMockupRefs BuildShopMockupRefs()
+    {
+        return new NavTabMockupRefs
+        {
+            Icon = tabShopIcon,
+            SelectedFrame = tabShopSelectedFrame,
+            IconLift = tabShopIconLift,
+            Glow = tabShopGlow,
+            LavaBackdrop = tabShopLavaBackdrop,
+            Label = tabShopLabel
+        };
+    }
+
+    private NavTabMockupRefs BuildSaleChannelsMockupRefs()
+    {
+        return new NavTabMockupRefs
+        {
+            Icon = tabSaleChannelsIcon,
+            SelectedFrame = tabSaleChannelsSelectedFrame,
+            IconLift = tabSaleChannelsIconLift,
+            Glow = tabSaleChannelsGlow,
+            LavaBackdrop = tabSaleChannelsLavaBackdrop,
+            Label = tabSaleChannelsLabel
+        };
+    }
+
+    private NavTabMockupRefs BuildMoreOptionMockupRefs()
+    {
+        return new NavTabMockupRefs
+        {
+            Icon = tabMoreOptionIcon,
+            SelectedFrame = tabMoreOptionSelectedFrame,
+            IconLift = tabMoreOptionIconLift,
+            Glow = tabMoreOptionGlow,
+            LavaBackdrop = tabMoreOptionLavaBackdrop,
+            Label = tabMoreOptionLabel
         };
     }
 
@@ -450,10 +584,14 @@ public class NavigationHUD : MonoBehaviour
     }
 
     /// <summary>Mockup nav : inactif gris, icône en bas ; actif = zoom, lueur, label, cadre étendu.</summary>
-    private void ApplyNavTabMockupVisual(NavTabMockupRefs refs, NavTabMockupRest rest, bool isActive)
+    private void ApplyNavTabMockupVisual(
+        NavTabMockupRefs refs,
+        NavTabMockupRest rest,
+        bool isActive,
+        bool allowActiveWithoutSprite = false)
     {
         bool hasSprite = refs.Icon != null && refs.Icon.sprite != null;
-        bool showActiveFx = isActive && hasSprite;
+        bool showActiveFx = isActive && (hasSprite || allowActiveWithoutSprite);
 
         ApplyNavTabSelectedFrameLayout(refs.SelectedFrame, rest, showActiveFx);
 
@@ -462,8 +600,9 @@ public class NavigationHUD : MonoBehaviour
 
         if (refs.Glow != null)
         {
-            refs.Glow.SetActive(showActiveFx);
-            if (showActiveFx)
+            bool showGlow = showActiveFx && hasSprite;
+            refs.Glow.SetActive(showGlow);
+            if (showGlow)
             {
                 Image glowImage = refs.Glow.GetComponent<Image>();
                 if (glowImage != null)
@@ -647,6 +786,8 @@ public class NavigationHUD : MonoBehaviour
         UIManager.Instance.HideScreen(ScreenId.Inventory);
         UIManager.Instance.HideScreen(ScreenId.Shop);
         UIManager.Instance.HideScreen(ScreenId.SaleChannels);
+        if (UIManager.Instance.HasScreen(ScreenId.FeaturesHub))
+            UIManager.Instance.HideScreen(ScreenId.FeaturesHub);
     }
 
     private static void HideOtherModalScreens(string keepVisibleScreenId)
@@ -660,7 +801,10 @@ public class NavigationHUD : MonoBehaviour
             UIManager.Instance.HideScreen(ScreenId.Shop);
         if (keepVisibleScreenId != ScreenId.SaleChannels)
             UIManager.Instance.HideScreen(ScreenId.SaleChannels);
+        if (keepVisibleScreenId != ScreenId.FeaturesHub &&
+            UIManager.Instance.HasScreen(ScreenId.FeaturesHub))
+            UIManager.Instance.HideScreen(ScreenId.FeaturesHub);
     }
 
-    private enum Tab { Aventures, Inventaire, Shop, SaleChannels }
+    private enum Tab { Aventures, Inventaire, Shop, SaleChannels, MoreOption }
 }

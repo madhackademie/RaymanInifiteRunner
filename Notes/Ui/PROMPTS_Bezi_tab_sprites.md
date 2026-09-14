@@ -12,7 +12,7 @@
 **Skill :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`  
 **File :** `Notes/Bezi/BEZY_QUEUE.md`  
 **Art (hors Bezy) :** Vague H `Notes/Art/PROMPT_generation_icones.md` — Dump → promo auteur `Sprites/UI/` **avant** wiring.  
-**Hub Plus (futur) :** `Notes/Ui/SPEC_features_hub_plus.md` — variante barre A (3+Plus) vs B (4+Plus) après playtest mobile.
+**Hub Plus (V0 onglet) :** `Notes/Ui/PROMPTS_Bezi_tab_more_option.md` — `[BZ-TAB-MORE-001]` `TabMoreOption` sans sprite.
 
 **Succès Bezy = Save + liste changements. STOP. Pas de Simulate / Play Mode.**
 
@@ -35,7 +35,7 @@ Tant que les blocs Phase ci-dessous sont vides : **aucun envoi Bezy**.
 
 - Hiérarchie : `SelectedFrame` + **`Glow`** + **`IconLift`** + `Icon` + **`Label`** (TMP, actif seulement)
 - Spec complète : `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`
-- Scripts : Cursor étend `NavigationHUD` (`IconLift`, glow, label) — Bezy **ne modifie pas** le C#
+- **C# / visuel onglets :** Bezy (scène + `NavigationHUD.cs` mockup — `@Notes/Bezi/RULES_bezy_code.md`). Cursor : specs, prompts, revue — pas le tuning placement/zoom sauf « sans Bezy ».
 - Press `[BZ-POLISH-006]` `NavTab.controller` — **ne pas casser**
 
 **Optionnel — barre inventaire** (`InventoryScreen` / `InventoryFilterBar`) : uniquement si le brief auteur le demande. Ne pas mélanger HUD nav et filtres inventaire dans le même prompt.
@@ -157,7 +157,7 @@ Save. List refs. STOP.
 ## TabInventaire — copie patron mockup `[BZ-TAB-INVENTAIRE-MOCKUP-001]`
 
 **Prérequis — art validé :** `Assets/Art/Sprites/UI/Inventory/InventaireIconeBagPack.png` sur `TabInventaire/IconLift/Icon` (promu depuis Dump 2026-09-13). Glyphe **sans texte** dans le PNG ; label TMP « Inventaire ».  
-**Cursor :** wiring glow/lift Inventaire dans `NavigationHUD.cs` **après** Bezy P1–P3 (champs à ajouter).
+**Ownership (2026-09-14) :** placement, zoom, cadre, wiring = **Bezy** (scène + `NavigationHUD.cs` simple — `@Notes/Bezi/RULES_bezy_code.md`). Cursor = prompts + revue, pas le tuning visuel onglets.
 
 ### Correctifs layout cadre — anti-débord écran / coupe haut (2026-09-13)
 
@@ -169,7 +169,7 @@ Save. List refs. STOP.
 | TabInventaire / TabShop | `(0, 0)` | Garder tel quel en P1–P2 sauf demande auteur. |
 | TabVente | `(0, 0)` → cible wood **`-10` en X** repos seulement (`[BZ-NAV-WOOD-FRAME-001]` P2). | Évite débord **droite**. |
 
-**Actif (runtime Cursor, pas Bezy mockup P2) :** `NavigationHUD` — `activeTabFrameActivePosY` **52.5**, `activeTabFrameSizeDeltaExpand` **(20, 105)** sur le `SelectedFrame` quand l’onglet est actif (cadre monte + grandit pour englober zoom/glow sans couper le haut).
+**Actif (runtime) :** `NavigationHUD` — `activeTabFrameActivePosY`, `activeTabFrameSizeDeltaExpand`, `activeTabIconScale`, lift, glow (Inspector + C# visuel). **Bezy** aligne Inventaire sur le patron TabAventures (déjà corrigé sur Play).
 
 **Bezy — règles communes :**
 - **Jamais** `RectMask2D` sur `NavBarContainer` (128 px haut) — sinon coupe icône zoomée / bois.
@@ -243,20 +243,32 @@ DO NOT copy TabAventures SelectedFrame +10 X.
 Save. List paths changed. STOP. No Play Mode.
 ```
 
-### Phase 3 — Wiring (champs existants)
+### Phase 3 — Parité comportement TabAventures (scène + C#) — **prêt à coller**
+
+`@Notes/Bezi/RULES_bezy_code.md` — C# visuel autorisé sur `NavigationHUD.cs` uniquement.
 
 ```
-[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 3 wiring. STOP.
+[BZ-TAB-INVENTAIRE-MOCKUP-001] PHASE 3 — Inventaire = same behavior as TabAventures (Play). STOP.
 
-OPEN NavigationHUD.unity. Do NOT edit C#.
+OPEN Assets/Scenes/NavigationHUD.unity first. m_Layer 5.
+Files ONLY: Assets/Scenes/NavigationHUD.unity, Assets/Scripts/UI/NavigationHUD.cs
+Read TabAventures as SOURCE OF TRUTH. Do NOT rescan whole project.
+No RectMask2D on NavBarContainer. No SceneNavigator/UIManager/popup changes.
 
-HUDRoot NavigationHUD:
-tabInventaireButton, tabInventaireIcon → IconLift/Icon,
-tabInventaireSelectedFrame, tabInventaireLabel → Label TMP.
+SPRITE: TabInventaire/IconLift/Icon = Assets/Art/Sprites/UI/Inventory/InventaireIconeBagPack.png ONLY.
 
-Do NOT wire Glow/Lava/IconLift yet (Cursor SerializeFields next).
+GOAL: Inactive = icon bottom-aligned, same visual size as Play. Active click = same zoom, lift, glow, label, frame expand as TabAventures (serre).
 
-Save. List refs. STOP.
+SCENE TabInventaire:
+1) Mirror TabAventures hierarchy + REST RectTransforms: IconLift, Icon (-8,-38), Glow, Label, SelectedFrame (X=0 NOT +10), borders/WoodFrame like Aventures.
+2) If backpack sits high vs Play: nudge Icon anchoredPosition Y only (small negative), keep IconLift at rest (0,0).
+
+C# NavigationHUD.cs:
+3) Ensure TabInventaire uses the SAME mockup path as TabAventures (lift, scale, glow, label, SelectedFrame expand). Reuse existing helpers/constants — duplicate wiring only if SerializeFields missing.
+4) Match HUDRoot Inspector refs: tabInventaireIconLift, tabInventaireGlow, tabInventaireIcon → IconLift/Icon, label, selectedFrame, lava optional.
+5) Do NOT change shop/vente tabs. Do NOT refactor unrelated code.
+
+Save. List scene paths + .cs methods/fields touched. STOP. No Play Mode.
 ```
 
 ---

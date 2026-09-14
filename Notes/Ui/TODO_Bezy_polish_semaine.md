@@ -50,6 +50,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 25 | **[BZ-FARM-BIOHUD-HOST-001]** | HUD world `BiofiltreHud` (neste `UiStarRow` + 2 rows) | `Assets/Prefabs/Ui/Farm/BiofiltreHud.prefab` | M | après jobs 23–24 |
 | 26 | **[BZ-TAB-SPRITES-001]** / **[P0-TAB-SPRITES-001]** | Mise en place + polish **sprites onglets** HUD | `NavigationHUD` (tabs) | M | TabVente dernier prompt — `PROMPTS_Bezi_tab_sprites.md` |
 | ~~27~~ | ~~**[BZ-AP-HUD-SCALE-001]**~~ | ~~HUD PA ×2~~ | — | — | **Bezy Ph.1–3 OK** 2026-09-10 — playtest auteur |
+| 28 | **[BZ-NAV-WOOD-REFONTE-001]** | **Cadre bois** nav : 9-slice + refonte layout (cadre **ne couvre pas** le label TMP) | `NavigationHUD` + `cadreBoisFinal.png` | M | **Après** mockup 4 onglets OK + **budget polish** ; garder base glow/zoom actuelle — `PROMPTS_Bezi_nav_wood_frame_slice.md` |
 
 ---
 
@@ -150,6 +151,14 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - **Texture** : `StarsParticle.png` recentré + `M_HarvestReadySparkle` (Cursor 2026-07-29)
 - **Cursor après** : hook `PlantGrow` — **OK** (2026-07-29) `HarvestReadyFxAnchor` + sync récoltable
 - Prompts : `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md`
+
+### 28 — Cadre bois onglets `[BZ-NAV-WOOD-REFONTE-001]` — **POLISH / BUDGET** (2026-09-14)
+
+- **Décision auteur :** la base mockup (glow, zoom, label) est **assez jolie** — on **reporte** la refonte bois complète au polish payant.
+- **Bugs cibles :** `cadreBoisFinal` moche en stretch ; cadre **par-dessus le texte** de l’onglet.
+- **Bezy :** 9-slice + `Image` Sliced + hiérarchie (label hors cadre bois) + rollout 4 onglets — **pas** avant mockup zoom 4/4.
+- **Prompts :** `Notes/Ui/PROMPTS_Bezi_nav_wood_frame_slice.md` (Ph.1–3).
+- **Gate :** mockup `[BZ-TAB-INVENTAIRE-MOCKUP-001]` + Shop + Vente OK ; puis crédits / temps polish.
 
 ### 26 — Sprites onglets HUD `[BZ-TAB-SPRITES-001]` / `[P0-TAB-SPRITES-001]` — **EN ATTENTE BRIEF**
 - **Quoi :** mise en place + polish des **sprites** sur les onglets (Bezy wiring / layout, pas génération d’art).

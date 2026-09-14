@@ -1,5 +1,46 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-14 — TabMoreOption (5ᵉ onglet Plus) V0 sans sprite
+
+### Demande auteur
+- Nouveau tab **`TabMoreOption`** dans `NavigationHUD.unity` + logique, **sans sprite** pour commencer.
+- Sprite glyphe Plus à générer à part (Dump).
+
+### Livré Cursor
+- `ScreenId.FeaturesHub`
+- `UIManager.HasScreen` (évite le warning si hub pas encore bindé)
+- `NavigationHUD` : `OnTabMoreOptionClicked`, enum `Tab.MoreOption`, mockup actif **même sans sprite** (label + cadre, glow seulement si sprite)
+- Clic V0 : ferme Inventaire/Shop/Vente, sélectionne Plus ; warning si prefab hub absent
+
+### Bezy à lancer
+- `[BZ-TAB-MORE-001]` Ph.1–3 — `Notes/Ui/PROMPTS_Bezi_tab_more_option.md`
+- Ouvrir `Assets/Scenes/NavigationHUD.unity` avant `/prefab-ui-3phases`
+
+### Pas encore
+- Prefab `FeaturesHubScreen` / lignes Quêtes-Atelier — `[BL-UI-FEATURES-HUB-001]`
+- Promo sprite `IconeTab_Plus_glyph.png`
+
+### Prochaine session (si pas fini Bezy)
+- Relancer Ph.1 `TabMoreOption` si pas collé ; sinon Ph.2 puis Ph.3 wiring.
+
+---
+
+## 2026-09-14 — Nav : cadre bois reporté polish
+
+### Décision auteur
+- Refonte **complète** du cadre bois (stretch moche + cadre sur le **texte** label) → **pas maintenant**.
+- Conserver la base mockup actuelle (glow + zoom) jusqu’au budget polish (« quand le fric rentre »).
+
+### Docs
+- File Bezy polish **#28** `[BZ-NAV-WOOD-REFONTE-001]` — `Notes/Ui/TODO_Bezy_polish_semaine.md`
+- Prompts Ph.1–3 : `Notes/Ui/PROMPTS_Bezi_nav_wood_frame_slice.md`
+- `Notes/Todo_project.md` : étape nav P2 bois → reportée ; backlog `[BL-UI-NAV-TAB-FRAME-001]` lié.
+
+### Prochaine session nav (inchangé)
+- Mockup Inventaire P3 Bezy → Shop → Vente ; pas de rollout bois avant polish.
+
+---
+
 ## 2026-09-13 — Délégation Bezy élargie (C# simple)
 
 ### Décision auteur

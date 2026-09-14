@@ -201,7 +201,7 @@ Réf. quêtes : `[BL-QUEST-DAILY-001]` · icônes H4–H7 `PROMPT_generation_ico
 |---------|------------|
 | `ScreenId.cs` | `public const string FeaturesHub = "FeaturesHub";` |
 | `UIManager` | Binding écran + prefab `FeaturesHubScreen` |
-| `NavigationHUD.cs` | `TabPlus` + `OnTabPlusClicked` ; masquer `TabShop` si variante A ; enum `Tab` étendu |
+| `NavigationHUD.cs` | `TabMoreOption` + `OnTabMoreOptionClicked` (**livré 2026-09-14**) ; masquer `TabShop` si variante A |
 | `RuntimeFeaturesHubScreen.cs` | *(nouveau)* liste entrées, navigation, états locked |
 | `FeatureHubEntryDefinition.cs` | *(optionnel V1)* SO : id, label, icon, screenId, unlocked |
 
@@ -230,7 +230,7 @@ Brief : sujet **85–90 %** du cadre 128², même poids visuel, Trim à l’impo
 
 | Phase | Livrable | Prérequis |
 |-------|----------|-----------|
-| **Nav TabPlus** | `TabPlus` dans `NavigationHUD.unity` (copie patron `TabAventures`) | Décision A ou B ; H-nav-5 |
+| **Nav TabMoreOption** | `TabMoreOption` dans `NavigationHUD.unity` (copie patron `TabInventaire`) | Prompts `[BZ-TAB-MORE-001]` ; sprite H-nav-5 plus tard |
 | **FeaturesHub Ph.1** | Hiérarchie `FeaturesHubScreen` shell + scroll + 3 lignes placeholder | Spec validée |
 | **FeaturesHub Ph.2** | Image, Button, TMP, Layout sur lignes | Ph.1 OK |
 | **FeaturesHub Ph.3** | Wiring `RuntimeFeaturesHubScreen` + `UIManager` | Scripts Cursor |

@@ -2,6 +2,8 @@
 
 À `@` dans tout thread Bezy qui **modifie du C#**. Ne pas rescanner tout le projet. Un sujet par thread.
 
+**Workspace Bezy (hors repo)** : si une règle dit encore « Cursor fournit tout le scripts C# », la remplacer par `Notes/Bezi/WORKSPACE_RULES_paste_in_bezi.md` (C# **visuel** = Bezy ; métier = Cursor).
+
 ## Périmètre
 
 **OK :** un ou deux scripts view/HUD déjà cités ; `Transform` / `RectTransform` ; sprite, couleur, TMP, `SetActive`, `CanvasGroup` ; `SerializeField` + cache ; layout ; `Animator.SetBool` / `SetTrigger` ; coller un pattern visuel déjà présent dans le même fichier.

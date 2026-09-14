@@ -10,6 +10,9 @@ public static class ScreenId
     /// <summary>Canaux de vente production (écoulement local — voisinage, bandoulière, vélo).</summary>
     public const string SaleChannels = "SaleChannels";
 
+    /// <summary>Hub « Plus » (TabMoreOption) — features hors barre. Prefab Bezy plus tard.</summary>
+    public const string FeaturesHub = "FeaturesHub";
+
     /// <summary>
     /// Popups gameplay ferme (scène FirstLvl, hors prefab écran UIManager).
     /// Utilisé uniquement comme clé dans <see cref="UIManager"/> runtimePopupBindings.

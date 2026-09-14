@@ -60,9 +60,12 @@ TabX (Button + Animator NavTab + Image fond slot pierre optionnel)
 
 ---
 
-## 4) Cursor — `NavigationHUD.cs`
+## 4) `NavigationHUD.cs` — mockup zoom (ownership Bezy 2026-09-14)
 
-Étendre `ApplyTabVisual` (ou petit helper `NavTabVisualState`) :
+**Bezy** : hiérarchie scène, wiring Inspector, tuning placement/zoom/glow/cadre sur `NavigationHUD.cs` (`@Notes/Bezi/RULES_bezy_code.md`).  
+**Cursor** : spec, prompts phasés, revue — pas le réglage visuel sauf demande « sans Bezy ».
+
+Cible technique (helper / champs) :
 
 | Champ SerializeField (par onglet) | Rôle |
 |-----------------------------------|------|
@@ -94,7 +97,7 @@ TabX (Button + Animator NavTab + Image fond slot pierre optionnel)
 | **1** | Hiérarchie `IconLift` / `Glow` / `Label` sur **un** pilote (`TabInventaire`) |
 | **2** | Images, TMP, couleurs glow, ancres débordement haut |
 | **3** | Dupliquer sur 4 autres onglets + wiring `NavigationHUD` |
-| **4** | (Cursor) brancher scale/label/glow dans `ApplyTabVisual` |
+| **4** | Bezy : parité visuelle + `ApplyTabVisual` / mockup par onglet (C# view autorisé) |
 
 Gate : même règle que `PROMPTS_Bezi_tab_sprites.md` — prompts validés avant envoi.
 

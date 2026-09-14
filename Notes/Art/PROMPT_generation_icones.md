@@ -270,7 +270,7 @@ Mobile game bottom navigation GLYPH icon, single object only, casual fantasy sto
 | H-nav-2 | `IconeTab_Inventaire_glyph.png` | Sac à dos + testeur pH (LCD) + fanes carotte (mockup) |
 | H-nav-3 | `IconeTab_Shop_glyph.png` | Market stall awning, minimal |
 | H-nav-4 | `IconeTab_Vente_glyph.png` | Coin stack or single banknote square, octopus+cabbage motif tiny |
-| H-nav-5 | `IconeTab_Plus_glyph.png` | 2x2 grid of rounded squares |
+| H-nav-5 | `IconeTab_Plus_glyph.png` | 2x2 grid of rounded squares → `TabMoreOption/Icon` |
 
 Promo : `Assets/Art/Sprites/UI/Nav/Tabs/` — PPU **100**, Trim, assign on `Tab*/Icon`.
 

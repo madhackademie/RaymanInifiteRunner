@@ -173,6 +173,10 @@ public class UIManager : MonoBehaviour
 
     // ── Query API ─────────────────────────────────────────────────────────────
 
+    /// <summary>True si un écran est enregistré dans UIManager (sans warning).</summary>
+    public bool HasScreen(string screenId)
+        => !string.IsNullOrEmpty(screenId) && registry.ContainsKey(screenId);
+
     /// <summary>Retourne true si l'écran est actuellement visible.</summary>
     public bool IsScreenVisible(string screenId)
         => TryGetEntry(screenId, out ScreenEntry entry) && entry.IsVisible;

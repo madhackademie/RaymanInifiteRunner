@@ -49,13 +49,14 @@ Convention d'IDs :
 **Décision :** pas de `[BZ-NAV-WOOD-FRAME-001]` P2 (bois ×3 onglets) avant mockup complet Inventaire / Shop / Vente.
 
 **Ordre :**
-1. [ ] **[BZ-TAB-INVENTAIRE-MOCKUP-001]** Bezy P1→P3 (patron `TabAventures`) — prompt P1 : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`
-2. [ ] **[BZ-TAB-SHOP-MOCKUP-001]** puis **[BZ-TAB-VENTE-MOCKUP-001]** (même pipeline, prompts à rédiger après Inventaire)
-3. [ ] **[BZ-NAV-TAB-MOCKUP-CODE-001]** Bezy C# simple : généraliser `NavigationHUD` (`ApplyNavTabMockupVisual` — zoom, glow, label, expand `SelectedFrame`) pour 4 onglets — prompt + `@Notes/Bezi/RULES_bezy_code.md` (pas Cursor)
-4. [ ] Playtest navigation 4 onglets (mockup actif/inactif)
-5. [ ] **[BZ-NAV-WOOD-FRAME-001]** P2 : `cadreBoisFinal.png` sur les 4 `SelectedFrame` ; **TabVente** repos `SelectedFrame` **X = -10** seulement (pas +10 Aventures)
+1. [ ] **[P0-UI-TAB-MORE-001]** / **[BZ-TAB-MORE-001]** 5ᵉ onglet `TabMoreOption` (Plus) — C# Cursor livré ; Bezy Ph.1–3 scène **sans sprite**. Prompts : `Notes/Ui/PROMPTS_Bezi_tab_more_option.md`. Hub écran = backlog `[BL-UI-FEATURES-HUB-001]`.
+2. [ ] **[BZ-TAB-INVENTAIRE-MOCKUP-001]** Bezy P1→P3 (patron `TabAventures`) — prompt P1 : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`
+3. [ ] **[BZ-TAB-SHOP-MOCKUP-001]** puis **[BZ-TAB-VENTE-MOCKUP-001]** (même pipeline, prompts à rédiger après Inventaire)
+4. [ ] **[BZ-NAV-TAB-MOCKUP-CODE-001]** Bezy C# simple : généraliser `NavigationHUD` (`ApplyNavTabMockupVisual` — zoom, glow, label, expand `SelectedFrame`) pour 4 onglets — prompt + `@Notes/Bezi/RULES_bezy_code.md` (pas Cursor)
+5. [ ] Playtest navigation 4/5 onglets (mockup actif/inactif)
+6. ~~**[BZ-NAV-WOOD-FRAME-001]** P2 rollout bois~~ → **reporté polish** `[BZ-NAV-WOOD-REFONTE-001]` (9-slice + cadre ne couvre pas le label) — file `Notes/Ui/TODO_Bezy_polish_semaine.md` **#28** · prompts `Notes/Ui/PROMPTS_Bezi_nav_wood_frame_slice.md`. **Garder** mockup glow/zoom actuel jusqu’au budget polish.
 
-**Déjà livré :** `TabAventures` mockup + Wood P1 sur Aventures (`WoodFrame`, bordures or OFF). Spec : `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`.
+**Déjà livré :** `TabAventures` mockup + Wood P1 expérimental (à refondre). Spec : `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`.
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
@@ -654,13 +655,14 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 
 ### Navigation — polish cadre actif onglets (backlog)
 
-- [ ] **[BL-UI-NAV-TAB-FRAME-001]** **Cadre bois actif** par onglet nav (élément UI activable/désactivable) — remplace ou complète le **Glow** Knob V0. Motif : **truite centrée en haut** du cadre (identité aquaponie), style pierre/bois cohérent mockup. **Bezy** : prefab `TabActiveWoodFrame` + wiring `NavigationHUD` ; **art** : sprite 9-slice ou overlay Dump → promo. Spec : `Notes/Ui/SPEC_nav_onglets_zoom_actif.md` § polish cadre.
+- [ ] **[BL-UI-NAV-TAB-FRAME-001]** **Cadre bois actif** — voir refonte **`[BZ-NAV-WOOD-REFONTE-001]`** (remplace P2 bois naïf).
+- [ ] **[BZ-NAV-WOOD-REFONTE-001]** **Refonte cadre bois** (budget polish) : `cadreBoisFinal` **9-slice**, `WoodFrame` Sliced, **label TMP non recouvert**, rollout 4 onglets (Vente `SelectedFrame` repos **X = -10**). **Ne pas lancer** avant mockup zoom 4 onglets OK. Base actuelle glow/zoom **conservée**. Prompts : `Notes/Ui/PROMPTS_Bezi_nav_wood_frame_slice.md` · file Bezy **#28** `Notes/Ui/TODO_Bezy_polish_semaine.md`.
 
 ### Navigation — hub « Plus » (features secondaires)
 
 > Décision auteur **2026-09-09** : **ne pas** empiler Quêtes, Atelier, Mail, Social, DIY… dans la barre du bas. **5ᵉ onglet « Plus »** → écran liste verticale (boutons taille standard, scroll) pour features à l’infini.
 
-- [ ] **[BL-UI-FEATURES-HUB-001]** Écran hub **Plus** : `ScreenId.FeaturesHub` (ou `MoreMenu`) via `UIManager` — **pas** une scène dédiée si le pattern Inventory/Shop suffit. **Spec :** `Notes/Ui/SPEC_features_hub_plus.md` (variantes A/B + checklist playtest mobile).
+- [ ] **[BL-UI-FEATURES-HUB-001]** Écran hub **Plus** : `ScreenId.FeaturesHub` **ajouté** (2026-09-14). Prefab `FeaturesHubScreen` + binding `UIManager` encore à faire. Onglet barre `TabMoreOption` : `[P0-UI-TAB-MORE-001]`. **Spec :** `Notes/Ui/SPEC_features_hub_plus.md`.
   - **Barre nav stable :** Aventures · Inventaire · Shop · Vente · **Plus** (5 onglets max).
   - **Contenu :** `ScrollView` + lignes bouton (icône ~64–96 px + label TMP) — une feature = une ligne, pas un onglet nav.
   - **Data-driven (cible) :** entrées configurables (`featureId`, `ScreenId` cible, icône, prérequis déblocage) pour ajouter Mail / Social / DIY sans retoucher `NavigationHUD`.

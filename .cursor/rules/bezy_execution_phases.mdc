@@ -14,8 +14,10 @@ alwaysApply: true
 
 - **Par défaut, seul Bezy.ai** crée/modifie les prefabs UI **et** le C# simple (transforms, vues).
 - L'assistant Cursor **ne génère pas** de prefabs/scènes UI sauf **demande explicite** de l'auteur.
-- Cursor fournit : services/archi, specs, arbre cible, prompts Bezy (3 phases **ou** job C# + `Notes/Bezi/RULES_bezy_code.md`).
-- Délégation C# : `.cursor/rules/bezy_delegate_simple_code.mdc`. Skill 3 phases = **sans** C#.
+- **Cursor** : services/archi, logique métier, specs, prompts Bezy phasés (prefab 3 phases **ou** job C# view + `Notes/Bezi/RULES_bezy_code.md`), revue diff.
+- **Bezy** : prefabs/scènes + C# **simple visuel** (transforms, zoom onglets, `NavigationHUD` mockup) — pas la logique métier.
+- Skill `/prefab-ui-3phases` = hiérarchie/composants/wiring **sans** C# ; mockup onglets = souvent **scène + `NavigationHUD.cs`** en un job Bezy dédié.
+- Délégation détail : `.cursor/rules/bezy_delegate_simple_code.mdc`.
 
 When delegating work to Bezy (or similar UI-building agent), always provide:
 
