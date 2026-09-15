@@ -42,7 +42,7 @@ public class ScreenEntry
 public class UIManager : MonoBehaviour
 {
     /// <summary>Hauteur réservée en bas de l'écran pour la nav bar du HUD (en unités canvas).</summary>
-    private const float NavBarHeight = 120f;
+    private const float NavBarHeight = 128f;
 
     // ── Singleton ─────────────────────────────────────────────────────────────
 

@@ -119,6 +119,14 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private Vector2 activeTabFrameSizeDeltaExpand = new Vector2(20f, 105f);
     [SerializeField] private float activeTabFrameActivePosY = 38f;
 
+    [Header("Nav bar — layout manuel 5 slots")]
+    [Tooltip("Padding horizontal (doit matcher NavBarContainer HLG si présent).")]
+    [SerializeField] private float navBarHorizontalPadding = 10f;
+    [Tooltip("Réduit zoom/lift sur le 5e onglet (bord écran).")]
+    [SerializeField] private float lastNavTabActiveIconScaleMultiplier = 0.82f;
+    [SerializeField] private float lastNavTabActiveLiftMultiplier = 0.88f;
+
+    private const int NavTabSlotCount = 5;
     private NavTabMockupRest tabAventuresMockupRest;
     private NavTabMockupRest tabInventaireMockupRest;
     private NavTabMockupRest tabShopMockupRest;
@@ -144,7 +152,8 @@ public class NavigationHUD : MonoBehaviour
         public TextMeshProUGUI Label;
     }
     private HudMode currentMode = HudMode.Hidden;
-    private int screenRootRestSiblingIndex = 1;
+    private HorizontalLayoutGroup navBarHorizontalLayout;
+    private bool navBarHorizontalLayoutDisabled;
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
@@ -201,6 +210,12 @@ public class NavigationHUD : MonoBehaviour
         ApplyNavTabLabelStyle(tabShopLabel);
         ApplyNavTabLabelStyle(tabSaleChannelsLabel);
         ApplyNavTabLabelStyle(tabMoreOptionLabel);
+        PreventNavTabLabelsFromDrivingBarLayout(
+            tabAventuresLabel,
+            tabInventaireLabel,
+            tabShopLabel,
+            tabSaleChannelsLabel,
+            tabMoreOptionLabel);
 
         if (tabAventuresButton != null)
             tabAventuresButton.onClick.AddListener(OnTabAventuresClicked);
@@ -215,23 +230,13 @@ public class NavigationHUD : MonoBehaviour
         if (exitButton != null)
             exitButton.onClick.AddListener(OnExitClicked);
 
-        if (SceneNavigator.Instance != null)
-            BindNavigator(SceneNavigator.Instance);
-
-        CacheScreenRootSiblingIndex();
         RefreshModalHudPresentation();
-    }
-
-    private void CacheScreenRootSiblingIndex()
-    {
-        if (UIManager.Instance == null || UIManager.Instance.ScreenRoot == null)
-            return;
-
-        screenRootRestSiblingIndex = UIManager.Instance.ScreenRoot.GetSiblingIndex();
+        RebuildNavBarLayoutImmediate();
     }
 
     /// <summary>
-    /// Quand une modale HUD est ouverte : masque la barre PA et passe ScreenRoot au-dessus du HUD gameplay shell.
+    /// Quand une modale HUD est ouverte : masque la barre PA uniquement.
+    /// La nav reste dernier sibling sous HUDRoot (pas de reorder ScreenRoot — évite layout cassé onglet 5).
     /// </summary>
     public void RefreshModalHudPresentation()
     {
@@ -243,31 +248,32 @@ public class NavigationHUD : MonoBehaviour
         if (actionPointsHudRoot != null)
             actionPointsHudRoot.SetActive(!modalOpen);
 
-        Transform screenRoot = UIManager.Instance.ScreenRoot;
-        if (screenRoot == null || navBarContainer == null)
-            return;
-
-        if (modalOpen)
-        {
-            int navBarIndex = navBarContainer.transform.GetSiblingIndex();
-            screenRoot.SetSiblingIndex(navBarIndex);
-            return;
-        }
-
-        screenRoot.SetSiblingIndex(screenRootRestSiblingIndex);
+        RebuildNavBarLayoutImmediate();
     }
 
     private void OnEnable()
     {
         SceneNavigator.OnNavigatorAvailable += BindNavigator;
         SceneNavigator.OnNavigatorUnavailable += UnbindNavigator;
+
+        // SceneNavigator est un enfant de HUDRoot : son Awake (Instance) tourne
+        // après celui du parent. Sans ce bind ici, OnNavigatorAvailable est déjà
+        // passé et le HUD ne passe jamais en ExitOnly en FirstLvl.
+        if (SceneNavigator.Instance != null)
+            BindNavigator(SceneNavigator.Instance);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         SceneNavigator.OnNavigatorAvailable -= BindNavigator;
         SceneNavigator.OnNavigatorUnavailable -= UnbindNavigator;
         UnbindNavigator();
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
 
         if (tabAventuresButton != null)
             tabAventuresButton.onClick.RemoveListener(OnTabAventuresClicked);
@@ -390,7 +396,7 @@ public class NavigationHUD : MonoBehaviour
     /// </summary>
     public void OnExitClicked()
     {
-        if (exitButtonContainer.activeSelf)
+        if (exitButtonContainer != null && exitButtonContainer.activeSelf)
             OnExitToHomeRequested?.Invoke();
     }
 
@@ -455,7 +461,13 @@ public class NavigationHUD : MonoBehaviour
     private void HandleTransitionChanged(bool isTransitioning)
     {
         if (isTransitioning)
+        {
             ApplyMode(HudMode.Hidden);
+            return;
+        }
+
+        if (boundNavigator != null)
+            HandleSceneShown(boundNavigator.CurrentScene);
     }
 
     private void HandleSceneShown(string sceneName)
@@ -476,17 +488,30 @@ public class NavigationHUD : MonoBehaviour
         ApplyMode(HudMode.ExitOnly);
     }
 
+    /// <summary>
+    /// HUD aventure : barre d'onglets masquée, croix de sortie active.
+    /// À appeler depuis le contrôleur de la scène gameplay (ex. FirstLvl).
+    /// </summary>
+    public void EnterAdventureMode()
+    {
+        ApplyMode(HudMode.ExitOnly);
+    }
+
     private void ApplyMode(HudMode mode)
     {
-        if (currentMode == mode)
-            return;
-
         currentMode = mode;
-        navBarContainer.SetActive(mode == HudMode.Navigation);
-        exitButtonContainer.SetActive(mode == HudMode.ExitOnly);
+
+        if (navBarContainer != null)
+            navBarContainer.SetActive(mode == HudMode.Navigation);
+
+        if (exitButtonContainer != null)
+            exitButtonContainer.SetActive(mode == HudMode.ExitOnly);
 
         if (mode == HudMode.Navigation)
+        {
             RefreshTabVisuals();
+            RebuildNavBarLayoutImmediate();
+        }
     }
 
     private void RefreshTabVisuals()
@@ -532,7 +557,11 @@ public class NavigationHUD : MonoBehaviour
             BuildMoreOptionMockupRefs(),
             tabMoreOptionMockupRest,
             active == Tab.MoreOption,
-            allowActiveWithoutSprite: true);
+            allowActiveWithoutSprite: true,
+            activeIconScaleMultiplier: lastNavTabActiveIconScaleMultiplier,
+            activeIconLiftMultiplier: lastNavTabActiveLiftMultiplier);
+
+        RebuildNavBarLayoutImmediate();
     }
 
     private NavTabMockupRefs BuildAventuresMockupRefs()
@@ -631,7 +660,9 @@ public class NavigationHUD : MonoBehaviour
         NavTabMockupRefs refs,
         NavTabMockupRest rest,
         bool isActive,
-        bool allowActiveWithoutSprite = false)
+        bool allowActiveWithoutSprite = false,
+        float activeIconScaleMultiplier = 1f,
+        float activeIconLiftMultiplier = 1f)
     {
         bool hasSprite = refs.Icon != null && refs.Icon.sprite != null;
         bool showActiveFx = isActive && (hasSprite || allowActiveWithoutSprite);
@@ -671,7 +702,7 @@ public class NavigationHUD : MonoBehaviour
         if (refs.IconLift != null)
         {
             refs.IconLift.localScale = Vector3.one;
-            float liftY = showActiveFx ? activeTabIconLiftY : 0f;
+            float liftY = showActiveFx ? activeTabIconLiftY * activeIconLiftMultiplier : 0f;
             refs.IconLift.anchoredPosition = rest.IconLiftAnchoredPosition + new Vector2(0f, liftY);
         }
 
@@ -679,10 +710,10 @@ public class NavigationHUD : MonoBehaviour
             return;
 
         RectTransform iconRect = refs.Icon.rectTransform;
-        float iconScale = showActiveFx ? activeTabIconScale : 1f;
+        float iconScale = showActiveFx ? activeTabIconScale * activeIconScaleMultiplier : 1f;
         iconRect.localScale = new Vector3(iconScale, iconScale, 1f);
 
-        float iconOffsetY = showActiveFx ? activeTabIconLocalOffsetY : 0f;
+        float iconOffsetY = showActiveFx ? activeTabIconLocalOffsetY * activeIconLiftMultiplier : 0f;
         iconRect.anchoredPosition = rest.IconAnchoredPosition + new Vector2(0f, iconOffsetY);
 
         if (!hasSprite)
@@ -763,6 +794,110 @@ public class NavigationHUD : MonoBehaviour
             if (activeTabGlowMaterial != null)
                 glowImage.material = activeTabGlowMaterial;
         }
+    }
+
+    /// <summary>
+    /// Les labels actifs ne doivent pas influencer la largeur des slots HLG (sinon le 5e onglet est écrasé).
+    /// </summary>
+    private static void PreventNavTabLabelsFromDrivingBarLayout(params TextMeshProUGUI[] labels)
+    {
+        foreach (TextMeshProUGUI label in labels)
+        {
+            if (label == null)
+                continue;
+
+            LayoutElement layout = label.GetComponent<LayoutElement>();
+            if (layout == null)
+                layout = label.gameObject.AddComponent<LayoutElement>();
+
+            layout.ignoreLayout = true;
+        }
+    }
+
+    private void RebuildNavBarLayoutImmediate()
+    {
+        if (navBarContainer == null)
+            return;
+
+        NormalizeNavTabRootTransforms();
+        EnsureManualNavTabStripLayout();
+    }
+
+    private void EnsureManualNavTabStripLayout()
+    {
+        if (navBarContainer == null)
+            return;
+
+        if (!navBarHorizontalLayoutDisabled)
+        {
+            navBarHorizontalLayout = navBarContainer.GetComponent<HorizontalLayoutGroup>();
+            if (navBarHorizontalLayout != null)
+                navBarHorizontalLayout.enabled = false;
+            navBarHorizontalLayoutDisabled = true;
+        }
+
+        ApplyEqualNavTabSlots();
+    }
+
+    /// <summary>5 colonnes égales en pixels — évite dérive HLG sur le dernier slot (Plus).</summary>
+    private void ApplyEqualNavTabSlots()
+    {
+        RectTransform barRect = navBarContainer.transform as RectTransform;
+        if (barRect == null)
+            return;
+
+        Canvas.ForceUpdateCanvases();
+        float barHeight = barRect.rect.height;
+        float innerWidth = barRect.rect.width - navBarHorizontalPadding * 2f;
+        if (innerWidth <= 1f || barHeight <= 1f)
+            return;
+
+        float slotWidth = innerWidth / NavTabSlotCount;
+        Button[] tabs =
+        {
+            tabAventuresButton,
+            tabInventaireButton,
+            tabShopButton,
+            tabSaleChannelsButton,
+            tabMoreOptionButton
+        };
+
+        for (int i = 0; i < tabs.Length; i++)
+        {
+            Button tabButton = tabs[i];
+            if (tabButton == null)
+                continue;
+
+            RectTransform slot = tabButton.transform as RectTransform;
+            slot.anchorMin = new Vector2(0f, 0f);
+            slot.anchorMax = new Vector2(0f, 1f);
+            slot.pivot = new Vector2(0.5f, 0.5f);
+            slot.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotWidth);
+            slot.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, barHeight);
+            float centerX = navBarHorizontalPadding + slotWidth * (i + 0.5f);
+            slot.anchoredPosition = new Vector2(centerX, 0f);
+        }
+    }
+
+    private void NormalizeNavTabRootTransforms()
+    {
+        ResetNavTabRootTransform(tabAventuresButton);
+        ResetNavTabRootTransform(tabInventaireButton);
+        ResetNavTabRootTransform(tabShopButton);
+        ResetNavTabRootTransform(tabSaleChannelsButton);
+        ResetNavTabRootTransform(tabMoreOptionButton);
+    }
+
+    private static void ResetNavTabRootTransform(Button tabButton)
+    {
+        if (tabButton == null)
+            return;
+
+        RectTransform rect = tabButton.transform as RectTransform;
+        if (rect == null)
+            return;
+
+        rect.localScale = Vector3.one;
     }
 
     private void ApplyNavTabLabelStyle(TextMeshProUGUI label)

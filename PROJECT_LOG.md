@@ -1,5 +1,31 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-15 — Fix croix ExitOnly FirstLvl `[P0-NAV-HUD-EXITONLY-001]`
+
+### Symptôme
+- En FirstLvl, `ExitButtonContainer` (croix) restait inactif ; la barre d’onglets restait visible.
+
+### Cause
+- `SceneNavigator` est enfant de `HUDRoot`. `NavigationHUD.Awake` (parent) tourne **avant** `SceneNavigator.Awake`.
+- `OnNavigatorAvailable` partait avant l’abonnement HUD ; `OnEnable` ne bindait pas l’instance déjà créée (contrairement à `UIManager`).
+- `ApplyMode` early-return si `currentMode == Hidden` alors que le YAML a `NavBarContainer` **actif**.
+
+### Fix (`NavigationHUD.cs`)
+- Bind `SceneNavigator` dans `OnEnable` si `Instance` existe ; `OnDisable` pour unbind.
+- `ApplyMode` synchronise toujours nav / croix (plus d’early-return).
+- Fin de transition → re-sync du mode selon `CurrentScene`.
+
+### Playtest auteur
+- Home → nœud aventure → FirstLvl : onglets masqués, **croix active** haut-gauche (position still `[P0-NAV-EXIT-ANCHOR-001]`).
+- Croix → retour Home, barre d’onglets revenue.
+
+### Suite 2026-09-15 (croix toujours inactive dans FirstLvl)
+- La croix n’est **pas** un objet de `FirstLvl.unity`. Elle vit dans `NavigationHUD` (`ExitButtonContainer`).
+- `FirstLvlController` force maintenant le HUD à l’`OnEnable` via `EnterAdventureMode()` (nav masquée, croix active, retour Home).
+- `SceneNavigator` masque toutes les autres scènes contenu (Home / FirstLvl / Map) pour ne plus laisser FirstLvl visible avec un HUD encore en mode Accueil.
+
+---
+
 ## 2026-09-15 — Bug nav : Plus (5ᵉ) coupé après onglets 2–4
 
 ### Playtest auteur

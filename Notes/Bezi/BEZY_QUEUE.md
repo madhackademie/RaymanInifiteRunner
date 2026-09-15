@@ -39,7 +39,11 @@ Ouvrir `NavigationHUD.unity`, puis :
 [BZ-FEATURES-HUB-V0-001] Execute PHASE 1b components ONLY. STOP.
 ```
 
-**Relink sprites nav `[BZ-NAV-TABS-SPRITE-FOLDER-001]` :** OK 2026-09-15.  
+**Relink sprites nav `[BZ-NAV-TABS-SPRITE-FOLDER-001]` :** OK 2026-09-15.
+
+**Nav 5ᵉ onglet coupé `[BZ-NAV-TAB5-CLIP-001]` :** prompt `Assets/Docs/Bezi/PROMPTS_Bezi_nav_tab5_clip_fix.md` (scène ; Cursor rebuild HLG insuffisant).
+
+**Hauteur barre = 140 px `[BZ-NAV-BAR-HEIGHT-001]` :** `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md` — `NavBarContainer` 128 → **140** (fond = IconLift + zoom). Après Bezy : Cursor `UIManager.NavBarHeight = 140f`.  
 **Onglets `[BZ-TAB-SPRITES-001]` :** TabVente dernier prompt.  
 **Sparkle récolte `[BZ-FARM-HARVEST-READY-VFX-002]` :** Phase 5 — peut partir sans attendre Cursor.  
 **Glow cible `[BZ-FARM-PLANT-SELECT-GLOW-001]` :** Cursor livré — Bezy Ph.1–3 pour visuel prefab (jaune/blanc, scale).  

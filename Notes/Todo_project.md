@@ -50,7 +50,7 @@ Convention d'IDs :
 
 **Piste technique :** `NavigationHUD.cs` — mockup zoom / `ApplyNavTabSelectedFrameLayout` / `LayoutRebuilder` sur `NavBarContainer` ou `HorizontalLayoutGroup` quand l’onglet actif n’est pas le 1er (largeur flexible du 5ᵉ slot). Voir `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`.
 
-**Ordre fix suggéré :** repro Play Mode → inspect `TabMoreOption` RectTransform + siblings après `RefreshTabVisuals(Tab.*)` → Cursor ou Bezy C# layout (`[BZ-NAV-TAB-MOCKUP-CODE-001]` si généralisation déjà en cours).
+**Ordre fix suggéré :** repro Play Mode → Bezy **`[BZ-NAV-TAB5-CLIP-001]`** (`Assets/Docs/Bezi/PROMPTS_Bezi_nav_tab5_clip_fix.md`) → playtest → Phase 2 C# edge tab si besoin.
 
 **Hors scope immédiat :** inventaire onglet « Tout » (`[BZ-INV-TABS-002]`).
 
@@ -119,7 +119,7 @@ Convention d'IDs :
 > Détail suspects : `PROJECT_LOG.md` 2026-09-10 — *Régressions playtest FirstLvl* + *vente sans salade*.  
 > On est **déjà sur `main`** : pas un écart de branche, ce sont des changements **récents sur `main`** (Bezy HUD + iso IBC).
 
-1. [ ] **[P0-NAV-HUD-EXITONLY-001]** En **FirstLvl**, la barre d’onglets (`NavBarContainer`) **reste visible** alors qu’elle doit **s’effacer** (mode `ExitOnly`). Sortie du niveau = **croix rouge** uniquement.
+1. [x] **[P0-NAV-HUD-EXITONLY-001]** En **FirstLvl**, la barre d’onglets (`NavBarContainer`) **reste visible** alors qu’elle doit **s’effacer** (mode `ExitOnly`). Sortie du niveau = **croix rouge** uniquement. **Fix 2026-09-15** : bind `SceneNavigator` dans `OnEnable` + sync `ApplyMode` (plus d’early-return). Playtest auteur à confirmer.
 2. [ ] **[P0-NAV-EXIT-ANCHOR-001]** Une fois dans FirstLvl, la **croix bouge selon la taille** Game view / aspect — **à valider sur mobile**. Lié `[CT-NAV-MAP-001]` (figer la croix).
 3. [ ] **[P0-FARM-IBC-OVERFLOW-001]** Sprite **IBC déborde** de l’écran ; la croix **change de place** avec le cadrage (même cause aspect / ancrage que 2).
 4. [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold **disparu** en haut `NavigationHUD` (Bezy onglets) — **reproduit** ce playtest. Empêche de vérifier le gold de la vente. Déjà listé item 1b ci-dessous.
@@ -602,7 +602,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 
 ### Navigation Scene/UI
 - [ ] [CT-NAV-001] Debug complet des flux `SceneNavigator.ShowScene` (transitions concurrentes, scènes orphelines, ordre d'activation).
-- [ ] **[P0-NAV-HUD-EXITONLY-001]** FirstLvl : `NavBarContainer` doit se masquer (`ExitOnly`) — playtest 2026-09-10, onglets encore visibles.
+- [x] **[P0-NAV-HUD-EXITONLY-001]** FirstLvl : `NavBarContainer` doit se masquer (`ExitOnly`) — fix Cursor 2026-09-15 (`NavigationHUD` bind OnEnable + `ApplyMode` sync). Playtest auteur à confirmer.
 - [ ] **[P0-NAV-EXIT-ANCHOR-001]** Croix `ExitButtonContainer` : ancrer **haut-gauche** (plus offset centre `-506 / 861.95`) — valider **mobile**. Lié `[CT-NAV-MAP-001]`.
 - [ ] **[CT-NAV-MAP-001]** Rework écran « Accueil » → **map principale des niveaux** (décision auteur **2026-09-09**) :
   - Ce n’est **pas** un hub Accueil statique : c’est la **carte / map principale** où le joueur choisit un niveau.

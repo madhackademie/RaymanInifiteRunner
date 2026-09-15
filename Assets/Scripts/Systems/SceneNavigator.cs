@@ -135,18 +135,45 @@ public class SceneNavigator : MonoBehaviour
         if (string.IsNullOrWhiteSpace(sceneName))
             return;
 
+        SetOtherContentScenesInactive(sceneName);
+        SetSceneRootsActive(sceneName, true);
         CurrentScene = sceneName;
         OnAfterSceneShown?.Invoke(sceneName);
     }
 
     /// <summary>Retourne true si la scène est chargée en mémoire.</summary>
-    public bool IsSceneLoaded(string sceneName)
+    public static bool IsSceneLoaded(string sceneName)
     {
         Scene scene = SceneManager.GetSceneByName(sceneName);
         return scene.IsValid() && scene.isLoaded;
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private static readonly string[] ContentSceneIds =
+    {
+        SceneId.HomeScene,
+        SceneId.FirstLvl,
+        SceneId.Map
+    };
+
+    /// <summary>
+    /// Masque les autres scènes de contenu déjà chargées (éditeur multi-scènes, lazy).
+    /// Le shell NavigationHUD n'est jamais touché.
+    /// </summary>
+    private static void SetOtherContentScenesInactive(string activeSceneName)
+    {
+        foreach (string sceneName in ContentSceneIds)
+        {
+            if (sceneName == activeSceneName)
+                continue;
+
+            if (!IsSceneLoaded(sceneName))
+                continue;
+
+            SetSceneRootsActive(sceneName, false);
+        }
+    }
 
     /// <summary>Active ou désactive tous les GameObjects racines d'une scène.</summary>
     private static void SetSceneRootsActive(string sceneName, bool active)
@@ -182,9 +209,7 @@ public class SceneNavigator : MonoBehaviour
                 return;
             }
 
-            if (!string.IsNullOrEmpty(CurrentScene))
-                SetSceneRootsActive(CurrentScene, false);
-
+            SetOtherContentScenesInactive(sceneName);
             SetSceneRootsActive(sceneName, true);
             CurrentScene = sceneName;
             OnAfterSceneShown?.Invoke(sceneName);
