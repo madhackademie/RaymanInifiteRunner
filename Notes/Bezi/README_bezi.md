@@ -21,8 +21,8 @@ Regle simple:
 - **Visuel / scene / prefab / inspector / C# transform-vue** -> Bezy en premier (**prefabs + C# simple = Bezy par defaut**).
 - **Structure / services / persistance / cloud / clean code metier** -> Codex en premier.
 
-Regle Cursor : `.cursor/rules/bezi_prefab_ownership.mdc` + `.cursor/rules/bezy_delegate_simple_code.mdc`.  
-C# Bezy : `@Notes/Bezi/RULES_bezy_code.md`.
+Regle Cursor : `.cursor/rules/bezy_prefab_ownership.mdc` + `.cursor/rules/bezy_delegate_simple_code.mdc`.  
+**Bezy `@` prompts :** `Assets/Docs/Bezi/` (miroir) · **Cursor source :** `Notes/Ui/PROMPTS_Bezi_*.md` · Workflow : `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md` (sans GitHub MCP, sans commit par prompt).
 
 **Workspace Rules Bezy.ai (UI Bezy)** : copier le bloc depuis `Notes/Bezi/WORKSPACE_RULES_paste_in_bezi.md` — **pas** l’ancienne règle « Cursor fournit tout le C# ».
 
@@ -210,7 +210,7 @@ Doc : [Using Threads](https://docs.bezi.com/fundamentals/threads)
 
 **Chaîne Cursor → Bezy :** Cursor rédige les `PROMPTS_Bezi_*.md` (même hors Unity) ; dans Bezi, `@` le prompt local puis `/prefab-ui-3phases` Phase N. L’auteur ne fait que lancer (2–5 min / phase).
 
-**Abandonné :** branche `cursor/bezi-workspace-rules-skill-76a4` (Workspace Rules + GitHub MCP comme chaîne principale). Le `@` local + le skill suffisent.
+**Abandonné :** GitHub MCP pour alimenter Bezy (commit parasite). **Retenu :** `@Assets/Docs/Bezi/PROMPTS_*.md` + commit Git quand tu veux.
 
 **Limite :** Bezi n’expose pas d’API pour que Cursor déclenche Bezi en autonomie. Doc : https://docs.bezi.com/context/mcp.md
 

@@ -120,7 +120,7 @@ Each invocation ends with exactly one phase's mutations applied live to the targ
 
 ## MCP requirements
 
-None. (GitHub MCP, if connected, is used only to read `PROMPTS_Bezi_*.md` task specs — it is not required to run this skill.)
+None. Prompt specs live in `Notes/Ui/PROMPTS_Bezi_*.md`; author copy-pastes into Bezy in Unity (see `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`).
 
 ## Runtime constraints
 

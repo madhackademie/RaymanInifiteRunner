@@ -1,5 +1,95 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-15 — Bug nav : Plus (5ᵉ) coupé après onglets 2–4
+
+### Playtest auteur
+- Barre OK avec **Aventures** actif.
+- Clics **Inventaire / Shop / Vente / Plus** : **5ᵉ onglet coupé** à droite ; état **persiste** sur les autres onglets jusqu’à **reclic Aventures**.
+
+### Suivi
+- Todo **`[P0-NAV-TAB5-CLIP-001]`** — priorité **prochaine session** (`Notes/Todo_project.md`).
+- Suspect : layout mockup nav (`NavigationHUD` / expand onglet actif sans rebuild barre).
+
+---
+
+## 2026-09-15 — FeaturesHub V0 Bezy P1 + correctifs Cursor
+
+### Auteur
+- **P1 OK** — prefab `FeaturesHubScreen.prefab` (hiérarchie PlaceholderRoot / WipIllustration / labels).
+
+### Revue repo
+- Prefab disque : **GameObjects seulement** (pas encore Image root opaque, TMP, `RuntimeFeaturesHubScreen`, sprite WIP) → **P1b Bezy**.
+- **UIManager** : entrée `FeaturesHub` pointait par erreur le prefab **SaleChannels** → corrigé vers `FeaturesHubScreen` (`NavigationHUD.unity`).
+
+### Suite
+- Bezy **Phase 1b** puis playtest Plus (écran opaque, pas de clic gameplay).
+
+### Clos 2026-09-15 (P1b)
+- Prefab complet : fond `a=0.98` Raycast ON, `IconeHub_WipCone_en`, TMP FR, UIManager → `FeaturesHubScreen`.
+- Bezy n’avait pas ajouté `RuntimeFeaturesHubScreen` → wiring ajouté Cursor sur prefab.
+
+---
+
+## 2026-09-15 — Relink sprites nav `Nav/Tabs` + barre 5 onglets
+
+### Auteur
+- Bezy `[BZ-NAV-TABS-SPRITE-FOLDER-001]` OK — 5 `Icon` pointent `Assets/Art/Sprites/UI/Nav/Tabs/`.
+- Playtest : bug bordure/cadre qui s’empilait au clic **Plus** (V0 sans hub) **disparu** après relink.
+
+### Prochaine priorité
+- **`[BL-UI-FEATURES-HUB-001]`** : prefab/scène hub Plus + binding `UIManager` (`ScreenId.FeaturesHub`).
+
+---
+
+## 2026-09-15 — TabMoreOption Bezy Phase 2 livrée
+
+### Auteur
+- **P2 OK** — glow, label « Plus », sprite composite `IconeTab_Plus_glyph.png` sur `TabMoreOption/IconLift/Icon` (même pipeline mockup que les autres onglets).
+
+### Repo (revue)
+- `NavigationHUD.unity` : icône Plus assignée (alpha 1, Preserve Aspect) ; refs `tabMoreOption*` sur HUDRoot encore **null** → **Phase 3** wiring + `OnTabMoreOptionClicked`.
+
+### Prochaine action Bezy
+```
+@Assets/Docs/Bezi/PROMPTS_Bezi_tab_more_option.md
+[BZ-TAB-MORE-001] Execute PHASE 3 only. NavigationHUD.unity open. No .cs. Save. List. STOP.
+```
+
+### Ensuite (optionnel)
+- `[BZ-NAV-TABS-SPRITE-FOLDER-001]` — 4 autres onglets → `Nav/Tabs/` si pas déjà fait.
+- Playtest nav : clic Plus = zoom/cadre comme Inventaire ; hub si bindé.
+
+---
+
+## 2026-09-15 — Hub Plus : sous-onglets frames (spec)
+
+### Demande auteur
+- Prochaine étape : **scène / UI** pour tout ce qui vit dans **Plus** : mailbox (spam updates/events), notifications, vote roadmap, craft, quêtes (daily/weekly/monthly), options (langue, son, abo), etc.
+- Navigation interne : **onglets en frames en ligne**, comme l’onglet **Vente** en barre.
+
+### Décisions / docs
+- `Notes/Ui/SPEC_features_hub_plus.md` : §4–8 réécrits — `FeaturesHubScreen` = barre secondaire `HubSubTabBar` + `HubPanelHost` ; listes verticales **dans** chaque panneau seulement.
+- `Notes/Todo_project.md` : `[BL-UI-FEATURES-HUB-001]` aligné sur cette UX.
+- Open design : **Mail vs Notifications** (2 onglets vs 1 « Actualités ») — recommandation V0 = fusion possible.
+
+### Prochaine session (hub)
+1. Finir `[BZ-TAB-MORE-001]` si pas fait.
+2. Cursor : binding `UIManager` + squelette `RuntimeFeaturesHubScreen` / `FeaturesHubTabId`.
+3. Rédiger `Notes/Ui/PROMPTS_Bezi_features_hub_plus.md` puis Bezy prefab hub Ph.1–3.
+
+---
+
+## 2026-09-15 — Workflow Bezy : copier-coller (pas GitHub MCP)
+
+### Décision auteur (précision)
+- **Retenu :** `@Assets/Docs/Bezi/PROMPTS_*.md` dans Unity (miroir local, pas de commit obligaire par phase).
+- **Abandonné :** GitHub MCP (commit parasite à chaque prompt).
+
+### Prochaine action Bezy
+- `[BZ-TAB-MORE-001]` Phase 1 — coller depuis `Notes/Ui/PROMPTS_Bezi_tab_more_option.md`.
+
+---
+
 ## 2026-09-14 — TabMoreOption (5ᵉ onglet Plus) V0 sans sprite
 
 ### Demande auteur

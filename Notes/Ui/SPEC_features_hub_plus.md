@@ -1,6 +1,7 @@
 # SPEC UI — Hub « Plus » & composition barre nav mobile
 
 **Création :** 2026-09-09  
+**Màj :** 2026-09-15 — contenu hub = **sous-onglets horizontaux** (frames en ligne, patron visuel onglet Vente / `SelectedFrame`), pas liste verticale seule.  
 **Statut :** **brouillon** — variante barre (A vs B) à trancher après **playtest mobile auteur**  
 **Backlog :** `[BL-UI-FEATURES-HUB-001]` · `Notes/Todo_project.md`  
 **Art onglets :** `Notes/Art/PROMPT_generation_icones.md` § **Vague H-nav**  
@@ -88,8 +89,9 @@ Cocher sur **téléphone réel** (pas seulement Game view Editor).
 | Hub features | **Écran UI** `ScreenId.FeaturesHub` — **pas** de scène `.unity` dédiée |
 | Ouverture | Onglet **Plus** → `UIManager.TryShowScreen(ScreenId.FeaturesHub)` |
 | Fermeture | Bouton retour / backdrop — même pattern `Inventory` / `SaleChannels` |
-| Contenu Plus | `ScrollView` vertical, **lignes bouton** (pas mini-onglets) |
-| Extensibilité | Registre data-driven (ScriptableObject ou liste sérialisée) — V1 peut être liste en dur |
+| Contenu Plus | **Un écran** `FeaturesHubScreen` : **barre secondaire** de sous-onglets (frames **en ligne**, même langage que `TabVente` / mockup nav) + **zone contenu** qui swap un panneau par sous-onglet |
+| Liste verticale | **Réservée à l’intérieur** de chaque panneau (ex. fil Mail, liste quêtes) — pas comme navigation principale du hub |
+| Extensibilité | Registre data-driven (`FeaturesHubTabId` + prefab panneau ou `ScreenId` enfant) — V0 placeholders « Bientôt » |
 | Multiverse / runner | Reste sur **Play (Aventures)** — pas dans le Plus |
 | Market cloud | Hors barre — spec cloud existante ; ne pas confondre avec Shop HUD |
 | Prefabs UI | **Bezy** (`FeaturesHubScreen.prefab`, lignes) ; **Cursor** = scripts, `ScreenId`, navigation |
@@ -145,53 +147,78 @@ Cocher sur **téléphone réel** (pas seulement Game view Editor).
 
 ## 7) Écran `FeaturesHubScreen` — hiérarchie cible (Bezy)
 
-```
-FeaturesHubScreen (root — RuntimeFeaturesHubScreen, Image backdrop semi-opaque)
-├── Header
-│   ├── TitleLabel ("Plus" / "Menu")
-│   └── CloseButton
-└── Body
-    └── FeaturesScrollView (ScrollRect vertical)
-        └── FeaturesContent (VerticalLayoutGroup, spacing ~12–16)
-            ├── FeatureHubRowButton (Quêtes)
-            ├── FeatureHubRowButton (Atelier craft)
-            ├── FeatureHubRowButton (Shop)          ← seulement si variante A
-            ├── FeatureHubRowButton (Mail — locked)
-            ├── FeatureHubRowButton (Social — locked)
-            └── …
-```
-
-### Ligne `FeatureHubRowButton` (patron)
+**Décision auteur 2026-09-15 :** navigation interne = **onglets en frames horizontaux** (comme l’onglet **Vente** en barre : `SelectedFrame`, glow optionnel, label sous l’icône ou à côté selon place). Scroll horizontal **seulement** si > 5–6 sous-onglets sur petit écran.
 
 ```
-FeatureHubRowButton (Button, hauteur fixe ~72–88 px, stretch horizontal)
-├── Icon (Image 64–72 px, Preserve Aspect)
-├── Label (TMP_Text)
-├── OptionalBadge (ex. "Bientôt", compteur quêtes)
-└── Chevron (optionnel)
+FeaturesHubScreen (root — RuntimeFeaturesHubScreen, backdrop)
+├── Header (optionnel : titre "Plus" + Close — ou fermeture = onglet barre)
+├── HubSubTabBar (HorizontalLayoutGroup, hauteur ~ nav cell ou légèrement plus bas)
+│   ├── HubSubTab_Notifications   (Button + SelectedFrame + Icon + Label)
+│   ├── HubSubTab_Mailbox
+│   ├── HubSubTab_RoadmapVote
+│   ├── HubSubTab_Craft
+│   ├── HubSubTab_Quests
+│   ├── HubSubTab_Settings
+│   └── … (extensible)
+└── HubContentViewport
+    └── HubPanelHost (un seul panneau actif à la fois)
+        ├── Panel_Notifications   (placeholder V0)
+        ├── Panel_Mailbox
+        ├── Panel_RoadmapVote
+        ├── Panel_Craft           → contenu atelier ou lien `ScreenId.Craft`
+        ├── Panel_Quests          (filtres daily / weekly / monthly en sous-barre ou chips)
+        └── Panel_Settings        (langue, son, abo — stubs)
 ```
+
+### Patron `HubSubTab` (copie **read-only** de `TabVente` / `TabInventaire` dans la scène nav)
+
+- Même stack : `SelectedFrame`, `IconLift` / `Glow` / `Icon`, `Label` TMP.
+- **Pas** de second `NavigationHUD` : composant dédié `FeaturesHubSubTabView` (Bezy wiring + Cursor logique sélection).
+- Badge non-lu sur icône (Mail / Notifications) : petit TMP ou Image en coin.
 
 **Règles :**
 
-- Une ligne = une feature ; clic → `UIManager.TryShowScreen(targetScreenId)` puis fermer ou laisser le hub en arrière-plan selon pattern Inventory (à aligner sur comportement actuel).
-- Entrée **locked** : `interactable = false` + overlay gris + label « Bientôt ».
-- **Pas** de sous-onglets dans le Plus en V0.
+- Clic sous-onglet → activer frame + afficher le panneau correspondant (**pas** de `LoadScene`).
+- Panneau lourd (Craft complet) : V1 peut ouvrir un `ScreenId` dédié par-dessus le hub ; V0 = placeholder dans `HubPanelHost`.
+- Entrée **locked** : sous-onglet grisé + panneau « Bientôt ».
+
+### Patron ligne (à l’intérieur d’un panneau Mail / Notifications)
+
+```
+FeatureHubRow (lecture seule, pas nav principale)
+├── Icon + Label + date
+└── OptionalBadge
+```
+
+Utiliser un `ScrollRect` **vertical** dans `Panel_Mailbox` / `Panel_Notifications` pour les listes longues.
 
 ---
 
-## 8) Registre entrées V1 (proposition)
+## 8) Registre sous-onglets hub (proposition auteur 2026-09-15)
 
-| Ordre | Label FR | `ScreenId` cible | Statut V0 | Art icône |
-|------:|----------|------------------|-----------|-----------|
-| 1 | Quêtes | *(futur `Quests`)* | locked ou stub | H4 backlog |
-| 2 | Atelier | *(futur `Craft`)* | locked ou stub | G5 / craft spec |
-| 3 | Shop | `Shop` | actif **si variante A** | H-nav-3 ou icône liste |
-| 4 | Mail | — | locked | backlog |
-| 5 | Social | — | locked | backlog |
-| 6 | Shop boulons | *(futur)* | locked | H8 backlog |
+| Ordre barre | `FeaturesHubTabId` | Rôle | Statut V0 | Notes métier |
+|------------:|--------------------|------|-----------|--------------|
+| 1 | `Notifications` | Fil **nouveaux** events / updates (badge global) | stub UI | Peut fusionner avec Mail si trop redondant — **à trancher** |
+| 2 | `Mailbox` | Messages **persistants** (patch notes, events, spam dev / outil éditeur) | stub + **dev inject** plus tard | Distinct si Notifications = alertes courtes, Mail = historique |
+| 3 | `RoadmapVote` | Vote sur items roadmap communauté / backlog | locked | Backend TBD ; UI liste + boutons vote |
+| 4 | `Craft` | Onglet **bricolage** / atelier | stub → `ScreenId.Craft` | `Notes/GDD/SPEC_craft_atelier_aquaponique.md` |
+| 5 | `Quests` | Quêtes **daily / weekly / monthly** (+ chips ou 2ᵉ barre) | stub | `[BL-QUEST-DAILY-001]` · icônes H4–H7 |
+| 6 | `Settings` | **Options** : langue, son, abonnement | stub | Futur `ScreenId.Settings` si écran plein |
+| — | `Shop` | Entrée shop | actif **seulement variante A** (shop hors barre) | Sinon shop reste onglet barre B |
+
+**Plus si affinité :** Social, Shop boulons, aide / FAQ — nouveaux `HubSubTab_*` sans toucher `NavigationHUD`.
 
 Réf. craft : `Notes/GDD/SPEC_craft_atelier_aquaponique.md`  
 Réf. quêtes : `[BL-QUEST-DAILY-001]` · icônes H4–H7 `PROMPT_generation_icones.md`
+
+### Open design — Mail vs Notifications
+
+| Option | Quand la choisir |
+|--------|------------------|
+| **A — 2 onglets** | Notifications = toasts agrégés + liste courte ; Mailbox = tout l’historique + contenu riche |
+| **B — 1 onglet « Actualités »** | V0 plus simple ; split plus tard si le fil grossit |
+
+**Recommandation V0 :** option **B** (un panneau, deux sections « Nouveau » / « Archives ») sauf besoin explicite de spam mailbox séparé.
 
 ---
 
@@ -202,8 +229,9 @@ Réf. quêtes : `[BL-QUEST-DAILY-001]` · icônes H4–H7 `PROMPT_generation_ico
 | `ScreenId.cs` | `public const string FeaturesHub = "FeaturesHub";` |
 | `UIManager` | Binding écran + prefab `FeaturesHubScreen` |
 | `NavigationHUD.cs` | `TabMoreOption` + `OnTabMoreOptionClicked` (**livré 2026-09-14**) ; masquer `TabShop` si variante A |
-| `RuntimeFeaturesHubScreen.cs` | *(nouveau)* liste entrées, navigation, états locked |
-| `FeatureHubEntryDefinition.cs` | *(optionnel V1)* SO : id, label, icon, screenId, unlocked |
+| `RuntimeFeaturesHubScreen.cs` | *(nouveau)* sélection sous-onglet, swap panneaux, badges non-lu |
+| `FeaturesHubTabId.cs` | constantes stables (Notifications, Mailbox, …) |
+| `FeatureHubTabDefinition.cs` | *(optionnel V1)* SO : tabId, label, icon, panelPrefab, unlocked |
 
 **Comportement Plus :**
 
@@ -231,9 +259,9 @@ Brief : sujet **85–90 %** du cadre 128², même poids visuel, Trim à l’impo
 | Phase | Livrable | Prérequis |
 |-------|----------|-----------|
 | **Nav TabMoreOption** | `TabMoreOption` dans `NavigationHUD.unity` (copie patron `TabInventaire`) | Prompts `[BZ-TAB-MORE-001]` ; sprite H-nav-5 plus tard |
-| **FeaturesHub Ph.1** | Hiérarchie `FeaturesHubScreen` shell + scroll + 3 lignes placeholder | Spec validée |
-| **FeaturesHub Ph.2** | Image, Button, TMP, Layout sur lignes | Ph.1 OK |
-| **FeaturesHub Ph.3** | Wiring `RuntimeFeaturesHubScreen` + `UIManager` | Scripts Cursor |
+| **FeaturesHub Ph.1** | Shell + `HubSubTabBar` (2–3 tabs placeholder) + `HubPanelHost` vide | `[BZ-TAB-MORE-001]` OK |
+| **FeaturesHub Ph.2** | Composants frames (copie patron `TabVente`) + panneaux placeholder | Ph.1 OK |
+| **FeaturesHub Ph.3** | Wiring `RuntimeFeaturesHubScreen` + `UIManager` binding | Scripts Cursor |
 
 Prompts détaillés : à rédiger dans `Notes/Ui/PROMPTS_Bezi_features_hub_plus.md` après validation auteur (gate même règle que onglets HUD).
 
@@ -244,8 +272,9 @@ Prompts détaillés : à rédiger dans `Notes/Ui/PROMPTS_Bezi_features_hub_plus.
 1. **Playtest mobile** §3 → cocher variante §2  
 2. Finir **H-nav** barre (3 ou 4 icônes + Plus) + playtest layout  
 3. Cursor : `ScreenId.FeaturesHub` + shell minimal  
-4. Bezy : `TabPlus` + `FeaturesHubScreen` phases 1–3  
-5. Remplir lignes V1 au fur et à mesure (Shop si A, Quêtes, Craft)
+4. Bezy : `TabMoreOption` + `FeaturesHubScreen` phases 1–3 (sous-onglets frames)  
+5. Cursor : `FeaturesHubTabId`, contrôleur hub, stubs panneaux ; puis Quêtes / Craft / Settings au fil de l’eau  
+6. Prompts : `Notes/Ui/PROMPTS_Bezi_features_hub_plus.md` (à rédiger avant Bezy hub)
 
 ---
 

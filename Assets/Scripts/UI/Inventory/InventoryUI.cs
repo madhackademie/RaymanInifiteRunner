@@ -18,7 +18,7 @@ public class InventoryUI : MonoBehaviour
     [Tooltip("Identifiant popup détail item / drop (binding Inventory).")]
     [SerializeField] private string itemDetailPopupId = PopupId.InventoryItemDetail;
 
-    private InventoryFilterTabBar.TabId activeFilterTab = InventoryFilterTabBar.TabId.Seeds;
+    private InventoryFilterTabBar.TabId activeFilterTab = InventoryFilterTabBar.DefaultTab;
     private InventoryFilterTabBar boundFilterTabBar;
     private readonly List<InventorySlotUI> spawnedSlots = new();
     private bool hasWarnedAboutNestedSlotPrefab;
@@ -50,7 +50,8 @@ public class InventoryUI : MonoBehaviour
             return;
 
         boundFilterTabBar.TabChanged += HandleFilterTabChanged;
-        ApplyFilterTab(boundFilterTabBar.ActiveTab);
+        boundFilterTabBar.SelectTab(InventoryFilterTabBar.DefaultTab, notify: false);
+        ApplyFilterTab(InventoryFilterTabBar.DefaultTab);
     }
 
     /// <summary>Applique un onglet filtre et rafraîchit la grille.</summary>
@@ -63,7 +64,7 @@ public class InventoryUI : MonoBehaviour
     /// <summary>Réinitialise l'onglet par défaut à l'ouverture de l'écran.</summary>
     public void ResetFilterTabToDefault()
     {
-        activeFilterTab = InventoryFilterTabBar.TabId.Seeds;
+        activeFilterTab = InventoryFilterTabBar.DefaultTab;
         boundFilterTabBar?.SelectTab(activeFilterTab, notify: false);
         Refresh();
     }

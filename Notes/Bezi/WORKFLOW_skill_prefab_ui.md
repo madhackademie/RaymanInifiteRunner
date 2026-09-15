@@ -3,11 +3,14 @@
 **Pourquoi cette note :** l’auteur a **peu de temps Unity**. Les crédits Bezy se perdent, les crédits Cursor se consument trop.  
 Prefab = skill 3 phases. **C# simple (transforms, vues) = Bezy aussi** (`RULES_bezy_code.md`). Cursor prépare, n’exécute pas le visuel.
 
-Miroir du skill (détail technique) : `Notes/Bezi/SKILL_prefab_ui_3_phases.md`  
-Install runtime Bezi : `%AppData%\Roaming\com.bezi.app\skills\prefab-ui-3phases\SKILL.md`  
-Slash : `/prefab-ui-3phases`
+## Décision workflow (2026-09-15)
+
+Voir **`Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`** — `@Assets/Docs/Bezi/` pour Bezy ; pas GitHub MCP ; pas commit par prompt.
+
+Miroir skill : `Notes/Bezi/SKILL_prefab_ui_3_phases.md` · Slash `/prefab-ui-3phases` (prefabs `Assets/Prefabs/Ui/` uniquement).
 
 ---
+
 
 ## À l’ouverture du projet (obligatoire)
 
@@ -17,11 +20,11 @@ Cursor doit, dès le bootstrap / « tâche du jour » :
 2. Pointer **cette note** comme chemin de prod UI.
 3. Sortir un **bloc de lancement prêt** pour le prochain job Bezy de `Notes/Todo_project.md` / `Notes/Ui/TODO_Bezy_polish_semaine.md` :
    - Prefab : Task ID, chemin `Assets/Prefabs/Ui/…`, phase `1|2|3`, fichier `PROMPTS_Bezi_*.md`.
-   - **C# simple** (transforms, vues) : Task ID, `@Notes/Bezi/RULES_bezy_code.md`, scripts exacts — **pas** `/prefab-ui-3phases`.
+   - **C# simple** (transforms, vues) : Task ID, scripts exacts, bloc collable — **pas** `/prefab-ui-3phases`.
 4. Si le prompt n’existe pas encore : **le rédiger tout de suite** (3 phases prefab **ou** 1 prompt C#, &lt; 3500 car. chacune) — ne pas attendre une « vraie » session Unity.
 5. **Ne jamais reporter Bezy « faute de temps auteur »** : c’est précisément le cas d’usage du skill.
 
-L’auteur n’ouvre Unity **que** pour coller le slash + `@` le prompt.
+L’auteur n’ouvre Unity **que** pour Bezy : **`@Assets/Docs/Bezi/…`** + ligne de phase. Voir `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`.
 
 ---
 
@@ -31,7 +34,7 @@ L’auteur n’ouvre Unity **que** pour coller le slash + `@` le prompt.
 |-------|-----|----------------|
 | Spec + `Notes/Ui/PROMPTS_Bezi_*.md` (1 fichier, 3 phases séparées) | **Cursor** (async, même hors Unity / téléphone) | 0 |
 | Prefab Mode : ouvrir le prefab cible | Auteur | ~30 s |
-| Thread Bezi : `@` le prompt → `/prefab-ui-3phases` Phase N | Auteur | 2–5 min |
+| Thread Bezy : coller le bloc Phase N (+ `/prefab-ui-3phases` si prefab `Assets/Prefabs/Ui/`) | Auteur | 2–5 min |
 | Review `git diff` du prefab, préparer Phase N+1 | **Cursor** | 0 |
 | Playtest Simulate / device | Auteur, **plus tard** | session playtest |
 
@@ -39,7 +42,7 @@ Bezi = hiérarchie / composants / wiring Inspector **+ C# simple** (transforms, 
 Cursor = architecture, services, specs, prompts, revue. **Pas** le C# transform/vue.  
 Auteur = lancer Bezy + playtest hors prompt.
 
-C# simple ≠ ce skill. Thread Bezy séparé : `@Notes/Bezi/RULES_bezy_code.md` + prompt.  
+C# simple ≠ ce skill. Thread Bezy séparé : coller le prompt depuis `PROMPTS_Bezi_*.md`.  
 Règle Cursor : `.cursor/rules/bezy_delegate_simple_code.mdc`.
 
 ---
@@ -55,14 +58,18 @@ Prefab: Assets/Prefabs/Ui/<Nom>.prefab
 Phase: 1
 ```
 
-Puis `@Notes/Ui/PROMPTS_Bezi_<sujet>.md` (même dossier Unity).
+Puis coller le bloc **Phase N** depuis `Notes/Ui/PROMPTS_Bezi_<sujet>.md` (copier-coller, pas `@`).
 
 Fin de phase attendue : `Save. List what changed. STOP.`  
 Ensuite : Cursor review → auteur relance **Phase 2** (même IDs) → idem Phase 3.
 
 ---
 
-## Interdits (sinon ça bloque ou ça brûle du temps)
+## Recette scène / C# simple (hors skill 3 phases)
+
+Nouveau thread Bezy, **coller** le bloc Phase du prompt + règles courtes (layer 5, pas métier, STOP).  
+Référence règles : `Notes/Bezi/RULES_bezy_code.md` — **copier** le passage utile si besoin, pas de `@` obligatoire.  
+Pas de `/prefab-ui-3phases` sur un job scène seule.
 
 - Fusionner Ph.1+2+3 dans un seul appel (même si on dit « all » → le skill ne fait que la Ph.1).
 - Demander Simulate / Play Mode / « confirm it looks good » à Bezi.
@@ -99,7 +106,8 @@ Pas de `/prefab-ui-3phases` sur un job C#.
 ## Références
 
 - Ownership prefabs + C# simple : `.cursor/rules/bezi_prefab_ownership.mdc` · `.cursor/rules/bezy_delegate_simple_code.mdc`
-- Règles C# à `@` dans Bezy : `Notes/Bezi/RULES_bezy_code.md`
+- Règles C# (texte à copier si besoin) : `Notes/Bezi/RULES_bezy_code.md`
 - Phases / limite 3500 car. : `.cursor/rules/bezy_execution_phases.mdc`
 - Layers UI = 5 : `Notes/Ui/CONVENTION_layers_unity.md`
+- Livraison prompts : `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md` (copier-coller Unity, pas GitHub MCP)
 - File polish : `Notes/Ui/TODO_Bezy_polish_semaine.md`

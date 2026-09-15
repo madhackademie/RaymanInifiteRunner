@@ -72,6 +72,9 @@ public class UIManager : MonoBehaviour
 
     public int HudModalCanvasSortingOrder => hudModalCanvasSortingOrder;
 
+    /// <summary>Parent des écrans modales instanciés par UIManager.</summary>
+    public Transform ScreenRoot => screenRoot;
+
     [Header("Écrans prioritaires — préchargés au démarrage")]
     [SerializeField] private List<ScreenEntry> priorityScreens = new();
 
@@ -169,6 +172,8 @@ public class UIManager : MonoBehaviour
             if (entry.IsLoaded)
                 entry.instance.SetActive(false);
         }
+
+        NotifyModalHudPresentationChanged();
     }
 
     // ── Query API ─────────────────────────────────────────────────────────────
@@ -198,6 +203,7 @@ public class UIManager : MonoBehaviour
         entry.instance.SetActive(true);
         // Dernier enfant de screenRoot = dessiné au-dessus des autres écrans (Shop / Inventaire).
         entry.instance.transform.SetAsLastSibling();
+        NotifyModalHudPresentationChanged();
         return true;
     }
 
@@ -208,6 +214,7 @@ public class UIManager : MonoBehaviour
             return false;
 
         entry.instance.SetActive(false);
+        NotifyModalHudPresentationChanged();
         return true;
     }
 
@@ -415,6 +422,21 @@ public class UIManager : MonoBehaviour
     private void HandleSceneShown(string _)
     {
         // No-op: conservé pour garder le hook navigator et permettre des extensions futures.
+    }
+
+    /// <summary>True si un écran HUD plein écran (modale) est visible.</summary>
+    public bool IsAnyModalHudScreenVisible()
+    {
+        return IsScreenVisible(ScreenId.Inventory)
+               || IsScreenVisible(ScreenId.Shop)
+               || IsScreenVisible(ScreenId.SaleChannels)
+               || IsScreenVisible(ScreenId.FeaturesHub);
+    }
+
+    private void NotifyModalHudPresentationChanged()
+    {
+        if (NavigationHUD.Instance != null)
+            NavigationHUD.Instance.RefreshModalHudPresentation();
     }
 
 }

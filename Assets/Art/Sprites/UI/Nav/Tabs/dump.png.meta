@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e04801675060c1c4191777e28104103f
+guid: 49ab9b31ea651004ab63a7f0ff340e08
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5772685410079252696
-    second: Atelier_DIY_0
+      213: -5248013486377480670
+    second: dump_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Atelier_DIY_0
+      name: dump_0
       rect:
         serializedVersion: 2
-        x: 64
-        y: 68
-        width: 1128
-        height: 1128
+        x: 19
+        y: 35
+        width: 1269
+        height: 1149
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 82f552c543d43efa0800000000000000
-      internalID: -5772685410079252696
+      spriteID: 22ec2001a8f4b27b0800000000000000
+      internalID: -5248013486377480670
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Atelier_DIY_0: -5772685410079252696
+      dump_0: -5248013486377480670
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

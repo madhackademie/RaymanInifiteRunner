@@ -21,6 +21,9 @@ public class InventoryFilterTabBar : MonoBehaviour
         All
     }
 
+    /// <summary>Onglet appliqué à chaque ouverture inventaire (Cursor).</summary>
+    public const TabId DefaultTab = TabId.All;
+
     [Header("Tabs (Bezy wiring)")]
     [SerializeField] private Button tabSeeds;
     [SerializeField] private Button tabConsumables;
@@ -33,8 +36,8 @@ public class InventoryFilterTabBar : MonoBehaviour
     [SerializeField] private GameObject selectedHighlightHarvests;
     [SerializeField] private GameObject selectedHighlightAll;
 
-    /// <summary>Onglet sélectionné ; défaut = premier onglet jeu (Graines).</summary>
-    public TabId ActiveTab { get; private set; } = TabId.Seeds;
+    /// <summary>Onglet sélectionné ; défaut = Tout (premier onglet barre).</summary>
+    public TabId ActiveTab { get; private set; } = DefaultTab;
 
     public event Action<TabId> TabChanged;
 
@@ -45,6 +48,11 @@ public class InventoryFilterTabBar : MonoBehaviour
         WireTab(tabConsumables, TabId.Consumables);
         WireTab(tabHarvests, TabId.Harvests);
         WireTab(tabAll, TabId.All);
+        SelectTab(DefaultTab, notify: false);
+    }
+
+    private void OnEnable()
+    {
         ApplySelectedVisual();
     }
 

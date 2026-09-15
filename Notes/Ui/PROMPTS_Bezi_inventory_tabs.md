@@ -10,11 +10,11 @@
 
 **Succès Bezy = Save + liste changements. STOP. Pas de Simulate / Play Mode.**
 
-**Onglets V0 farm (labels TMP) :**
-1. **Graines**
-2. **Consommables**
-3. **Récoltes**
-4. **Tout** (vue global — dernier onglet, visuellement distinct : outline ou couleur accent)
+**Onglets V0 farm (labels TMP, ordre barre depuis 2026-09-15) :**
+1. **Tout** (vue globale — premier onglet, actif par défaut côté C#)
+2. **Graines**
+3. **Consommables**
+4. **Récoltes**
 
 **Hors scope Bezy :** logique filtre C#, `ItemCategory`, playtest, Simulate.
 
@@ -145,11 +145,21 @@ Done = Save. Confirm all 4 Button refs assigned + filterBarPlaceholder wired. ST
 
 **Problème :** seul **Tout** paraît actif (fond plus clair en dur). Pas de feedback sur Graines / Consommables / Récoltes.
 
-**Cursor déjà prêt :** `InventoryFilterTabBar` toggle `selectedHighlight*` au clic (défaut Graines).
+**Cursor déjà prêt :** `InventoryFilterTabBar` toggle `selectedHighlight*` au clic (défaut **Tout** / `TabId.All`).
 
-**Prérequis Editor :** ouvrir `InventoryScreen.prefab` en mode Prefab avant Bezy.
+---
 
-### Prompt copier-coller Bezy (Phase 4 ONLY)
+## Phase 5 — « Tout » premier dans la barre `[BZ-INV-TABS-002]` — **Bezy prefab**
+
+**C# Cursor (2026-09-15) :** défaut filtre = `TabId.All` dans `InventoryFilterTabBar`, `InventoryUI.ResetFilterTabToDefault()`.
+
+**Bezy :** réordonner les 4 `TabButton_*` sous `InventoryFilterBar` + idle All = même fond que les autres.
+
+**Prompt @ copier :** `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_tout_first.md`
+
+---
+
+### Prompt copier-coller Bezy (Phase 4 ONLY — archive)
 
 ```
 [BZ-INV-TABS-001] Phase 4 ONLY — selected tab highlight. Wait success. STOP after save.

@@ -44,12 +44,26 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ Bug nav — 5ᵉ onglet (Plus) coupé après clic 2–4 `[P0-NAV-TAB5-CLIP-001]` — **2026-09-15**
+
+**Symptôme (playtest auteur) :** tant que le **1er onglet (Aventures)** est actif, la barre est OK. En cliquant **Inventaire → Shop → Vente → Plus**, le **5ᵉ onglet reste visuellement coupé** (icône / cadre tronqué à droite). Ce layout **reste faux** sur les autres onglets actifs **jusqu’à recliquer Aventures** (1er).
+
+**Piste technique :** `NavigationHUD.cs` — mockup zoom / `ApplyNavTabSelectedFrameLayout` / `LayoutRebuilder` sur `NavBarContainer` ou `HorizontalLayoutGroup` quand l’onglet actif n’est pas le 1er (largeur flexible du 5ᵉ slot). Voir `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`.
+
+**Ordre fix suggéré :** repro Play Mode → inspect `TabMoreOption` RectTransform + siblings après `RefreshTabVisuals(Tab.*)` → Cursor ou Bezy C# layout (`[BZ-NAV-TAB-MOCKUP-CODE-001]` si généralisation déjà en cours).
+
+**Hors scope immédiat :** inventaire onglet « Tout » (`[BZ-INV-TABS-002]`).
+
+---
+
 ### ★ Nav HUD onglets mockup zoom — 2026-09-13
 
 **Décision :** pas de `[BZ-NAV-WOOD-FRAME-001]` P2 (bois ×3 onglets) avant mockup complet Inventaire / Shop / Vente.
 
 **Ordre :**
-1. [ ] **[P0-UI-TAB-MORE-001]** / **[BZ-TAB-MORE-001]** 5ᵉ onglet `TabMoreOption` (Plus) — C# Cursor livré ; Bezy Ph.1–3 scène **sans sprite**. Prompts : `Notes/Ui/PROMPTS_Bezi_tab_more_option.md`. Hub écran = backlog `[BL-UI-FEATURES-HUB-001]`.
+1. [x] **[P0-UI-TAB-MORE-001]** / **[BZ-TAB-MORE-001]** — Bezy P1–P3 OK 2026-09-15.
+2. [x] **[BZ-NAV-TABS-SPRITE-FOLDER-001]** Relink 5 onglets → `Nav/Tabs/` — OK 2026-09-15 (playtest auteur : bordures Plus OK).
+3. [x] **`[BL-UI-FEATURES-HUB-001]` V0 placeholder** — écran Plus WIP livré (prefab + UIManager). **Suite :** hub sous-onglets (`SPEC_features_hub_plus.md`).
 2. [ ] **[BZ-TAB-INVENTAIRE-MOCKUP-001]** Bezy P1→P3 (patron `TabAventures`) — prompt P1 : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`
 3. [ ] **[BZ-TAB-SHOP-MOCKUP-001]** puis **[BZ-TAB-VENTE-MOCKUP-001]** (même pipeline, prompts à rédiger après Inventaire)
 4. [ ] **[BZ-NAV-TAB-MOCKUP-CODE-001]** Bezy C# simple : généraliser `NavigationHUD` (`ApplyNavTabMockupVisual` — zoom, glow, label, expand `SelectedFrame`) pour 4 onglets — prompt + `@Notes/Bezi/RULES_bezy_code.md` (pas Cursor)
@@ -660,16 +674,17 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 
 ### Navigation — hub « Plus » (features secondaires)
 
-> Décision auteur **2026-09-09** : **ne pas** empiler Quêtes, Atelier, Mail, Social, DIY… dans la barre du bas. **5ᵉ onglet « Plus »** → écran liste verticale (boutons taille standard, scroll) pour features à l’infini.
+> Décision auteur **2026-09-09** : **ne pas** empiler Quêtes, Atelier, Mail… dans la barre du bas. **5ᵉ onglet « Plus »** → **un écran hub** avec sous-navigation interne.  
+> **Màj 2026-09-15 :** sous-onglets = **frames en ligne** (patron visuel onglet **Vente** / `SelectedFrame`), zone contenu par panneau — pas une liste verticale comme nav principale.
 
-- [ ] **[BL-UI-FEATURES-HUB-001]** Écran hub **Plus** : `ScreenId.FeaturesHub` **ajouté** (2026-09-14). Prefab `FeaturesHubScreen` + binding `UIManager` encore à faire. Onglet barre `TabMoreOption` : `[P0-UI-TAB-MORE-001]`. **Spec :** `Notes/Ui/SPEC_features_hub_plus.md`.
-  - **Barre nav stable :** Aventures · Inventaire · Shop · Vente · **Plus** (5 onglets max).
-  - **Contenu :** `ScrollView` + lignes bouton (icône ~64–96 px + label TMP) — une feature = une ligne, pas un onglet nav.
-  - **Data-driven (cible) :** entrées configurables (`featureId`, `ScreenId` cible, icône, prérequis déblocage) pour ajouter Mail / Social / DIY sans retoucher `NavigationHUD`.
-  - **V1 lignes :** Quêtes (`H4`), Atelier craft (`ScreenId.Craft`, spec `SPEC_craft_atelier_aquaponique.md`), placeholders Mail / Social (désactivés ou « bientôt »).
-  - **Art onglet Plus :** `H-nav-5` dans `Notes/Art/PROMPT_generation_icones.md` (grille / « … » cartoon, même brief 128²).
-  - **Bezy :** prefab `FeaturesHubScreen` (phases shell → lignes → wiring) ; **Cursor :** `ScreenId`, navigation depuis `NavigationHUD`, registre entrées.
-  - **Hors barre :** Multiverse / runner reste sur Aventures (hub jeu) — pas dans Plus sauf décision contraire.
+- [ ] **[BL-UI-FEATURES-HUB-001]** Écran hub **Plus** : `ScreenId.FeaturesHub` (2026-09-14). Prefab `FeaturesHubScreen` + binding `UIManager` + prompts Bezy `PROMPTS_Bezi_features_hub_plus.md` (à rédiger). **Spec :** `Notes/Ui/SPEC_features_hub_plus.md`.
+  - **Barre nav stable :** Aventures · Inventaire · Shop · Vente · **Plus** (variante B).
+  - **Sous-onglets hub (cible) :** Notifications · Mailbox · Vote roadmap · Craft · Quêtes (daily/weekly/monthly) · Options (langue, son, abo) · extensible.
+  - **Open :** Mail vs Notifications — 2 onglets ou 1 « Actualités » (sections Nouveau / Archives) ; spec §8.
+  - **V0 :** placeholders « Bientôt » + 1 panneau jouable quand le métier existe (priorité probable : Quêtes ou Craft).
+  - **Cursor :** `FeaturesHubTabId`, `RuntimeFeaturesHubScreen`, binding `UIManager` ; injection mailbox dev plus tard.
+  - **Bezy :** prefab hub Ph.1–3 (sub-tab bar + panel host) ; patron `HubSubTab` copié depuis `TabVente` read-only.
+  - **Hors barre :** Multiverse / runner sur Aventures.
 
 ### GDD / design
 - [ ] [BL-GDD-001] Esquisser le GDD MVP (concept, boucle, scope).

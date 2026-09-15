@@ -35,6 +35,10 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private GameObject navBarContainer;
     [SerializeField] private GameObject exitButtonContainer;
 
+    [Header("HUD chrome — modales plein écran")]
+    [Tooltip("Masqué quand Inventaire / Shop / Vente / Hub Plus est ouvert.")]
+    [SerializeField] private GameObject actionPointsHudRoot;
+
     [Header("Nav Bar Buttons")]
     [SerializeField] private Button tabAventuresButton;
     [SerializeField] private Button tabInventaireButton;
@@ -140,6 +144,7 @@ public class NavigationHUD : MonoBehaviour
         public TextMeshProUGUI Label;
     }
     private HudMode currentMode = HudMode.Hidden;
+    private int screenRootRestSiblingIndex = 1;
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
 
@@ -212,6 +217,44 @@ public class NavigationHUD : MonoBehaviour
 
         if (SceneNavigator.Instance != null)
             BindNavigator(SceneNavigator.Instance);
+
+        CacheScreenRootSiblingIndex();
+        RefreshModalHudPresentation();
+    }
+
+    private void CacheScreenRootSiblingIndex()
+    {
+        if (UIManager.Instance == null || UIManager.Instance.ScreenRoot == null)
+            return;
+
+        screenRootRestSiblingIndex = UIManager.Instance.ScreenRoot.GetSiblingIndex();
+    }
+
+    /// <summary>
+    /// Quand une modale HUD est ouverte : masque la barre PA et passe ScreenRoot au-dessus du HUD gameplay shell.
+    /// </summary>
+    public void RefreshModalHudPresentation()
+    {
+        if (UIManager.Instance == null)
+            return;
+
+        bool modalOpen = UIManager.Instance.IsAnyModalHudScreenVisible();
+
+        if (actionPointsHudRoot != null)
+            actionPointsHudRoot.SetActive(!modalOpen);
+
+        Transform screenRoot = UIManager.Instance.ScreenRoot;
+        if (screenRoot == null || navBarContainer == null)
+            return;
+
+        if (modalOpen)
+        {
+            int navBarIndex = navBarContainer.transform.GetSiblingIndex();
+            screenRoot.SetSiblingIndex(navBarIndex);
+            return;
+        }
+
+        screenRoot.SetSiblingIndex(screenRootRestSiblingIndex);
     }
 
     private void OnEnable()

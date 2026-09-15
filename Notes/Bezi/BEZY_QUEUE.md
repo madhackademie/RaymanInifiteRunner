@@ -3,7 +3,7 @@
 **Usage :** Cursor remplit les lignes `[ ]` (prep async). L’auteur exécute dans Unity + Bezy, puis passe en `[x]`.
 
 **Étude complète :** `Notes/Bezi/ETUDE_prompts_bezi_distance.md`  
-**Skill :** `/prefab-ui-3phases` (prefab) · C# simple : `@Notes/Bezi/RULES_bezy_code.md` — `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`  
+**Skill :** `/prefab-ui-3phases` (prefab) · scène : `@Assets/Docs/Bezi/PROMPTS_*.md` — `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`  
 **Prompts détaillés :** `Notes/Ui/PROMPTS_Bezi_*.md`
 
 ---
@@ -22,7 +22,8 @@
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
 | [x] skip | `[BZ-FARM-BIOHUD-NEST-001]` | `Biofiltre.prefab` | — | Cursor a nesté 2026-09-07 | `main` | Plus besoin Bezy |
-| [ ] | `[BZ-TAB-MORE-001]` | `NavigationHUD.unity` | 1 | `Notes/Ui/PROMPTS_Bezi_tab_more_option.md` | `main` | 5ᵉ onglet Plus, **sans sprite** |
+| [x] | `[BZ-TAB-MORE-001]` | `NavigationHUD.unity` | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_tab_more_option.md` | `main` | P1–P3 OK 2026-09-15 |
+| [x] | `[BZ-FEATURES-HUB-V0-001]` | `FeaturesHubScreen.prefab` | 1b | `Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_v0_placeholder.md` | `main` | P1+P1b OK 2026-09-15 — wiring script Cursor |
 | [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | TabVente dernier prompt |
 | [ ] | `[BZ-FARM-HARVEST-READY-VFX-002]` | `HarvestReadyFx.prefab` | 5 | `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` | `main` | Particules récolte Mature+Seedling **plus grosses** (lisibilité) |
 | [x] | `[BZ-FARM-PLANT-SELECT-GLOW-001]` | `LaitueObj.prefab` | 1–3 | `Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md` | `main` | Livré 2026-09-10 — playtest auteur |
@@ -31,15 +32,14 @@
 
 ## Bloc de lancement (copier dans Bezy)
 
+Ouvrir `NavigationHUD.unity`, puis :
+
 ```
-/prefab-ui-3phases
-Task ID: [BZ-TAB-MORE-001]
-Prefab: Assets/Scenes/NavigationHUD.unity
-Phase: 1
+@Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_v0_placeholder.md
+[BZ-FEATURES-HUB-V0-001] Execute PHASE 1b components ONLY. STOP.
 ```
 
-**HUD PA ×2 `[BZ-AP-HUD-SCALE-001]` :** Ph.1–3 **OK** 2026-09-10 — playtest auteur.  
-**5ᵉ onglet `[BZ-TAB-MORE-001]` :** Ph.1 `TabMoreOption` sans sprite — ouvrir `NavigationHUD.unity` avant l’appel.  
+**Relink sprites nav `[BZ-NAV-TABS-SPRITE-FOLDER-001]` :** OK 2026-09-15.  
 **Onglets `[BZ-TAB-SPRITES-001]` :** TabVente dernier prompt.  
 **Sparkle récolte `[BZ-FARM-HARVEST-READY-VFX-002]` :** Phase 5 — peut partir sans attendre Cursor.  
 **Glow cible `[BZ-FARM-PLANT-SELECT-GLOW-001]` :** Cursor livré — Bezy Ph.1–3 pour visuel prefab (jaune/blanc, scale).  

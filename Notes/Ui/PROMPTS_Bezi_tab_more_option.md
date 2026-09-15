@@ -1,29 +1,30 @@
 # Prompts Bezy — TabMoreOption (5ᵉ onglet Plus)
 
 **Tâche :** `[P0-UI-TAB-MORE-001]`  
-**Job Bezy :** `[BZ-TAB-MORE-001]` — `/prefab-ui-3phases`  
-**Skill :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`  
-**Scène :** `Assets/Scenes/NavigationHUD.unity`  
+**Job Bezy :** `[BZ-TAB-MORE-001]` — scène `NavigationHUD.unity` (pas `/prefab-ui-3phases`).  
+**Ref `@` Bezy (Unity) :** `Assets/Docs/Bezi/PROMPTS_Bezi_tab_more_option.md` — miroir de ce fichier ; Cursor resync les deux.  
+**Workflow :** `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md` (pas GitHub MCP ; commit Git optionnel).
 **Spec :** `Notes/Ui/SPEC_features_hub_plus.md` (variante B : 4 + Plus) · mockup `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`  
 **C# Cursor déjà livré :** `ScreenId.FeaturesHub`, `OnTabMoreOptionClicked`, champs `tabMoreOption*` — **Bezy ne touche pas au .cs**  
-**Sprite :** **aucun en V0** (label `Plus` + cadre quand actif). Art après : § Sprite ci-dessous.
+**Sprites barre nav :** dossier cible `Assets/Art/Sprites/UI/Nav/Tabs/` — voir `Notes/Ui/SPEC_nav_tabs_sprites_folder.md`.
 
 **Succès Bezy = Save + liste. STOP. Pas de Simulate / Play Mode.**
 
 ---
 
-## Bloc de lancement (coller dans Bezy)
+## Bloc de lancement Bezy
 
-Ouvrir **`NavigationHUD.unity`** avant l’appel. Une phase par thread.
+1. Ouvrir **`Assets/Scenes/NavigationHUD.unity`**.  
+2. Bezy :
 
 ```
-/prefab-ui-3phases
-Task ID: [BZ-TAB-MORE-001]
-Prefab: Assets/Scenes/NavigationHUD.unity
-Phase: 1
+@Assets/Docs/Bezi/PROMPTS_Bezi_tab_more_option.md
+[BZ-TAB-MORE-001] Execute PHASE 1 only. NavigationHUD.unity open. No .cs. Save. List. STOP.
 ```
 
-Puis `@Notes/Ui/PROMPTS_Bezi_tab_more_option.md`
+3. Phases 2 puis 3 : remplacer `PHASE 1` par `PHASE 2` / `PHASE 3`. Une phase par appel.
+
+**Pas** de commit Git requis entre chaque phase (fichiers locaux dans `Assets/Docs/Bezi/`).
 
 ---
 
@@ -64,7 +65,7 @@ Save. List hierarchy paths. STOP. No Play Mode.
 
 ---
 
-## Phase 2 — Composants (toujours sans sprite)
+## Phase 2 — Visuel mockup (sprite Plus = même pipeline qu’Inventaire)
 
 ```
 [BZ-TAB-MORE-001] PHASE 2 components ONLY. P1 done. STOP.
@@ -72,14 +73,16 @@ Save. List hierarchy paths. STOP. No Play Mode.
 OPEN Assets/Scenes/NavigationHUD.unity first. m_Layer 5. TabMoreOption ONLY.
 Reference TabInventaire READ-ONLY. Do NOT edit .cs. Do NOT change other tabs.
 
-SPRITE LOCK: Icon sprite stays NONE. Do NOT assign any PNG.
+SPRITE (Plus): texture ENTIÈRE (feuille composite validée auteur) sur IconLift/Icon →
+Assets/Art/Sprites/UI/Nav/Tabs/IconeTab_Plus_glyph.png
+(color white alpha 1, Preserve Aspect, Raycast OFF). Mêmes règles que TabInventaire/Icon. Pas de slice. Si absent: STOP.
 
 1) Glow: copy TabInventaire/IconLift/Glow Image + RT
    (anchor center, pos 0,8, size 108x108, NavTabSoftGlow.mat,
    color RGB(1,0.78,0.2) alpha ~0.4, Raycast OFF). GO OFF default.
 
 2) Icon: copy Inventaire Icon RT (stretch, sizeDelta about -8,-38).
-   Sprite empty, alpha 0, Preserve Aspect ON, Raycast OFF.
+   Sprite IconeTab_Plus_glyph.png (Nav/Tabs). Preserve Aspect ON, Raycast OFF.
 
 3) Label TMP: text "Plus". Copy TabInventaire/Label RT + style
    (fontSize 31, Bold, face RGB(1,0.78,0.2), Outline black ~0.28).
@@ -102,7 +105,7 @@ Save. List paths changed. STOP. No Play Mode.
 
 OPEN Assets/Scenes/NavigationHUD.unity first. m_Layer 5.
 File ONLY this scene. Do NOT edit .cs (Cursor already added methods/fields).
-No RectMask2D. Do NOT change other tabs. Icon sprite still NONE.
+No RectMask2D. Do NOT change other tabs. Icon = IconeTab_Plus_glyph.png.
 
 On HUDRoot component NavigationHUD assign:
 - tabMoreOptionButton → TabMoreOption Button
@@ -143,6 +146,6 @@ Mini prompt Bezy **après promo** (pas maintenant) : assigner le sprite sur `Tab
 
 ## Hors scope (V0)
 
-- Prefab `FeaturesHubScreen` / lignes Quêtes-Atelier-Mail — `[BL-UI-FEATURES-HUB-001]`
+- Prefab `FeaturesHubScreen` / **sous-onglets frames** (Notifications, Craft, Quêtes, …) — `[BL-UI-FEATURES-HUB-001]` · `Notes/Ui/SPEC_features_hub_plus.md` §7–8
 - Variante A (masquer Shop)
 - Wallet disparu `[P0-NAV-WALLET-REG-001]`
