@@ -1281,6 +1281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NavigationHUD
   navBarContainer: {fileID: 919069777}
   exitButtonContainer: {fileID: 1507970742}
+  actionPointsHudRoot: {fileID: 7441046510719425699, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
   tabAventuresButton: {fileID: 1157943601}
   tabInventaireButton: {fileID: 1562647025}
   tabShopButton: {fileID: 2099893049}
@@ -1334,7 +1335,6 @@ MonoBehaviour:
   activeTabLabelOutlineWidth: 0.28
   activeTabFrameSizeDeltaExpand: {x: 20, y: 105}
   activeTabFrameActivePosY: 52.5
-  actionPointsHudRoot: {fileID: 7441046510719425699, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
 --- !u!114 &628439020
 MonoBehaviour:
   m_ObjectHideFlags: 0
