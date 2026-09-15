@@ -28,6 +28,23 @@ Ensuite, sur cette branche :
 - En fin de tache, il peut te donner la **liste des fichiers** et un **message de commit suggere** a copier.
 - Regle detaillee : `.cursor/rules/git_commits_user_only.mdc` + `WORKFLOW_PROTOCOL.md` § --4--.
 
+## --0c-- Point d'arret avant bandeaux HUD
+
+**Avant** de modifier les bandeaux UI du HUD (`NavBarContainer`, hauteur, layout onglets, fond Scene/prefab) : poser un point d'arret **sur la branche courante**. Pas de Bezy / YAML tant que le tag n'existe pas.
+
+```powershell
+git status -sb
+git add Assets/Scenes/NavigationHUD.unity
+git commit -m "checkpoint: HUD bandeaux avant essai"
+git tag hud-bandeau-before-<sujet>
+git branch backup/hud-bandeau-<sujet>
+```
+
+Rollback (essai non poussé) : `git reset --hard hud-bandeau-before-<sujet>`  
+Scene seule : `git checkout hud-bandeau-before-<sujet> -- Assets/Scenes/NavigationHUD.unity`
+
+Exemple 2026-09-15 : tag `nav-bar-128-before-height-140` · branche `backup/nav-bar-128`.
+
 ## --0-- Checklist rapide (branche + synchro)
 
 Utilise cette séquence au début de chaque session ou après un switch de branche :

@@ -43,7 +43,7 @@ Ouvrir `NavigationHUD.unity`, puis :
 
 **Nav 5ᵉ onglet coupé `[BZ-NAV-TAB5-CLIP-001]` :** prompt `Assets/Docs/Bezi/PROMPTS_Bezi_nav_tab5_clip_fix.md` (scène ; Cursor rebuild HLG insuffisant).
 
-**Hauteur barre = 140 px `[BZ-NAV-BAR-HEIGHT-001]` :** `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md` — `NavBarContainer` 128 → **140** (fond = IconLift + zoom). Après Bezy : Cursor `UIManager.NavBarHeight = 140f`.  
+**Hauteur barre = 140 px `[BZ-NAV-BAR-HEIGHT-001]` / `[P0-NAV-BAR-HEIGHT-140-001]` :** **prochaine session (demain)** — pas ce soir. **Avant Bezy :** point d’arrêt Git (commit + tag + `backup/…`, `GIT_HELPER.md` § `--0c--`). Prompt `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`. Rollback tag `nav-bar-128-before-height-140`. Enchaîner `[P0-INV-SCROLL-NAVBAR-001]` (ScrollView inventaire + `UIManager.NavBarHeight`).  
 **Onglets `[BZ-TAB-SPRITES-001]` :** TabVente dernier prompt.  
 **Sparkle récolte `[BZ-FARM-HARVEST-READY-VFX-002]` :** Phase 5 — peut partir sans attendre Cursor.  
 **Glow cible `[BZ-FARM-PLANT-SELECT-GLOW-001]` :** Cursor livré — Bezy Ph.1–3 pour visuel prefab (jaune/blanc, scale).  

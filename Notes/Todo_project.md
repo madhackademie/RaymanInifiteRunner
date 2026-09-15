@@ -44,6 +44,30 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ P0 demain — fond nav 140 px + ScrollView inventaire — **2026-09-15 soir**
+
+**Décision auteur :** essai `NavBarContainer` **140 px** (fond assez haut pour IconLift + zoom). Risque : les onglets **suivent la hauteur de la barre** au runtime (`NavigationHUD.ApplyEqualNavTabSlots` → `Vertical = barHeight`). Il faudra **aussi** adapter le **ScrollView inventaire** (bas de liste vs barre plus haute).
+
+**Garde-fou (obligatoire, demain et à chaque fois) :** **avant** de trafiquer les bandeaux UI du HUD (`NavBarContainer`, hauteur, layout onglets, fond), poser un **point d’arrêt Git** sur la branche courante (commit + tag + branche `backup/…`). Ne pas lancer Bezy / éditer la scène tant que le tag n’existe pas.
+
+**Point d’arrêt déjà créé ce soir (128 px) :**
+- Branche de travail : `fix/farm-iso-footprint-hit`
+- Commit / tag / backup : `1f76429` · tag **`nav-bar-128-before-height-140`** · branche **`backup/nav-bar-128`**
+- Rollback essai : `git reset --hard nav-bar-128-before-height-140` (si l’essai n’est pas encore poussé) **ou** restaurer seulement la scène : `git checkout nav-bar-128-before-height-140 -- Assets/Scenes/NavigationHUD.unity`
+- **Demain :** si d’autres commits sont passés dessus, **refaire un point d’arrêt** juste avant l’essai 140 (ne pas s’appuyer uniquement sur le tag de ce soir).
+
+**Ordre (même session) :**
+
+0. [ ] **Point d’arrêt Git** sur la branche **avant** tout Bezy / YAML HUD (`git commit` checkpoint + `git tag` + `git branch backup/…`). Recette : `GIT_HELPER.md` § `--0c--`.
+1. [ ] **[P0-NAV-BAR-HEIGHT-140-001]** Essai hauteur fond **140**. Prompt Bezy : `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`. Playtest : icône active (Inventaire) entièrement sur le fond **sans** agrandir les glyphes idle de façon inacceptable. Si les boutons gonflent trop → rollback tag, puis variante « fond 140 / slots onglets calés à 128 bas ».
+2. [ ] **[P0-INV-SCROLL-NAVBAR-001]** Adapter le **ScrollView** inventaire à la nouvelle hauteur de barre. Prefab `Assets/Prefabs/Ui/InventoryScreen.prefab` → `ScrollView` (`sizeDelta.y` actuel **-108**). Aligner `UIManager.NavBarHeight` (aujourd’hui **128f**, offset bas des écrans). Playtest : dernières lignes / slots du bas cliquables, pas masqués par l’onglet zoomé. Shop / Vente : même `NavBarHeight` à rejouer si le bas est coupé.
+
+**Hors cet essai :** ne pas lancer le job Bezy 140 **ce soir** — reprise **prochaine session** (demain).
+
+Prompt Bezy déjà prêt : `@Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`
+
+---
+
 ### ★ Bug nav — 5ᵉ onglet (Plus) coupé après clic 2–4 `[P0-NAV-TAB5-CLIP-001]` — **2026-09-15**
 
 **Symptôme (playtest auteur) :** tant que le **1er onglet (Aventures)** est actif, la barre est OK. En cliquant **Inventaire → Shop → Vente → Plus**, le **5ᵉ onglet reste visuellement coupé** (icône / cadre tronqué à droite). Ce layout **reste faux** sur les autres onglets actifs **jusqu’à recliquer Aventures** (1er).
@@ -74,11 +98,12 @@ Convention d'IDs :
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`main`** — chantier iso 2:1 **mergé** (ex-`feature/biofiltre-isometric`, branche supprimée).  
-> **Chantier actif :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint seul (branche `fix/farm-iso-footprint-hit` à créer).  
+> Branche courante : **`fix/farm-iso-footprint-hit`** (pas `main`).  
+> **P0 prochaine session :** point d’arrêt Git **puis** `[P0-NAV-BAR-HEIGHT-140-001]` + `[P0-INV-SCROLL-NAVBAR-001]`. **Règle :** avant tout bandeau HUD (`NavBarContainer` / hauteur / layout onglets) → commit + tag + `backup/…`. Rollback actuel : `nav-bar-128-before-height-140`.  
+> **Chantier farm :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
-> **Priorité immédiate (2026-09-10) :** playtest régressions FirstLvl HUD / croix / IBC (`[P0-NAV-HUD-EXITONLY-001]`). HUD PA ×2 playtest. Puis TabVente / farm.  
+> **Priorité immédiate (2026-09-15 soir → demain) :** `[P0-NAV-BAR-HEIGHT-140-001]` + `[P0-INV-SCROLL-NAVBAR-001]`. Croix ExitOnly playtestée 2026-09-15.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows par biofiltre. Bezy nest skip.  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  

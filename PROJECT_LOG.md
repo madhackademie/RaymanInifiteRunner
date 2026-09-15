@@ -1,5 +1,26 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-15 — Prochaine session : fond nav 140 + ScrollView inventaire
+
+### Décision auteur
+- Essai `NavBarContainer` **140 px** (fond = IconLift + zoom) **reporté à demain**.
+- Risque connu : agrandir le bandeau **agrandit les onglets** (`ApplyEqualNavTabSlots` copie `barHeight`).
+- À faire **dans la même session** : adapter le **ScrollView** de l’inventaire (`InventoryScreen` / `UIManager.NavBarHeight`).
+
+### Point d’arrêt Git
+- **Règle :** avant de trafiquer les bandeaux UI du HUD, toujours un point d’arrêt (commit + tag + `backup/…`) — `GIT_HELPER.md` § `--0c--`.
+- Commit `1f76429` — `checkpoint: barre nav 128 px avant essai hauteur 140`
+- Tag `nav-bar-128-before-height-140`
+- Branche `backup/nav-bar-128`
+- Branche de travail : `fix/farm-iso-footprint-hit`
+- Demain : **refaire** un point d’arrêt si la branche a avancé, **avant** Bezy 140.
+
+### Todo
+- Priorité immédiate prochaine session : `[P0-NAV-BAR-HEIGHT-140-001]` puis `[P0-INV-SCROLL-NAVBAR-001]` (`Notes/Todo_project.md`).
+- `[P0-NAV-TAB5-CLIP-001]` reste ouvert, juste après.
+
+---
+
 ## 2026-09-15 — Fix croix ExitOnly FirstLvl `[P0-NAV-HUD-EXITONLY-001]`
 
 ### Symptôme
