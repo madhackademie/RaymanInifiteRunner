@@ -72,6 +72,15 @@ Légende :
 | `Notes/Art/PROMPT_generation_icones.md` | Actif | P1 | Backlog art Dump → promo Sprites (icônes UI + vague W monde). |
 | `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md` | Actif | P1 | Brief 7 stades laitue **iso 3/4 cartoon**. |
 
+## Notes Marketing
+
+| Fichier | Statut | Priorité | Synthèse |
+|---|---|---|---|
+| `Notes/Marketing/README_marketing.md` | Actif | P2 | Hub marketing : foyer itch/Steam, clips, calendrier live, plan 4 semaines. |
+| `Notes/Marketing/Communication/NOTE_devblog.md` | Actif | P2 | Où poster un devlog (itch → Steam News → shorts), cadence, structure Devlog #1. |
+| `Notes/Marketing/Communication/NOTE_streaming.md` | Actif | P2 | Foyer live YouTube, restream, Steam sans build PC public, itch/X pas maisons live. |
+| `Notes/Marketing/Communication/NOTE_posts_share.md` | Actif | P2 | Posts/share : X, Bluesky, TikTok/Shorts/Reels, Discord, Reddit, modèles « je live ». |
+
 ## Notes References
 
 | Fichier | Statut | Priorité | Synthèse |

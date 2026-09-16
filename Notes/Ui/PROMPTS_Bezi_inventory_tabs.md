@@ -10,11 +10,11 @@
 
 **Succès Bezy = Save + liste changements. STOP. Pas de Simulate / Play Mode.**
 
-**Onglets V0 farm (labels TMP, ordre barre depuis 2026-09-15) :**
+**Onglets V0 farm (labels TMP, ordre barre depuis 2026-09-16) :**
 1. **Tout** (vue globale — premier onglet, actif par défaut côté C#)
-2. **Graines**
-3. **Consommables**
-4. **Récoltes**
+2. **Récoltes** — Bezy `[BZ-INV-TABS-003]` (`PROMPTS_Bezi_inventory_tab_recoltes_second.md`)
+3. **Graines**
+4. **Consommables**
 
 **Hors scope Bezy :** logique filtre C#, `ItemCategory`, playtest, Simulate.
 
@@ -156,6 +156,14 @@ Done = Save. Confirm all 4 Button refs assigned + filterBarPlaceholder wired. ST
 **Bezy :** réordonner les 4 `TabButton_*` sous `InventoryFilterBar` + idle All = même fond que les autres.
 
 **Prompt @ copier :** `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_tout_first.md`
+
+---
+
+## Phase 6 — « Récoltes » 2ᵉ onglet `[BZ-INV-TABS-003]` — **Bezy prefab**
+
+**Cible gauche → droite :** Tout · Récoltes · Graines · Consommables.
+
+**Prompt @ copier :** `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_recoltes_second.md`
 
 ---
 

@@ -18,7 +18,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     [SerializeField] private string resourceFeedbackPopupId = PopupId.ShopResourceFeedback;
 
     [Header("Bindings UI (prefab)")]
-    [SerializeField] private Button closeButton;
     [SerializeField] private RectTransform bandeauxContainer;
     [SerializeField] private Image rootBackdropImage;
     [SerializeField] private SaleChannelUnlockTooltipHost unlockTooltipHost;
@@ -28,7 +27,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     [Tooltip("Prefab Bezy SaleMoneyBurst (ref Simulate / Phase 3). Runtime = burst UI Overlay.")]
     [SerializeField] private GameObject saleMoneyBurstPrefab;
 
-    private Button hookedCloseButton;
     private SaleChannelBandeauView[] bandeauViews = System.Array.Empty<SaleChannelBandeauView>();
     private bool bandeauxHooked;
     private bool sellPopupHandlerWired;
@@ -45,7 +43,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
         ResolveBindingsIfNeeded();
         ResolveUnlockTooltipHost();
         ResolveStarTooltipHost();
-        HookCloseButton();
         HookBandeauViews();
     }
 
@@ -229,9 +226,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
     private void ResolveBindingsIfNeeded()
     {
-        if (closeButton == null)
-            closeButton = transform.Find("Header/CloseButton")?.GetComponent<Button>();
-
         if (bandeauxContainer == null)
             bandeauxContainer = transform.Find(BandeauxContentPath) as RectTransform;
 
@@ -658,26 +652,6 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
         Debug.LogWarning(
             "[RuntimeSaleChannelsScreen] ResourceFeedbackPopup introuvable — message : " + message +
             $". Ajoutez un ScreenPopupBinding ({ScreenId.SaleChannels} + {PopupId.ShopResourceFeedback}).");
-    }
-
-    private void HookCloseButton()
-    {
-        if (closeButton == null || closeButton == hookedCloseButton)
-            return;
-
-        if (hookedCloseButton != null)
-            hookedCloseButton.onClick.RemoveListener(HandleCloseClicked);
-
-        hookedCloseButton = closeButton;
-        hookedCloseButton.onClick.AddListener(HandleCloseClicked);
-    }
-
-    private void HandleCloseClicked()
-    {
-        unlockTooltipHost?.Hide();
-
-        if (UIManager.Instance != null)
-            UIManager.Instance.HideScreen(ScreenId.SaleChannels);
     }
 
     private void ApplyShellBackdrop()

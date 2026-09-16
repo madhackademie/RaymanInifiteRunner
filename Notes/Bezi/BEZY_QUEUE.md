@@ -21,6 +21,11 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
+| [ ] | `[BZ-FEATURES-HUB-WIP-COPY-001]` | `FeaturesHubScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_wip_copy.md` | branche courante | Placeholder WIP : ComingSoon + En construction (pas bandeau atelier) |
+| [ ] | `[BZ-INV-TABS-003]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_recoltes_second.md` | branche courante | Récoltes entre Tout et Graines |
+| [ ] | `[BZ-HUD-CLOSE-STRIP-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_screenroot_strip_close.md` | branche courante | Delete Header/CloseButton |
+| [ ] | `[BZ-HUD-CLOSE-STRIP-001]` | `ShopScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_screenroot_strip_close.md` | branche courante | Delete CloseButton |
+| [ ] | `[BZ-HUD-CLOSE-STRIP-001]` | `SaleChannelsScreen.prefab` | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_screenroot_strip_close.md` | branche courante | Delete Header/CloseButton |
 | [x] skip | `[BZ-FARM-BIOHUD-NEST-001]` | `Biofiltre.prefab` | — | Cursor a nesté 2026-09-07 | `main` | Plus besoin Bezy |
 | [x] | `[BZ-TAB-MORE-001]` | `NavigationHUD.unity` | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_tab_more_option.md` | `main` | P1–P3 OK 2026-09-15 |
 | [x] | `[BZ-FEATURES-HUB-V0-001]` | `FeaturesHubScreen.prefab` | 1b | `Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_v0_placeholder.md` | `main` | P1+P1b OK 2026-09-15 — wiring script Cursor |
@@ -40,11 +45,25 @@
 
 ## Bloc de lancement (copier dans Bezy)
 
-Prefab Mode **`Assets/Prefabs/Ui/InventoryScreen.prefab`**, puis :
+**Placeholder Hub Plus `[BZ-FEATURES-HUB-WIP-COPY-001]`** — d’abord Move Dump → `Sprites/UI/FeaturesHub/IconeHub_ComingSoon.png` (Sprite Mode **Single**), puis Prefab Mode `FeaturesHubScreen.prefab` :
 
 ```
-@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md
-[BZ-INV-WALLET-NAV-BAND-002] Raise wallet + Canvas in front of nav. PREFAB ONLY. STOP.
+@Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_wip_copy.md
+[BZ-FEATURES-HUB-WIP-COPY-001] Execute PHASE 1 only. STOP.
+```
+
+Prefab Mode **`Assets/Prefabs/Ui/InventoryScreen.prefab`**, puis **d’abord** l’ordre onglets :
+
+```
+@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_recoltes_second.md
+[BZ-INV-TABS-003] Reorder harvest tab ONLY. STOP.
+```
+
+Ensuite Close HUD (Ph.1 même prefab, **nouveau thread**) :
+
+```
+@Assets/Docs/Bezi/PROMPTS_Bezi_hud_screenroot_strip_close.md
+[BZ-HUD-CLOSE-STRIP-001] Phase 1 ONLY. STOP.
 ```
 
 **Modales Bottom 260 `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` :** **CLOS Bezy + Cursor** 2026-09-16 — Shop Ph.1–2, Hub 3a, Vente 3b (extras warp retirés), Inventaire 3c. `UIManager.NavBarHeight = 260f`. Pas FirstLvl.

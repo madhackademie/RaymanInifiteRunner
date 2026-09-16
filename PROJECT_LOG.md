@@ -1,5 +1,26 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-16 — Hub Plus placeholder : panneau ComingSoon + copy WIP
+
+### Objectif
+- Placeholder onglet Plus (pas le bandeau atelier) : image + titre / sous-titre, le temps de dev les features non primaires.
+
+### Livré
+- Sprite promo `Assets/Art/Sprites/UI/FeaturesHub/IconeHub_ComingSoon.png` (panneau bois sablier+clé, draft Cursor 2026-09-15).
+- Copy : **En construction** / **Bientôt disponible** (`RuntimeFeaturesHubScreen` + overrides prefab).
+- Passe auto anti-halo blanc sur fond noir (frange externe). Auteur jugé « mieux ».
+- Prompts Bezy : `PROMPTS_Bezi_features_hub_wip_copy.md`.
+
+### Décision
+- Panneau conservé pour playtest taille (pieuvre non reprise dans le slot).
+- **P0 auteur demain** `[P0-ART-HUB-COMINGSOON-CLEAN-001]` : clean à la mano du sprite (Paint.NET, 1ʳᵉ sélection limitée) pendant que Cursor + Bezy programment.
+- Bandeau atelier `[P0-ART-BANDEAU-ATELIER-001]` reste l’autre piste art demain.
+
+### Cette tâche est la référence « tâche du jour » auteur (piste art)
+- Clean `IconeHub_ComingSoon.png` à la mano, puis playtest fond noir.
+
+---
+
 ## 2026-09-16 — Fin session HUD : playtest reporté + brief responsive
 
 ### Objectif

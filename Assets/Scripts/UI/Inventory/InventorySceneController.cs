@@ -1,24 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// Contrôleur legacy du panneau inventaire.
 /// Conserve le bind/refresh pour les anciennes instances de panel,
-/// mais l'ouverture/fermeture runtime passe désormais par UIManager.
+/// mais l'ouverture/fermeture runtime passe désormais par UIManager / NavigationHUD.
 /// </summary>
 public class InventorySceneController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private InventoryUI inventoryUI;
-    [SerializeField] private Button closeButton;
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
-
-    private void Awake()
-    {
-        if (closeButton != null)
-            closeButton.onClick.AddListener(Close);
-    }
 
     private void OnEnable()
     {
@@ -31,13 +23,6 @@ public class InventorySceneController : MonoBehaviour
             TryBindInventory();
         else
             inventoryUI.Refresh();
-
-    }
-
-    private void OnDestroy()
-    {
-        if (closeButton != null)
-            closeButton.onClick.RemoveListener(Close);
     }
 
     // ── Private ───────────────────────────────────────────────────────────────

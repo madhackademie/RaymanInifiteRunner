@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// </summary>
 public class RuntimeFeaturesHubScreen : MonoBehaviour
 {
-    private const string DefaultTitle = "Hub Plus";
+    private const string DefaultTitle = "En construction";
     private const string DefaultSubtitle = "Bientôt disponible";
 
     [Header("Shell")]

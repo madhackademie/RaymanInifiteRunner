@@ -59,6 +59,20 @@ Convention d'IDs :
 
 **Hors scope demain :** Bezy prefab / promo `Sprites/` tant que la chimère n’est pas OK.
 
+### ★ P0 demain — clean à la mano panneau hub Plus `[P0-ART-HUB-COMINGSOON-CLEAN-001]` — **2026-09-16 soir**
+
+**Piste auteur** (pendant que Cursor + Bezy font code / prompts) : polish manuel du sprite placeholder hub Plus.
+
+**Fichier jeu :** `Assets/Art/Sprites/UI/FeaturesHub/IconeHub_ComingSoon.png`  
+**Dump auto-frange :** `Assets/Art/Assets Store Dump/Ui/IconeHub_ComingSoon_black_fringe.png` (passe Cursor : halo blanc → noir, contour externe seulement).
+
+**Pourquoi :** halo blanc d’anti-aliasing (matte claire) trop visible sur le fond HUD noir. La baguette magique Paint.NET prend tout le dessin ; il faut **limiter une 1ʳᵉ sélection** (lasso autour de la silhouette) puis nettoyer la frange.
+
+1. [ ] Clean à la mano (Paint.NET / équivalent) : filet blanc du contour → noir ou transparent propre. **Ne pas** repeindre sablier / clé / bois.
+2. [ ] Playtest onglet Plus fond noir : plus de halo ; taille `WipIllustration` OK (Preserve Aspect, pas Set Native Size).
+
+Pieuvre `IconeHub_WipCone_en` retirée du slot hub (gardée hors promo si encore au Dump). Copy runtime : **En construction** / **Bientôt disponible**.
+
 ### ★ P0 session — modales HUD = même Bottom 260 `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` — **CLOS 2026-09-16**
 
 **Ref auteur (Play Mode) :** `FeaturesHubScreen(Clone)` Bottom **260**. Shop / Hub / Vente / Inventaire doivent partager ce cadre (au-dessus de l’onglet zoomé). **Ne pas** modifier `FirstLvl.unity` (scène gameplay).
@@ -243,7 +257,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 > On est **déjà sur `main`** : pas un écart de branche, ce sont des changements **récents sur `main`** (Bezy HUD + iso IBC).
 
 1. [x] **[P0-NAV-HUD-EXITONLY-001]** En **FirstLvl**, la barre d’onglets (`NavBarContainer`) **reste visible** alors qu’elle doit **s’effacer** (mode `ExitOnly`). Sortie du niveau = **croix rouge** uniquement. **Fix 2026-09-15** : bind `SceneNavigator` dans `OnEnable` + sync `ApplyMode` (plus d’early-return). Playtest auteur à confirmer.
-2. [ ] **[P0-NAV-EXIT-ANCHOR-001]** Une fois dans FirstLvl, la **croix bouge selon la taille** Game view / aspect — **à valider sur mobile**. Lié `[CT-NAV-MAP-001]` (figer la croix).
+2. [x] **[P0-NAV-EXIT-ANCHOR-001]** Croix `ExitButtonContainer` ancrée **haut-gauche** `(0,1)` pos `(140, -160)` 80×80 — équivalent visuel Play Mode `(-400, 800)` centre sur 1080×1920. **Playtest mobile** encore à valider.
 3. [ ] **[P0-FARM-IBC-OVERFLOW-001]** Sprite **IBC déborde** de l’écran ; la croix **change de place** avec le cadrage (même cause aspect / ancrage que 2).
 4. [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold **disparu** en haut `NavigationHUD` (Bezy onglets) — **reproduit** ce playtest. Empêche de vérifier le gold de la vente. Déjà listé item 1b ci-dessous.
 5. [ ] **[P0-SALE-NO-STOCK-001]** Impression de **vendre sans salade** (non vérifié wallet). Playtest : 0 `laitue_mature` en inventaire → vente bloquée. **UX à trancher :** bouton bandeau **off** *ou* popup « pas assez de salade ».

@@ -15,7 +15,6 @@ public class RuntimeShopScreen : MonoBehaviour
     [Header("Bindings UI (prefab)")]
     [SerializeField] private RectTransform slotsContainer;
     [SerializeField] private GridLayoutGroup slotsGridLayout;
-    [SerializeField] private Button closeButton;
     [SerializeField] private Text fallbackListText;
     [SerializeField] private Text stateLabel;
     [SerializeField] private Image rootBackdropImage;
@@ -46,7 +45,6 @@ public class RuntimeShopScreen : MonoBehaviour
     private readonly List<InventorySlotUI> slotViews = new();
 
     private bool initialized;
-    private Button hookedCloseButton;
     private ShopItemPopupController shopItemPopupInstance;
     private ResourceFeedbackPopupUI resourceFeedbackPopupInstance;
     private ScreenPopupHost screenPopupHost;
@@ -71,7 +69,6 @@ public class RuntimeShopScreen : MonoBehaviour
         initialized = true;
 
         ResolveBindingsIfNeeded();
-        HookCloseButton();
         SubscribeInventoryEvents();
         Refresh();
     }
@@ -79,13 +76,11 @@ public class RuntimeShopScreen : MonoBehaviour
     private void Awake()
     {
         ResolveBindingsIfNeeded();
-        HookCloseButton();
     }
 
     private void OnEnable()
     {
         ResolveBindingsIfNeeded();
-        HookCloseButton();
         SubscribeInventoryEvents();
         if (initialized)
             Refresh();
@@ -96,7 +91,6 @@ public class RuntimeShopScreen : MonoBehaviour
     private void OnDestroy()
     {
         UnsubscribeInventoryEvents();
-        UnhookCloseButton();
 
         if (shopItemPopupInstance != null && shopPurchaseHandlerWired)
         {
@@ -476,9 +470,6 @@ public class RuntimeShopScreen : MonoBehaviour
             slotsGridLayout = slotsContainer.GetComponent<GridLayoutGroup>();
         }
 
-        if (closeButton == null)
-            closeButton = FindCloseButton();
-
         if (rootBackdropImage == null)
             rootBackdropImage = GetComponent<Image>();
 
@@ -503,40 +494,6 @@ public class RuntimeShopScreen : MonoBehaviour
 
         if (emptyCataloguePanel.activeSelf != visible)
             emptyCataloguePanel.SetActive(visible);
-    }
-
-    private Button FindCloseButton()
-    {
-        Button[] buttons = GetComponentsInChildren<Button>(true);
-        if (buttons == null || buttons.Length == 0)
-            return null;
-
-        foreach (Button button in buttons)
-        {
-            if (button != null && button.gameObject.name.Contains("Close"))
-                return button;
-        }
-
-        return buttons[0];
-    }
-
-    private void HookCloseButton()
-    {
-        if (closeButton == null || hookedCloseButton == closeButton)
-            return;
-
-        UnhookCloseButton();
-        closeButton.onClick.AddListener(Close);
-        hookedCloseButton = closeButton;
-    }
-
-    private void UnhookCloseButton()
-    {
-        if (hookedCloseButton == null)
-            return;
-
-        hookedCloseButton.onClick.RemoveListener(Close);
-        hookedCloseButton = null;
     }
 
     private void ApplyLayoutAndBackdrop()
