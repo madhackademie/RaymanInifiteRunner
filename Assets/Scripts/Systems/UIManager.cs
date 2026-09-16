@@ -41,8 +41,11 @@ public class ScreenEntry
 /// </summary>
 public class UIManager : MonoBehaviour
 {
-    /// <summary>Hauteur réservée en bas de l'écran pour la nav bar du HUD (en unités canvas).</summary>
-    private const float NavBarHeight = 128f;
+    /// <summary>
+    /// Inset bas des écrans overlay (Shop, Inventaire, Vente, Hub), en unités canvas.
+    /// NavBarContainer reste à 128 ; 260 = barre + cadre onglet zoomé + marge (ref Play Mode Hub).
+    /// </summary>
+    private const float NavBarHeight = 260f;
 
     // ── Singleton ─────────────────────────────────────────────────────────────
 

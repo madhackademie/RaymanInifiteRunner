@@ -24,6 +24,11 @@
 | [x] skip | `[BZ-FARM-BIOHUD-NEST-001]` | `Biofiltre.prefab` | — | Cursor a nesté 2026-09-07 | `main` | Plus besoin Bezy |
 | [x] | `[BZ-TAB-MORE-001]` | `NavigationHUD.unity` | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_tab_more_option.md` | `main` | P1–P3 OK 2026-09-15 |
 | [x] | `[BZ-FEATURES-HUB-V0-001]` | `FeaturesHubScreen.prefab` | 1b | `Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_v0_placeholder.md` | `main` | P1+P1b OK 2026-09-15 — wiring script Cursor |
+| [x] Ph.1 | `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` | `ShopScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md` | branche courante | OK 2026-09-16 — root Bottom 260, grid insets 24/24/16/0. |
+| [x] Ph.2 | `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` | `ShopScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md` | branche courante | OK 2026-09-16 — VerticalFit Unconstrained (0). |
+| [x] Ph.3a | `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` | `FeaturesHubScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md` | branche courante | OK 2026-09-16 — root Bottom 260. PlaceholderRoot 640×720 intact. |
+| [x] Ph.3b | `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` | `SaleChannelsScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md` | branche courante | OK 2026-09-16 — root Bottom 260. Cursor a retiré extras Bezy (`UiQuadWarpMeshEffect` nested). |
+| [x] Ph.3c | `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md` | branche courante | OK 2026-09-16 — root Bottom 260 + layer 5. ScrollView -108 intact. Cursor `NavBarHeight=260`. |
 | [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | TabVente dernier prompt |
 | [ ] | `[BZ-FARM-HARVEST-READY-VFX-002]` | `HarvestReadyFx.prefab` | 5 | `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` | `main` | Particules récolte Mature+Seedling **plus grosses** (lisibilité) |
 | [x] | `[BZ-FARM-PLANT-SELECT-GLOW-001]` | `LaitueObj.prefab` | 1–3 | `Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md` | `main` | Livré 2026-09-10 — playtest auteur |
@@ -32,12 +37,17 @@
 
 ## Bloc de lancement (copier dans Bezy)
 
-Ouvrir `NavigationHUD.unity`, puis :
+Ouvrir le prefab cible en **Prefab Mode**, puis :
 
 ```
-@Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_v0_placeholder.md
-[BZ-FEATURES-HUB-V0-001] Execute PHASE 1b components ONLY. STOP.
+/prefab-ui-3phases
+@Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md
+Task ID: [BZ-HUD-MODAL-SAFE-BOTTOM-001]
+Prefab: Assets/Prefabs/Ui/InventoryScreen.prefab
+Phase: 1
 ```
+
+**Modales Bottom 260 `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` :** **CLOS Bezy + Cursor** 2026-09-16 — Shop Ph.1–2, Hub 3a, Vente 3b (extras warp retirés), Inventaire 3c. `UIManager.NavBarHeight = 260f`. NavBarContainer scène **reste 128**. Pas FirstLvl.
 
 **Relink sprites nav `[BZ-NAV-TABS-SPRITE-FOLDER-001]` :** OK 2026-09-15.
 

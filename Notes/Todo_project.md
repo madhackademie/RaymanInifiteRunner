@@ -16,6 +16,7 @@ Références de détail :
 - **HUD biofiltre en dur (plus d’Instantiate)** : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`
 - **Bezy distance / stack vocal (à voir)** : `Notes/Bezi/ETUDE_prompts_bezi_distance.md` · file : `Notes/Bezi/BEZY_QUEUE.md` · install : `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md`
 - Playtests batch : `Notes/Todo_playtest.md`
+- **Playtest live mobile (adb / APK) :** `Notes/WORKFLOW_playtest_mobile_live.md`
 - File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
 - Journal : `PROJECT_LOG.md`
 - Guide utilisateur (suivi) : `Notes/GUIDE_suivi_projet.md`
@@ -44,6 +45,50 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ P0 session — modales HUD = même Bottom 260 `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` — **CLOS 2026-09-16**
+
+**Ref auteur (Play Mode) :** `FeaturesHubScreen(Clone)` Bottom **260**. Shop / Hub / Vente / Inventaire doivent partager ce cadre (au-dessus de l’onglet zoomé). **Ne pas** modifier `FirstLvl.unity` (scène gameplay).
+
+**Bezy :** `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md`  
+- [x] Ph.1 `ShopScreen.prefab` — root Bottom 260, grille insets 24/24/16/0 (OK 2026-09-16)  
+- [x] Ph.2 `ShopScreen` — ContentSizeFitter VerticalFit Unconstrained (OK 2026-09-16)  
+- [x] Ph.3a `FeaturesHubScreen` — root Bottom 260 (OK 2026-09-16)  
+- [x] Ph.3b `SaleChannelsScreen` — root Bottom 260 ; extras Bezy (`UiQuadWarpMeshEffect`) retirés Cursor  
+- [x] Ph.3c `InventoryScreen` — root Bottom 260 + layer 5 ; ScrollView -108 intact  
+- [x] Cursor : `UIManager.NavBarHeight` **260f** (Instantiate ne réécrase plus à 128)
+
+NavBarContainer scène **reste 128**. Playtest auteur : relancer Play (les clones déjà spawnés gardaient 128).
+
+### ★ Playtest mobile 2026-09-16 — dump bugs / behaviors
+
+**Session en cours :** auteur sur **SM-A137F** (APK ARMv7). Lister ici, **sans fixer tout de suite**.  
+Logs / USB / archis : **`Notes/WORKFLOW_playtest_mobile_live.md`**.  
+Prochain bug dans ce chat → on l’ajoute à la file (même section + `Notes/Todo_playtest.md` Batch H).
+
+1. [ ] **[P0-FARM-GRID-PLANTING-ONLY-001]** Grille **uniquement en mode plantation**.  
+   **Attendu :** grille **cachée** par défaut. Mode plantation = **clic biofiltre** + **sélection d’une graine**. **0 graine en stock → pas de grille.**  
+   **Actuel :** `GridLinesRenderer` dessine dès que le composant est actif ; `BiofiltreGridVisualizer.GenerateGrid()` au `Start` (cellules visibles hors pose). Entrée actuelle = clic **cellule vide** → popup graines (`BiofiltreManager.HandleCellClicked`).  
+   **Implication :** si la grille est off, le clic d’entrée doit viser le **corps IBC / biofiltre**, pas une cellule. Sortie mode plantation (fermer popup / plus de graines / pose annulée) → grille off.
+
+2. [ ] **[P0-FARM-MOBILE-BIOFILTER-SCALE-001]** Réduire la taille du **biofiltre de ~10 %** sur mobile (lisibilité / confort doigt).  
+   **Comparatif :** `Docs/ScreenPlaytestMobile/README_comparatif_batch-H.md` — **cible** `20260916_REF_*_target-editor-free-aspect.png` · **KO** `…_biofiltre-oversized-no-exit.jpg`.  
+   **Branche + Bezy :** `rework/biofilter-mobile-scale` · `Assets/Docs/Bezi/PROMPTS_Bezi_biofilter_mobile_scale.md` (Ph.1 FirstLvl caméra · Ph.2 croix HUD).
+
+3. [ ] **[P0-FARM-MOBILE-PLANT-RELEASE-001]** Pose en mode plantation : **valider au relâchement** (touch end), pas au **touch down**.  
+   **Attendu :** en mode planting, le doigt **déplace le ghost** comme la souris (drag) ; la plante se pose **au lâcher** sur une cellule valide.  
+   **Actuel :** pose au premier contact (équivalent clic immédiat) — pas de fenêtre pour repositionner.  
+   **Piste :** `FarmPointerInput` / branche touch vs souris ; complète `[P0-FARM-PLANT-TOUCH-001]` (OK desktop-like touch down).  
+   **Ref :** screenshots mobile à fournir.
+
+### ★ Branche `rework/biofilter-mobile-scale` (mobile + HUD — hors Bezy scale)
+
+4. [ ] **[P0-UI-PA-HUD-TALENTTREE-001]** **Masquer** le widget PA global quand l’overlay **arbre de talents** est ouvert (inventaire).  
+   **Prefab :** `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab` (instance sous `NavigationHUD` → `actionPointsHudRoot`).  
+   **KO :** le HUD PA (coin haut-droit) **recouvre** les nœuds talents (Logi, Vente, etc.) — clics / lecture impossibles.  
+   **Ref :** `Docs/ScreenPlaytestMobile/20260916_REF_p0-ui-pa-hud-talenttree_inventory-overlay-blocks-talent-nodes.png`  
+   **Piste :** étendre la règle existante `NavigationHUD` (`actionPointsHudRoot.SetActive(!modalOpen)`) à l’état overlay talents **ou** désactiver le root tant que `TalentTreeOverlay` visible — **Cursor** (pas Bezy prefab).  
+   **Hors scope :** repositionner le widget ; pour cette branche = **off** sur talent tree.
+
 ### ★ P0 demain — fond nav 140 px + ScrollView inventaire — **2026-09-15 soir**
 
 **Décision auteur :** essai `NavBarContainer` **140 px** (fond assez haut pour IconLift + zoom). Risque : les onglets **suivent la hauteur de la barre** au runtime (`NavigationHUD.ApplyEqualNavTabSlots` → `Vertical = barHeight`). Il faudra **aussi** adapter le **ScrollView inventaire** (bas de liste vs barre plus haute).
@@ -60,11 +105,26 @@ Convention d'IDs :
 
 0. [ ] **Point d’arrêt Git** sur la branche **avant** tout Bezy / YAML HUD (`git commit` checkpoint + `git tag` + `git branch backup/…`). Recette : `GIT_HELPER.md` § `--0c--`.
 1. [ ] **[P0-NAV-BAR-HEIGHT-140-001]** Essai hauteur fond **140**. Prompt Bezy : `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`. Playtest : icône active (Inventaire) entièrement sur le fond **sans** agrandir les glyphes idle de façon inacceptable. Si les boutons gonflent trop → rollback tag, puis variante « fond 140 / slots onglets calés à 128 bas ».
-2. [ ] **[P0-INV-SCROLL-NAVBAR-001]** Adapter le **ScrollView** inventaire à la nouvelle hauteur de barre. Prefab `Assets/Prefabs/Ui/InventoryScreen.prefab` → `ScrollView` (`sizeDelta.y` actuel **-108**). Aligner `UIManager.NavBarHeight` (aujourd’hui **128f**, offset bas des écrans). Playtest : dernières lignes / slots du bas cliquables, pas masqués par l’onglet zoomé. Shop / Vente : même `NavBarHeight` à rejouer si le bas est coupé.
+2. [ ] **[P0-INV-SCROLL-NAVBAR-001]** Adapter le **ScrollView** inventaire à la nouvelle hauteur de barre. Prefab `Assets/Prefabs/Ui/InventoryScreen.prefab` → `ScrollView` (`sizeDelta.y` actuel **-108**). `UIManager.NavBarHeight` est **260f** (inset overlay, 2026-09-16) — ne pas le ramener à 128. Playtest : dernières lignes / slots du bas cliquables, pas masqués par l’onglet zoomé.
 
 **Hors cet essai :** ne pas lancer le job Bezy 140 **ce soir** — reprise **prochaine session** (demain).
 
 Prompt Bezy déjà prêt : `@Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`
+
+### ★ Build Android playtest — archis `[CT-BUILD-ARM64-ONLY-001]` — **2026-09-16**
+
+**Tél. playtest :** Samsung **SM-A137F** → **`armeabi-v7a` seulement** (pas d’ARM64).
+
+**Playtest local :** après **ce** build, **décocher ARM64**, garder **ARMv7 (ARM32) seul**. Ça évite un 2ᵉ IL2CPP inutile.  
+**Ne pas** décocher ARMv7 (l’APK ne s’installerait plus).
+
+**Avant un build Store / tél. 64-bit :** **recocher ARM64** (Google Play exige le 64-bit).
+
+`adb` (pas dans le PATH) :
+
+```powershell
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" shell getprop ro.product.cpu.abi
+```
 
 ---
 
@@ -100,6 +160,7 @@ Prompt Bezy déjà prêt : `@Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height
 
 > Branche courante : **`fix/farm-iso-footprint-hit`** (pas `main`).  
 > **P0 prochaine session :** point d’arrêt Git **puis** `[P0-NAV-BAR-HEIGHT-140-001]` + `[P0-INV-SCROLL-NAVBAR-001]`. **Règle :** avant tout bandeau HUD (`NavBarContainer` / hauteur / layout onglets) → commit + tag + `backup/…`. Rollback actuel : `nav-bar-128-before-height-140`.  
+> **Playtest mobile 2026-09-16 (dump en cours) :** grille · scale biofiltre · plant release · `[P0-UI-PA-HUD-TALENTTREE-001]` (branche `rework/biofilter-mobile-scale`).  
 > **Chantier farm :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
@@ -712,7 +773,9 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
   - **Hors barre :** Multiverse / runner sur Aventures.
 
 ### GDD / design
-- [ ] [BL-GDD-001] Esquisser le GDD MVP (concept, boucle, scope).
+- [ ] [BL-GDD-001] Esquisser le GDD MVP (concept, boucle, scope). **Entrée 2026-09-16 :** `Notes/GDD/NOTE_mvp_hook_equilibrage.md` (Must hook §3.1, T1 = 3 leafy, pas « lvl 10 »).
+- [ ] [BL-GDD-009] Revue MVP hook **toutes les 2 semaines** — prompt `NOTE_mvp_hook_equilibrage.md` §8.1. **Prochaine : 2026-09-30.** Append journal §9. Ne pas réécrire les SPEC_*.
+- [ ] [BL-GDD-010] Caler **timers laitue** dans `Notes/GDD/data/GDD_balance.xlsx` (onglet `stades_timers`, colonne `gddMinutes`). `Laitue.asset` reste debug. Copie Unity seulement si `applyToUnity = oui` + demande auteur.
 - [ ] [BL-GDD-002] Spécifier le temps de ferme (`lastUtc -> delta`, plafond offline).
 - [ ] [BL-GDD-003] XP joueur (halo) **vs** XP / **étoiles biofiltre** — spec `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`. ★1 (travail) : 240 XP, 50 récoltes salade, 100 germinations, 50 graines ; cadence 3–5 j / 2–3 sessions de 5–7 min. Chiffres à playtester. Germinations tentées vs réussies : ouvert.
 - [ ] [BL-GDD-004] [OPTIONNEL] Collecter 2-3 références UI et noter ce qui est repris/évité.
