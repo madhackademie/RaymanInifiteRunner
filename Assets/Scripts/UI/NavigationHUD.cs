@@ -127,6 +127,12 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private float lastNavTabActiveLiftMultiplier = 0.88f;
 
     private const int NavTabSlotCount = 5;
+
+    /// <summary>
+    /// Hauteur repos des 5 onglets, independante du fond NavBarContainer.
+    /// Un bandeau plus haut ne doit pas agrandir icone/cadre actifs (zoom = multiplicateur).
+    /// </summary>
+    private const float NavTabSlotHeight = 128f;
     private NavTabMockupRest tabAventuresMockupRest;
     private NavTabMockupRest tabInventaireMockupRest;
     private NavTabMockupRest tabShopMockupRest;
@@ -869,14 +875,19 @@ public class NavigationHUD : MonoBehaviour
                 continue;
 
             RectTransform slot = tabButton.transform as RectTransform;
-            slot.anchorMin = new Vector2(0f, 0f);
-            slot.anchorMax = new Vector2(0f, 1f);
-            slot.pivot = new Vector2(0.5f, 0.5f);
-            slot.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotWidth);
-            slot.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, barHeight);
-            float centerX = navBarHorizontalPadding + slotWidth * (i + 0.5f);
-            slot.anchoredPosition = new Vector2(centerX, 0f);
+            LayoutNavTabSlot(slot, slotWidth, i);
         }
+    }
+
+    /// <summary>Slot ancré bas, hauteur fixe — le surplus de fond reste au-dessus (lift/zoom).</summary>
+    private void LayoutNavTabSlot(RectTransform slot, float slotWidth, int slotIndex)
+    {
+        slot.anchorMin = new Vector2(0f, 0f);
+        slot.anchorMax = new Vector2(0f, 0f);
+        slot.pivot = new Vector2(0.5f, 0f);
+        slot.sizeDelta = new Vector2(slotWidth, NavTabSlotHeight);
+        float centerX = navBarHorizontalPadding + slotWidth * (slotIndex + 0.5f);
+        slot.anchoredPosition = new Vector2(centerX, 0f);
     }
 
     private void NormalizeNavTabRootTransforms()
@@ -907,9 +918,15 @@ public class NavigationHUD : MonoBehaviour
 
         label.color = activeTabLabelColor;
         label.fontSize = activeTabLabelFontSize;
+        label.fontStyle = FontStyles.Bold;
+
+        // outlineWidth instancie le material via CanvasRenderer.
+        // Sur un GO inactif, TMP n'a pas encore Awake → NRE (label Plus sans fontMaterial).
+        if (!label.isActiveAndEnabled || label.font == null)
+            return;
+
         label.outlineWidth = activeTabLabelOutlineWidth;
         label.outlineColor = Color.black;
-        label.fontStyle = FontStyles.Bold;
     }
 
     private static Sprite GetUiWhiteSprite()

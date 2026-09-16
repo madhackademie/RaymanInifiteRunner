@@ -1,11 +1,14 @@
-# [BZ-NAV-BAR-HEIGHT-001] Barre nav — fond 140 px (IconLift + zoom)
+# [BZ-NAV-BAR-HEIGHT-001] Fond nav 140 px — slots restent 128 (bas)
 
 **Scène :** `Assets/Scenes/NavigationHUD.unity`  
-**Cible :** `NavBarContainer` (bandeau sombre derrière les 5 onglets) — **pas** le widget monnaie 275.  
-**Aujourd’hui :** `sizeDelta.y = 128`. **Cible auteur :** **140**.  
+**Cible :** `NavBarContainer` Image (bandeau sombre) — **pas** le widget monnaie 275.  
+**Variante auteur 2026-09-16 :** fond **140** ; onglets **128 ancrés bas** (C# `NavigationHUD.NavTabSlotHeight`).  
+**Interdit :** agrandir les `Tab*` / Icon / IconLift / SelectedFrame. Ça gonfle le zoom actif (×1.87).  
 **Spec :** `Notes/Ui/SPEC_nav_onglets_zoom_actif.md` (pas de RectMask2D).
 
-**Après Bezy :** Cursor aligne `UIManager.NavBarHeight = 140f` (modales).
+**Déjà fait Cursor :** `ApplyEqualNavTabSlots` → hauteur slot **128**, pivot bas. Ne **pas** éditer `.cs`.  
+**Après Bezy :** playtest auteur (taille icône+cadre actif = avant). `UIManager.NavBarHeight` reste **260** (modales).  
+**Checkpoint :** tag `hud-bandeau-before-fond140-slots128` · `backup/hud-bandeau-fond140-slots128`.
 
 ---
 
@@ -14,22 +17,26 @@
 ```
 [BZ-NAV-BAR-HEIGHT-001] NavBarContainer height EXACTLY 140 px. SCENE ONLY. STOP.
 
-OPEN Assets/Scenes/NavigationHUD.unity FIRST. UI m_Layer = 5. Do NOT rescan. Do NOT edit .cs.
+OPEN Assets/Scenes/NavigationHUD.unity FIRST. UI m_Layer = 5. Do NOT rescan. Do NOT edit .cs. Do NOT edit prefabs.
 
-GOAL: Dark fond (NavBarContainer Image) must be 140 px tall so the active tab IconLift + zoom + SelectedFrame + TMP label sit ON the dark strip. Author: 140 is the correct fond size. Do NOT use 128. Do NOT guess 176–192.
+GOAL: Dark fond only grows to 140 px. Tab slots stay 128 px at the BOTTOM (runtime C#). Active icon + SelectedFrame must KEEP current pixel size. Do NOT use 128 for the fond. Do NOT guess 176–192.
 
 1) NavBarContainer RectTransform:
-   - Keep anchor bottom stretch: AnchorMin (0,0) AnchorMax (1,0) Pivot (0.5,0) AnchoredPosition (0,0).
+   - Keep AnchorMin (0,0) AnchorMax (1,0) Pivot (0.5,0) AnchoredPosition (0,0).
    - Set sizeDelta to (0, 140). Height = 140 only.
    - Image (dark strip) stretch full rect. Raycast ON OK.
 
-2) 5 tab roots stay children of NavBarContainer (order: TabAventures, TabInventaire, TabShop, TabVente, TabMoreOption). HLG unchanged (padding L/R 10, childAlignment LowerCenter, childControl/ForceExpand ON). Tabs fill the new 140 height. Do NOT add RectMask2D / Mask.
+2) Do NOT resize TabAventures, TabInventaire, TabShop, TabVente, TabMoreOption.
+   Do NOT change their anchors, pivot, sizeDelta, or sibling order.
+   Do NOT enable/tweak HorizontalLayoutGroup to fill 140 (runtime disables HLG).
+   Do NOT add RectMask2D / Mask on NavBarContainer or any tab.
 
-3) Do NOT change icon scale, IconLift Y, Glow, or SelectedFrame expand. Keep idle SelectedFrame X: TabAventures +10 ; TabVente and TabMoreOption -10.
+3) Do NOT change Icon, IconLift, Glow, Label, SelectedFrame (sizeDelta, scale, pos, expand).
+   Keep idle SelectedFrame X: TabAventures +10 ; TabVente and TabMoreOption -10.
 
 4) If currency HUD (stamps + 275) overlaps the taller bar, nudge its Y up a few px only. Do not resize that widget.
 
-Save scene. Reply: NavBarContainer sizeDelta.y = 140. List what changed. STOP. No Play Mode / Simulate.
+Save scene. Reply: NavBarContainer sizeDelta.y = 140. Confirm Tab* sizeDelta unchanged. List what changed. STOP. No Play Mode / Simulate.
 ```
 
 **Lancement Unity :**

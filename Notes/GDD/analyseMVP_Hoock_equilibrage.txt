@@ -1,3 +1,10 @@
+[2026-09-16] Inbox prompts bruts — ne plus relancer tel quel.
+Tri / analyse / schéma data / prompts propres :
+  Notes/GDD/NOTE_mvp_hook_equilibrage.md
+  (alimente BL-GDD-001 ; revue 2 semaines = BL-GDD-009)
+
+---
+
 Je vais noté ici toutes les idées dans un seul bloc et demander à cursor d'en faire le tri. il devra supprimer les éléments prompt
 une fois trié dans la doc MVP.md (minimal viable product). Et dans ce meme dossier il y aura un stock de prompt 
 définit par branche/feature qui pourra etre pris pour lancer les commandes cursor a distance par VM.

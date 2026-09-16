@@ -45,6 +45,20 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ P0 demain — bandeau atelier Plantfischstein `[P0-ART-BANDEAU-ATELIER-001]` — **2026-09-16 soir**
+
+**Décision auteur :** crédits ChatGPT à 0 ; reprise **demain**. Base OK : `Assets/Art/Assets Store Dump/Ui/Tab_Plus/FirstTryBandeauAtelier.png` (bras, table, fiole, robot, zone titre). **KO :** truite et poireau = 2 persos (2 têtes). Cible = **un** Plantfischstein (corps truite + tête poireau kawaii).
+
+**Prompts :** `Notes/Art/PROMPT_bandeau_atelier_bricolage.md` (Passe 2 inpaint).  
+**Sélection Modifier :** un seul lasso — queue + flanc + **cou** + feuilles + pince ; bocal / petit robot **dehors**.
+
+**Ordre demain :**
+1. [ ] Relancer ChatGPT (crédits) : bandeau propre + crop chimère en 2ᵉ image + Passe 2.
+2. [ ] Si encore 2 têtes → **Cursor génère** l’art (pas ChatGPT) → Dump `Tab_Plus/` (auteur : « si le modèle ne capte pas le fishenstein, tu génères »).
+3. [ ] Playtest bandeau hub Bricolage (remplace papier peint rouages+feuilles) — **après** OK visuel. Titre *Bricolage* en TMP, pas dans le PNG.
+
+**Hors scope demain :** Bezy prefab / promo `Sprites/` tant que la chimère n’est pas OK.
+
 ### ★ P0 session — modales HUD = même Bottom 260 `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` — **CLOS 2026-09-16**
 
 **Ref auteur (Play Mode) :** `FeaturesHubScreen(Clone)` Bottom **260**. Shop / Hub / Vente / Inventaire doivent partager ce cadre (au-dessus de l’onglet zoomé). **Ne pas** modifier `FirstLvl.unity` (scène gameplay).
@@ -89,27 +103,50 @@ Prochain bug dans ce chat → on l’ajoute à la file (même section + `Notes/T
    **Piste :** étendre la règle existante `NavigationHUD` (`actionPointsHudRoot.SetActive(!modalOpen)`) à l’état overlay talents **ou** désactiver le root tant que `TalentTreeOverlay` visible — **Cursor** (pas Bezy prefab).  
    **Hors scope :** repositionner le widget ; pour cette branche = **off** sur talent tree.
 
-### ★ P0 demain — fond nav 140 px + ScrollView inventaire — **2026-09-15 soir**
+### ★ P0 prochaine session — playtest HUD/wallet puis scan responsive — **2026-09-16 soir**
 
-**Décision auteur :** essai `NavBarContainer` **140 px** (fond assez haut pour IconLift + zoom). Risque : les onglets **suivent la hauteur de la barre** au runtime (`NavigationHUD.ApplyEqualNavTabSlots` → `Vertical = barHeight`). Il faudra **aussi** adapter le **ScrollView inventaire** (bas de liste vs barre plus haute).
+**1. Playtest (priorité, même branche) `[P0-INV-WALLET-PLAY-001]`**
 
-**Garde-fou (obligatoire, demain et à chaque fois) :** **avant** de trafiquer les bandeaux UI du HUD (`NavBarContainer`, hauteur, layout onglets, fond), poser un **point d’arrêt Git** sur la branche courante (commit + tag + branche `backup/…`). Ne pas lancer Bezy / éditer la scène tant que le tag n’existe pas.
+Play Mode + device si possible. Ne pas lancer de Bezy / scan responsive avant.
 
-**Point d’arrêt déjà créé ce soir (128 px) :**
-- Branche de travail : `fix/farm-iso-footprint-hit`
-- Commit / tag / backup : `1f76429` · tag **`nav-bar-128-before-height-140`** · branche **`backup/nav-bar-128`**
-- Rollback essai : `git reset --hard nav-bar-128-before-height-140` (si l’essai n’est pas encore poussé) **ou** restaurer seulement la scène : `git checkout nav-bar-128-before-height-140 -- Assets/Scenes/NavigationHUD.unity`
-- **Demain :** si d’autres commits sont passés dessus, **refaire un point d’arrêt** juste avant l’essai 140 (ne pas s’appuyer uniquement sur le tag de ce soir).
+- [ ] Fond nav **140** / slots **128** (déjà OK éditeur) — reconfirmer Inventaire actif (glyphe + cadre).
+- [ ] `WalletWidget` **Y = -40**, Canvas **60** (devant la nav).
+- [ ] Ordre chip : **timbres → `=` → 275**.
+- [ ] Shop / Hub / Vente : pas de wallet.
+- [ ] ≡ expand vers le haut ; bas de grille inventaire (`ScrollView` -16) cliquable.
+- [ ] 5ᵉ onglet Plus pas coupé (`[P0-NAV-TAB5-CLIP-001]` si encore KO).
 
-**Ordre (même session) :**
+**2. Après playtest — nouveau thread `[CT-UI-RESPONSIVE-SCAN-001]`**
 
-0. [ ] **Point d’arrêt Git** sur la branche **avant** tout Bezy / YAML HUD (`git commit` checkpoint + `git tag` + `git branch backup/…`). Recette : `GIT_HELPER.md` § `--0c--`.
-1. [ ] **[P0-NAV-BAR-HEIGHT-140-001]** Essai hauteur fond **140**. Prompt Bezy : `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`. Playtest : icône active (Inventaire) entièrement sur le fond **sans** agrandir les glyphes idle de façon inacceptable. Si les boutons gonflent trop → rollback tag, puis variante « fond 140 / slots onglets calés à 128 bas ».
-2. [ ] **[P0-INV-SCROLL-NAVBAR-001]** Adapter le **ScrollView** inventaire à la nouvelle hauteur de barre. Prefab `Assets/Prefabs/Ui/InventoryScreen.prefab` → `ScrollView` (`sizeDelta.y` actuel **-108**). `UIManager.NavBarHeight` est **260f** (inset overlay, 2026-09-16) — ne pas le ramener à 128. Playtest : dernières lignes / slots du bas cliquables, pas masqués par l’onglet zoomé.
+Note théorique déjà écrite : `Notes/Ui/NOTE_ui_responsive_ratios.md`.  
+**Ce thread-ci ne scanne pas.** Nouveau chat : classer les UI (déjà OK / adaptable / mockup verrouillé). Pas de YAML tant que l’auteur n’a pas validé le tableau.
 
-**Hors cet essai :** ne pas lancer le job Bezy 140 **ce soir** — reprise **prochaine session** (demain).
+---
 
-Prompt Bezy déjà prêt : `@Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`
+### ★ P0 en cours — fond nav 140 / slots 128 bas — **2026-09-16**
+
+**Variante auteur :** fond `NavBarContainer` **140 px** ; slots onglets **128 px ancrés bas** (icône + cadre actifs inchangés). Zoom = multiplicateur → ne pas stretch les tabs sur 140.
+
+**Garde-fou :** avant bandeaux HUD → point d’arrêt (`GIT_HELPER.md` § `--0c--`).
+
+**Point d’arrêt 2026-09-16 (avant rework) :**
+- Branche : `fix/farm-iso-footprint-hit`
+- HEAD checkpoint : `982d785`
+- Tag **`hud-bandeau-before-fond140-slots128`** · branche **`backup/hud-bandeau-fond140-slots128`**
+- Rollback : `git reset --hard hud-bandeau-before-fond140-slots128` (essai non poussé) **ou** scène seule : `git checkout hud-bandeau-before-fond140-slots128 -- Assets/Scenes/NavigationHUD.unity`
+- Tag plus ancien (128 avant tout essai 140) : `nav-bar-128-before-height-140` · `backup/nav-bar-128`
+
+**Ordre (cette session) :**
+
+0. [x] **Point d’arrêt Git** — tag `hud-bandeau-before-fond140-slots128` (2026-09-16).
+1. [x] **C# slots 128 bas** — `NavigationHUD.ApplyEqualNavTabSlots` / `LayoutNavTabSlot` (`NavTabSlotHeight = 128`). Plus de copie `barHeight`.
+2. [x] **[BZ-NAV-BAR-HEIGHT-001]** Fond scène **140** — Bezy P1 OK 2026-09-16 (`sizeDelta.y` 128→140 **seul** diff YAML). Tabs / Icon / SelectedFrame inchangés. Pas de RectMask2D.
+2b. [x] **[P0-NAV-BAR-HEIGHT-140-001]** Playtest auteur OK 2026-09-16 — glyphe + cadre actifs inchangés.
+3. [x] **[BZ-INV-WALLET-NAV-BAND-001]** Bezy OK 2026-09-16 — `WalletWidget` pos (-16, **-190**), 400×80, toujours enfant `WalletBar`. `WalletBar` h=0 / Image alpha 0. ScrollView `-108`→`-16`. Root Bottom 260 intact.
+3b. [ ] Playtest wallet **Y = -40**, Canvas 60, ordre **timbres → `=` → 275** — **prochaine session** `[P0-INV-WALLET-PLAY-001]`.
+4. [ ] **[P0-INV-SCROLL-NAVBAR-001]** Playtest ScrollView après le wallet (Bezy passe `-108` → `-16`). `UIManager.NavBarHeight` reste **260f**.
+
+Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 
 ### ★ Build Android playtest — archis `[CT-BUILD-ARM64-ONLY-001]` — **2026-09-16**
 
@@ -159,12 +196,12 @@ Prompt Bezy déjà prêt : `@Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`fix/farm-iso-footprint-hit`** (pas `main`).  
-> **P0 prochaine session :** point d’arrêt Git **puis** `[P0-NAV-BAR-HEIGHT-140-001]` + `[P0-INV-SCROLL-NAVBAR-001]`. **Règle :** avant tout bandeau HUD (`NavBarContainer` / hauteur / layout onglets) → commit + tag + `backup/…`. Rollback actuel : `nav-bar-128-before-height-140`.  
+> **P0 prochaine session :** playtest `[P0-INV-WALLET-PLAY-001]` (wallet Y -40, `=` entre timbres et 275, nav 140). **Ensuite, autre thread :** scan responsive `[CT-UI-RESPONSIVE-SCAN-001]` — `Notes/Ui/NOTE_ui_responsive_ratios.md`. Checkpoint : `hud-bandeau-before-fond140-slots128`. **Règle :** avant bandeaux HUD → tag + `backup/…`.  
 > **Playtest mobile 2026-09-16 (dump en cours) :** grille · scale biofiltre · plant release · `[P0-UI-PA-HUD-TALENTTREE-001]` (branche `rework/biofilter-mobile-scale`).  
 > **Chantier farm :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
-> **Priorité immédiate (2026-09-15 soir → demain) :** `[P0-NAV-BAR-HEIGHT-140-001]` + `[P0-INV-SCROLL-NAVBAR-001]`. Croix ExitOnly playtestée 2026-09-15.  
+> **Priorité immédiate (prochaine session) :** playtest wallet/nav. Puis scan UI responsive (nouveau thread). Croix ExitOnly playtestée 2026-09-15.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows par biofiltre. Bezy nest skip.  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  

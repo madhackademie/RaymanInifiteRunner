@@ -41,6 +41,7 @@ Légende :
 | `Notes/Ui/LOADINGSCREEN_image_workflow.md` | Actif | P1 | Illustration + import sprite + intégration Canvas **`Bootstrap`** / fade `LoadingScreen`. |
 | `Notes/Ui/Todo_ui.md` | Actif | P1 | Backlog UI : **FirstLvl** popups génériques ; polish shop (saisie qty, Max, confirmation) ; LoadingScreen ; hub ; `LanguageManager`. |
 | `Notes/Ui/popup_generique.md` | Actif | P1 | Shop sur `main` : flux achat, **popup item + binding** + ressources insuffisantes **faits** ; reste polish §3 ; extension pipeline vers **FirstLvl** (cf. `PROJECT_LOG` 2026-05-14). |
+| `Notes/Ui/NOTE_ui_responsive_ratios.md` | Actif | P1 | Brief théorique ratios/écrans ; scan `[CT-UI-RESPONSIVE-SCAN-001]` = **prochaine session, nouveau thread**. |
 | `Notes/Ui/TODO_Bezi_audit_scene_ui_refactor.md` | Actif | P1 | Cible ~2026-05-01 : audit **Bezi** navigation Scene/UI + clean/refactor + alignement doc (`ShowScene` vs notes `GoTo`/unload). |
 | `Notes/Ui/RULE_DRAFT_bezi_scene_ui_runtime.md` | Actif | P1 | Brouillon de rule Bezi IA : architecture runtime Scene/UI cible (SceneNavigator + UIManager + NavigationHUD), invariants, do/don't, checklist d’implémentation. |
 | `Notes/Ui/Decision_ui.md` | Actif | P3 | Spéc UI proto -> polish (objectifs, architecture panneaux, animations, contrat d'orchestration). |
@@ -53,6 +54,8 @@ Légende :
 
 | Fichier | Statut | Priorité | Synthèse |
 |---|---|---|---|
+| `Notes/GDD/NOTE_mvp_hook_equilibrage.md` | Actif | P1 | Analyse MVP hook / palier commercial / équilibrage plantes + schéma GameDesignData + prompts revue 2 sem. Inbox brut : `analyseMVP_Hoock_equilibrage.txt`. |
+| `Notes/GDD/data/GDD_balance.xlsx` | Actif | P1 | Tableur équilibrage (timers, plantes, rétention). Laitue Unity = debug tant que `gddMinutes` vide. CSV miroir dans le même dossier. |
 | `Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md` | Actif | P2 | Spéc de progression: XP joueur + maturité du biofiltre/système pour gate les cultures avancées. |
 | `Notes/GDD/SPEC_progression_systeme_aquaponique_par_niveau.md` | Actif | P3 | Note future : progression **par scène/niveau** (FirstLvl+) — panneau 3 onglets, points système, techno, anti-aléas. |
 | `Notes/GDD/INBOX_notes_tablette_recherches.md` | Actif | P1 | Hub [P0-IDEA-001] : notes manuscrites / recherches perso (« tablette » = référence auteur) + cartographie docs liés. |

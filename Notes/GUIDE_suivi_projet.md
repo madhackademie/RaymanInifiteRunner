@@ -64,6 +64,7 @@ Pour reprendre un chantier Unity **sans parcourir le journal** :
 
 | Sujet | Fichier unique |
 |-------|----------------|
+| Playtest live mobile (adb logcat, APK, SM-A137F) | **`Notes/WORKFLOW_playtest_mobile_live.md`** |
 | Composition arbre de talents (8 etapes, Track_Commerce) | **`Notes/Ui/WORKFLOW_creation_arbre_talents.md`** |
 
 - **Statut session** (etape en cours) : `Notes/Todo_project.md` uniquement.

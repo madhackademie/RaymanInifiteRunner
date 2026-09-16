@@ -43,7 +43,7 @@ git branch backup/hud-bandeau-<sujet>
 Rollback (essai non poussé) : `git reset --hard hud-bandeau-before-<sujet>`  
 Scene seule : `git checkout hud-bandeau-before-<sujet> -- Assets/Scenes/NavigationHUD.unity`
 
-Exemple 2026-09-15 : tag `nav-bar-128-before-height-140` · branche `backup/nav-bar-128`.
+Exemples : 2026-09-15 tag `nav-bar-128-before-height-140` · `backup/nav-bar-128` ; 2026-09-16 tag `hud-bandeau-before-fond140-slots128` · `backup/hud-bandeau-fond140-slots128`.
 
 ## --0-- Checklist rapide (branche + synchro)
 

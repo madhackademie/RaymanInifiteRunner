@@ -3,6 +3,8 @@
 Statut officiel des tâches : **`Notes/Todo_project.md`**.  
 Cette note = **checklists playtest en batch** + **comment forcer PA / inventaire / vente à la mano**.
 
+**Playtest sur téléphone (adb, APK, SM-A137F) :** `Notes/WORKFLOW_playtest_mobile_live.md` — logs PC, archis, USB.
+
 Règle : Bezy / code en priorité session ; playtests batch ici jusqu’à une session « QA ».
 
 ---
@@ -176,9 +178,38 @@ Ex. budget 160, remaining 0 → HUD **160 / 160**.
 
 ---
 
+## Batch H — Playtest mobile 2026-09-16 (dump bugs / behaviors)
+
+**Tél. :** Samsung **SM-A137F** (`armeabi-v7a`). Statut officiel : `Notes/Todo_project.md` § *Playtest mobile 2026-09-16*.  
+Logs live : `Notes/WORKFLOW_playtest_mobile_live.md`.  
+Règle : **lister d’abord**, fix ensuite (pas de code dans ce batch tant que l’auteur n’a pas dit « on fixe »).
+
+- [ ] **[P0-FARM-GRID-PLANTING-ONLY-001]** Grille absente hors mode plantation  
+  - Recette KO actuelle : FirstLvl, **sans** avoir choisi une graine → lignes / cellules encore visibles.  
+  - Recette OK : biofiltre seul (pas de graines) → **pas** de grille. Clic biofiltre + graine choisie → grille **on**. Fermer / plus de graines / annuler pose → grille **off**.  
+  - Suspects : `GridLinesRenderer` (GL toujours on), sprites `BiofiltreGridVisualizer`, entrée clic cellule vs clic IBC.
+
+- [ ] **[P0-FARM-MOBILE-BIOFILTER-SCALE-001]** Biofiltre **~10 % plus petit** sur mobile  
+  - Comparatif : `Docs/ScreenPlaytestMobile/README_comparatif_batch-H.md` (REF éditeur vs capture KO).  
+  - Bezy : `Assets/Docs/Bezi/PROMPTS_Bezi_biofilter_mobile_scale.md` sur branche `rework/biofilter-mobile-scale`.  
+  - Suspects : `Main Camera` ortho FirstLvl (5 → ~5,5) ; override scale instance ; runtime aspect si APK ≠ Game view.
+
+- [ ] **[P0-FARM-MOBILE-PLANT-RELEASE-001]** Pose plantation au **relâchement** doigt (ghost draggable)  
+  - Recette OK : mode planting + graine → touch down **déplace** le ghost, **release** sur cellule valide → pose ; release hors zone → annule / pas de pose.  
+  - Recette KO actuelle : pose dès le touch down.  
+  - Suspects : `FarmPointerInput`, handlers touch vs `BiofiltreManager` planting.
+
+- [ ] **[P0-UI-PA-HUD-TALENTTREE-001]** PA HUD masqué pendant overlay talents (branche `rework/biofilter-mobile-scale`)  
+  - Recette KO : Inventaire → arbre talents → widget `ActionPointsHudWidget` au-dessus des nœuds (coin haut-droit).  
+  - Ref : `Docs/ScreenPlaytestMobile/20260916_REF_p0-ui-pa-hud-talenttree_inventory-overlay-blocks-talent-nodes.png`  
+  - Fix attendu : `NavigationHUD.actionPointsHudRoot` off quand overlay talents ouvert (`TalentTreeOverlayController`).
+
+---
+
 ## Ordre suggéré session batch QA
 
-0. **Batch G** — régressions FirstLvl HUD / croix / IBC (playtest 2026-09-10)  
+0. **Batch H** — dump playtest mobile 2026-09-16 (lister, pas fixer)  
+0b. **Batch G** — régressions FirstLvl HUD / croix / IBC (playtest 2026-09-10)  
 1. **Cheatsheet** : localiser `ActionPointService` + `PlayerInventory` + `SaleChannelService` en Play  
 2. **Batch A** (§1–4) — PA  
 3. **Batch C** — graines empty  

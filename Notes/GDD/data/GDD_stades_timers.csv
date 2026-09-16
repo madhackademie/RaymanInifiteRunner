@@ -1,0 +1,22 @@
+plantId;stageEnum;stageName;unitySeconds;unityMinutes;gddMinutes;applyToUnity;notes
+lettuce;0;Graine;1;0.0166667;;non;DEBUG Unity Laitue.asset — remplir gddMinutes
+lettuce;1;Starting;1;0.0166667;;non;DEBUG
+lettuce;2;Baby;1;0.0166667;;non;DEBUG
+lettuce;3;Growing;1;0.0166667;;non;DEBUG — gros du cycle feuille ici
+lettuce;4;Mature;1;0.0166667;;non;DEBUG — fenetre recolte feuille (XOR)
+lettuce;5;Flowering;3500;58.3333;;non;DEBUG — seul stade long actuel (~58 min)
+lettuce;6;Seedling;1;0.0166667;;non;DEBUG — recolte graines si pas coupe a Mature
+basil;0;Graine;;;;non;Pas d asset — gddMinutes plus tard
+basil;1;Starting;;;;non;
+basil;2;Baby;;;;non;
+basil;3;Growing;;;;non;
+basil;4;Mature;;;;non;
+basil;5;Flowering;;;;non;
+basil;6;Seedling;;;;non;
+swiss_chard;0;Graine;;;;non;Pas d asset — gddMinutes plus tard
+swiss_chard;1;Starting;;;;non;
+swiss_chard;2;Baby;;;;non;
+swiss_chard;3;Growing;;;;non;
+swiss_chard;4;Mature;;;;non;
+swiss_chard;5;Flowering;;;;non;
+swiss_chard;6;Seedling;;;;non;

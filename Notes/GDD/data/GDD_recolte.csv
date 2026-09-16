@@ -1,0 +1,7 @@
+plantId;stageName;harvestItemId;harvestAmountMin;harvestAmountMax;notes
+lettuce;Mature;laitue_mature;1;3;XOR — une recolte par plante (maxHarvestCount=1)
+lettuce;Seedling;laitue_seed;5;15;Si on laisse fleurir. Moins or/unite, plus de qty.
+basil;Mature;;;;Placeholder
+basil;Seedling;;;;Placeholder
+swiss_chard;Mature;;;;Placeholder
+swiss_chard;Seedling;;;;Placeholder

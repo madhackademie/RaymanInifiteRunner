@@ -29,6 +29,9 @@
 | [x] Ph.3a | `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` | `FeaturesHubScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md` | branche courante | OK 2026-09-16 — root Bottom 260. PlaceholderRoot 640×720 intact. |
 | [x] Ph.3b | `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` | `SaleChannelsScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md` | branche courante | OK 2026-09-16 — root Bottom 260. Cursor a retiré extras Bezy (`UiQuadWarpMeshEffect` nested). |
 | [x] Ph.3c | `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md` | branche courante | OK 2026-09-16 — root Bottom 260 + layer 5. ScrollView -108 intact. Cursor `NavBarHeight=260`. |
+| [x] | `[BZ-NAV-BAR-HEIGHT-001]` | `NavigationHUD.unity` | scène | `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-16 — fond 140 only ; tabs inchangés ; playtest auteur OK |
+| [x] | `[BZ-INV-WALLET-NAV-BAND-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md` | `fix/farm-iso-footprint-hit` | OK YAML ; playtest KO — trop bas + derrière nav |
+| [ ] | `[BZ-INV-WALLET-NAV-BAND-002]` | `InventoryScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md` | `fix/farm-iso-footprint-hit` | Y -100 + Canvas sorting 60 |
 | [ ] | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` (tabs) | 1–3 TBD | `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` | `main` | TabVente dernier prompt |
 | [ ] | `[BZ-FARM-HARVEST-READY-VFX-002]` | `HarvestReadyFx.prefab` | 5 | `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` | `main` | Particules récolte Mature+Seedling **plus grosses** (lisibilité) |
 | [x] | `[BZ-FARM-PLANT-SELECT-GLOW-001]` | `LaitueObj.prefab` | 1–3 | `Notes/Ui/PROMPTS_Bezi_plant_selection_glow.md` | `main` | Livré 2026-09-10 — playtest auteur |
@@ -37,23 +40,20 @@
 
 ## Bloc de lancement (copier dans Bezy)
 
-Ouvrir le prefab cible en **Prefab Mode**, puis :
+Prefab Mode **`Assets/Prefabs/Ui/InventoryScreen.prefab`**, puis :
 
 ```
-/prefab-ui-3phases
-@Assets/Docs/Bezi/PROMPTS_Bezi_hud_modal_safe_bottom.md
-Task ID: [BZ-HUD-MODAL-SAFE-BOTTOM-001]
-Prefab: Assets/Prefabs/Ui/InventoryScreen.prefab
-Phase: 1
+@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md
+[BZ-INV-WALLET-NAV-BAND-002] Raise wallet + Canvas in front of nav. PREFAB ONLY. STOP.
 ```
 
-**Modales Bottom 260 `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` :** **CLOS Bezy + Cursor** 2026-09-16 — Shop Ph.1–2, Hub 3a, Vente 3b (extras warp retirés), Inventaire 3c. `UIManager.NavBarHeight = 260f`. NavBarContainer scène **reste 128**. Pas FirstLvl.
+**Modales Bottom 260 `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` :** **CLOS Bezy + Cursor** 2026-09-16 — Shop Ph.1–2, Hub 3a, Vente 3b (extras warp retirés), Inventaire 3c. `UIManager.NavBarHeight = 260f`. Pas FirstLvl.
 
 **Relink sprites nav `[BZ-NAV-TABS-SPRITE-FOLDER-001]` :** OK 2026-09-15.
 
 **Nav 5ᵉ onglet coupé `[BZ-NAV-TAB5-CLIP-001]` :** prompt `Assets/Docs/Bezi/PROMPTS_Bezi_nav_tab5_clip_fix.md` (scène ; Cursor rebuild HLG insuffisant).
 
-**Hauteur barre = 140 px `[BZ-NAV-BAR-HEIGHT-001]` / `[P0-NAV-BAR-HEIGHT-140-001]` :** **prochaine session (demain)** — pas ce soir. **Avant Bezy :** point d’arrêt Git (commit + tag + `backup/…`, `GIT_HELPER.md` § `--0c--`). Prompt `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`. Rollback tag `nav-bar-128-before-height-140`. Enchaîner `[P0-INV-SCROLL-NAVBAR-001]` (ScrollView inventaire + `UIManager.NavBarHeight`).  
+**Hauteur fond barre = 140 px `[BZ-NAV-BAR-HEIGHT-001]` :** **CLOS** Bezy + playtest 2026-09-16. `UIManager.NavBarHeight` reste 260. Checkpoint : `hud-bandeau-before-fond140-slots128`.  
 **Onglets `[BZ-TAB-SPRITES-001]` :** TabVente dernier prompt.  
 **Sparkle récolte `[BZ-FARM-HARVEST-READY-VFX-002]` :** Phase 5 — peut partir sans attendre Cursor.  
 **Glow cible `[BZ-FARM-PLANT-SELECT-GLOW-001]` :** Cursor livré — Bezy Ph.1–3 pour visuel prefab (jaune/blanc, scale).  
@@ -65,6 +65,8 @@ Phase: 1
 
 | Task ID | Prefab | Phase | Date | Commit / note |
 |---------|--------|-------|------|----------------|
+| `[BZ-INV-WALLET-NAV-BAND-001]` | `InventoryScreen.prefab` | 1 | 2026-09-16 | chip Y -190 ; WalletBar 0 ; ScrollView -16 |
+| `[BZ-NAV-BAR-HEIGHT-001]` | `NavigationHUD.unity` | scène | 2026-09-16 | fond 140 only ; tabs / Icon / frame inchangés |
 | `[BZ-AP-HUD-SCALE-001]` | `ActionPointsHudWidget` + `NavigationHUD` | 1–3 | 2026-09-10 | 480×120, fonts ×2, instance scène OK — playtest auteur |
 | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 3 | 2026-09-06 | `topIsoLine` → `{fileID: 1385485198660413513}` |
 | `[BZ-FARM-BIOHUD-ISO-001]` | `BiofiltreHud.prefab` | 2 | 2026-09-06 | No-op Bezy OK ; tilt+layout = binder |

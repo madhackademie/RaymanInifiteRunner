@@ -21,6 +21,7 @@ Ce fichier est le **hub d’accueil** quand ces notes seront retranscrites ou im
 
 | Fichier | Contenu utile pour [P0-IDEA-001] | Statut |
 |---------|----------------------------------|--------|
+| **`Notes/GDD/NOTE_mvp_hook_equilibrage.md`** | Analyse MVP hook, palier commercial, catalogue T1–T5, schéma GameDesignData, prompts revue | **2026-09-16** — source brute `analyseMVP_Hoock_equilibrage.txt` |
 | **`Notes/GDD/Inbox_gdd.md`** | Brouillon GDD : états plantes (6 stades), salade vs tomate, Farm City, mini-Trello 15 min/jour, IA Google casual farm | **Partiellement transcrit** — à relire / compléter depuis tablette |
 | **`Notes/Ui/SPEC_rework_inventaire_halo_progression.md`** | Vision UI halo (XP centre, talents acheteur / vendeur), §4 renvoie ici | Spec UI — règles métier **après** import notes |
 | **`Notes/GDD/SPEC_progression_xp_joueur_et_biofiltre.md`** | XP **système** + **étoiles biofiltre** (★1 : 240 XP, 50 salades, 100 germinations, 50 graines ; cadence 3–5 j) | Vision 2026-08-27 — chiffres playtest |

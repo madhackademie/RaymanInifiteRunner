@@ -1,0 +1,7 @@
+cle;valeur
+regle;Les timers Unity laitue sont du DEBUG. Ne pas les copier vers Laitue.asset tant que applyToUnity != oui.
+source_gdd;Colonne gddMinutes (onglet stades_timers) = vérité equilibrage. Vide = pas encore calé.
+source_unity;Colonne unitySeconds = miroir de l asset actuel (debug).
+excel;Ouvrir GDD_balance.xlsx. Si tu édites les CSV: séparateur point-virgule, UTF-8.
+cursor;Je lis le tableur dans le repo (xlsx ou csv). Je n ouvre pas Excel sur ta machine.
+prochain_job;Remplir gddMinutes pour lettuce uniquement. Basil / blette: lignes placeholders.

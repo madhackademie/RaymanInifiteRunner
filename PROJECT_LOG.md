@@ -1,5 +1,110 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-16 — Fin session HUD : playtest reporté + brief responsive
+
+### Objectif
+- Clôturer le chantier nav 140 / wallet bandeau côté code+Bezy.
+- Reporter le **playtest** et un **scan UI responsive** (autre thread).
+
+### Décision auteur
+- **P0 prochaine session :** playtest `[P0-INV-WALLET-PLAY-001]` (Y -40, `=` entre timbres et 275, Canvas 60, nav 140).
+- **Ensuite, nouveau thread :** `[CT-UI-RESPONSIVE-SCAN-001]` — classer les UI (déjà OK / adaptable / mockup verrouillé). Pas de code dans ce scan.
+- Note théorique livrée maintenant : `Notes/Ui/NOTE_ui_responsive_ratios.md`.
+
+### État livrable (à playtester)
+- Fond `NavBarContainer` 140 ; slots 128 bas.
+- `WalletWidget` enfant inventaire, Y **-40**, sorting **60**, ordre **CoinIcon → Toggle (`=`) → Amount**.
+- Checkpoint : `hud-bandeau-before-fond140-slots128`.
+
+### Cette tâche est la référence « tâche du jour » au prochain chat
+1. Playtest wallet/nav.
+2. Si OK : ouvrir un **nouveau** thread pour le scan responsive (lire la note d’abord).
+
+---
+
+## 2026-09-16 — Nav bar : fond 140 / slots 128 bas
+
+### Objectif
+- Agrandir le fond `NavBarContainer` **sans** agrandir icône ni cadre de l’onglet **actif**.
+
+### Décision
+- Variante : fond **140 px** ; slots onglets **128 px ancrés bas** (`NavTabSlotHeight`). Le zoom reste un multiplicateur → stretch slot = gonflement actif.
+
+### Livré
+- Checkpoint Git : tag `hud-bandeau-before-fond140-slots128` · `backup/hud-bandeau-fond140-slots128` (HEAD `982d785`).
+- C# `NavigationHUD.LayoutNavTabSlot` — plus de copie `barHeight`.
+- Prompt Bezy : `Assets/Docs/Bezi/PROMPTS_Bezi_nav_bar_active_height.md`.
+- **Bezy P1 OK** : `NavBarContainer` `sizeDelta.y` 128→**140** (seul diff scène). Tabs / Icon / SelectedFrame inchangés. Pas de RectMask2D.
+
+### Suite
+- Playtest fond 140 **OK** auteur 2026-09-16.
+- **Bezy `[BZ-INV-WALLET-NAV-BAND-001]` YAML OK** puis playtest **KO** : Y -190 trop bas + chip derrière la nav (`NavBarContainer` dernier sibling, canvas 50).
+- **P2 :** `[BZ-INV-WALLET-NAV-BAND-002]` — Y **-100** + Canvas override **60**. Prompt `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`.
+
+### Rollback
+- `git reset --hard hud-bandeau-before-fond140-slots128` (si essai non poussé)
+- Scène seule : `git checkout hud-bandeau-before-fond140-slots128 -- Assets/Scenes/NavigationHUD.unity`
+
+---
+
+## 2026-09-16 — Bandeau atelier Bricolage : pause crédits ChatGPT
+
+### Objectif
+- Remplacer le papier peint rouages+feuilles du bandeau **Bricolage** par une scène atelier (bras KUKA, table, fiole in-vitro, robot, chimère poisson-poireau).
+
+### Livré aujourd’hui
+- Brief + prompts : `Notes/Art/PROMPT_bandeau_atelier_bricolage.md`.
+- Base Dump : `Assets/Art/Assets Store Dump/Ui/Tab_Plus/FirstTryBandeauAtelier.png` (composition OK).
+- Itérations fusion **Plantfischstein** : le modèle garde 2 têtes (gueule de truite + poireau). Sélection inpaint auteur quasi OK (un lasso, bocal dehors).
+
+### Décision
+- Stop : plus de crédits ChatGPT. Reprise **demain** `[P0-ART-BANDEAU-ATELIER-001]`.
+- Si ChatGPT échoue encore sur la chimère → **Cursor génère** l’asset (demande auteur).
+
+### Prochaine session
+- Tâche de référence « tâche du jour » : fusion Plantfischstein sur le FirstTry, puis Dump. Pas de promo Sprites tant que KO.
+
+---
+
+## 2026-09-16 — Shader silhouette strip Android
+
+### Playtest SM-A137F
+- Erreur spam : `Shader 'Farm/SpriteSelectionSilhouette' introuvable` (halo sélection plante).
+- Cause : `Shader.Find` → shader **stripped** du player Android.
+
+### Fix
+- Ajout dans `GraphicsSettings` Always Included Shaders (`guid: 6bed397124bd3844698be22de95713ff`).
+- Helper logs : `scripts/adb-unity-logcat.ps1` — procédure **`Notes/WORKFLOW_playtest_mobile_live.md`**.
+
+---
+
+## 2026-09-16 — Playtest mobile : dump bugs / behaviors
+
+### Contexte
+- Auteur en playtest APK sur **SM-A137F**. File ouverte pour lister bugs + changements de behavior **avant** de coder.
+- Branche : `fix/farm-iso-footprint-hit`.
+
+### Premier item
+- **[P0-FARM-GRID-PLANTING-ONLY-001]** : la grille ne doit s’afficher **que** en mode plantation (clic biofiltre + graine sélectionnée). **0 graine → pas de grille.** Aujourd’hui `GridLinesRenderer` + cellules runtime restent visibles en permanence.
+
+### Suite
+- Les prochains constats du même playtest s’ajoutent dans `Notes/Todo_project.md` (section playtest mobile) et Batch H de `Notes/Todo_playtest.md`.
+
+---
+
+## 2026-09-16 — Build Android trop long : drop ARM32 en playtest
+
+### Constat
+- Build mobile en cours **> 21 min** ; IL2CPP **ARMv7 puis ARM64**.
+
+### Décision auteur
+- **Playtest SM-A137F :** décocher **ARM64**, garder **ARMv7 seul** (après le build en cours).
+- **Ne pas** dropper ARMv7 (ABI `armeabi-v7a` only).
+- Recocher **ARM64** avant un build Store.
+- `adb` : `%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe`.
+
+---
+
 ## 2026-09-15 — Prochaine session : fond nav 140 + ScrollView inventaire
 
 ### Décision auteur

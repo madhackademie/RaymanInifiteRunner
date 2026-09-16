@@ -1,0 +1,12 @@
+champ;valeur;unite;notes
+sessionsPerDayMin;2;count;auteur + spec star1
+sessionsPerDayMax;3;count;
+sessionMinutesMin;5;min;spec 5-7 / prompt 5-10
+sessionMinutesMax;10;min;
+star1CalendarDaysMin;3;day;SPEC_progression_xp_joueur_et_biofiltre
+star1CalendarDaysMax;5;day;
+offlineCapHours;;hour;TBD BL-GDD-002 — industrie idle 8-12
+saladHarvestStar1;50;count;XOR avec graines
+seedHarvestStar1;50;count;
+germinationStar1;100;count;tentees vs reussies ouvert
+systemXpStar1;240;xp;

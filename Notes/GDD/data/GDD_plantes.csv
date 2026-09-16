@@ -1,0 +1,4 @@
+plantId;displayName;unlockTier;growthPattern;visualRole;footprintCells;sessionBand;seedBuyGold;sellLeafGold;notes
+lettuce;Laitue;T1;Leafy;mass;4;;5;15;Runtime debug. Timers = onglet stades_timers. Prix 15 gold voisinage actuel.
+basil;Basilic;T1;Leafy;vertical;1;B;;;Placeholder T1 — pas d asset Unity.
+swiss_chard;Blette;T1;Leafy;accent;1;B;;;Placeholder T1 — pas d asset Unity.
