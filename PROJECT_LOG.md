@@ -1,5 +1,25 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-17 — Fin de session (journal auteur)
+
+### Session (rappel)
+- Bandeau atelier **Plantfischstein** livré Cursor (Dump + script composite) — voir entrée ci-dessous.
+- Échanges **Comfy Desktop** / FLUX.1 Kontext vs FLUX.2 local (Pro/Max = API payante ; dev = machine + licence BFL).
+
+### Prochaine session — priorité « tâche du jour »
+1. **[BZ-INV-HALO-SCALE-001]** — **Poursuivre la modification `PlayerHaloPanel`** (scale / layout inventaire). Prompts : `Notes/Ui/PROMPTS_Bezi_inventory_halo_scale.md` · prefabs `InventoryScreen` + `PlayerHaloPanel`.
+2. **[CT-ART-GEN-LOCAL-001]** — **Pipeline art local** : installer modèle(s) cible (Kontext [dev] et/ou FLUX.2 [dev] selon VRAM), workflow Comfy, **vérifier licence commerciale** (jeu mobile) et **coût** (GPU local vs API Pro/Max). Tracer décision dans `Notes/Art/` ou `Notes/Bezi/README_bezi.md`.
+3. **[CT-BUILD-REMOTE-UNITY-001]** — **Build / playtest sur une autre machine** : inventorier options Unity (Build Automation, dev build, partage projet, remote desktop déjà noté `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md`). Vérifier s’il existe un **package Unity** pertinent ; **Bezy** peut installer le package en scène/projet si validé.
+
+### Suite art (non bloquant P0)
+- `[P0-ART-BANDEAU-ATELIER-001]` playtest bandeau Dump, retouche pince/feuilles, promo Sprites après OK.
+- `[P0-ART-HUB-COMINGSOON-CLEAN-001]` clean manuel frange `IconeHub_ComingSoon`.
+
+### Cette tâche est la référence au prochain « tâche du jour »
+Ordre : **PlayerHalo** → **art local (licence + coût)** → **build machine distante** ; bandeau / ComingSoon en parallèle auteur.
+
+---
+
 ## 2026-09-16 — Hub Plus placeholder : panneau ComingSoon + copy WIP
 
 ### Objectif

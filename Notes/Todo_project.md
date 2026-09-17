@@ -45,7 +45,32 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-### ★ P0 demain — bandeau atelier Plantfischstein `[P0-ART-BANDEAU-ATELIER-001]` — **2026-09-17**
+### ★ P0 — PlayerHalo inventaire `[BZ-INV-HALO-SCALE-001]`
+
+**Objectif :** continuer la modification du **`PlayerHaloPanel`** (hauteur bandeau halo, scale slots / portrait via `HaloContentScaler`).
+
+**Refs :** `Notes/Ui/PROMPTS_Bezi_inventory_halo_scale.md` · `Assets/Prefabs/Ui/InventoryScreen.prefab` · `Assets/Prefabs/Ui/Progression/PlayerHaloPanel.prefab`.
+
+1. [ ] Bezy Ph.1–3 si pas terminées (Preferred Height 560, `referenceHeight` 320 source panel).
+2. [ ] Playtest inventaire : halo ~2×, grille flexible OK, pas de régression wallet / overlay talents.
+
+### ★ P0 — Art local Comfy / FLUX `[CT-ART-GEN-LOCAL-001]`
+
+**Objectif :** installer le modèle de génération sur la machine (Comfy Desktop), documenter **licence** (usage commercial jeu) et **coût** (électricité + GPU vs API).
+
+1. [ ] Choisir variante locale : **FLUX.1 Kontext [dev]** (VRAM modeste) ou **FLUX.2 [dev]** (multi-ref, edits difficiles) — cf. discussion session 2026-09-17.
+2. [ ] Accepter licence BFL / Hugging Face ; noter si licence commerciale payante requise avant promo `Sprites/`.
+3. [ ] Premier test : inpaint bandeau `FirstTryBandeauAtelier` (masque chimère) vs composite Cursor actuel.
+
+### ★ P0 — Build / autre machine Unity `[CT-BUILD-REMOTE-UNITY-001]`
+
+**Objectif :** étudier comment **simuler ou builder** le projet sur une **autre machine** (second PC, laptop, CI).
+
+1. [ ] Cartographier options Unity 6 (Build Profiles, dev build, Build Automation / cloud si compte).
+2. [ ] Lister packages Asset Store / UPM utiles (remote, build farm, etc.) — **Bezy** peut installer un package validé (prefab/scène seulement si package le demande).
+3. [ ] Croiser avec stack existante : `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md` (WOL / Parsec).
+
+### ★ Suite art — bandeau atelier `[P0-ART-BANDEAU-ATELIER-001]` — **2026-09-17**
 
 **Livré Cursor :** `Dump/Ui/Tab_Plus/BandeauAtelier_Plantfischstein_20260917.png` + `Plantfischstein_chimera_20260917.png` (chimère seule). Script : `scripts/composite_plantfischstein_banner.py`.
 
