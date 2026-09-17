@@ -68,6 +68,21 @@
 
 ---
 
+## 2026-09-17 — Bandeau atelier : Plantfischstein (Cursor)
+
+### Contexte
+- ChatGPT inpaint : échec répété (2 têtes). Auteur demande génération Cursor.
+
+### Livrable Dump
+- `Assets/Art/Assets Store Dump/Ui/Tab_Plus/BandeauAtelier_Plantfischstein_20260917.png` — base `FirstTryBandeauAtelier.png` + chimère composée.
+- `…/Plantfischstein_chimera_20260917.png` — sprite chimère seul (fond blanc détouré au composite).
+- Script reproductible : `scripts/composite_plantfischstein_banner.py` (ajuster `cx` / `target_w` si besoin).
+
+### Suite
+- Playtest auteur Unity ; promo Sprites après OK. Pince du bras peut demander retouche manuelle (feuilles).
+
+---
+
 ## 2026-09-16 — Bandeau atelier Bricolage : pause crédits ChatGPT
 
 ### Objectif

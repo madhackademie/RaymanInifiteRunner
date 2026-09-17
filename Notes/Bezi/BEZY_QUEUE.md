@@ -21,6 +21,9 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
+| [x] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-17 — Layout 400/560/flex0. Extra hors P1 : refHeight instance 315 (à corriger P2) |
+| [ ] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | Revert scale 0.5 + referenceHeight 320 |
+| [ ] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` + nested | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | Source PlayerHaloPanel ref 320, plus override 320 |
 | [ ] | `[BZ-FEATURES-HUB-WIP-COPY-001]` | `FeaturesHubScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_wip_copy.md` | branche courante | Placeholder WIP : ComingSoon + En construction (pas bandeau atelier) |
 | [ ] | `[BZ-INV-TABS-003]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_recoltes_second.md` | branche courante | Récoltes entre Tout et Graines |
 | [ ] | `[BZ-HUD-CLOSE-STRIP-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_screenroot_strip_close.md` | branche courante | Delete Header/CloseButton |
@@ -44,6 +47,17 @@
 ---
 
 ## Bloc de lancement (copier dans Bezy)
+
+**Halo inventaire `[BZ-INV-HALO-SCALE-001]`** — Prefab Mode `Assets/Prefabs/Ui/InventoryScreen.prefab` (pas la scène) :
+
+```
+/prefab-ui-3phases
+Task ID: [BZ-INV-HALO-SCALE-001]
+Prefab: Assets/Prefabs/Ui/InventoryScreen.prefab
+Phase: 1
+```
+
+Puis `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` (coller le bloc Phase 1). Wait success. Phase 2 puis 3, **nouveau thread** à chaque fois.
 
 **Placeholder Hub Plus `[BZ-FEATURES-HUB-WIP-COPY-001]`** — d’abord Move Dump → `Sprites/UI/FeaturesHub/IconeHub_ComingSoon.png` (Sprite Mode **Single**), puis Prefab Mode `FeaturesHubScreen.prefab` :
 

@@ -133,6 +133,33 @@ If you draw any fish face, the image is a failure. One creature only.
 
 Critère OK : silhouette unique, **un seul visage** (poireau), queue de truite à gauche.
 
+## Passe 3 — 2026-09-17 : REMPLACER (plus « fusionner »)
+
+Les passes « fuse / chimera » recollent 2 têtes. Nouvelle consigne : **écraser** la sélection avec le crop `poissonPoireauStein`.
+
+**Joindre :** bandeau + collage (découpe). Sélection = 1 lasso (queue → cou → feuilles → pince), bocal dehors. **OK** sur le screenshot auteur.
+
+```
+Inpaint ONLY the red-selected region. Change NOTHING outside it (arm, jar, robot, table, window stay pixel-identical).
+
+This is a REPLACE job, not a fusion job.
+DELETE the current trout AND the current leek inside the selection. Do not keep either of those two faces.
+
+PAINT instead the SINGLE creature from IMAGE 2 (the cutout). Ignore jagged scissors edges and checkerboard holes — redraw it clean in the same thick-outline cartoon style as the banner.
+
+ANATOMY (copy IMAGE 2):
+- One animal, one silhouette, one neck, ONE face.
+- Left = rainbow trout BODY only: orange tail, olive-gold spotted back, pink stripe, cream belly, orange fins. No fish head.
+- Right = leek HEAD: cream-white round bulb is the only face (kawaii black eyes + smile). Green leek leaves are hair, fanning up-right.
+- The white bulb sits where a fish head would be. No fish mouth, no fish lips, no fish eyes, no snout.
+
+The orange gripper still pinches the GREEN LEAVES of this same one creature.
+
+If any fish face remains, fail and redo the selection only. No second vegetable. No text.
+```
+
+Si encore 2 têtes après cette passe → génération Cursor (`[P0-ART-BANDEAU-ATELIER-001]`).
+
 ## État 2026-09-16 soir — crédits ChatGPT = 0
 
 - Base : `FirstTryBandeauAtelier.png` à garder.

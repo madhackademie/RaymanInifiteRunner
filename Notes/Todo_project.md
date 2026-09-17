@@ -45,19 +45,16 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-### ★ P0 demain — bandeau atelier Plantfischstein `[P0-ART-BANDEAU-ATELIER-001]` — **2026-09-16 soir**
+### ★ P0 demain — bandeau atelier Plantfischstein `[P0-ART-BANDEAU-ATELIER-001]` — **2026-09-17**
 
-**Décision auteur :** crédits ChatGPT à 0 ; reprise **demain**. Base OK : `Assets/Art/Assets Store Dump/Ui/Tab_Plus/FirstTryBandeauAtelier.png` (bras, table, fiole, robot, zone titre). **KO :** truite et poireau = 2 persos (2 têtes). Cible = **un** Plantfischstein (corps truite + tête poireau kawaii).
+**Livré Cursor :** `Dump/Ui/Tab_Plus/BandeauAtelier_Plantfischstein_20260917.png` + `Plantfischstein_chimera_20260917.png` (chimère seule). Script : `scripts/composite_plantfischstein_banner.py`.
 
-**Prompts :** `Notes/Art/PROMPT_bandeau_atelier_bricolage.md` (Passe 2 inpaint).  
-**Sélection Modifier :** un seul lasso — queue + flanc + **cou** + feuilles + pince ; bocal / petit robot **dehors**.
+**Suite auteur :**
+1. [ ] Playtest visuel Unity (bandeau hub Bricolage vs `FirstTryBandeauAtelier.png`).
+2. [ ] Ajustements position/scale si besoin (constantes dans le script) **ou** retouche Photopea (pince sur feuilles).
+3. [ ] Promo `Sprites/` après OK — pas avant.
 
-**Ordre demain :**
-1. [ ] Relancer ChatGPT (crédits) : bandeau propre + crop chimère en 2ᵉ image + Passe 2.
-2. [ ] Si encore 2 têtes → **Cursor génère** l’art (pas ChatGPT) → Dump `Tab_Plus/` (auteur : « si le modèle ne capte pas le fishenstein, tu génères »).
-3. [ ] Playtest bandeau hub Bricolage (remplace papier peint rouages+feuilles) — **après** OK visuel. Titre *Bricolage* en TMP, pas dans le PNG.
-
-**Hors scope demain :** Bezy prefab / promo `Sprites/` tant que la chimère n’est pas OK.
+ChatGPT fusion : **abandonné** (2 têtes). Réf prompts : `Notes/Art/PROMPT_bandeau_atelier_bricolage.md`.
 
 ### ★ P0 demain — clean à la mano panneau hub Plus `[P0-ART-HUB-COMINGSOON-CLEAN-001]` — **2026-09-16 soir**
 

@@ -4487,6 +4487,14 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4290307826
       objectReference: {fileID: 0}
+    - target: {fileID: 3793133425233240342, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
+      propertyPath: m_fontSharedMaterials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3793133425233240342, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
+      propertyPath: 'm_fontSharedMaterials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 4255138599259370724, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -4498,6 +4506,10 @@ PrefabInstance:
     - target: {fileID: 4255138599259370724, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255138599259370724, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6562450824512328419, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
       propertyPath: m_Name
@@ -4614,11 +4626,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: -1
+  m_MinHeight: 400
   m_PreferredWidth: -1
-  m_PreferredHeight: 280
+  m_PreferredHeight: 560
   m_FlexibleWidth: 1
-  m_FlexibleHeight: -1
+  m_FlexibleHeight: 0
   m_LayoutPriority: 1
 --- !u!114 &2956409141846449545 stripped
 MonoBehaviour:

@@ -40,7 +40,7 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 Write-Host "--- statut ---" -ForegroundColor Yellow
 git status -sb
-git branch -vv
+git --no-pager branch -vv
 
 Write-Host ""
 Write-Host "--- pull ---" -ForegroundColor Yellow
