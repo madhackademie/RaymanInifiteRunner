@@ -60,16 +60,19 @@ Save. List referenceHeight + the 3 localScales. STOP.
 ## Phase 3 — Source nested + plus d’override 320
 
 ```
-[BZ-INV-HALO-SCALE-001] Phase 3 ONLY — inherit scaler from source, drop 320 override. STOP.
+[BZ-INV-HALO-SCALE-001] Phase 3 ONLY — source ref 320, drop 0.5 scale overrides. STOP.
 
 Do not rescan whole project. Do not modify C#.
 Open Assets/Prefabs/Ui/InventoryScreen.prefab in Prefab Mode.
 
-1) On the nested PlayerHaloPanel instance: REVERT the HaloContentScaler.referenceHeight override if it is still 320 (bold). Instance must inherit 320.
-2) Open nested source Assets/Prefabs/Ui/Progression/PlayerHaloPanel.prefab (arrow on instance). Set HaloContentScaler.referenceHeight = 320 (not 200). Do not change that prefab root sizeDelta 663. Save source prefab.
-3) Back on InventoryScreen: confirm nested LayoutElement Preferred Height still 560. Apply All on the nested instance if Unity asks.
+P2 leftover: nested HaloSlots, PortraitFrame, LevelLabel still have m_LocalScale.x/y = 0.5 overrides. REVERT those six properties (right-click Revert). Scaler may then write uniform X=Y. Do not type 0.5 again.
 
-GUID PlayerHaloPanel must stay 1432e647380543f4b8bdc5490d415e3a. GUID slot prefab a1931597dd60ec948aeb14c6a9ccfa34 unchanged.
+Then:
+1) Nested PlayerHaloPanel: REVERT HaloContentScaler.referenceHeight override (bold 320). Instance must inherit 320.
+2) Open nested source Assets/Prefabs/Ui/Progression/PlayerHaloPanel.prefab (arrow). Set HaloContentScaler.referenceHeight = 320 (not 200). Do not change root sizeDelta 663. Save source prefab.
+3) Back on InventoryScreen: LayoutElement Preferred Height still 560, Min 400, Flexible Height 0. Apply All if Unity asks.
 
-Save both prefabs. List overrides remaining on PlayerHaloPanel instance. STOP.
+GUID PlayerHaloPanel 1432e647380543f4b8bdc5490d415e3a unchanged. Slot prefab a1931597dd60ec948aeb14c6a9ccfa34 unchanged.
+
+Save both prefabs. List remaining PlayerHaloPanel instance overrides. STOP.
 ```

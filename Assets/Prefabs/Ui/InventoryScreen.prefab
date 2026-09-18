@@ -4483,18 +4483,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3793133425233240342, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4290307826
-      objectReference: {fileID: 0}
-    - target: {fileID: 3793133425233240342, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
-      propertyPath: m_fontSharedMaterials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3793133425233240342, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
-      propertyPath: 'm_fontSharedMaterials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 4255138599259370724, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -4503,21 +4491,9 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 4255138599259370724, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4255138599259370724, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6562450824512328419, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
       propertyPath: m_Name
       value: PlayerHaloPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 7752446579058231504, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
-      propertyPath: referenceHeight
-      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 7894093636570146428, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
       propertyPath: m_Pivot.x
@@ -4605,14 +4581,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6562450824512328419, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 936365341805351268}
+      addedObject: {fileID: 4285504999515167587}
   m_SourcePrefab: {fileID: 100100000, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
 --- !u!1 &635587512906704907 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6562450824512328419, guid: 1432e647380543f4b8bdc5490d415e3a, type: 3}
   m_PrefabInstance: {fileID: 6034978775848762088}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &936365341805351268
+--- !u!114 &4285504999515167587
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -22,8 +22,8 @@
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
 | [x] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-17 — Layout 400/560/flex0. Extra hors P1 : refHeight instance 315 (à corriger P2) |
-| [ ] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | Revert scale 0.5 + referenceHeight 320 |
-| [ ] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` + nested | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | Source PlayerHaloPanel ref 320, plus override 320 |
+| [x] partiel | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-18 — ref 320 + constrain HaloSlots. Scale 0.5 encore là → P3 |
+| [x] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` + nested | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-18 — source ref 320, layout 560. Playtest auteur au top |
 | [ ] | `[BZ-FEATURES-HUB-WIP-COPY-001]` | `FeaturesHubScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_wip_copy.md` | branche courante | Placeholder WIP : ComingSoon + En construction (pas bandeau atelier) |
 | [ ] | `[BZ-INV-TABS-003]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_recoltes_second.md` | branche courante | Récoltes entre Tout et Graines |
 | [ ] | `[BZ-HUD-CLOSE-STRIP-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_screenroot_strip_close.md` | branche courante | Delete Header/CloseButton |
