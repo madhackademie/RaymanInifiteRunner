@@ -45,6 +45,15 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ P0 — Croix popup jeter graine `[BZ-INV-DROP-CLOSE-POS-001]`
+
+**Objectif :** déplacer `CloseButton` de `ShopItemPopup` (aujourd’hui bas-centre de `Root`, dans la nav) vers le **coin haut-droit de `Card`**.
+
+**Refs :** `Notes/Ui/PROMPTS_Bezi_shopitempopup_close_topright.md` · prefab `Assets/Prefabs/Ui/ShopItemPopup.prefab`.
+
+1. [ ] Bezy Phase 1 (reparent + Ignore Layout + anchors).
+2. [ ] Playtest drop inventaire : croix sur le bandeau Gold, plus dans la nav ; shop/vente inchangés.
+
 ### ★ P0 — PlayerHalo inventaire `[BZ-INV-HALO-SCALE-001]`
 
 **Objectif :** continuer la modification du **`PlayerHaloPanel`** (hauteur bandeau halo, scale slots / portrait via `HaloContentScaler`).
@@ -59,7 +68,8 @@ Convention d'IDs :
 **Objectif :** installer le modèle de génération sur la machine (Comfy Desktop), documenter **licence** (usage commercial jeu) et **coût** (électricité + GPU vs API).
 
 1. [ ] Choisir variante locale : **FLUX.1 Kontext [dev]** (VRAM modeste) ou **FLUX.2 [dev]** (multi-ref, edits difficiles) — cf. discussion session 2026-09-17.
-2. [ ] Accepter licence BFL / Hugging Face ; noter si licence commerciale payante requise avant promo `Sprites/`.
+2. [ ] **Guide :** `Notes/Art/GUIDE_comfy_flux_models_local.md` · script optionnel `scripts/download-flux-kontext-dev.ps1` (login HF requis).
+3. [ ] Accepter licence BFL / Hugging Face ; noter si licence commerciale payante requise avant promo `Sprites/`.
 3. [ ] Premier test : inpaint bandeau `FirstTryBandeauAtelier` (masque chimère) vs composite Cursor actuel.
 
 ### ★ P0 — Build / autre machine Unity `[CT-BUILD-REMOTE-UNITY-001]`

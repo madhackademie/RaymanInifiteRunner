@@ -21,6 +21,7 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
+| [ ] | `[BZ-INV-DROP-CLOSE-POS-001]` | `ShopItemPopup.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_close_topright.md` | branche courante | Croix drop : Root bas-centre → Card haut-droit |
 | [x] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-17 — Layout 400/560/flex0. Extra hors P1 : refHeight instance 315 (à corriger P2) |
 | [x] partiel | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-18 — ref 320 + constrain HaloSlots. Scale 0.5 encore là → P3 |
 | [x] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` + nested | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-18 — source ref 320, layout 560. Playtest auteur au top |
@@ -47,6 +48,17 @@
 ---
 
 ## Bloc de lancement (copier dans Bezy)
+
+**Croix popup drop `[BZ-INV-DROP-CLOSE-POS-001]`** — Prefab Mode `Assets/Prefabs/Ui/ShopItemPopup.prefab` :
+
+```
+/prefab-ui-3phases
+Task ID: [BZ-INV-DROP-CLOSE-POS-001]
+Prefab: Assets/Prefabs/Ui/ShopItemPopup.prefab
+Phase: 1
+```
+
+Puis `@Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_close_topright.md` (coller le bloc Phase 1). Save. List. STOP.
 
 **Halo inventaire `[BZ-INV-HALO-SCALE-001]`** — Prefab Mode `Assets/Prefabs/Ui/InventoryScreen.prefab` (pas la scène) :
 
