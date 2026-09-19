@@ -65,12 +65,12 @@ Convention d'IDs :
 
 ### ★ P0 — Art local Comfy / FLUX `[CT-ART-GEN-LOCAL-001]`
 
-**Objectif :** installer le modèle de génération sur la machine (Comfy Desktop), documenter **licence** (usage commercial jeu) et **coût** (électricité + GPU vs API).
+**Objectif :** installer sur Comfy Desktop le **stack 3 modèles** (2 principaux + plan B), workflows associés, **licence** ship (repasse ChatGPT) et **coût** (GPU vs API).
 
-1. [ ] Choisir variante locale : **FLUX.1 Kontext [dev]** (VRAM modeste) ou **FLUX.2 [dev]** (multi-ref, edits difficiles) — cf. discussion session 2026-09-17.
-2. [ ] **Guide :** `Notes/Art/GUIDE_comfy_flux_models_local.md` · script optionnel `scripts/download-flux-kontext-dev.ps1` (login HF requis).
+1. [ ] Installer stack Comfy **3 modèles** : **Krea Dev FP8** (créer) + **Kontext FP8** (modifier) + **Qwen Image Edit 2511** ou **2509 FP8** (plan B) — cf. `GUIDE_comfy_flux_models_local.md` · optionnel **Fill Dev** (masque).
+2. [ ] **Guide :** `Notes/Art/GUIDE_comfy_flux_models_local.md` · script optionnel Kontext `scripts/download-flux-kontext-dev.ps1` (login HF requis).
 3. [ ] Accepter licence BFL / Hugging Face ; noter si licence commerciale payante requise avant promo `Sprites/`.
-3. [ ] Premier test : inpaint bandeau `FirstTryBandeauAtelier` (masque chimère) vs composite Cursor actuel.
+4. [ ] Premier test : inpaint bandeau `FirstTryBandeauAtelier` (masque chimère) vs composite Cursor actuel.
 
 ### ★ P0 — Build / autre machine Unity `[CT-BUILD-REMOTE-UNITY-001]`
 

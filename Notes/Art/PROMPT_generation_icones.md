@@ -1,7 +1,8 @@
 # Backlog art — création (Dump) → validation → Sprites
 
-**Création :** 2026-08-31 · **MAJ :** 2026-09-08
+**Création :** 2026-08-31 · **MAJ :** 2026-09-19
 
+> **Workflow complet (outils, Comfy Krea/Kontext/Qwen → ChatGPT, licences, UI kit) :** `Notes/Art/WORKFLOW_creation_assets.md` · stack Comfy : `Notes/Art/GUIDE_comfy_flux_models_local.md`  
 > **Direction monde (2026-09-08) :** vue **iso 2:1** + **cartoon** (polish Zombie Castaways, sans thème zombie). Prompt : `Notes/Art/PROMPT_assets_monde_iso.md`. Icônes UI (§1) restent bois rustique.  
 **Source unique** de tout l’art à produire (icônes UI, stades monde, IBC, fishtank, bandeaux…).  
 **Usage :** 1 asset / jour (~15 min) — générer → Dump → **après OK auteur** copier dans le dossier `Sprites/` de la ligne.
@@ -40,6 +41,8 @@ Le sous-dossier Dump annonce déjà la cible. Promo = copier vers le chemin `Spr
 | `…/Dump/Ui/Nav/` | `Assets/Art/Sprites/UI/` |
 | `…/Dump/Ui/Nav/Tabs/` | `Assets/Art/Sprites/UI/Nav/Tabs/` |
 | `…/Dump/Ui/` (nav générique) | `Assets/Art/Sprites/UI/` |
+| `…/Dump/Ui/KitRefonte/` | `Assets/Art/Sprites/UI/Kit/` |
+| `…/Dump/Ui/Tab_Plus/` | `Assets/Art/Sprites/UI/` ou `Sprites/UI/FeaturesHub/` |
 | `…/Dump/Plantes/<Nom>/` | `Assets/Art/Sprites/Plantes/<Nom>/` |
 | `…/Dump/ElementProd/Biofiltre/` | `Assets/Art/Sprites/Farm/Biofiltre/` |
 | `…/Dump/Poisson/` | `Assets/Art/Sprites/Farm/Poisson/` |
@@ -77,6 +80,8 @@ A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors
 ---
 
 ## 2) Routine quotidienne
+
+Voir **`Notes/Art/WORKFLOW_creation_assets.md` §8** pour l’arbre outils (ChatGPT / Comfy / Bezy).
 
 1. Prendre **la première ligne `à générer`** du §3 (ordre = priorité produit).
 2. Coller le prompt + objet anglais (colonne *Prompt objet*).

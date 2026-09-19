@@ -32,8 +32,9 @@
 - Jauges tooltip ★ `[P0-SALE-STAR-BARS-001]` + compteurs `[P0-SALE-STAR-PROGRESS-001]` + UI étoiles Bezy.
 - Playtest 3 bandeaux ★ `[P0-SALE-STAR-PLAY-001]` — **OK 2026-08-30** (hover ★ → jauges + texte + fill live).
 
-### Direction art (2026-09-08)
+### Direction art (2026-09-08 · pipeline 2026-09-19)
 - Monde : **iso 2:1 cartoon**. Modèles **Township + The Tribez** (sauf champ plat). Volume = biofiltres / hydro. Prompt : `Notes/Art/PROMPT_assets_monde_iso.md`.
+- **UI chrome** : bois rustique + cel cartoon (`RaymanFarm_UI_CartoonCel`) — ref `FirstTryBandeauAtelier.png`. Hub outils / licences / Comfy→ChatGPT : **`Notes/Art/WORKFLOW_creation_assets.md`**. **Comfy local (Dump) :** Krea (créer) + Kontext (modifier) + Qwen 2511 (plan B) — `Notes/Art/GUIDE_comfy_flux_models_local.md`. Backlog : `Notes/Art/PROMPT_generation_icones.md`.
 
 ### Contexte Git
 - Branche : **`main`** — iso 2:1 mergé (ex-`feature/biofiltre-isometric`, branche supprimée locale + remote).

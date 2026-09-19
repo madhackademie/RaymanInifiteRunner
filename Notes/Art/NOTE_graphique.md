@@ -2,6 +2,8 @@
 
 **Création :** 2026-09-08  
 **Branche :** `main` (iso 2:1 mergé)  
+**Workflow art :** `Notes/Art/WORKFLOW_creation_assets.md`  
+**Comfy local (Dump) :** Krea + Kontext + Qwen — `Notes/Art/GUIDE_comfy_flux_models_local.md`  
 **IDs :** `[BL-ART-003]` (amorcé) · grille `[P0-FARM-ISO-GRID-001]`  
 **Backlog assets :** `Notes/Art/PROMPT_generation_icones.md`  
 **Jeux de ref :** `Notes/References/REFERENCES_jeux_inspiration.md` § **F**

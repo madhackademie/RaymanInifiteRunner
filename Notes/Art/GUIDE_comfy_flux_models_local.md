@@ -1,8 +1,39 @@
 # Guide — Comfy Desktop : modèles FLUX (art Dump)
 
 **ID tâche :** `[CT-ART-GEN-LOCAL-001]`  
-**Date :** 2026-09-18  
-**Usage projet :** inpaint / image→image (bandeau atelier, assets UI) → `Assets/Art/Assets Store Dump/` puis promo auteur → `Sprites/`.
+**Date :** 2026-09-18 · **MAJ :** 2026-09-19 (stack 3 modèles — décision auteur)
+**Hub workflow :** `Notes/Art/WORKFLOW_creation_assets.md`  
+**Usage projet :** brouillons **création + retouche** en local (Dump) → repasse **ChatGPT** (style + droits ship) → `Sprites/`.
+
+---
+
+## Stack Comfy recommandé — **3 modèles** (pipeline art complet)
+
+Objectif : couvrir **tout** le cycle local **avant** la repasse ChatGPT (§ pipeline), pas seulement bandeau/masque.
+
+**Décision auteur (2026-09-19) — 3 poids, 2 principaux :**
+
+| Tier | Rôle | Modèle (nom Comfy) | Workflow |
+|------|------|-------------------|----------|
+| **Principal A** | **Création from scratch** | **Flux1 Krea Dev FP8 scaled** | Text to Image FLUX |
+| **Principal B** | **Modification** (image + consignes) | **Flux1 Dev Kontext FP8 scaled** | Kontext image edit |
+| **Plan B retouche** | Si Kontext bloque / rendu raté | **Qwen Image Edit 2511** *(ou **2509 FP8** si VRAM serrée — pas de modèle « 2059 »)* | Template Qwen Image Edit |
+
+Repli création si Krea indispo : **Flux1 Dev FP8**. Optionnel masque serré : **Flux1 Fill Dev** (4ᵉ poids, pas obligatoire).
+
+```
+Brief → [1 Krea/Dev] brouillon Dump
+     → [2 Kontext] itérations sur PNG (ou ref projet)
+     → ([3 Qwen] ou Fill si coin dur)
+     → ChatGPT (IMAGE1=Comfy, IMAGE2=ref charte) « unify STYLE only »
+     → OK auteur → Sprites/
+```
+
+**Ce n’est pas 3× le même modèle** : **Krea** = génération · **Kontext** = édition (duo principal) · **Qwen** = secours edit uniquement.
+
+**ChatGPT direct** (sans Comfy) reste valide pour icônes §1, kit UI, bandeaux simples — voir `WORKFLOW_creation_assets.md` §3.3.
+
+**VRAM / disque** : les 3 poids + CLIP/VAE partagés FLUX ≈ prévoir **~25–45 Go** selon variantes ; installer via **Model Manager** + templates (chemin principal), script HF = surtout Kontext.
 
 ---
 
@@ -27,25 +58,34 @@ Réf. officielle : [Comfy — Models](https://docs.comfy.org/basic-concepts/mode
 
 ---
 
-## Quel modèle télécharger (production d’assets **édition**)
+## Quel modèle télécharger (détail par rôle)
 
-| Besoin | Modèle | Où le prendre |
-|--------|--------|----------------|
-| **Modifier** un PNG existant (masque, bandeau) | **FLUX.1 Kontext [dev]** | [huggingface.co/black-forest-labs/FLUX.1-Kontext-dev](https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev) |
-| Création from scratch + edit multi-ref (GPU costaud) | **FLUX.2 [dev]** | [huggingface.co/black-forest-labs/FLUX.2-dev](https://huggingface.co/black-forest-labs/FLUX.2-dev) (vérifier page BFL à jour) |
-| Brouillons rapides | FLUX.2 Klein | Plus léger — voir doc BFL |
+Liste Comfy : [supported-models](https://comfy.org/p/supported-models). **Partner Node** = API payante.
 
-**Pour ton bandeau Plantfischstein :** commencer par **Kontext [dev]** (workflows Comfy « Kontext / image edit »).
+| Rôle (voir stack § ci-dessus) | Modèle | Où |
+|--------|--------|-----|
+| **#1 Créer** | **Flux1 Krea Dev FP8 scaled** · repli **Flux1 Dev FP8** | Manager Comfy · templates T2I |
+| **#2 Modifier** | **Flux1 Dev Kontext FP8 scaled** · **FLUX.1 Kontext [dev]** | Manager · [HF](https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev) · `scripts/download-flux-kontext-dev.ps1` |
+| **#3 Plan B edit** | **Qwen Image Edit 2511** · alt. **2509 FP8** | Templates Comfy |
+| Masque serré (opt.) | **Flux1 Fill Dev** | Templates inpaint Fill |
+| Plus tard (GPU costaud) | **Flux2 Dev fp8mixed** | Comfy / BFL |
+
+Style Comfy : viser **`RaymanFarm_UI_CartoonCel`** (proche `FirstTryBandeauAtelier`) → meilleure conversion ChatGPT. Détail : `WORKFLOW_creation_assets.md` §3.
 
 ---
 
 ## Installation — 3 méthodes
 
-### A) Comfy Desktop (recommandé si proposé)
+### A) Comfy Desktop (recommandé)
 
-1. Onglet **Templates** / **Get started** / **Model Manager** (libellé selon version).
-2. Chercher **FLUX Kontext** ou importer un **workflow template** Kontext → l’app propose souvent le téléchargement des poids manquants.
-3. Vérifier dans **Open Model Folder** que les fichiers sont apparus.
+1. **Model Manager** / **Templates** — installer **3 workflows** (téléchargement poids proposé par l’app) :
+   - **Flux1 Krea Dev FP8 scaled** → template **Text to Image** (création).
+   - **Flux1 Dev Kontext FP8 scaled** → template **Kontext image edit** (modification).
+   - **Qwen Image Edit 2511** (ou **2509 FP8**) → template **Qwen Image Edit** (plan B).
+2. Menu **Help → Open Model Folder** : vérifier `diffusion_models` / `clip` / `vae` / `text_encoders`.
+3. Touche **`r`** dans Comfy pour refresh.
+
+Licence **Agree** HF requise pour les poids BFL (Krea, Kontext, Fill) — compte HF dans l’app ou § B.
 
 ### B) Hugging Face (manuel)
 
@@ -71,13 +111,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\download-flux-kontext-dev.ps1
 
 **Erreur `GatedRepoError 401` :** token absent **ou** licence FLUX pas acceptée sur le site (même compte que le login).
 
-CLI (après `py -3 -m pip install -U huggingface_hub`) — **sans** dépendre du PATH :
+4. Après téléchargement : placer ou pointer les fichiers selon le template Comfy (`diffusion_models` + `clip` + `vae` séparés). Refresh Comfy : touche **`r`**.
 
-Ensuite, déplacer ou pointer les fichiers selon le template Comfy (parfois `diffusion_models` + `clip` + `vae` séparés).
+### C) Script projet
 
-### C) Script projet (optionnel)
-
-`scripts/download-flux-kontext-dev.ps1` — lance le téléchargement HF **vers** `Documents\ComfyUI\models\` **après** login HF. Ne remplace pas l’acceptation licence sur le site.
+`scripts/download-flux-kontext-dev.ps1` — télécharge HF **vers** `Documents\ComfyUI\models\` **après** login. Ne remplace pas **Agree** licence sur le site HF.
 
 ---
 
@@ -85,11 +123,14 @@ Ensuite, déplacer ou pointer les fichiers selon le template Comfy (parfois `dif
 
 | Sujet | Détail |
 |-------|--------|
-| **Licence [dev]** | **FLUX.1-dev Non-Commercial License** — recherche / perso / prototypage Dump OK ; **promo Sprites / jeu publié** = vérifier [BFL licensing](https://bfl.ai) ou API Pro/Max commerciale. |
-| **Coût local** | Gratuit en redevance modèle ; coût = disque (~20–40 Go selon variante) + électricité GPU. |
-| **Coût API** | Kontext Pro ~0,04 $/image, Max ~0,08 $ (si pas de GPU). |
+| **Usage du modèle [dev]** | **Non-commercial / non-prod** (R&D Dump) — licence [FLUX.1 dev NC](https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/blob/main/LICENSE.md) |
+| **Outputs FLUX [dev]** | BFL §2.d : usage Output **y compris commercial** possible, sauf interdits (ex. entraîner un modèle concurrent) |
+| **Pipeline projet ship** | **ChatGPT repasse** sur ref charte → Sprites ; ou licence commerciale BFL / API |
+| **Qwen Image Edit** | Lire licence fiche modèle (HF / Comfy) — Dump OK ; ship via repasse ChatGPT comme FLUX |
+| **ChatGPT images** | CGU OpenAI — Output assigné à toi (indie OK en principe) |
+| **Coût local** | GPU + disque ; scripts `scripts/hf-auth-login.ps1` |
 
-**Décision à tracer ici** quand tranché : cocher dans `Notes/Todo_project.md` `[CT-ART-GEN-LOCAL-001]`.
+Tableau complet : `WORKFLOW_creation_assets.md` §4.
 
 ---
 
@@ -104,11 +145,23 @@ Ensuite, déplacer ou pointer les fichiers selon le template Comfy (parfois `dif
 
 ---
 
-## Premier test projet
+## Premier test projet (checklist 3 modèles)
 
-1. Workflow Comfy **FLUX.1 Kontext image edit** + masque.
-2. Input : `Assets/Art/Assets Store Dump/Ui/Tab_Plus/FirstTryBandeauAtelier.png`.
-3. Masque : zone truite/poireau/pince (comme ChatGPT).
-4. Output → `Dump/Ui/Tab_Plus/` — comparer avec `BandeauAtelier_Plantfischstein_20260917.png`.
+| # | Modèle | Test minimal | Output |
+|---|--------|--------------|--------|
+| A | **Krea Dev FP8** | Prompt court iso plante ou panneau UI bois, T2I | `Dump/` brouillon |
+| B | **Kontext FP8** | Edit sur `FirstTryBandeauAtelier.png` (consigne ou masque chimère) | `Dump/Ui/Tab_Plus/` |
+| C | **Qwen Image Edit** | Même PNG + consigne simple si B raté | comparer avec B |
 
-Réf. prompts bandeau : `Notes/Art/PROMPT_bandeau_atelier_bricolage.md` (Passe 2 / 3).
+Bandeau : `PROMPT_bandeau_atelier_bricolage.md` · composite ref `BandeauAtelier_Plantfischstein_20260917.png`.
+
+---
+
+## Pipeline Comfy → ChatGPT (rappel)
+
+1. Comfy → `Dump/` (edit, même style UI cartoon si possible).  
+2. ChatGPT : image1 = Comfy, image2 = ref charte → *« unify style only, keep layout »*.  
+3. OK auteur → `Sprites/`.
+
+Schéma complet : **`Notes/Art/WORKFLOW_creation_assets.md`**.
+

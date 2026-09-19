@@ -1,5 +1,25 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-19 — Stack Comfy art (décision auteur)
+
+### Décision
+- **3 modèles Comfy** pour le pipeline art complet (avant repasse ChatGPT → `Sprites/`) :
+  - **Principal A — créer :** Flux1 **Krea Dev FP8 scaled**
+  - **Principal B — modifier :** Flux1 **Dev Kontext FP8 scaled**
+  - **Plan B retouche :** **Qwen Image Edit 2511** (variante **2509 FP8** si VRAM serrée)
+- **Optionnel :** Flux1 **Fill Dev** (inpaint masque serré, ex. bandeau).
+- **Ship commercial indie :** repasse **ChatGPT** style lock sur ref charte ; Comfy = Dump / R&D.
+
+### Docs mises à jour
+- `Notes/Art/GUIDE_comfy_flux_models_local.md` (stack, install 3 templates, tests, licences Qwen)
+- `Notes/Art/WORKFLOW_creation_assets.md` (§2, §3.2, §5, §10)
+- `Notes/Art/NOTE_graphique.md` · `PROMPT_generation_icones.md` · `ASSISTANT_CONTEXT.md` · `Notes/Todo_project.md` `[CT-ART-GEN-LOCAL-001]` · `Notes/GUIDE_suivi_projet.md`
+
+### Prochaine action `[CT-ART-GEN-LOCAL-001]`
+Model Manager Comfy : 3 workflows + login HF / Agree licence BFL pour Kontext (script `download-flux-kontext-dev.ps1` si besoin).
+
+---
+
 ## 2026-09-17 — Fin de session (journal auteur)
 
 ### Session (rappel)
@@ -8,7 +28,7 @@
 
 ### Prochaine session — priorité « tâche du jour »
 1. **[BZ-INV-HALO-SCALE-001]** — **Poursuivre la modification `PlayerHaloPanel`** (scale / layout inventaire). Prompts : `Notes/Ui/PROMPTS_Bezi_inventory_halo_scale.md` · prefabs `InventoryScreen` + `PlayerHaloPanel`.
-2. **[CT-ART-GEN-LOCAL-001]** — **Pipeline art local** : installer modèle(s) cible (Kontext [dev] et/ou FLUX.2 [dev] selon VRAM), workflow Comfy, **vérifier licence commerciale** (jeu mobile) et **coût** (GPU local vs API Pro/Max). Tracer décision dans `Notes/Art/` ou `Notes/Bezi/README_bezi.md`.
+2. **[CT-ART-GEN-LOCAL-001]** — **Pipeline art local** : stack **Krea + Kontext + Qwen 2511** (voir `GUIDE_comfy_flux_models_local.md`), workflows Comfy, repasse ChatGPT pour ship, **coût** GPU vs API.
 3. **[CT-BUILD-REMOTE-UNITY-001]** — **Build / playtest sur une autre machine** : inventorier options Unity (Build Automation, dev build, partage projet, remote desktop déjà noté `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md`). Vérifier s’il existe un **package Unity** pertinent ; **Bezy** peut installer le package en scène/projet si validé.
 
 ### Suite art (non bloquant P0)
