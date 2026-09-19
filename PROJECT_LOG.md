@@ -1,5 +1,20 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-19 — Mockup popup bois (kit UiKit) `[BZ-UIKIT-POPUP-MOCK-001]`
+
+### Décision
+- Chrome kit (planches découpées `UiKit_*_20260919`) testé sur une **copie** `ShopItemPopup_WoodMockup`, pas le popup runtime.
+- Layout : `Card` = panneau 9-slice ; `IconFrame` = cadre icône seulement ; qty = row ; CTA = pill orange.
+
+### Prompts Bezy
+- `Notes/Ui/PROMPTS_Bezi_shopitempopup_wood_mockup.md` · miroir `Assets/Docs/Bezi/`
+- File : `Notes/Bezi/BEZY_QUEUE.md` (Ph.1–3)
+
+### Hors scope
+- Bindings `UIManager` / `ShopItemPopup.prefab` original. Playtest auteur après Ph.3.
+
+---
+
 ## 2026-09-19 — Stack Comfy art (décision auteur)
 
 ### Décision

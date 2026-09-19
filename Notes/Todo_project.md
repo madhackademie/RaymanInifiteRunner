@@ -45,6 +45,16 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ P0 — Mockup popup bois `[BZ-UIKIT-POPUP-MOCK-001]`
+
+**Objectif :** intégrer le kit `UiKit_*_20260919` sur une **copie** `ShopItemPopup_WoodMockup` (Card = panneau, cadre = icône seule, CTA orange). Pas le prefab runtime.
+
+**Refs :** `Notes/Ui/PROMPTS_Bezi_shopitempopup_wood_mockup.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md`
+
+1. [x] Bezy Phase 1 (dupliquer + Card 480×760) — OK 2026-09-19.
+2. [ ] Bezy Phase 3 (tailles) — P2 sprites **Cursor** (Bezy a no-op). Playtest visuel Prefab Mode.
+3. [ ] Playtest visuel Prefab Mode (hors prompt) ; si OK, décider promo runtime plus tard.
+
 ### ★ P0 — Croix popup jeter graine `[BZ-INV-DROP-CLOSE-POS-001]`
 
 **Objectif :** déplacer `CloseButton` de `ShopItemPopup` (aujourd’hui bas-centre de `Root`, dans la nav) vers le **coin haut-droit de `Card`**.

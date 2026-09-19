@@ -21,6 +21,9 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
+| [x] | `[BZ-UIKIT-POPUP-MOCK-001]` | `ShopItemPopup_WoodMockup.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` | `main` | OK 2026-09-19 — Card 480×760 padding 48/48/56/48. Original intact |
+| [x] | `[BZ-UIKIT-POPUP-MOCK-001]` | `ShopItemPopup_WoodMockup.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` | `main` | **Cursor** 2026-09-19 — Bezy noop (a lu « composants déjà là »). Sprites kit branchés YAML |
+| [ ] | `[BZ-UIKIT-POPUP-MOCK-001]` | `ShopItemPopup_WoodMockup.prefab` | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` | `main` | Tailles IconFrame/CTA/qty (après P2 OK) |
 | [ ] | `[BZ-INV-DROP-CLOSE-POS-001]` | `ShopItemPopup.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_close_topright.md` | branche courante | Croix drop : Root bas-centre → Card haut-droit |
 | [x] | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-17 — Layout 400/560/flex0. Extra hors P1 : refHeight instance 315 (à corriger P2) |
 | [x] partiel | `[BZ-INV-HALO-SCALE-001]` | `InventoryScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` | `fix/farm-iso-footprint-hit` | OK 2026-09-18 — ref 320 + constrain HaloSlots. Scale 0.5 encore là → P3 |

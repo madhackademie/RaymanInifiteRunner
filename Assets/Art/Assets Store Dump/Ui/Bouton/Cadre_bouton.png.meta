@@ -1,0 +1,832 @@
+fileFormatVersion: 2
+guid: 43ff066966e1bd845a620dd083f575ed
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8229811716467564145
+    second: Cadre_bouton_0
+  - first:
+      213: -1786676398888128088
+    second: Cadre_bouton_1
+  - first:
+      213: 6551892609024350872
+    second: Cadre_bouton_2
+  - first:
+      213: 1600381533437469746
+    second: Cadre_bouton_3
+  - first:
+      213: 5918591755890797001
+    second: Cadre_bouton_4
+  - first:
+      213: 4579563028557357273
+    second: Cadre_bouton_5
+  - first:
+      213: 4292242404191145867
+    second: Cadre_bouton_6
+  - first:
+      213: -2402825663608384025
+    second: Cadre_bouton_7
+  - first:
+      213: -5967923517899003630
+    second: Cadre_bouton_8
+  - first:
+      213: -7178173543838859269
+    second: Cadre_bouton_9
+  - first:
+      213: 9006755787333855708
+    second: Cadre_bouton_10
+  - first:
+      213: -1227816030909289874
+    second: Cadre_bouton_11
+  - first:
+      213: 8528856940596568952
+    second: Cadre_bouton_12
+  - first:
+      213: 6765664898019292012
+    second: Cadre_bouton_13
+  - first:
+      213: -6639734958232681601
+    second: Cadre_bouton_14
+  - first:
+      213: -8391285808522370184
+    second: Cadre_bouton_15
+  - first:
+      213: -1899331991629427971
+    second: Cadre_bouton_16
+  - first:
+      213: 5716440492271298007
+    second: Cadre_bouton_17
+  - first:
+      213: -5188714839116786548
+    second: Cadre_bouton_18
+  - first:
+      213: -4007631625001869074
+    second: Cadre_bouton_19
+  - first:
+      213: -8326478250079634142
+    second: Cadre_bouton_20
+  - first:
+      213: 3182338211681522915
+    second: Cadre_bouton_21
+  - first:
+      213: -7127283957080867681
+    second: Cadre_bouton_22
+  - first:
+      213: 8505989450287608060
+    second: Cadre_bouton_23
+  - first:
+      213: -8487866055319984759
+    second: Cadre_bouton_24
+  - first:
+      213: 5957370436145434269
+    second: Cadre_bouton_25
+  - first:
+      213: 3142736256877681645
+    second: Cadre_bouton_26
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Cadre_bouton_0
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 768
+        width: 29
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f816a97e8d5d9cd80800000000000000
+      internalID: -8229811716467564145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_1
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 687
+        width: 89
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a1f2bb08437437e0800000000000000
+      internalID: -1786676398888128088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_2
+      rect:
+        serializedVersion: 2
+        x: 862
+        y: 689
+        width: 18
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89a576f4d9ffcea50800000000000000
+      internalID: 6551892609024350872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_3
+      rect:
+        serializedVersion: 2
+        x: 1396
+        y: 745
+        width: 197
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 234a2a58682b53610800000000000000
+      internalID: 1600381533437469746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_4
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 0
+        width: 1204
+        height: 740
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c92d6c08df032250800000000000000
+      internalID: 5918591755890797001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_5
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 687
+        width: 66
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d06ca79f40ed8f30800000000000000
+      internalID: 4579563028557357273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_6
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 695
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8f8eafa9bb119b30800000000000000
+      internalID: 4292242404191145867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_7
+      rect:
+        serializedVersion: 2
+        x: 879
+        y: 695
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e51e672ac277aed0800000000000000
+      internalID: -2402825663608384025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_8
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 678
+        width: 27
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2192eec0e2dad2da0800000000000000
+      internalID: -5967923517899003630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_9
+      rect:
+        serializedVersion: 2
+        x: 1848
+        y: 615
+        width: 122
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bffb0678131026c90800000000000000
+      internalID: -7178173543838859269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_10
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 658
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd96ab23bac6efc70800000000000000
+      internalID: 9006755787333855708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_11
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 648
+        width: 23
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6a2f1c33dbe5fee0800000000000000
+      internalID: -1227816030909289874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_12
+      rect:
+        serializedVersion: 2
+        x: 554
+        y: 658
+        width: 9
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 873226c13369c5670800000000000000
+      internalID: 8528856940596568952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_13
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 661
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c63f4c3f06874ed50800000000000000
+      internalID: 6765664898019292012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_14
+      rect:
+        serializedVersion: 2
+        x: 733
+        y: 662
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f734ccbfb3cead3a0800000000000000
+      internalID: -6639734958232681601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_15
+      rect:
+        serializedVersion: 2
+        x: 1167
+        y: 23
+        width: 769
+        height: 650
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8736f3e140a2c8b80800000000000000
+      internalID: -8391285808522370184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_16
+      rect:
+        serializedVersion: 2
+        x: 739
+        y: 638
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfa8460ed9734a5e0800000000000000
+      internalID: -1899331991629427971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_17
+      rect:
+        serializedVersion: 2
+        x: 1967
+        y: 217
+        width: 16
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d56d793750e45f40800000000000000
+      internalID: 5716440492271298007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_18
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 47
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8455a5485bfdf7b0800000000000000
+      internalID: -5188714839116786548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_19
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 31
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee0642935480268c0800000000000000
+      internalID: -4007631625001869074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_20
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 34
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22dbcf9a528627c80800000000000000
+      internalID: -8326478250079634142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_21
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 47
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e4dd662ebfe92c20800000000000000
+      internalID: 3182338211681522915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_22
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 35
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9cbad4c00dc61d90800000000000000
+      internalID: -7127283957080867681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_23
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 35
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf0fc9f96585b0670800000000000000
+      internalID: 8505989450287608060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_24
+      rect:
+        serializedVersion: 2
+        x: 586
+        y: 31
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9856e871bca053a80800000000000000
+      internalID: -8487866055319984759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_25
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 35
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9eccd129d4dca250800000000000000
+      internalID: 5957370436145434269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cadre_bouton_26
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 17
+        width: 17
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: deb5fe589fd3d9b20800000000000000
+      internalID: 3142736256877681645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Cadre_bouton_0: -8229811716467564145
+      Cadre_bouton_1: -1786676398888128088
+      Cadre_bouton_10: 9006755787333855708
+      Cadre_bouton_11: -1227816030909289874
+      Cadre_bouton_12: 8528856940596568952
+      Cadre_bouton_13: 6765664898019292012
+      Cadre_bouton_14: -6639734958232681601
+      Cadre_bouton_15: -8391285808522370184
+      Cadre_bouton_16: -1899331991629427971
+      Cadre_bouton_17: 5716440492271298007
+      Cadre_bouton_18: -5188714839116786548
+      Cadre_bouton_19: -4007631625001869074
+      Cadre_bouton_2: 6551892609024350872
+      Cadre_bouton_20: -8326478250079634142
+      Cadre_bouton_21: 3182338211681522915
+      Cadre_bouton_22: -7127283957080867681
+      Cadre_bouton_23: 8505989450287608060
+      Cadre_bouton_24: -8487866055319984759
+      Cadre_bouton_25: 5957370436145434269
+      Cadre_bouton_26: 3142736256877681645
+      Cadre_bouton_3: 1600381533437469746
+      Cadre_bouton_4: 5918591755890797001
+      Cadre_bouton_5: 4579563028557357273
+      Cadre_bouton_6: 4292242404191145867
+      Cadre_bouton_7: -2402825663608384025
+      Cadre_bouton_8: -5967923517899003630
+      Cadre_bouton_9: -7178173543838859269
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
