@@ -13,6 +13,7 @@ public class SaleChannelBandeauView : MonoBehaviour
     private const string IsOnCooldownAnimatorBool = "IsOnCooldown";
     private const string UnlockableFxAnchorName = "UnlockableFxAnchor";
     private const int DefaultFilledStarCount = 0;
+    private const float IllustrationFiligraneAlpha = 0.33f;
 
     private static readonly Color IllustrationActiveColor = Color.white;
     private static readonly Color IllustrationCooldownColor = new(0.55f, 0.55f, 0.55f, 1f);
@@ -129,14 +130,7 @@ public class SaleChannelBandeauView : MonoBehaviour
         }
 
         if (illustrationImage != null && !IsOnCooldown)
-        {
-            illustrationImage.color = ProgressionPhase switch
-            {
-                SaleChannelProgressionPhase.Unlockable => IllustrationUnlockableColor,
-                SaleChannelProgressionPhase.Unlocked => IllustrationActiveColor,
-                _ => IllustrationLockedColor,
-            };
-        }
+            illustrationImage.color = GetIllustrationColorForPhase(ProgressionPhase);
 
         ApplyUnlockableFx(ProgressionPhase == SaleChannelProgressionPhase.Unlockable);
 
@@ -231,12 +225,7 @@ public class SaleChannelBandeauView : MonoBehaviour
         {
             illustrationImage.color = shouldShow
                 ? IllustrationCooldownColor
-                : ProgressionPhase switch
-                {
-                    SaleChannelProgressionPhase.Unlockable => IllustrationUnlockableColor,
-                    SaleChannelProgressionPhase.Unlocked => IllustrationActiveColor,
-                    _ => IllustrationLockedColor,
-                };
+                : GetIllustrationColorForPhase(ProgressionPhase);
         }
 
         if (shouldShow)
@@ -281,6 +270,30 @@ public class SaleChannelBandeauView : MonoBehaviour
 
         if (cooldownOverlay != null)
             cooldownOverlay.SetActive(false);
+    }
+
+    private Color GetIllustrationColorForPhase(SaleChannelProgressionPhase phase)
+    {
+        Color color = phase switch
+        {
+            SaleChannelProgressionPhase.Unlockable => IllustrationUnlockableColor,
+            SaleChannelProgressionPhase.Unlocked => IllustrationActiveColor,
+            _ => IllustrationLockedColor,
+        };
+
+        if (UsesFiligraneAlpha(phase))
+            color.a = IllustrationFiligraneAlpha;
+
+        return color;
+    }
+
+    private bool UsesFiligraneAlpha(SaleChannelProgressionPhase phase)
+    {
+        if (illustrationImage == null || illustrationImage.sprite == null)
+            return false;
+
+        return phase is SaleChannelProgressionPhase.Unlocked
+            or SaleChannelProgressionPhase.Unlockable;
     }
 
     private void ResolvePolishRefs()

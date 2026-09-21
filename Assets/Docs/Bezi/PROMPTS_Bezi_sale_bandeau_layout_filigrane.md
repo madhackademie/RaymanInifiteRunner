@@ -47,7 +47,7 @@ Done = Save. List BandeauxContent padding top + optional Viewport offsetMax.y. S
 
 ---
 
-## Série B — Illustration pleine largeur en filigrane 30 %
+## Série B — Illustration pleine surface du bandeau, filigrane 33 %
 
 ### Avis technique (auteur / Cursor)
 
@@ -56,9 +56,9 @@ Done = Save. List BandeauxContent padding top + optional Viewport offsetMax.y. S
 | **Stretch sans Preserve Aspect** (sprite actuel ~carré) | Remplit la largeur mais **écrase** le panier / iso — déconseillé en filigrane lisible. |
 | **Preserve Aspect + stretch** (état actuel) | **Bandes bleues** sur les côtés — normal. |
 | **Regénération paysage ultra-large** (recommandé) | Ratio **~4:1** (ex. 1792×448), sujet **centré**, haie/ciel **continus sur les bords** → stretch léger ou `Preserve Aspect` avec peu de marge. |
-| **Runtime** | `SaleChannelBandeauView` remet `illustrationImage.color` en **alpha 1** à l’ouverture → après Bezy, **ticket Cursor** : alpha filigrane **0.30** sur états actif / unlockable (cooldown garde gris). |
+| **Runtime** | `SaleChannelBandeauView` applique **α 0.33** sur états actif / unlockable si sprite assigné (cooldown / verrouillé inchangés). |
 
-**Pattern shop :** `Notes/Ui/PROMPTS_Bezi_shop_filigrane.md` (sibling 0, α 0.30).
+**Pattern shop :** `Notes/Ui/PROMPTS_Bezi_shop_filigrane.md` (sibling 0, filigrane ~30–33 %).
 
 ### Phase 1 — Template Illustration « mode filigrane » (COPIER TEL QUEL)
 
@@ -83,15 +83,16 @@ REQUIRED:
 Done = Save. List Illustration preserveAspect + color alpha + anchors. STOP.
 ```
 
-### Phase 2 — Instance Voisinage α 0.30 + stretch (COPIER TEL QUEL)
+### Phase 2 — Voisinage : plein bandeau + α 33 % (COPIER TEL QUEL)
 
 ```
-[BZ-SALE-BANDEAU-VOISIN-FILIGRANE-001] Phase 2 ONLY — Voisinage filigrane instance. STOP after save.
+[BZ-SALE-BANDEAU-VOISIN-FILIGRANE-001] Phase 2 ONLY — Voisinage illustration full-bleed filigrane 33%. STOP after save.
 
 Do not rescan whole project. Do not modify C#. No Simulate.
 Do NOT edit SaleChannelBandeauView.prefab this phase.
 Do NOT change Bandoulière or Vélo instances.
 Do NOT unpack bandeau prefabs.
+Do NOT add UiQuadWarpMeshEffect.
 
 File ONLY:
 - Assets/Prefabs/Ui/SaleChannelsScreen.prefab
@@ -99,20 +100,20 @@ File ONLY:
 Sprite (keep):
 - Assets/Art/Sprites/UI/SaleChannels/BandeauVente_Voisinage.png
 
-REQUIRED — nested instance named Voisinage only:
-1) Illustration Image override: keep sprite assigned.
-2) Color RGBA = (1, 1, 1, 0.30) — filigrane like shop.
-3) Preserve Aspect = OFF on this instance override.
-4) Do not move Illustration RectTransform (still full stretch under bandeau).
-5) TitleLabel outline + stars + root blue button unchanged.
+REQUIRED — nested instance named Voisinage only, child Illustration:
+1) RectTransform Illustration: stretch FULL bandeau blue area — anchors (0,0) to (1,1), all offsets 0, pivot 0.5/0.5, sibling index 0 (behind HeaderRow/title/stars).
+2) Illustration Image: sprite BandeauVente_Voisinage.png assigned.
+3) Image Type = Simple. Preserve Aspect = OFF (false). Raycast Target = false.
+4) Color RGBA = (1, 1, 1, 0.33) — filigrane 33%.
+5) Do not change root bandeau size, TitleLabel outline, stars, locked overlays, Button.
 6) Save.
 
-Done = Save. List Voisinage Illustration color.a + preserveAspect. STOP.
+Done = Save. List Voisinage Illustration anchors, offsets, preserveAspect, color.a. STOP.
 ```
 
-### Phase 3 (Cursor, pas Bezy) — Alpha runtime
+### Phase 3 (Cursor) — Alpha runtime
 
-Après Ph.2 Bezy : patch `SaleChannelBandeauView.cs` — constante `IllustrationFiligraneAlpha = 0.3f` appliquée aux couleurs `Unlocked` / `Unlockable` (pas écraser à alpha 1). Cooldown / locked inchangés.
+Livré : `SaleChannelBandeauView` — `IllustrationFiligraneAlpha = 0.33f` (aligné prefab Bezy Ph.2).
 
 ### Option art — regénération (ChatGPT / autre, hors Bezy)
 
@@ -134,11 +135,11 @@ Style cohérent jeu casual aquaponie, couleurs saturées modérées, pas de text
 ## Checklist review Cursor
 
 ### Série A
-- [ ] `BandeauxContent` padding top ≥ 56 (ou Viewport inset)
-- [ ] Playtest : gap ~8 px sous barre PA, scroll OK
+- [x] `BandeauxContent` padding top ≥ 56 (ou Viewport inset)
+- [ ] Playtest : gap ~8 px sous barre PA, filigrane 33 %, scroll OK
 
 ### Série B
-- [ ] Template `Preserve Aspect` OFF
-- [ ] Voisinage α 0.30, stretch plein bandeau
-- [ ] Cursor Ph.3 alpha runtime
+- [x] Template `Preserve Aspect` OFF
+- [x] Bezy Ph.2 — Voisinage plein bandeau + α **0.33** prefab
+- [x] Cursor Ph.3 alpha runtime (`IllustrationFiligraneAlpha = 0.33f`)
 - [ ] Regén sprite si déformation gênante
