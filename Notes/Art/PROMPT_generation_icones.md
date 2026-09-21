@@ -474,7 +474,7 @@ Même fichier, **pas** le prompt icône §1 par défaut. Détail pose plante : `
 | W1 | Cuve IBC dessus losange 2:1 | brief iso grille (pas icône) | `Dump/ElementProd/Biofiltre/` | `Sprites/Farm/Biofiltre/` | promu 2026-09-05 (2e passe 2:1) | `IbcIso.png` |
 | W2 | Stades laitue monde (regen iso) | `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md` (charte `NOTE_graphique.md`) | `Dump/Plantes/Laitue/` | `Sprites/Plantes/Laitue/` | à générer | |
 | W3 | Stades tomate monde (iso 3/4) | même charte que W2 — 7 stades grille | `Dump/Plantes/Tomate/` | `Sprites/Plantes/Tomate/` | à générer | |
-| W4 | Illustrations bandeaux vente | scène, pas icon | `Dump/Ui/` | `Sprites/UI/` | à générer | |
+| W4 | Illustrations bandeaux vente | scène, pas icon | `Dump/Ui/` | `Sprites/UI/SaleChannels/` | **Voisinage promu** 2026-09-21 ; bandoulière / vélo à générer | `BandeauVente_Voisinage.png` |
 | HUB | Bandeau + fanion hub Plus | `Notes/Art/PROMPT_features_hub_bandeau_flag.md` | `Dump/Ui/FeaturesHub/` | `Sprites/UI/FeaturesHub/` | à générer | B1 chrome 9s + F0 neutre puis F1–F6 |
 | W5 | Fishtank / poissons jouables | ~lvl 10 | `Dump/Poisson/` | `Sprites/Farm/Poisson/` | à générer | |
 

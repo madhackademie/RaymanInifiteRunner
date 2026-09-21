@@ -1,5 +1,29 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-21 — Art bandeau Voisinage `[BZ-SALE-BANDEAU-VOISIN-ART-001]`
+
+### Livré Cursor (prep Bezy)
+- Promo sprite : Dump `Vente_voisin_bandeau_filigrane.png` → `Assets/Art/Sprites/UI/SaleChannels/BandeauVente_Voisinage.png`.
+- Prompts 3 phases : `Notes/Ui/PROMPTS_Bezi_sale_bandeau_voisinage_art.md` + miroir `Assets/Docs/Bezi/`.
+- Décision : **fond plein** du bandeau (`Illustration` stretch), sprite **instance Voisinage** seulement (template partagé). Pas filigrane shop 0.30.
+
+### Livré Bezy Ph.1
+- `Illustration` stretch 0,0–1,1, sibling 0, sprite None, Color blanc a=0, Preserve Aspect, `illustrationImage` câblé.
+- Extra hors scope : 10× `UiQuadWarpMeshEffect` sur nested StarRow — **retirés Cursor**.
+
+### Livré Bezy Ph.2
+- Instance `Voisinage` : sprite `BandeauVente_Voisinage`, Color blanc a=1.
+- Bandoulière / Vélo : pas ce sprite.
+- Extra hors scope : 30× `UiQuadWarpMeshEffect` — **retirés Cursor** (YAML propre).
+
+### Livré Bezy Ph.3
+- `TitleLabel` : `TitleLabel_Voisinage_Outline.mat` pour lisibilité sur l’art.
+- Extra warp StarRow retirés Cursor (3e passe).
+
+### Suite
+- **Playtest auteur** : onglet Vente → bandeau Voisinage (art + titre + étoiles + clic + cooldown grisé).
+- Chantier `[BZ-SALE-BANDEAU-VOISIN-ART-001]` **clos Bezy** — prochains bandeaux = même pattern (instance override sprite).
+
 ## 2026-09-21 — Caméra farm zoom planifié `[P0-FARM-CAMERA-VIEW-001]`
 
 ### Décision auteur

@@ -45,6 +45,17 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ P0 — Art bandeau Voisinage `[BZ-SALE-BANDEAU-VOISIN-ART-001]`
+
+**Objectif :** scène haie + panier en **fond plein** du bandeau Voisinage (pas vignette 80×80, pas filigrane α 0.30).  
+**Sprite :** `Assets/Art/Sprites/UI/SaleChannels/BandeauVente_Voisinage.png`  
+**Refs :** `Notes/Ui/PROMPTS_Bezi_sale_bandeau_voisinage_art.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_sale_bandeau_voisinage_art.md`
+
+1. [x] Bezy Phase 1 — `Illustration` stretch derrière `HeaderRow` (template, **sans** sprite). OK YAML 2026-09-21. Cursor a retiré extras warp sur StarRow.
+2. [x] Bezy Phase 2 — sprite **seulement** sur l’instance `Voisinage`. OK YAML 2026-09-21. Cursor a retiré extras warp (30).
+3. [x] Bezy Phase 3 — outline `TitleLabel`. OK YAML 2026-09-21 (`TitleLabel_Voisinage_Outline.mat`).
+4. [ ] Playtest auteur (hors prompt) : Vente → Voisinage = scène ; Bandoulière/Vélo inchangés ; cooldown grise encore l’art.
+
 ### ★ P0 — Caméra farm zoom `[P0-FARM-CAMERA-VIEW-001]`
 
 **Branche :** `feature/plant-harvest-zoom` — **nouvelle**, créée depuis `main` (`e841fc2`). **Pas** `feature/ui-kit-refonte`. Checkout plus tard, quand on attaque ce chantier.  

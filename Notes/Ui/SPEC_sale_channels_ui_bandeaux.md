@@ -63,6 +63,7 @@ Référence GDD §2.2 — `Notes/GDD/ref_ui_ecoulement_production_panneaux.png`.
 
 - Bandoulière / vélo : bandeaux **visibles mais verrouillés** (gris + cadenas) ou absents — à trancher en Phase 1 Bezy ; recommandation : **1 actif + 2 verrouillés** pour lire la progression.
 - Clic bandeau Voisinage actif → ouvre popup vente (chantier suivant, pas Phase 1–3 Bezy).
+- **Art Voisinage (2026-09-21) :** scène paysage (haie + panier) en **fond plein** via `Illustration` stretch — pas la vignette 80×80. Sprite sur l’**instance** `Voisinage` seulement (`[BZ-SALE-BANDEAU-VOISIN-ART-001]`). Template partagé sans sprite.
 
 ---
 
