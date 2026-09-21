@@ -36,7 +36,7 @@ public class NavigationHUD : MonoBehaviour
     [SerializeField] private GameObject exitButtonContainer;
 
     [Header("HUD chrome — modales plein écran")]
-    [Tooltip("Masqué quand Inventaire / Shop / Vente / Hub Plus est ouvert.")]
+    [Tooltip("Masqué sur Inventaire / Shop / Hub Plus. Visible sur Vente (coût PA).")]
     [SerializeField] private GameObject actionPointsHudRoot;
 
     [Header("Nav Bar Buttons")]
@@ -241,20 +241,50 @@ public class NavigationHUD : MonoBehaviour
     }
 
     /// <summary>
-    /// Quand une modale HUD est ouverte : masque la barre PA uniquement.
-    /// La nav reste dernier sibling sous HUDRoot (pas de reorder ScreenRoot — évite layout cassé onglet 5).
+    /// Masque la barre PA sur Shop / Inventaire / Hub Plus (pas d’usage PA).
+    /// Vente la garde : les actions de vente consomment des PA.
+    /// Le widget est un sibling après ScreenRoot — visible par-dessus si on ne le coupe pas.
+    /// La nav reste dernier sibling sous HUDRoot (pas de reorder ScreenRoot).
     /// </summary>
     public void RefreshModalHudPresentation()
     {
+        ResolveActionPointsHudRoot();
+
         if (UIManager.Instance == null)
             return;
 
-        bool modalOpen = UIManager.Instance.IsAnyModalHudScreenVisible();
-
-        if (actionPointsHudRoot != null)
-            actionPointsHudRoot.SetActive(!modalOpen);
-
+        SetActionPointsHudVisible(!UIManager.Instance.ShouldHideActionPointsHud());
         RebuildNavBarLayoutImmediate();
+    }
+
+    /// <summary>
+    /// Le champ Inspector peut pointer le prefab disque au lieu de l’instance scène
+    /// (réf. avec guid, sans GameObject stripped). SetActive sur l’asset ne masque rien.
+    /// </summary>
+    private void ResolveActionPointsHudRoot()
+    {
+        if (IsSceneInstance(actionPointsHudRoot))
+            return;
+
+        ActionPointsHudView view = GetComponentInChildren<ActionPointsHudView>(true);
+        if (view == null)
+        {
+            Debug.LogWarning("[NavigationHUD] ActionPointsHudWidget introuvable sous HUDRoot.", this);
+            return;
+        }
+
+        actionPointsHudRoot = view.gameObject;
+    }
+
+    private void SetActionPointsHudVisible(bool visible)
+    {
+        if (actionPointsHudRoot != null)
+            actionPointsHudRoot.SetActive(visible);
+    }
+
+    private static bool IsSceneInstance(GameObject go)
+    {
+        return go != null && go.scene.IsValid();
     }
 
     private void OnEnable()

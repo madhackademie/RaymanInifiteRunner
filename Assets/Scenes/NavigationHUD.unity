@@ -1281,7 +1281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NavigationHUD
   navBarContainer: {fileID: 919069777}
   exitButtonContainer: {fileID: 1507970742}
-  actionPointsHudRoot: {fileID: 7441046510719425699, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
+  actionPointsHudRoot: {fileID: 1178429121}
   tabAventuresButton: {fileID: 1157943601}
   tabInventaireButton: {fileID: 1562647025}
   tabShopButton: {fileID: 2099893049}
@@ -2936,6 +2936,11 @@ PrefabInstance:
 --- !u!224 &1178429120 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7496940324090015776, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
+  m_PrefabInstance: {fileID: 1178429119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1178429121 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7441046510719425699, guid: 35de189a9ad111e459c1ea1d8c925ca0, type: 3}
   m_PrefabInstance: {fileID: 1178429119}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1199668781

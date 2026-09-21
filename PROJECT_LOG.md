@@ -1,5 +1,38 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-21 — Caméra farm zoom planifié `[P0-FARM-CAMERA-VIEW-001]`
+
+### Décision auteur
+- **Nouvelle** branche **`feature/plant-harvest-zoom`**, créée depuis **`main`** (`e841fc2`, 2026-09-21). Pas un checkout de `feature/ui-kit-refonte`.
+- Session courante reste **`feature/ui-kit-refonte`**. Checkout zoom = session dédiée, avant Bezy Ph.1.
+- Hybride **PC + mobile**. **Slice 1 = PC**. **Slice 2 = tactile Township** après PC OK.
+- Rect auteur `BiofiltreViewBounds` = vue défaut + zoom out max (pas un recalc grille).
+- Pinch off tant que `enableTouchCamera` est false.
+
+### Docs
+- Todo : `Notes/Todo_project.md` § P0 caméra farm.
+- Spec gestes : `Notes/Farm/NOTE_camera_view_zoom.md`
+- Bezy câblage : `[BZ-FARM-CAMERA-VIEW-001]` · `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md`
+
+### Référence « tâche du jour »
+Uniquement **après checkout** `feature/plant-harvest-zoom`. Pas la tâche du jour tant qu’on est sur `feature/ui-kit-refonte`.
+
+---
+
+## 2026-09-21 — Filigrane sac inventaire P1 `[BZ-INV-SAC-FILIGRANE-001]`
+
+### Livré Bezy
+- `SacFiligrane` (Image) enfant 0 de `InventoryPanel` : sprite onglet, stretch, α **0.50**, raycast off, layer 5.
+- `ScrollView` Image alpha 0 (voile retiré pour le test). Filigrane Commerce intact.
+
+### Extra
+- Plusieurs RectTransform layout (onglets filtre, titre, icônes wallet) rebakés en `0,0` — bruit Prefab Mode ; playtest auteur.
+
+### Suite
+- Playtest : sac visible derrière la grille, slots cliquables. Si 50 % trop fort → alpha 0.20 / 0.12.
+
+---
+
 ## 2026-09-19 — Mockup popup bois (kit UiKit) `[BZ-UIKIT-POPUP-MOCK-001]`
 
 ### Décision

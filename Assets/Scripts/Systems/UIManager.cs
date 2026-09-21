@@ -436,6 +436,19 @@ public class UIManager : MonoBehaviour
                || IsScreenVisible(ScreenId.FeaturesHub);
     }
 
+    /// <summary>
+    /// Shop / Inventaire / Hub Plus : pas d’usage PA. Vente : les actions coûtent des PA.
+    /// </summary>
+    public bool ShouldHideActionPointsHud()
+    {
+        if (IsScreenVisible(ScreenId.SaleChannels))
+            return false;
+
+        return IsScreenVisible(ScreenId.Inventory)
+               || IsScreenVisible(ScreenId.Shop)
+               || IsScreenVisible(ScreenId.FeaturesHub);
+    }
+
     private void NotifyModalHudPresentationChanged()
     {
         if (NavigationHUD.Instance != null)

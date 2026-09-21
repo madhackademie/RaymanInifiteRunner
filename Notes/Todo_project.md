@@ -45,6 +45,19 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ P0 — Caméra farm zoom `[P0-FARM-CAMERA-VIEW-001]`
+
+**Branche :** `feature/plant-harvest-zoom` — **nouvelle**, créée depuis `main` (`e841fc2`). **Pas** `feature/ui-kit-refonte`. Checkout plus tard, quand on attaque ce chantier.  
+**Hybride PC + mobile.** Slice 1 = **PC** (fine tuning). Slice 2 = **tactile Township** après PC OK.  
+**Refs :** `Notes/Farm/NOTE_camera_view_zoom.md` · `Notes/Ui/PROMPTS_Bezi_farm_camera_view.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md`  
+**C# Cursor déjà là :** `BiofiltreViewBounds` + `FarmCameraController` (`enableTouchCamera = false`).
+
+1. [x] Branche `feature/plant-harvest-zoom` créée depuis `main` (2026-09-21). Checkout **plus tard** (session dédiée).
+2. [ ] Bezy `[BZ-FARM-CAMERA-VIEW-001]` Ph.1 — `BiofiltreViewBounds` sur `Biofiltre.prefab` (Init IBC / grille).
+3. [ ] Bezy Ph.2 — `FarmCameraController` sur Main Camera `FirstLvl` (`enableTouchCamera` **off**).
+4. [ ] Playtest **PC** : molette zoom vers curseur, clic milieu pan, rect orange = zoom out max, clic gauche plante encore.
+5. [ ] Slice 2 `[P0-FARM-CAMERA-TOUCH-001]` — tactile Township (`NOTE_camera_view_zoom.md`), pas avant fine tune PC.
+
 ### ★ P0 — Mockup popup bois `[BZ-UIKIT-POPUP-MOCK-001]`
 
 **Objectif :** intégrer le kit `UiKit_*_20260919` sur une **copie** `ShopItemPopup_WoodMockup` (Card = panneau, cadre = icône seule, CTA orange). Pas le prefab runtime.
@@ -251,10 +264,8 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`fix/farm-iso-footprint-hit`** (pas `main`).  
-> **P0 prochaine session :** playtest `[P0-INV-WALLET-PLAY-001]` (wallet Y -40, `=` entre timbres et 275, nav 140). **Ensuite, autre thread :** scan responsive `[CT-UI-RESPONSIVE-SCAN-001]` — `Notes/Ui/NOTE_ui_responsive_ratios.md`. Checkpoint : `hud-bandeau-before-fond140-slots128`. **Règle :** avant bandeaux HUD → tag + `backup/…`.  
-> **Playtest mobile 2026-09-16 (dump en cours) :** grille · scale biofiltre · plant release · `[P0-UI-PA-HUD-TALENTTREE-001]` (branche `rework/biofilter-mobile-scale`).  
-> **Chantier farm :** `[P0-FARM-ISO-GRID-001]` playtest sprite/grille · `[P0-FARM-ISO-FOOTPRINT-HIT-001]` clic footprint.  
+> Branche courante : **`feature/ui-kit-refonte`**.  
+> **Caméra zoom :** nouvelle branche `feature/plant-harvest-zoom` (depuis `main`, créée 2026-09-21). Checkout **uniquement** en session dédiée, pas pendant le kit UI. `[P0-FARM-CAMERA-VIEW-001]` PC d’abord, Township ensuite.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
 > **Priorité immédiate (prochaine session) :** playtest wallet/nav. Puis scan UI responsive (nouveau thread). Croix ExitOnly playtestée 2026-09-15.  
@@ -328,6 +339,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 - [x] **`[P0-FARM-PLANT-SELECT-GLOW-001]`** — Bezy `LaitueObj` Ph.1–3 + Cursor `PlantSelectionHighlight` + shader `Farm/SpriteSelectionSilhouette` ; silhouette blanche fine (défaut scale **1,012**, offset **0,004**). Tuning fin sur prefab si besoin.
 
 **Ordre prochaine session farm :**
+0. [ ] **[P0-FARM-CAMERA-VIEW-001]** Branche `feature/plant-harvest-zoom` — rect vue + zoom **PC** (Bezy câblage, puis playtest molette). Tactile Township = slice 2.
 1. [ ] **[CT-FARM-BAKE-RECT-001]** Bake B sur biofiltre **rect plus grand** (dupliquer layout SO + variante prefab).
 2. [ ] **[BZ-FARM-HARVEST-READY-VFX-002]** Sparkle récolte Mature + Seedling plus lisible (Bezy Ph.5 — `PROMPTS_Bezi_harvest_ready_vfx.md`).
 3. **Backlog :** `[BL-FARM-DECK-CIRCLE-MASK-001]` — `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md`.

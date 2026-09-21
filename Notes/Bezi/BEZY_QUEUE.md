@@ -21,6 +21,11 @@
 
 | Statut | Task ID | Prefab | Phase | Prompt file | Branche | Notes |
 |--------|---------|--------|-------|-------------|---------|-------|
+| [ ] | `[BZ-FARM-CAMERA-VIEW-001]` | `Biofiltre.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md` | `feature/plant-harvest-zoom` | Add `BiofiltreViewBounds` + Init IBC/grille. Pas de C#. Branche avant Bezy. |
+| [ ] | `[BZ-FARM-CAMERA-VIEW-001]` | `FirstLvl.unity` Main Camera | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md` | `feature/plant-harvest-zoom` | Add `FarmCameraController`, `enableTouchCamera=false`. Après Ph.1. |
+| [x] | `[BZ-SHOP-FILIGRANE-001]` | `ShopScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_shop_filigrane.md` | `main` | OK YAML — ShopFiligrane sibling 0 α 0.30. Voile = SlotsGrid Image + C# ApplyContentPanel 0.995 |
+| [ ] | `[BZ-SHOP-FILIGRANE-001]` | `ShopScreen.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_shop_filigrane.md` | `main` | Disable Image sur SlotsGrid (pas un GO Backdrop) |
+| [x] | `[BZ-INV-SAC-FILIGRANE-001]` | `InventoryScreen.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_sac_filigrane.md` | `main` | OK YAML 2026-09-21 — SacFiligrane sibling 0. α 0.50 trop visible → Cursor α **0.12** (Commerce). Tweak Play Mode = clone `InventoryScreen(Clone)`, pas le prefab asset |
 | [x] | `[BZ-UIKIT-POPUP-MOCK-001]` | `ShopItemPopup_WoodMockup.prefab` | 1 | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` | `main` | OK 2026-09-19 — Card 480×760 padding 48/48/56/48. Original intact |
 | [x] | `[BZ-UIKIT-POPUP-MOCK-001]` | `ShopItemPopup_WoodMockup.prefab` | 2 | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` | `main` | **Cursor** 2026-09-19 — Bezy noop (a lu « composants déjà là »). Sprites kit branchés YAML |
 | [ ] | `[BZ-UIKIT-POPUP-MOCK-001]` | `ShopItemPopup_WoodMockup.prefab` | 3 | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` | `main` | Tailles IconFrame/CTA/qty (après P2 OK) |
