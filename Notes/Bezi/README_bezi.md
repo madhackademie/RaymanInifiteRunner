@@ -22,7 +22,7 @@ Regle simple:
 - **Structure / services / persistance / cloud / clean code metier** -> Codex en premier.
 
 Regle Cursor : `.cursor/rules/bezy_prefab_ownership.mdc` + `.cursor/rules/bezy_delegate_simple_code.mdc`.  
-**Bezy `@` prompts :** `Assets/Docs/Bezi/` (miroir) · **Cursor source :** `Notes/Ui/PROMPTS_Bezi_*.md` · Workflow : `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md` (sans GitHub MCP, sans commit par prompt).
+**Bezy `@` prompts :** `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` · **À faire :** `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` · Workflow : `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md` (sans GitHub MCP, sans commit par prompt).
 
 **Workspace Rules Bezy.ai (UI Bezy)** : copier le bloc depuis `Notes/Bezi/WORKSPACE_RULES_paste_in_bezi.md` — **pas** l’ancienne règle « Cursor fournit tout le C# ».
 
@@ -162,7 +162,7 @@ Si echec/timeout:
 2. Relancer la phase Bezy de wiring.
 3. Vérifier le diff Git / YAML (`Animator`, `m_Transition: 3`, `m_Layer: 5`) avant de marquer OK.
 
-**Exemple :** `[BZ-POLISH-006]` Ph.2 — `Notes/Ui/PROMPTS_Bezi_nav_tabs_press.md`.
+**Exemple :** `[BZ-POLISH-006]` Ph.2 — `Assets/Docs/Bezi/PROMPTS_Bezi_nav_tabs_press.md`.
 
 Exemple de sorties explicites:
 - `Assets/Prefabs/UI/ShopItemPopup.prefab` (creer/modifier)

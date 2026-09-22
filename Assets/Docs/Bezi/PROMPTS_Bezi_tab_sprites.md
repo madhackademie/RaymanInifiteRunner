@@ -12,7 +12,7 @@
 **Skill :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`  
 **File :** `Notes/Bezi/BEZY_QUEUE.md`  
 **Art (hors Bezy) :** Vague H `Notes/Art/PROMPT_generation_icones.md` — Dump → promo auteur `Sprites/UI/` **avant** wiring.  
-**Hub Plus (V0 onglet) :** `Notes/Ui/PROMPTS_Bezi_tab_more_option.md` — `[BZ-TAB-MORE-001]` `TabMoreOption` sans sprite.
+**Hub Plus (V0 onglet) :** `Assets/Docs/Bezi/PROMPTS_Bezi_tab_more_option.md` — `[BZ-TAB-MORE-001]` `TabMoreOption` sans sprite.
 
 **Succès Bezy = Save + liste changements. STOP. Pas de Simulate / Play Mode.**
 

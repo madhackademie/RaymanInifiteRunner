@@ -58,7 +58,7 @@ Done = Save. List BandeauxContent padding top + optional Viewport offsetMax.y. S
 | **Regénération paysage ultra-large** (recommandé) | Ratio **~4:1** (ex. 1792×448), sujet **centré**, haie/ciel **continus sur les bords** → stretch léger ou `Preserve Aspect` avec peu de marge. |
 | **Runtime** | `SaleChannelBandeauView` applique **α 0.33** sur états actif / unlockable si sprite assigné (cooldown / verrouillé inchangés). |
 
-**Pattern shop :** `Notes/Ui/PROMPTS_Bezi_shop_filigrane.md` (sibling 0, filigrane ~30–33 %).
+**Pattern shop :** `Assets/Docs/Bezi/PROMPTS_Bezi_shop_filigrane.md` (sibling 0, filigrane ~30–33 %).
 
 ### Phase 1 — Template Illustration « mode filigrane » (COPIER TEL QUEL)
 

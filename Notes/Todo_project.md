@@ -49,7 +49,7 @@ Convention d'IDs :
 
 **Objectif :** scène haie + panier en **fond plein** du bandeau Voisinage (pas vignette 80×80, pas filigrane α 0.30).  
 **Sprite :** `Assets/Art/Sprites/UI/SaleChannels/BandeauVente_Voisinage.png`  
-**Refs :** `Notes/Ui/PROMPTS_Bezi_sale_bandeau_voisinage_art.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_sale_bandeau_voisinage_art.md`
+**Refs :** `Assets/Docs/Bezi/PROMPTS_Bezi_sale_bandeau_voisinage_art.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_sale_bandeau_voisinage_art.md`
 
 1. [x] Bezy Phase 1 — `Illustration` stretch derrière `HeaderRow` (template, **sans** sprite). OK YAML 2026-09-21. Cursor a retiré extras warp sur StarRow.
 2. [x] Bezy Phase 2 — sprite **seulement** sur l’instance `Voisinage`. OK YAML 2026-09-21. Cursor a retiré extras warp (30).
@@ -60,7 +60,7 @@ Convention d'IDs :
 
 **Branche :** `feature/plant-harvest-zoom` — **nouvelle**, créée depuis `main` (`e841fc2`). **Pas** `feature/ui-kit-refonte`. Checkout plus tard, quand on attaque ce chantier.  
 **Hybride PC + mobile.** Slice 1 = **PC** (fine tuning). Slice 2 = **tactile Township** après PC OK.  
-**Refs :** `Notes/Farm/NOTE_camera_view_zoom.md` · `Notes/Ui/PROMPTS_Bezi_farm_camera_view.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md`  
+**Refs :** `Notes/Farm/NOTE_camera_view_zoom.md` · `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md`  
 **C# Cursor déjà là :** `BiofiltreViewBounds` + `FarmCameraController` (`enableTouchCamera = false`).
 
 1. [x] Branche `feature/plant-harvest-zoom` créée depuis `main` (2026-09-21). Checkout **plus tard** (session dédiée).
@@ -73,7 +73,7 @@ Convention d'IDs :
 
 **Objectif :** intégrer le kit `UiKit_*_20260919` sur une **copie** `ShopItemPopup_WoodMockup` (Card = panneau, cadre = icône seule, CTA orange). Pas le prefab runtime.
 
-**Refs :** `Notes/Ui/PROMPTS_Bezi_shopitempopup_wood_mockup.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md`
+**Refs :** `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md`
 
 1. [x] Bezy Phase 1 (dupliquer + Card 480×760) — OK 2026-09-19.
 2. [ ] Bezy Phase 3 (tailles) — P2 sprites **Cursor** (Bezy a no-op). Playtest visuel Prefab Mode.
@@ -83,7 +83,7 @@ Convention d'IDs :
 
 **Objectif :** déplacer `CloseButton` de `ShopItemPopup` (aujourd’hui bas-centre de `Root`, dans la nav) vers le **coin haut-droit de `Card`**.
 
-**Refs :** `Notes/Ui/PROMPTS_Bezi_shopitempopup_close_topright.md` · prefab `Assets/Prefabs/Ui/ShopItemPopup.prefab`.
+**Refs :** `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_close_topright.md` · prefab `Assets/Prefabs/Ui/ShopItemPopup.prefab`.
 
 1. [ ] Bezy Phase 1 (reparent + Ignore Layout + anchors).
 2. [ ] Playtest drop inventaire : croix sur le bandeau Gold, plus dans la nav ; shop/vente inchangés.
@@ -92,7 +92,7 @@ Convention d'IDs :
 
 **Objectif :** continuer la modification du **`PlayerHaloPanel`** (hauteur bandeau halo, scale slots / portrait via `HaloContentScaler`).
 
-**Refs :** `Notes/Ui/PROMPTS_Bezi_inventory_halo_scale.md` · `Assets/Prefabs/Ui/InventoryScreen.prefab` · `Assets/Prefabs/Ui/Progression/PlayerHaloPanel.prefab`.
+**Refs :** `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` · `Assets/Prefabs/Ui/InventoryScreen.prefab` · `Assets/Prefabs/Ui/Progression/PlayerHaloPanel.prefab`.
 
 1. [ ] Bezy Ph.1–3 si pas terminées (Preferred Height 560, `referenceHeight` 320 source panel).
 2. [ ] Playtest inventaire : halo ~2×, grille flexible OK, pas de régression wallet / overlay talents.
@@ -265,11 +265,11 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 1. [x] **[P0-UI-TAB-MORE-001]** / **[BZ-TAB-MORE-001]** — Bezy P1–P3 OK 2026-09-15.
 2. [x] **[BZ-NAV-TABS-SPRITE-FOLDER-001]** Relink 5 onglets → `Nav/Tabs/` — OK 2026-09-15 (playtest auteur : bordures Plus OK).
 3. [x] **`[BL-UI-FEATURES-HUB-001]` V0 placeholder** — écran Plus WIP livré (prefab + UIManager). **Suite :** hub sous-onglets (`SPEC_features_hub_plus.md`).
-2. [ ] **[BZ-TAB-INVENTAIRE-MOCKUP-001]** Bezy P1→P3 (patron `TabAventures`) — prompt P1 : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`
+2. [ ] **[BZ-TAB-INVENTAIRE-MOCKUP-001]** Bezy P1→P3 (patron `TabAventures`) — prompt P1 : `Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md`
 3. [ ] **[BZ-TAB-SHOP-MOCKUP-001]** puis **[BZ-TAB-VENTE-MOCKUP-001]** (même pipeline, prompts à rédiger après Inventaire)
 4. [ ] **[BZ-NAV-TAB-MOCKUP-CODE-001]** Bezy C# simple : généraliser `NavigationHUD` (`ApplyNavTabMockupVisual` — zoom, glow, label, expand `SelectedFrame`) pour 4 onglets — prompt + `@Notes/Bezi/RULES_bezy_code.md` (pas Cursor)
 5. [ ] Playtest navigation 4/5 onglets (mockup actif/inactif)
-6. ~~**[BZ-NAV-WOOD-FRAME-001]** P2 rollout bois~~ → **reporté polish** `[BZ-NAV-WOOD-REFONTE-001]` (9-slice + cadre ne couvre pas le label) — file `Notes/Ui/TODO_Bezy_polish_semaine.md` **#28** · prompts `Notes/Ui/PROMPTS_Bezi_nav_wood_frame_slice.md`. **Garder** mockup glow/zoom actuel jusqu’au budget polish.
+6. ~~**[BZ-NAV-WOOD-FRAME-001]** P2 rollout bois~~ → **reporté polish** `[BZ-NAV-WOOD-REFONTE-001]` (9-slice + cadre ne couvre pas le label) — file `Notes/Ui/TODO_Bezy_polish_semaine.md` **#28** · prompts `Assets/Docs/Bezi/PROMPTS_Bezi_nav_wood_frame_slice.md`. **Garder** mockup glow/zoom actuel jusqu’au budget polish.
 
 **Déjà livré :** `TabAventures` mockup + Wood P1 expérimental (à refondre). Spec : `Notes/Ui/SPEC_nav_onglets_zoom_actif.md`.
 
@@ -311,7 +311,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 > **Ne pas envoyer de prompt** tant que l’auteur n’a pas listé les changements visuels et que les prompts n’ont pas été **validés ensemble**.  
 > Cible probable : `NavigationHUD` (`TabAventures` / `TabInventaire` / `TabShop` / `TabVente`) — champs `Image` déjà dans `NavigationHUD.cs`. Barre inventaire (`InventoryFilterBar`) **seulement si** le brief le dit.  
 > Art : Dump → promo auteur `Sprites/UI/` **avant** Bezy (Vague H `Notes/Art/PROMPT_generation_icones.md`). Bezy = wiring / layout / polish prefab, **pas** génération d’images.  
-> Stub prompts : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` — Ph.1–3 à rédiger après le brief. File : `Notes/Bezi/BEZY_QUEUE.md`.
+> Stub prompts : `Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md` — Ph.1–3 à rédiger après le brief. File : `Notes/Bezi/BEZY_QUEUE.md`.
 
 ### ★ Playtest régressions 2026-09-10 (auteur — file close)
 
@@ -337,7 +337,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 ### ★ Bezy immédiat — HUD PA ×2 `[P0-AP-HUD-SCALE-001]`
 
 > **Décision auteur 2026-09-10** (capture `240 / 240`) : agrandir **2×** le widget PA.  
-> Prefab `ActionPointsHudWidget` : **240×60 → 480×120**. Prompts : `Notes/Ui/PROMPTS_Bezi_action_points_scale.md`.  
+> Prefab `ActionPointsHudWidget` : **240×60 → 480×120**. Prompts : `Assets/Docs/Bezi/PROMPTS_Bezi_action_points_scale.md`.  
 > **Bezy Ph.1–3 livrées 2026-09-10.** Playtest auteur (lisibilité + tooltip + overlap wallet/onglets).
 
 1. [x] **[P0-AP-HUD-SCALE-001]** / **[BZ-AP-HUD-SCALE-001]** HUD PA ×2 Bezy Ph.1–3 (layout + TMP + instance `NavigationHUD`)
@@ -358,7 +358,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 **Ordre prochaine session (autres chantiers) :**
 
 0. [ ] Playtest régressions 2026-09-10 : HUD / croix / IBC + wallet + vente sans stock (voir § ci-dessus)
-1. [~] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Bezy onglets HUD — 3/4 livrés ; **TabVente** dernier prompt (`Notes/Ui/PROMPTS_Bezi_tab_sprites.md`)
+1. [~] **[P0-TAB-SPRITES-001]** / **[BZ-TAB-SPRITES-001]** Bezy onglets HUD — 3/4 livrés ; **TabVente** dernier prompt (`Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md`)
 1b. [ ] **[P0-NAV-WALLET-REG-001]** Wallet / solde gold disparu en haut `NavigationHUD` après passes Bezy onglets — **reproduit playtest 2026-09-10** (bloque vérif gold vente)
 2. [ ] **[P0-FARM-ISO-FOOTPRINT-HIT-001]** Clic plante = losanges footprint seuls (`GridManager.TryScorePlantHit`, branche `fix/farm-iso-footprint-hit`)
 3. [~] **[P0-FARM-ISO-GRID-001]** Géométrie iso 2:1 + `IbcIso` — playtest pose manuelle sprite/grille
@@ -382,7 +382,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 > **Priorité session 2026-09-10** (avec bake rect grand).
 
 **A — Sparkle récoltable (2 stades)** `[BZ-FARM-HARVEST-READY-VFX-002]`  
-> Mature + Seedling (`HarvestReadyFx` / `PlantGrow.SyncHarvestReadyFxForStage`) : effet **trop faible** en jeu → passe Bezy : **taille particules** (et si besoin rate/size over lifetime). Prompt Phase 5 : `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md`.
+> Mature + Seedling (`HarvestReadyFx` / `PlantGrow.SyncHarvestReadyFxForStage`) : effet **trop faible** en jeu → passe Bezy : **taille particules** (et si besoin rate/size over lifetime). Prompt Phase 5 : `Assets/Docs/Bezi/PROMPTS_Bezi_harvest_ready_vfx.md`.
 
 **B — Glow cible au clic** `[P0-FARM-PLANT-SELECT-GLOW-001]` — **clos 2026-09-10**  
 > Shader `Assets/Shaders/Farm/SpriteSelectionSilhouette.shader` (alpha → couleur unie). `PlantSelectionHighlight` : une cible active, socle vert conservé. Réglages : `silhouetteLocalScale` / `silhouetteLocalOffset` sur `LaitueObj`.
@@ -445,7 +445,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 > HUD **world** enfant de chaque biofiltre ; **pose manuelle** (tailles différentes, pas de moule unique).  
 > Prefabs + art = **Bezy** `/prefab-ui-3phases`. Agent VM = C# + promo **uniquement** les 2 atlas slots UI Dump→Sprites (pas la cuve IBC).  
 > Prompt collable : `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`  
-> Prompts skill : `Notes/Ui/PROMPTS_Bezi_biofiltre_hud_slots.md`
+> Prompts skill : `Assets/Docs/Bezi/PROMPTS_Bezi_biofiltre_hud_slots.md`
 
 1. [x] **[P0-FARM-BIOHUD-001]** Cursor/VM : scripts vues + binder + `GetWorldRect` + promo art `Sprites/UI/Biofiltre/` (2026-08-29 agent VM)
 2. [x] **[BZ-FARM-BIOHUD-PRIM-001]** Bezy : slot + row `UiBiofiltrePrimarySlotRow` — **clos** 2026-08-31 (spacing HLG 4, polish optionnel)
@@ -479,7 +479,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 > Tooltip : **survol de la rangée d’étoiles** (pas tout le bandeau) — le bandeau reste clic vente / recherche ; le tooltip déblocage reste sur l’overlay cadenas.  
 > Ne pas relancer wallet punch (`[BZ-POLISH-015]` park).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain : **30 août**).  
-> Prompts Bezy étoiles : `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–3 livrées**. Playtest auteur **OK 2026-08-30**.
+> Prompts Bezy étoiles : `Assets/Docs/Bezi/PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–3 livrées**. Playtest auteur **OK 2026-08-30**.
 
 Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAND-001]`, `[P0-SALE-QTY-RAND-PLAY-001]`.
 
@@ -533,13 +533,13 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [~] **[P0-AP-CODE-002]** Hook vente −1 PA
 - [ ] Commit auteur lot session + docs
 
-**Réf. étoiles bandeaux :** `Notes/Ui/PROMPTS_Bezi_sale_channel_stars.md` · GDD §2.9  
-**Réf. sprites onglets HUD :** `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` · Vague H `Notes/Art/PROMPT_generation_icones.md`  
-**Réf. onglets inventaire :** `Notes/GDD/SPEC_inventaire_multiverse_hub.md` · `Notes/Ui/PROMPTS_Bezi_inventory_tabs.md`  
-**Réf. HomeScene :** `Notes/Ui/PROMPTS_Bezi_home_012.md`  
-**Réf. LoadingScreen :** `Notes/Ui/PROMPTS_Bezi_loading_011.md`  
+**Réf. étoiles bandeaux :** `Assets/Docs/Bezi/PROMPTS_Bezi_sale_channel_stars.md` · GDD §2.9  
+**Réf. sprites onglets HUD :** `Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md` · Vague H `Notes/Art/PROMPT_generation_icones.md`  
+**Réf. onglets inventaire :** `Notes/GDD/SPEC_inventaire_multiverse_hub.md` · `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tabs.md`  
+**Réf. HomeScene :** `Assets/Docs/Bezi/PROMPTS_Bezi_home_012.md`  
+**Réf. LoadingScreen :** `Assets/Docs/Bezi/PROMPTS_Bezi_loading_011.md`  
 **Réf. layout PA :** `Notes/Ui/CONVENTION_hud_pa_safe_zone.md`  
-**Réf. HUD PA ×2 :** `Notes/Ui/PROMPTS_Bezi_action_points_scale.md`
+**Réf. HUD PA ×2 :** `Assets/Docs/Bezi/PROMPTS_Bezi_action_points_scale.md`
 
 **Clos playtests (session 2026-07-29) — validés auteur :**
 
@@ -639,7 +639,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 
 **Références (clos)**
 
-- Prompts Bezy phasés : `Notes/Ui/PROMPTS_Bezi_sale_channels.md`
+- Prompts Bezy phasés : `Assets/Docs/Bezi/PROMPTS_Bezi_sale_channels.md`
 - GDD économie : `Notes/GDD/SPEC_vente_production_boucle_jeu.md`
 
 ---
@@ -706,7 +706,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 
 - **Layout éditeur (décision 2026-06-07)** : `Notes/Ui/SPEC_talent_tree_layout_editeur.md`
 - **Procédure arbre talents 8 étapes (auteur)** : `Notes/Ui/WORKFLOW_creation_arbre_talents.md`
-- **Bezy fix affichage arbre (Phase 4)** : `Notes/Ui/PROMPTS_Bezi_talent_tree.md`
+- **Bezy fix affichage arbre (Phase 4)** : `Assets/Docs/Bezi/PROMPTS_Bezi_talent_tree.md`
 - **Session prochaine (3 étapes historiques)** : `Notes/Ui/SESSION_prochaine_halo_arbres_competences.md`
 - Spec halo : `Notes/Ui/SPEC_rework_inventaire_halo_progression.md`
 - Arbre UI : `Notes/Ui/ARBRE_inventory_halo_ui.md`
@@ -872,7 +872,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 ### Navigation — polish cadre actif onglets (backlog)
 
 - [ ] **[BL-UI-NAV-TAB-FRAME-001]** **Cadre bois actif** — voir refonte **`[BZ-NAV-WOOD-REFONTE-001]`** (remplace P2 bois naïf).
-- [ ] **[BZ-NAV-WOOD-REFONTE-001]** **Refonte cadre bois** (budget polish) : `cadreBoisFinal` **9-slice**, `WoodFrame` Sliced, **label TMP non recouvert**, rollout 4 onglets (Vente `SelectedFrame` repos **X = -10**). **Ne pas lancer** avant mockup zoom 4 onglets OK. Base actuelle glow/zoom **conservée**. Prompts : `Notes/Ui/PROMPTS_Bezi_nav_wood_frame_slice.md` · file Bezy **#28** `Notes/Ui/TODO_Bezy_polish_semaine.md`.
+- [ ] **[BZ-NAV-WOOD-REFONTE-001]** **Refonte cadre bois** (budget polish) : `cadreBoisFinal` **9-slice**, `WoodFrame` Sliced, **label TMP non recouvert**, rollout 4 onglets (Vente `SelectedFrame` repos **X = -10**). **Ne pas lancer** avant mockup zoom 4 onglets OK. Base actuelle glow/zoom **conservée**. Prompts : `Assets/Docs/Bezi/PROMPTS_Bezi_nav_wood_frame_slice.md` · file Bezy **#28** `Notes/Ui/TODO_Bezy_polish_semaine.md`.
 
 ### Navigation — hub « Plus » (features secondaires)
 

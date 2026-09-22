@@ -32,7 +32,7 @@ L’auteur n’ouvre Unity **que** pour Bezy : **`@Assets/Docs/Bezi/…`** + lig
 
 | Étape | Qui | Temps auteur |
 |-------|-----|----------------|
-| Spec + `Notes/Ui/PROMPTS_Bezi_*.md` (1 fichier, 3 phases séparées) | **Cursor** (async, même hors Unity / téléphone) | 0 |
+| Spec + `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` (1 fichier, 3 phases séparées) | **Cursor** (async, même hors Unity / téléphone) | 0 |
 | Prefab Mode : ouvrir le prefab cible | Auteur | ~30 s |
 | Thread Bezy : coller le bloc Phase N (+ `/prefab-ui-3phases` si prefab `Assets/Prefabs/Ui/`) | Auteur | 2–5 min |
 | Review `git diff` du prefab, préparer Phase N+1 | **Cursor** | 0 |
@@ -58,7 +58,7 @@ Prefab: Assets/Prefabs/Ui/<Nom>.prefab
 Phase: 1
 ```
 
-Puis coller le bloc **Phase N** depuis `Notes/Ui/PROMPTS_Bezi_<sujet>.md` (copier-coller, pas `@`).
+Puis coller le bloc **Phase N** depuis `Assets/Docs/Bezi/PROMPTS_Bezi_<sujet>.md` (copier-coller, pas `@`).
 
 Fin de phase attendue : `Save. List what changed. STOP.`  
 Ensuite : Cursor review → auteur relance **Phase 2** (même IDs) → idem Phase 3.
@@ -87,7 +87,7 @@ Nouveau thread Bezy, **un seul script / sujet**, scène ou script `@` :
 
 ```
 @Notes/Bezi/RULES_bezy_code.md
-@Notes/Ui/PROMPTS_Bezi_<sujet>.md
+@Assets/Docs/Bezi/PROMPTS_Bezi_<sujet>.md
 ```
 
 Le prompt liste les `.cs` exacts, ce qu’il faut changer, et finit par `Save. List what changed. STOP.`  

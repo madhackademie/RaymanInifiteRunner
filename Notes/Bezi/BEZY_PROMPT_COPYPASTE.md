@@ -6,7 +6,7 @@
 
 | Étape | Où | Qui |
 |-------|-----|-----|
-| Spec source (Cursor) | `Notes/Ui/PROMPTS_Bezi_*.md` · `Notes/Bezi/RULES_bezy_code.md` | **Cursor** rédige / met à jour |
+| Spec source (Cursor) | `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` · `Notes/Bezi/RULES_bezy_code.md` | **Cursor** rédige / met à jour |
 | Ref Bezy (`@` Unity) | **`Assets/Docs/Bezi/PROMPTS_Bezi_*.md`** (+ `RULES_bezy_code.md`) | **Cursor** recopie le miroir à chaque job |
 | Règles permanentes | `Notes/Bezi/WORKSPACE_RULES_paste_in_bezi.md` | **Auteur** une fois dans Bezy |
 | Exécution | Scène/prefab ouvert + thread Bezy | **Auteur** `@` le fichier Assets + phase (ou slash prefab) |
@@ -19,7 +19,7 @@
 
 ## Ce que Cursor doit livrer à chaque job Bezy
 
-1. Mettre à jour **`Notes/Ui/PROMPTS_Bezi_<sujet>.md`** (vérité doc).
+1. Mettre à jour **`Assets/Docs/Bezi/PROMPTS_Bezi_<sujet>.md`** (vérité doc).
 2. **Recopier** le même contenu dans **`Assets/Docs/Bezi/PROMPTS_Bezi_<sujet>.md`**.
 3. Te donner le **chemin Assets exact** + une ligne de lancement, ex. :
 
