@@ -448,17 +448,26 @@ public class SeedSelectionUI : MonoBehaviour
     /// <summary>
     /// Ouvre l'ecran Shop depuis l'empty state.
     /// </summary>
-    private void HandleOpenShopClicked()
+    private async void HandleOpenShopClicked()
     {
-        // On ferme localement et on masque la popup hote ferme si necessaire.
         Close();
         targetManager?.HideFarmSeedSelectionPopup();
 
-        // Flux normal: passer par UIManager.
+        if (NavigationHUD.Instance != null)
+        {
+            if (await NavigationHUD.Instance.TryPresentShopLeavingGameplayAsync())
+                return;
+
+            Debug.LogWarning("[SeedSelectionUI] Impossible d'ouvrir le shop (UIManager).", this);
+            return;
+        }
+
+        if (SceneNavigator.Instance != null)
+            await SceneNavigator.Instance.EnsureHomeSceneForGlobalHudAsync();
+
         if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Shop))
             return;
 
-        // Warning explicite si le routing UI n'est pas disponible.
         Debug.LogWarning("[SeedSelectionUI] Impossible d'ouvrir le shop (UIManager).", this);
     }
 

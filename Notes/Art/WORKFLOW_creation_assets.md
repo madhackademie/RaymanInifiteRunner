@@ -53,16 +53,27 @@ Pour **max conversion** vers la charte et **usage commercial indie** (salaire co
 
 ### 3.2 Chaîne Comfy → ChatGPT → Sprites
 
+**Icônes UI (défaut 2026-09-22) — sans Kontext :**
+
 ```
-Comfy #1 Krea (créer) ou edit direct
-Comfy #2 Kontext (modifier) · #3 Qwen si blocage     → Dump/   [R&D local]
-        ↓
-ChatGPT : IMAGE1 = sortie Comfy
+Krea T2I (masse, local)  →  tri KEEP  →  ChatGPT (style lock + ref charte)  →  Dump/  →  Sprites/
+```
+
+**Bandeau / edit lourd sur PNG existant :**
+
+```
+Kontext (edit) · Qwen si blocage (skip 1060)  →  tri  →  ChatGPT si besoin  →  Dump/
+```
+
+```
+ChatGPT : IMAGE1 = sortie Comfy (KEEP)
           IMAGE2 = ref charte projet
           « Unify STYLE only, keep layout exactly »
         ↓
 OK auteur → Sprites/                  [ligne APK / UI runtime]
 ```
+
+Détail file nuit + prompt ChatGPT : `Notes/Art/PROTOCOLE_comfy_batch_jour.md` § Pipeline icônes UI.
 
 - **Comfy seul en Sprites** : possible pour tests ; voir §4 licences.
 - **ChatGPT sortie** : CGU OpenAI — Output assigné à toi ; **inputs** = droits OK (refs projet, pas stock volé).

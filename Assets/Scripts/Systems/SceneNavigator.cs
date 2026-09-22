@@ -141,6 +141,21 @@ public class SceneNavigator : MonoBehaviour
         OnAfterSceneShown?.Invoke(sceneName);
     }
 
+    /// <summary>
+    /// Affiche <see cref="SceneId.HomeScene"/> si une autre scène de contenu est active (ex. FirstLvl).
+    /// À appeler avant un écran HUD global (Shop, Inventaire) pour ne pas laisser le gameplay visible derrière.
+    /// </summary>
+    public async Awaitable EnsureHomeSceneForGlobalHudAsync()
+    {
+        if (IsTransitioning)
+            return;
+
+        if (string.IsNullOrEmpty(CurrentScene) || CurrentScene == SceneId.HomeScene)
+            return;
+
+        await ShowScene(SceneId.HomeScene);
+    }
+
     /// <summary>Retourne true si la scène est chargée en mémoire.</summary>
     public static bool IsSceneLoaded(string sceneName)
     {

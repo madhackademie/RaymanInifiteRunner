@@ -340,17 +340,15 @@ public class NavigationHUD : MonoBehaviour
     }
 
     /// <summary>Affiche l'écran inventaire global via UIManager.</summary>
-    public void OnTabInventaireClicked()
+    public async void OnTabInventaireClicked()
     {
         if (IsSceneTransitionBlocking())
             return;
 
         SetTabsInteractable(false);
 
-        if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Inventory))
+        if (await PresentModalScreenLeavingGameplayAsync(ScreenId.Inventory, Tab.Inventaire))
         {
-            HideOtherModalScreens(ScreenId.Inventory);
-            RefreshTabVisuals(Tab.Inventaire);
             SetTabsInteractable(true);
             return;
         }
@@ -360,17 +358,15 @@ public class NavigationHUD : MonoBehaviour
     }
 
     /// <summary>Affiche l'écran shop global via UIManager.</summary>
-    public void OnTabShopClicked()
+    public async void OnTabShopClicked()
     {
         if (IsSceneTransitionBlocking())
             return;
 
         SetTabsInteractable(false);
 
-        if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.Shop))
+        if (await PresentModalScreenLeavingGameplayAsync(ScreenId.Shop, Tab.Shop))
         {
-            HideOtherModalScreens(ScreenId.Shop);
-            RefreshTabVisuals(Tab.Shop);
             SetTabsInteractable(true);
             return;
         }
@@ -379,18 +375,25 @@ public class NavigationHUD : MonoBehaviour
         SetTabsInteractable(true);
     }
 
+    /// <summary>
+    /// Ouvre le Shop depuis un flux gameplay (ex. empty state graines FirstLvl) :
+    /// quitte la scène de niveau puis affiche le Shop.
+    /// </summary>
+    public async Awaitable<bool> TryPresentShopLeavingGameplayAsync()
+    {
+        return await PresentModalScreenLeavingGameplayAsync(ScreenId.Shop, Tab.Shop);
+    }
+
     /// <summary>Affiche l'écran canaux de vente via UIManager.</summary>
-    public void OnTabSaleChannelsClicked()
+    public async void OnTabSaleChannelsClicked()
     {
         if (IsSceneTransitionBlocking())
             return;
 
         SetTabsInteractable(false);
 
-        if (UIManager.Instance != null && UIManager.Instance.TryShowScreen(ScreenId.SaleChannels))
+        if (await PresentModalScreenLeavingGameplayAsync(ScreenId.SaleChannels, Tab.SaleChannels))
         {
-            HideOtherModalScreens(ScreenId.SaleChannels);
-            RefreshTabVisuals(Tab.SaleChannels);
             SetTabsInteractable(true);
             return;
         }
@@ -1002,6 +1005,19 @@ public class NavigationHUD : MonoBehaviour
     }
 
     // ── Enums ─────────────────────────────────────────────────────────────────
+
+    private async Awaitable<bool> PresentModalScreenLeavingGameplayAsync(string screenId, Tab activeTab)
+    {
+        if (SceneNavigator.Instance != null && !SceneNavigator.Instance.IsTransitioning)
+            await SceneNavigator.Instance.EnsureHomeSceneForGlobalHudAsync();
+
+        if (UIManager.Instance == null || !UIManager.Instance.TryShowScreen(screenId))
+            return false;
+
+        HideOtherModalScreens(screenId);
+        RefreshTabVisuals(activeTab);
+        return true;
+    }
 
     private void HideGlobalPanels()
     {
