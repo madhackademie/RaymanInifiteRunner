@@ -1,5 +1,25 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-23 — Validation UI responsive shell `[P0-UI-RESPONSIVE-VALID-001]`
+
+### Décision auteur
+- **Farm / harvest / zoom caméra** : pas dans le lot validation UI responsive (caméra PC OK).
+- **Priorité lecture + playtest :** `NavigationHUD`, overlays `UIManager`, popups.
+
+### Docs
+- Note action : `Notes/Ui/NOTE_validation_ui_responsive_shell_popups.md`
+- Todo : `Notes/Todo_project.md` § « LIRE EN PRIORITÉ »
+- Lien depuis `Notes/Ui/NOTE_ui_responsive_ratios.md`
+
+### Suite
+- Playtest ratios (Device Simulator) → tableau OK/KO dans la note → factory 800×600 / Safe Area / scan `[CT-UI-RESPONSIVE-SCAN-001]` selon résultat.
+
+### Caméra farm (même jour)
+- Tâche ajoutée `[P0-FARM-CAMERA-PAN-LONGPRESS-001]` : pan **haut/bas** à valider ; geste mobile préféré = **long press sur décor non interactif** puis drag (pinch = zoom secondaire, pas pan principal).
+- Spec : `Notes/Farm/NOTE_camera_view_zoom.md` § Slice 2.
+
+---
+
 ## 2026-09-21 — Art bandeau Voisinage `[BZ-SALE-BANDEAU-VOISIN-ART-001]`
 
 ### Livré Cursor (prep Bezy)

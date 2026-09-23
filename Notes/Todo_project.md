@@ -45,6 +45,19 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★★ LIRE EN PRIORITÉ — UI responsive shell + popups `[P0-UI-RESPONSIVE-VALID-001]`
+
+**Note obligatoire :** `Notes/Ui/NOTE_validation_ui_responsive_shell_popups.md`
+
+**Décision 2026-09-23 :** farm / harvest / zoom caméra **hors scope** (déjà OK côté ressenti auteur). **À valider :** `NavigationHUD`, overlays `UIManager`, popups (`ScreenPopupHost` + prefabs).
+
+1. [ ] **Lire** la note ci-dessus (10 min).
+2. [ ] Playtest Device Simulator ou device : ratios 16:9 → 20:9 + notch — checklist § périmètre dans la note.
+3. [ ] Noter OK/KO par écran ; **pas de YAML / Bezy** tant que le tableau « Après playtest » de la note n’est pas rempli.
+4. [ ] Si KO : suivre la note (factory 800×600, Safe Area, ou thread `[CT-UI-RESPONSIVE-SCAN-001]`).
+
+Théorie : `Notes/Ui/NOTE_ui_responsive_ratios.md`.
+
 ### ★ P0 — Art bandeau Voisinage `[BZ-SALE-BANDEAU-VOISIN-ART-001]`
 
 **Objectif :** scène haie + panier en **fond plein** du bandeau Voisinage (pas vignette 80×80, pas filigrane α 0.30).  
@@ -67,6 +80,21 @@ Convention d'IDs :
 2. [x] Bezy `[BZ-FARM-CAMERA-VIEW-001]` Ph.1–2 — 2026-09-23.
 3. [x] Playtest **PC** OK 2026-09-23 (molette, pan milieu, bounds, clic gauche).
 4. [ ] Slice 2 `[P0-FARM-CAMERA-TOUCH-001]` — tactile Township (`NOTE_camera_view_zoom.md`), plus tard.
+
+### ★ CT — Pan caméra farm (haut/bas + long press décor) `[P0-FARM-CAMERA-PAN-LONGPRESS-001]`
+
+**Constat auteur (2026-09-23) :** en jeu, la caméra semble se déplacer **gauche/droite** mais **pas haut/bas** (à confirmer : clamp `BiofiltreViewBounds` au zoom actuel vs bug pan).
+
+**Décision geste mobile :** préférer **pas** le pan à deux doigts seul — **appui long** sur une zone **décor non interactive** (pas de clic plantation / pas d’UI), puis **drag** pour pan **X + Y**. Pinch 2 doigts = **zoom** optionnel (slice 2), pas le geste principal pour se déplacer.
+
+**Refs :** `Notes/Farm/NOTE_camera_view_zoom.md` § Slice 2 bis · `FarmCameraController` · `FarmCameraInput` · `FarmPointerInput` (ne pas confondre avec pose plante).
+
+**Branche :** `feature/plant-harvest-zoom` (session dédiée, après validation spec).
+
+1. [ ] Playtest : noter zoom + ratio écran quand le pan vertical est bloqué (zoom out = souvent lock Y sur le rect).
+2. [ ] Spec : collider / layer « décor pan » (sans `IPointer` farm, raycast plante ignoré) + durée long press (~400–500 ms) + slop.
+3. [ ] Cursor : `FarmCameraInput` — pan 1 doigt **après** long press sur hit décor ; conserver clic milieu PC.
+4. [ ] Playtest mobile : pan 4 directions + plantation inchangée (tap court grille).
 
 ### Backlog — Mockup popup bois `[BZ-UIKIT-POPUP-MOCK-001]` — **rework entier**
 
@@ -275,7 +303,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
 > **Priorité immédiate (prochaine session) :** playtest wallet/nav. Puis scan UI responsive (nouveau thread). Croix ExitOnly playtestée 2026-09-15.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
-> **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows par biofiltre. Bezy nest skip.  
+> **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows (`NOTE_hud_biofiltre_prefab_en_dur.md`).  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
 > Crédits Bezy : reset le **30** de chaque mois (prochain cycle : **30 septembre**). File `#13` après onglets. Wallet punch = PARK UX.
 
@@ -431,22 +459,12 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 1. [x] **[P0-FARM-GRID-PLAY-001]** Grille sans colliders + clics coordonnées + pose/récolte + pause/recall persistance — **OK auteur**
 2. [x] **[P0-FARM-PLANT-TOUCH-001]** Pose tactile — `FarmPointerInput` souris + touch — **OK** (même playtest)
 
-### ★ Prêt agent VM (nuit) — HUD slots primaire / secondaire
+### ★ HUD biofiltre world — pose auteur
 
-> Décision auteur 2026-08-29 : mockup `Assets/Art/Mocup/biofiltreInterface_1.png`.  
-> Les **étoiles existent déjà** (`UiStarSlot` / `UiStarRow`) — les **neste** dans le HUD, ne pas recréer.  
-> Deux familles **comme le modèle ★** : rangée N slots **verrouillés** (primaire N=3, secondaire N=5, GDD `[BL-GDD-007]`).  
-> HUD **world** enfant de chaque biofiltre ; **pose manuelle** (tailles différentes, pas de moule unique).  
-> Prefabs + art = **Bezy** `/prefab-ui-3phases`. Agent VM = C# + promo **uniquement** les 2 atlas slots UI Dump→Sprites (pas la cuve IBC).  
-> Prompt collable : `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`  
-> Prompts skill : `Assets/Docs/Bezi/PROMPTS_Bezi_biofiltre_hud_slots.md`
+> Mockup : `Assets/Art/Mocup/biofiltreInterface_1.png`. Procédure : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`.
 
-1. [x] **[P0-FARM-BIOHUD-001]** Cursor/VM : scripts vues + binder + `GetWorldRect` + promo art `Sprites/UI/Biofiltre/` (2026-08-29 agent VM)
-2. [x] **[BZ-FARM-BIOHUD-PRIM-001]** Bezy : slot + row `UiBiofiltrePrimarySlotRow` — **clos** 2026-08-31 (spacing HLG 4, polish optionnel)
-3. [x] **[BZ-FARM-BIOHUD-SEC-001]** Bezy : slot + row `UiBiofiltreSecondarySlotRow` — **clos** 2026-08-31 (HLG spacing 10, polish optionnel 6)
-4. [x] **[BZ-FARM-BIOHUD-HOST-001]** Bezy : `BiofiltreHud.prefab` Ph.1–3 — **clos** 2026-09-02 (sorting 0 / size 100×100 polish optionnel)
-5. [x] **Auteur / Cursor** : HUD nested + `BiofiltreHudBinder.hud` (2026-09-07)
-6. [ ] Pose manuelle rows + playtest HUD world FirstLvl — grille/clics déjà validés `[P0-FARM-GRID-PLAY-001]`
+1. [x] Scripts + prefabs + HUD nested + binder (2026-08-29 → 2026-09-07)
+2. [ ] Pose manuelle `PrimaryRow` / `StarRow` / `SecondaryRow` + playtest FirstLvl — grille/clics OK `[P0-FARM-GRID-PLAY-001]`
 
 ### ★ Biofiltre — chantier bed skin annulé (contexte, 2026-08-29)
 
@@ -891,7 +909,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [BL-GDD-004] [OPTIONNEL] Collecter 2-3 références UI et noter ce qui est repris/évité.
 - [ ] [BL-GDD-005] Progression système aquaponique par scène (`FirstLvl+`) — spec `SPEC_progression_systeme_aquaponique_par_niveau.md` (panneau onglets, points, anti-aléas).
 - [ ] [BL-GDD-006] Prestige / génération par système — spec `Notes/GDD/SPEC_prestige_generation_systemes.md` (portes biofiltre ★3 **ou** ★5 ; grille vide ; G1 +5 % croissance ; G2 media +5 % qty). **Pas** un wipe global.
-- [ ] [BL-GDD-007] Slots & shields biofiltre — spec `Notes/GDD/SPEC_biofiltre_slots_shields.md` (5 secondaires, 3 primaires ; anti-slug 4 niv. ; serre voile / bâche bulles / géodésique ; monnaie paliers TBD : prestige / ★ / or). HUD world V0 (vues + prefabs Bezy, pas le métier prestige) : `[P0-FARM-BIOHUD-001]` / `Notes/Farm/PROMPT_agent_vm_biofiltre_hud_slots.md`.
+- [ ] [BL-GDD-007] Slots & shields biofiltre — spec `Notes/GDD/SPEC_biofiltre_slots_shields.md` (5 secondaires, 3 primaires ; anti-slug 4 niv. ; serre voile / bâche bulles / géodésique ; monnaie paliers TBD : prestige / ★ / or). HUD world V0 (vues + prefabs, pas le métier prestige) : `NOTE_hud_biofiltre_prefab_en_dur.md`.
 - [ ] [BL-GDD-008] Atelier craft aquaponique + quêtes livraison — spec `Notes/GDD/SPEC_craft_atelier_aquaponique.md` (bacs DWC particulier/pro, `CraftService`, `ScreenId.Craft` ; cuisine phase 2). Branche cible : `feature/craft-aquaponic-workshop`.
 
 ### Workflow / documentation

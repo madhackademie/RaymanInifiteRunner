@@ -10,10 +10,9 @@
 
 ## Priorité immédiate (file courante)
 
-| Ordre | Task ID | Phase | Prefab / cible | Prompt `@` |
-|------|---------|-------|----------------|------------|
-| 1 | `[BZ-FARM-HARVEST-READY-VFX-002]` | 5 | `HarvestReadyFx.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_harvest_ready_vfx.md` |
-| 2 | `[BZ-TAB-SPRITES-001]` | TBD | `NavigationHUD` | `Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md` |
+| Task ID | Phase | Notes |
+|---------|-------|--------|
+*Vide — `[BZ-FARM-CAMERA-TOUCH-ZOOM-001]` clos 2026-09-23 (Ph.2 Inspector déjà OK).*
 
 Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.
 
@@ -27,9 +26,9 @@ Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.
 
 ---
 
-## Farm / caméra
+## Farm / caméra + VFX
 
-**`[BZ-FARM-CAMERA-VIEW-001]`** — clos 2026-09-23 (Bezy Ph.1–2 + playtest). Réf. `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md` · `Notes/Farm/NOTE_camera_view_zoom.md` (slice tactile = plus tard).
+**`[BZ-FARM-CAMERA-VIEW-001]`** — clos 2026-09-23. **`[BZ-FARM-HARVEST-READY-VFX-002]`** — clos 2026-09-23 (sparkles récolte, Ph.5–5f Bezy).
 
 ---
 

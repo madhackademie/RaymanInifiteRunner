@@ -1,6 +1,7 @@
 # Prompts Bezy — sprites onglets HUD `[BZ-TAB-SPRITES-001]`
 
-**Statut :** **pivot 2026-09-10** — mockup zoom actif + glyphes simples (`Notes/Ui/SPEC_nav_onglets_zoom_actif.md`). Anciens pilotes iso = référence hiérarchie seulement ; **nouvelle passe Bezy** après promo sprites H-nav mockup.
+**Statut :** **CLOS playtest 2026-09-23** — HUD + 5 onglets validés auteur.  
+**Historique :** **pivot 2026-09-10** — mockup zoom actif + glyphes simples (`Notes/Ui/SPEC_nav_onglets_zoom_actif.md`). Anciens pilotes iso = référence hiérarchie seulement ; **nouvelle passe Bezy** après promo sprites H-nav mockup.
 
 ### Régression connue (2026-09-09)
 
@@ -348,8 +349,8 @@ Save. List changes. STOP.
 - [x] `TabAventures` — sprite + cadre
 - [x] `TabInventaire` — sprite + cadre
 - [x] `TabShop` — sprite + cadre
-- [ ] `TabVente` — sprite + cadre
+- [x] `TabVente` — sprite + cadre (playtest 2026-09-23)
+- [x] Playtest navigation 5 onglets (2026-09-23)
 - [ ] Variantes tab 128² — `Notes/Art/PROMPT_generation_icones.md` § **Vague H-nav** (H-nav-1 → 4)
 - [ ] Trim sprite par onglet (lisibilité) — ou remplacer par H-nav après promo
-- [ ] Playtest navigation 4 onglets
 - [ ] `[P0-NAV-WALLET-REG-001]` restaurer wallet barre nav

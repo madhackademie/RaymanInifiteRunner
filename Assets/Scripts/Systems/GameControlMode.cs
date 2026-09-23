@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 /// <summary>
 /// Détection hybride PC / tactile pour l'UI (overlays virtuels, hints).
-/// Ne remplace pas la lecture gameplay — voir FarmPointerInput vs InputAction runner.
+/// Ne remplace pas la lecture gameplay — voir FarmPointerInput vs InputAction (map Player).
 /// </summary>
 public static class GameControlMode
 {
@@ -15,7 +15,7 @@ public static class GameControlMode
         Unknown
     }
 
-    /// <summary>Vrai si l'UI devrait proposer des contrôles à l'écran (runner, etc.).</summary>
+    /// <summary>Vrai si l'UI devrait proposer des contrôles à l'écran (mobile / tactile).</summary>
     public static bool PrefersTouchUi => ResolveKind() == ControlKind.Touch;
 
     public static ControlKind CurrentKind => ResolveKind();

@@ -1,8 +1,11 @@
 # Note théorique — UI responsive (ratios / tailles d’écran)
 
 **Création :** 2026-09-16  
-**Statut :** brief — **pas d’implémentation dans cette session**  
-**Prochaine session (nouveau thread) :** `[CT-UI-RESPONSIVE-SCAN-001]` scanner les UI, classer déjà-responsive / à adapter / pixels verrouillés.  
+**Statut :** brief théorique — implémentation **après** playtest shell  
+
+**Action prioritaire auteur (2026-09-23) :** lire et exécuter **`Notes/Ui/NOTE_validation_ui_responsive_shell_popups.md`** — `[P0-UI-RESPONSIVE-VALID-001]` (NavigationHUD + popups ; **farm/zoom harvest hors scope**).
+
+**Ensuite :** `[CT-UI-RESPONSIVE-SCAN-001]` — scanner les UI, classer déjà-responsive / à adapter / pixels verrouillés.  
 **Déclencheur :** nav 140 + `WalletWidget` (offsets canvas fixes, pas liés à `NavBarContainer`).
 
 Playtest HUD/wallet **avant** ce scan : `[P0-INV-WALLET-PLAY-001]`.

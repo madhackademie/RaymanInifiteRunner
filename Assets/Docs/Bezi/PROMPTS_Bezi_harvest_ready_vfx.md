@@ -148,6 +148,7 @@ Save. Confirm HarvestReadyAnchor starts DISABLED. List hierarchy. STOP.
 
 ## Phase 5 — Polish lisibilité (particules plus grosses) `[BZ-FARM-HARVEST-READY-VFX-002]`
 
+**Statut :** **CLOS playtest 2026-09-23** (Ph.5–5f Bezy).  
 **Brief auteur 2026-09-23 :** sparkle visible mais **trop timide** (Seedling OK faible ; Mature souvent invisible). **Bezy = propriétaire** du prefab VFX (pas Cursor).
 
 **Prefab Mode :** `Assets/Prefabs/World/VFX/HarvestReadyFx.prefab` uniquement.

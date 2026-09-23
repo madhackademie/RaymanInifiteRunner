@@ -69,6 +69,10 @@ public static class FarmCameraInput
             if (!touch.isInProgress)
                 continue;
 
+            int touchId = touch.touchId.ReadValue();
+            if (FarmPointerInput.IsOverUi(touchId))
+                return false;
+
             if (count == 0)
                 first = touch.position.ReadValue();
             else

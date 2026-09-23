@@ -4,6 +4,8 @@
 **Branche :** `feature/plant-harvest-zoom` (nouvelle, depuis `main`, 2026-09-21)  
 **Rect auteur :** `BiofiltreViewBounds` (vue défaut + zoom out max). La grille n’est pas recalculée.
 
+**Scènes :** molette / pan / pinch = **uniquement** les scènes de contenu ferme (ex. `FirstLvl`). Pas hub (`HomeScene`), pas runner, pas caméra shell UI. `FarmCameraController` sur la Main Camera de la scène ferme seulement.
+
 ## Slice 1 — PC (fine tuning)
 
 Entrées :
@@ -15,24 +17,44 @@ Bornes : frustum clampé dans le rect orange. `enableTouchCamera = false` (pinch
 
 Câblage Bezy : `PROMPTS_Bezi_farm_camera_view.md` Ph.1–2.
 
-## Slice 2 — tactile façon Township (après PC OK)
+## Slice 2 — tactile mobile (après PC OK)
 
-Township / Hay Day : la carte se **prend** au doigt ; planter est un **mode**, pas le geste par défaut.
+**Ticket pan décor :** `[P0-FARM-CAMERA-PAN-LONGPRESS-001]`  
+**Constat 2026-09-23 :** pan perçu **horizontal seulement** — vérifier clamp `FarmCameraViewMath` (zoom out = centre verrouillé sur un axe) avant tout code.
+
+### Option retenue par l’auteur — long press sur décor (prioritaire)
+
+Plus simple qu’un pan systématique au **drag 1 doigt** ou qu’un **pan à deux doigts** :
+
+| Étape | Comportement |
+|-------|----------------|
+| Tap court sur grille / plante | Inchangé — plantation, récolte, IBC |
+| **Long press** (~400–500 ms) sur **décor non activable** (haie, sol hors cellules, fond IBC sans hit farm) | Entre en mode **pan caméra** |
+| Drag pendant le hold | Pan **X et Y**, clampé `BiofiltreViewBounds` |
+| Relâcher | Fin pan ; tap court suivant = jeu normal |
+| Pinch 2 doigts | **Zoom** seulement (option slice 2 — pas le geste principal pour se déplacer) |
+
+Implémentation cible :
+- Colliders ou layer dédié **sans** handler plantation (`FarmPointerInput` ignore ou filtre « décor pan »).
+- Pas d’UI overlay sous le doigt (`IsOverUi`).
+- C# : étendre `FarmCameraInput` + orchestration avec `FarmCameraController` (Cursor).
+
+### Option Township (doc historique — non prioritaire)
+
+Township / Hay Day : drag 1 doigt = pan partout hors mode plante. Gardé en référence si le long press décor est trop restrictif.
 
 | Geste | Hors plantation | Mode plantation |
 |-------|-----------------|-----------------|
 | Tap court (déplacement &lt; slop ~12 px) | Clic cellule / IBC | — |
-| 1 doigt drag | **Pan** caméra | Ghost sur la grille ; **pose au relâche** (`[P0-FARM-MOBILE-PLANT-RELEASE-001]`) |
-| Pinch 2 doigts | Zoom vers le milieu + pan du centroïde | Idem (zoom reste dispo) |
-| 2 doigts drag sans pinch | Pan | Pan (le 1 doigt reste au ghost) |
+| 1 doigt drag | Pan caméra | Ghost grille ; pose au relâche |
+| Pinch 2 doigts | Zoom (+ évent. pan centroïde) | Zoom |
 
-Règles :
-- Slop : en dessous = tap (grille) ; au-dessus = pan. Sinon chaque balayage plante.
-- Pas de pan au **touch down** immédiat.
-- Inertie pan : optionnelle, légère, clampée au rect — pas obligatoire V1 tactile.
-- Overlay UI (croix, popups) : ignorer zoom/pan.
+Règles Township :
+- Slop : en dessous = tap ; au-dessus = pan.
+- Pas de pan au touch down immédiat.
+- Overlay UI : ignorer zoom/pan.
 
-PC ne change pas en slice 2 : LMB reste clic, pas drag-pan.
+PC inchangé : molette + **clic milieu** pan ; LMB = clic grille, pas drag-pan.
 
 ## Hors scope
 

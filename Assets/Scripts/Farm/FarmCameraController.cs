@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// Caméra farm : cadrage sur <see cref="BiofiltreViewBounds"/>, zoom borné, pan clampé.
-/// Slice 1 PC : molette + clic milieu. Tactile Township : <c>enableTouchCamera</c>.
+/// Caméra **scène ferme uniquement** (ex. FirstLvl) : cadrage sur <see cref="BiofiltreViewBounds"/>, zoom borné, pan clampé.
+/// Pas sur hub / runner / shell UI — placer ce composant seulement sur la Main Camera du contenu biofiltre.
+/// Slice 1 PC : molette + clic milieu. Tactile : <c>enableTouchCamera</c> (pinch 2 doigts).
 /// </summary>
 [RequireComponent(typeof(Camera))]
 public class FarmCameraController : MonoBehaviour
@@ -27,6 +28,12 @@ public class FarmCameraController : MonoBehaviour
     [Tooltip("Slice 2 Township. Slice 1 PC = off (molette + clic milieu seulement).")]
     [SerializeField] private bool enableTouchCamera = false;
 
+    [Tooltip("Active enableTouchCamera automatiquement sur plateforme mobile (Start).")]
+    [SerializeField] private bool autoEnableTouchOnMobile = true;
+
+    [Tooltip("Puissance appliquée au ratio de pinch (1 = comportement inchangé).")]
+    [SerializeField] [Range(0.25f, 2f)] private float pinchZoomStrength = 1f;
+
     private bool pinchActive;
     private float lastPinchDistance;
     private bool panAnchored;
@@ -48,6 +55,9 @@ public class FarmCameraController : MonoBehaviour
     {
         if (!TryResolve())
             return;
+
+        if (autoEnableTouchOnMobile && Application.isMobilePlatform)
+            enableTouchCamera = true;
 
         if (frameOnStart)
             FrameToBounds();
@@ -121,7 +131,10 @@ public class FarmCameraController : MonoBehaviour
         }
 
         if (pinchActive && lastPinchDistance > 1f)
-            ApplyZoom(lastPinchDistance / distance, midpoint);
+        {
+            float ratio = lastPinchDistance / distance;
+            ApplyZoom(Mathf.Pow(ratio, pinchZoomStrength), midpoint);
+        }
 
         lastPinchDistance = distance;
         pinchActive = true;

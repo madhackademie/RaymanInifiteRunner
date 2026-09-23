@@ -43,8 +43,6 @@ Biofiltre
 - Cellules : toujours `GridManager.GridToWorldCenter` dans `BiofiltreGridVisualizer`.
 - Gizmos cyan grille **seulement** si la racine `Biofiltre` est sélectionnée.
 
-**Bezy nest `[BZ-FARM-BIOHUD-NEST-001]` :** skip — Cursor a nesté. Prompts conservés au cas où.
-
 ---
 
 ## Travail auteur (Prefab Mode)
