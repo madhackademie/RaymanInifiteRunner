@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: a6b538fc9a7774d4299f656bc360279f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7446313928641596953
+    second: Bandeau_vente_voisin_0
+  - first:
+      213: -1218027915085607574
+    second: Bandeau_vente_voisin_1
+  - first:
+      213: -6618616387498796990
+    second: Bandeau_vente_voisin_2
+  - first:
+      213: 3458485665594121036
+    second: Bandeau_vente_voisin_3
+  - first:
+      213: 2042795154122956641
+    second: Bandeau_vente_voisin_4
+  - first:
+      213: 4564163226510275517
+    second: Bandeau_vente_voisin_5
+  - first:
+      213: 6959136713528900608
+    second: Bandeau_vente_voisin_6
+  - first:
+      213: 7315899750840996662
+    second: Bandeau_vente_voisin_7
+  - first:
+      213: -279533077145582044
+    second: Bandeau_vente_voisin_8
+  - first:
+      213: 4957303214609319515
+    second: Bandeau_vente_voisin_9
+  - first:
+      213: 548263015537617465
+    second: Bandeau_vente_voisin_10
+  - first:
+      213: -7776897115054226826
+    second: Bandeau_vente_voisin_11
+  - first:
+      213: -5664098436683494315
+    second: Bandeau_vente_voisin_12
+  - first:
+      213: 6627515694857713616
+    second: Bandeau_vente_voisin_13
+  - first:
+      213: 609990401068799364
+    second: Bandeau_vente_voisin_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 678
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91ec9bad01f965760800000000000000
+      internalID: 7446313928641596953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_1
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 699
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6d00da8012b81fe0800000000000000
+      internalID: -1218027915085607574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_2
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 668
+        width: 156
+        height: 190
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2481e866673f524a0800000000000000
+      internalID: -6618616387498796990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_3
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 630
+        width: 76
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4b948693620fff20800000000000000
+      internalID: 3458485665594121036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_4
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 584
+        width: 306
+        height: 283
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16f53669e57795c10800000000000000
+      internalID: 2042795154122956641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_5
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 553
+        width: 243
+        height: 201
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db3bb05c54a275f30800000000000000
+      internalID: 4564163226510275517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_6
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 644
+        width: 124
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00cf44948f1d39060800000000000000
+      internalID: 6959136713528900608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_7
+      rect:
+        serializedVersion: 2
+        x: 1193
+        y: 586
+        width: 207
+        height: 184
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6331f35ef0c478560800000000000000
+      internalID: 7315899750840996662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_8
+      rect:
+        serializedVersion: 2
+        x: 1071
+        y: 651
+        width: 11
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42604c9b526ee1cf0800000000000000
+      internalID: -279533077145582044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_9
+      rect:
+        serializedVersion: 2
+        x: 1097
+        y: 646
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b56c0be3201ebc440800000000000000
+      internalID: 4957303214609319515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_10
+      rect:
+        serializedVersion: 2
+        x: 1451
+        y: 563
+        width: 145
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93aaa9cce42db9700800000000000000
+      internalID: 548263015537617465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_11
+      rect:
+        serializedVersion: 2
+        x: 1628
+        y: 571
+        width: 103
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 672ce621749e21490800000000000000
+      internalID: -7776897115054226826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_12
+      rect:
+        serializedVersion: 2
+        x: 861
+        y: 590
+        width: 13
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55c82a44b741561b0800000000000000
+      internalID: -5664098436683494315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_13
+      rect:
+        serializedVersion: 2
+        x: 1613
+        y: 574
+        width: 19
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d7f15f096aa9fb50800000000000000
+      internalID: 6627515694857713616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bandeau_vente_voisin_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1774
+        height: 541
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4859a14b90f177800800000000000000
+      internalID: 609990401068799364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Bandeau_vente_voisin_0: 7446313928641596953
+      Bandeau_vente_voisin_1: -1218027915085607574
+      Bandeau_vente_voisin_10: 548263015537617465
+      Bandeau_vente_voisin_11: -7776897115054226826
+      Bandeau_vente_voisin_12: -5664098436683494315
+      Bandeau_vente_voisin_13: 6627515694857713616
+      Bandeau_vente_voisin_14: 609990401068799364
+      Bandeau_vente_voisin_2: -6618616387498796990
+      Bandeau_vente_voisin_3: 3458485665594121036
+      Bandeau_vente_voisin_4: 2042795154122956641
+      Bandeau_vente_voisin_5: 4564163226510275517
+      Bandeau_vente_voisin_6: 6959136713528900608
+      Bandeau_vente_voisin_7: 7315899750840996662
+      Bandeau_vente_voisin_8: -279533077145582044
+      Bandeau_vente_voisin_9: 4957303214609319515
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

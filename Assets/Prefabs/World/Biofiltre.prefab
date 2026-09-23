@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 7120944831028475613}
   - component: {fileID: 8137672529843776454}
   - component: {fileID: 9123456789012345678}
+  - component: {fileID: 1524372104897119387}
   m_Layer: 0
   m_Name: Biofiltre
   m_TagString: Untagged
@@ -282,19 +283,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmGridPointerInput
   worldCamera: {fileID: 0}
---- !u!114 &9123456789012345678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7776529302815179675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b5f3a0d9c2e4156b7f8a091b2c3d4e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BiofiltreLayoutBinder
-  layoutDefinition: {fileID: 11400000, guid: 9c6d8e2f1a0b4c5d6e7f8091a2b3c4e6, type: 2}
 --- !u!114 &7120944831028475613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +320,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BiofiltreHudBinder
   hud: {fileID: 8654077508231771076}
   gridManager: {fileID: 0}
+--- !u!114 &9123456789012345678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776529302815179675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b5f3a0d9c2e4156b7f8a091b2c3d4e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BiofiltreLayoutBinder
+  layoutDefinition: {fileID: 11400000, guid: 9c6d8e2f1a0b4c5d6e7f8091a2b3c4e6, type: 2}
+--- !u!114 &1524372104897119387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7776529302815179675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c1a9e2b4d6f4081a3b5c7d9e0f12345, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BiofiltreViewBounds
+  localCenter: {x: 2.7649, y: -3.0182076}
+  localSize: {x: 7.4929967, y: 9.02626}
 --- !u!1001 &8011223344556677881
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -117,7 +117,7 @@ STYLE LOCK (strict):
 - NO zombies, NO gore, NO grim palette.
 - Each plant sits on a tiny mound of hydroponic clay pebbles (grow media on an IBC deck), NOT flat Township dirt at ground level.
 - Transparent background ONLY. NO black, NO white, NO floor tile, NO grid, NO text.
-- ALPHA PERF (strict): hard clean silhouette on every frame. NO outer glow, NO fog, NO haze, NO bloom, NO soft aura, NO mist around the lettuce. NO soft transparent drop shadow on the background. Minimal semi-transparent pixels — at most 1-2px anti-alias on leaf edges. Shade with opaque paint inside the sprite, not with transparent halos outside.
+- EDGE LOCK / ALPHA PERF (strict): pure black (#000000) outer outline on every frame. NO anti-aliasing — hard pixel-clean alpha edge, no gray fringe. NO outer glow, NO fog, NO haze, NO bloom, NO soft aura, NO mist. NO soft transparent drop shadow. Shade with opaque paint inside the sprite, not with transparent halos outside.
 
 SPRITE SHEET OUTPUT (strict):
 - Exactly 7 equal square frames, ONE horizontal row, left to right, 3584 x 512 total (512 per frame).

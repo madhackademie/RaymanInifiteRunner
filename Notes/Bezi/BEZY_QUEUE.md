@@ -25,31 +25,27 @@
 
 | Statut | Task ID | Phase | Notes |
 |--------|---------|-------|-------|
-| [ ] | `[BZ-INV-DROP-CLOSE-POS-001]` | 1 | Croix popup drop |
-| [ ] | `[BZ-INV-TABS-003]` | 1 | Onglet Récoltes |
-| [ ] | `[BZ-HUD-CLOSE-STRIP-001]` | 1→3 | Supprimer CloseButton legacy |
-| [ ] | `[BZ-FEATURES-HUB-WIP-COPY-001]` | 1 | Copy WIP hub |
-| [ ] | `[BZ-SHOP-FILIGRANE-001]` | 2 | Disable Image SlotsGrid |
-| [ ] | `[BZ-UIKIT-POPUP-MOCK-001]` | 3 | Tailles mockup bois |
-| [ ] | `[BZ-INV-WALLET-NAV-BAND-002]` | 2 | Y -100 + sorting 60 |
-| [ ] | `[BZ-FARM-CAMERA-VIEW-001]` | 1→2 | Branche feature — Cursor scripts d’abord |
 | [ ] | `[BZ-TAB-SPRITES-001]` | TBD | TabVente dernier |
 | [ ] | `[BZ-FARM-HARVEST-READY-VFX-002]` | 5 | Particules plus grosses |
+
+### Backlog — rework (hors playtest file)
+
+| Task ID | Notes |
+|---------|--------|
+| `[BZ-UIKIT-POPUP-MOCK-001]` | Mockup `ShopItemPopup_WoodMockup` **à refaire entièrement** (2026-09-23 : base visible, qualité insuffisante). Pas runtime. Reprendre Ph.1→3 ou nouveau brief auteur avant Bezy. |
 
 ---
 
 ## Bloc de lancement (copier dans Bezy)
 
-**Croix popup drop `[BZ-INV-DROP-CLOSE-POS-001]`** — Prefab Mode `Assets/Prefabs/Ui/ShopItemPopup.prefab` :
+**Sparkle récolte `[BZ-FARM-HARVEST-READY-VFX-002]`** — Prefab Mode `Assets/Prefabs/World/VFX/HarvestReadyFx.prefab` :
 
 ```
-/prefab-ui-3phases
-Task ID: [BZ-INV-DROP-CLOSE-POS-001]
-Prefab: Assets/Prefabs/Ui/ShopItemPopup.prefab
-Phase: 1
+@Assets/Docs/Bezi/PROMPTS_Bezi_harvest_ready_vfx.md
+[BZ-FARM-HARVEST-READY-VFX-002] Phase 5 ONLY — harvest sparkle readability. STOP.
 ```
 
-Puis `@Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_close_topright.md` (coller le bloc Phase 1). Save. List. STOP.
+Puis **nouveau thread** Phase 5b (C# tri) : même `@` + bloc Phase 5b + `@Notes/Bezi/RULES_bezy_code.md`.
 
 **Halo inventaire `[BZ-INV-HALO-SCALE-001]`** — Prefab Mode `Assets/Prefabs/Ui/InventoryScreen.prefab` (pas la scène) :
 
@@ -61,27 +57,6 @@ Phase: 1
 ```
 
 Puis `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` (coller le bloc Phase 1). Wait success. Phase 2 puis 3, **nouveau thread** à chaque fois.
-
-**Placeholder Hub Plus `[BZ-FEATURES-HUB-WIP-COPY-001]`** — d’abord Move Dump → `Sprites/UI/FeaturesHub/IconeHub_ComingSoon.png` (Sprite Mode **Single**), puis Prefab Mode `FeaturesHubScreen.prefab` :
-
-```
-@Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_wip_copy.md
-[BZ-FEATURES-HUB-WIP-COPY-001] Execute PHASE 1 only. STOP.
-```
-
-Prefab Mode **`Assets/Prefabs/Ui/InventoryScreen.prefab`**, puis **d’abord** l’ordre onglets :
-
-```
-@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_recoltes_second.md
-[BZ-INV-TABS-003] Reorder harvest tab ONLY. STOP.
-```
-
-Ensuite Close HUD (Ph.1 même prefab, **nouveau thread**) :
-
-```
-@Assets/Docs/Bezi/PROMPTS_Bezi_hud_screenroot_strip_close.md
-[BZ-HUD-CLOSE-STRIP-001] Phase 1 ONLY. STOP.
-```
 
 **Modales Bottom 260 `[BZ-HUD-MODAL-SAFE-BOTTOM-001]` :** **CLOS Bezy + Cursor** 2026-09-16 — Shop Ph.1–2, Hub 3a, Vente 3b (extras warp retirés), Inventaire 3c. `UIManager.NavBarHeight = 260f`. Pas FirstLvl.
 
@@ -102,6 +77,13 @@ Ensuite Close HUD (Ph.1 même prefab, **nouveau thread**) :
 
 | Task ID | Prefab | Phase | Date | Commit / note |
 |---------|--------|-------|------|----------------|
+| `[BZ-FARM-CAMERA-VIEW-001]` | `Biofiltre.prefab` + `FirstLvl` | 1→2 | 2026-09-23 | Bezy + playtest OK — bounds + FarmCameraController |
+| `[BZ-INV-WALLET-NAV-BAND-002]` | `InventoryScreen.prefab` | 2 | 2026-09-23 | Playtest OK — chip devant nav, Y -40, sorting 60 |
+| `[BZ-SHOP-FILIGRANE-001]` | `ShopScreen.prefab` | 1→2 | 2026-09-23 | Playtest OK — filigrane + sans voile SlotsGrid |
+| `[BZ-FEATURES-HUB-WIP-COPY-001]` | `FeaturesHubScreen.prefab` | 1 | 2026-09-23 | Playtest OK — En construction / Bientôt disponible |
+| `[BZ-HUD-CLOSE-STRIP-001]` | Inventaire · Shop · Vente | 1→3 | 2026-09-23 | Playtest OK — plus de CloseButton écran |
+| `[BZ-INV-TABS-003]` | `InventoryScreen.prefab` | 1 | 2026-09-23 | Playtest OK — ordre Tout · Récoltes · Graines · Consommables |
+| `[BZ-INV-DROP-CLOSE-POS-001]` | `ShopItemPopup.prefab` | 1 | 2026-09-23 | Playtest OK — retiré de la file |
 | `[BZ-INV-WALLET-NAV-BAND-001]` | `InventoryScreen.prefab` | 1 | 2026-09-16 | chip Y -190 ; WalletBar 0 ; ScrollView -16 |
 | `[BZ-NAV-BAR-HEIGHT-001]` | `NavigationHUD.unity` | scène | 2026-09-16 | fond 140 only ; tabs / Icon / frame inchangés |
 | `[BZ-AP-HUD-SCALE-001]` | `ActionPointsHudWidget` + `NavigationHUD` | 1–3 | 2026-09-10 | 480×120, fonts ×2, instance scène OK — playtest auteur |

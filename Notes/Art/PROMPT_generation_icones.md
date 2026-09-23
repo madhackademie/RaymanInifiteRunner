@@ -1,11 +1,13 @@
 # Backlog art — création (Dump) → validation → Sprites
 
-**Création :** 2026-08-31 · **MAJ :** 2026-09-19
+**Création :** 2026-08-31 · **MAJ :** 2026-09-23
 
 > **Workflow complet (outils, Comfy Krea/Kontext/Qwen → ChatGPT, licences, UI kit) :** `Notes/Art/WORKFLOW_creation_assets.md` · stack Comfy : `Notes/Art/GUIDE_comfy_flux_models_local.md`  
 > **Direction monde (2026-09-08) :** vue **iso 2:1** + **cartoon** (polish Zombie Castaways, sans thème zombie). Prompt : `Notes/Art/PROMPT_assets_monde_iso.md`. Icônes UI (§1) restent bois rustique.  
 **Source unique** de tout l’art à produire (icônes UI, stades monde, IBC, fishtank, bandeaux…).  
 **Usage :** 1 asset / jour (~15 min) — générer → Dump → **après OK auteur** copier dans le dossier `Sprites/` de la ligne.
+
+**Contour (2026-09-23) :** tout prompt (§1 ou prompts spécialisés plus bas) doit inclure **EDGE_LOCK** — bordure **noire nette**, **pas d’anti-aliasing** sur la silhouette. Snippet EN : `Notes/Art/WORKFLOW_creation_assets.md` §3.1.
 
 ## Flux (toujours le même)
 
@@ -56,14 +58,17 @@ Le **§1** est le prompt **icône UI** (fond blanc). Les lignes monde (vague W) 
 Remplacer uniquement `[VOTRE OBJET ICI]` :
 
 ```
-A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors, isolated on a white background. Made with thick rustic light brown wooden textures, thick outlines, smooth shading, cozy farming game aesthetic, high quality UI asset.
+A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors, isolated on a white background. Made with thick rustic light brown wooden textures, thick pure black outer outline, hard edges with NO anti-aliasing on the silhouette, smooth cel shading inside, cozy farming game aesthetic, high quality UI asset. EDGE LOCK: no gray semi-transparent fringe on alpha cutout, no outer glow.
 ```
 
-**Exemple :** `A 2D casual mobile game icon of a packet of lettuce seeds, cartoon style, vibrant colors, isolated on a white background. Made with thick rustic light brown wooden textures, thick outlines, smooth shading, cozy farming game aesthetic, high quality UI asset.`
+**Exemple :** même phrase avec `a packet of lettuce seeds`.
+
+**Snippet EDGE_LOCK seul (ajouter si le générateur oublie le contour) :** voir bloc EN dans `Notes/Art/WORKFLOW_creation_assets.md` §3.1.
 
 ### Consignes de remplissage
 
 - Objet **un seul**, lisible à **64–96 px** (inventaire mobile).
+- **Contour :** bordure **noire nette**, **sans anti-aliasing** sur la découpe (évite halo sur HUD sombre — cf. `[P0-FARM-SPRITE-ALPHA-001]`).
 - Nommer le fichier : `Icone_[Objet]_[YYYYMMDD].png` (ex. `Icone_GrainesAntiSlug_20260831.png`).
 - Déposer dans le sous-dossier Dump de la famille (tableau §3).
 - Fond blanc isolé = prévu : on détourera / importera en sprite plus tard. Ne pas coller le PNG brut sur un prefab.
@@ -75,7 +80,7 @@ A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors
 | Paquet / sachet | `packaged as a small seed packet with a simple label` |
 | Consommable (dose) | `shown as a small pouch or bottle, not a landscape scene` |
 | Structure (serre, bac) | `isometric 3/4 view of the object only, no environment` |
-| Portrait canal vente | **ne pas** utiliser ce prompt — ce sont des illustrations bandeau, pas des icônes |
+| Portrait canal vente | **ne pas** utiliser ce prompt — voir **`Notes/Art/PROMPT_bandeaux_vente_generique.md`** (ratio ~6:1, 2048×360) |
 
 ---
 
@@ -474,7 +479,7 @@ Même fichier, **pas** le prompt icône §1 par défaut. Détail pose plante : `
 | W1 | Cuve IBC dessus losange 2:1 | brief iso grille (pas icône) | `Dump/ElementProd/Biofiltre/` | `Sprites/Farm/Biofiltre/` | promu 2026-09-05 (2e passe 2:1) | `IbcIso.png` |
 | W2 | Stades laitue monde (regen iso) | `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md` (charte `NOTE_graphique.md`) | `Dump/Plantes/Laitue/` | `Sprites/Plantes/Laitue/` | à générer | |
 | W3 | Stades tomate monde (iso 3/4) | même charte que W2 — 7 stades grille | `Dump/Plantes/Tomate/` | `Sprites/Plantes/Tomate/` | à générer | |
-| W4 | Illustrations bandeaux vente | scène, pas icon | `Dump/Ui/` | `Sprites/UI/SaleChannels/` | **Voisinage promu** 2026-09-21 ; bandoulière / vélo à générer | `BandeauVente_Voisinage.png` |
+| W4 | Illustrations bandeaux vente | `PROMPT_bandeaux_vente_generique.md` | `Dump/Ui/` | `Sprites/UI/SaleChannels/` | **Voisinage promu** 2026-09-21 ; bandoulière / vélo à générer | `BandeauVente_Voisinage.png` |
 | HUB | Bandeau + fanion hub Plus | `Notes/Art/PROMPT_features_hub_bandeau_flag.md` | `Dump/Ui/FeaturesHub/` | `Sprites/UI/FeaturesHub/` | à générer | B1 chrome 9s + F0 neutre puis F1–F6 |
 | W5 | Fishtank / poissons jouables | ~lvl 10 | `Dump/Poisson/` | `Sprites/Farm/Poisson/` | à générer | |
 

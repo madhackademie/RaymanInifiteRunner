@@ -6,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class HarvestReadyFxAnchor : MonoBehaviour
 {
+    private const int SortingOrderBoostVsPlant = 2;
+
     [Tooltip("Si vide, récupère tous les ParticleSystem enfants (incl. inactifs).")]
     [SerializeField] private ParticleSystem[] sparkleSystems;
 
@@ -24,7 +26,40 @@ public class HarvestReadyFxAnchor : MonoBehaviour
             gameObject.SetActive(true);
 
         CacheSystemsIfNeeded();
+        SyncSortingWithPlant(FindAncestorPlantRenderer());
         PlaySystems();
+    }
+
+    /// <summary>Sparkles au-dessus du sprite plante (même couche, order + boost).</summary>
+    public void SyncSortingWithPlant(SpriteRenderer plantRenderer)
+    {
+        if (plantRenderer == null)
+            return;
+
+        ParticleSystemRenderer[] renderers = GetComponentsInChildren<ParticleSystemRenderer>(true);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            ParticleSystemRenderer particleRenderer = renderers[i];
+            if (particleRenderer == null)
+                continue;
+
+            particleRenderer.sortingLayerID = plantRenderer.sortingLayerID;
+            particleRenderer.sortingOrder = plantRenderer.sortingOrder + SortingOrderBoostVsPlant;
+        }
+    }
+
+    private SpriteRenderer FindAncestorPlantRenderer()
+    {
+        Transform ancestor = transform.parent;
+        while (ancestor != null)
+        {
+            if (ancestor.TryGetComponent(out SpriteRenderer plantRenderer))
+                return plantRenderer;
+
+            ancestor = ancestor.parent;
+        }
+
+        return null;
     }
 
     private void CacheSystemsIfNeeded()

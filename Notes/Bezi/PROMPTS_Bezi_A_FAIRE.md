@@ -1,6 +1,6 @@
 # Bezy — prompts encore à faire (index unique)
 
-**MAJ :** 2026-09-22 — les anciens `Notes/Ui/PROMPTS_Bezi_*.md` sont supprimés (doublons / livrés).  
+**MAJ :** 2026-09-23 — les anciens `Notes/Ui/PROMPTS_Bezi_*.md` sont supprimés (doublons / livrés).  
 **Texte complet des prompts :** `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` (fichier `@` dans Unity).  
 **Statut opérationnel :** cocher dans `Notes/Bezi/BEZY_QUEUE.md` après chaque phase.
 
@@ -12,35 +12,24 @@
 
 | Ordre | Task ID | Phase | Prefab / cible | Prompt `@` |
 |------|---------|-------|----------------|------------|
-| 1 | `[BZ-INV-DROP-CLOSE-POS-001]` | 1 | `ShopItemPopup.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_close_topright.md` |
-| 2 | `[BZ-INV-TABS-003]` | 1 | `InventoryScreen.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_tab_recoltes_second.md` |
-| 3 | `[BZ-HUD-CLOSE-STRIP-001]` | 1→3 | Inventaire → Shop → Vente | `Assets/Docs/Bezi/PROMPTS_Bezi_hud_screenroot_strip_close.md` |
-| 4 | `[BZ-FEATURES-HUB-WIP-COPY-001]` | 1 | `FeaturesHubScreen.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_features_hub_wip_copy.md` |
-| 5 | `[BZ-SHOP-FILIGRANE-001]` | 2 | `ShopScreen.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_shop_filigrane.md` |
-| 6 | `[BZ-UIKIT-POPUP-MOCK-001]` | 3 | `ShopItemPopup_WoodMockup.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` |
-| 7 | `[BZ-INV-WALLET-NAV-BAND-002]` | 2 | `InventoryScreen.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md` |
+| 1 | `[BZ-FARM-HARVEST-READY-VFX-002]` | 5 | `HarvestReadyFx.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_harvest_ready_vfx.md` |
+| 2 | `[BZ-TAB-SPRITES-001]` | TBD | `NavigationHUD` | `Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md` |
 
 Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.
 
 ---
 
-## Farm / caméra (branche `feature/plant-harvest-zoom`)
+## Backlog — rework UI kit
 
-| Task ID | Phase | Cible | Prompt `@` |
-|---------|-------|-------|------------|
-| `[BZ-FARM-CAMERA-VIEW-001]` | 1 | `Biofiltre.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md` |
-| `[BZ-FARM-CAMERA-VIEW-001]` | 2 | `FirstLvl.unity` Main Camera | idem |
-
-**Cursor avant Ph.1 :** scripts `BiofiltreViewBounds` / `FarmCameraController` sur la branche feature.
+| Task ID | Statut | Notes |
+|---------|--------|--------|
+| `[BZ-UIKIT-POPUP-MOCK-001]` | **À refaire entièrement** | Prefab `ShopItemPopup_WoodMockup` — aperçu 2026-09-23 : quelque chose en place mais pas validable. Repartir Ph.1–3 ou brief visuel auteur + prompts Bezy neufs. **Hors** popup runtime `ShopItemPopup`. |
 
 ---
 
-## HUD onglets + VFX farm
+## Farm / caméra
 
-| Task ID | Phase | Cible | Prompt `@` |
-|---------|-------|-------|------------|
-| `[BZ-TAB-SPRITES-001]` | 1–3 TBD | `NavigationHUD` | `Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md` |
-| `[BZ-FARM-HARVEST-READY-VFX-002]` | 5 | `HarvestReadyFx.prefab` | `Assets/Docs/Bezi/PROMPTS_Bezi_harvest_ready_vfx.md` |
+**`[BZ-FARM-CAMERA-VIEW-001]`** — clos 2026-09-23 (Bezy Ph.1–2 + playtest). Réf. `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md` · `Notes/Farm/NOTE_camera_view_zoom.md` (slice tactile = plus tard).
 
 ---
 

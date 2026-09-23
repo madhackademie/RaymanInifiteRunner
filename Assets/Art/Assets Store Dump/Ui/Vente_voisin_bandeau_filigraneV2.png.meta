@@ -1,0 +1,2626 @@
+fileFormatVersion: 2
+guid: 76beb33f729ddfc4ba8189fc8ff9d64e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2471663222549090665
+    second: Vente_voisin_bandeau_filigraneV2_0
+  - first:
+      213: 6853566236130370769
+    second: Vente_voisin_bandeau_filigraneV2_1
+  - first:
+      213: -3589264569308167048
+    second: Vente_voisin_bandeau_filigraneV2_2
+  - first:
+      213: 509745192952812186
+    second: Vente_voisin_bandeau_filigraneV2_3
+  - first:
+      213: 2438756001228338237
+    second: Vente_voisin_bandeau_filigraneV2_4
+  - first:
+      213: -4828689520545004693
+    second: Vente_voisin_bandeau_filigraneV2_5
+  - first:
+      213: 8608257026622756388
+    second: Vente_voisin_bandeau_filigraneV2_6
+  - first:
+      213: -4586000957345025904
+    second: Vente_voisin_bandeau_filigraneV2_7
+  - first:
+      213: 3831085647866132412
+    second: Vente_voisin_bandeau_filigraneV2_8
+  - first:
+      213: 6487352318443555261
+    second: Vente_voisin_bandeau_filigraneV2_9
+  - first:
+      213: 2283735948955820699
+    second: Vente_voisin_bandeau_filigraneV2_10
+  - first:
+      213: -5417085722321605032
+    second: Vente_voisin_bandeau_filigraneV2_11
+  - first:
+      213: 2522071338652412193
+    second: Vente_voisin_bandeau_filigraneV2_12
+  - first:
+      213: -159563118097323691
+    second: Vente_voisin_bandeau_filigraneV2_13
+  - first:
+      213: 5623808654485798252
+    second: Vente_voisin_bandeau_filigraneV2_14
+  - first:
+      213: 224209907846772911
+    second: Vente_voisin_bandeau_filigraneV2_15
+  - first:
+      213: 601686999825934273
+    second: Vente_voisin_bandeau_filigraneV2_16
+  - first:
+      213: -7017446351167196277
+    second: Vente_voisin_bandeau_filigraneV2_17
+  - first:
+      213: -4270430819090260977
+    second: Vente_voisin_bandeau_filigraneV2_18
+  - first:
+      213: 6494342259335519760
+    second: Vente_voisin_bandeau_filigraneV2_19
+  - first:
+      213: -9203435258291890700
+    second: Vente_voisin_bandeau_filigraneV2_20
+  - first:
+      213: 238644688143888087
+    second: Vente_voisin_bandeau_filigraneV2_21
+  - first:
+      213: -1243390844388555031
+    second: Vente_voisin_bandeau_filigraneV2_22
+  - first:
+      213: 2521592622569747084
+    second: Vente_voisin_bandeau_filigraneV2_23
+  - first:
+      213: 7957688271934941014
+    second: Vente_voisin_bandeau_filigraneV2_24
+  - first:
+      213: 1639615774751452537
+    second: Vente_voisin_bandeau_filigraneV2_25
+  - first:
+      213: 2257355465726736001
+    second: Vente_voisin_bandeau_filigraneV2_26
+  - first:
+      213: 6409086030934717844
+    second: Vente_voisin_bandeau_filigraneV2_27
+  - first:
+      213: 922352619690374946
+    second: Vente_voisin_bandeau_filigraneV2_28
+  - first:
+      213: 2044130349835659601
+    second: Vente_voisin_bandeau_filigraneV2_29
+  - first:
+      213: -5125841060708535070
+    second: Vente_voisin_bandeau_filigraneV2_30
+  - first:
+      213: 5805131237505115008
+    second: Vente_voisin_bandeau_filigraneV2_31
+  - first:
+      213: 4327531898073873277
+    second: Vente_voisin_bandeau_filigraneV2_32
+  - first:
+      213: 5570323769118451446
+    second: Vente_voisin_bandeau_filigraneV2_33
+  - first:
+      213: -290554597814623229
+    second: Vente_voisin_bandeau_filigraneV2_34
+  - first:
+      213: 3266743677919591518
+    second: Vente_voisin_bandeau_filigraneV2_35
+  - first:
+      213: 198295460590329592
+    second: Vente_voisin_bandeau_filigraneV2_36
+  - first:
+      213: 5282976051837946418
+    second: Vente_voisin_bandeau_filigraneV2_37
+  - first:
+      213: -2862945165469855922
+    second: Vente_voisin_bandeau_filigraneV2_38
+  - first:
+      213: 4056141917392108058
+    second: Vente_voisin_bandeau_filigraneV2_39
+  - first:
+      213: -7350531801733286581
+    second: Vente_voisin_bandeau_filigraneV2_40
+  - first:
+      213: 2111647085996656283
+    second: Vente_voisin_bandeau_filigraneV2_41
+  - first:
+      213: 3423574167252295
+    second: Vente_voisin_bandeau_filigraneV2_42
+  - first:
+      213: -5197651707324915402
+    second: Vente_voisin_bandeau_filigraneV2_43
+  - first:
+      213: -268879629922241014
+    second: Vente_voisin_bandeau_filigraneV2_44
+  - first:
+      213: 5104840667106550855
+    second: Vente_voisin_bandeau_filigraneV2_45
+  - first:
+      213: 3624219625541390254
+    second: Vente_voisin_bandeau_filigraneV2_46
+  - first:
+      213: 878160079683948633
+    second: Vente_voisin_bandeau_filigraneV2_47
+  - first:
+      213: -2921542855490472802
+    second: Vente_voisin_bandeau_filigraneV2_48
+  - first:
+      213: -6137613713418439432
+    second: Vente_voisin_bandeau_filigraneV2_49
+  - first:
+      213: -6830782749137040983
+    second: Vente_voisin_bandeau_filigraneV2_50
+  - first:
+      213: -4954812964775151412
+    second: Vente_voisin_bandeau_filigraneV2_51
+  - first:
+      213: 2481058876392946965
+    second: Vente_voisin_bandeau_filigraneV2_52
+  - first:
+      213: 1952822430676377206
+    second: Vente_voisin_bandeau_filigraneV2_53
+  - first:
+      213: 2846075066707410555
+    second: Vente_voisin_bandeau_filigraneV2_54
+  - first:
+      213: -8444364085527285147
+    second: Vente_voisin_bandeau_filigraneV2_55
+  - first:
+      213: -8125805532091886256
+    second: Vente_voisin_bandeau_filigraneV2_56
+  - first:
+      213: -3385848876258027018
+    second: Vente_voisin_bandeau_filigraneV2_57
+  - first:
+      213: 6749836436974560493
+    second: Vente_voisin_bandeau_filigraneV2_58
+  - first:
+      213: -1607680871893048179
+    second: Vente_voisin_bandeau_filigraneV2_59
+  - first:
+      213: 8209052138297211786
+    second: Vente_voisin_bandeau_filigraneV2_60
+  - first:
+      213: 6649276689094808955
+    second: Vente_voisin_bandeau_filigraneV2_61
+  - first:
+      213: 1007091919922897967
+    second: Vente_voisin_bandeau_filigraneV2_62
+  - first:
+      213: 7010059603920553626
+    second: Vente_voisin_bandeau_filigraneV2_63
+  - first:
+      213: -813042090543116848
+    second: Vente_voisin_bandeau_filigraneV2_64
+  - first:
+      213: 6312900924865339341
+    second: Vente_voisin_bandeau_filigraneV2_65
+  - first:
+      213: 7662414727189355019
+    second: Vente_voisin_bandeau_filigraneV2_66
+  - first:
+      213: -4959587911601693015
+    second: Vente_voisin_bandeau_filigraneV2_67
+  - first:
+      213: -2852281574924391967
+    second: Vente_voisin_bandeau_filigraneV2_68
+  - first:
+      213: -1227963488825448265
+    second: Vente_voisin_bandeau_filigraneV2_69
+  - first:
+      213: 8241878227825802040
+    second: Vente_voisin_bandeau_filigraneV2_70
+  - first:
+      213: 6230146296592074645
+    second: Vente_voisin_bandeau_filigraneV2_71
+  - first:
+      213: -5281643740772325763
+    second: Vente_voisin_bandeau_filigraneV2_72
+  - first:
+      213: -1923900695818036194
+    second: Vente_voisin_bandeau_filigraneV2_73
+  - first:
+      213: -6399884733851059029
+    second: Vente_voisin_bandeau_filigraneV2_74
+  - first:
+      213: -5105406035259105632
+    second: Vente_voisin_bandeau_filigraneV2_75
+  - first:
+      213: -5385743190540531569
+    second: Vente_voisin_bandeau_filigraneV2_76
+  - first:
+      213: 2263931540100026702
+    second: Vente_voisin_bandeau_filigraneV2_77
+  - first:
+      213: -6451338708458373480
+    second: Vente_voisin_bandeau_filigraneV2_78
+  - first:
+      213: 1709278586476450075
+    second: Vente_voisin_bandeau_filigraneV2_79
+  - first:
+      213: -4882754652610361744
+    second: Vente_voisin_bandeau_filigraneV2_80
+  - first:
+      213: -5879784468762797954
+    second: Vente_voisin_bandeau_filigraneV2_81
+  - first:
+      213: -4063731439597003446
+    second: Vente_voisin_bandeau_filigraneV2_82
+  - first:
+      213: -6863298713164468759
+    second: Vente_voisin_bandeau_filigraneV2_83
+  - first:
+      213: -5485380906113733079
+    second: Vente_voisin_bandeau_filigraneV2_84
+  - first:
+      213: 7768933709792668166
+    second: Vente_voisin_bandeau_filigraneV2_85
+  - first:
+      213: 1785589436578722306
+    second: Vente_voisin_bandeau_filigraneV2_86
+  - first:
+      213: -1764972707264834199
+    second: Vente_voisin_bandeau_filigraneV2_87
+  - first:
+      213: 2447323306575821272
+    second: Vente_voisin_bandeau_filigraneV2_88
+  - first:
+      213: 8980737663917532243
+    second: Vente_voisin_bandeau_filigraneV2_89
+  - first:
+      213: -5268963757714353101
+    second: Vente_voisin_bandeau_filigraneV2_90
+  - first:
+      213: 7721259154312743569
+    second: Vente_voisin_bandeau_filigraneV2_91
+  - first:
+      213: 2478915189672332403
+    second: Vente_voisin_bandeau_filigraneV2_92
+  - first:
+      213: 8615554570083521047
+    second: Vente_voisin_bandeau_filigraneV2_93
+  - first:
+      213: 5777437650350631420
+    second: Vente_voisin_bandeau_filigraneV2_94
+  - first:
+      213: 7265087493672661105
+    second: Vente_voisin_bandeau_filigraneV2_95
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_0
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 608
+        width: 106
+        height: 187
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9619f600b9c1d4220800000000000000
+      internalID: 2471663222549090665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_1
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 772
+        width: 34
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d469251e22cc1f50800000000000000
+      internalID: 6853566236130370769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_2
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 618
+        width: 154
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 874cd7514ee503ec0800000000000000
+      internalID: -3589264569308167048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_3
+      rect:
+        serializedVersion: 2
+        x: 1489
+        y: 624
+        width: 25
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a925aef5d8af21700800000000000000
+      internalID: 509745192952812186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_4
+      rect:
+        serializedVersion: 2
+        x: 1761
+        y: 607
+        width: 146
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d34311b79a338d120800000000000000
+      internalID: 2438756001228338237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_5
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 618
+        width: 37
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b63834de67c0dfcb0800000000000000
+      internalID: -4828689520545004693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_6
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 632
+        width: 66
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4261c1f382ca67770800000000000000
+      internalID: 8608257026622756388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_7
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 605
+        width: 16
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09039dd4d604b50c0800000000000000
+      internalID: -4586000957345025904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_8
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 618
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb778294910ca2530800000000000000
+      internalID: 3831085647866132412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_9
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 618
+        width: 37
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db982a9ef84b70a50800000000000000
+      internalID: 6487352318443555261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_10
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 618
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b922d4eeeb571bf10800000000000000
+      internalID: 2283735948955820699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_11
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 626
+        width: 23
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85e2e2b8c35a2d4b0800000000000000
+      internalID: -5417085722321605032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_12
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 618
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 129229e1582300320800000000000000
+      internalID: 2522071338652412193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_13
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 603
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5592e82803e19cdf0800000000000000
+      internalID: -159563118097323691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_14
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 601
+        width: 8
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6db46fcc28cb0e40800000000000000
+      internalID: 5623808654485798252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_15
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 603
+        width: 76
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa8745829bd8c1300800000000000000
+      internalID: 224209907846772911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_16
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 618
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c76892732f995800800000000000000
+      internalID: 601686999825934273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_17
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 601
+        width: 12
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b83715049b50d9e90800000000000000
+      internalID: -7017446351167196277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_18
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 622
+        width: 35
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0c9e36bbc16cb4c0800000000000000
+      internalID: -4270430819090260977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_19
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 642
+        width: 43
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01e508950e9802a50800000000000000
+      internalID: 6494342259335519760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_20
+      rect:
+        serializedVersion: 2
+        x: 586
+        y: 643
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f5d43cf464d64080800000000000000
+      internalID: -9203435258291890700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_21
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 620
+        width: 67
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dea9585416df4300800000000000000
+      internalID: 238644688143888087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_22
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 653
+        width: 12
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e64f336d969ebee0800000000000000
+      internalID: -1243390844388555031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_23
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 644
+        width: 46
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c82f388512f7ef220800000000000000
+      internalID: 2521592622569747084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_24
+      rect:
+        serializedVersion: 2
+        x: 727
+        y: 646
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65769f952536f6e60800000000000000
+      internalID: 7957688271934941014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_25
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 656
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97def2e2cd511c610800000000000000
+      internalID: 1639615774751452537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_26
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 634
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 186bd6a06dcb35f10800000000000000
+      internalID: 2257355465726736001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_27
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 658
+        width: 28
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49538c0d9c5a1f850800000000000000
+      internalID: 6409086030934717844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_28
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 666
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 227bb4e12dadccc00800000000000000
+      internalID: 922352619690374946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_29
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 669
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 159ac8019b53e5c10800000000000000
+      internalID: 2044130349835659601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_30
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 640
+        width: 33
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e43b5196ba5dd8b0800000000000000
+      internalID: -5125841060708535070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_31
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 666
+        width: 86
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08324068a18ff8050800000000000000
+      internalID: 5805131237505115008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_32
+      rect:
+        serializedVersion: 2
+        x: 803
+        y: 616
+        width: 11
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7b7dd2455b7e0c30800000000000000
+      internalID: 4327531898073873277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_33
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 648
+        width: 23
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f6683684f3cd4d40800000000000000
+      internalID: 5570323769118451446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_34
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 609
+        width: 37
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3042769f12eb7fbf0800000000000000
+      internalID: -290554597814623229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_35
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 618
+        width: 22
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5c76ae211ec55d20800000000000000
+      internalID: 3266743677919591518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_36
+      rect:
+        serializedVersion: 2
+        x: 970
+        y: 630
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fe1f09bbac70c200800000000000000
+      internalID: 198295460590329592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_37
+      rect:
+        serializedVersion: 2
+        x: 990
+        y: 609
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23a42be8ab6e05940800000000000000
+      internalID: 5282976051837946418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_38
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 658
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4f4fb06a86c448d0800000000000000
+      internalID: -2862945165469855922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_39
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 607
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1a7ab0659f4a4830800000000000000
+      internalID: 4056141917392108058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_40
+      rect:
+        serializedVersion: 2
+        x: 1012
+        y: 642
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b45b977654aadf990800000000000000
+      internalID: -7350531801733286581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_41
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 658
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b96c1d336d31e4d10800000000000000
+      internalID: 2111647085996656283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_42
+      rect:
+        serializedVersion: 2
+        x: 1061
+        y: 607
+        width: 101
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74de91af8b92c0000800000000000000
+      internalID: 3423574167252295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_43
+      rect:
+        serializedVersion: 2
+        x: 1111
+        y: 618
+        width: 23
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63122be7f4b3ed7b0800000000000000
+      internalID: -5197651707324915402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_44
+      rect:
+        serializedVersion: 2
+        x: 1132
+        y: 665
+        width: 30
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a067523b66fb44cf0800000000000000
+      internalID: -268879629922241014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_45
+      rect:
+        serializedVersion: 2
+        x: 1133
+        y: 617
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 744aad54a8908d640800000000000000
+      internalID: 5104840667106550855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_46
+      rect:
+        serializedVersion: 2
+        x: 1163
+        y: 642
+        width: 34
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eafc4682c80db4230800000000000000
+      internalID: 3624219625541390254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_47
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 618
+        width: 32
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9509d7590f9df2c00800000000000000
+      internalID: 878160079683948633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_48
+      rect:
+        serializedVersion: 2
+        x: 1195
+        y: 662
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e94f86e70489477d0800000000000000
+      internalID: -2921542855490472802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_49
+      rect:
+        serializedVersion: 2
+        x: 1197
+        y: 658
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f4b02b98d0d2daa0800000000000000
+      internalID: -6137613713418439432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_50
+      rect:
+        serializedVersion: 2
+        x: 1215
+        y: 634
+        width: 52
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a902dbd74f2431a0800000000000000
+      internalID: -6830782749137040983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_51
+      rect:
+        serializedVersion: 2
+        x: 1215
+        y: 656
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc8b31a3cd7fc3bb0800000000000000
+      internalID: -4954812964775151412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_52
+      rect:
+        serializedVersion: 2
+        x: 1230
+        y: 618
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51d3b3227ed7e6220800000000000000
+      internalID: 2481058876392946965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_53
+      rect:
+        serializedVersion: 2
+        x: 1232
+        y: 605
+        width: 30
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67e51e977a1d91b10800000000000000
+      internalID: 1952822430676377206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_54
+      rect:
+        serializedVersion: 2
+        x: 1238
+        y: 616
+        width: 11
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7ef03ba13a4f7720800000000000000
+      internalID: 2846075066707410555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_55
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 633
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5627418ba979fca80800000000000000
+      internalID: -8444364085527285147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_56
+      rect:
+        serializedVersion: 2
+        x: 1260
+        y: 609
+        width: 21
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05552c1cbe65b3f80800000000000000
+      internalID: -8125805532091886256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_57
+      rect:
+        serializedVersion: 2
+        x: 1266
+        y: 634
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f91c73d26c0301d0800000000000000
+      internalID: -3385848876258027018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_58
+      rect:
+        serializedVersion: 2
+        x: 1294
+        y: 617
+        width: 27
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de46bdd2a7c3cad50800000000000000
+      internalID: 6749836436974560493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_59
+      rect:
+        serializedVersion: 2
+        x: 1316
+        y: 607
+        width: 40
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d84ef9ec3ce50b9e0800000000000000
+      internalID: -1607680871893048179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_60
+      rect:
+        serializedVersion: 2
+        x: 1353
+        y: 640
+        width: 23
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8bbdd52d696ce170800000000000000
+      internalID: 8209052138297211786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_61
+      rect:
+        serializedVersion: 2
+        x: 1354
+        y: 599
+        width: 74
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7518ca5be9f64c50800000000000000
+      internalID: 6649276689094808955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_62
+      rect:
+        serializedVersion: 2
+        x: 1373
+        y: 640
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f24ab2fe3c8e9fd00800000000000000
+      internalID: 1007091919922897967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_63
+      rect:
+        serializedVersion: 2
+        x: 1441
+        y: 606
+        width: 35
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a960002a11cb84160800000000000000
+      internalID: 7010059603920553626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_64
+      rect:
+        serializedVersion: 2
+        x: 1562
+        y: 602
+        width: 22
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dd8cbdb68e77b4f0800000000000000
+      internalID: -813042090543116848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_65
+      rect:
+        serializedVersion: 2
+        x: 1632
+        y: 607
+        width: 82
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcf55d8a1fdeb9750800000000000000
+      internalID: 6312900924865339341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_66
+      rect:
+        serializedVersion: 2
+        x: 1697
+        y: 625
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0ad7dfd89d565a60800000000000000
+      internalID: 7662414727189355019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_67
+      rect:
+        serializedVersion: 2
+        x: 1739
+        y: 617
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aed8a842110c2bb0800000000000000
+      internalID: -4959587911601693015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_68
+      rect:
+        serializedVersion: 2
+        x: 1809
+        y: 635
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e96d370509aa68d0800000000000000
+      internalID: -2852281574924391967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_69
+      rect:
+        serializedVersion: 2
+        x: 1906
+        y: 624
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b8e86386b565fee0800000000000000
+      internalID: -1227963488825448265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_70
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1932
+        height: 617
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83b3593b498016270800000000000000
+      internalID: 8241878227825802040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_71
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 602
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 597061b4c0de57650800000000000000
+      internalID: 6230146296592074645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_72
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 585
+        width: 14
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d76a9194005d3b6b0800000000000000
+      internalID: -5281643740772325763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_73
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 609
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1c93aaa28eec45e0800000000000000
+      internalID: -1923900695818036194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_74
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 600
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bacbc5b1eba0f27a0800000000000000
+      internalID: -6399884733851059029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_75
+      rect:
+        serializedVersion: 2
+        x: 1350
+        y: 607
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0aede32b244f529b0800000000000000
+      internalID: -5105406035259105632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_76
+      rect:
+        serializedVersion: 2
+        x: 1473
+        y: 601
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f884a546a1ff145b0800000000000000
+      internalID: -5385743190540531569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_77
+      rect:
+        serializedVersion: 2
+        x: 1518
+        y: 599
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e41177badb91b6f10800000000000000
+      internalID: 2263931540100026702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_78
+      rect:
+        serializedVersion: 2
+        x: 1530
+        y: 601
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89e7c9410ad3876a0800000000000000
+      internalID: -6451338708458373480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_79
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 571
+        width: 19
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b115c1971d398b710800000000000000
+      internalID: 1709278586476450075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_80
+      rect:
+        serializedVersion: 2
+        x: 1616
+        y: 593
+        width: 9
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07606cd6388fc3cb0800000000000000
+      internalID: -4882754652610361744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_81
+      rect:
+        serializedVersion: 2
+        x: 1797
+        y: 604
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e78d8879d2fc66ea0800000000000000
+      internalID: -5879784468762797954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_82
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 547
+        width: 39
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4ddb3849c9ba97c0800000000000000
+      internalID: -4063731439597003446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_83
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 587
+        width: 7
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9edaf660f2aa0c0a0800000000000000
+      internalID: -6863298713164468759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_84
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 582
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92e6161f02300e3b0800000000000000
+      internalID: -5485380906113733079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_85
+      rect:
+        serializedVersion: 2
+        x: 938
+        y: 583
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60aefb72c0cc0db60800000000000000
+      internalID: 7768933709792668166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_86
+      rect:
+        serializedVersion: 2
+        x: 1133
+        y: 577
+        width: 19
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 202f6f1d120b7c810800000000000000
+      internalID: 1785589436578722306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_87
+      rect:
+        serializedVersion: 2
+        x: 1167
+        y: 595
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96558398cae8187e0800000000000000
+      internalID: -1764972707264834199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_88
+      rect:
+        serializedVersion: 2
+        x: 1342
+        y: 587
+        width: 24
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d97cf2b493a6f120800000000000000
+      internalID: 2447323306575821272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_89
+      rect:
+        serializedVersion: 2
+        x: 1366
+        y: 591
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 354a6c6c25df1ac70800000000000000
+      internalID: 8980737663917532243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_90
+      rect:
+        serializedVersion: 2
+        x: 1397
+        y: 589
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3345707e061e0e6b0800000000000000
+      internalID: -5268963757714353101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_91
+      rect:
+        serializedVersion: 2
+        x: 1868
+        y: 588
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19a4b87ba4c672b60800000000000000
+      internalID: 7721259154312743569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_92
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 563
+        width: 26
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37c4dbc2b30e66220800000000000000
+      internalID: 2478915189672332403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_93
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 587
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71252dcfb39909770800000000000000
+      internalID: 8615554570083521047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_94
+      rect:
+        serializedVersion: 2
+        x: 1408
+        y: 585
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf9ed1dcee49d2050800000000000000
+      internalID: 5777437650350631420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Vente_voisin_bandeau_filigraneV2_95
+      rect:
+        serializedVersion: 2
+        x: 1491
+        y: 573
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 170fd7a5596c2d460800000000000000
+      internalID: 7265087493672661105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Vente_voisin_bandeau_filigraneV2_0: 2471663222549090665
+      Vente_voisin_bandeau_filigraneV2_1: 6853566236130370769
+      Vente_voisin_bandeau_filigraneV2_10: 2283735948955820699
+      Vente_voisin_bandeau_filigraneV2_11: -5417085722321605032
+      Vente_voisin_bandeau_filigraneV2_12: 2522071338652412193
+      Vente_voisin_bandeau_filigraneV2_13: -159563118097323691
+      Vente_voisin_bandeau_filigraneV2_14: 5623808654485798252
+      Vente_voisin_bandeau_filigraneV2_15: 224209907846772911
+      Vente_voisin_bandeau_filigraneV2_16: 601686999825934273
+      Vente_voisin_bandeau_filigraneV2_17: -7017446351167196277
+      Vente_voisin_bandeau_filigraneV2_18: -4270430819090260977
+      Vente_voisin_bandeau_filigraneV2_19: 6494342259335519760
+      Vente_voisin_bandeau_filigraneV2_2: -3589264569308167048
+      Vente_voisin_bandeau_filigraneV2_20: -9203435258291890700
+      Vente_voisin_bandeau_filigraneV2_21: 238644688143888087
+      Vente_voisin_bandeau_filigraneV2_22: -1243390844388555031
+      Vente_voisin_bandeau_filigraneV2_23: 2521592622569747084
+      Vente_voisin_bandeau_filigraneV2_24: 7957688271934941014
+      Vente_voisin_bandeau_filigraneV2_25: 1639615774751452537
+      Vente_voisin_bandeau_filigraneV2_26: 2257355465726736001
+      Vente_voisin_bandeau_filigraneV2_27: 6409086030934717844
+      Vente_voisin_bandeau_filigraneV2_28: 922352619690374946
+      Vente_voisin_bandeau_filigraneV2_29: 2044130349835659601
+      Vente_voisin_bandeau_filigraneV2_3: 509745192952812186
+      Vente_voisin_bandeau_filigraneV2_30: -5125841060708535070
+      Vente_voisin_bandeau_filigraneV2_31: 5805131237505115008
+      Vente_voisin_bandeau_filigraneV2_32: 4327531898073873277
+      Vente_voisin_bandeau_filigraneV2_33: 5570323769118451446
+      Vente_voisin_bandeau_filigraneV2_34: -290554597814623229
+      Vente_voisin_bandeau_filigraneV2_35: 3266743677919591518
+      Vente_voisin_bandeau_filigraneV2_36: 198295460590329592
+      Vente_voisin_bandeau_filigraneV2_37: 5282976051837946418
+      Vente_voisin_bandeau_filigraneV2_38: -2862945165469855922
+      Vente_voisin_bandeau_filigraneV2_39: 4056141917392108058
+      Vente_voisin_bandeau_filigraneV2_4: 2438756001228338237
+      Vente_voisin_bandeau_filigraneV2_40: -7350531801733286581
+      Vente_voisin_bandeau_filigraneV2_41: 2111647085996656283
+      Vente_voisin_bandeau_filigraneV2_42: 3423574167252295
+      Vente_voisin_bandeau_filigraneV2_43: -5197651707324915402
+      Vente_voisin_bandeau_filigraneV2_44: -268879629922241014
+      Vente_voisin_bandeau_filigraneV2_45: 5104840667106550855
+      Vente_voisin_bandeau_filigraneV2_46: 3624219625541390254
+      Vente_voisin_bandeau_filigraneV2_47: 878160079683948633
+      Vente_voisin_bandeau_filigraneV2_48: -2921542855490472802
+      Vente_voisin_bandeau_filigraneV2_49: -6137613713418439432
+      Vente_voisin_bandeau_filigraneV2_5: -4828689520545004693
+      Vente_voisin_bandeau_filigraneV2_50: -6830782749137040983
+      Vente_voisin_bandeau_filigraneV2_51: -4954812964775151412
+      Vente_voisin_bandeau_filigraneV2_52: 2481058876392946965
+      Vente_voisin_bandeau_filigraneV2_53: 1952822430676377206
+      Vente_voisin_bandeau_filigraneV2_54: 2846075066707410555
+      Vente_voisin_bandeau_filigraneV2_55: -8444364085527285147
+      Vente_voisin_bandeau_filigraneV2_56: -8125805532091886256
+      Vente_voisin_bandeau_filigraneV2_57: -3385848876258027018
+      Vente_voisin_bandeau_filigraneV2_58: 6749836436974560493
+      Vente_voisin_bandeau_filigraneV2_59: -1607680871893048179
+      Vente_voisin_bandeau_filigraneV2_6: 8608257026622756388
+      Vente_voisin_bandeau_filigraneV2_60: 8209052138297211786
+      Vente_voisin_bandeau_filigraneV2_61: 6649276689094808955
+      Vente_voisin_bandeau_filigraneV2_62: 1007091919922897967
+      Vente_voisin_bandeau_filigraneV2_63: 7010059603920553626
+      Vente_voisin_bandeau_filigraneV2_64: -813042090543116848
+      Vente_voisin_bandeau_filigraneV2_65: 6312900924865339341
+      Vente_voisin_bandeau_filigraneV2_66: 7662414727189355019
+      Vente_voisin_bandeau_filigraneV2_67: -4959587911601693015
+      Vente_voisin_bandeau_filigraneV2_68: -2852281574924391967
+      Vente_voisin_bandeau_filigraneV2_69: -1227963488825448265
+      Vente_voisin_bandeau_filigraneV2_7: -4586000957345025904
+      Vente_voisin_bandeau_filigraneV2_70: 8241878227825802040
+      Vente_voisin_bandeau_filigraneV2_71: 6230146296592074645
+      Vente_voisin_bandeau_filigraneV2_72: -5281643740772325763
+      Vente_voisin_bandeau_filigraneV2_73: -1923900695818036194
+      Vente_voisin_bandeau_filigraneV2_74: -6399884733851059029
+      Vente_voisin_bandeau_filigraneV2_75: -5105406035259105632
+      Vente_voisin_bandeau_filigraneV2_76: -5385743190540531569
+      Vente_voisin_bandeau_filigraneV2_77: 2263931540100026702
+      Vente_voisin_bandeau_filigraneV2_78: -6451338708458373480
+      Vente_voisin_bandeau_filigraneV2_79: 1709278586476450075
+      Vente_voisin_bandeau_filigraneV2_8: 3831085647866132412
+      Vente_voisin_bandeau_filigraneV2_80: -4882754652610361744
+      Vente_voisin_bandeau_filigraneV2_81: -5879784468762797954
+      Vente_voisin_bandeau_filigraneV2_82: -4063731439597003446
+      Vente_voisin_bandeau_filigraneV2_83: -6863298713164468759
+      Vente_voisin_bandeau_filigraneV2_84: -5485380906113733079
+      Vente_voisin_bandeau_filigraneV2_85: 7768933709792668166
+      Vente_voisin_bandeau_filigraneV2_86: 1785589436578722306
+      Vente_voisin_bandeau_filigraneV2_87: -1764972707264834199
+      Vente_voisin_bandeau_filigraneV2_88: 2447323306575821272
+      Vente_voisin_bandeau_filigraneV2_89: 8980737663917532243
+      Vente_voisin_bandeau_filigraneV2_9: 6487352318443555261
+      Vente_voisin_bandeau_filigraneV2_90: -5268963757714353101
+      Vente_voisin_bandeau_filigraneV2_91: 7721259154312743569
+      Vente_voisin_bandeau_filigraneV2_92: 2478915189672332403
+      Vente_voisin_bandeau_filigraneV2_93: 8615554570083521047
+      Vente_voisin_bandeau_filigraneV2_94: 5777437650350631420
+      Vente_voisin_bandeau_filigraneV2_95: 7265087493672661105
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

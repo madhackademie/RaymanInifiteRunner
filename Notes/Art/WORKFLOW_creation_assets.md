@@ -1,7 +1,7 @@
 # Workflow — création d’assets (Dump → Sprites)
 
 **Création :** 2026-09-19  
-**MAJ :** 2026-09-19 (stack Comfy : Krea + Kontext + Qwen · décision auteur)  
+**MAJ :** 2026-09-23 (EDGE_LOCK contour noir · pas d’AA)  
 **Règle dump :** `.cursor/rules/art_asset_dump.mdc`  
 **Backlog lignes :** `Notes/Art/PROMPT_generation_icones.md` §3  
 **Charte :** `Notes/Art/NOTE_graphique.md`
@@ -29,7 +29,7 @@ Brief (cette note + prompts spécialisés)
 | Besoin | Outil principal | Prompt / doc |
 |--------|-----------------|--------------|
 | **Icône UI** 64–256 px, bois rustique | **ChatGPT** (ou générateur §1 backlog) | `PROMPT_generation_icones.md` §1 |
-| **Bandeau / illustration UI** (pas iso) | **ChatGPT** (+ ref projet) | `PROMPT_bandeau_atelier_bricolage.md` · `FirstTryBandeauAtelier.png` |
+| **Bandeau / illustration UI** (pas iso) | **ChatGPT** (+ ref projet) | Vente : `PROMPT_bandeaux_vente_generique.md` · Hub atelier : `PROMPT_bandeau_atelier_bricolage.md` |
 | **Kit UI chrome** (panneaux, boutons, nav bois) | **ChatGPT** → découpe → Bezy 9-slice | `Notes/Ui/PROMPT_chatgpt_ui_kit_planche_bois.md` |
 | **Monde iso 2:1** (plantes, IBC) | **Comfy Krea** (brouillon) ou **ChatGPT** ; retouche **Kontext** ; ship ChatGPT si besoin | `PROMPT_assets_monde_iso.md` |
 | **Brouillon local puis charte** | **Comfy** (Krea → Kontext → Qwen plan B) | `GUIDE_comfy_flux_models_local.md` |
@@ -47,9 +47,17 @@ Pour **max conversion** vers la charte et **usage commercial indie** (salaire co
 
 **Nom interne :** `RaymanFarm_UI_CartoonCel`
 
-- Illustration **2D mobile UI** : bois rustique clair, contours bruns épais, cel shading, fun cartoon.
+- Illustration **2D mobile UI** : bois rustique clair, cel shading, fun cartoon ; **contour extérieur noir net, sans anti-aliasing** sur la silhouette (sprites / icônes découpées).
 - **Pas** pierre grise barre nav actuelle · **pas** iso sur bandeaux · **pas** photoreal.
 - **Ref projet :** `Dump/Ui/Tab_Plus/FirstTryBandeauAtelier.png`, `Dump/Ui/cadreBoisFinal.png`, icônes §1 backlog.
+
+**EDGE_LOCK (à coller ou paraphraser dans tout prompt art — EN pour les générateurs) :**
+
+```
+EDGE LOCK: pure black (#000000) outer outline on the subject. NO anti-aliasing — hard pixel-clean alpha edge, no gray semi-transparent fringe, no soft halo, no outer glow.
+```
+
+Détail revue : `Notes/Art/NOTE_graphique.md` § Do / Alpha.
 
 ### 3.2 Chaîne Comfy → ChatGPT → Sprites
 

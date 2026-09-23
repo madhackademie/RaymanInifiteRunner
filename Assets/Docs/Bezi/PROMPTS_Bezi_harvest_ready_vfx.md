@@ -148,20 +148,54 @@ Save. Confirm HarvestReadyAnchor starts DISABLED. List hierarchy. STOP.
 
 ## Phase 5 — Polish lisibilité (particules plus grosses) `[BZ-FARM-HARVEST-READY-VFX-002]`
 
-**Brief auteur 2026-09-10 :** sparkle idle **trop faible** sur les **2 stades récoltables** (Mature + Seedling). Objectif : **particules plus grandes** et plus lisibles mobile (sans burst agressif).
+**Brief auteur 2026-09-23 :** sparkle visible mais **trop timide** (Seedling OK faible ; Mature souvent invisible). **Bezy = propriétaire** du prefab VFX (pas Cursor).
+
+**Prefab Mode :** `Assets/Prefabs/World/VFX/HarvestReadyFx.prefab` uniquement.
 
 ```
-[BZ-FARM-HARVEST-READY-VFX-002] Phase 5 ONLY — enlarge harvest sparkle readability.
+[BZ-FARM-HARVEST-READY-VFX-002] Phase 5 ONLY — harvest sparkle readability. STOP.
 
-Do NOT rescan whole project. Do NOT create scripts. Edit ONLY:
-- Assets/Prefabs/World/VFX/HarvestReadyFx.prefab
-- optional: instance under LaitueObj/HarvestReadyAnchor/HarvestReadyFx if overrides exist
+Do NOT rescan whole project. Do NOT edit .cs. Edit ONLY HarvestReadyFx.prefab.
+Do NOT change LaitueObj unless Sparkle has instance overrides (then match prefab).
 
-Adjust Sparkle ParticleSystem:
-- Increase start size (and Size over Lifetime if used) ~1.5x–2.5x vs current
-- Keep Looping ON, Play On Awake OFF
-- Same material StarsParticle / M_HarvestReadySparkle
-- Same soft idle feel — NOT fireworks
+Sparkle ParticleSystem — SET (or confirm) these targets:
+- Start Size: random between 0.22 and 0.45 (minMaxState Two Constants)
+- Start Color: maxColor cream RGB(1, 0.95, 0.75) alpha 1
+- Emission Rate over Time: 4
+- Max Particles: 16
+- Shape Sphere radius: 0.32
+- Renderer Max Particle Size: 2
+- Material: M_HarvestReadySparkle (unchanged)
+- Looping ON, Play On Awake OFF, soft idle (no burst)
 
-Save. List Inspector values changed (Start Size, etc.). STOP.
+Keep Size/Color over Lifetime twinkle from Phase 2 if present.
+
+Save prefab. List final Start Size, Rate, Max Particles, radius, Max Particle Size. STOP. No Play Mode.
+```
+
+---
+
+## Phase 5b — Tri 2D sparkles (C# visuel, Bezy)
+
+**Fichiers :** `HarvestReadyFxAnchor.cs`, `PlantGrow.cs` (appel après `SetFxActive(true)`).  
+**Référence :** même pattern que `InsectPathFollower.SyncSortingOrderWithPlant` (+2 order).
+
+```
+[BZ-FARM-HARVEST-READY-VFX-002] Phase 5b ONLY — sparkle sorting above plant sprite. STOP.
+
+@Notes/Bezi/RULES_bezy_code.md
+
+Do NOT rescan whole project. Edit ONLY:
+- Assets/Scripts/Farm/HarvestReadyFxAnchor.cs
+- Assets/Scripts/Farm/PlantGrow.cs (SyncHarvestReadyFxForStage only)
+
+GOAL: ParticleSystemRenderer sortingLayerID = plant; sortingOrder = plant + 2 when FX turns on.
+
+HarvestReadyFxAnchor:
+- Add SyncSortingWithPlant(SpriteRenderer plantRenderer) — set all child ParticleSystemRenderer layers/orders.
+- On SetFxActive(true): find ancestor SpriteRenderer on plant root, call SyncSortingWithPlant before Play.
+
+PlantGrow.SyncHarvestReadyFxForStage: after SetFxActive(true), call harvestReadyFx.SyncSortingWithPlant(spriteRenderer).
+
+No other logic changes. Save. List methods touched. STOP. No Play Mode.
 ```

@@ -1,5 +1,7 @@
 # [BZ-UIKIT-POPUP-MOCK-001] Mockup chrome bois — popup item (copie)
 
+**Statut 2026-09-23 :** **BACKLOG — rework entier.** Aperçu prefab insuffisant ; ne pas considérer Ph.3 clos. Repartir Ph.1–3 ou nouveau brief avant relance Bezy.
+
 **Idée :** `Card` = panneau 9-slice. `IconFrame` = cadre troué **autour de l’icône seulement**. Qty = bandeau liste. CTA = pill orange. Croix inchangée (coin Card).
 
 **Prefab cible :** `Assets/Prefabs/Ui/ShopItemPopup_WoodMockup.prefab`  

@@ -228,6 +228,8 @@ public class PlantGrow : MonoBehaviour
             && plantDefinition.GetHarvestConfig(stage) != null;
 
         harvestReadyFx.SetFxActive(showFx);
+        if (showFx)
+            harvestReadyFx.SyncSortingWithPlant(spriteRenderer);
     }
 
     /// <summary>

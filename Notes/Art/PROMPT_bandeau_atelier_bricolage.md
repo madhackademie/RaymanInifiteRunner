@@ -79,7 +79,7 @@ COMPOSITION (banner, left → right):
 4) MID: giant plant flask; rustic workshop continues behind (window, microscope, upper shelves).
 5) RIGHT 35–40%: keep this zone QUIET and less busy (soft workshop wall / parchment wood) so a gold UI title can overlay later. No important details, no character, no flask here.
 
-OUTPUT: one PNG, wide banner, transparent outside the vignette, hard clean silhouette edges (1–2px AA max), no outer glow, no fog.
+OUTPUT: one PNG, wide banner, transparent outside the vignette, pure black outer outline on cutout edges, NO anti-aliasing, hard pixel-clean alpha, no outer glow, no fog.
 ```
 
 ## Base validée — `FirstTryBandeauAtelier.png`

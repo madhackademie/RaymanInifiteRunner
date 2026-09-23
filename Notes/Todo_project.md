@@ -63,30 +63,24 @@ Convention d'IDs :
 **Refs :** `Notes/Farm/NOTE_camera_view_zoom.md` · `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md`  
 **C# Cursor déjà là :** `BiofiltreViewBounds` + `FarmCameraController` (`enableTouchCamera = false`).
 
-1. [x] Branche `feature/plant-harvest-zoom` créée depuis `main` (2026-09-21). Checkout **plus tard** (session dédiée).
-2. [ ] Bezy `[BZ-FARM-CAMERA-VIEW-001]` Ph.1 — `BiofiltreViewBounds` sur `Biofiltre.prefab` (Init IBC / grille).
-3. [ ] Bezy Ph.2 — `FarmCameraController` sur Main Camera `FirstLvl` (`enableTouchCamera` **off**).
-4. [ ] Playtest **PC** : molette zoom vers curseur, clic milieu pan, rect orange = zoom out max, clic gauche plante encore.
-5. [ ] Slice 2 `[P0-FARM-CAMERA-TOUCH-001]` — tactile Township (`NOTE_camera_view_zoom.md`), pas avant fine tune PC.
+1. [x] Branche `feature/plant-harvest-zoom` créée depuis `main` (2026-09-21).
+2. [x] Bezy `[BZ-FARM-CAMERA-VIEW-001]` Ph.1–2 — 2026-09-23.
+3. [x] Playtest **PC** OK 2026-09-23 (molette, pan milieu, bounds, clic gauche).
+4. [ ] Slice 2 `[P0-FARM-CAMERA-TOUCH-001]` — tactile Township (`NOTE_camera_view_zoom.md`), plus tard.
 
-### ★ P0 — Mockup popup bois `[BZ-UIKIT-POPUP-MOCK-001]`
+### Backlog — Mockup popup bois `[BZ-UIKIT-POPUP-MOCK-001]` — **rework entier**
 
-**Objectif :** intégrer le kit `UiKit_*_20260919` sur une **copie** `ShopItemPopup_WoodMockup` (Card = panneau, cadre = icône seule, CTA orange). Pas le prefab runtime.
+**Objectif (inchangé) :** kit `UiKit_*_20260919` sur **copie** `ShopItemPopup_WoodMockup` uniquement — pas le runtime.
 
-**Refs :** `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md`
+**2026-09-23 :** prefab visible en éditeur mais **à refaire entièrement** (qualité / layout). Retiré de la file playtest Bezy.
 
-1. [x] Bezy Phase 1 (dupliquer + Card 480×760) — OK 2026-09-19.
-2. [ ] Bezy Phase 3 (tailles) — P2 sprites **Cursor** (Bezy a no-op). Playtest visuel Prefab Mode.
-3. [ ] Playtest visuel Prefab Mode (hors prompt) ; si OK, décider promo runtime plus tard.
+**Refs :** `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_wood_mockup.md` (à réécrire après brief auteur si besoin).
 
-### ★ P0 — Croix popup jeter graine `[BZ-INV-DROP-CLOSE-POS-001]`
+1. [x] Bezy Phase 1 — 2026-09-19.
+2. [~] Phase 2 sprites — partiel / no-op historique.
+3. [ ] **Reprise :** brief visuel auteur → Bezy Ph.1→3 sur mockup (ou reset prefab depuis duplicate).
 
-**Objectif :** déplacer `CloseButton` de `ShopItemPopup` (aujourd’hui bas-centre de `Root`, dans la nav) vers le **coin haut-droit de `Card`**.
-
-**Refs :** `Assets/Docs/Bezi/PROMPTS_Bezi_shopitempopup_close_topright.md` · prefab `Assets/Prefabs/Ui/ShopItemPopup.prefab`.
-
-1. [ ] Bezy Phase 1 (reparent + Ignore Layout + anchors).
-2. [ ] Playtest drop inventaire : croix sur le bandeau Gold, plus dans la nav ; shop/vente inchangés.
+### ~~P0 — Croix popup jeter graine `[BZ-INV-DROP-CLOSE-POS-001]`~~ — **clos** 2026-09-23 (playtest OK, file Bezy retirée)
 
 ### ★ P0 — PlayerHalo inventaire `[BZ-INV-HALO-SCALE-001]`
 

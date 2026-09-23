@@ -1,7 +1,7 @@
 # [BZ-FARM-CAMERA-VIEW-001] Câbler vue caméra + zoom (rect orange)
 
-**Branche :** `feature/plant-harvest-zoom` (nouvelle, depuis `main`). Checkout cette branche **avant** Bezy. Pas `feature/ui-kit-refonte`.  
-**C# déjà livré Cursor** — Bezy **n’écrit pas** le zoom. Job = Inspector / prefab / scène.  
+**Branche :** `main` (scripts `BiofiltreViewBounds` / `FarmCameraController` déjà dans le repo).  
+**C# déjà livré Cursor** — Bezy **n’écrit pas** de `.cs` ni ne modifie la logique zoom. Job = Inspector / prefab / scène.  
 **Slice 1 = PC** (molette + clic milieu). Pinch / Township = slice 2, **pas** ces phases.
 
 | Script | Rôle |

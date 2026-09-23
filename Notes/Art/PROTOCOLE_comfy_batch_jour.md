@@ -30,7 +30,7 @@ Promo         plus tard                       → Sprites/ (après OK, pas direc
 Edit IMAGE 1 (the Comfy draft icon). Use IMAGE 2 only as STYLE reference (outlines, rustic farm UI cartoon, cel shading, colors).
 
 Keep IMAGE 1 layout exactly: same single subject, same pose, same silhouette, same white background.
-Unify STYLE to match IMAGE 2 — thick dark outlines, cozy mobile farming game, readable at 64px.
+Unify STYLE to match IMAGE 2 — thick pure black outer outline, NO anti-aliasing on silhouette, hard alpha edge, cozy mobile farming game, readable at 64px.
 NO text, NO letters, NO numbers, NO watermark. One icon only.
 
 Subject must stay: [OBJET — ex. lightning bolt for electricity / water droplet / daily quest sun badge / bolt token].
