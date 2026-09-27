@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AquaFarm — Fiche plante (v1)</title>
+  <style>
+    :root {
+      --bg: #f4f7f2;
+      --card: #fff;
+      --border: #c8d4c4;
+      --accent: #2d6a4f;
+      --accent-soft: #d8f3dc;
+      --text: #1b4332;
+      --muted: #5c6b5f;
+      --handle: #95b89a;
+      --shadow: 0 2px 8px rgba(27, 67, 50, 0.08);
+      --radius: 10px;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    header.app-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+    header.app-header h1 {
+      font-size: 1.1rem;
+      margin: 0;
+      flex: 1 1 12rem;
+    }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    button, .btn {
+      font: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+    }
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    button:hover { filter: brightness(0.97); }
+    button.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
+    .hint {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 0.5rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: #eef5ee;
+    }
+    main { max-width: 920px; margin: 0 auto; padding: 1rem 1.25rem 3rem; }
+    #sections-root { display: flex; flex-direction: column; gap: 1rem; }
+    .sheet-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .sheet-section.dragging { opacity: 0.55; }
+    .sheet-section.drag-over { outline: 2px dashed var(--accent); }
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.85rem;
+      background: var(--accent-soft);
+      border-bottom: 1px solid var(--border);
+      user-select: none;
+    }
+    .drag-handle {
+      width: 1.25rem;
+      color: var(--handle);
+      cursor: grab;
+      font-size: 1.1rem;
+      line-height: 1;
+      text-align: center;
+    }
+    .sheet-section.reorder-off .drag-handle { visibility: hidden; cursor: default; }
+    .section-head h2 { margin: 0; font-size: 1rem; flex: 1; }
+    .section-body { padding: 0.85rem 1rem 1rem; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.65rem 1rem;
+    }
+    label.field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      font-size: 0.8rem;
+    }
+    label.field span.lbl { color: var(--muted); font-weight: 600; }
+    input, select, textarea {
+      font: inherit;
+      padding: 0.35rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+    }
+    textarea { min-height: 4rem; resize: vertical; }
+    table.stages {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    table.stages th, table.stages td {
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.4rem;
+      text-align: left;
+    }
+    table.stages th { background: #eef5ee; font-weight: 600; }
+    table.stages input[type="number"] { max-width: 5.5rem; }
+    table.stages input[type="text"] { min-width: 6rem; }
+    .footprint-grid {
+      display: inline-grid;
+      grid-template-columns: repeat(4, 2rem);
+      gap: 2px;
+      margin-top: 0.35rem;
+    }
+    .footprint-cell {
+      width: 2rem;
+      height: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      background: #fff;
+    }
+    .footprint-cell.on { background: var(--accent); }
+    .footprint-cell.anchor { box-shadow: inset 0 0 0 2px #f9c74f; }
+    .readonly { background: #f0f4f0; color: var(--muted); }
+    pre.export-preview {
+      font-size: 0.75rem;
+      max-height: 12rem;
+      overflow: auto;
+      background: #1b4332;
+      color: #d8f3dc;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+    }
+    .save-status {
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex: 1 1 100%;
+      min-width: 12rem;
+    }
+    .save-status.ok { color: var(--accent); font-weight: 600; }
+    .folder-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      align-items: center;
+      padding: 0.55rem 1.25rem;
+      background: #d8f3dc;
+      border-bottom: 2px solid var(--accent);
+      font-size: 0.85rem;
+      position: sticky;
+      top: 0;
+      z-index: 9;
+    }
+    .folder-bar .folder-label { flex: 1 1 14rem; color: var(--text); }
+    .folder-bar label.chk {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .folder-bar input.path-note {
+      flex: 1 1 12rem;
+      max-width: 22rem;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.5rem;
+    }
+    .identity-icon-block {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: flex-start;
+    }
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      background: #fafcfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    .drop-zone.drag-over {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .drop-zone.icon-drop {
+      width: 96px;
+      height: 96px;
+      flex-shrink: 0;
+    }
+    .drop-zone.stage-drop {
+      width: 100%;
+      min-height: 88px;
+      max-height: none;
+    }
+    .drop-zone img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .stage-preview-slot {
+      width: 100%;
+    }
+    .stage-preview-frame {
+      width: 100%;
+      margin: 0 auto;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      overflow: hidden;
+      max-height: min(320px, 50vh);
+    }
+    .stage-preview-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+    .stage-preview-empty {
+      min-height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-replace-stage-img {
+      margin-top: 0.25rem;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.4rem;
+      width: 100%;
+    }
+    .drop-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 0.35rem;
+      line-height: 1.3;
+    }
+    .stage-images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+      gap: 0.75rem;
+      align-items: start;
+    }
+    .stage-image-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem;
+      background: #fafcfa;
+    }
+    .stage-image-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: var(--muted);
+    }
+    .btn-clear-image {
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
+      padding: 0.2rem 0.45rem;
+      width: 100%;
+    }
+    .stage-img-filename {
+      margin-top: 0.25rem;
+      font-size: 0.7rem !important;
+    }
+    .atlas-panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      background: #fafcfa;
+    }
+    .drop-zone.atlas-drop {
+      width: 100%;
+      min-height: 100px;
+      max-height: 220px;
+      margin-top: 0.35rem;
+    }
+    .drop-zone.atlas-drop img {
+      max-height: 200px;
+    }
+    .atlas-editor-outer {
+      margin-top: 0.5rem;
+      overflow-x: auto;
+    }
+    .atlas-editor {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      line-height: 0;
+      user-select: none;
+    }
+    .atlas-editor img {
+      max-width: min(100%, 900px);
+      height: auto;
+      display: block;
+      pointer-events: none;
+    }
+    #atlas-slice-layer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .slice-rect {
+      position: absolute;
+      box-sizing: border-box;
+      border: 2px solid var(--accent);
+      background: rgba(45, 106, 79, 0.12);
+      cursor: move;
+      touch-action: none;
+    }
+    .slice-rect.active {
+      border-color: #e9c46a;
+      background: rgba(233, 196, 106, 0.2);
+      z-index: 2;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+    }
+    .slice-label {
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #1b4332;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 0 3px;
+      border-radius: 3px;
+      line-height: 1.3;
+      pointer-events: none;
+    }
+    .slice-handle-br {
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border: 2px solid #fff;
+      border-radius: 2px;
+      cursor: nwse-resize;
+    }
+    .slice-rect:not(.active) .slice-handle-br {
+      opacity: 0.65;
+    }
+    .stage-image-card.selectable {
+      cursor: pointer;
+    }
+    .stage-image-card.slice-active {
+      outline: 2px solid #e9c46a;
+      outline-offset: 2px;
+    }
+    .atlas-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      align-items: center;
+    }
+    .env-banner-block {
+      border-bottom: 1px solid #e9c46a;
+      background: #fff3cd;
+    }
+    .env-banner-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 0;
+      padding: 0.4rem 1.25rem;
+      border: none;
+      background: #fff3cd;
+      color: #5c4a00;
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+    }
+    .env-banner-toggle:hover { background: #ffe8a3; }
+    .env-banner-chevron {
+      font-size: 0.75rem;
+      line-height: 1;
+      transition: transform 0.2s ease;
+      color: #7f4f00;
+    }
+    .env-banner-block.collapsed .env-banner-chevron {
+      transform: rotate(-90deg);
+    }
+    .env-banner-panel {
+      padding: 0 1.25rem 0.65rem;
+      font-size: 0.85rem;
+      color: #5c4a00;
+    }
+    .env-banner-block.collapsed .env-banner-panel {
+      display: none;
+    }
+    .env-banner-panel strong { color: #7f4f00; }
+    .env-banner-panel ul { margin: 0.35rem 0 0 1.1rem; padding: 0; }
+    @media print {
+      header.app-header, .hint, .toolbar, .drag-handle { display: none !important; }
+      .sheet-section { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.2</small></h1>
+    <div class="toolbar">
+      <button type="button" id="btn-new-blank">Fiche vierge</button>
+      <button type="button" id="btn-load-lettuce">Exemple laitue</button>
+      <button type="button" id="btn-save" title="Brouillon dans ce navigateur seulement">Sauvegarder (navigateur)</button>
+      <button type="button" id="btn-reorder" class="active" title="Glisser les blocs par la poignée ≡">Réorganiser : ON</button>
+      <button type="button" id="btn-import" title="Rouvrir un .json exporté">Ouvrir JSON…</button>
+      <button type="button" id="btn-export" title="Enregistrer un .json sur le disque">Enregistrer JSON…</button>
+      <button type="button" id="btn-copy">Copier JSON</button>
+      <input type="file" id="file-import" accept=".json,application/json" hidden />
+    </div>
+    <p class="save-status" id="save-status" role="status">Pas encore enregistré dans ce navigateur.</p>
+  </header>
+  <div class="folder-bar">
+    <span class="folder-label" id="folder-label">Dossier JSON : non défini</span>
+    <button type="button" id="btn-pick-folder" class="primary">Dossier JSON…</button>
+    <button type="button" id="btn-clear-folder">Oublier dossier</button>
+    <label class="chk" title="Écrit le fichier sans redemander l’emplacement">
+      <input type="checkbox" id="chk-direct-save" checked disabled />
+      Enregistrer direct dans ce dossier
+    </label>
+    <input type="text" class="path-note" id="path-note" placeholder="Note chemin (pour toi, ex. D:\AquaFarm\fiches)" title="Le navigateur ne peut pas ouvrir un chemin tapé — utilise « Définir dossier » une fois" />
+  </div>
+  <div class="env-banner-block" id="env-banner-block">
+    <button type="button" class="env-banner-toggle" id="btn-toggle-banner" aria-expanded="true" aria-controls="env-banner-panel">
+      <span>Aide fichiers JSON</span>
+      <span class="env-banner-chevron" id="env-banner-chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="env-banner-panel" id="env-banner-panel">
+      <div id="env-banner-content"></div>
+    </div>
+  </div>
+  <main>
+    <div id="sections-root"></div>
+    <section class="sheet-section" id="section-export" style="margin-top:1rem">
+      <div class="section-head"><span class="drag-handle" aria-hidden="true">≡</span><h2>Aperçu données</h2></div>
+      <div class="section-body">
+        <p class="lbl" style="font-size:0.85rem;color:var(--muted)">JSON issu des champs (pour carnet / prochaine itération import Unity).</p>
+        <pre class="export-preview" id="json-preview">{}</pre>
+      </div>
+    </section>
+  </main>
+
+  <template id="section-template">
+    <article class="sheet-section" draggable="true">
+      <div class="section-head">
+        <span class="drag-handle" aria-hidden="true" title="Déplacer">≡</span>
+        <h2></h2>
+      </div>
+      <div class="section-body"></div>
+    </article>
+  </template>
+
+  <script>
+    const STORAGE_KEY = "aquafarm-plant-sheet-v1";
+    const PATH_NOTE_KEY = "aquafarm-path-note";
+    const BANNER_HIDDEN_KEY = "aquafarm-help-banner-hidden";
+    const DIR_DB_NAME = "aquafarm-fiche-v1";
+    const DIR_STORE = "kv";
+    const DIR_KEY = "plantsDir";
+    const STAGE_NAMES = ["Graine", "Starting", "Baby", "Growing", "Mature", "Flowering", "Seedling"];
+    const INSECT_KINDS = ["None", "Bee", "Butterfly", "RandomBeeOrButterfly"];
+    const FOOTPRINT_SIZE = 4;
+    const SLICE_MIN_SIZE = 8;
+    let atlasActiveStage = 0;
+    let atlasDrag = null;
+
+    const SECTION_DEFS = [
+      { id: "identity", title: "1. Identité & profil" },
+      { id: "gdd", title: "2. GDD carnet (hors SO Unity)" },
+      { id: "footprint", title: "3. Footprint & offsets" },
+      { id: "stages", title: "4. Stades & timers" },
+      { id: "stage-images", title: "5. Atlas & images des stades" },
+      { id: "harvest", title: "6. Récolte (maxHarvestCount)" },
+      { id: "insect", title: "7. Insecte (Flowering)" },
+      { id: "items", title: "8. Items inventaire" },
+      { id: "economy", title: "9. Économie & assets" },
+      { id: "notes", title: "10. Notes & suivi" },
+    ];
+
+    function defaultAtlas() {
+      return {
+        fileName: "",
+        dataUrl: "",
+        width: 0,
+        height: 0,
+        columns: 7,
+        rows: 1,
+      };
+    }
+
+    function defaultPlantIcon() {
+      return {
+        fileName: "",
+        dataUrl: "",
+        assetPath: "",
+        source: "file",
+        atlasSliceIndex: 4,
+      };
+    }
+
+    function ensureImageFields(data) {
+      if (!data.plantIcon) data.plantIcon = defaultPlantIcon();
+      else data.plantIcon = { ...defaultPlantIcon(), ...data.plantIcon };
+      if (!data.atlas) data.atlas = defaultAtlas();
+      else data.atlas = { ...defaultAtlas(), ...data.atlas };
+      if (Array.isArray(data.stages)) {
+        data.stages.forEach((st) => {
+          if (st.imageFileName === undefined) st.imageFileName = "";
+          if (st.imageDataUrl === undefined) st.imageDataUrl = "";
+          if (!st.sliceRect) st.sliceRect = null;
+        });
+      }
+      return data;
+    }
+
+    function ensureSectionOrderHasStageImages(order) {
+      if (order.includes("stage-images")) return order;
+      const next = [...order];
+      const idx = next.indexOf("stages");
+      if (idx >= 0) next.splice(idx + 1, 0, "stage-images");
+      else next.push("stage-images");
+      return next;
+    }
+
+    function defaultLettuceData() {
+      const stages = STAGE_NAMES.map((name, index) => {
+        const durationSeconds = index === 5 ? 3500 : 1;
+        let harvest = null;
+        if (index === 4) harvest = { itemId: "laitue_mature", min: 1, max: 3 };
+        if (index === 6) harvest = { itemId: "laitue_seed", min: 5, max: 15 };
+        return {
+          index,
+          name,
+          durationSeconds,
+          spriteRef: `AtlasLaitue_${index}`,
+          imageFileName: "",
+          imageDataUrl: "",
+          harvest,
+        };
+      });
+      return ensureImageFields({
+        plantId: "lettuce",
+        plantIcon: defaultPlantIcon(),
+        atlas: defaultAtlas(),
+        displayName: "Laitue",
+        growthPattern: "Leafy",
+        maxHarvestCount: 1,
+        assetPath: "Assets/Data/Ferme/Laitue.asset",
+        prefabPath: "Assets/Prefabs/World/Plantes/LaitueObj.prefab",
+        atlasPath: "Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png",
+        gdd: {
+          unlockTier: "T1",
+          visualRole: "mass",
+          sessionBand: "",
+          seedBuyGold: 5,
+          sellLeafGold: 15,
+          notes: "Runtime debug timers — voisinage 15 gold",
+        },
+        footprintCells: [
+          { x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 },
+        ],
+        spriteWorldOffset: { x: 0, y: 0 },
+        isoSpriteViewOffset: { x: 0, y: 0 },
+        stages,
+        insect: {
+          kind: "RandomBeeOrButterfly",
+          moveSpeed: 0,
+          forageMin: 0,
+          forageMax: 0,
+        },
+        items: {
+          seedItemId: "laitue_seed",
+          seedDisplayName: "Laitue Seedling",
+          seedMaxStack: 99,
+          matureItemId: "laitue_mature",
+          matureDisplayName: "Laitue Mature",
+          matureMaxStack: 99,
+        },
+        economy: {
+          shopSeedPrice: 5,
+          sellMaturePrice: 15,
+        },
+        notes: "",
+        tickets: "",
+      });
+    }
+
+    function emptyData() {
+      const stages = STAGE_NAMES.map((name, index) => ({
+        index,
+        name,
+        durationSeconds: "",
+        spriteRef: "",
+        imageFileName: "",
+        imageDataUrl: "",
+        harvest: null,
+      }));
+      return ensureImageFields({
+        plantId: "",
+        plantIcon: defaultPlantIcon(),
+        atlas: defaultAtlas(),
+        displayName: "",
+        growthPattern: "Leafy",
+        maxHarvestCount: 1,
+        assetPath: "",
+        prefabPath: "",
+        atlasPath: "",
+        gdd: { unlockTier: "", visualRole: "", sessionBand: "", seedBuyGold: "", sellLeafGold: "", notes: "" },
+        footprintCells: [{ x: 0, y: 0 }],
+        spriteWorldOffset: { x: 0, y: 0 },
+        isoSpriteViewOffset: { x: 0, y: 0 },
+        stages,
+        insect: { kind: "None", moveSpeed: "", forageMin: "", forageMax: "" },
+        items: {
+          seedItemId: "", seedDisplayName: "", seedMaxStack: 99,
+          matureItemId: "", matureDisplayName: "", matureMaxStack: 99,
+        },
+        economy: { shopSeedPrice: "", sellMaturePrice: "" },
+        notes: "",
+        tickets: "",
+      });
+    }
+
+    let reorderEnabled = true;
+    let pendingSectionOrder = null;
+    let cachedDirHandle = null;
+    let state = loadState();
+
+    function openDirDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DIR_DB_NAME, 1);
+        request.onupgradeneeded = () => {
+          request.result.createObjectStore(DIR_STORE);
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    async function idbGet(key) {
+      const db = await openDirDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(DIR_STORE, "readonly");
+        const req = tx.objectStore(DIR_STORE).get(key);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function idbSet(key, value) {
+      const db = await openDirDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(DIR_STORE, "readwrite");
+        tx.objectStore(DIR_STORE).put(value, key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+
+    async function idbDelete(key) {
+      const db = await openDirDatabase();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(DIR_STORE, "readwrite");
+        tx.objectStore(DIR_STORE).delete(key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+
+    async function verifyDirPermission(handle, needsWrite) {
+      if (!handle) return false;
+      const mode = needsWrite ? "readwrite" : "read";
+      if ((await handle.queryPermission({ mode })) === "granted") return true;
+      return (await handle.requestPermission({ mode })) === "granted";
+    }
+
+    function updateFolderUi() {
+      const label = document.getElementById("folder-label");
+      const direct = document.getElementById("chk-direct-save");
+      if (!label || !direct) return;
+      if (cachedDirHandle) {
+        label.textContent = `Dossier JSON mémorisé : ${cachedDirHandle.name}`;
+        direct.disabled = false;
+      } else {
+        label.textContent = "Dossier JSON : non défini — clique « Définir dossier JSON… »";
+        direct.disabled = true;
+        direct.checked = true;
+      }
+    }
+
+    async function initDefaultFolder() {
+      try {
+        const handle = await idbGet(DIR_KEY);
+        if (handle && (await verifyDirPermission(handle, true))) {
+          cachedDirHandle = handle;
+        } else {
+          cachedDirHandle = null;
+        }
+      } catch {
+        cachedDirHandle = null;
+      }
+      updateFolderUi();
+      const note = localStorage.getItem(PATH_NOTE_KEY);
+      const pathInput = document.getElementById("path-note");
+      if (pathInput && note) pathInput.value = note;
+    }
+
+    async function pickDefaultFolder() {
+      if (typeof window.showDirectoryPicker !== "function") {
+        setSaveStatus("Dossier JSON : utilise Chrome ou Edge (hors aperçu Cursor).", false);
+        return;
+      }
+      try {
+        const handle = await window.showDirectoryPicker({ mode: "readwrite" });
+        await idbSet(DIR_KEY, handle);
+        cachedDirHandle = handle;
+        updateFolderUi();
+        setSaveStatus(`Dossier mémorisé : ${handle.name}`, true);
+      } catch (err) {
+        if (err && err.name === "AbortError") return;
+        console.error(err);
+        setSaveStatus("Impossible de mémoriser ce dossier.", false);
+      }
+    }
+
+    async function clearDefaultFolder() {
+      cachedDirHandle = null;
+      try {
+        await idbDelete(DIR_KEY);
+      } catch { /* ignore */ }
+      updateFolderUi();
+      setSaveStatus("Dossier mémorisé retiré.", false);
+    }
+
+    async function writeJsonToDir(dirHandle, fileName, json) {
+      const fileHandle = await dirHandle.getFileHandle(fileName, { create: true });
+      const writable = await fileHandle.createWritable();
+      await writable.write(json);
+      await writable.close();
+    }
+
+    function mergeImportedData(raw) {
+      const base = emptyData();
+      if (!raw || typeof raw !== "object") return base;
+      const merged = {
+        ...base,
+        ...raw,
+        gdd: { ...base.gdd, ...(raw.gdd || {}) },
+        insect: { ...base.insect, ...(raw.insect || {}) },
+        items: { ...base.items, ...(raw.items || {}) },
+        economy: { ...base.economy, ...(raw.economy || {}) },
+        spriteWorldOffset: { ...base.spriteWorldOffset, ...(raw.spriteWorldOffset || {}) },
+        isoSpriteViewOffset: { ...base.isoSpriteViewOffset, ...(raw.isoSpriteViewOffset || {}) },
+      };
+      if (Array.isArray(raw.stages)) {
+        merged.stages = base.stages.map((st, i) => ({
+          ...st,
+          ...(raw.stages[i] || {}),
+          name: STAGE_NAMES[i],
+          index: i,
+        }));
+      }
+      if (Array.isArray(raw.footprintCells) && raw.footprintCells.length) {
+        merged.footprintCells = raw.footprintCells;
+      }
+      merged.plantIcon = { ...base.plantIcon, ...(raw.plantIcon || {}) };
+      merged.atlas = { ...base.atlas, ...(raw.atlas || {}) };
+      return ensureImageFields(merged);
+    }
+
+    function parseImportedFile(text) {
+      const parsed = JSON.parse(text);
+      const data = parsed.data != null ? parsed.data : parsed;
+      let sectionOrder = Array.isArray(parsed.sectionOrder) ? parsed.sectionOrder : null;
+      if (sectionOrder) {
+        const valid = new Set(SECTION_DEFS.map((s) => s.id));
+        sectionOrder = sectionOrder.filter((id) => valid.has(id));
+        SECTION_DEFS.forEach((s) => {
+          if (!sectionOrder.includes(s.id)) sectionOrder.push(s.id);
+        });
+        sectionOrder = ensureSectionOrderHasStageImages(sectionOrder);
+      }
+      return { data: mergeImportedData(data), sectionOrder };
+    }
+
+    function loadState() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("vierge") === "1" || params.get("blank") === "1") {
+        return emptyData();
+      }
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultLettuceData();
+        const parsed = JSON.parse(raw);
+        const data = parsed.data ? parsed.data : defaultLettuceData();
+        return ensureImageFields(data);
+      } catch {
+        return defaultLettuceData();
+      }
+    }
+
+    function loadSectionOrder() {
+      if (pendingSectionOrder) {
+        const order = pendingSectionOrder;
+        pendingSectionOrder = null;
+        return order;
+      }
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return SECTION_DEFS.map((s) => s.id);
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed.sectionOrder) && parsed.sectionOrder.length) {
+          return ensureSectionOrderHasStageImages(parsed.sectionOrder);
+        }
+      } catch { /* ignore */ }
+      return SECTION_DEFS.map((s) => s.id);
+    }
+
+    function formatSaveTime(iso) {
+      if (!iso) return "";
+      try {
+        return new Date(iso).toLocaleString("fr-FR");
+      } catch {
+        return iso;
+      }
+    }
+
+    function setSaveStatus(message, ok) {
+      const el = document.getElementById("save-status");
+      if (!el) return;
+      el.textContent = message;
+      el.classList.toggle("ok", Boolean(ok));
+    }
+
+    function refreshSaveStatusFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          setSaveStatus("Pas encore enregistré dans ce navigateur.", false);
+          return;
+        }
+        const parsed = JSON.parse(raw);
+        const when = formatSaveTime(parsed.updatedAt);
+        const name = parsed.data?.displayName || parsed.data?.plantId || "fiche";
+        setSaveStatus(`Dernière sauvegarde locale : ${when} (${name})`, true);
+      } catch {
+        setSaveStatus("Sauvegarde locale illisible.", false);
+      }
+    }
+
+    function persist(options = {}) {
+      const { showFeedback = false, silent = false } = options;
+      collectFromDom();
+      const updatedAt = new Date().toISOString();
+      const payload = {
+        version: 1,
+        updatedAt,
+        sectionOrder: getCurrentSectionOrder(),
+        data: state,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      updateJsonPreview();
+      if (showFeedback) {
+        const label = state.displayName || state.plantId || "fiche";
+        setSaveStatus(`Enregistré — ${formatSaveTime(updatedAt)} (${label})`, true);
+      } else if (!silent) {
+        refreshSaveStatusFromStorage();
+      }
+    }
+
+    function field(label, id, value, opts = {}) {
+      const type = opts.type || "text";
+      const ro = opts.readonly ? "readonly class='readonly'" : "";
+      const extra = opts.extraAttrs || "";
+      if (type === "select") {
+        const options = (opts.options || [])
+          .map((o) => `<option value="${o}" ${o === value ? "selected" : ""}>${o}</option>`)
+          .join("");
+        return `<label class="field"><span class="lbl">${label}</span>
+          <select data-bind="${id}" ${extra}>${options}</select></label>`;
+      }
+      if (type === "textarea") {
+        return `<label class="field"><span class="lbl">${label}</span>
+          <textarea data-bind="${id}" ${extra}>${escapeHtml(String(value ?? ""))}</textarea></label>`;
+      }
+      return `<label class="field"><span class="lbl">${label}</span>
+        <input type="${type}" data-bind="${id}" value="${escapeAttr(value ?? "")}" ${ro} ${extra} /></label>`;
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    function escapeAttr(s) {
+      return escapeHtml(String(s)).replace(/"/g, "&quot;");
+    }
+
+    function renderFootprintEditor() {
+      const set = new Set(state.footprintCells.map((c) => `${c.x},${c.y}`));
+      let cells = "";
+      for (let y = FOOTPRINT_SIZE - 1; y >= 0; y--) {
+        for (let x = 0; x < FOOTPRINT_SIZE; x++) {
+          const key = `${x},${y}`;
+          const on = set.has(key);
+          const anchor = x === 0 && y === 0;
+          cells += `<button type="button" class="footprint-cell${on ? " on" : ""}${anchor ? " anchor" : ""}"
+            data-fp-x="${x}" data-fp-y="${y}" title="(${x},${y})${anchor ? " ancre" : ""}"></button>`;
+        }
+      }
+      return `<p style="font-size:0.85rem;color:var(--muted)">Clique pour activer/désactiver une cellule. Bordure jaune = (0,0) ancre attendue.</p>
+        <div class="footprint-grid" id="footprint-grid">${cells}</div>
+        <input type="hidden" data-bind="footprintJson" value="" />`;
+    }
+
+    function renderStagesTable() {
+      const rows = state.stages.map((st) => {
+        const h = st.harvest;
+        const checked = h ? "checked" : "";
+        return `<tr data-stage-index="${st.index}">
+          <td>${st.index}</td>
+          <td><strong>${st.name}</strong></td>
+          <td><input type="number" min="0" step="1" data-stage-field="duration" value="${st.durationSeconds}" /></td>
+          <td><input type="text" data-stage-field="spriteRef" value="${escapeAttr(st.spriteRef)}" /></td>
+          <td><input type="checkbox" data-stage-field="harvestable" ${checked} /></td>
+          <td><input type="text" data-stage-field="harvestItemId" value="${escapeAttr(h?.itemId ?? "")}" /></td>
+          <td><input type="number" min="0" data-stage-field="harvestMin" value="${h?.min ?? ""}" /></td>
+          <td><input type="number" min="0" data-stage-field="harvestMax" value="${h?.max ?? ""}" /></td>
+        </tr>`;
+      }).join("");
+      return `<table class="stages"><thead><tr>
+        <th>#</th><th>Stade</th><th>durationSeconds</th><th>sprite / ref</th>
+        <th>Récolte</th><th>harvestItemId</th><th>min</th><th>max</th>
+      </tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    function renderDropZoneInner(dataUrl, hint) {
+      if (dataUrl) {
+        return `<img src="${dataUrl}" alt="" />`;
+      }
+      return `<span class="drop-hint">${hint}</span>`;
+    }
+
+    function renderPlantIconBlock() {
+      const icon = state.plantIcon || defaultPlantIcon();
+      return `<div class="identity-icon-block">
+        <div class="drop-zone icon-drop" data-drop-kind="plant-icon" title="Image seule, ou utilise l’atlas §5">
+          ${renderDropZoneInner(icon.dataUrl, "Icône présentation")}
+        </div>
+        <div class="grid-2" style="flex:1;min-width:200px">
+          ${field("Source icône", "plantIcon.source", icon.source, {
+            type: "select", options: ["file", "atlas"],
+          })}
+          ${field("Tranche atlas (stade)", "plantIcon.atlasSliceIndex", icon.atlasSliceIndex, { type: "number", extraAttrs: 'min="0" max="6" step="1"' })}
+          ${field("Nom fichier", "plantIcon.fileName", icon.fileName, { readonly: true })}
+          ${field("Chemin asset Unity", "plantIcon.assetPath", icon.assetPath)}
+          <button type="button" id="btn-icon-from-atlas" style="width:auto">Icône depuis l’atlas</button>
+          <button type="button" class="btn-clear-image" data-clear-kind="plant-icon" style="width:auto">Retirer l’icône</button>
+          <p style="font-size:0.8rem;color:var(--muted);margin:0">Source <code>atlas</code> : tranche §5 (défaut stade 4 Mature). Source <code>file</code> : drop ici.</p>
+        </div>
+      </div>`;
+    }
+
+    function renderAtlasPanel() {
+      const atlas = state.atlas || defaultAtlas();
+      const dim = atlas.width && atlas.height ? ` (${atlas.width}×${atlas.height} px)` : "";
+      const dropBlock = atlas.dataUrl
+        ? `<button type="button" id="btn-replace-atlas" style="margin-top:0.35rem">Remplacer l’atlas…</button>`
+        : `<div class="drop-zone atlas-drop" data-drop-kind="atlas" title="Glisser AtlasLaitue.png ou équivalent">
+            ${renderDropZoneInner("", "Glisser l’atlas spritesheet")}
+          </div>`;
+      const editorBlock = atlas.dataUrl
+        ? `<div class="atlas-editor-outer">
+            <p style="font-size:0.85rem;margin:0.5rem 0 0.35rem">
+              <label>Stade actif
+                <select id="atlas-active-stage" style="margin-left:0.35rem">
+                  ${STAGE_NAMES.map((n, i) => `<option value="${i}" ${i === atlasActiveStage ? "selected" : ""}>${i} — ${n}</option>`).join("")}
+                </select>
+              </label>
+              — déplace le cadre ; poignée <strong>bas-droite</strong> pour redimensionner.
+            </p>
+            <div class="atlas-editor" id="atlas-editor">
+              <img id="atlas-editor-img" src="${atlas.dataUrl}" alt="Atlas" draggable="false" />
+              <div id="atlas-slice-layer"></div>
+            </div>
+          </div>`
+        : "";
+      return `<div class="atlas-panel">
+        <strong>Atlas croissance</strong> — découpe manuelle (atlas non uniforme).${dim}
+        ${dropBlock}
+        ${editorBlock}
+        <div class="grid-2" style="margin-top:0.5rem">
+          ${field("Colonnes (grille aide)", "atlas.columns", atlas.columns, { type: "number", extraAttrs: 'min="1" max="16" step="1"' })}
+          ${field("Lignes (grille aide)", "atlas.rows", atlas.rows, { type: "number", extraAttrs: 'min="1" max="16" step="1"' })}
+          ${field("Fichier atlas", "atlas.fileName", atlas.fileName, { readonly: true })}
+          ${field("Lier atlasPath §9", "atlasPath", state.atlasPath || "", { extraAttrs: 'placeholder="Assets/Art/.../Atlas.png"' })}
+        </div>
+        <div class="atlas-actions">
+          <button type="button" id="btn-init-grid">Grille uniforme (départ)</button>
+          <button type="button" id="btn-apply-atlas" class="primary">Mettre à jour les 7 aperçus</button>
+          <button type="button" id="btn-clear-atlas">Retirer l’atlas</button>
+        </div>
+      </div>`;
+    }
+
+    function stagePreviewFrameStyle(rect) {
+      if (!rect || !rect.w || !rect.h) return "min-height:88px";
+      const w = Math.round(rect.w);
+      const h = Math.round(rect.h);
+      return `aspect-ratio: ${w} / ${h}; max-height: min(320px, 50vh);`;
+    }
+
+    function renderStagePreviewHtml(st) {
+      const rect = getStageSliceRect(st.index);
+      if (st.imageDataUrl) {
+        return `<div class="stage-preview-slot" data-stage-preview="${st.index}">
+          <div class="stage-preview-frame" style="${stagePreviewFrameStyle(rect)}">
+            <img src="${st.imageDataUrl}" alt="${escapeAttr(st.name)}" />
+          </div>
+          <button type="button" class="btn-replace-stage-img" data-replace-stage="${st.index}">Remplacer l’image…</button>
+        </div>`;
+      }
+      return `<div class="stage-preview-slot" data-stage-preview="${st.index}">
+        <div class="drop-zone stage-drop stage-preview-empty" data-drop-kind="stage" data-stage-index="${st.index}">
+          ${renderDropZoneInner("", "Glisser image")}
+        </div>
+      </div>`;
+    }
+
+    function renderStageImagesGrid() {
+      const cards = state.stages.map((st) => {
+        const rect = getStageSliceRect(st.index);
+        const rectLabel = rect ? `${Math.round(rect.x)},${Math.round(rect.y)} ${Math.round(rect.w)}×${Math.round(rect.h)}` : "";
+        return `
+        <div class="stage-image-card selectable${st.index === atlasActiveStage ? " slice-active" : ""}" data-select-slice="${st.index}" title="Sélectionner ce cadre sur l’atlas">
+          <div class="stage-image-label">${st.index} · ${st.name}</div>
+          ${renderStagePreviewHtml(st)}
+          <button type="button" class="btn-clear-image" data-clear-kind="stage" data-stage-index="${st.index}">Retirer</button>
+          <input type="text" class="stage-img-filename" readonly value="${escapeAttr(st.imageFileName || "")}" placeholder="fichier…" />
+          ${rectLabel ? `<p style="font-size:0.65rem;color:var(--muted);margin:0.2rem 0 0">${rectLabel}</p>` : ""}
+        </div>`;
+      }).join("");
+      return `${renderAtlasPanel()}
+        <p style="font-size:0.85rem;color:var(--muted)">Aperçus par stade (générés depuis l’atlas ou image individuelle). Ordre = §4.</p>
+        <div class="stage-images-grid">${cards}</div>`;
+    }
+
+    function loadImageDimensions(dataUrl) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        img.onerror = reject;
+        img.src = dataUrl;
+      });
+    }
+
+    function getAtlasSliceRect(index, atlas) {
+      const cols = Math.max(1, Number(atlas.columns) || 7);
+      const rows = Math.max(1, Number(atlas.rows) || 1);
+      const w = atlas.width;
+      const h = atlas.height;
+      if (!w || !h) return null;
+      const cellW = w / cols;
+      const cellH = h / rows;
+      const col = index % cols;
+      const row = Math.floor(index / cols);
+      if (row >= rows) return null;
+      return { x: col * cellW, y: row * cellH, w: cellW, h: cellH };
+    }
+
+    function getStageSliceRect(index) {
+      const st = state.stages[index];
+      const r = st?.sliceRect;
+      if (r && r.w > 0 && r.h > 0) return { ...r };
+      return getAtlasSliceRect(index, state.atlas);
+    }
+
+    function clampSliceRect(rect, maxW, maxH) {
+      const out = { ...rect };
+      out.w = Math.max(SLICE_MIN_SIZE, out.w);
+      out.h = Math.max(SLICE_MIN_SIZE, out.h);
+      out.x = Math.max(0, Math.min(out.x, maxW - out.w));
+      out.y = Math.max(0, Math.min(out.y, maxH - out.h));
+      return out;
+    }
+
+    function initSliceRectsFromGrid() {
+      if (!state.atlas?.dataUrl) return;
+      collectFromDom();
+      for (let i = 0; i < STAGE_NAMES.length; i++) {
+        const rect = getAtlasSliceRect(i, state.atlas);
+        if (rect) state.stages[i].sliceRect = { ...rect };
+      }
+    }
+
+    function getAtlasEditorMetrics() {
+      const img = document.getElementById("atlas-editor-img");
+      if (!img || !state.atlas?.width) return null;
+      const dw = img.clientWidth;
+      const dh = img.clientHeight;
+      if (!dw || !dh) return null;
+      return {
+        dw,
+        dh,
+        scaleX: state.atlas.width / dw,
+        scaleY: state.atlas.height / dh,
+      };
+    }
+
+    function naturalRectToDisplay(rect, metrics) {
+      return {
+        left: rect.x / metrics.scaleX,
+        top: rect.y / metrics.scaleY,
+        width: rect.w / metrics.scaleX,
+        height: rect.h / metrics.scaleY,
+      };
+    }
+
+    function displayDeltaToNatural(dx, dy, metrics) {
+      return { dx: dx * metrics.scaleX, dy: dy * metrics.scaleY };
+    }
+
+    function layoutAtlasSliceOverlays() {
+      const layer = document.getElementById("atlas-slice-layer");
+      const metrics = getAtlasEditorMetrics();
+      if (!layer || !metrics) return;
+      layer.innerHTML = "";
+      for (let i = 0; i < STAGE_NAMES.length; i++) {
+        const rect = getStageSliceRect(i);
+        if (!rect) continue;
+        const d = naturalRectToDisplay(rect, metrics);
+        const box = document.createElement("div");
+        box.className = "slice-rect" + (i === atlasActiveStage ? " active" : "");
+        box.dataset.stageIndex = String(i);
+        box.style.left = `${d.left}px`;
+        box.style.top = `${d.top}px`;
+        box.style.width = `${d.width}px`;
+        box.style.height = `${d.height}px`;
+        box.innerHTML = `<span class="slice-label">${i} ${STAGE_NAMES[i]}</span><div class="slice-handle-br" data-resize="1"></div>`;
+        layer.appendChild(box);
+      }
+    }
+
+    function setAtlasActiveStage(index) {
+      atlasActiveStage = Math.min(6, Math.max(0, Number(index) || 0));
+      layoutAtlasSliceOverlays();
+      document.querySelectorAll("[data-select-slice]").forEach((card) => {
+        card.classList.toggle("slice-active", Number(card.dataset.selectSlice) === atlasActiveStage);
+      });
+      const sel = document.getElementById("atlas-active-stage");
+      if (sel) sel.value = String(atlasActiveStage);
+    }
+
+    function onAtlasPointerMove(e) {
+      if (!atlasDrag) return;
+      const metrics = getAtlasEditorMetrics();
+      if (!metrics) return;
+      const nd = displayDeltaToNatural(e.clientX - atlasDrag.startX, e.clientY - atlasDrag.startY, metrics);
+      const maxW = state.atlas.width;
+      const maxH = state.atlas.height;
+      let rect = { ...atlasDrag.startRect };
+      if (atlasDrag.mode === "move") {
+        rect.x = atlasDrag.startRect.x + nd.dx;
+        rect.y = atlasDrag.startRect.y + nd.dy;
+      } else {
+        rect.w = atlasDrag.startRect.w + nd.dx;
+        rect.h = atlasDrag.startRect.h + nd.dy;
+      }
+      rect = clampSliceRect(rect, maxW, maxH);
+      state.stages[atlasDrag.stageIndex].sliceRect = rect;
+      const d = naturalRectToDisplay(rect, metrics);
+      const el = document.querySelector(`.slice-rect[data-stage-index="${atlasDrag.stageIndex}"]`);
+      if (el) {
+        el.style.left = `${d.left}px`;
+        el.style.top = `${d.top}px`;
+        el.style.width = `${d.width}px`;
+        el.style.height = `${d.height}px`;
+      }
+    }
+
+    async function onAtlasPointerUp() {
+      if (!atlasDrag) return;
+      const idx = atlasDrag.stageIndex;
+      atlasDrag = null;
+      document.removeEventListener("pointermove", onAtlasPointerMove);
+      document.removeEventListener("pointerup", onAtlasPointerUp);
+      await refreshSingleStagePreview(idx);
+      persist({ silent: true });
+    }
+
+    async function refreshSingleStagePreview(index) {
+      const rect = getStageSliceRect(index);
+      if (!rect || !state.atlas?.dataUrl) return;
+      state.stages[index].sliceRect = { ...rect };
+      state.stages[index].imageDataUrl = await cropAtlasRect(state.atlas.dataUrl, rect);
+      state.stages[index].imageFileName = `${state.atlas.fileName} · ${STAGE_NAMES[index]}`;
+      const slot = document.querySelector(`[data-stage-preview="${index}"]`);
+      if (slot) {
+        slot.outerHTML = renderStagePreviewHtml(state.stages[index]);
+        bindStageReplaceButtons();
+      }
+      if (state.plantIcon?.source === "atlas" && Number(state.plantIcon.atlasSliceIndex) === index) {
+        await applyPlantIconFromAtlas(false);
+        const iconZone = document.querySelector('[data-drop-kind="plant-icon"]');
+        if (iconZone && state.plantIcon.dataUrl) {
+          iconZone.innerHTML = `<img src="${state.plantIcon.dataUrl}" alt="" />`;
+        }
+      }
+    }
+
+    async function refreshStagePreviewsFromSliceRects() {
+      if (!state.atlas?.dataUrl) {
+        setSaveStatus("Charge un atlas avant.", false);
+        return;
+      }
+      collectFromDom();
+      for (let i = 0; i < STAGE_NAMES.length; i++) {
+        await refreshSingleStagePreview(i);
+      }
+      await applyPlantIconFromAtlas(false);
+      persist({ silent: true });
+      renderSections();
+      setSaveStatus("7 aperçus mis à jour depuis les cadres.", true);
+    }
+
+    function cropAtlasRect(dataUrl, rect) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const cw = Math.max(1, Math.floor(rect.w));
+          const ch = Math.max(1, Math.floor(rect.h));
+          canvas.width = cw;
+          canvas.height = ch;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, rect.x, rect.y, rect.w, rect.h, 0, 0, cw, ch);
+          resolve(canvas.toDataURL("image/png"));
+        };
+        img.onerror = reject;
+        img.src = dataUrl;
+      });
+    }
+
+    async function applyAtlasSlicesToStages() {
+      await refreshStagePreviewsFromSliceRects();
+    }
+
+    async function applyPlantIconFromAtlas(showStatus) {
+      if (!state.atlas?.dataUrl) {
+        if (showStatus) setSaveStatus("Aucun atlas chargé.", false);
+        return;
+      }
+      collectFromDom();
+      if (state.plantIcon.source !== "atlas") {
+        if (showStatus) setSaveStatus("Source icône = fichier : drop sur l’icône ou passe en « atlas ».", false);
+        return;
+      }
+      const idx = Math.min(6, Math.max(0, Number(state.plantIcon.atlasSliceIndex) || 0));
+      state.plantIcon.atlasSliceIndex = idx;
+      const rect = getStageSliceRect(idx);
+      if (!rect) return;
+      state.plantIcon.dataUrl = await cropAtlasRect(state.atlas.dataUrl, rect);
+      state.plantIcon.fileName = `${state.atlas.fileName}#${STAGE_NAMES[idx]}`;
+      if (showStatus !== false) {
+        persist({ silent: true });
+        renderSections();
+        setSaveStatus(`Icône = tranche ${idx} (${STAGE_NAMES[idx]}).`, true);
+      }
+    }
+
+    async function assignAtlasFromFile(file) {
+      const maxBytes = 8 * 1024 * 1024;
+      if (file.size > maxBytes) {
+        setSaveStatus("Atlas trop lourd (max 8 Mo).", false);
+        return;
+      }
+      const dataUrl = await readFileAsDataUrl(file);
+      const dim = await loadImageDimensions(dataUrl);
+      state.atlas = {
+        ...defaultAtlas(),
+        ...state.atlas,
+        fileName: file.name,
+        dataUrl,
+        width: dim.width,
+        height: dim.height,
+      };
+      if (!state.atlasPath) state.atlasPath = file.name;
+      initSliceRectsFromGrid();
+      await refreshStagePreviewsFromSliceRects();
+    }
+
+    function clearAtlas() {
+      state.atlas = defaultAtlas();
+      persist({ silent: true });
+      renderSections();
+      setSaveStatus("Atlas retiré.", false);
+    }
+
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function assignImageFromFile(file, kind, stageIndex) {
+      if (!file || !file.type.startsWith("image/")) {
+        setSaveStatus("Fichier ignoré : image PNG/JPG/WebP uniquement.", false);
+        return;
+      }
+      if (kind === "atlas") {
+        await assignAtlasFromFile(file);
+        return;
+      }
+      const maxBytes = 2 * 1024 * 1024;
+      if (file.size > maxBytes) {
+        setSaveStatus("Image trop lourde (max 2 Mo par fichier).", false);
+        return;
+      }
+      const dataUrl = await readFileAsDataUrl(file);
+      if (kind === "plant-icon") {
+        state.plantIcon = { ...defaultPlantIcon(), ...state.plantIcon };
+        state.plantIcon.source = "file";
+        state.plantIcon.fileName = file.name;
+        state.plantIcon.dataUrl = dataUrl;
+      } else if (kind === "stage" && state.stages[stageIndex]) {
+        state.stages[stageIndex].imageFileName = file.name;
+        state.stages[stageIndex].imageDataUrl = dataUrl;
+      }
+      persist({ silent: true });
+      renderSections();
+      setSaveStatus(`Image ajoutée : ${file.name}`, true);
+    }
+
+    function clearImage(kind, stageIndex) {
+      if (kind === "plant-icon") {
+        if (!state.plantIcon) return;
+        state.plantIcon.fileName = "";
+        state.plantIcon.dataUrl = "";
+      } else if (kind === "stage" && state.stages[stageIndex]) {
+        state.stages[stageIndex].imageFileName = "";
+        state.stages[stageIndex].imageDataUrl = "";
+      }
+      persist({ silent: true });
+      renderSections();
+    }
+
+    function bindStageReplaceButtons() {
+      document.querySelectorAll("[data-replace-stage]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const index = Number(btn.dataset.replaceStage);
+          const input = document.createElement("input");
+          input.type = "file";
+          input.accept = "image/*";
+          input.onchange = async () => {
+            const file = input.files?.[0];
+            if (file) await assignImageFromFile(file, "stage", index);
+          };
+          input.click();
+        });
+      });
+    }
+
+    function bindImageDropZones() {
+      document.querySelectorAll(".drop-zone[data-drop-kind]").forEach((zone) => {
+        zone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          zone.classList.add("drag-over");
+        });
+        zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+        zone.addEventListener("drop", async (e) => {
+          e.preventDefault();
+          zone.classList.remove("drag-over");
+          const file = e.dataTransfer?.files?.[0];
+          const kind = zone.dataset.dropKind;
+          const stageIndex = Number(zone.dataset.stageIndex);
+          if (file) await assignImageFromFile(file, kind, stageIndex);
+        });
+        zone.addEventListener("click", () => {
+          const input = document.createElement("input");
+          input.type = "file";
+          input.accept = "image/*";
+          input.onchange = async () => {
+            const file = input.files?.[0];
+            if (file) {
+              await assignImageFromFile(file, zone.dataset.dropKind, Number(zone.dataset.stageIndex));
+            }
+          };
+          input.click();
+        });
+      });
+      document.querySelectorAll("[data-clear-kind]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          clearImage(btn.dataset.clearKind, Number(btn.dataset.stageIndex));
+        });
+      });
+    }
+
+    function bindAtlasSliceEditor() {
+      layoutAtlasSliceOverlays();
+      const layer = document.getElementById("atlas-slice-layer");
+      if (!layer) return;
+
+      layer.onpointerdown = (e) => {
+        const handle = e.target.closest(".slice-handle-br");
+        const box = e.target.closest(".slice-rect");
+        if (!box) return;
+        e.preventDefault();
+        const stageIndex = Number(box.dataset.stageIndex);
+        setAtlasActiveStage(stageIndex);
+        const rect = getStageSliceRect(stageIndex);
+        if (!rect) return;
+        atlasDrag = {
+          mode: handle ? "resize" : "move",
+          stageIndex,
+          startX: e.clientX,
+          startY: e.clientY,
+          startRect: { ...rect },
+        };
+        document.addEventListener("pointermove", onAtlasPointerMove);
+        document.addEventListener("pointerup", onAtlasPointerUp);
+      };
+
+      const sel = document.getElementById("atlas-active-stage");
+      if (sel) {
+        sel.addEventListener("change", () => setAtlasActiveStage(sel.value));
+      }
+
+      document.querySelectorAll("[data-select-slice]").forEach((card) => {
+        card.addEventListener("click", (e) => {
+          if (e.target.closest(".btn-clear-image") || e.target.closest(".stage-drop") || e.target.closest(".btn-replace-stage-img")) return;
+          setAtlasActiveStage(card.dataset.selectSlice);
+        });
+      });
+
+      const img = document.getElementById("atlas-editor-img");
+      if (img && !img.complete) {
+        img.addEventListener("load", () => layoutAtlasSliceOverlays());
+      }
+      if (!window._atlasEditorResizeBound) {
+        window._atlasEditorResizeBound = true;
+        window.addEventListener("resize", () => layoutAtlasSliceOverlays());
+      }
+    }
+
+    function bindAtlasControls() {
+      const applyBtn = document.getElementById("btn-apply-atlas");
+      if (applyBtn) applyBtn.addEventListener("click", () => refreshStagePreviewsFromSliceRects());
+      const gridBtn = document.getElementById("btn-init-grid");
+      if (gridBtn) {
+        gridBtn.addEventListener("click", () => {
+          initSliceRectsFromGrid();
+          layoutAtlasSliceOverlays();
+          setSaveStatus("Cadres repositionnés sur la grille — ajuste à la main.", true);
+        });
+      }
+      const clearBtn = document.getElementById("btn-clear-atlas");
+      if (clearBtn) clearBtn.addEventListener("click", () => clearAtlas());
+      const replaceBtn = document.getElementById("btn-replace-atlas");
+      if (replaceBtn) {
+        replaceBtn.addEventListener("click", () => {
+          const input = document.createElement("input");
+          input.type = "file";
+          input.accept = "image/*";
+          input.onchange = async () => {
+            const file = input.files?.[0];
+            if (file) await assignAtlasFromFile(file);
+          };
+          input.click();
+        });
+      }
+      const iconBtn = document.getElementById("btn-icon-from-atlas");
+      if (iconBtn) iconBtn.addEventListener("click", () => applyPlantIconFromAtlas(true));
+      document.querySelectorAll('[data-bind="plantIcon.source"], [data-bind="plantIcon.atlasSliceIndex"]').forEach((el) => {
+        el.addEventListener("change", () => {
+          collectFromDom();
+          if (state.plantIcon.source === "atlas") applyPlantIconFromAtlas(true);
+        });
+      });
+      bindAtlasSliceEditor();
+    }
+
+    function sectionContent(id) {
+      const d = state;
+      switch (id) {
+        case "identity":
+          return `${renderPlantIconBlock()}
+          <div class="grid-2">
+            ${field("plantId", "plantId", d.plantId)}
+            ${field("displayName", "displayName", d.displayName)}
+            ${field("growthPattern", "growthPattern", d.growthPattern, {
+              type: "select", options: ["Leafy", "Fruiting"],
+            })}
+            ${field("maxHarvestCount", "maxHarvestCount", d.maxHarvestCount, { type: "number" })}
+          </div>`;
+        case "stage-images":
+          return renderStageImagesGrid();
+        case "gdd":
+          return `<div class="grid-2">
+            ${field("unlockTier", "gdd.unlockTier", d.gdd.unlockTier)}
+            ${field("visualRole (mass / vertical / accent)", "gdd.visualRole", d.gdd.visualRole)}
+            ${field("sessionBand (S/B/N)", "gdd.sessionBand", d.gdd.sessionBand)}
+            ${field("seedBuyGold", "gdd.seedBuyGold", d.gdd.seedBuyGold, { type: "number" })}
+            ${field("sellLeafGold", "gdd.sellLeafGold", d.gdd.sellLeafGold, { type: "number" })}
+            ${field("notes GDD", "gdd.notes", d.gdd.notes, { type: "textarea" })}
+          </div>`;
+        case "footprint":
+          return `<div class="grid-2">
+            ${field("spriteWorldOffset.x", "spriteWorldOffset.x", d.spriteWorldOffset.x, { type: "number" })}
+            ${field("spriteWorldOffset.y", "spriteWorldOffset.y", d.spriteWorldOffset.y, { type: "number" })}
+            ${field("isoSpriteViewOffset.x", "isoSpriteViewOffset.x", d.isoSpriteViewOffset.x, { type: "number" })}
+            ${field("isoSpriteViewOffset.y", "isoSpriteViewOffset.y", d.isoSpriteViewOffset.y, { type: "number" })}
+          </div>
+          ${renderFootprintEditor()}`;
+        case "stages":
+          return `<p style="font-size:0.85rem;color:var(--muted)">Ordre d’affichage fixe (enum). Leafy : Mature avant Flowering — Fruiting : l’inverse en jeu.</p>
+            ${renderStagesTable()}
+            <p id="time-to-mature" style="margin-top:0.75rem;font-size:0.9rem"></p>`;
+        case "harvest":
+          return `<p style="font-size:0.85rem;color:var(--muted)">MVP : <code>maxHarvestCount = 1</code> → une fenêtre de récolte par cycle (voir lignes cochées dans stades).</p>
+            ${field("maxHarvestCount (rappel)", "maxHarvestCount", d.maxHarvestCount, { type: "number" })}`;
+        case "insect":
+          return `<div class="grid-2">
+            ${field("insectKind", "insect.kind", d.insect.kind, { type: "select", options: INSECT_KINDS })}
+            ${field("insectMoveSpeed (0 = défaut)", "insect.moveSpeed", d.insect.moveSpeed, { type: "number" })}
+            ${field("forageDurationMin", "insect.forageMin", d.insect.forageMin, { type: "number" })}
+            ${field("forageDurationMax", "insect.forageMax", d.insect.forageMax, { type: "number" })}
+          </div>`;
+        case "items":
+          return `<div class="grid-2">
+            ${field("seed itemId", "items.seedItemId", d.items.seedItemId)}
+            ${field("seed displayName", "items.seedDisplayName", d.items.seedDisplayName)}
+            ${field("seed maxStack", "items.seedMaxStack", d.items.seedMaxStack, { type: "number" })}
+            ${field("récolte itemId", "items.matureItemId", d.items.matureItemId)}
+            ${field("récolte displayName", "items.matureDisplayName", d.items.matureDisplayName)}
+            ${field("récolte maxStack", "items.matureMaxStack", d.items.matureMaxStack, { type: "number" })}
+          </div>`;
+        case "economy":
+          return `<div class="grid-2">
+            ${field("assetPath SO", "assetPath", d.assetPath)}
+            ${field("prefabPath", "prefabPath", d.prefabPath)}
+            ${field("atlas / spritesheet", "atlasPath", d.atlasPath)}
+            ${field("shop graine (gold)", "economy.shopSeedPrice", d.economy.shopSeedPrice, { type: "number" })}
+            ${field("vente récolte (gold)", "economy.sellMaturePrice", d.economy.sellMaturePrice, { type: "number" })}
+          </div>`;
+        case "notes":
+          return `${field("Notes libres", "notes", d.notes, { type: "textarea" })}
+            ${field("Tickets / dettes (P0, CT…)", "tickets", d.tickets, { type: "textarea" })}`;
+        default:
+          return "";
+      }
+    }
+
+    function renderSections() {
+      const root = document.getElementById("sections-root");
+      root.innerHTML = "";
+      const order = loadSectionOrder();
+      const tpl = document.getElementById("section-template");
+      order.forEach((id) => {
+        const def = SECTION_DEFS.find((s) => s.id === id);
+        if (!def) return;
+        const node = tpl.content.firstElementChild.cloneNode(true);
+        node.dataset.sectionId = id;
+        node.querySelector("h2").textContent = def.title;
+        node.querySelector(".section-body").innerHTML = sectionContent(id);
+        root.appendChild(node);
+      });
+      bindSectionEvents();
+      bindImageDropZones();
+      bindStageReplaceButtons();
+      bindAtlasControls();
+      updateTimeToMature();
+      updateJsonPreview();
+    }
+
+    function setByPath(obj, path, value) {
+      const parts = path.split(".");
+      let cur = obj;
+      for (let i = 0; i < parts.length - 1; i++) {
+        const p = parts[i];
+        if (cur[p] === undefined) cur[p] = {};
+        cur = cur[p];
+      }
+      const last = parts[parts.length - 1];
+      if (value === "" && (last.includes("Gold") || last.includes("Price") || last.includes("Stack") || last === "moveSpeed")) {
+        cur[last] = "";
+      } else if (typeof cur[last] === "number" || /Count|Seconds|min|max|Stack|Price|Gold|moveSpeed|forage|columns|rows|SliceIndex/.test(last)) {
+        const n = Number(value);
+        cur[last] = Number.isFinite(n) ? n : value;
+      } else {
+        cur[last] = value;
+      }
+    }
+
+    function collectFromDom() {
+      document.querySelectorAll("[data-bind]").forEach((el) => {
+        const path = el.getAttribute("data-bind");
+        if (path === "plantIcon.fileName" || path === "atlas.fileName") return;
+        setByPath(state, path, el.value);
+      });
+      document.querySelectorAll("tr[data-stage-index]").forEach((row) => {
+        const index = Number(row.dataset.stageIndex);
+        const st = state.stages[index];
+        if (!st) return;
+        st.durationSeconds = row.querySelector('[data-stage-field="duration"]').value;
+        st.spriteRef = row.querySelector('[data-stage-field="spriteRef"]').value;
+        const harvestable = row.querySelector('[data-stage-field="harvestable"]').checked;
+        if (harvestable) {
+          st.harvest = {
+            itemId: row.querySelector('[data-stage-field="harvestItemId"]').value,
+            min: Number(row.querySelector('[data-stage-field="harvestMin"]').value) || 0,
+            max: Number(row.querySelector('[data-stage-field="harvestMax"]').value) || 0,
+          };
+        } else {
+          st.harvest = null;
+        }
+      });
+    }
+
+    function updateTimeToMature() {
+      const el = document.getElementById("time-to-mature");
+      if (!el || !state.stages) return;
+      let sum = 0;
+      for (let i = 0; i <= 4; i++) {
+        const v = Number(state.stages[i]?.durationSeconds);
+        if (Number.isFinite(v)) sum += v;
+      }
+      const pattern = state.growthPattern || "Leafy";
+      el.textContent = `Σ durées stades 0→4 (jusqu’à Mature en ${pattern}) : ${sum} s — à ajuster pour le carnet « temps until harvest ».`;
+    }
+
+    function updateJsonPreview() {
+      collectFromDom();
+      const pre = document.getElementById("json-preview");
+      if (pre) pre.textContent = JSON.stringify(state, null, 2);
+    }
+
+    function getCurrentSectionOrder() {
+      return [...document.querySelectorAll("#sections-root .sheet-section")]
+        .map((el) => el.dataset.sectionId);
+    }
+
+    let dragId = null;
+
+    function bindSectionEvents() {
+      document.querySelectorAll("#sections-root .sheet-section").forEach((section) => {
+        section.draggable = reorderEnabled;
+        section.classList.toggle("reorder-off", !reorderEnabled);
+        section.addEventListener("dragstart", (e) => {
+          if (!reorderEnabled) {
+            e.preventDefault();
+            return;
+          }
+          dragId = section.dataset.sectionId;
+          section.classList.add("dragging");
+          e.dataTransfer.effectAllowed = "move";
+        });
+        section.addEventListener("dragend", () => {
+          section.classList.remove("dragging");
+          dragId = null;
+          persist({ silent: true });
+          refreshSaveStatusFromStorage();
+        });
+        section.addEventListener("dragover", (e) => {
+          if (!reorderEnabled || !dragId) return;
+          e.preventDefault();
+          section.classList.add("drag-over");
+        });
+        section.addEventListener("dragleave", () => section.classList.remove("drag-over"));
+        section.addEventListener("drop", (e) => {
+          e.preventDefault();
+          section.classList.remove("drag-over");
+          if (!dragId || section.dataset.sectionId === dragId) return;
+          const root = document.getElementById("sections-root");
+          const dragged = root.querySelector(`[data-section-id="${dragId}"]`);
+          const target = section;
+          if (dragged && target) root.insertBefore(dragged, target);
+        });
+      });
+
+      document.querySelectorAll("[data-bind], [data-stage-field]").forEach((el) => {
+        el.addEventListener("input", () => {
+          persist({ silent: true });
+          updateTimeToMature();
+        });
+        el.addEventListener("change", () => {
+          persist({ silent: true });
+          refreshSaveStatusFromStorage();
+          updateTimeToMature();
+        });
+      });
+
+      document.querySelectorAll(".footprint-cell").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const x = Number(btn.dataset.fpX);
+          const y = Number(btn.dataset.fpY);
+          const key = `${x},${y}`;
+          const set = new Set(state.footprintCells.map((c) => `${c.x},${c.y}`));
+          if (set.has(key)) {
+            if (x === 0 && y === 0) return;
+            state.footprintCells = state.footprintCells.filter((c) => c.x !== x || c.y !== y);
+          } else {
+            state.footprintCells.push({ x, y });
+          }
+          renderSections();
+          persist({ showFeedback: true });
+        });
+      });
+    }
+
+    document.getElementById("btn-save").addEventListener("click", () => {
+      persist({ showFeedback: true });
+    });
+
+    document.getElementById("btn-new-blank").addEventListener("click", () => {
+      if (!confirm("Créer une fiche vierge ? La saisie affichée sera remplacée.")) return;
+      state = emptyData();
+      renderSections();
+      persist({ showFeedback: true });
+    });
+
+    document.getElementById("btn-reorder").addEventListener("click", () => {
+      reorderEnabled = !reorderEnabled;
+      const btn = document.getElementById("btn-reorder");
+      btn.textContent = `Réorganiser : ${reorderEnabled ? "ON" : "OFF"}`;
+      btn.classList.toggle("active", reorderEnabled);
+      document.querySelectorAll("#sections-root .sheet-section").forEach((s) => {
+        s.draggable = reorderEnabled;
+        s.classList.toggle("reorder-off", !reorderEnabled);
+      });
+    });
+
+    document.getElementById("btn-load-lettuce").addEventListener("click", () => {
+      if (!confirm("Recharger l’exemple laitue ? (écrase la saisie courante)")) return;
+      state = defaultLettuceData();
+      renderSections();
+      persist({ showFeedback: true });
+    });
+
+    function buildExportPayload() {
+      collectFromDom();
+      return {
+        version: 1,
+        updatedAt: new Date().toISOString(),
+        sectionOrder: getCurrentSectionOrder(),
+        data: state,
+      };
+    }
+
+    function suggestedJsonFileName() {
+      const id = (state.plantId || "plante").replace(/[^\w.-]+/g, "_");
+      return `${id}-fiche.json`;
+    }
+
+    async function applyImportedText(text, fileName) {
+      const { data, sectionOrder } = parseImportedFile(text);
+      state = data;
+      if (sectionOrder) pendingSectionOrder = sectionOrder;
+      renderSections();
+      persist({ showFeedback: true });
+      setSaveStatus(`Fichier chargé : ${fileName}`, true);
+    }
+
+    function fallbackDownloadJson(json, fileName) {
+      const blob = new Blob([json], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = fileName;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      setSaveStatus(`Téléchargement : ${fileName} → regarde le dossier Téléchargements`, true);
+    }
+
+    async function exportJsonToDisk() {
+      const payload = buildExportPayload();
+      const json = JSON.stringify(payload, null, 2);
+      const fileName = suggestedJsonFileName();
+      const useDirect = Boolean(document.getElementById("chk-direct-save")?.checked);
+
+      if (cachedDirHandle && (await verifyDirPermission(cachedDirHandle, true))) {
+        if (useDirect) {
+          try {
+            await writeJsonToDir(cachedDirHandle, fileName, json);
+            setSaveStatus(`Enregistré : ${cachedDirHandle.name} / ${fileName}`, true);
+            return;
+          } catch (err) {
+            console.warn("writeJsonToDir:", err);
+          }
+        }
+        if (typeof window.showSaveFilePicker === "function") {
+          try {
+            const handle = await window.showSaveFilePicker({
+              suggestedName: fileName,
+              startIn: cachedDirHandle,
+              types: [{
+                description: "Fiche plante AquaFarm",
+                accept: { "application/json": [".json"] },
+              }],
+            });
+            const writable = await handle.createWritable();
+            await writable.write(json);
+            await writable.close();
+            setSaveStatus(`Fichier enregistré : ${handle.name}`, true);
+            return;
+          } catch (err) {
+            if (err && err.name === "AbortError") return;
+            console.warn("showSaveFilePicker:", err);
+          }
+        }
+      }
+
+      if (typeof window.showSaveFilePicker === "function") {
+        try {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: fileName,
+            types: [{
+              description: "Fiche plante AquaFarm",
+              accept: { "application/json": [".json"] },
+            }],
+          });
+          const writable = await handle.createWritable();
+          await writable.write(json);
+          await writable.close();
+          setSaveStatus(`Fichier enregistré : ${handle.name}`, true);
+          return;
+        } catch (err) {
+          if (err && err.name === "AbortError") return;
+          console.warn("showSaveFilePicker:", err);
+        }
+      }
+      fallbackDownloadJson(json, fileName);
+    }
+
+    async function importJsonFromDisk() {
+      if (typeof window.showOpenFilePicker === "function") {
+        try {
+          const opts = {
+            multiple: false,
+            types: [{
+              description: "Fiche plante AquaFarm",
+              accept: { "application/json": [".json"] },
+            }],
+          };
+          if (cachedDirHandle && (await verifyDirPermission(cachedDirHandle, false))) {
+            opts.startIn = cachedDirHandle;
+          }
+          const [handle] = await window.showOpenFilePicker(opts);
+          const file = await handle.getFile();
+          await applyImportedText(await file.text(), file.name);
+          return;
+        } catch (err) {
+          if (err && err.name === "AbortError") return;
+          console.warn("showOpenFilePicker:", err);
+        }
+      }
+      const input = document.getElementById("file-import");
+      if (!input) return;
+      input.click();
+    }
+
+    function buildEnvironmentBannerHtml() {
+      const tips = [];
+      if (window.self !== window.top) {
+        tips.push("Tu es dans un cadre intégré (ex. Cursor) : l’explorateur de fichiers est souvent bloqué.");
+      }
+      if (location.protocol === "file:") {
+        tips.push("Protocole fichier local : OK si tu ouvres avec Chrome/Edge.");
+      } else if (!location.protocol.startsWith("http")) {
+        tips.push(`Protocole « ${location.protocol} » : préfère ouvrir le .html depuis ton disque.`);
+      }
+      if (typeof window.showSaveFilePicker !== "function") {
+        tips.push("Ce navigateur ne propose pas le choix de dossier : export = Téléchargements par défaut.");
+      }
+      tips.push("Une fois « Dossier JSON… » fait, Ouvrir/Enregistrer démarre dans ce dossier (Chrome/Edge).");
+      tips.push("Impossible de coller un chemin Windows : le navigateur impose de choisir le dossier une fois.");
+      tips.push("Ouvre le .html avec Chrome/Edge (hors aperçu Cursor) si l’explorateur ne s’affiche pas.");
+      return "<strong>Fichiers JSON — aide</strong><ul>" +
+        tips.map((t) => `<li>${t}</li>`).join("") + "</ul>";
+    }
+
+    function isHelpBannerHidden() {
+      return localStorage.getItem(BANNER_HIDDEN_KEY) === "1";
+    }
+
+    function applyHelpBannerVisibility() {
+      const block = document.getElementById("env-banner-block");
+      const btn = document.getElementById("btn-toggle-banner");
+      const content = document.getElementById("env-banner-content");
+      const hidden = isHelpBannerHidden();
+      if (content && (!content.innerHTML || !hidden)) {
+        content.innerHTML = buildEnvironmentBannerHtml();
+      }
+      if (block) block.classList.toggle("collapsed", hidden);
+      if (btn) {
+        btn.setAttribute("aria-expanded", hidden ? "false" : "true");
+        btn.title = hidden ? "Afficher l’aide fichiers" : "Masquer l’aide fichiers";
+      }
+    }
+
+    function toggleHelpBanner() {
+      const hidden = !isHelpBannerHidden();
+      localStorage.setItem(BANNER_HIDDEN_KEY, hidden ? "1" : "0");
+      applyHelpBannerVisibility();
+    }
+
+    document.getElementById("btn-toggle-banner").addEventListener("click", () => {
+      toggleHelpBanner();
+    });
+
+    document.getElementById("btn-pick-folder").addEventListener("click", () => {
+      pickDefaultFolder();
+    });
+
+    document.getElementById("btn-clear-folder").addEventListener("click", () => {
+      clearDefaultFolder();
+    });
+
+    document.getElementById("path-note").addEventListener("change", (e) => {
+      localStorage.setItem(PATH_NOTE_KEY, e.target.value || "");
+    });
+    document.getElementById("path-note").addEventListener("input", (e) => {
+      localStorage.setItem(PATH_NOTE_KEY, e.target.value || "");
+    });
+
+    document.getElementById("btn-export").addEventListener("click", () => {
+      exportJsonToDisk();
+    });
+
+    document.getElementById("btn-import").addEventListener("click", () => {
+      importJsonFromDisk();
+    });
+
+    document.getElementById("file-import").addEventListener("change", async (e) => {
+      const input = e.target;
+      const file = input.files && input.files[0];
+      input.value = "";
+      if (!file) return;
+      try {
+        await applyImportedText(await file.text(), file.name);
+      } catch (err) {
+        window.alert("Impossible de lire ce JSON. Vérifie le format (export Enregistrer JSON…).");
+        console.error(err);
+      }
+    });
+
+    document.getElementById("btn-copy").addEventListener("click", async () => {
+      collectFromDom();
+      await navigator.clipboard.writeText(JSON.stringify(state, null, 2));
+      setSaveStatus("JSON copié dans le presse-papiers.", true);
+    });
+
+    applyHelpBannerVisibility();
+    initDefaultFolder();
+    renderSections();
+    persist({ silent: true });
+    refreshSaveStatusFromStorage();
+  </script>
+</body>
+</html>
