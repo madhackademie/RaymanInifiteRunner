@@ -45,25 +45,32 @@
       flex: 1 1 12rem;
     }
     .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
-    .toolbar-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      align-items: center;
-    }
-    .toolbar-actions.is-hidden { display: none; }
-    #btn-toggle-toolbar {
-      border-color: var(--accent);
+    .chrome-fab {
+      display: none;
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 50;
+      font: inherit;
+      cursor: pointer;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
       font-weight: 600;
+      max-width: calc(100vw - 2rem);
     }
-    .sync-test-badge {
-      font-size: 0.7rem;
-      background: #fff3cd;
-      color: #7f4f00;
-      padding: 0.15rem 0.45rem;
-      border-radius: 4px;
-      border: 1px solid #e6c200;
-      margin-left: 0.35rem;
+    @media (max-width: 768px) {
+      .chrome-fab { display: block; }
+      body.mobile-chrome-hidden .app-chrome {
+        display: none !important;
+      }
+      body.mobile-chrome-hidden main {
+        padding-top: 0.75rem;
+        padding-bottom: 4rem;
+      }
     }
     button, .btn {
       font: inherit;
@@ -466,20 +473,18 @@
   </style>
 </head>
 <body>
+  <div class="app-chrome" id="app-chrome">
   <header class="app-header">
-    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.3</small><span class="sync-test-badge" title="Test alignement cloud → git pull local">TEST sync</span></h1>
+    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.4</small></h1>
     <div class="toolbar" id="main-toolbar">
-      <button type="button" id="btn-toggle-toolbar" aria-expanded="true" aria-controls="toolbar-actions">Masquer boutons</button>
-      <div class="toolbar-actions" id="toolbar-actions">
-        <button type="button" id="btn-new-blank">Fiche vierge</button>
-        <button type="button" id="btn-load-lettuce">Exemple laitue</button>
-        <button type="button" id="btn-save" title="Brouillon dans ce navigateur seulement">Sauvegarder (navigateur)</button>
-        <button type="button" id="btn-reorder" class="active" title="Glisser les blocs par la poignée ≡">Réorganiser : ON</button>
-        <button type="button" id="btn-import" title="Rouvrir un .json exporté">Ouvrir JSON…</button>
-        <button type="button" id="btn-export" title="Enregistrer un .json sur le disque">Enregistrer JSON…</button>
-        <button type="button" id="btn-copy">Copier JSON</button>
-        <input type="file" id="file-import" accept=".json,application/json" hidden />
-      </div>
+      <button type="button" id="btn-new-blank">Fiche vierge</button>
+      <button type="button" id="btn-load-lettuce">Exemple laitue</button>
+      <button type="button" id="btn-save" title="Brouillon dans ce navigateur seulement">Sauvegarder (navigateur)</button>
+      <button type="button" id="btn-reorder" class="active" title="Glisser les blocs par la poignée ≡">Réorganiser : ON</button>
+      <button type="button" id="btn-import" title="Rouvrir un .json exporté">Ouvrir JSON…</button>
+      <button type="button" id="btn-export" title="Enregistrer un .json sur le disque">Enregistrer JSON…</button>
+      <button type="button" id="btn-copy">Copier JSON</button>
+      <input type="file" id="file-import" accept=".json,application/json" hidden />
     </div>
     <p class="save-status" id="save-status" role="status">Pas encore enregistré dans ce navigateur.</p>
   </header>
@@ -502,6 +507,8 @@
       <div id="env-banner-content"></div>
     </div>
   </div>
+  </div>
+  <button type="button" class="chrome-fab" id="btn-chrome-fab" aria-expanded="true" aria-controls="app-chrome">Masquer outils</button>
   <main>
     <div id="sections-root"></div>
     <section class="sheet-section" id="section-export" style="margin-top:1rem">
@@ -523,10 +530,188 @@
     </article>
   </template>
 
+  <script type="application/json" id="bundled-lettuce-json">
+{
+  "version": 1,
+  "updatedAt": "2026-09-28T08:57:41.777Z",
+  "sectionOrder": [
+    "identity",
+    "gdd",
+    "footprint",
+    "stages",
+    "stage-images",
+    "harvest",
+    "insect",
+    "items",
+    "economy",
+    "notes"
+  ],
+  "data": {
+    "plantId": "lettuce",
+    "displayName": "Laitue",
+    "growthPattern": "Leafy",
+    "maxHarvestCount": 1,
+    "assetPath": "Assets/Data/Ferme/Laitue.asset",
+    "prefabPath": "Assets/Prefabs/World/Plantes/LaitueObj.prefab",
+    "atlasPath": "Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png",
+    "plantIcon": {
+      "fileName": "",
+      "dataUrl": "",
+      "assetPath": "",
+      "source": "atlas",
+      "atlasSliceIndex": 4
+    },
+    "atlas": {
+      "fileName": "",
+      "dataUrl": "",
+      "width": 0,
+      "height": 0,
+      "columns": 7,
+      "rows": 1
+    },
+    "gdd": {
+      "unlockTier": "T1",
+      "visualRole": "mass",
+      "sessionBand": "",
+      "seedBuyGold": 5,
+      "sellLeafGold": 15,
+      "notes": "Aligné Laitue.asset (2026-09)"
+    },
+    "footprintCells": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 1
+      }
+    ],
+    "spriteWorldOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "isoSpriteViewOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "stages": [
+      {
+        "index": 0,
+        "name": "Graine",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_0",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 1,
+        "name": "Starting",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_1",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 2,
+        "name": "Baby",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_2",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 3,
+        "name": "Growing",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_3",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 4,
+        "name": "Mature",
+        "durationSeconds": 60,
+        "spriteRef": "AtlasLaitue_4",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": {
+          "itemId": "laitue_mature",
+          "min": 1,
+          "max": 3
+        },
+        "sliceRect": null
+      },
+      {
+        "index": 5,
+        "name": "Flowering",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_5",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 6,
+        "name": "Seedling",
+        "durationSeconds": 60,
+        "spriteRef": "AtlasLaitue_6",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": {
+          "itemId": "laitue_seed",
+          "min": 5,
+          "max": 15
+        },
+        "sliceRect": null
+      }
+    ],
+    "insect": {
+      "kind": "RandomBeeOrButterfly",
+      "moveSpeed": 0,
+      "forageMin": 0,
+      "forageMax": 0
+    },
+    "items": {
+      "seedItemId": "laitue_seed",
+      "seedDisplayName": "Laitue Seedling",
+      "seedMaxStack": 99,
+      "matureItemId": "laitue_mature",
+      "matureDisplayName": "Laitue Mature",
+      "matureMaxStack": 99
+    },
+    "economy": {
+      "shopSeedPrice": 5,
+      "sellMaturePrice": 15
+    },
+    "notes": "",
+    "tickets": ""
+  }
+}
+  </script>
   <script>
     const STORAGE_KEY = "aquafarm-plant-sheet-v1";
     const PATH_NOTE_KEY = "aquafarm-path-note";
     const BANNER_HIDDEN_KEY = "aquafarm-help-banner-hidden";
+    const CHROME_MOBILE_HIDDEN_KEY = "aquafarm-mobile-chrome-hidden";
+    const LETTUCE_SAMPLE_REL = "samples/lettuce-fiche.json";
     const DIR_DB_NAME = "aquafarm-fiche-v1";
     const DIR_STORE = "kv";
     const DIR_KEY = "plantsDir";
@@ -597,7 +782,8 @@
 
     function defaultLettuceData() {
       const stages = STAGE_NAMES.map((name, index) => {
-        const durationSeconds = index === 5 ? 3500 : 1;
+        const durationByIndex = [1, 1, 1, 1, 60, 1, 60];
+        const durationSeconds = durationByIndex[index] ?? 1;
         let harvest = null;
         if (index === 4) harvest = { itemId: "laitue_mature", min: 1, max: 3 };
         if (index === 6) harvest = { itemId: "laitue_seed", min: 5, max: 15 };
@@ -865,8 +1051,15 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return defaultLettuceData();
         const parsed = JSON.parse(raw);
-        const data = parsed.data ? parsed.data : defaultLettuceData();
-        return ensureImageFields(data);
+        if (parsed.data != null) {
+          if (Array.isArray(parsed.sectionOrder)) {
+            pendingSectionOrder = ensureSectionOrderHasStageImages(
+              parsed.sectionOrder.filter((id) => SECTION_DEFS.some((s) => s.id === id)),
+            );
+          }
+          return mergeImportedData(parsed.data);
+        }
+        return defaultLettuceData();
       } catch {
         return defaultLettuceData();
       }
@@ -1783,35 +1976,57 @@
       });
     }
 
-    const TOOLBAR_HIDDEN_KEY = "aquaFarmEditorToolbarHidden";
-
-    function applyToolbarVisibility(hidden) {
-      const actions = document.getElementById("toolbar-actions");
-      const toggle = document.getElementById("btn-toggle-toolbar");
-      if (!actions || !toggle) return;
-      actions.classList.toggle("is-hidden", hidden);
-      toggle.setAttribute("aria-expanded", hidden ? "false" : "true");
-      toggle.textContent = hidden ? "Afficher boutons" : "Masquer boutons";
-    }
-
-    function loadToolbarVisibility() {
-      try {
-        applyToolbarVisibility(localStorage.getItem(TOOLBAR_HIDDEN_KEY) === "1");
-      } catch {
-        applyToolbarVisibility(false);
+    function applyMobileChromeVisibility(hidden) {
+      document.body.classList.toggle("mobile-chrome-hidden", hidden);
+      const fab = document.getElementById("btn-chrome-fab");
+      if (fab) {
+        fab.setAttribute("aria-expanded", hidden ? "false" : "true");
+        fab.textContent = hidden ? "Afficher outils" : "Masquer outils";
       }
     }
 
-    document.getElementById("btn-toggle-toolbar").addEventListener("click", () => {
-      const actions = document.getElementById("toolbar-actions");
-      const hidden = !actions.classList.contains("is-hidden");
-      applyToolbarVisibility(hidden);
+    function loadMobileChromeVisibility() {
       try {
-        localStorage.setItem(TOOLBAR_HIDDEN_KEY, hidden ? "1" : "0");
+        applyMobileChromeVisibility(localStorage.getItem(CHROME_MOBILE_HIDDEN_KEY) === "1");
+      } catch {
+        applyMobileChromeVisibility(false);
+      }
+    }
+
+    document.getElementById("btn-chrome-fab").addEventListener("click", () => {
+      const hidden = !document.body.classList.contains("mobile-chrome-hidden");
+      applyMobileChromeVisibility(hidden);
+      try {
+        localStorage.setItem(CHROME_MOBILE_HIDDEN_KEY, hidden ? "1" : "0");
       } catch { /* ignore */ }
     });
 
-    loadToolbarVisibility();
+    loadMobileChromeVisibility();
+
+    async function applyLettuceSample() {
+      let text = null;
+      try {
+        const res = await fetch(LETTUCE_SAMPLE_REL);
+        if (res.ok) text = await res.text();
+      } catch (err) {
+        console.warn("fetch lettuce sample:", err);
+      }
+      if (!text) {
+        const bundled = document.getElementById("bundled-lettuce-json");
+        if (bundled && bundled.textContent.trim()) text = bundled.textContent;
+      }
+      if (text) {
+        const { data, sectionOrder } = parseImportedFile(text);
+        state = data;
+        if (sectionOrder) pendingSectionOrder = sectionOrder;
+        setSaveStatus("Exemple laitue chargé (samples/lettuce-fiche.json).", true);
+      } else {
+        state = defaultLettuceData();
+        setSaveStatus("Exemple laitue (données intégrées).", true);
+      }
+      renderSections();
+      persist({ showFeedback: true });
+    }
 
     document.getElementById("btn-save").addEventListener("click", () => {
       persist({ showFeedback: true });
@@ -1835,11 +2050,9 @@
       });
     });
 
-    document.getElementById("btn-load-lettuce").addEventListener("click", () => {
+    document.getElementById("btn-load-lettuce").addEventListener("click", async () => {
       if (!confirm("Recharger l’exemple laitue ? (écrase la saisie courante)")) return;
-      state = defaultLettuceData();
-      renderSections();
-      persist({ showFeedback: true });
+      await applyLettuceSample();
     });
 
     function buildExportPayload() {

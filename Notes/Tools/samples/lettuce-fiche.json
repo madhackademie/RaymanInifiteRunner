@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-28T08:57:41.777Z",
+  "sectionOrder": [
+    "identity",
+    "gdd",
+    "footprint",
+    "stages",
+    "stage-images",
+    "harvest",
+    "insect",
+    "items",
+    "economy",
+    "notes"
+  ],
+  "data": {
+    "plantId": "lettuce",
+    "displayName": "Laitue",
+    "growthPattern": "Leafy",
+    "maxHarvestCount": 1,
+    "assetPath": "Assets/Data/Ferme/Laitue.asset",
+    "prefabPath": "Assets/Prefabs/World/Plantes/LaitueObj.prefab",
+    "atlasPath": "Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png",
+    "plantIcon": {
+      "fileName": "",
+      "dataUrl": "",
+      "assetPath": "",
+      "source": "atlas",
+      "atlasSliceIndex": 4
+    },
+    "atlas": {
+      "fileName": "",
+      "dataUrl": "",
+      "width": 0,
+      "height": 0,
+      "columns": 7,
+      "rows": 1
+    },
+    "gdd": {
+      "unlockTier": "T1",
+      "visualRole": "mass",
+      "sessionBand": "",
+      "seedBuyGold": 5,
+      "sellLeafGold": 15,
+      "notes": "Aligné Laitue.asset (2026-09)"
+    },
+    "footprintCells": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 1
+      }
+    ],
+    "spriteWorldOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "isoSpriteViewOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "stages": [
+      {
+        "index": 0,
+        "name": "Graine",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_0",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 1,
+        "name": "Starting",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_1",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 2,
+        "name": "Baby",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_2",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 3,
+        "name": "Growing",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_3",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 4,
+        "name": "Mature",
+        "durationSeconds": 60,
+        "spriteRef": "AtlasLaitue_4",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": {
+          "itemId": "laitue_mature",
+          "min": 1,
+          "max": 3
+        },
+        "sliceRect": null
+      },
+      {
+        "index": 5,
+        "name": "Flowering",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_5",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 6,
+        "name": "Seedling",
+        "durationSeconds": 60,
+        "spriteRef": "AtlasLaitue_6",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": {
+          "itemId": "laitue_seed",
+          "min": 5,
+          "max": 15
+        },
+        "sliceRect": null
+      }
+    ],
+    "insect": {
+      "kind": "RandomBeeOrButterfly",
+      "moveSpeed": 0,
+      "forageMin": 0,
+      "forageMax": 0
+    },
+    "items": {
+      "seedItemId": "laitue_seed",
+      "seedDisplayName": "Laitue Seedling",
+      "seedMaxStack": 99,
+      "matureItemId": "laitue_mature",
+      "matureDisplayName": "Laitue Mature",
+      "matureMaxStack": 99
+    },
+    "economy": {
+      "shopSeedPrice": 5,
+      "sellMaturePrice": 15
+    },
+    "notes": "",
+    "tickets": ""
+  }
+}
