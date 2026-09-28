@@ -25,9 +25,11 @@
 
 | Statut | Task ID | Phase | Notes |
 |--------|---------|-------|-------|
-| [x] | `[BZ-FARM-CAMERA-TOUCH-ZOOM-001]` | 1 | C# livré 2026-09-23 — revue Cursor OK |
+| [ ] | `[BZ-FARM-CAM-PAN-Y-001]` | 1 | `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
+| [ ] | `[BZ-FARM-CAM-ROTATE-001]` | 1 | après PAN-Y |
+| [ ] | `[BZ-FARM-CAM-RESET-001]` | A→C | snapshot + prefab + FarmUICanvas |
 
-*(File playtest session 2026-09-23 vidée — voir Terminé + backlog ci-dessous.)*
+*(Voir Terminé + backlog ci-dessous.)*
 
 ### Backlog — rework (hors playtest file)
 

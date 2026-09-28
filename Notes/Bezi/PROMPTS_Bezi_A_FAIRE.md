@@ -12,7 +12,11 @@
 
 | Task ID | Phase | Notes |
 |---------|-------|--------|
-*Vide — `[BZ-FARM-CAMERA-TOUCH-ZOOM-001]` clos 2026-09-23 (Ph.2 Inspector déjà OK).*
+| Task ID | Passe | Notes |
+|---------|-------|--------|
+| `[BZ-FARM-CAM-PAN-Y-001]` | **1** | Pan Y pinch — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
+| `[BZ-FARM-CAM-ROTATE-001]` | 2 | Après passe 1 |
+| `[BZ-FARM-CAM-RESET-001]` | 3a→3c | Reset vue + prefab bouton |
 
 Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.
 

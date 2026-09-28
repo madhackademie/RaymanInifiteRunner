@@ -14,6 +14,7 @@ Les fichiers détaillés Phase 1–3 qui étaient dans `Notes/Ui/PROMPTS_Bezi_*.
 |---------|--------|-------------|
 | `[BZ-TAB-SPRITES-001]` | Onglets HUD NavigationHUD (×5) | Playtest OK 2026-09-23 |
 | `[BZ-FARM-HARVEST-READY-VFX-002]` | Sparkle idle récolte `HarvestReadyFx` | Playtest OK 2026-09-23 (Bezy 5c–5f) |
+| `[BZ-FARM-CAM-TOWN-PAN-001]` | Long press pan Township + tap relâche grille | Bezy + Cursor 2026-09-28 — playtest APK |
 | `[BZ-FARM-CAMERA-TOUCH-ZOOM-001]` | Pinch 2 doigts farm cam (C# + FirstLvl Inspector) | Bezy clos 2026-09-23 — Ph.2 no-op ; playtest pinch APK auteur |
 | `[BZ-FARM-CAMERA-VIEW-001]` | BiofiltreViewBounds + FarmCameraController FirstLvl | Playtest OK 2026-09-23 |
 | `[BZ-FEATURES-HUB-WIP-COPY-001]` | Hub Plus WIP copy + icône | Playtest OK 2026-09-23 |

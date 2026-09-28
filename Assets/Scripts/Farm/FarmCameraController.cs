@@ -142,7 +142,11 @@ public class FarmCameraController : MonoBehaviour
 
     private void HandlePan()
     {
-        if (!FarmCameraInput.TryGetPanScreenPosition(enableTouchCamera, out Vector2 screenPosition))
+        bool hasPan = enableTouchCamera
+            ? FarmCameraInput.TryGetLongPressPanScreenPosition(out Vector2 screenPosition)
+            : FarmCameraInput.TryGetPanScreenPosition(false, out screenPosition);
+
+        if (!hasPan)
         {
             panAnchored = false;
             return;
@@ -205,6 +209,11 @@ public class FarmCameraController : MonoBehaviour
     private float ComputeMaxOrtho(Rect aabb) =>
         FarmCameraViewMath.ComputeFitOrthographicSize(aabb, worldCamera.aspect, paddingFactor);
 
-    private Vector2 ScreenToWorld(Vector2 screenPosition) =>
-        worldCamera.ScreenToWorldPoint(screenPosition);
+    private Vector2 ScreenToWorld(Vector2 screenPosition)
+    {
+        float depth = Mathf.Abs(worldCamera.transform.position.z);
+        Vector3 world = worldCamera.ScreenToWorldPoint(
+            new Vector3(screenPosition.x, screenPosition.y, depth));
+        return new Vector2(world.x, world.y);
+    }
 }

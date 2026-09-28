@@ -20,24 +20,34 @@ Câblage Bezy : `PROMPTS_Bezi_farm_camera_view.md` Ph.1–2.
 ## Slice 2 — tactile mobile (après PC OK)
 
 **Ticket pan décor :** `[P0-FARM-CAMERA-PAN-LONGPRESS-001]`  
-**Constat 2026-09-23 :** pan perçu **horizontal seulement** — vérifier clamp `FarmCameraViewMath` (zoom out = centre verrouillé sur un axe) avant tout code.
+**Constat 2026-09-23 :** pan perçu **horizontal seulement** — piste #1 : `ScreenToWorldPoint` sans profondeur Z ortho ; piste #2 : clamp Y quand frustum ≥ hauteur rect.
 
-### Option retenue par l’auteur — long press sur décor (prioritaire)
+**Plan 2026-09-28 (3 passes Bezy) :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md`
 
-Plus simple qu’un pan systématique au **drag 1 doigt** ou qu’un **pan à deux doigts** :
+| Passe | ID | Contenu |
+|-------|-----|---------|
+| 1 | `[BZ-FARM-CAM-PAN-Y-001]` | Pan Y + fix projection + translation centroïde pinch |
+| 2 | `[BZ-FARM-CAM-ROTATE-001]` | Twist 2 doigts, rotation Z bornée |
+| 3 | `[BZ-FARM-CAM-RESET-001]` | Snapshot vue Start + bouton UI `FarmUICanvas` |
+
+### Option retenue — Township : long press + drag (grille incluse)
+
+**Prompt Bezy :** `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_township_longpress_pan.md` · `[BZ-FARM-CAM-TOWN-PAN-001]`
 
 | Étape | Comportement |
 |-------|----------------|
-| Tap court sur grille / plante | Inchangé — plantation, récolte, IBC |
-| **Long press** (~400–500 ms) sur **décor non activable** (haie, sol hors cellules, fond IBC sans hit farm) | Entre en mode **pan caméra** |
-| Drag pendant le hold | Pan **X et Y**, clampé `BiofiltreViewBounds` |
-| Relâcher | Fin pan ; tap court suivant = jeu normal |
-| Pinch 2 doigts | **Zoom** seulement (option slice 2 — pas le geste principal pour se déplacer) |
+| **Tap court** (relâche &lt; ~450 ms, slop &lt; ~12 px) | Clic grille / plante — **au relâchement** (tactile) |
+| **Long press** (~450 ms) puis drag | Pan caméra **X + Y** (carte suit le doigt) |
+| Relâcher après pan | Fin pan ; pas de clic grille |
+| Pinch 2 doigts | **Zoom** seulement (pas pan au centroïde) |
+| PC | Molette · clic **milieu** pan · LMB clic immédiat |
 
-Implémentation cible :
-- Colliders ou layer dédié **sans** handler plantation (`FarmPointerInput` ignore ou filtre « décor pan »).
-- Pas d’UI overlay sous le doigt (`IsOverUi`).
-- C# : étendre `FarmCameraInput` + orchestration avec `FarmCameraController` (Cursor).
+**Sens Township :** doigt → droite = décor → droite ⇒ caméra monde **←** (`delta = worldBefore - worldAfter`, déjà dans `HandlePan`).
+
+Implémentation :
+- **Bezy :** `FarmCameraInput` + `FarmCameraController` (long press pan).
+- **Cursor :** `FarmGridPointerInput` tap au relâchement + respect `IsPrimaryPointerConsumedByCamera`.
+- Pas d’UI sous le doigt (`IsOverUi`).
 
 ### Option Township (doc historique — non prioritaire)
 

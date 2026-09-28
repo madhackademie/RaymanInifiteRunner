@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
-/// Clic grille oldschool : écran → monde → (col, row) via <see cref="GridManager"/>.
-/// Aucun collider, aucun raycast physique — modèle CodeMonkey.
+/// Clic grille : écran → monde → (col, row) via <see cref="GridManager"/>.
+/// PC : clic gauche au press. Tactile : tap au relâchement (long press = pan caméra).
 /// </summary>
 [RequireComponent(typeof(GridManager))]
 [RequireComponent(typeof(BiofiltreGridVisualizer))]
@@ -27,15 +28,41 @@ public class FarmGridPointerInput : MonoBehaviour
 
     private void Update()
     {
+        if (biofiltreManager != null && biofiltreManager.ShouldSuppressFarmPointerUi)
+            return;
+
+        if (UsesDeferredTouchTap())
+        {
+            FarmCameraInput.TickLongPressPanTracking();
+            TryHandleTouchTapRelease();
+            return;
+        }
+
         if (!FarmPointerInput.TryGetPrimaryPress(out Vector2 screenPosition, out int pointerId))
             return;
 
         if (FarmPointerInput.IsOverUi(pointerId))
             return;
 
-        if (biofiltreManager != null && biofiltreManager.ShouldSuppressFarmPointerUi)
+        TryNotifyCellAtScreen(screenPosition);
+    }
+
+    /// <summary>Tactile / simulateur : tap au relâchement pour laisser place au long press pan.</summary>
+    private static bool UsesDeferredTouchTap() => Touchscreen.current != null;
+
+    private void TryHandleTouchTapRelease()
+    {
+        if (!FarmCameraInput.TryGetPrimaryTapOnRelease(out Vector2 screenPosition, out int pointerId))
             return;
 
+        if (FarmPointerInput.IsOverUi(pointerId))
+            return;
+
+        TryNotifyCellAtScreen(screenPosition);
+    }
+
+    private void TryNotifyCellAtScreen(Vector2 screenPosition)
+    {
         if (TryResolveCell(screenPosition, out Vector2Int coords))
             visualizer.NotifyCellClicked(coords);
     }
@@ -49,7 +76,7 @@ public class FarmGridPointerInput : MonoBehaviour
         if (camera == null)
             return false;
 
-        Vector2 world = camera.ScreenToWorldPoint(screenPosition);
+        Vector2 world = ScreenToGameplayPlane(camera, screenPosition);
         return gridManager.TryResolveClickTarget(world, out coords);
     }
 
@@ -62,5 +89,12 @@ public class FarmGridPointerInput : MonoBehaviour
             Debug.LogWarning("[FarmGridPointerInput] Aucune caméra — clics grille ignorés.", this);
 
         return worldCamera;
+    }
+
+    private static Vector2 ScreenToGameplayPlane(Camera camera, Vector2 screenPosition)
+    {
+        float depth = Mathf.Abs(camera.transform.position.z);
+        Vector3 world = camera.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, depth));
+        return new Vector2(world.x, world.y);
     }
 }

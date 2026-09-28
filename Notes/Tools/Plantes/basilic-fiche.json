@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-27T08:13:33.619Z",
+  "sectionOrder": [
+    "identity",
+    "gdd",
+    "footprint",
+    "stages",
+    "harvest",
+    "insect",
+    "items",
+    "economy",
+    "notes"
+  ],
+  "data": {
+    "plantId": "basilic",
+    "displayName": "",
+    "plantLevel": 1,
+    "growthPattern": "Leafy",
+    "maxHarvestCount": 1,
+    "assetPath": "",
+    "prefabPath": "",
+    "atlasPath": "",
+    "gdd": {
+      "unlockTier": "",
+      "visualRole": "",
+      "sessionBand": "",
+      "seedBuyGold": "",
+      "sellLeafGold": "",
+      "notes": ""
+    },
+    "footprintCells": [
+      {
+        "x": 0,
+        "y": 0
+      }
+    ],
+    "spriteWorldOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "isoSpriteViewOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "stages": [
+      {
+        "index": 0,
+        "name": "Graine",
+        "durationSeconds": "",
+        "spriteRef": "",
+        "harvest": null
+      },
+      {
+        "index": 1,
+        "name": "Starting",
+        "durationSeconds": "",
+        "spriteRef": "",
+        "harvest": null
+      },
+      {
+        "index": 2,
+        "name": "Baby",
+        "durationSeconds": "",
+        "spriteRef": "",
+        "harvest": null
+      },
+      {
+        "index": 3,
+        "name": "Growing",
+        "durationSeconds": "",
+        "spriteRef": "",
+        "harvest": null
+      },
+      {
+        "index": 4,
+        "name": "Mature",
+        "durationSeconds": "",
+        "spriteRef": "",
+        "harvest": null
+      },
+      {
+        "index": 5,
+        "name": "Flowering",
+        "durationSeconds": "",
+        "spriteRef": "",
+        "harvest": null
+      },
+      {
+        "index": 6,
+        "name": "Seedling",
+        "durationSeconds": "",
+        "spriteRef": "",
+        "harvest": null
+      }
+    ],
+    "insect": {
+      "kind": "None",
+      "moveSpeed": "",
+      "forageMin": 0,
+      "forageMax": 0
+    },
+    "items": {
+      "seedItemId": "",
+      "seedDisplayName": "",
+      "seedMaxStack": 99,
+      "matureItemId": "",
+      "matureDisplayName": "",
+      "matureMaxStack": 99
+    },
+    "economy": {
+      "shopSeedPrice": "",
+      "sellMaturePrice": ""
+    },
+    "notes": "",
+    "tickets": "",
+    "footprintJson": ""
+  }
+}
