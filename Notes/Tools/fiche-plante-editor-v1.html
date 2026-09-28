@@ -44,7 +44,25 @@
       margin: 0;
       flex: 1 1 12rem;
     }
-    .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+    .chrome-shell-block {
+      border-bottom: 1px solid #e9c46a;
+      background: #fff3cd;
+    }
+    .chrome-shell-block > .env-banner-toggle {
+      background: #fff3cd;
+      color: #5c4a00;
+    }
+    .chrome-shell-block > .env-banner-toggle:hover {
+      background: #ffe8a3;
+    }
+    .chrome-shell-block .collapse-action,
+    .chrome-shell-block .collapse-chevron {
+      color: #7f4f00;
+    }
+    .chrome-shell-block.collapsed .app-chrome {
+      display: none;
+    }
     button, .btn {
       font: inherit;
       cursor: pointer;
@@ -190,9 +208,21 @@
       cursor: pointer;
       font-size: 0.85rem;
     }
+    .folder-bar .path-field-wrap {
+      flex: 1 1 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 12rem;
+    }
+    .folder-bar .path-field-wrap label {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
     .folder-bar input.path-note {
-      flex: 1 1 12rem;
-      max-width: 22rem;
+      flex: 1 1 auto;
+      width: 100%;
+      max-width: 100%;
       font-size: 0.85rem;
       padding: 0.3rem 0.5rem;
     }
@@ -420,13 +450,28 @@
       text-align: left;
     }
     .env-banner-toggle:hover { background: #ffe8a3; }
-    .env-banner-chevron {
-      font-size: 0.75rem;
-      line-height: 1;
-      transition: transform 0.2s ease;
+    .collapse-affordance {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+    .collapse-action {
+      font-size: 0.8rem;
+      font-weight: 700;
       color: #7f4f00;
     }
-    .env-banner-block.collapsed .env-banner-chevron {
+    .collapse-chevron {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 7px solid currentColor;
+      color: #7f4f00;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .env-banner-block.collapsed > .env-banner-toggle .collapse-chevron {
       transform: rotate(-90deg);
     }
     .env-banner-panel {
@@ -446,9 +491,18 @@
   </style>
 </head>
 <body>
+  <div class="env-banner-block chrome-shell-block" id="chrome-shell-block">
+    <button type="button" class="env-banner-toggle" id="btn-toggle-chrome" aria-expanded="true" aria-controls="app-chrome">
+      <span class="collapse-title">Outils éditeur (barre, JSON, aide)</span>
+      <span class="collapse-affordance">
+        <span class="collapse-action" id="chrome-collapse-action">Masquer</span>
+        <span class="collapse-chevron" aria-hidden="true"></span>
+      </span>
+    </button>
+    <div class="app-chrome" id="app-chrome">
   <header class="app-header">
-    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.2</small></h1>
-    <div class="toolbar">
+    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.8</small></h1>
+    <div class="toolbar" id="main-toolbar">
       <button type="button" id="btn-new-blank">Fiche vierge</button>
       <button type="button" id="btn-load-lettuce">Exemple laitue</button>
       <button type="button" id="btn-save" title="Brouillon dans ce navigateur seulement">Sauvegarder (navigateur)</button>
@@ -468,15 +522,25 @@
       <input type="checkbox" id="chk-direct-save" checked disabled />
       Enregistrer direct dans ce dossier
     </label>
-    <input type="text" class="path-note" id="path-note" placeholder="Note chemin (pour toi, ex. D:\AquaFarm\fiches)" title="Le navigateur ne peut pas ouvrir un chemin tapé — utilise « Définir dossier » une fois" />
+    <div class="path-field-wrap">
+      <label for="path-note">Chemin ou URL — exemple laitue (mémorisé)</label>
+      <input type="text" class="path-note" id="path-note" spellcheck="false" autocomplete="off"
+        placeholder="Plantes/lettuce-fiche.json ou URL raw GitHub / même dossier OneDrive"
+        title="Relatif au .html (clone local, Pages, OneDrive) ou URL https:// complète vers lettuce-fiche.json" />
+    </div>
   </div>
   <div class="env-banner-block" id="env-banner-block">
     <button type="button" class="env-banner-toggle" id="btn-toggle-banner" aria-expanded="true" aria-controls="env-banner-panel">
-      <span>Aide fichiers JSON</span>
-      <span class="env-banner-chevron" id="env-banner-chevron" aria-hidden="true">▼</span>
+      <span class="collapse-title">Aide fichiers JSON</span>
+      <span class="collapse-affordance">
+        <span class="collapse-action" id="help-collapse-action">Masquer</span>
+        <span class="collapse-chevron" aria-hidden="true"></span>
+      </span>
     </button>
     <div class="env-banner-panel" id="env-banner-panel">
       <div id="env-banner-content"></div>
+    </div>
+  </div>
     </div>
   </div>
   <main>
@@ -500,10 +564,192 @@
     </article>
   </template>
 
+  <script type="application/json" id="bundled-lettuce-json">
+{
+  "version": 1,
+  "updatedAt": "2026-09-28T08:57:41.777Z",
+  "sectionOrder": [
+    "identity",
+    "gdd",
+    "footprint",
+    "stages",
+    "stage-images",
+    "harvest",
+    "insect",
+    "items",
+    "economy",
+    "notes"
+  ],
+  "data": {
+    "plantId": "lettuce",
+    "displayName": "Laitue",
+    "plantLevel": 1,
+    "growthPattern": "Leafy",
+    "maxHarvestCount": 1,
+    "assetPath": "Assets/Data/Ferme/Laitue.asset",
+    "prefabPath": "Assets/Prefabs/World/Plantes/LaitueObj.prefab",
+    "atlasPath": "Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png",
+    "plantIcon": {
+      "fileName": "",
+      "dataUrl": "",
+      "assetPath": "",
+      "source": "atlas",
+      "atlasSliceIndex": 4
+    },
+    "atlas": {
+      "fileName": "",
+      "dataUrl": "",
+      "width": 0,
+      "height": 0,
+      "columns": 7,
+      "rows": 1
+    },
+    "gdd": {
+      "unlockTier": "T1",
+      "visualRole": "mass",
+      "sessionBand": "",
+      "seedBuyGold": 5,
+      "sellLeafGold": 15,
+      "notes": "Aligné Laitue.asset (2026-09)"
+    },
+    "footprintCells": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 1,
+        "y": 1
+      }
+    ],
+    "spriteWorldOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "isoSpriteViewOffset": {
+      "x": 0,
+      "y": 0
+    },
+    "stages": [
+      {
+        "index": 0,
+        "name": "Graine",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_0",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 1,
+        "name": "Starting",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_1",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 2,
+        "name": "Baby",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_2",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 3,
+        "name": "Growing",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_3",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 4,
+        "name": "Mature",
+        "durationSeconds": 60,
+        "spriteRef": "AtlasLaitue_4",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": {
+          "itemId": "laitue_mature",
+          "min": 1,
+          "max": 3
+        },
+        "sliceRect": null
+      },
+      {
+        "index": 5,
+        "name": "Flowering",
+        "durationSeconds": 1,
+        "spriteRef": "AtlasLaitue_5",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": null,
+        "sliceRect": null
+      },
+      {
+        "index": 6,
+        "name": "Seedling",
+        "durationSeconds": 60,
+        "spriteRef": "AtlasLaitue_6",
+        "imageFileName": "",
+        "imageDataUrl": "",
+        "harvest": {
+          "itemId": "laitue_seed",
+          "min": 5,
+          "max": 15
+        },
+        "sliceRect": null
+      }
+    ],
+    "insect": {
+      "kind": "RandomBeeOrButterfly",
+      "moveSpeed": 0,
+      "forageMin": 0,
+      "forageMax": 0
+    },
+    "items": {
+      "seedItemId": "laitue_seed",
+      "seedDisplayName": "Laitue Seedling",
+      "seedMaxStack": 99,
+      "matureItemId": "laitue_mature",
+      "matureDisplayName": "Laitue Mature",
+      "matureMaxStack": 99
+    },
+    "economy": {
+      "shopSeedPrice": 5,
+      "sellMaturePrice": 15
+    },
+    "notes": "",
+    "tickets": ""
+  }
+}
+  </script>
   <script>
     const STORAGE_KEY = "aquafarm-plant-sheet-v1";
-    const PATH_NOTE_KEY = "aquafarm-path-note";
+    const LETTUCE_SAMPLE_PATH_KEY = "aquafarm-lettuce-sample-path";
+    const PATH_NOTE_KEY_LEGACY = "aquafarm-path-note";
     const BANNER_HIDDEN_KEY = "aquafarm-help-banner-hidden";
+    const CHROME_SHELL_COLLAPSED_KEY = "aquafarm-chrome-shell-collapsed";
+    const PLANTES_DIR_REL = "Plantes";
+    const LETTUCE_SAMPLE_FILE = "lettuce-fiche.json";
+    const LETTUCE_SAMPLE_REL = `${PLANTES_DIR_REL}/${LETTUCE_SAMPLE_FILE}`;
     const DIR_DB_NAME = "aquafarm-fiche-v1";
     const DIR_STORE = "kv";
     const DIR_KEY = "plantsDir";
@@ -574,7 +820,8 @@
 
     function defaultLettuceData() {
       const stages = STAGE_NAMES.map((name, index) => {
-        const durationSeconds = index === 5 ? 3500 : 1;
+        const durationByIndex = [1, 1, 1, 1, 60, 1, 60];
+        const durationSeconds = durationByIndex[index] ?? 1;
         let harvest = null;
         if (index === 4) harvest = { itemId: "laitue_mature", min: 1, max: 3 };
         if (index === 6) harvest = { itemId: "laitue_seed", min: 5, max: 15 };
@@ -593,6 +840,7 @@
         plantIcon: defaultPlantIcon(),
         atlas: defaultAtlas(),
         displayName: "Laitue",
+        plantLevel: 1,
         growthPattern: "Leafy",
         maxHarvestCount: 1,
         assetPath: "Assets/Data/Ferme/Laitue.asset",
@@ -650,6 +898,7 @@
         plantIcon: defaultPlantIcon(),
         atlas: defaultAtlas(),
         displayName: "",
+        plantLevel: 1,
         growthPattern: "Leafy",
         maxHarvestCount: 1,
         assetPath: "",
@@ -750,9 +999,41 @@
         cachedDirHandle = null;
       }
       updateFolderUi();
-      const note = localStorage.getItem(PATH_NOTE_KEY);
       const pathInput = document.getElementById("path-note");
-      if (pathInput && note) pathInput.value = note;
+      if (pathInput) {
+        pathInput.value = getStoredLettuceSamplePathDisplay();
+      }
+    }
+
+    function normalizeLettuceSamplePath(raw) {
+      const t = (raw || "").trim();
+      if (!t) return "";
+      if (/^https?:\/\//i.test(t)) return t;
+      const repoPrefix = "Notes/Tools/";
+      if (t.startsWith(repoPrefix)) return t.slice(repoPrefix.length);
+      return t.replace(/^\/+/, "");
+    }
+
+    function getStoredLettuceSamplePathDisplay() {
+      const stored = localStorage.getItem(LETTUCE_SAMPLE_PATH_KEY);
+      if (stored != null && stored.trim() !== "") return stored.trim();
+      const legacy = localStorage.getItem(PATH_NOTE_KEY_LEGACY);
+      if (legacy && legacy.trim()) {
+        const leg = legacy.trim();
+        if (/^https?:\/\//i.test(leg) || leg.endsWith(".json")) return leg;
+      }
+      return LETTUCE_SAMPLE_REL;
+    }
+
+    function getLettuceSampleFetchTarget() {
+      const pathInput = document.getElementById("path-note");
+      const raw = (pathInput && pathInput.value.trim()) || getStoredLettuceSamplePathDisplay();
+      const normalized = normalizeLettuceSamplePath(raw) || LETTUCE_SAMPLE_REL;
+      return { url: normalized, label: normalized };
+    }
+
+    function persistLettuceSamplePath(value) {
+      localStorage.setItem(LETTUCE_SAMPLE_PATH_KEY, (value || "").trim());
     }
 
     async function pickDefaultFolder() {
@@ -787,6 +1068,48 @@
       const writable = await fileHandle.createWritable();
       await writable.write(json);
       await writable.close();
+    }
+
+    async function readTextFromDirFile(dirHandle, fileName) {
+      const fileHandle = await dirHandle.getFileHandle(fileName, { create: false });
+      const file = await fileHandle.getFile();
+      return file.text();
+    }
+
+    /** Exemple laitue : chemin/URL mémorisé, puis dossier JSON (desktop), puis secours intégré. */
+    async function loadLettuceSampleText() {
+      const { url, label } = getLettuceSampleFetchTarget();
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (res.ok) {
+          return { text: await res.text(), sourceLabel: label };
+        }
+        console.warn("lettuce fetch failed:", res.status, url);
+      } catch (err) {
+        console.warn("fetch lettuce sample:", err);
+      }
+
+      if (cachedDirHandle && (await verifyDirPermission(cachedDirHandle, false))) {
+        try {
+          const text = await readTextFromDirFile(cachedDirHandle, LETTUCE_SAMPLE_FILE);
+          return { text, sourceLabel: `${cachedDirHandle.name}/${LETTUCE_SAMPLE_FILE}` };
+        } catch (err) {
+          console.warn("lettuce sample in memorized dir:", err);
+        }
+        try {
+          const plantsDir = await cachedDirHandle.getDirectoryHandle(PLANTES_DIR_REL, { create: false });
+          const text = await readTextFromDirFile(plantsDir, LETTUCE_SAMPLE_FILE);
+          return { text, sourceLabel: `${PLANTES_DIR_REL}/${LETTUCE_SAMPLE_FILE}` };
+        } catch (err) {
+          console.warn("lettuce sample in Plantes subfolder:", err);
+        }
+      }
+
+      const bundled = document.getElementById("bundled-lettuce-json");
+      if (bundled && bundled.textContent.trim()) {
+        return { text: bundled.textContent, sourceLabel: "copie intégrée (secours)" };
+      }
+      return null;
     }
 
     function mergeImportedData(raw) {
@@ -842,8 +1165,15 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return defaultLettuceData();
         const parsed = JSON.parse(raw);
-        const data = parsed.data ? parsed.data : defaultLettuceData();
-        return ensureImageFields(data);
+        if (parsed.data != null) {
+          if (Array.isArray(parsed.sectionOrder)) {
+            pendingSectionOrder = ensureSectionOrderHasStageImages(
+              parsed.sectionOrder.filter((id) => SECTION_DEFS.some((s) => s.id === id)),
+            );
+          }
+          return mergeImportedData(parsed.data);
+        }
+        return defaultLettuceData();
       } catch {
         return defaultLettuceData();
       }
@@ -1540,6 +1870,7 @@
           <div class="grid-2">
             ${field("plantId", "plantId", d.plantId)}
             ${field("displayName", "displayName", d.displayName)}
+            ${field("Niveau requis (lvl)", "plantLevel", d.plantLevel ?? 1, { type: "number", extraAttrs: 'min="1" step="1"' })}
             ${field("growthPattern", "growthPattern", d.growthPattern, {
               type: "select", options: ["Leafy", "Fruiting"],
             })}
@@ -1636,7 +1967,7 @@
       const last = parts[parts.length - 1];
       if (value === "" && (last.includes("Gold") || last.includes("Price") || last.includes("Stack") || last === "moveSpeed")) {
         cur[last] = "";
-      } else if (typeof cur[last] === "number" || /Count|Seconds|min|max|Stack|Price|Gold|moveSpeed|forage|columns|rows|SliceIndex/.test(last)) {
+      } else if (typeof cur[last] === "number" || /Count|Seconds|min|max|Stack|Price|Gold|moveSpeed|forage|columns|rows|SliceIndex|plantLevel|Level/.test(last)) {
         const n = Number(value);
         cur[last] = Number.isFinite(n) ? n : value;
       } else {
@@ -1760,6 +2091,53 @@
       });
     }
 
+    function isChromeShellCollapsed() {
+      return localStorage.getItem(CHROME_SHELL_COLLAPSED_KEY) === "1";
+    }
+
+    function applyChromeShellVisibility() {
+      const block = document.getElementById("chrome-shell-block");
+      const btn = document.getElementById("btn-toggle-chrome");
+      const collapsed = isChromeShellCollapsed();
+      if (block) block.classList.toggle("collapsed", collapsed);
+      const actionLabel = document.getElementById("chrome-collapse-action");
+      if (btn) {
+        btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        btn.title = collapsed ? "Afficher la barre d’outils" : "Masquer la barre d’outils";
+      }
+      if (actionLabel) actionLabel.textContent = collapsed ? "Afficher" : "Masquer";
+    }
+
+    function toggleChromeShell() {
+      const collapsed = !isChromeShellCollapsed();
+      localStorage.setItem(CHROME_SHELL_COLLAPSED_KEY, collapsed ? "1" : "0");
+      applyChromeShellVisibility();
+    }
+
+    document.getElementById("btn-toggle-chrome").addEventListener("click", () => {
+      toggleChromeShell();
+    });
+
+    applyChromeShellVisibility();
+
+    async function applyLettuceSample() {
+      const loaded = await loadLettuceSampleText();
+      if (loaded && loaded.text) {
+        const { data, sectionOrder } = parseImportedFile(loaded.text);
+        state = data;
+        if (sectionOrder) pendingSectionOrder = sectionOrder;
+        setSaveStatus(`Exemple laitue : ${loaded.sourceLabel}`, true);
+      } else {
+        state = defaultLettuceData();
+        setSaveStatus(
+          `Exemple laitue indisponible — vérifie le chemin/URL ci-dessus (${LETTUCE_SAMPLE_REL} ou raw GitHub).`,
+          false,
+        );
+      }
+      renderSections();
+      persist({ showFeedback: true });
+    }
+
     document.getElementById("btn-save").addEventListener("click", () => {
       persist({ showFeedback: true });
     });
@@ -1782,11 +2160,9 @@
       });
     });
 
-    document.getElementById("btn-load-lettuce").addEventListener("click", () => {
+    document.getElementById("btn-load-lettuce").addEventListener("click", async () => {
       if (!confirm("Recharger l’exemple laitue ? (écrase la saisie courante)")) return;
-      state = defaultLettuceData();
-      renderSections();
-      persist({ showFeedback: true });
+      await applyLettuceSample();
     });
 
     function buildExportPayload() {
@@ -1929,6 +2305,13 @@
       tips.push("Une fois « Dossier JSON… » fait, Ouvrir/Enregistrer démarre dans ce dossier (Chrome/Edge).");
       tips.push("Impossible de coller un chemin Windows : le navigateur impose de choisir le dossier une fois.");
       tips.push("Ouvre le .html avec Chrome/Edge (hors aperçu Cursor) si l’explorateur ne s’affiche pas.");
+      tips.push(
+        `Exemple laitue : champ « Chemin ou URL » → <code>${LETTUCE_SAMPLE_REL}</code> si le .html est dans <code>Notes/Tools/</code> (clone, OneDrive, GitHub Pages).`,
+      );
+      tips.push(
+        "Mobile / HTML ouvert ailleurs : colle l’URL <code>raw.githubusercontent.com/…/lettuce-fiche.json</code> (bouton Raw sur GitHub).",
+      );
+      tips.push("OneDrive : ouvre le .html depuis le dossier synchronisé et garde un chemin relatif vers <code>Plantes/lettuce-fiche.json</code>.");
       return "<strong>Fichiers JSON — aide</strong><ul>" +
         tips.map((t) => `<li>${t}</li>`).join("") + "</ul>";
     }
@@ -1946,10 +2329,12 @@
         content.innerHTML = buildEnvironmentBannerHtml();
       }
       if (block) block.classList.toggle("collapsed", hidden);
+      const actionLabel = document.getElementById("help-collapse-action");
       if (btn) {
         btn.setAttribute("aria-expanded", hidden ? "false" : "true");
         btn.title = hidden ? "Afficher l’aide fichiers" : "Masquer l’aide fichiers";
       }
+      if (actionLabel) actionLabel.textContent = hidden ? "Afficher" : "Masquer";
     }
 
     function toggleHelpBanner() {
@@ -1971,10 +2356,10 @@
     });
 
     document.getElementById("path-note").addEventListener("change", (e) => {
-      localStorage.setItem(PATH_NOTE_KEY, e.target.value || "");
+      persistLettuceSamplePath(e.target.value);
     });
     document.getElementById("path-note").addEventListener("input", (e) => {
-      localStorage.setItem(PATH_NOTE_KEY, e.target.value || "");
+      persistLettuceSamplePath(e.target.value);
     });
 
     document.getElementById("btn-export").addEventListener("click", () => {
