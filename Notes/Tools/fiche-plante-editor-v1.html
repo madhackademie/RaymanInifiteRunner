@@ -44,7 +44,27 @@
       margin: 0;
       flex: 1 1 12rem;
     }
-    .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+    .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .toolbar-actions.is-hidden { display: none; }
+    #btn-toggle-toolbar {
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .sync-test-badge {
+      font-size: 0.7rem;
+      background: #fff3cd;
+      color: #7f4f00;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid #e6c200;
+      margin-left: 0.35rem;
+    }
     button, .btn {
       font: inherit;
       cursor: pointer;
@@ -447,16 +467,19 @@
 </head>
 <body>
   <header class="app-header">
-    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.2</small></h1>
-    <div class="toolbar">
-      <button type="button" id="btn-new-blank">Fiche vierge</button>
-      <button type="button" id="btn-load-lettuce">Exemple laitue</button>
-      <button type="button" id="btn-save" title="Brouillon dans ce navigateur seulement">Sauvegarder (navigateur)</button>
-      <button type="button" id="btn-reorder" class="active" title="Glisser les blocs par la poignée ≡">Réorganiser : ON</button>
-      <button type="button" id="btn-import" title="Rouvrir un .json exporté">Ouvrir JSON…</button>
-      <button type="button" id="btn-export" title="Enregistrer un .json sur le disque">Enregistrer JSON…</button>
-      <button type="button" id="btn-copy">Copier JSON</button>
-      <input type="file" id="file-import" accept=".json,application/json" hidden />
+    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.3</small><span class="sync-test-badge" title="Test alignement cloud → git pull local">TEST sync</span></h1>
+    <div class="toolbar" id="main-toolbar">
+      <button type="button" id="btn-toggle-toolbar" aria-expanded="true" aria-controls="toolbar-actions">Masquer boutons</button>
+      <div class="toolbar-actions" id="toolbar-actions">
+        <button type="button" id="btn-new-blank">Fiche vierge</button>
+        <button type="button" id="btn-load-lettuce">Exemple laitue</button>
+        <button type="button" id="btn-save" title="Brouillon dans ce navigateur seulement">Sauvegarder (navigateur)</button>
+        <button type="button" id="btn-reorder" class="active" title="Glisser les blocs par la poignée ≡">Réorganiser : ON</button>
+        <button type="button" id="btn-import" title="Rouvrir un .json exporté">Ouvrir JSON…</button>
+        <button type="button" id="btn-export" title="Enregistrer un .json sur le disque">Enregistrer JSON…</button>
+        <button type="button" id="btn-copy">Copier JSON</button>
+        <input type="file" id="file-import" accept=".json,application/json" hidden />
+      </div>
     </div>
     <p class="save-status" id="save-status" role="status">Pas encore enregistré dans ce navigateur.</p>
   </header>
@@ -1759,6 +1782,36 @@
         });
       });
     }
+
+    const TOOLBAR_HIDDEN_KEY = "aquaFarmEditorToolbarHidden";
+
+    function applyToolbarVisibility(hidden) {
+      const actions = document.getElementById("toolbar-actions");
+      const toggle = document.getElementById("btn-toggle-toolbar");
+      if (!actions || !toggle) return;
+      actions.classList.toggle("is-hidden", hidden);
+      toggle.setAttribute("aria-expanded", hidden ? "false" : "true");
+      toggle.textContent = hidden ? "Afficher boutons" : "Masquer boutons";
+    }
+
+    function loadToolbarVisibility() {
+      try {
+        applyToolbarVisibility(localStorage.getItem(TOOLBAR_HIDDEN_KEY) === "1");
+      } catch {
+        applyToolbarVisibility(false);
+      }
+    }
+
+    document.getElementById("btn-toggle-toolbar").addEventListener("click", () => {
+      const actions = document.getElementById("toolbar-actions");
+      const hidden = !actions.classList.contains("is-hidden");
+      applyToolbarVisibility(hidden);
+      try {
+        localStorage.setItem(TOOLBAR_HIDDEN_KEY, hidden ? "1" : "0");
+      } catch { /* ignore */ }
+    });
+
+    loadToolbarVisibility();
 
     document.getElementById("btn-save").addEventListener("click", () => {
       persist({ showFeedback: true });
