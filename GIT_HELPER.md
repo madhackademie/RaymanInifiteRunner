@@ -228,7 +228,7 @@ Si une branche locale affiche `[origin/...: gone]` : la branche distante n'exist
 powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1
 ```
 
-Script : `scripts/session-git-sync.ps1` (fetch `--prune` + status + pull). One-liner equivalent :
+Script : `scripts/session-git-sync.ps1` (fetch `--prune` + status + pull de la branche courante ; **sur une branche feature**, merge automatique de `origin/main` s'il y a des commits sur `main` absents de ta branche). One-liner minimal (sans merge main auto) :
 
 ```bash
 git fetch --all --prune; git status -sb; git pull

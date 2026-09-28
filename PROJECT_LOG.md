@@ -1,5 +1,33 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-28 — Fiche plante éditeur (progression, RNG, market GDD) + backlog meta master
+
+### Contexte
+- Session sur **`main`** (outillage carnet plantes, pas de code Unity runtime).
+- Éditeur HTML : `Notes/Tools/fiche-plante-editor-v1.html` (**v3.1**).
+
+### Livré — champs JSON fiche plante
+- **Progression :** `plantLevel` (niveau plante = niveau biofiltre requis), `xpPlayer`, `xpBiofiltre` — bloc UI avec icône IBC projet + OpenMoji joueur.
+- **`successRates` :** `germination`, `disease` (float 0–1) ; `resistances` : `disease`, `rat`, `bird`, `slug`, `ant` — section dédiée §3 (ordre sections renuméroté 4→11).
+- **Market de base :** `gdd.seedsInBaseMarket` (bool) — graines achetables au shop V0 ou déblocage ailleurs.
+- Support checkbox + export / import / exemple laitue intégré (bundled JSON).
+
+### Backlog GDD
+- **`[BL-MARKET-MASTER-TAX-ROULETTE-001]`** dans `Notes/Todo_project.md` § GDD : taxe master sur transactions market global, achats réguliers de lots graines, event hebdo + roulette, surplus non gagné remis en vente. Spec/UI **après** fondation market cloud (`BL-CLOUD-002`).
+
+### Non fait / hors scope session
+- Pas de sync `PlantDefinition` / `Laitue.asset` Unity avec les nouveaux champs fiche.
+- Pas de mise à jour `lettuce-fiche.json` embarqué (fichier lourd base64) — secours HTML à jour.
+
+### Prochaine session (suggestion)
+- Reprendre priorité doc existante : **`[P0-UI-RESPONSIVE-VALID-001]`** (playtest shell + popups) ou chantier farm/bezy selon `Notes/Todo_project.md`.
+- Si carnet plantes : exporter JSON laitue depuis l’éditeur v3.1 et aligner spec GDD §6.3 (`germinationBase`, market).
+
+### Git (auteur)
+- Fichiers modifiés non commités par l’assistant : `Notes/Tools/fiche-plante-editor-v1.html`, `Notes/Todo_project.md`, `PROJECT_LOG.md`.
+
+---
+
 ## 2026-09-23 — Validation UI responsive shell `[P0-UI-RESPONSIVE-VALID-001]`
 
 ### Décision auteur

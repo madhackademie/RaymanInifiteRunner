@@ -911,6 +911,13 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [BL-GDD-006] Prestige / génération par système — spec `Notes/GDD/SPEC_prestige_generation_systemes.md` (portes biofiltre ★3 **ou** ★5 ; grille vide ; G1 +5 % croissance ; G2 media +5 % qty). **Pas** un wipe global.
 - [ ] [BL-GDD-007] Slots & shields biofiltre — spec `Notes/GDD/SPEC_biofiltre_slots_shields.md` (5 secondaires, 3 primaires ; anti-slug 4 niv. ; serre voile / bâche bulles / géodésique ; monnaie paliers TBD : prestige / ★ / or). HUD world V0 (vues + prefabs, pas le métier prestige) : `NOTE_hud_biofiltre_prefab_en_dur.md`.
 - [ ] [BL-GDD-008] Atelier craft aquaponique + quêtes livraison — spec `Notes/GDD/SPEC_craft_atelier_aquaponique.md` (bacs DWC particulier/pro, `CraftService`, `ScreenId.Craft` ; cuisine phase 2). Branche cible : `feature/craft-aquaponic-workshop`.
+- [ ] **[BL-MARKET-MASTER-TAX-ROULETTE-001]** **Meta « master player » + market global + event hebdo graines** — backlog design (pas MVP T1).
+
+  **Idée :** le compte **master** (auteur / opérateur du jeu) prélève une **taxe** sur **chaque transaction** du market global (achat/vente entre joueurs ou avec le pool central — % TBD). Une part de cette taxe (ou un budget dédié) sert à **acheter régulièrement des lots de graines** sur le marché global (espèces/raretés choisies pour la semaine).
+
+  **Event hebdo :** ces graines alimentent une **roulette** (tirage limité dans le temps) où les joueurs peuvent **gagner** des packs de graines rares. **Stock non gagné** à la fin de l’event → **remis en vente** sur le market standard (pas de destruction du surplus).
+
+  **À trancher plus tard :** taux de taxe, cadence d’achat lots, pricing roulette (monnaie soft / ticket event), anti-abus, sync cloud (`IMarketService`), lien fiche plante (`gdd.seedsInBaseMarket` vs graines « event only »). **Livrables cibles :** spec GDD courte + flux économie + UI event/roulette — **après** `[BL-CLOUD-002]` ou stub market local.
 
 ### Workflow / documentation
 - [ ] [BL-DOC-001] Documenter les règles projet (style, conventions AI/notes, organisation dossiers).

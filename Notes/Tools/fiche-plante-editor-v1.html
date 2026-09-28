@@ -233,6 +233,87 @@
       margin-bottom: 1rem;
       align-items: flex-start;
     }
+    .progression-panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 0.85rem;
+      margin-bottom: 1rem;
+      background: #f8fbf8;
+    }
+    .progression-panel > p {
+      margin: 0 0 0.65rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .success-rates-panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 0.85rem;
+      background: #fafcfa;
+    }
+    .success-rates-panel h3 {
+      margin: 0 0 0.5rem;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .success-rates-panel .sub-block {
+      margin-top: 0.85rem;
+      padding-top: 0.65rem;
+      border-top: 1px dashed var(--border);
+    }
+    .success-rates-panel .sub-block h4 {
+      margin: 0 0 0.45rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    input.rate-float {
+      font-variant-numeric: tabular-nums;
+    }
+    .progression-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.65rem 1rem;
+      align-items: end;
+    }
+    .xp-field-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+    }
+    .xp-field-row .xp-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      object-fit: contain;
+      padding: 3px;
+    }
+    .xp-field-row label.field {
+      flex: 1;
+      min-width: 0;
+    }
+    .level-field-wrap {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+    }
+    .level-field-wrap label.field {
+      flex: 1;
+    }
+    .level-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.35rem 0.5rem;
+      white-space: nowrap;
+      margin-bottom: 0.35rem;
+    }
     .drop-zone {
       border: 2px dashed var(--border);
       border-radius: var(--radius);
@@ -501,7 +582,7 @@
     </button>
     <div class="app-chrome" id="app-chrome">
   <header class="app-header">
-    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.8</small></h1>
+    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v3.1</small></h1>
     <div class="toolbar" id="main-toolbar">
       <button type="button" id="btn-new-blank">Fiche vierge</button>
       <button type="button" id="btn-load-lettuce">Exemple laitue</button>
@@ -571,6 +652,7 @@
   "sectionOrder": [
     "identity",
     "gdd",
+    "success-rates",
     "footprint",
     "stages",
     "stage-images",
@@ -584,6 +666,19 @@
     "plantId": "lettuce",
     "displayName": "Laitue",
     "plantLevel": 1,
+    "xpPlayer": 10,
+    "xpBiofiltre": 15,
+    "successRates": {
+      "germination": 1,
+      "disease": 1,
+      "resistances": {
+        "disease": 0,
+        "rat": 0,
+        "bird": 0,
+        "slug": 0,
+        "ant": 0
+      }
+    },
     "growthPattern": "Leafy",
     "maxHarvestCount": 1,
     "assetPath": "Assets/Data/Ferme/Laitue.asset",
@@ -610,6 +705,7 @@
       "sessionBand": "",
       "seedBuyGold": 5,
       "sellLeafGold": 15,
+      "seedsInBaseMarket": true,
       "notes": "Aligné Laitue.asset (2026-09)"
     },
     "footprintCells": [
@@ -757,21 +853,55 @@
     const INSECT_KINDS = ["None", "Bee", "Butterfly", "RandomBeeOrButterfly"];
     const FOOTPRINT_SIZE = 4;
     const SLICE_MIN_SIZE = 8;
+    /** Relatif à Notes/Tools/ — sprite IBC promu du projet */
+    const IBC_XP_ICON_REL = "../../Assets/Art/Sprites/Farm/Biofiltre/IbcIso.png";
+    /** OpenMoji 🧑‍🌾 (CDN, secours si hors-ligne = alt texte) */
+    const PLAYER_XP_ICON_URL =
+      "https://cdn.jsdelivr.net/npm/openmoji@15.0.0/color/svg/1F9D1-200D-1F33E.svg";
     let atlasActiveStage = 0;
     let atlasDrag = null;
 
     const SECTION_DEFS = [
       { id: "identity", title: "1. Identité & profil" },
       { id: "gdd", title: "2. GDD carnet (hors SO Unity)" },
-      { id: "footprint", title: "3. Footprint & offsets" },
-      { id: "stages", title: "4. Stades & timers" },
-      { id: "stage-images", title: "5. Atlas & images des stades" },
-      { id: "harvest", title: "6. Récolte (maxHarvestCount)" },
-      { id: "insect", title: "7. Insecte (Flowering)" },
-      { id: "items", title: "8. Items inventaire" },
-      { id: "economy", title: "9. Économie & assets" },
-      { id: "notes", title: "10. Notes & suivi" },
+      { id: "success-rates", title: "3. Taux succès & résistances (float 0–1)" },
+      { id: "footprint", title: "4. Footprint & offsets" },
+      { id: "stages", title: "5. Stades & timers" },
+      { id: "stage-images", title: "6. Atlas & images des stades" },
+      { id: "harvest", title: "7. Récolte (maxHarvestCount)" },
+      { id: "insect", title: "8. Insecte (Flowering)" },
+      { id: "items", title: "9. Items inventaire" },
+      { id: "economy", title: "10. Économie & assets" },
+      { id: "notes", title: "11. Notes & suivi" },
     ];
+
+    const FLOAT_RATE_ATTRS = 'class="rate-float" min="0" max="1" step="0.01"';
+
+    function defaultSuccessRates() {
+      return {
+        germination: 1,
+        disease: 1,
+        resistances: {
+          disease: 0,
+          rat: 0,
+          bird: 0,
+          slug: 0,
+          ant: 0,
+        },
+      };
+    }
+
+    function ensureSuccessRates(data) {
+      const base = defaultSuccessRates();
+      const raw = data.successRates && typeof data.successRates === "object" ? data.successRates : {};
+      const resRaw = raw.resistances && typeof raw.resistances === "object" ? raw.resistances : {};
+      data.successRates = {
+        ...base,
+        ...raw,
+        resistances: { ...base.resistances, ...resRaw },
+      };
+      return data;
+    }
 
     function defaultAtlas() {
       return {
@@ -806,7 +936,16 @@
           if (!st.sliceRect) st.sliceRect = null;
         });
       }
-      return data;
+      return ensureSuccessRates(data);
+    }
+
+    function ensureSectionOrderHasSuccessRates(order) {
+      if (order.includes("success-rates")) return order;
+      const next = [...order];
+      const idx = next.indexOf("gdd");
+      if (idx >= 0) next.splice(idx + 1, 0, "success-rates");
+      else next.unshift("success-rates");
+      return next;
     }
 
     function ensureSectionOrderHasStageImages(order) {
@@ -841,6 +980,9 @@
         atlas: defaultAtlas(),
         displayName: "Laitue",
         plantLevel: 1,
+        xpPlayer: 10,
+        xpBiofiltre: 15,
+        successRates: defaultSuccessRates(),
         growthPattern: "Leafy",
         maxHarvestCount: 1,
         assetPath: "Assets/Data/Ferme/Laitue.asset",
@@ -852,6 +994,7 @@
           sessionBand: "",
           seedBuyGold: 5,
           sellLeafGold: 15,
+          seedsInBaseMarket: true,
           notes: "Runtime debug timers — voisinage 15 gold",
         },
         footprintCells: [
@@ -899,12 +1042,15 @@
         atlas: defaultAtlas(),
         displayName: "",
         plantLevel: 1,
+        xpPlayer: 0,
+        xpBiofiltre: 0,
+        successRates: defaultSuccessRates(),
         growthPattern: "Leafy",
         maxHarvestCount: 1,
         assetPath: "",
         prefabPath: "",
         atlasPath: "",
-        gdd: { unlockTier: "", visualRole: "", sessionBand: "", seedBuyGold: "", sellLeafGold: "", notes: "" },
+        gdd: { unlockTier: "", visualRole: "", sessionBand: "", seedBuyGold: "", sellLeafGold: "", seedsInBaseMarket: false, notes: "" },
         footprintCells: [{ x: 0, y: 0 }],
         spriteWorldOffset: { x: 0, y: 0 },
         isoSpriteViewOffset: { x: 0, y: 0 },
@@ -1125,6 +1271,15 @@
         spriteWorldOffset: { ...base.spriteWorldOffset, ...(raw.spriteWorldOffset || {}) },
         isoSpriteViewOffset: { ...base.isoSpriteViewOffset, ...(raw.isoSpriteViewOffset || {}) },
       };
+      const sr = raw.successRates && typeof raw.successRates === "object" ? raw.successRates : {};
+      merged.successRates = {
+        ...base.successRates,
+        ...sr,
+        resistances: {
+          ...base.successRates.resistances,
+          ...(sr.resistances && typeof sr.resistances === "object" ? sr.resistances : {}),
+        },
+      };
       if (Array.isArray(raw.stages)) {
         merged.stages = base.stages.map((st, i) => ({
           ...st,
@@ -1138,7 +1293,7 @@
       }
       merged.plantIcon = { ...base.plantIcon, ...(raw.plantIcon || {}) };
       merged.atlas = { ...base.atlas, ...(raw.atlas || {}) };
-      return ensureImageFields(merged);
+      return ensureImageFields(ensureSuccessRates(merged));
     }
 
     function parseImportedFile(text) {
@@ -1151,6 +1306,7 @@
         SECTION_DEFS.forEach((s) => {
           if (!sectionOrder.includes(s.id)) sectionOrder.push(s.id);
         });
+        sectionOrder = ensureSectionOrderHasSuccessRates(sectionOrder);
         sectionOrder = ensureSectionOrderHasStageImages(sectionOrder);
       }
       return { data: mergeImportedData(data), sectionOrder };
@@ -1167,8 +1323,10 @@
         const parsed = JSON.parse(raw);
         if (parsed.data != null) {
           if (Array.isArray(parsed.sectionOrder)) {
-            pendingSectionOrder = ensureSectionOrderHasStageImages(
-              parsed.sectionOrder.filter((id) => SECTION_DEFS.some((s) => s.id === id)),
+            pendingSectionOrder = ensureSectionOrderHasSuccessRates(
+              ensureSectionOrderHasStageImages(
+                parsed.sectionOrder.filter((id) => SECTION_DEFS.some((s) => s.id === id)),
+              ),
             );
           }
           return mergeImportedData(parsed.data);
@@ -1190,7 +1348,7 @@
         if (!raw) return SECTION_DEFS.map((s) => s.id);
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed.sectionOrder) && parsed.sectionOrder.length) {
-          return ensureSectionOrderHasStageImages(parsed.sectionOrder);
+          return ensureSectionOrderHasSuccessRates(ensureSectionOrderHasStageImages(parsed.sectionOrder));
         }
       } catch { /* ignore */ }
       return SECTION_DEFS.map((s) => s.id);
@@ -1263,6 +1421,12 @@
         return `<label class="field"><span class="lbl">${label}</span>
           <textarea data-bind="${id}" ${extra}>${escapeHtml(String(value ?? ""))}</textarea></label>`;
       }
+      if (type === "checkbox") {
+        const on = value === true || value === "true" || value === 1;
+        return `<label class="field" style="flex-direction:row;align-items:center;gap:0.45rem;cursor:pointer">
+          <input type="checkbox" data-bind="${id}" ${on ? "checked" : ""} ${extra} />
+          <span class="lbl" style="font-weight:600">${label}</span></label>`;
+      }
       return `<label class="field"><span class="lbl">${label}</span>
         <input type="${type}" data-bind="${id}" value="${escapeAttr(value ?? "")}" ${ro} ${extra} /></label>`;
     }
@@ -1317,6 +1481,90 @@
         return `<img src="${dataUrl}" alt="" />`;
       }
       return `<span class="drop-hint">${hint}</span>`;
+    }
+
+    function renderSuccessRatesSection() {
+      const sr = state.successRates || defaultSuccessRates();
+      const r = sr.resistances || defaultSuccessRates().resistances;
+      return `<div class="success-rates-panel">
+        <p style="margin:0 0 0.65rem;font-size:0.85rem;color:var(--muted)">
+          Objet JSON <code>successRates</code> — taux de base (0–1, 1 = 100&nbsp;%). Aligné GDD <code>germinationBase</code> (V0 = 1).
+          Résistances = bonus plante face aux aléas (maladie, pestes shields).
+        </p>
+        <h3>Taux de succès</h3>
+        <div class="grid-2">
+          ${field("germination (float)", "successRates.germination", sr.germination, {
+            type: "number",
+            extraAttrs: FLOAT_RATE_ATTRS + ' title="Proba germination réussie à la pose"',
+          })}
+          ${field("disease — succès / stabilité (float)", "successRates.disease", sr.disease, {
+            type: "number",
+            extraAttrs: FLOAT_RATE_ATTRS + ' title="Taux lié maladie (GDD hazards)"',
+          })}
+        </div>
+        <div class="sub-block">
+          <h4>Résistances (float 0–1)</h4>
+          <div class="grid-2">
+            ${field("résistance maladie", "successRates.resistances.disease", r.disease, {
+              type: "number",
+              extraAttrs: FLOAT_RATE_ATTRS,
+            })}
+            ${field("résistance rat", "successRates.resistances.rat", r.rat, {
+              type: "number",
+              extraAttrs: FLOAT_RATE_ATTRS,
+            })}
+            ${field("résistance oiseau", "successRates.resistances.bird", r.bird, {
+              type: "number",
+              extraAttrs: FLOAT_RATE_ATTRS,
+            })}
+            ${field("résistance limace (slug)", "successRates.resistances.slug", r.slug, {
+              type: "number",
+              extraAttrs: FLOAT_RATE_ATTRS,
+            })}
+            ${field("résistance fourmis (ant)", "successRates.resistances.ant", r.ant, {
+              type: "number",
+              extraAttrs: FLOAT_RATE_ATTRS,
+            })}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function renderProgressionPanel() {
+      const lvl = dNum(state.plantLevel, 1);
+      return `<div class="progression-panel">
+        <p><strong>Progression</strong> — <code>plantLevel</code> = niveau de la plante <em>et</em> niveau minimum du biofiltre IBC pour débloquer la graine / la pose.</p>
+        <div class="progression-grid">
+          <div class="level-field-wrap">
+            <span class="level-badge" title="Même valeur côté joueur et biofiltre">Lvl ${escapeHtml(String(lvl))}</span>
+            ${field("plantLevel (int)", "plantLevel", state.plantLevel ?? 1, {
+              type: "number",
+              extraAttrs: 'min="1" step="1" title="Niveau plante = niveau biofiltre requis"',
+            })}
+          </div>
+          <div class="xp-field-row">
+            <img class="xp-icon" src="${escapeAttr(PLAYER_XP_ICON_URL)}" alt="Joueur" width="44" height="44"
+              onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'xp-icon',textContent:'🧑‍🌾',title:'Joueur'}))" />
+            ${field("xpPlayer — XP joueur (récolte / cycle)", "xpPlayer", state.xpPlayer ?? 0, {
+              type: "number",
+              extraAttrs: 'min="0" step="1"',
+            })}
+          </div>
+          <div class="xp-field-row">
+            <img class="xp-icon" src="${escapeAttr(IBC_XP_ICON_REL)}" alt="Biofiltre IBC" width="44" height="44"
+              title="Cuve IBC — Assets/Art/Sprites/Farm/Biofiltre/IbcIso.png" />
+            ${field("xpBiofiltre — XP biofiltre IBC", "xpBiofiltre", state.xpBiofiltre ?? 0, {
+              type: "number",
+              extraAttrs: 'min="0" step="1"',
+            })}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function dNum(v, fallback) {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : fallback;
     }
 
     function renderPlantIconBlock() {
@@ -1867,10 +2115,10 @@
       switch (id) {
         case "identity":
           return `${renderPlantIconBlock()}
+          ${renderProgressionPanel()}
           <div class="grid-2">
             ${field("plantId", "plantId", d.plantId)}
             ${field("displayName", "displayName", d.displayName)}
-            ${field("Niveau requis (lvl)", "plantLevel", d.plantLevel ?? 1, { type: "number", extraAttrs: 'min="1" step="1"' })}
             ${field("growthPattern", "growthPattern", d.growthPattern, {
               type: "select", options: ["Leafy", "Fruiting"],
             })}
@@ -1880,6 +2128,10 @@
           return renderStageImagesGrid();
         case "gdd":
           return `<div class="grid-2">
+            ${field("Graines dispo market de base", "gdd.seedsInBaseMarket", d.gdd.seedsInBaseMarket, {
+              type: "checkbox",
+              extraAttrs: 'title="Si coché : graine achetable au shop/market V0 sans déblocage extra"',
+            })}
             ${field("unlockTier", "gdd.unlockTier", d.gdd.unlockTier)}
             ${field("visualRole (mass / vertical / accent)", "gdd.visualRole", d.gdd.visualRole)}
             ${field("sessionBand (S/B/N)", "gdd.sessionBand", d.gdd.sessionBand)}
@@ -1887,6 +2139,8 @@
             ${field("sellLeafGold", "gdd.sellLeafGold", d.gdd.sellLeafGold, { type: "number" })}
             ${field("notes GDD", "gdd.notes", d.gdd.notes, { type: "textarea" })}
           </div>`;
+        case "success-rates":
+          return renderSuccessRatesSection();
         case "footprint":
           return `<div class="grid-2">
             ${field("spriteWorldOffset.x", "spriteWorldOffset.x", d.spriteWorldOffset.x, { type: "number" })}
@@ -1965,9 +2219,16 @@
         cur = cur[p];
       }
       const last = parts[parts.length - 1];
+      if (typeof value === "boolean") {
+        cur[last] = value;
+        return;
+      }
       if (value === "" && (last.includes("Gold") || last.includes("Price") || last.includes("Stack") || last === "moveSpeed")) {
         cur[last] = "";
-      } else if (typeof cur[last] === "number" || /Count|Seconds|min|max|Stack|Price|Gold|moveSpeed|forage|columns|rows|SliceIndex|plantLevel|Level/.test(last)) {
+      } else if (
+        typeof cur[last] === "number"
+        || /Count|Seconds|min|max|Stack|Price|Gold|moveSpeed|forage|columns|rows|SliceIndex|plantLevel|xpPlayer|xpBiofiltre|Level|germination|disease|rat|bird|slug|ant/.test(last)
+      ) {
         const n = Number(value);
         cur[last] = Number.isFinite(n) ? n : value;
       } else {
@@ -1979,6 +2240,10 @@
       document.querySelectorAll("[data-bind]").forEach((el) => {
         const path = el.getAttribute("data-bind");
         if (path === "plantIcon.fileName" || path === "atlas.fileName") return;
+        if (el.type === "checkbox") {
+          setByPath(state, path, el.checked);
+          return;
+        }
         setByPath(state, path, el.value);
       });
       document.querySelectorAll("tr[data-stage-index]").forEach((row) => {
@@ -2065,6 +2330,10 @@
         el.addEventListener("input", () => {
           persist({ silent: true });
           updateTimeToMature();
+          if (el.getAttribute("data-bind") === "plantLevel") {
+            const badge = document.querySelector(".level-badge");
+            if (badge) badge.textContent = `Lvl ${el.value || 1}`;
+          }
         });
         el.addEventListener("change", () => {
           persist({ silent: true });

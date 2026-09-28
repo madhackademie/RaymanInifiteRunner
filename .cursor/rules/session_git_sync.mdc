@@ -86,7 +86,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1
 
 One-liner : `git fetch --all --prune; git status -sb; git pull`
 
-Détail : `GIT_HELPER.md` § --1--, script `scripts/session-git-sync.ps1`.
+Détail : `GIT_HELPER.md` § --1--, script `scripts/session-git-sync.ps1` (pull branche courante + merge `origin/main` sur branche feature si besoin).
 
 ## 2) Gate — avant tout prompt, tout court
 
