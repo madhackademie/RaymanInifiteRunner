@@ -45,32 +45,22 @@
       flex: 1 1 12rem;
     }
     .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
-    .chrome-fab {
-      display: none;
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      z-index: 50;
-      font: inherit;
-      cursor: pointer;
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #fff;
-      padding: 0.55rem 0.85rem;
-      border-radius: 999px;
-      box-shadow: var(--shadow);
-      font-weight: 600;
-      max-width: calc(100vw - 2rem);
+    .chrome-shell-block {
+      border-bottom: 1px solid var(--border);
+      background: var(--accent-soft);
     }
-    @media (max-width: 768px) {
-      .chrome-fab { display: block; }
-      body.mobile-chrome-hidden .app-chrome {
-        display: none !important;
-      }
-      body.mobile-chrome-hidden main {
-        padding-top: 0.75rem;
-        padding-bottom: 4rem;
-      }
+    .chrome-shell-block .env-banner-toggle {
+      background: var(--accent-soft);
+      color: var(--text);
+    }
+    .chrome-shell-block .env-banner-toggle:hover {
+      background: #c7e8d0;
+    }
+    .chrome-shell-block .env-banner-chevron {
+      color: var(--accent);
+    }
+    .chrome-shell-block.collapsed .app-chrome {
+      display: none;
     }
     button, .btn {
       font: inherit;
@@ -473,9 +463,14 @@
   </style>
 </head>
 <body>
-  <div class="app-chrome" id="app-chrome">
+  <div class="env-banner-block chrome-shell-block" id="chrome-shell-block">
+    <button type="button" class="env-banner-toggle" id="btn-toggle-chrome" aria-expanded="true" aria-controls="app-chrome">
+      <span>Outils éditeur (barre, JSON, aide)</span>
+      <span class="env-banner-chevron" id="chrome-shell-chevron" aria-hidden="true">▼</span>
+    </button>
+    <div class="app-chrome" id="app-chrome">
   <header class="app-header">
-    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.4</small></h1>
+    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.5</small></h1>
     <div class="toolbar" id="main-toolbar">
       <button type="button" id="btn-new-blank">Fiche vierge</button>
       <button type="button" id="btn-load-lettuce">Exemple laitue</button>
@@ -507,8 +502,8 @@
       <div id="env-banner-content"></div>
     </div>
   </div>
+    </div>
   </div>
-  <button type="button" class="chrome-fab" id="btn-chrome-fab" aria-expanded="true" aria-controls="app-chrome">Masquer outils</button>
   <main>
     <div id="sections-root"></div>
     <section class="sheet-section" id="section-export" style="margin-top:1rem">
@@ -710,7 +705,7 @@
     const STORAGE_KEY = "aquafarm-plant-sheet-v1";
     const PATH_NOTE_KEY = "aquafarm-path-note";
     const BANNER_HIDDEN_KEY = "aquafarm-help-banner-hidden";
-    const CHROME_MOBILE_HIDDEN_KEY = "aquafarm-mobile-chrome-hidden";
+    const CHROME_SHELL_COLLAPSED_KEY = "aquafarm-chrome-shell-collapsed";
     const LETTUCE_SAMPLE_REL = "samples/lettuce-fiche.json";
     const DIR_DB_NAME = "aquafarm-fiche-v1";
     const DIR_STORE = "kv";
@@ -1976,32 +1971,32 @@
       });
     }
 
-    function applyMobileChromeVisibility(hidden) {
-      document.body.classList.toggle("mobile-chrome-hidden", hidden);
-      const fab = document.getElementById("btn-chrome-fab");
-      if (fab) {
-        fab.setAttribute("aria-expanded", hidden ? "false" : "true");
-        fab.textContent = hidden ? "Afficher outils" : "Masquer outils";
+    function isChromeShellCollapsed() {
+      return localStorage.getItem(CHROME_SHELL_COLLAPSED_KEY) === "1";
+    }
+
+    function applyChromeShellVisibility() {
+      const block = document.getElementById("chrome-shell-block");
+      const btn = document.getElementById("btn-toggle-chrome");
+      const collapsed = isChromeShellCollapsed();
+      if (block) block.classList.toggle("collapsed", collapsed);
+      if (btn) {
+        btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        btn.title = collapsed ? "Afficher la barre d’outils" : "Masquer la barre d’outils";
       }
     }
 
-    function loadMobileChromeVisibility() {
-      try {
-        applyMobileChromeVisibility(localStorage.getItem(CHROME_MOBILE_HIDDEN_KEY) === "1");
-      } catch {
-        applyMobileChromeVisibility(false);
-      }
+    function toggleChromeShell() {
+      const collapsed = !isChromeShellCollapsed();
+      localStorage.setItem(CHROME_SHELL_COLLAPSED_KEY, collapsed ? "1" : "0");
+      applyChromeShellVisibility();
     }
 
-    document.getElementById("btn-chrome-fab").addEventListener("click", () => {
-      const hidden = !document.body.classList.contains("mobile-chrome-hidden");
-      applyMobileChromeVisibility(hidden);
-      try {
-        localStorage.setItem(CHROME_MOBILE_HIDDEN_KEY, hidden ? "1" : "0");
-      } catch { /* ignore */ }
+    document.getElementById("btn-toggle-chrome").addEventListener("click", () => {
+      toggleChromeShell();
     });
 
-    loadMobileChromeVisibility();
+    applyChromeShellVisibility();
 
     async function applyLettuceSample() {
       let text = null;
