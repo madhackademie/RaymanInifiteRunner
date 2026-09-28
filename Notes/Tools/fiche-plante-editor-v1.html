@@ -46,18 +46,19 @@
     }
     .toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
     .chrome-shell-block {
-      border-bottom: 1px solid var(--border);
-      background: var(--accent-soft);
+      border-bottom: 1px solid #e9c46a;
+      background: #fff3cd;
     }
-    .chrome-shell-block .env-banner-toggle {
-      background: var(--accent-soft);
-      color: var(--text);
+    .chrome-shell-block > .env-banner-toggle {
+      background: #fff3cd;
+      color: #5c4a00;
     }
-    .chrome-shell-block .env-banner-toggle:hover {
-      background: #c7e8d0;
+    .chrome-shell-block > .env-banner-toggle:hover {
+      background: #ffe8a3;
     }
-    .chrome-shell-block .env-banner-chevron {
-      color: var(--accent);
+    .chrome-shell-block .collapse-action,
+    .chrome-shell-block .collapse-chevron {
+      color: #7f4f00;
     }
     .chrome-shell-block.collapsed .app-chrome {
       display: none;
@@ -437,13 +438,28 @@
       text-align: left;
     }
     .env-banner-toggle:hover { background: #ffe8a3; }
-    .env-banner-chevron {
-      font-size: 0.75rem;
-      line-height: 1;
-      transition: transform 0.2s ease;
+    .collapse-affordance {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+    .collapse-action {
+      font-size: 0.8rem;
+      font-weight: 700;
       color: #7f4f00;
     }
-    .env-banner-block.collapsed .env-banner-chevron {
+    .collapse-chevron {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 7px solid currentColor;
+      color: #7f4f00;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .env-banner-block.collapsed > .env-banner-toggle .collapse-chevron {
       transform: rotate(-90deg);
     }
     .env-banner-panel {
@@ -465,12 +481,15 @@
 <body>
   <div class="env-banner-block chrome-shell-block" id="chrome-shell-block">
     <button type="button" class="env-banner-toggle" id="btn-toggle-chrome" aria-expanded="true" aria-controls="app-chrome">
-      <span>Outils éditeur (barre, JSON, aide)</span>
-      <span class="env-banner-chevron" id="chrome-shell-chevron" aria-hidden="true">▼</span>
+      <span class="collapse-title">Outils éditeur (barre, JSON, aide)</span>
+      <span class="collapse-affordance">
+        <span class="collapse-action" id="chrome-collapse-action">Masquer</span>
+        <span class="collapse-chevron" aria-hidden="true"></span>
+      </span>
     </button>
     <div class="app-chrome" id="app-chrome">
   <header class="app-header">
-    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.5</small></h1>
+    <h1>Fiche plante — AquaFarm <small style="font-weight:normal;color:var(--muted)">v2.6</small></h1>
     <div class="toolbar" id="main-toolbar">
       <button type="button" id="btn-new-blank">Fiche vierge</button>
       <button type="button" id="btn-load-lettuce">Exemple laitue</button>
@@ -491,12 +510,15 @@
       <input type="checkbox" id="chk-direct-save" checked disabled />
       Enregistrer direct dans ce dossier
     </label>
-    <input type="text" class="path-note" id="path-note" placeholder="Note chemin (pour toi, ex. D:\AquaFarm\fiches)" title="Le navigateur ne peut pas ouvrir un chemin tapé — utilise « Définir dossier » une fois" />
+    <input type="text" class="path-note" id="path-note" placeholder="Notes/Tools/Plantes (ex. laitue → lettuce-fiche.json)" title="Rappel : dossier canonique Notes/Tools/Plantes sur le disque" />
   </div>
   <div class="env-banner-block" id="env-banner-block">
     <button type="button" class="env-banner-toggle" id="btn-toggle-banner" aria-expanded="true" aria-controls="env-banner-panel">
-      <span>Aide fichiers JSON</span>
-      <span class="env-banner-chevron" id="env-banner-chevron" aria-hidden="true">▼</span>
+      <span class="collapse-title">Aide fichiers JSON</span>
+      <span class="collapse-affordance">
+        <span class="collapse-action" id="help-collapse-action">Masquer</span>
+        <span class="collapse-chevron" aria-hidden="true"></span>
+      </span>
     </button>
     <div class="env-banner-panel" id="env-banner-panel">
       <div id="env-banner-content"></div>
@@ -706,7 +728,8 @@
     const PATH_NOTE_KEY = "aquafarm-path-note";
     const BANNER_HIDDEN_KEY = "aquafarm-help-banner-hidden";
     const CHROME_SHELL_COLLAPSED_KEY = "aquafarm-chrome-shell-collapsed";
-    const LETTUCE_SAMPLE_REL = "samples/lettuce-fiche.json";
+    const PLANTES_DIR_REL = "Plantes";
+    const LETTUCE_SAMPLE_REL = "Plantes/lettuce-fiche.json";
     const DIR_DB_NAME = "aquafarm-fiche-v1";
     const DIR_STORE = "kv";
     const DIR_KEY = "plantsDir";
@@ -956,7 +979,8 @@
       updateFolderUi();
       const note = localStorage.getItem(PATH_NOTE_KEY);
       const pathInput = document.getElementById("path-note");
-      if (pathInput && note) pathInput.value = note;
+      const defaultPathNote = `Notes/Tools/${PLANTES_DIR_REL}`;
+      if (pathInput) pathInput.value = note || defaultPathNote;
     }
 
     async function pickDefaultFolder() {
@@ -1980,10 +2004,12 @@
       const btn = document.getElementById("btn-toggle-chrome");
       const collapsed = isChromeShellCollapsed();
       if (block) block.classList.toggle("collapsed", collapsed);
+      const actionLabel = document.getElementById("chrome-collapse-action");
       if (btn) {
         btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
         btn.title = collapsed ? "Afficher la barre d’outils" : "Masquer la barre d’outils";
       }
+      if (actionLabel) actionLabel.textContent = collapsed ? "Afficher" : "Masquer";
     }
 
     function toggleChromeShell() {
@@ -2014,7 +2040,7 @@
         const { data, sectionOrder } = parseImportedFile(text);
         state = data;
         if (sectionOrder) pendingSectionOrder = sectionOrder;
-        setSaveStatus("Exemple laitue chargé (samples/lettuce-fiche.json).", true);
+        setSaveStatus(`Exemple laitue chargé (${LETTUCE_SAMPLE_REL}).`, true);
       } else {
         state = defaultLettuceData();
         setSaveStatus("Exemple laitue (données intégrées).", true);
@@ -2190,6 +2216,7 @@
       tips.push("Une fois « Dossier JSON… » fait, Ouvrir/Enregistrer démarre dans ce dossier (Chrome/Edge).");
       tips.push("Impossible de coller un chemin Windows : le navigateur impose de choisir le dossier une fois.");
       tips.push("Ouvre le .html avec Chrome/Edge (hors aperçu Cursor) si l’explorateur ne s’affiche pas.");
+      tips.push(`Exemple laitue et fiches : <code>Notes/Tools/${PLANTES_DIR_REL}/</code> (ex. <code>lettuce-fiche.json</code>).`);
       return "<strong>Fichiers JSON — aide</strong><ul>" +
         tips.map((t) => `<li>${t}</li>`).join("") + "</ul>";
     }
@@ -2207,10 +2234,12 @@
         content.innerHTML = buildEnvironmentBannerHtml();
       }
       if (block) block.classList.toggle("collapsed", hidden);
+      const actionLabel = document.getElementById("help-collapse-action");
       if (btn) {
         btn.setAttribute("aria-expanded", hidden ? "false" : "true");
         btn.title = hidden ? "Afficher l’aide fichiers" : "Masquer l’aide fichiers";
       }
+      if (actionLabel) actionLabel.textContent = hidden ? "Afficher" : "Masquer";
     }
 
     function toggleHelpBanner() {
