@@ -297,7 +297,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/ui-kit-refonte`**.  
+> Branche courante : **`feature/ui-kit-refonte`** (tip `e699057`, `Notes/Tools/` sur la branche). **Alignement IDE ↔ agent cloud :** même branche + `git pull` après push agent ; voir `Notes/WORKFLOW_cloud_agent_local.md`.  
 > **Caméra zoom :** nouvelle branche `feature/plant-harvest-zoom` (depuis `main`, créée 2026-09-21). Checkout **uniquement** en session dédiée, pas pendant le kit UI. `[P0-FARM-CAMERA-VIEW-001]` PC d’abord, Township ensuite.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
