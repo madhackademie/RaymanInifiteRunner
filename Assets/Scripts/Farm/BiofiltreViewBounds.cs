@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Rect 2D auteur : vue caméra par défaut du biofiltre + bornes de zoom/pan.
+/// Rect 2D auteur (orange) : vue / focus **initial** d'un biofiltre — pas les bornes de niveau en runtime.
 /// Indépendant de <see cref="GridManager.GetWorldRect"/> (AABB grille) et du bake deck UV.
 /// </summary>
 [DisallowMultipleComponent]

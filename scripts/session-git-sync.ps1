@@ -54,6 +54,22 @@ Write-Host "--- statut ---" -ForegroundColor Yellow
 git status -sb
 git --no-pager branch -vv
 
+$porcelain = git status --porcelain 2>$null
+if ($porcelain) {
+    Write-Host ""
+    Write-Host "WORKING TREE NON VIDE — pull risque d'echouer (merge abort)." -ForegroundColor Red
+    Write-Host "Avant pull : commit WIP sur ta branche OU stash, puis relance ce script."
+    Write-Host ""
+    Write-Host "  git stash push -u -m ""WIP avant pull session"""
+    Write-Host "  powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1"
+    Write-Host "  git stash pop"
+    Write-Host ""
+    Write-Host "Voir GIT_HELPER.md (Si git pull refuse a cause de modifs locales)."
+    Write-Host ""
+    Write-Host "Stop ici (pas de pull sur tree sale). Corrige puis relance." -ForegroundColor Red
+    exit 2
+}
+
 Write-Host ""
 Write-Host "--- pull ($branch) ---" -ForegroundColor Yellow
 git pull

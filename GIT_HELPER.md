@@ -344,13 +344,20 @@ Vérification
 git status
 ```
 Si git pull refuse à cause de modifs locales
+
+Message typique : `Your local changes to the following files would be overwritten by merge` (souvent `Notes/Todo_project.md`).
+
+Le script `scripts/session-git-sync.ps1` **s’arrête avant le pull** si le working tree n’est pas propre (exit 2).
+
 Option simple :
-```bash
-git stash
-git pull
+```powershell
+git stash push -u -m "WIP avant pull session"
+powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1
 git stash pop
 ```
 Puis tu résous les conflits si besoin, et tu continues (add/commit/push).
+
+**Gate Cursor :** après sync OK, dis **`pull ok`** — l’assistant met à jour `.cursor/session_pull_ok` avec la **date du jour** avant tout métier.
 
 ## --3-- Branche par feature + fusion dans `main` (recommandé)
 

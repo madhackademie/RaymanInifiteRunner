@@ -2,7 +2,9 @@
 
 **Ticket :** `[P0-FARM-CAMERA-VIEW-001]` · tactile `[P0-FARM-CAMERA-TOUCH-001]`  
 **Branche :** `feature/plant-harvest-zoom` (nouvelle, depuis `main`, 2026-09-21)  
-**Rect auteur :** `BiofiltreViewBounds` (vue défaut + zoom out max). La grille n’est pas recalculée.
+**Rect orange (`BiofiltreViewBounds`) :** cadrage de **départ** ou `Focus()` sur un biofiltre — **ne bloque plus** pan/zoom en jeu (2026-09-29).  
+**Bornes niveau :** `FarmLevelViewBounds` sur la scène (TODO auteur) — seul clamp pan quand assigné.  
+**Zoom :** `minOrthoSize` (in) · `maxOrthoSize` sur caméra (0 = pas de plafond arrière).
 
 **Scènes :** molette / pan / pinch = **uniquement** les scènes de contenu ferme (ex. `FirstLvl`). Pas hub (`HomeScene`), pas runner, pas caméra shell UI. `FarmCameraController` sur la Main Camera de la scène ferme seulement.
 
@@ -22,13 +24,15 @@ Câblage Bezy : `PROMPTS_Bezi_farm_camera_view.md` Ph.1–2.
 **Ticket pan décor :** `[P0-FARM-CAMERA-PAN-LONGPRESS-001]`  
 **Constat 2026-09-23 :** pan perçu **horizontal seulement** — piste #1 : `ScreenToWorldPoint` sans profondeur Z ortho ; piste #2 : clamp Y quand frustum ≥ hauteur rect.
 
-**Plan 2026-09-28 (3 passes Bezy) :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md`
+**Plan Bezy restant :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md`
 
 | Passe | ID | Contenu |
 |-------|-----|---------|
-| 1 | `[BZ-FARM-CAM-PAN-Y-001]` | Pan Y + fix projection + translation centroïde pinch |
-| 2 | `[BZ-FARM-CAM-ROTATE-001]` | Twist 2 doigts, rotation Z bornée |
-| 3 | `[BZ-FARM-CAM-RESET-001]` | Snapshot vue Start + bouton UI `FarmUICanvas` |
+| ~~Pan au pinch~~ | — | **Annulé** — pinch = zoom (+ rotation) ; pan = long press seulement |
+| 1 | `[BZ-FARM-CAM-ROTATE-001]` | Rotation Z au **pinch** (twist 2 doigts), bornes |
+| 2 | `[BZ-FARM-CAM-RESET-001]` | Snapshot vue Start + bouton UI `FarmUICanvas` |
+
+**Limites zoom (runtime) :** `minOrthoSize` (zoom in max) · zoom out max = tout le rect orange (`BiofiltreViewBounds` + `paddingFactor` ~1,08) via `FarmCameraViewMath`.
 
 ### Option retenue — Township : long press + drag (grille incluse)
 
@@ -57,7 +61,7 @@ Township / Hay Day : drag 1 doigt = pan partout hors mode plante. Gardé en réf
 |-------|-----------------|-----------------|
 | Tap court (déplacement &lt; slop ~12 px) | Clic cellule / IBC | — |
 | 1 doigt drag | Pan caméra | Ghost grille ; pose au relâche |
-| Pinch 2 doigts | Zoom (+ évent. pan centroïde) | Zoom |
+| Pinch 2 doigts | Zoom (+ rotation Z prévu) | Zoom |
 
 Règles Township :
 - Slop : en dessous = tap ; au-dessus = pan.

@@ -50,14 +50,9 @@ public static class FarmCameraInput
         return distance > 1f;
     }
 
-    public static bool TryGetPanScreenPosition(bool includePinchPan, out Vector2 screenPosition)
+    /// <summary>Pan PC : clic milieu uniquement (pas de pan au pinch — zoom et pan sont exclus).</summary>
+    public static bool TryGetPanScreenPosition(out Vector2 screenPosition)
     {
-        if (includePinchPan && TryGetPinch(out _, out Vector2 pinchMid))
-        {
-            screenPosition = pinchMid;
-            return true;
-        }
-
         Mouse mouse = Mouse.current;
         if (mouse != null && mouse.middleButton.isPressed)
         {
@@ -69,9 +64,16 @@ public static class FarmCameraInput
         return false;
     }
 
+    /// <summary>Vrai si un geste pinch (2 doigts) est en cours — pan 1 doigt interdit.</summary>
+    public static bool IsPinchGestureActive()
+    {
+        Touchscreen touchscreen = Touchscreen.current;
+        return touchscreen != null && CountActiveTouches(touchscreen) >= MinPinchTouches;
+    }
+
     /// <summary>
     /// Pan tactile Township : appui long (<see cref="LongPressSeconds"/>) puis drag 1 doigt.
-    /// Ignore le pinch pan (zoom uniquement au pinch sur tactile).
+    /// Pinch = zoom (+ rotation future) ; jamais pan simultané.
     /// </summary>
     public static bool TryGetLongPressPanScreenPosition(out Vector2 screenPosition)
     {
@@ -84,7 +86,7 @@ public static class FarmCameraInput
             return false;
         }
 
-        if (CountActiveTouches(touchscreen) != 1)
+        if (IsPinchGestureActive())
         {
             ResetLongPressPan();
             return false;
@@ -155,29 +157,38 @@ public static class FarmCameraInput
         screenPosition = primaryTouch.position.ReadValue();
 
         if (FarmPointerInput.IsOverUi(pointerId))
+        {
+            ResetLongPressPan();
             return false;
+        }
 
-        // Tap ultra-court (press + release même frame) : pas encore passé par LateUpdate caméra.
-        if (primaryTouch.press.wasPressedThisFrame)
+        bool sameFrameTap = primaryTouch.press.wasPressedThisFrame;
+        bool wasTracking = longPressTracking;
+        bool panFired = longPressFired;
+        bool consumed = IsPrimaryPointerConsumedByCamera;
+        float startTime = longPressStartTime;
+        Vector2 startScreen = longPressStartScreen;
+
+        // Toujours clôturer la session au relâchement (avant Tick / LateUpdate caméra).
+        ResetLongPressPan();
+
+        if (sameFrameTap)
             return true;
 
-        if (!longPressTracking)
+        if (!wasTracking || panFired || consumed)
             return false;
 
-        if (longPressFired || IsPrimaryPointerConsumedByCamera)
-            return false;
-
-        float elapsed = Time.unscaledTime - longPressStartTime;
+        float elapsed = Time.unscaledTime - startTime;
         if (elapsed >= LongPressSeconds)
             return false;
 
-        if (Vector2.Distance(screenPosition, longPressStartScreen) > TapSlopPixels)
+        if (Vector2.Distance(screenPosition, startScreen) > TapSlopPixels)
             return false;
 
         return true;
     }
 
-    /// <summary>Met à jour le suivi long press pendant le doigt posé (appeler en Update si pan caméra différé).</summary>
+    /// <summary>Met à jour le suivi long press tant que le doigt est posé (ne pas appeler au relâchement avant le tap).</summary>
     public static void TickLongPressPanTracking()
     {
         if (Touchscreen.current == null)
@@ -185,6 +196,10 @@ public static class FarmCameraInput
             ResetLongPressPan();
             return;
         }
+
+        TouchControl primaryTouch = Touchscreen.current.primaryTouch;
+        if (!primaryTouch.press.isPressed)
+            return;
 
         TryGetLongPressPanScreenPosition(out _);
     }

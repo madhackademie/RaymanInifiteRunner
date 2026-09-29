@@ -12,11 +12,8 @@
 
 | Task ID | Phase | Notes |
 |---------|-------|--------|
-| Task ID | Passe | Notes |
-|---------|-------|--------|
-| `[BZ-FARM-CAM-PAN-Y-001]` | **1** | Pan Y pinch — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
-| `[BZ-FARM-CAM-ROTATE-001]` | 2 | Après passe 1 |
-| `[BZ-FARM-CAM-RESET-001]` | 3a→3c | Reset vue + prefab bouton |
+| `[BZ-FARM-CAM-ROTATE-001]` | 1 | Rotation Z au pinch — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
+| `[BZ-FARM-CAM-RESET-001]` | 2 | Reset vue + prefab bouton |
 
 Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.
 

@@ -83,7 +83,10 @@ public static class FarmPointerInput
         if (eventSystem == null)
             return false;
 
-        return eventSystem.IsPointerOverGameObject(pointerId) ||
-               eventSystem.IsPointerOverGameObject();
+        // Tactile : uniquement le fingerId (sans id = faux positifs fréquents sur mobile).
+        if (pointerId >= 0)
+            return eventSystem.IsPointerOverGameObject(pointerId);
+
+        return eventSystem.IsPointerOverGameObject();
     }
 }

@@ -45,6 +45,15 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+### ★ P0 — Bornes caméra niveau ferme `[P0-FARM-LEVEL-CAM-BOUNDS-001]`
+
+**Contexte :** pan/zoom **libres** (rect orange biofiltre = vue initiale seulement). Clamp pan uniquement quand `FarmLevelViewBounds` est posé sur la scène (multi-biofiltres / taille du lvl).  
+**Script :** `Assets/Scripts/Farm/FarmLevelViewBounds.cs` (gizmo bleu) → lier sur `FarmCameraController.levelViewBounds` dans `FirstLvl` (ou prefab niveau).  
+**Refs :** `Notes/Farm/NOTE_camera_view_zoom.md`
+
+1. [ ] Définir le rect monde du lvl (auteur + Bezy scène si besoin).
+2. [ ] Playtest : pan X/Y libre entre biofiltres ; clamp seulement aux bords du lvl.
+
 ### ★★ LIRE EN PRIORITÉ — UI responsive shell + popups `[P0-UI-RESPONSIVE-VALID-001]`
 
 **Note obligatoire :** `Notes/Ui/NOTE_validation_ui_responsive_shell_popups.md`

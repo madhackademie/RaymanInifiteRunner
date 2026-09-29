@@ -33,8 +33,9 @@ public class FarmGridPointerInput : MonoBehaviour
 
         if (UsesDeferredTouchTap())
         {
-            FarmCameraInput.TickLongPressPanTracking();
+            // Tap au relâchement avant Tick : sinon TryGetLongPressPan reset l'état (doigt déjà levé).
             TryHandleTouchTapRelease();
+            FarmCameraInput.TickLongPressPanTracking();
             return;
         }
 

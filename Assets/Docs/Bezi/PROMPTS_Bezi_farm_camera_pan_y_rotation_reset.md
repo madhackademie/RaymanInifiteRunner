@@ -1,67 +1,20 @@
-# Farm caméra — 3 passes : pan Y · rotation · reset
+# Farm caméra — rotation au pinch · reset
 
 **Scène :** `FirstLvl` uniquement (`FarmCameraController` sur Main Camera).  
 **Référence :** `Notes/Farm/NOTE_camera_view_zoom.md`  
-**Une phase Bezy par appel.** Fin : `Save. List what changed. STOP.` — pas Simulate.
+**Règle produit :** pinch = **zoom** (+ **rotation** twist) ; **pan** = long press 1 doigt — jamais les deux en même temps.  
+**Pan au pinch :** annulé (pas de translation du centroïde pendant le pinch).
 
 | Passe | Task ID | Agent |
 |-------|---------|--------|
-| 1 — Pan Y (pinch + zoom) | `[BZ-FARM-CAM-PAN-Y-001]` | Bezy C# |
-| 2 — Rotation Z | `[BZ-FARM-CAM-ROTATE-001]` | Bezy C# |
-| 3 — Bouton reset | `[BZ-FARM-CAM-RESET-001]` | Bezy prefab 3 phases + C# view |
+| 1 — Rotation Z au pinch | `[BZ-FARM-CAM-ROTATE-001]` | Bezy C# |
+| 2 — Bouton reset | `[BZ-FARM-CAM-RESET-001]` | Bezy prefab + C# view |
 
-**Ordre strict :** 1 → 2 → 3 (rotation et reset s’appuient sur le contrôleur corrigé).
-
----
-
-## Passe 1 — `[BZ-FARM-CAM-PAN-Y-001]` Pan vertical + pinch
-
-**Diagnostic attendu :** le pan math clamp déjà X **et** Y (`FarmCameraViewMath`). Si seul X bouge au pinch/zoom, corriger surtout la projection écran→monde (Z ortho) et le **translation du centroïde** pendant le pinch.
-
-```
-[BZ-FARM-CAM-PAN-Y-001] ONLY — Farm camera pan Y + ScreenToWorld fix. STOP.
-
-READ ONLY (no full project scan):
-@Assets/Scripts/Farm/FarmCameraController.cs
-@Assets/Scripts/Farm/FarmCameraInput.cs
-@Assets/Scripts/Farm/FarmCameraViewMath.cs
-@Notes/Bezi/RULES_bezy_code.md
-
-Do NOT edit scenes/prefabs. Do NOT touch GridManager, BiofiltreManager, NavigationHUD, popups.
-
-GOAL: During pinch-zoom AND pan, camera moves on BOTH X and Y (world), then ApplyClamp.
-
-1) FarmCameraController — ScreenToWorld:
-   - Replace naive ScreenToWorldPoint(Vector2) with correct depth for ortho 2D:
-     use gameplay plane z=0: e.g. float depth = -worldCamera.transform.position.z;
-     Vector3 sp = new Vector3(screenPosition.x, screenPosition.y, depth);
-     return worldCamera.ScreenToWorldPoint(sp) as Vector2 (x,y only).
-
-2) HandlePinchZoom — centroid pan:
-   - Cache lastPinchMidpoint (Vector2) alongside lastPinchDistance.
-   - Each frame with valid pinch: AFTER zoom step, if pinchActive and last midpoint valid,
-     world delta = ScreenToWorld(lastMid) - ScreenToWorld(currentMid);
-     add delta to camera position (same as HandlePan).
-   - Reset lastPinchMidpoint when pinch ends.
-
-3) Do NOT remove HandlePan or ApplyClamp. Keep farm-scene-only behavior.
-
-Save. List methods changed. STOP.
-```
-
-**Lancement :**
-
-```
-@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md
-@Notes/Bezi/RULES_bezy_code.md
-[BZ-FARM-CAM-PAN-Y-001] ONLY — Farm camera pan Y + ScreenToWorld fix. STOP.
-```
-
-**Playtest auteur (hors Bezy) :** pinch zoom + déplacer les 2 doigts → image bouge en X **et** Y ; zoom out max = centre peut rester locké (normal si frustum ≥ rect).
+**Limites zoom (déjà en place) :** `minOrthoSize` (zoom in) · max = fit `BiofiltreViewBounds` × `paddingFactor` (zoom out).
 
 ---
 
-## Passe 2 — `[BZ-FARM-CAM-ROTATE-001]` Rotation Z
+## Passe 1 — `[BZ-FARM-CAM-ROTATE-001]` Rotation Z au pinch
 
 ```
 [BZ-FARM-CAM-ROTATE-001] ONLY — Two-finger twist rotation (farm cam). STOP.
@@ -73,7 +26,7 @@ READ ONLY:
 
 Do NOT edit scenes/prefabs yet. No new files unless one small helper in FarmCameraInput is required.
 
-GOAL: Optional Z rotation on Main Camera (ortho farm), gesture twist 2 doigts when enableTouchCamera.
+GOAL: Z rotation on Main Camera during 2-finger pinch (twist), same gesture as zoom — when enableTouchCamera and IsPinchGestureActive. Pan long-press unchanged.
 
 1) FarmCameraInput — add TryGetPinchTwistDelta(out float deltaDegrees):
    - Reuse same 2 in-progress touches as TryGetPinch (respect IsOverUi on touchIds).
@@ -103,7 +56,7 @@ Save. List new APIs. STOP.
 
 ---
 
-## Passe 3 — `[BZ-FARM-CAM-RESET-001]` Bouton reset vue
+## Passe 2 — `[BZ-FARM-CAM-RESET-001]` Bouton reset vue
 
 **Cible UI :** canvas `FarmUICanvas` dans `Assets/Scenes/FirstLvl.unity` (coin haut-droit, sous safe area, layer UI = 5).
 
