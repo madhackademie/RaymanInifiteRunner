@@ -25,8 +25,7 @@
 
 | Statut | Task ID | Phase | Notes |
 |--------|---------|-------|-------|
-| [ ] | `[BZ-FARM-CAM-ROTATE-001]` | 1 | Rotation Z au pinch — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` passe 2 |
-| [ ] | `[BZ-FARM-CAM-RESET-001]` | A→C | snapshot + prefab + FarmUICanvas |
+| [ ] | `[BZ-FARM-CAM-RESET-001]` | A→C | Reset vue (optionnel) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
 
 *(Voir Terminé + backlog ci-dessous.)*
 

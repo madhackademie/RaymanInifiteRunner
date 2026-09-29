@@ -12,8 +12,7 @@
 
 | Task ID | Phase | Notes |
 |---------|-------|--------|
-| `[BZ-FARM-CAM-ROTATE-001]` | 1 | Rotation Z au pinch — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
-| `[BZ-FARM-CAM-RESET-001]` | 2 | Reset vue + prefab bouton |
+| `[BZ-FARM-CAM-RESET-001]` | A→C | Reset vue (optionnel) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
 
 Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.
 

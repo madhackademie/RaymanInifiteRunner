@@ -73,7 +73,7 @@ public static class FarmCameraInput
 
     /// <summary>
     /// Pan tactile Township : appui long (<see cref="LongPressSeconds"/>) puis drag 1 doigt.
-    /// Pinch = zoom (+ rotation future) ; jamais pan simultané.
+    /// Pinch = zoom uniquement ; jamais pan simultané.
     /// </summary>
     public static bool TryGetLongPressPanScreenPosition(out Vector2 screenPosition)
     {

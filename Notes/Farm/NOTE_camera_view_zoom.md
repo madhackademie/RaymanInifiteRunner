@@ -1,6 +1,6 @@
 # Caméra farm — vue rect + zoom hybride
 
-**Ticket :** `[P0-FARM-CAMERA-VIEW-001]` · tactile `[P0-FARM-CAMERA-TOUCH-001]`  
+**Ticket :** `[P0-FARM-CAMERA-VIEW-001]` · tactile `[P0-FARM-CAMERA-TOUCH-001]` — **playtest pan + zoom OK auteur 2026-09-29** (APK).  
 **Branche :** `feature/plant-harvest-zoom` (nouvelle, depuis `main`, 2026-09-21)  
 **Rect orange (`BiofiltreViewBounds`) :** cadrage de **départ** ou `Focus()` sur un biofiltre — **ne bloque plus** pan/zoom en jeu (2026-09-29).  
 **Bornes niveau :** `FarmLevelViewBounds` sur la scène (TODO auteur) — seul clamp pan quand assigné.  
@@ -28,9 +28,9 @@ Câblage Bezy : `PROMPTS_Bezi_farm_camera_view.md` Ph.1–2.
 
 | Passe | ID | Contenu |
 |-------|-----|---------|
-| ~~Pan au pinch~~ | — | **Annulé** — pinch = zoom (+ rotation) ; pan = long press seulement |
-| 1 | `[BZ-FARM-CAM-ROTATE-001]` | Rotation Z au **pinch** (twist 2 doigts), bornes |
-| 2 | `[BZ-FARM-CAM-RESET-001]` | Snapshot vue Start + bouton UI `FarmUICanvas` |
+| ~~Pan au pinch~~ | — | **Annulé** — pinch = zoom ; pan = long press |
+| ~~Rotation twist~~ | `[BZ-FARM-CAM-ROTATE-001]` | **Annulé 2026-09-29** — pan + zoom suffisent |
+| 1 | `[BZ-FARM-CAM-RESET-001]` | Snapshot vue Start + bouton UI `FarmUICanvas` (optionnel) |
 
 **Limites zoom (runtime) :** `minOrthoSize` (zoom in max) · zoom out max = tout le rect orange (`BiofiltreViewBounds` + `paddingFactor` ~1,08) via `FarmCameraViewMath`.
 
@@ -61,7 +61,7 @@ Township / Hay Day : drag 1 doigt = pan partout hors mode plante. Gardé en réf
 |-------|-----------------|-----------------|
 | Tap court (déplacement &lt; slop ~12 px) | Clic cellule / IBC | — |
 | 1 doigt drag | Pan caméra | Ghost grille ; pose au relâche |
-| Pinch 2 doigts | Zoom (+ rotation Z prévu) | Zoom |
+| Pinch 2 doigts | Zoom | Zoom |
 
 Règles Township :
 - Slop : en dessous = tap ; au-dessus = pan.
