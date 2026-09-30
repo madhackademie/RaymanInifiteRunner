@@ -1,6 +1,6 @@
 # Bezy — prompts encore à faire (index unique)
 
-**MAJ :** 2026-09-23 — les anciens `Notes/Ui/PROMPTS_Bezi_*.md` sont supprimés (doublons / livrés).  
+**MAJ :** 2026-09-30 — caméra farm touch/pan **clos APK 2026-09-29** ; seul reset optionnel en file.  
 **Texte complet des prompts :** `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` (fichier `@` dans Unity).  
 **Statut opérationnel :** cocher dans `Notes/Bezi/BEZY_QUEUE.md` après chaque phase.
 
@@ -28,7 +28,7 @@ Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.
 
 ## Farm / caméra + VFX
 
-**`[BZ-FARM-CAMERA-VIEW-001]`** — clos 2026-09-23. **`[BZ-FARM-HARVEST-READY-VFX-002]`** — clos 2026-09-23 (sparkles récolte, Ph.5–5f Bezy).
+**`[BZ-FARM-CAMERA-VIEW-001]`** — clos 2026-09-23. **`[BZ-FARM-CAM-TOWN-PAN-001]`** / touch zoom — **clos APK 2026-09-29** (voir `NOTE_camera_view_zoom.md`). **`[BZ-FARM-HARVEST-READY-VFX-002]`** — clos 2026-09-23.
 
 ---
 

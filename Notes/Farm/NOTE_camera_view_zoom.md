@@ -74,3 +74,37 @@ PC inchangé : molette + **clic milieu** pan ; LMB = clic grille, pas drag-pan.
 
 - Letterbox / scale du biofiltre pour coller à l’écran (`[BZ-FARM-MOBILE-SCALE-001]` one-shot ortho).
 - Recalc bake / `cellSize`.
+
+---
+
+## Livré validé APK (2026-09-29) — ne pas refaire Bezy sauf bug
+
+| Sujet | Fichiers | Règle |
+|-------|----------|--------|
+| Pan long press + pinch zoom | `FarmCameraInput.cs`, `FarmCameraController.cs` | Pinch = zoom ; pan = long press ~450 ms |
+| Clic grille tactile | `FarmGridPointerInput.cs` | Tap au relâchement ; ordre avant tracking long press |
+| UI / doigt | `FarmPointerInput.cs` | `IsOverUi` avec `fingerId` |
+| Consommation pointeur | `FarmCameraInput.IsPrimaryPointerConsumedByCamera` | Grille ignore si caméra a pris le geste |
+| Rect orange | `BiofiltreViewBounds.cs` | Vue initiale / `Focus()` — plus de prison runtime |
+| Bornes niveau | `FarmLevelViewBounds.cs` | Clamp pan si assigné sur la caméra — **TODO scène** `[P0-FARM-LEVEL-CAM-BOUNDS-001]` |
+| Rotation pinch | — | **Annulé** — ne pas réintroduire |
+
+---
+
+## Nouveau thread Bezy (farm clic + caméra, FirstLvl)
+
+Thread plein pan/zoom/clic = **clos**. Ne pas rescanner tout le projet.
+
+**Message 1 (read-only)** — `@` les 7 scripts farm cam + `NOTE_camera_view_zoom.md` + `RULES_bezy_code.md` ; confirmer lecture + APIs publiques ; `ResetToDefault` absent = normal. STOP.
+
+**Message 2 — reset (optionnel) :**
+
+```
+@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md
+@Notes/Bezi/RULES_bezy_code.md
+[BZ-FARM-CAM-RESET-001] Phase A ONLY — Capture default view + ResetToDefault(). STOP.
+```
+
+**Message 2 — bug ciblé :** une phrase de symptôme + `@FarmCameraInput.cs` + `@FarmGridPointerInput.cs` + `RULES_bezy_code.md` ; change ONLY fix ; pas rotation ; pas `SceneNavigator`. STOP.
+
+**Cursor (pas Bezy) :** bornes niveau — `Notes/Todo_project.md` `[P0-FARM-LEVEL-CAM-BOUNDS-001]`.

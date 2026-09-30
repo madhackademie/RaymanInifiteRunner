@@ -70,7 +70,8 @@ Puis `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` (coller le bloc Ph
 |---------|--------|-------|------|----------------|
 | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` | pilotes | 2026-09-23 | Playtest OK — 5 onglets + HUD nav |
 | `[BZ-FARM-HARVEST-READY-VFX-002]` | `HarvestReadyFx.prefab` | 5–5f | 2026-09-23 | Playtest OK — sparkle récolte (Bezy tune) |
-| `[BZ-FARM-CAMERA-TOUCH-ZOOM-001]` | `FirstLvl` + C# farm cam | 1→2 | 2026-09-23 | Ph.1 C# Bezy ; Ph.2 no-op (Inspector déjà conforme) — playtest pinch APK à faire |
+| `[BZ-FARM-CAM-TOWN-PAN-001]` | C# farm cam | — | 2026-09-29 | Long press pan + tap relâche — playtest APK OK |
+| `[BZ-FARM-CAMERA-TOUCH-ZOOM-001]` | `FirstLvl` + C# farm cam | 1→2 | 2026-09-29 | Pinch zoom — inclus playtest APK 2026-09-29 |
 | `[BZ-FARM-CAMERA-VIEW-001]` | `Biofiltre.prefab` + `FirstLvl` | 1→2 | 2026-09-23 | Bezy + playtest OK — bounds + FarmCameraController |
 | `[BZ-INV-WALLET-NAV-BAND-002]` | `InventoryScreen.prefab` | 2 | 2026-09-23 | Playtest OK — chip devant nav, Y -40, sorting 60 |
 | `[BZ-SHOP-FILIGRANE-001]` | `ShopScreen.prefab` | 1→2 | 2026-09-23 | Playtest OK — filigrane + sans voile SlotsGrid |

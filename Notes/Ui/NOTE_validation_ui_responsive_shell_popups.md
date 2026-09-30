@@ -12,7 +12,7 @@
 
 | Zone | Verdict session |
 |------|-----------------|
-| **Farm / harvest / zoom caméra** | **Pas prioritaire** pour la validation UI responsive — playtest PC caméra OK (`[P0-FARM-CAMERA-VIEW-001]`). Pan mobile / vertical : voir `[P0-FARM-CAMERA-PAN-LONGPRESS-001]` (hors lot shell UI). |
+| **Farm / harvest / zoom caméra** | **Hors scope** validation UI responsive — PC + **APK OK 2026-09-29** (`[P0-FARM-CAMERA-VIEW-001]` / touch clos). Suite farm cam = bornes lvl `[P0-FARM-LEVEL-CAM-BOUNDS-001]` ou reset optionnel Bezy. |
 | **Shell + overlays + popups** | **À valider** : `NavigationHUD`, écrans `UIManager`, popups (`ScreenPopupHost` + prefabs). |
 
 Théorie ratios / constantes 140·128·260 : `Notes/Ui/NOTE_ui_responsive_ratios.md` (ne pas recoder avant validation).

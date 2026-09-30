@@ -1,5 +1,31 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-09-30 — Fin session : caméra farm clos (APK) + protocole thread Bezy
+
+### Contexte
+- Branche courante : **`feature/ui-kit-refonte`** (pull ok en ouverture).
+- **Aucun code Unity** modifié cette session — consolidation doc / suivi après playtest **APK OK 2026-09-29** (Township pan + zoom + clic grille).
+
+### Livré validé (ne pas refaire Bezy sauf bug précis)
+- Pan long press ~450 ms + drag X/Y ; pinch = zoom seulement ; pas pan+pinch ensemble.
+- Tap grille au relâchement ; ordre avant tracking long press (`FarmGridPointerInput`).
+- UI doigt : `IsOverUi(fingerId)` ; grille ignore si `FarmCameraInput.IsPrimaryPointerConsumedByCamera`.
+- `BiofiltreViewBounds` = vue initiale / `Focus()` — plus de prison runtime pan/zoom.
+- Clamp pan niveau = `FarmLevelViewBounds` si assigné sur `FarmCameraController` (**TODO scène auteur**).
+- Rotation pinch **`[BZ-FARM-CAM-ROTATE-001]`** annulée — ne pas réintroduire.
+- Référence : `Notes/Farm/NOTE_camera_view_zoom.md` § Livré + § Nouveau thread Bezy.
+
+### Prochaine session (priorité)
+1. **`[P0-FARM-LEVEL-CAM-BOUNDS-001]`** — placer `FarmLevelViewBounds` dans `FirstLvl`, lier `levelViewBounds` (Cursor / scène auteur, hors Bezy C# view).
+2. **Optionnel Bezy :** `[BZ-FARM-CAM-RESET-001]` Phase A→C — thread neuf : message 1 contexte read-only puis Phase A (`ResetToDefault`) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md`.
+3. **`[P0-UI-RESPONSIVE-VALID-001]`** — shell + popups (farm cam hors scope validation UI).
+
+### Git (auteur)
+- Docs modifiés par l’assistant : `PROJECT_LOG.md`, `Notes/Todo_project.md`, `Notes/Farm/NOTE_camera_view_zoom.md`, `Notes/Bezi/BEZY_QUEUE.md`, `Notes/Bezi/ARCHIVE_prompts_bezi_index.md`, `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`, `Notes/Ui/NOTE_validation_ui_responsive_shell_popups.md`.
+- Commit / push : **auteur** après pull.
+
+---
+
 ## 2026-09-28 — Fiche plante éditeur (progression, RNG, market GDD) + backlog meta master
 
 ### Contexte

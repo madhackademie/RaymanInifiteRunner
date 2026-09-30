@@ -45,6 +45,8 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+> **2026-09-30 :** caméra farm Township + PC **validée APK 2026-09-29** — ne pas rouvrir pan/zoom/clic en Bezy sauf bug ciblé. Thread Bezy neuf = contexte read-only puis reset Phase A **ou** fix une phrase — `Notes/Farm/NOTE_camera_view_zoom.md` § Nouveau thread Bezy.
+
 ### ★ P0 — Bornes caméra niveau ferme `[P0-FARM-LEVEL-CAM-BOUNDS-001]`
 
 **Contexte :** pan/zoom **libres** (rect orange biofiltre = vue initiale seulement). Clamp pan uniquement quand `FarmLevelViewBounds` est posé sur la scène (multi-biofiltres / taille du lvl).  
@@ -78,32 +80,22 @@ Théorie : `Notes/Ui/NOTE_ui_responsive_ratios.md`.
 3. [x] Bezy Phase 3 — outline `TitleLabel`. OK YAML 2026-09-21 (`TitleLabel_Voisinage_Outline.mat`).
 4. [ ] Playtest auteur (hors prompt) : Vente → Voisinage = scène ; Bandoulière/Vélo inchangés ; cooldown grise encore l’art.
 
-### ★ P0 — Caméra farm zoom `[P0-FARM-CAMERA-VIEW-001]`
+### ~~P0 — Caméra farm zoom~~ `[P0-FARM-CAMERA-VIEW-001]` — **clos** 2026-09-29 (PC + APK Township)
 
-**Branche :** `feature/plant-harvest-zoom` — **nouvelle**, créée depuis `main` (`e841fc2`). **Pas** `feature/ui-kit-refonte`. Checkout plus tard, quand on attaque ce chantier.  
-**Hybride PC + mobile.** Slice 1 = **PC** (fine tuning). Slice 2 = **tactile Township** après PC OK.  
-**Refs :** `Notes/Farm/NOTE_camera_view_zoom.md` · `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md` · `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_view.md`  
-**C# Cursor déjà là :** `BiofiltreViewBounds` + `FarmCameraController` (`enableTouchCamera = false`).
+**Refs :** `Notes/Farm/NOTE_camera_view_zoom.md` · scripts `FarmCameraController`, `FarmCameraInput`, `FarmGridPointerInput`, `FarmPointerInput`.
 
-1. [x] Branche `feature/plant-harvest-zoom` créée depuis `main` (2026-09-21).
-2. [x] Bezy `[BZ-FARM-CAMERA-VIEW-001]` Ph.1–2 — 2026-09-23.
-3. [x] Playtest **PC** OK 2026-09-23 (molette, pan milieu, bounds, clic gauche).
-4. [ ] Slice 2 `[P0-FARM-CAMERA-TOUCH-001]` — tactile Township (`NOTE_camera_view_zoom.md`), plus tard.
+1. [x] Bezy `[BZ-FARM-CAMERA-VIEW-001]` Ph.1–2 — 2026-09-23.
+2. [x] Playtest **PC** OK 2026-09-23.
+3. [x] Slice 2 `[P0-FARM-CAMERA-TOUCH-001]` — playtest **APK OK 2026-09-29** (long press pan, pinch zoom, tap grille relâchement).
+4. [x] `[BZ-FARM-CAM-TOWN-PAN-001]` livré — voir archive Bezy.
 
-### ★ CT — Pan caméra farm (haut/bas + long press décor) `[P0-FARM-CAMERA-PAN-LONGPRESS-001]`
+**Suite optionnelle (pas P0) :** `[BZ-FARM-CAM-RESET-001]` reset vue — Bezy Phase A→C.
 
-**Constat auteur (2026-09-23) :** en jeu, la caméra semble se déplacer **gauche/droite** mais **pas haut/bas** (à confirmer : clamp `BiofiltreViewBounds` au zoom actuel vs bug pan).
+### ~~CT — Pan caméra farm long press~~ `[P0-FARM-CAMERA-PAN-LONGPRESS-001]` — **clos** 2026-09-29 (même livrable que touch Township)
 
-**Décision geste mobile :** préférer **pas** le pan à deux doigts seul — **appui long** sur une zone **décor non interactive** (pas de clic plantation / pas d’UI), puis **drag** pour pan **X + Y**. Pinch 2 doigts = **zoom** optionnel (slice 2), pas le geste principal pour se déplacer.
-
-**Refs :** `Notes/Farm/NOTE_camera_view_zoom.md` § Slice 2 bis · `FarmCameraController` · `FarmCameraInput` · `FarmPointerInput` (ne pas confondre avec pose plante).
-
-**Branche :** `feature/plant-harvest-zoom` (session dédiée, après validation spec).
-
-1. [ ] Playtest : noter zoom + ratio écran quand le pan vertical est bloqué (zoom out = souvent lock Y sur le rect).
-2. [ ] Spec : collider / layer « décor pan » (sans `IPointer` farm, raycast plante ignoré) + durée long press (~400–500 ms) + slop.
-3. [ ] Cursor : `FarmCameraInput` — pan 1 doigt **après** long press sur hit décor ; conserver clic milieu PC.
-4. [ ] Playtest mobile : pan 4 directions + plantation inchangée (tap court grille).
+1. [x] Pan X+Y long press ~450 ms + pinch zoom only — APK OK.
+2. [x] Clic grille au relâchement ; consommation pointeur caméra.
+3. [ ] **Bug only :** rouvrir Bezy avec symptôme une phrase — pas de refonte gestes.
 
 ### Backlog — Mockup popup bois `[BZ-UIKIT-POPUP-MOCK-001]` — **rework entier**
 
@@ -307,10 +299,10 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche courante : **`feature/ui-kit-refonte`** (tip `e699057`, `Notes/Tools/` sur la branche). **Alignement IDE ↔ agent cloud :** même branche + `git pull` après push agent ; voir `Notes/WORKFLOW_cloud_agent_local.md`.  
-> **Caméra zoom :** nouvelle branche `feature/plant-harvest-zoom` (depuis `main`, créée 2026-09-21). Checkout **uniquement** en session dédiée, pas pendant le kit UI. `[P0-FARM-CAMERA-VIEW-001]` PC d’abord, Township ensuite.  
+> **Caméra farm :** touch/pan/zoom **clos APK 2026-09-29** sur branche courante (`feature/ui-kit-refonte`). Suite : `[P0-FARM-LEVEL-CAM-BOUNDS-001]` en scène ; reset optionnel `[BZ-FARM-CAM-RESET-001]`.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
-> **Priorité immédiate (prochaine session) :** playtest wallet/nav. Puis scan UI responsive (nouveau thread). Croix ExitOnly playtestée 2026-09-15.  
+> **Priorité immédiate (prochaine session) :** `[P0-FARM-LEVEL-CAM-BOUNDS-001]` (scène FirstLvl). Puis `[P0-UI-RESPONSIVE-VALID-001]`. Bezy optionnel : `[BZ-FARM-CAM-RESET-001]` Phase A. Crédits Bezy : reset **30 septembre** (aujourd’hui).  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows (`NOTE_hud_biofiltre_prefab_en_dur.md`).  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
@@ -381,7 +373,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 - [x] **`[P0-FARM-PLANT-SELECT-GLOW-001]`** — Bezy `LaitueObj` Ph.1–3 + Cursor `PlantSelectionHighlight` + shader `Farm/SpriteSelectionSilhouette` ; silhouette blanche fine (défaut scale **1,012**, offset **0,004**). Tuning fin sur prefab si besoin.
 
 **Ordre prochaine session farm :**
-0. [ ] **[P0-FARM-CAMERA-VIEW-001]** Branche `feature/plant-harvest-zoom` — rect vue + zoom **PC** (Bezy câblage, puis playtest molette). Tactile Township = slice 2.
+0. [x] **[P0-FARM-CAMERA-VIEW-001]** PC + Township — clos 2026-09-29 (voir § Prochaine session).
 1. [ ] **[CT-FARM-BAKE-RECT-001]** Bake B sur biofiltre **rect plus grand** (dupliquer layout SO + variante prefab).
 2. [ ] **[BZ-FARM-HARVEST-READY-VFX-002]** Sparkle récolte Mature + Seedling plus lisible (Bezy Ph.5 — `PROMPTS_Bezi_harvest_ready_vfx.md`).
 3. **Backlog :** `[BL-FARM-DECK-CIRCLE-MASK-001]` — `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md`.
