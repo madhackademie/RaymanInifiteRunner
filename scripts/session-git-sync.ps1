@@ -57,7 +57,7 @@ git --no-pager branch -vv
 $porcelain = git status --porcelain 2>$null
 if ($porcelain) {
     Write-Host ""
-    Write-Host "WORKING TREE NON VIDE — pull risque d'echouer (merge abort)." -ForegroundColor Red
+    Write-Host 'WORKING TREE NON VIDE - pull risque d''echouer (merge abort).' -ForegroundColor Red
     Write-Host "Avant pull : commit WIP sur ta branche OU stash, puis relance ce script."
     Write-Host ""
     Write-Host "  git stash push -u -m ""WIP avant pull session"""
