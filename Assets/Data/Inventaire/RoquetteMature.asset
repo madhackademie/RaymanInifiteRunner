@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 213938cacdf78bb4198c1ff334e389c8, type: 3}
+  m_Name: RoquetteMature
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
+  itemId: roquette_mature
+  displayName: Roquette
+  description: 
+  inventoryBehavior: 0
+  itemCategory: 1
+  gameScope: 1
+  icon: {fileID: 7919455497477591970, guid: 3b70397d180943c49ac6ee186f122c60, type: 3}
+  maxStack: 99

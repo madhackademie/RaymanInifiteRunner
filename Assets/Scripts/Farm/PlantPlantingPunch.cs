@@ -46,6 +46,9 @@ public class PlantPlantingPunch : MonoBehaviour
         if (scaleTarget == null)
             scaleTarget = transform;
 
+        // Repos = scale courant (PlantGrow peut avoir appliqué un multiplicateur par stade).
+        restLocalScale = scaleTarget.localScale;
+
         if (punchRoutine != null)
             StopCoroutine(punchRoutine);
 

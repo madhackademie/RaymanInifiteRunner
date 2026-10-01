@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 2444895485939233202}
   - component: {fileID: 4861480717907546344}
   m_Layer: 0
-  m_Name: LaitueObj
+  m_Name: RoquetteObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -351,12 +351,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 3438625136742301237, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
+  m_Sprite: {fileID: 4737967149177498246, guid: 3b70397d180943c49ac6ee186f122c60, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.668065, y: 5.7575755}
+  m_Size: {x: 2.26, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f820a01d39b0d0b4d963a2d1503e320c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantGrow
-  plantDefinition: {fileID: 11400000, guid: 8bc33cbc19362c94b8bc576596d09598, type: 2}
+  plantDefinition: {fileID: 11400000, guid: 7a4e2f1c9b8d6543e0f1a2b3c4d5e6f7, type: 2}
   initialStage: 0
   insectPath: {fileID: 1921937737001328545}
   harvestReadyFx: {fileID: 7829341056284713901}
@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc2dd619df53514499e22041dee10e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlantDefinitionHolder
-  definition: {fileID: 11400000, guid: 8bc33cbc19362c94b8bc576596d09598, type: 2}
+  definition: {fileID: 11400000, guid: 7a4e2f1c9b8d6543e0f1a2b3c4d5e6f7, type: 2}
 --- !u!114 &615750847586506196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,10 +438,6 @@ MonoBehaviour:
   glowRenderers:
   - {fileID: 7771457945329537051}
   - {fileID: 1572985388736304717}
-  silhouetteColor: {r: 1, g: 1, b: 1, a: 1}
-  silhouetteLocalScale: 1.012
-  silhouetteLocalOffset: {x: 0.004, y: 0.004}
-  sortingOrderBehindPlant: 2
 --- !u!1 &5558286893705684889
 GameObject:
   m_ObjectHideFlags: 0

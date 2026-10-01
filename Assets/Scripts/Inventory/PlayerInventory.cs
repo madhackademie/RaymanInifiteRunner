@@ -14,7 +14,7 @@ public class PlayerInventory : MonoBehaviour
     public static PlayerInventory Instance { get; private set; }
 
     /// <summary>Id d'item utilisé en secours si aucun item de graine de départ n'est assigné dans l'Inspector.</summary>
-    private const string DefaultStartingSeedItemId = "laitue_seed";
+    private const string DefaultStartingSeedItemId = FarmItemIds.LaitueSeed;
 
     [SerializeField] private int slotCount = 20;
 

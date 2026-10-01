@@ -59,9 +59,11 @@ public class PlantGrow : MonoBehaviour
     private GrowthStage currentStage;
     private float stageTimer;
     private float currentStageDuration;
+    private Vector3 prefabLocalScale;
 
     private void Awake()
     {
+        prefabLocalScale = transform.localScale;
         spriteRenderer = GetComponent<SpriteRenderer>();
         CacheInsectPath();
         CacheHarvestReadyFx();
@@ -120,6 +122,7 @@ public class PlantGrow : MonoBehaviour
 
         currentStage = stage;
         spriteRenderer.sprite = GetSpriteForStage(stage);
+        ApplyStageDisplayScale();
 
         stageTimer = 0f;
         currentStageDuration = plantDefinition.GetDuration(stage);
@@ -316,6 +319,15 @@ public class PlantGrow : MonoBehaviour
         }
 
         SetStage(order[nextIndex]);
+    }
+
+    private void ApplyStageDisplayScale()
+    {
+        if (plantDefinition == null)
+            return;
+
+        float multiplier = plantDefinition.GetStageDisplayScale(currentStage);
+        transform.localScale = prefabLocalScale * multiplier;
     }
 
     private Sprite GetSpriteForStage(GrowthStage stage) => plantDefinition.GetSprite(stage);

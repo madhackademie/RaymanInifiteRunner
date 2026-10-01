@@ -15,5 +15,7 @@ MonoBehaviour:
   items:
   - {fileID: 11400000, guid: 6392697ea1588bb47a5a54346f3cc1be, type: 2}
   - {fileID: 11400000, guid: eee016e7728a0374ca7e6a2da06050a9, type: 2}
+  - {fileID: 11400000, guid: 8b5f3e2d0c9e7654f1a2b3c4d5e6f708, type: 2}
+  - {fileID: 11400000, guid: 9c6a4f3e1d0f8765a2b3c4d5e6f70819, type: 2}
   - {fileID: 11400000, guid: e5d4c3b2a1908f7e6d5c4b3a29180756, type: 2}
   primaryCurrency: {fileID: 11400000, guid: e5d4c3b2a1908f7e6d5c4b3a29180756, type: 2}

@@ -25,6 +25,8 @@
 
 | Statut | Task ID | Phase | Notes |
 |--------|---------|-------|-------|
+| [~] | `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | Pivot + PPU 33 OK auteur 2026-10-01 ; clos si wiring + icônes OK |
+| [x] | `[BZ-FARM-ROQUETTE-ATLAS-001]` | 1→3 | 2026-10-01 — slice/pivot auteur + Bezy Ph.3 wiring OK (review Cursor) |
 | [ ] | `[BZ-FARM-CAM-RESET-001]` | A→C | Reset vue (optionnel) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
 
 *(Voir Terminé + backlog ci-dessous.)*

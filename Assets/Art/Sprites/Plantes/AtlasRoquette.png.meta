@@ -1,0 +1,327 @@
+fileFormatVersion: 2
+guid: 3b70397d180943c49ac6ee186f122c60
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8949127634086385965
+    second: AtlasRoquette_0
+  - first:
+      213: 1854657025803879801
+    second: AtlasRoquette_1
+  - first:
+      213: 7759787611138216617
+    second: AtlasRoquette_2
+  - first:
+      213: 4737967149177498246
+    second: AtlasRoquette_3
+  - first:
+      213: -1545935601391293825
+    second: AtlasRoquette_4
+  - first:
+      213: 8941160972861433899
+    second: AtlasRoquette_5
+  - first:
+      213: 9019129583991630542
+    second: AtlasRoquette_6
+  - first:
+      213: 3114712420537885113
+    second: AtlasRoquette_7
+  - first:
+      213: 7919455497477591970
+    second: AtlasRoquette_8
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Roquette_02_Starting
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 0
+        width: 252
+        height: 275
+      alignment: 9
+      pivot: {x: 0.49031454, y: 0.020734128}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d626a0d4df4ec380800000000000000
+      internalID: -8949127634086385965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roquette_04_Growing
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 10
+        width: 322
+        height: 357
+      alignment: 9
+      pivot: {x: 0.53789884, y: 0.02143026}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97509331db01db910800000000000000
+      internalID: 1854657025803879801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roquette_06_Flowering
+      rect:
+        serializedVersion: 2
+        x: 1504
+        y: 0
+        width: 308
+        height: 482
+      alignment: 9
+      pivot: {x: 0.4766058, y: 0.03439919}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a2de5e18bd40bb60800000000000000
+      internalID: 7759787611138216617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roquette_01_Graine
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 1
+        width: 153
+        height: 176
+      alignment: 9
+      pivot: {x: 0.18095346, y: 0.090904586}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68ae134f404a0c140800000000000000
+      internalID: 4737967149177498246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roquette_03_Baby
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 0
+        width: 285
+        height: 277
+      alignment: 9
+      pivot: {x: 0.53853714, y: 0.010977815}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7a2171e2cbbb8ae0800000000000000
+      internalID: -1545935601391293825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roquette_07_Seedling
+      rect:
+        serializedVersion: 2
+        x: 1817
+        y: 0
+        width: 272
+        height: 495
+      alignment: 9
+      pivot: {x: 0.55832493, y: 0.034047112}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b28edf25882651c70800000000000000
+      internalID: 8941160972861433899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Roquette_05_Mature
+      rect:
+        serializedVersion: 2
+        x: 1102
+        y: 3
+        width: 396
+        height: 408
+      alignment: 9
+      pivot: {x: 0.50613207, y: 0.01994415}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a39aadd0de87ed60800000000000000
+      internalID: 7919455497477591970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: fa8b322e9ea5b2941b2b7fb99deef73c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      AtlasRoquette_0: -8949127634086385965
+      AtlasRoquette_1: 1854657025803879801
+      AtlasRoquette_2: 7759787611138216617
+      AtlasRoquette_3: 4737967149177498246
+      AtlasRoquette_4: -1545935601391293825
+      AtlasRoquette_5: 8941160972861433899
+      AtlasRoquette_6: 9019129583991630542
+      AtlasRoquette_7: 3114712420537885113
+      AtlasRoquette_8: 7919455497477591970
+      Roquette_01_Graine: 4737967149177498246
+      Roquette_02_Starting: -8949127634086385965
+      Roquette_03_Baby: -1545935601391293825
+      Roquette_04_Growing: 1854657025803879801
+      Roquette_05_Mature: 7919455497477591970
+      Roquette_06_Flowering: 7759787611138216617
+      Roquette_07_Seedling: 8941160972861433899
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

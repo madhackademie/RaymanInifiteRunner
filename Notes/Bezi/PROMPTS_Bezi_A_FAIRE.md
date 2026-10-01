@@ -12,6 +12,8 @@
 
 | Task ID | Phase | Notes |
 |---------|-------|--------|
+| `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | `@Notes/Art/PROMPTS_Bezi_laitue_atlas_reloc.md` — laitue déplacée + offsets |
+| ~~`[BZ-FARM-ROQUETTE-ATLAS-001]`~~ | — | **clos** 2026-10-01 (slice auteur + Bezy Ph.3) |
 | `[BZ-FARM-CAM-RESET-001]` | A→C | Reset vue (optionnel) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
 
 Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.

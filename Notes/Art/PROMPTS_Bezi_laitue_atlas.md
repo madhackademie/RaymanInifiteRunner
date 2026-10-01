@@ -4,7 +4,8 @@
 **Branche :** `main` (ex-`feature/biofiltre-isometric`)  
 **Hors skill UI** : import texture + wiring `ScriptableObject` (pas de prefab).
 
-**Atlas (promu auteur) :** `Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png`  
+**Atlas (chemin actuel) :** `Assets/Art/Sprites/Plantes/AtlasLaitue.png`  
+**Déplacement / review :** `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` → `Notes/Art/PROMPTS_Bezi_laitue_atlas_reloc.md`  
 **Cible data :** `Assets/Data/Ferme/Laitue.asset`  
 **Brief art :** `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md`
 
@@ -48,7 +49,7 @@ Task: BZ-FARM-LAITUE-ATLAS-001 Phase 1/3 — AtlasLaitue import + rename slices.
 Do NOT rescan whole project. Do NOT edit C# scripts. Do NOT Play Mode or Simulate.
 
 TARGET ONLY:
-- Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png
+- Assets/Art/Sprites/Plantes/AtlasLaitue.png
 
 REFERENCE (read-only, no edits):
 - Assets/Data/Ferme/Laitue.asset

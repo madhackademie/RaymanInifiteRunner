@@ -45,7 +45,32 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-09-30 :** caméra farm Township + PC **validée APK 2026-09-29** — ne pas rouvrir pan/zoom/clic en Bezy sauf bug ciblé. Thread Bezy neuf = contexte read-only puis reset Phase A **ou** fix une phrase — `Notes/Farm/NOTE_camera_view_zoom.md` § Nouveau thread Bezy.
+> **2026-10-01 :** roquette 1×1 **playtest OK** (shop + atlas PPU 100 + `stageDisplayScales`). Caméra farm toujours **clos APK 2026-09-29** — `Notes/Farm/NOTE_camera_view_zoom.md`.
+
+### ★ P0 — Plantation mobile (touch ≠ souris) `[P0-FARM-PLANT-TOUCH-MODE-001]`
+
+**Contexte :** Township caméra OK ; **pose plante** encore modèle souris. Plante ref. **roquette** footprint 1×1.
+
+**Refs :** `Notes/Farm/NOTE_roquette_footprint1_setup.md` § Suite mobile · `FarmGridPointerInput` · `PlantPlacementPreview`.
+
+1. [ ] Spec mode plantation dédié (ghost, validation relâchement, pas conflit pan caméra).
+2. [ ] Cursor : archi / services ; Bezy : preview/visuel si besoin.
+3. [ ] Playtest APK roquette + laitue.
+
+### ~~P0 — Roquette footprint 1×1~~ `[P0-FARM-PLANT-ROQUETTE-001]` — **clos** 2026-10-01
+
+Data + atlas + shop + playtest pose/croissance OK. Affinage optionnel : `stageDisplayScales`, `isoSpriteViewOffset` sur `Roquette.asset`.
+
+### ★ P0 — Zoom molette plus agressif `[P0-FARM-CAM-SCROLL-STEP-001]`
+
+**Constat 2026-10-01 :** le zoom souris est trop fin — un cran de molette ne change la vue que de quelques millimètres (pas « mm par millimètre »).
+
+**À faire :** remplacer la constante `ScrollZoomSensitivity` (`0.001f`) dans `FarmCameraController` par un `[SerializeField]` (ex. `scrollZoomSensitivity`). L’auteur tweake la valeur dans l’Inspector et playteste lui-même — pas de valeur figée par Cursor, pas de job Bezy.
+
+**Script :** `Assets/Scripts/Farm/FarmCameraController.cs` — `HandleScrollZoom` : `ApplyZoom(1f - scrollY * ScrollZoomSensitivity, pivot)`.
+
+1. [ ] Exposer le pas de zoom molette en `[SerializeField]`.
+2. [ ] Playtest auteur : cran de molette nettement plus large ; ajuster la valeur dans l’Inspector.
 
 ### ★ P0 — Bornes caméra niveau ferme `[P0-FARM-LEVEL-CAM-BOUNDS-001]`
 

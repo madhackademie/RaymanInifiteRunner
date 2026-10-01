@@ -167,6 +167,30 @@ public class PlantDefinition : ScriptableObject
     /// <summary>Butinage max override (0 = défaut follower).</summary>
     public float ForageDurationMax => forageDurationMax;
 
+    [Header("Display Scale")]
+    [Tooltip("Multiplie le localScale du prefab (toute l'espèce). Utile si PPU atlas ≠ laitue (33).")]
+    [SerializeField] private float globalDisplayScale = 1f;
+
+    [Tooltip("Boost par stade (ex. graine lisible avec atlas PPU 100). Vide = globalDisplayScale seul.")]
+    [SerializeField] private StageDisplayScale[] stageDisplayScales = Array.Empty<StageDisplayScale>();
+
+    /// <summary>Facteur appliqué au localScale prefab pour un stade (global × override stade).</summary>
+    public float GetStageDisplayScale(PlantGrow.GrowthStage stage)
+    {
+        float scale = globalDisplayScale <= 0f ? 1f : globalDisplayScale;
+
+        if (stageDisplayScales == null)
+            return scale;
+
+        foreach (StageDisplayScale entry in stageDisplayScales)
+        {
+            if (entry.stage == stage && entry.scaleMultiplier > 0f)
+                return scale * entry.scaleMultiplier;
+        }
+
+        return scale;
+    }
+
     [Header("Stage Durations (seconds)")]
     [Tooltip("Duration for each stage before automatically advancing to the next one. Leave at 0 to skip auto-advance for that stage.")]
     public StageDuration[] stageDurations = Array.Empty<StageDuration>();
@@ -195,6 +219,13 @@ public class PlantDefinition : ScriptableObject
         }
     }
 #endif
+}
+
+[Serializable]
+public struct StageDisplayScale
+{
+    public PlantGrow.GrowthStage stage;
+    [Min(0.01f)] public float scaleMultiplier;
 }
 
 [Serializable]

@@ -25,13 +25,13 @@ MonoBehaviour:
     harvestAmountMin: 5
     harvestAmountMax: 15
   maxHarvestCount: 1
-  spriteGraine: {fileID: 3438625136742301237, guid: 325a2cf84028db24d8b2f401dde4d2cc, type: 3}
-  spriteStarting: {fileID: 5810937463493807243, guid: 325a2cf84028db24d8b2f401dde4d2cc, type: 3}
-  spriteBaby: {fileID: 4604566936846532081, guid: 325a2cf84028db24d8b2f401dde4d2cc, type: 3}
-  spriteGrowing: {fileID: 3940599319124680128, guid: 325a2cf84028db24d8b2f401dde4d2cc, type: 3}
-  spriteMature: {fileID: 168203161415380284, guid: 325a2cf84028db24d8b2f401dde4d2cc, type: 3}
-  spriteFlowering: {fileID: 2100569369381979722, guid: 325a2cf84028db24d8b2f401dde4d2cc, type: 3}
-  spriteSeedling: {fileID: -5724078450489768718, guid: 325a2cf84028db24d8b2f401dde4d2cc, type: 3}
+  spriteGraine: {fileID: 3438625136742301237, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
+  spriteStarting: {fileID: 5810937463493807243, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
+  spriteBaby: {fileID: 4604566936846532081, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
+  spriteGrowing: {fileID: 3940599319124680128, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
+  spriteMature: {fileID: 168203161415380284, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
+  spriteFlowering: {fileID: 2100569369381979722, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
+  spriteSeedling: {fileID: -5724078450489768718, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
   footprint:
   - {x: 0, y: 0}
   - {x: 1, y: 0}

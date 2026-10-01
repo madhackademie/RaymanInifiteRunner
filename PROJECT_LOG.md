@@ -1,5 +1,44 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-01 — Fin session : roquette 1×1 + atlas laitue + échelle stades
+
+### Contexte
+- Branche **`feature/ui-kit-refonte`** (pull ok).
+- Playtest auteur : roquette shop → pose → croissance **OK** ; laitue pivot/PPU corrigés après move atlas.
+
+### Livré — Roquette `[P0-FARM-PLANT-ROQUETTE-001]`
+- Data : `Roquette.asset`, items, `ItemDatabase`, shop `ShopItem_RoquetteSeedling`, `SeedSelectionUI` (stock > 0).
+- Atlas `Assets/Art/Sprites/Plantes/AtlasRoquette.png` — 7 slices (auteur) + Bezy Ph.3 wiring.
+- Prefab `RoquetteObj.prefab` ; GUID meta corrigés (32 hex) ; refs catalogue/seed UI.
+- **PPU roquette 100** · laitue **33** — `Notes/Art/NOTE_atlas_plantes_conformite.md`.
+- **`stageDisplayScales`** sur `PlantDefinition` + `PlantGrow` / `PlantPlantingPunch` (graine lisible à PPU 100).
+- Docs : `Notes/Farm/NOTE_roquette_footprint1_setup.md`, `FarmPlantIds.cs`, prompts Bezy roquette/laitue reloc.
+
+### Livré / corrigé — Laitue atlas déplacé
+- Chemin : `Assets/Art/Sprites/Plantes/AtlasLaitue.png` (plus `Laitue/`).
+- Décalage visuel = **pivot reset reimport** + PPU 33 (pas prefab « cassé »).
+- Bezy **`[BZ-FARM-LAITUE-ATLAS-RELOC-002]`** [~] — pivot OK auteur ; **`[BZ-FARM-ROQUETTE-ATLAS-001]`** [x].
+
+### Noté (non implémenté cette session)
+- **`[P0-FARM-CAM-SCROLL-STEP-001]`** — molette trop fine → `[SerializeField]` sensibilité zoom (`FarmCameraController`).
+
+### Prochaine session (priorité)
+1. **`[P0-FARM-PLANT-TOUCH-MODE-001]`** — mode plantation mobile (touch ≠ souris) ; roquette 1×1 = référence.
+2. **`[P0-FARM-CAM-SCROLL-STEP-001]`** — pas zoom molette Inspector.
+3. **`[P0-FARM-LEVEL-CAM-BOUNDS-001]`** — `FarmLevelViewBounds` scène `FirstLvl`.
+4. Affinage optionnel : `stageDisplayScales` / `isoSpriteViewOffset` roquette.
+
+### Git (auteur)
+- Commit / push : **auteur** (C# `PlantDefinition`/`PlantGrow`, data, art meta, docs).
+
+---
+
+## 2026-10-01 — Note : zoom molette ferme trop fin
+
+*(Intégré dans l’entrée « Fin session » ci-dessus — tâche `[P0-FARM-CAM-SCROLL-STEP-001]`.)*
+
+---
+
 ## 2026-09-30 — Fin session : caméra farm clos (APK) + protocole thread Bezy
 
 ### Contexte
