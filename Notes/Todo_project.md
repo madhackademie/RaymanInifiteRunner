@@ -45,11 +45,39 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-01 fin :** branche `feature/farm-plant-paint`. Tag `marker/avant-pose-glisser-2026-10-01` poussé. Glisser souris pose + récolte batch en code, **pas playtestés**. Mobile et bouton popup = prochaine session.
+> **2026-10-01 fin :** branche **`feature/farm-plant-paint`**. Pose + récolte batch **PC OK** (gant calé sur le pointeur, flèche cachée pendant le mode). **Animation de récolte du curseur encore à faire.** Fond PNG du gant encore noir. Doigt porté dans le code, **playtest APK pas fait**.
 
-### ★★ P0 — Fermer le choix de graines avant le popup plante `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`
+**Ordre auteur (prochaine fois) :**
 
-**Comportement voulu (2026-10-01) :** clic case vide → popup choix de graines = OK. Si on clique ensuite une plante qui est derrière ce popup, le choix de graines doit se **fermer avant** d’ouvrir le popup plante. Les deux ne restent pas ouverts ensemble.
+1. **`[BZ-FARM-HARVEST-CURSOR-ANIM-001]`** — animation de récolte du curseur, **en premier**. Quatre phases, une par appel Bezy. Prompt : `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_cursor_anim.md`.
+2. **`[P0-FARM-HARVEST-GRID-CLAMP-001]`** — voir s’il existe un clamp de grille pour les récoltes, et s’il est tenable. Footprints différents = peut-être pas la bonne voie. Piste à trancher : **une plante par cellule**, et c’est l’art qui s’adapte à la taille (plusieurs plants dans le sprite) plutôt que le footprint.
+3. **Playtest mobile (APK)** — pose au glisser + récolte batch. Pinch = zoom. Hors de ces modes, long press = pan.
+4. **`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`** — pas de pile de popups : case libre puis plante. En fermant la plante, le choix de graines ne doit plus rester ouvert.
+5. **Si le playtest valide :** mettre à jour **`feature/ui-kit-refonte`**, puis merger **`feature/farm-plant-paint`** dans **`main`**. Push = auteur.
+
+### ★★ P0 — Animation curseur récolte `[BZ-FARM-HARVEST-CURSOR-ANIM-001]`
+
+**Constat auteur 2026-10-01 :** le gant est calé, l’animation de récolte manque. À faire en premier, quatre phases.
+
+**Prompt :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_cursor_anim.md`
+
+1. [ ] Phase 1 — slice idle (`GloveIdle_01`–`_06`).
+2. [ ] Phase 2 — slice récolte (`GloveHarvest_01`–`_06`).
+3. [ ] Phase 3 — clips `GloveIdle.anim` + `GloveHarvest.anim`.
+4. [ ] Phase 4 — controller `GloveCursor` + câblage sur `BatchHarvestCursor`.
+
+### ★ P0 — Clamp grille récolte vs une cellule `[P0-FARM-HARVEST-GRID-CLAMP-001]`
+
+**Question auteur 2026-10-01 :** y a-t-il un clamp sur la grille pour les récoltes, et est-ce envisageable ?
+
+**Réserve :** avec des footprints différents, le clamp n’est peut-être pas la solution. Alternative à trancher : revenir à **un élément par cellule**. La production d’art s’adapte à la taille de la plante (plusieurs plants dans le sprite) plutôt que d’élargir le footprint.
+
+1. [ ] Dire si un clamp récolte existe déjà, et où.
+2. [ ] Trancher : clamp + footprints, ou 1 cellule + art multi-plants.
+
+### ★ P0 — Fermer le choix de graines (pas de pile) `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`
+
+**Symptôme auteur 2026-10-01 :** clic case libre → choix de graines. Clic ensuite sur une plante → le popup plante s’ouvre **par-dessus**. En fermant la plante, le choix de graines **reste ouvert**. Dans ce cas précis : **pas de stack**. Fermer aussi le choix de graines.
 
 **Bezy (demande auteur) :** un seul fichier, méthode déjà là. Pas de prefab, pas de nouveau binding.
 
@@ -58,7 +86,7 @@ Convention d'IDs :
 **Prompt :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` + `@Notes/Bezi/RULES_bezy_code.md`
 
 1. [ ] Bezy : `HideFarmSeedSelectionPopup()` juste avant `TryOpenFarmPlantHarvestPopup` dans `TryOpenPlantPopup`.
-2. [ ] Playtest auteur (hors prompt) : graines ouvertes → clic plante derrière → graines fermées, puis popup plante seul.
+2. [ ] Playtest auteur (hors prompt) : graines ouvertes → clic plante → graines fermées, popup plante seul. Fermer la plante ne laisse pas le choix de graines.
 
 ### ★ P0 — Plantation mobile (touch ≠ souris) `[P0-FARM-PLANT-TOUCH-MODE-001]`
 
@@ -71,21 +99,26 @@ Convention d'IDs :
 **Refs :** `Notes/Farm/NOTE_roquette_footprint1_setup.md` § Suite mobile · `FarmGridPointerInput` · `PlantPlacementPreview`.
 
 1. [x] Spec mode peinture + pas de footprint (pas de 2ᵉ grille).
-2. [~] Cursor : glisser souris dans `PlantPlacementPreview` (tactile inchangé). Bezy : non, tant que pas de visuel.
-3. [ ] Playtest PC souris (fluidité roquette, puis laitue).
-4. [ ] **Playtest mobile (APK)** — le tactile n’a pas ce geste : le playtest montre l’écart, puis porter le balayage au doigt.
+2. [x] Glisser souris puis doigt dans `PlantPlacementPreview`. Bezy : non, tant que pas de visuel.
+3. [x] Playtest PC souris (fluidité roquette, puis laitue) — **OK auteur 2026-10-01**.
+4. [ ] **Playtest mobile (APK)** — le doigt peint comme la souris. Pinch = zoom. Long press pan coupé pendant la pose.
 
 ### ★ P0 — Récolte batch souris `[P0-FARM-HARVEST-BATCH-001]`
 
 Même geste que la pose : balayage, une plante récoltable à la fois, **relâchement = fin**. Pas d’arrachage. Plante immature ignorée. Inventaire plein ou plus de PA = un seul message, le trait s’arrête.
 
-**Constat fin session (auteur) :** le bouton blanc **n’est pas** sur le popup récolte. Ce popup **bloque le double-clic** (le second clic tombe sur l’UI, pas sur la plante).
+**Bouton :** Bezy Ph.1–3 OK 2026-10-01. Clic Batch ferme le popup et arme le mode.
 
-1. [x] Cursor : double-clic prévu pour récolter **et** armer le glisser (tenir le second clic). **KO en jeu** tant que le popup s’ouvre au premier clic.
-2. [ ] Bezy `[BZ-FARM-HARVEST-BATCH-BTN-001]` : poser le bouton blanc `Batch` sur `FarmHarvestPanel.prefab` → `batchHarvestButton`. Prompt : `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_batch_button.md`
-3. [ ] Cursor : le popup ne doit plus manger le double-clic (ouvrir après un clic simple confirmé, ou laisser passer le second clic monde).
-4. [ ] Playtest souris une fois le bouton en place et le double-clic débloqué.
-5. [ ] **Playtest mobile (APK)** après le port tactile (aujourd’hui souris seulement).
+**Curseur :** position OK auteur 2026-10-01 (pivot au centre, flèche cachée pendant le mode). **Animation de récolte encore à faire** — `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` Ph.1–4, en tête de la prochaine session. Fond des PNG encore noir.
+
+1. [x] Cursor : double-clic prévu pour récolter **et** armer le glisser. L’entrée du mode est le bouton Batch.
+2. [x] Bezy `[BZ-FARM-HARVEST-BATCH-BTN-001]` — bouton blanc câblé, 2026-10-01.
+3. [x] Cursor : `FarmBatchHarvestMode` (`Idle` / `Armed` / `Stroking`) + `ModeChanged`.
+4. [x] Bezy `[BZ-FARM-HARVEST-CURSOR-001]` — vue livrée, sprite encore vide.
+5. [ ] Art gant — `Notes/Art/PROMPT_curseur_gant_recolte_batch.md` (Dump, pas Sprites).
+6. [ ] Verrou popups pendant `Stroking` (`BlocksFarmPopups`).
+7. [x] Playtest PC — geste + gant calé sur le pointeur, **OK auteur 2026-10-01**.
+8. [ ] **Playtest mobile (APK)** — doigt = même balayage. Pan caméra coupé tant que le mode batch est armé.
 
 ### ~~P0 — Roquette footprint 1×1~~ `[P0-FARM-PLANT-ROQUETTE-001]` — **clos** 2026-10-01
 
@@ -353,11 +386,11 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche courante : **`feature/ui-kit-refonte`** (tip `e699057`, `Notes/Tools/` sur la branche). **Alignement IDE ↔ agent cloud :** même branche + `git pull` après push agent ; voir `Notes/WORKFLOW_cloud_agent_local.md`.  
+> Branche de travail : **`feature/farm-plant-paint`** (depuis `feature/ui-kit-refonte`, pas encore mergée dans `main`). **Alignement IDE ↔ agent cloud :** même branche + `git pull` après push agent ; voir `Notes/WORKFLOW_cloud_agent_local.md`.  
 > **Caméra farm :** touch/pan/zoom **clos APK 2026-09-29** sur branche courante (`feature/ui-kit-refonte`). Suite : `[P0-FARM-LEVEL-CAM-BOUNDS-001]` en scène ; reset optionnel `[BZ-FARM-CAM-RESET-001]`.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
-> **Priorité immédiate (prochaine session) :** `[P0-FARM-LEVEL-CAM-BOUNDS-001]` (scène FirstLvl). Puis `[P0-UI-RESPONSIVE-VALID-001]`. Bezy optionnel : `[BZ-FARM-CAM-RESET-001]` Phase A. Crédits Bezy : reset **30 septembre** (aujourd’hui).  
+> **Priorité immédiate (prochaine session, 2026-10-01) :** 1) `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` Ph.1–4 (animation récolte du curseur) 2) `[P0-FARM-HARVEST-GRID-CLAMP-001]` 3) playtest APK 4) `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` 5) si playtest OK : màj `feature/ui-kit-refonte` puis merge `main`. Détail : section « Prochaine session » en tête de fichier.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows (`NOTE_hud_biofiltre_prefab_en_dur.md`).  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  

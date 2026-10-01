@@ -16,9 +16,27 @@ public static class FarmCameraInput
     private static bool longPressFired;
     private static float longPressStartTime;
     private static Vector2 longPressStartScreen;
+    private static bool placementBlocksPan;
+    private static bool harvestBlocksPan;
 
     /// <summary>Vrai tant que la caméra a « pris » le pointeur principal (slop dépassé ou long press) : le tap grille doit être ignoré.</summary>
     public static bool IsPrimaryPointerConsumedByCamera { get; private set; }
+
+    /// <summary>Fantôme de pose actif : le doigt peint, il ne pane pas.</summary>
+    public static void SetPlacementBlocksPan(bool blocked)
+    {
+        placementBlocksPan = blocked;
+        if (blocked)
+            ResetLongPressPan();
+    }
+
+    /// <summary>Récolte batch armée ou en cours : le doigt récolte, il ne pane pas.</summary>
+    public static void SetHarvestBlocksPan(bool blocked)
+    {
+        harvestBlocksPan = blocked;
+        if (blocked)
+            ResetLongPressPan();
+    }
 
     public static bool TryGetScrollZoom(out float scrollY)
     {
@@ -78,6 +96,11 @@ public static class FarmCameraInput
     public static bool TryGetLongPressPanScreenPosition(out Vector2 screenPosition)
     {
         screenPosition = default;
+        if (placementBlocksPan || harvestBlocksPan)
+        {
+            ResetLongPressPan();
+            return false;
+        }
 
         Touchscreen touchscreen = Touchscreen.current;
         if (touchscreen == null)

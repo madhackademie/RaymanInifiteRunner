@@ -25,8 +25,9 @@
 
 | Statut | Task ID | Phase | Notes |
 |--------|---------|-------|-------|
-| [ ] | `[BZ-FARM-HARVEST-BATCH-BTN-001]` | prefab | **P0** — bouton blanc Batch, popup récolte. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_batch_button.md` |
-| [ ] | `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **P0** — fermer graines avant popup plante. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` |
+| [ ] | `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` | anim | **P0 première** — animation récolte du curseur encore à faire. Ph.1–4, une par appel. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_cursor_anim.md` |
+| [x] | `[BZ-FARM-HARVEST-BATCH-BTN-001]` | prefab | Bouton blanc Batch câblé 2026-10-01 (Ph.1–3). |
+| [ ] | `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **P0 prochaine session** — pas de pile : case libre puis plante, le choix de graines ne reste pas ouvert. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` |
 | [~] | `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | Pivot + PPU 33 OK auteur 2026-10-01 ; clos si wiring + icônes OK |
 | [x] | `[BZ-FARM-ROQUETTE-ATLAS-001]` | 1→3 | 2026-10-01 — slice/pivot auteur + Bezy Ph.3 wiring OK (review Cursor) |
 | [ ] | `[BZ-FARM-CAM-RESET-001]` | A→C | Reset vue (optionnel) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |

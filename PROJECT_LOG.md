@@ -1,5 +1,70 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-01 — Fin session : gant calé, prochaine fois
+
+### Constat auteur
+- Pivot du gant corrigé : le dessin est sur le pointeur. Position **OK**.
+- La flèche OS est cachée pendant le mode batch (vue Game au focus).
+- L’animation de récolte du curseur manque encore. À faire en premier : les 4 phases `[BZ-FARM-HARVEST-CURSOR-ANIM-001]`.
+
+### Prochaine session (référence « tâche du jour »)
+1. `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` — animation curseur récolte, Ph.1 slice idle, Ph.2 slice harvest, Ph.3 clips, Ph.4 controller + câblage. Prompt `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_cursor_anim.md`.
+2. `[P0-FARM-HARVEST-GRID-CLAMP-001]` — clamp grille récolte, ou revenir à 1 cellule et laisser l’art porter la taille (plusieurs plants dans le sprite).
+3. Playtest mobile (APK) pose + récolte batch.
+4. `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` — pas de pile : case libre puis plante ; fermer la plante ne doit pas laisser le choix de graines ouvert.
+5. Si le playtest valide : mettre à jour `feature/ui-kit-refonte`, puis merger `feature/farm-plant-paint` dans `main`.
+
+### Git
+- Push : **auteur**, après ces notes.
+- Branche : `feature/farm-plant-paint`.
+
+---
+
+## 2026-10-01 — Glisser pose + récolte porté au doigt
+
+### Constat auteur
+- Playtest PC de la récolte batch : geste OK.
+
+### Port tactile
+- Pose : le doigt peint comme la souris (`PlantPlacementPreview`). Relâchement = fin.
+- Récolte batch : doigt posé = trait, relâchement = fin (`FarmBatchHarvestInput.Tick`).
+- Pendant ces deux modes, le long press ne pane plus la caméra. Le pinch zoom reste.
+- Hors mode : tap au relâchement et pan Township inchangés.
+
+### Suite
+- Playtest APK pose + récolte.
+
+---
+
+## 2026-10-01 — Curseur gant récolte batch
+
+### Livré
+- `[BZ-FARM-HARVEST-BATCH-BTN-001]` Ph.1–3 validées : bouton blanc câblé sur `FarmHarvestPanel`.
+- `FarmBatchHarvestMode` public (`Idle` / `Armed` / `Stroking`) + événement `ModeChanged`.
+
+### Décision auteur
+- Clic Batch ferme déjà le popup. Feedback = gant qui suit la souris.
+- `Armed` : boucle idle (gant qui arrache des herbes). `Stroking` : animation tant que le clic est tenu.
+- Pas d’asset encore. Prompts art : `Notes/Art/PROMPT_curseur_gant_recolte_batch.md`.
+
+### Suite
+- Bezy `[BZ-FARM-HARVEST-CURSOR-001]` — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_cursor.md`.
+- Verrou popups pendant `Stroking` toujours ouvert.
+
+---
+
+## 2026-10-01 — Playtest pose glisser PC OK
+
+### Constat auteur
+- `[P0-FARM-PLANT-TOUCH-MODE-001]` : playtest **souris** de la pose au glisser **validé**.
+- Il reste le **playtest mobile (APK)** : le doigt n’a pas encore le geste.
+
+### Toujours ouvert
+- Récolte batch `[P0-FARM-HARVEST-BATCH-001]` : bouton blanc absent, double-clic mangé par le popup, playtest souris puis APK.
+- Bezy `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`.
+
+---
+
 ## 2026-10-01 — Fin session : glisser pose + récolte batch (souris)
 
 ### Contexte

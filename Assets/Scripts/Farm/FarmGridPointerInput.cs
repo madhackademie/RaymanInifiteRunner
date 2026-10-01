@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Clic grille : écran → monde → (col, row) via <see cref="GridManager"/>.
-/// PC : clic gauche au press. Tactile : tap au relâchement (long press = pan caméra).
+/// PC : clic gauche au press. Tactile : tap au relâchement, sauf pose et récolte batch (glisser).
 /// </summary>
 [RequireComponent(typeof(GridManager))]
 [RequireComponent(typeof(BiofiltreGridVisualizer))]
@@ -37,11 +37,11 @@ public class FarmGridPointerInput : MonoBehaviour
         if (biofiltreManager != null && biofiltreManager.ShouldSuppressFarmPointerUi && !strokeActive)
             return;
 
+        if (batchHarvest != null && batchHarvest.Tick())
+            return;
+
         if (FarmPointerInput.IsMouseDriven())
         {
-            if (batchHarvest != null && batchHarvest.TickMouse())
-                return;
-
             if (!FarmPointerInput.TryGetPrimaryPress(out Vector2 screenPosition, out int pointerId))
                 return;
 

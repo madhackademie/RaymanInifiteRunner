@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Fantôme de pose aimanté à la grille. Vert = valide, rouge = invalide.
-/// Souris : glisser pour peindre (pas = footprint), relâchement = fin.
-/// Tactile : appui = une pose. Clic droit ou Échap = annulation.
+/// Souris et doigt : glisser pour peindre (pas = footprint), relâchement = fin.
+/// Clic droit ou Échap = annulation. Le pinch reste le zoom.
 /// </summary>
 [DefaultExecutionOrder(-100)]
 public class PlantPlacementPreview : MonoBehaviour
@@ -82,70 +81,44 @@ public class PlantPlacementPreview : MonoBehaviour
             return;
 
         UpdateGhostPosition();
-
-        if (IsMousePaintDevice())
-        {
-            TickMousePaintStroke();
-            return;
-        }
-
-        TickPressToPlace();
+        FarmCameraInput.SetPlacementBlocksPan(true);
+        TickPaintStroke();
     }
 
-    /// <summary>Glisser souris. Un doigt posé garde l'ancien tap tactile.</summary>
-    private static bool IsMousePaintDevice()
+    private void OnDisable()
     {
-        if (Mouse.current == null)
-            return false;
-
-        Touchscreen touchscreen = Touchscreen.current;
-        return touchscreen == null || !touchscreen.primaryTouch.press.isPressed;
+        FarmCameraInput.SetPlacementBlocksPan(false);
     }
 
-    private void TickPressToPlace()
+    private void TickPaintStroke()
     {
-        bool confirmPressed = FarmPointerInput.TryGetPrimaryPress(out _, out int pointerId) &&
-                              !FarmPointerInput.IsOverUi(pointerId);
-        bool cancelPressed  = FarmPointerInput.WasCancelPressed();
-
-        if (confirmPressed || cancelPressed)
-            biofiltreManager.SuppressFarmPointerUiUntilPointerRelease();
-
-        if (confirmPressed)
-        {
-            if (currentlyValid)
-                ConfirmPlacement();
-            else
-                Cancel();
-        }
-        else if (cancelPressed)
-        {
-            Cancel();
-        }
-    }
-
-    private void TickMousePaintStroke()
-    {
-        Mouse mouse = Mouse.current;
-        if (mouse == null || biofiltreManager == null)
+        if (biofiltreManager == null)
             return;
 
-        bool overUi = FarmPointerInput.IsOverUi(FarmPointerInput.MousePointerId);
-        if (mouse.leftButton.wasPressedThisFrame && !overUi)
+        if (FarmCameraInput.IsPinchGestureActive())
+            return;
+
+        if (!FarmPointerInput.TryReadPrimaryStroke(
+                out bool pressed,
+                out bool held,
+                out bool released,
+                out bool overUi))
+            return;
+
+        if (pressed && !overUi)
             strokeActive = true;
 
         if (FarmPointerInput.WasCancelPressed())
         {
-            EndMouseStroke();
+            EndPaintStroke();
             return;
         }
 
-        bool released = mouse.leftButton.wasReleasedThisFrame;
-        if (strokeActive && !overUi && (mouse.leftButton.isPressed || released))
+        if (strokeActive && !overUi && (held || released))
             PaintPathToCurrent();
 
         if (strokeActive && released)
-            EndMouseStroke();
+            EndPaintStroke();
     }
 
     /// <summary>Comble les cases sautées si la souris va plus vite qu'une case par frame.</summary>
@@ -202,7 +175,7 @@ public class PlantPlacementPreview : MonoBehaviour
         paintedAnchor = cell;
     }
 
-    private void EndMouseStroke()
+    private void EndPaintStroke()
     {
         if (biofiltreManager != null)
             biofiltreManager.SuppressFarmPointerUiUntilPointerRelease();

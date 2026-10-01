@@ -1,29 +1,38 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
-/// Récolte en balayage souris. Le mode s'éteint au relâchement.
+/// Idle : curseur caché. Armed : gant en boucle, on attend le clic.
+/// Stroking : animation de récolte tant que le clic est tenu.
+/// </summary>
+public enum FarmBatchHarvestMode
+{
+    Idle,
+    Armed,
+    Stroking
+}
+
+/// <summary>
+/// Récolte en balayage souris ou doigt. Le mode s'éteint au relâchement.
 /// Une plante n'est prise qu'une fois, même si le curseur traverse son footprint.
 /// </summary>
 public class FarmBatchHarvestInput : MonoBehaviour
 {
-    private enum StrokeMode
-    {
-        Idle,
-        Armed,
-        Stroking
-    }
-
     private GridManager gridManager;
     private BiofiltreManager biofiltreManager;
     private Camera worldCamera;
-    private StrokeMode mode = StrokeMode.Idle;
+    private FarmBatchHarvestMode mode = FarmBatchHarvestMode.Idle;
     private bool hasVisited;
     private Vector2Int visited;
     private readonly HashSet<int> seenPlantIds = new();
 
-    public bool IsStrokeActive => mode == StrokeMode.Stroking;
+    public FarmBatchHarvestMode Mode => mode;
+
+    /// <summary>La vue curseur s'abonne ici. Pas de lecture dans Update.</summary>
+    public event Action<FarmBatchHarvestMode> ModeChanged;
+
+    public bool IsStrokeActive => mode == FarmBatchHarvestMode.Stroking;
 
     public void Initialise(GridManager grid, BiofiltreManager manager, Camera camera)
     {
@@ -35,9 +44,9 @@ public class FarmBatchHarvestInput : MonoBehaviour
     /// <summary>Bouton popup : attend le prochain clic grille, sans couper au relâchement du bouton.</summary>
     public void Arm()
     {
-        mode = StrokeMode.Armed;
         hasVisited = false;
         seenPlantIds.Clear();
+        SetMode(FarmBatchHarvestMode.Armed);
     }
 
     /// <summary>Double-clic : la plante courante est déjà récoltée, le glisser continue.</summary>
@@ -50,44 +59,48 @@ public class FarmBatchHarvestInput : MonoBehaviour
 
     private void EnterStroke()
     {
-        mode = StrokeMode.Stroking;
         seenPlantIds.Clear();
         hasVisited = false;
+        SetMode(FarmBatchHarvestMode.Stroking);
     }
 
     /// <returns>Vrai si ce frame ne doit pas ouvrir un popup grille.</returns>
-    public bool TickMouse()
+    public bool Tick()
     {
-        if (mode == StrokeMode.Idle || !FarmPointerInput.IsMouseDriven())
+        if (mode == FarmBatchHarvestMode.Idle)
             return false;
 
         if (biofiltreManager != null && biofiltreManager.IsPlantPlacementPreviewActive)
         {
-            mode = StrokeMode.Idle;
+            SetMode(FarmBatchHarvestMode.Idle);
             return false;
         }
 
-        Mouse mouse = Mouse.current;
-        if (mouse == null)
+        if (FarmCameraInput.IsPinchGestureActive())
+            return true;
+
+        if (!FarmPointerInput.TryReadPrimaryStroke(
+                out bool pressed,
+                out bool held,
+                out bool released,
+                out bool overUi))
             return false;
 
-        bool overUi = FarmPointerInput.IsOverUi(FarmPointerInput.MousePointerId);
-        if (mode == StrokeMode.Armed)
+        if (mode == FarmBatchHarvestMode.Armed)
         {
-            if (!mouse.leftButton.wasPressedThisFrame || overUi)
+            if (!pressed || overUi)
                 return false;
 
             EnterStroke();
         }
 
-        if (mode != StrokeMode.Stroking)
+        if (mode != FarmBatchHarvestMode.Stroking)
             return false;
 
-        bool released = mouse.leftButton.wasReleasedThisFrame;
-        if (!overUi && (mouse.leftButton.isPressed || released) && TryCellUnderPointer(out Vector2Int cell))
+        if (!overUi && (held || released) && TryCellUnderPointer(out Vector2Int cell))
             HarvestPathTo(cell);
 
-        if (mode == StrokeMode.Stroking && released)
+        if (mode == FarmBatchHarvestMode.Stroking && released)
             EndStroke();
 
         return true;
@@ -109,7 +122,7 @@ public class FarmBatchHarvestInput : MonoBehaviour
             int x = Mathf.RoundToInt(Mathf.Lerp(from.x, target.x, t));
             int y = Mathf.RoundToInt(Mathf.Lerp(from.y, target.y, t));
             HarvestCell(new Vector2Int(x, y));
-            if (mode != StrokeMode.Stroking)
+            if (mode != FarmBatchHarvestMode.Stroking)
                 return;
         }
     }
@@ -132,10 +145,20 @@ public class FarmBatchHarvestInput : MonoBehaviour
 
     private void EndStroke()
     {
-        mode = StrokeMode.Idle;
         hasVisited = false;
         seenPlantIds.Clear();
+        SetMode(FarmBatchHarvestMode.Idle);
         biofiltreManager?.SuppressFarmPointerUiUntilPointerRelease();
+    }
+
+    private void SetMode(FarmBatchHarvestMode next)
+    {
+        if (mode == next)
+            return;
+
+        mode = next;
+        FarmCameraInput.SetHarvestBlocksPan(next != FarmBatchHarvestMode.Idle);
+        ModeChanged?.Invoke(mode);
     }
 
     private bool TryCellUnderPointer(out Vector2Int cell)
