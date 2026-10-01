@@ -23,6 +23,7 @@ public class HarvestPanelUI : MonoBehaviour
     [SerializeField] private Button harvestButton;
     [SerializeField] private Button uprootButton;
     [SerializeField] private Button closeButton;
+    [SerializeField] private Button batchHarvestButton;
 
     private PlantHarvestInteractor currentTarget;
     private PlantGrow currentPlantGrow;
@@ -54,6 +55,8 @@ public class HarvestPanelUI : MonoBehaviour
         harvestButton.onClick.AddListener(OnHarvestClicked);
         uprootButton.onClick.AddListener(OnUprootClicked);
         closeButton.onClick.AddListener(Close);
+        if (batchHarvestButton != null)
+            batchHarvestButton.onClick.AddListener(OnBatchHarvestClicked);
         panel.SetActive(false);
     }
 
@@ -183,6 +186,12 @@ public class HarvestPanelUI : MonoBehaviour
         if (currentTarget == null) { Close(); return; }
         currentTarget.ConfirmHarvest();
         Close();
+    }
+
+    private void OnBatchHarvestClicked()
+    {
+        Close();
+        biofiltreManager?.ArmBatchHarvest();
     }
 
     private void OnUprootClicked()

@@ -54,6 +54,16 @@ public static class FarmPointerInput
         return false;
     }
 
+    /// <summary>Souris active, sans doigt posé. Le tactile garde son propre geste.</summary>
+    public static bool IsMouseDriven()
+    {
+        if (Mouse.current == null)
+            return false;
+
+        Touchscreen touchscreen = Touchscreen.current;
+        return touchscreen == null || !touchscreen.primaryTouch.press.isPressed;
+    }
+
     /// <summary>Appui principal maintenu (clic gauche ou doigt posé).</summary>
     public static bool IsPrimaryHeld()
     {

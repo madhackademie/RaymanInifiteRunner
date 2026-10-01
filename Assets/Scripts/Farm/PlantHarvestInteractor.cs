@@ -75,32 +75,38 @@ public class PlantHarvestInteractor : MonoBehaviour
         onPlantRemoved = callback;
     }
 
+    /// <summary>Vrai si le stade courant a une récolte (même règle que le bouton Récolter).</summary>
+    public bool CanHarvestNow() => GetCurrentHarvestConfig().HasValue;
+
     // ── Harvest ───────────────────────────────────────────────────────────────
-    public void ConfirmHarvest()
+    /// <returns>Vrai si la plante a été retirée de la grille.</returns>
+    public bool ConfirmHarvest()
     {
         HarvestStageConfig? config = GetCurrentHarvestConfig();
 
         if (!config.HasValue)
         {
             Debug.Log($"[PlantHarvestInteractor] '{gameObject.name}' n'est pas récoltable à ce stade ({plantGrow.CurrentStage}).");
-            return;
+            return false;
         }
 
         ItemDefinition item = ResolveItem(config.Value);
-        if (item != null)
-            ApplyHarvest(item, config.Value);
+        if (item == null)
+            return false;
+
+        return ApplyHarvest(item, config.Value);
     }
 
     // ── Application ───────────────────────────────────────────────────────────
 
-    private void ApplyHarvest(ItemDefinition item, HarvestStageConfig config)
+    private bool ApplyHarvest(ItemDefinition item, HarvestStageConfig config)
     {
         PlayerInventory inventory = PlayerInventory.Instance;
 
         if (inventory == null)
         {
             Debug.LogWarning("[PlantHarvestInteractor] PlayerInventory.Instance introuvable — récolte annulée.", this);
-            return;
+            return false;
         }
 
         ActionPointService actionPoints = ActionPointService.Instance;
@@ -112,7 +118,7 @@ public class PlantHarvestInteractor : MonoBehaviour
             !actionPoints.TryConsume(ActionPointActionId.Harvest, harvestCost, out string apMessage))
         {
             Debug.Log($"[PlantHarvestInteractor] ConfirmHarvest: {apMessage}", this);
-            return;
+            return false;
         }
 
         int amount = UnityEngine.Random.Range(config.harvestAmountMin, config.harvestAmountMax + 1);
@@ -127,18 +133,21 @@ public class PlantHarvestInteractor : MonoBehaviour
             case InventoryResult.Partial:
                 ShowHarvestRewardFeedback(item, amount, harvestWorldPos);
                 OnHarvestSuccess();
-                break;
+                return true;
 
             case InventoryResult.Full:
                 Debug.Log($"[PlantHarvestInteractor] Inventaire plein — '{item.DisplayName}' non ajouté.");
                 actionPoints?.Refund(harvestCost);
                 ShowInventoryFullFeedback();
-                break;
+                return false;
 
             case InventoryResult.InvalidItem:
                 Debug.LogWarning($"[PlantHarvestInteractor] Item invalide résolu pour '{gameObject.name}'.", this);
                 actionPoints?.Refund(harvestCost);
-                break;
+                return false;
+
+            default:
+                return false;
         }
     }
 

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Fantôme de pose aimanté à la grille. Vert = valide, rouge = invalide.
-/// Appui principal = pose ; clic droit ou Échap = annulation.
+/// Souris : glisser pour peindre (pas = footprint), relâchement = fin.
+/// Tactile : appui = une pose. Clic droit ou Échap = annulation.
 /// </summary>
 [DefaultExecutionOrder(-100)]
 public class PlantPlacementPreview : MonoBehaviour
@@ -27,6 +29,11 @@ public class PlantPlacementPreview : MonoBehaviour
     private bool             currentlyValid;
     private Camera           mainCamera;
     private readonly List<Vector2Int> previewedCells = new();
+    private bool             strokeActive;
+    private bool             hasPaintedAnchor;
+    private Vector2Int       paintedAnchor;
+    private bool             hasVisitedAnchor;
+    private Vector2Int       visitedAnchor;
 
     // ── Initialisation ────────────────────────────────────────────────────────
 
@@ -76,6 +83,27 @@ public class PlantPlacementPreview : MonoBehaviour
 
         UpdateGhostPosition();
 
+        if (IsMousePaintDevice())
+        {
+            TickMousePaintStroke();
+            return;
+        }
+
+        TickPressToPlace();
+    }
+
+    /// <summary>Glisser souris. Un doigt posé garde l'ancien tap tactile.</summary>
+    private static bool IsMousePaintDevice()
+    {
+        if (Mouse.current == null)
+            return false;
+
+        Touchscreen touchscreen = Touchscreen.current;
+        return touchscreen == null || !touchscreen.primaryTouch.press.isPressed;
+    }
+
+    private void TickPressToPlace()
+    {
         bool confirmPressed = FarmPointerInput.TryGetPrimaryPress(out _, out int pointerId) &&
                               !FarmPointerInput.IsOverUi(pointerId);
         bool cancelPressed  = FarmPointerInput.WasCancelPressed();
@@ -94,6 +122,93 @@ public class PlantPlacementPreview : MonoBehaviour
         {
             Cancel();
         }
+    }
+
+    private void TickMousePaintStroke()
+    {
+        Mouse mouse = Mouse.current;
+        if (mouse == null || biofiltreManager == null)
+            return;
+
+        bool overUi = FarmPointerInput.IsOverUi(FarmPointerInput.MousePointerId);
+        if (mouse.leftButton.wasPressedThisFrame && !overUi)
+            strokeActive = true;
+
+        if (FarmPointerInput.WasCancelPressed())
+        {
+            EndMouseStroke();
+            return;
+        }
+
+        bool released = mouse.leftButton.wasReleasedThisFrame;
+        if (strokeActive && !overUi && (mouse.leftButton.isPressed || released))
+            PaintPathToCurrent();
+
+        if (strokeActive && released)
+            EndMouseStroke();
+    }
+
+    /// <summary>Comble les cases sautées si la souris va plus vite qu'une case par frame.</summary>
+    private void PaintPathToCurrent()
+    {
+        if (!hasVisitedAnchor || visitedAnchor == currentCell)
+        {
+            VisitAndMaybePlant(currentCell);
+            return;
+        }
+
+        Vector2Int from = visitedAnchor;
+        Vector2Int to = currentCell;
+        int steps = Mathf.Max(Mathf.Abs(to.x - from.x), Mathf.Abs(to.y - from.y));
+        for (int i = 1; i <= steps; i++)
+        {
+            float t = i / (float)steps;
+            int x = Mathf.RoundToInt(Mathf.Lerp(from.x, to.x, t));
+            int y = Mathf.RoundToInt(Mathf.Lerp(from.y, to.y, t));
+            VisitAndMaybePlant(SnapAnchorToFootprintStride(new Vector2Int(x, y)));
+            if (ghostInstance == null || biofiltreManager == null)
+                return;
+        }
+    }
+
+    private void VisitAndMaybePlant(Vector2Int cell)
+    {
+        bool alreadyPlantedHere = hasPaintedAnchor && paintedAnchor == cell;
+        if (hasVisitedAnchor && visitedAnchor == cell && alreadyPlantedHere)
+            return;
+
+        currentCell = cell;
+        currentlyValid = biofiltreManager.CanPlace(currentCell, plantDefinition);
+        RefreshFootprintPreview();
+        hasVisitedAnchor = true;
+        visitedAnchor = cell;
+        TryPaintSnappedCell();
+    }
+
+    private void TryPaintSnappedCell()
+    {
+        if (!currentlyValid)
+            return;
+
+        if (hasPaintedAnchor && paintedAnchor == currentCell)
+            return;
+
+        Vector2Int cell = currentCell;
+        ConfirmPlacement();
+        if (ghostInstance == null)
+            return;
+
+        hasPaintedAnchor = true;
+        paintedAnchor = cell;
+    }
+
+    private void EndMouseStroke()
+    {
+        if (biofiltreManager != null)
+            biofiltreManager.SuppressFarmPointerUiUntilPointerRelease();
+
+        if (enabled)
+            Cancel();
     }
 
     // ── Ghost management ──────────────────────────────────────────────────────
@@ -160,7 +275,8 @@ public class PlantPlacementPreview : MonoBehaviour
         // spriteWorldOffset is a purely visual offset for the sprite pivot and must NOT be used
         // here — it can exceed one cell in magnitude and break the floor-based WorldToGrid calculation.
         Vector2 footprintCenter = ComputeFootprintCenterWorldOffset();
-        Vector2Int hoveredCell = gridManager.WorldToGrid(mouseWorld - footprintCenter);
+        Vector2Int hoveredCell = SnapAnchorToFootprintStride(
+            gridManager.WorldToGrid(mouseWorld - footprintCenter));
 
         if (hoveredCell != currentCell)
         {
@@ -208,6 +324,45 @@ public class PlantPlacementPreview : MonoBehaviour
         }
 
         previewedCells.Clear();
+    }
+
+    /// <summary>
+    /// Cale l'ancre sur un pas égal au footprint (roquette 1, laitue 2).
+    /// Les blocs voisins se touchent sans décalage d'une case.
+    /// </summary>
+    private Vector2Int SnapAnchorToFootprintStride(Vector2Int cell)
+    {
+        Vector2Int[] footprint = plantDefinition != null ? plantDefinition.footprint : null;
+        if (footprint == null || footprint.Length == 0)
+            return cell;
+
+        int minX = int.MaxValue;
+        int minY = int.MaxValue;
+        int maxX = int.MinValue;
+        int maxY = int.MinValue;
+        for (int i = 0; i < footprint.Length; i++)
+        {
+            Vector2Int offset = footprint[i];
+            if (offset.x < minX) minX = offset.x;
+            if (offset.y < minY) minY = offset.y;
+            if (offset.x > maxX) maxX = offset.x;
+            if (offset.y > maxY) maxY = offset.y;
+        }
+
+        int strideX = Mathf.Max(1, maxX - minX + 1);
+        int strideY = Mathf.Max(1, maxY - minY + 1);
+        int anchorX = minX + FloorToStride(cell.x - minX, strideX) * strideX;
+        int anchorY = minY + FloorToStride(cell.y - minY, strideY) * strideY;
+        return new Vector2Int(anchorX, anchorY);
+    }
+
+    private static int FloorToStride(int value, int stride)
+    {
+        int quotient = value / stride;
+        if (value < 0 && value % stride != 0)
+            quotient--;
+
+        return quotient;
     }
 
     /// <summary>
@@ -281,6 +436,9 @@ public class PlantPlacementPreview : MonoBehaviour
         visualizer       = null;
         biofiltreManager = null;
         originCell       = null;
-        enabled          = false;
+        strokeActive      = false;
+        hasPaintedAnchor  = false;
+        hasVisitedAnchor  = false;
+        enabled           = false;
     }
 }

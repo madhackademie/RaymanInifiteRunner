@@ -35,6 +35,7 @@ public class BiofiltreManager : MonoBehaviour
     [SerializeField] private float plantingDirtBurstDestroyDelay = 2f;
 
     private const int PlantSortingBase = 20;
+    private const float BatchHarvestDoubleClickSeconds = 0.35f;
 
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
@@ -43,6 +44,8 @@ public class BiofiltreManager : MonoBehaviour
     private SeedSelectionUI cachedSeedSelectionUi;
     private HarvestPanelUI cachedHarvestPanelUi;
     private PlantSelectionHighlight activePlantSelectionHighlight;
+    private int lastPlantClickId;
+    private float lastPlantClickUnscaledTime;
 
     // Suppression du clic de placement : le clic confirmant la pose est livré par
     // l'EventSystem au relâchement (souvent une frame plus tard que l'instanciation
@@ -149,8 +152,45 @@ public class BiofiltreManager : MonoBehaviour
             ClearPlantSelectionHighlight();
             TryOpenFarmSeedSelection(cell);
         }
-        else
+        else if (!TryConsumeBatchHarvestDoubleClick(cell.GridCoordinates))
             TryOpenPlantPopup(cell.GridCoordinates);
+    }
+
+    /// <summary>Bouton placeholder du popup : arme le balayage jusqu'au prochain relâchement souris.</summary>
+    public void ArmBatchHarvest()
+    {
+        FarmBatchHarvestInput batch = GetComponent<FarmBatchHarvestInput>();
+        batch?.Arm();
+    }
+
+    /// <summary>
+    /// Second clic rapide sur la même plante récoltable : la récolte, puis laisse le glisser continuer.
+    /// </summary>
+    private bool TryConsumeBatchHarvestDoubleClick(Vector2Int coords)
+    {
+        if (!FarmPointerInput.IsMouseDriven())
+            return false;
+
+        GameObject plant = gridManager.GetPlantAt(coords);
+        if (plant == null || !plant.TryGetComponent(out PlantHarvestInteractor interactor))
+            return false;
+
+        int plantId = plant.GetInstanceID();
+        float now = Time.unscaledTime;
+        bool isDoubleClick = plantId == lastPlantClickId
+            && (now - lastPlantClickUnscaledTime) <= BatchHarvestDoubleClickSeconds;
+        lastPlantClickId = plantId;
+        lastPlantClickUnscaledTime = now;
+
+        if (!isDoubleClick || !interactor.CanHarvestNow())
+            return false;
+
+        HideFarmPlantHarvestPopup();
+        if (!interactor.ConfirmHarvest())
+            return true;
+
+        GetComponent<FarmBatchHarvestInput>()?.BeginStroke(coords);
+        return true;
     }
 
     /// <summary>Ferme le popup graines (panneau + instance lazy host).</summary>

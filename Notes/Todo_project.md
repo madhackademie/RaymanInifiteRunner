@@ -45,17 +45,47 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-01 :** roquette 1×1 **playtest OK** (shop + atlas PPU 100 + `stageDisplayScales`). Caméra farm toujours **clos APK 2026-09-29** — `Notes/Farm/NOTE_camera_view_zoom.md`.
+> **2026-10-01 fin :** branche `feature/farm-plant-paint`. Tag `marker/avant-pose-glisser-2026-10-01` poussé. Glisser souris pose + récolte batch en code, **pas playtestés**. Mobile et bouton popup = prochaine session.
+
+### ★★ P0 — Fermer le choix de graines avant le popup plante `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`
+
+**Comportement voulu (2026-10-01) :** clic case vide → popup choix de graines = OK. Si on clique ensuite une plante qui est derrière ce popup, le choix de graines doit se **fermer avant** d’ouvrir le popup plante. Les deux ne restent pas ouverts ensemble.
+
+**Bezy (demande auteur) :** un seul fichier, méthode déjà là. Pas de prefab, pas de nouveau binding.
+
+**Script :** `Assets/Scripts/Farm/BiofiltreManager.cs` — `HandleCellClicked` ouvre `TryOpenPlantPopup` sans appeler `HideFarmSeedSelectionPopup()`. Le popup plante = `PopupId.FarmPlantHarvest` via `TryOpenFarmPlantHarvestPopup`.
+
+**Prompt :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` + `@Notes/Bezi/RULES_bezy_code.md`
+
+1. [ ] Bezy : `HideFarmSeedSelectionPopup()` juste avant `TryOpenFarmPlantHarvestPopup` dans `TryOpenPlantPopup`.
+2. [ ] Playtest auteur (hors prompt) : graines ouvertes → clic plante derrière → graines fermées, puis popup plante seul.
 
 ### ★ P0 — Plantation mobile (touch ≠ souris) `[P0-FARM-PLANT-TOUCH-MODE-001]`
 
 **Contexte :** Township caméra OK ; **pose plante** encore modèle souris. Plante ref. **roquette** footprint 1×1.
 
+**Décision 2026-10-01 :** peinture au glisser (chaque case valide, fin au relâchement ou stock 0 = popup une fois). Pas de grille fantôme pour ce test : ancre calée sur le pas du footprint (roquette 1, laitue 2). Bezy plus tard seulement si le pas ne suffit pas (visuel). Crédits Bezy économisés sur la logique.
+
+**Branche d’essai :** `feature/farm-plant-paint` (pas de merge `main`). Tag retour : `marker/avant-pose-glisser-2026-10-01` sur `a7d233e`.
+
 **Refs :** `Notes/Farm/NOTE_roquette_footprint1_setup.md` § Suite mobile · `FarmGridPointerInput` · `PlantPlacementPreview`.
 
-1. [ ] Spec mode plantation dédié (ghost, validation relâchement, pas conflit pan caméra).
-2. [ ] Cursor : archi / services ; Bezy : preview/visuel si besoin.
-3. [ ] Playtest APK roquette + laitue.
+1. [x] Spec mode peinture + pas de footprint (pas de 2ᵉ grille).
+2. [~] Cursor : glisser souris dans `PlantPlacementPreview` (tactile inchangé). Bezy : non, tant que pas de visuel.
+3. [ ] Playtest PC souris (fluidité roquette, puis laitue).
+4. [ ] **Playtest mobile (APK)** — le tactile n’a pas ce geste : le playtest montre l’écart, puis porter le balayage au doigt.
+
+### ★ P0 — Récolte batch souris `[P0-FARM-HARVEST-BATCH-001]`
+
+Même geste que la pose : balayage, une plante récoltable à la fois, **relâchement = fin**. Pas d’arrachage. Plante immature ignorée. Inventaire plein ou plus de PA = un seul message, le trait s’arrête.
+
+**Constat fin session (auteur) :** le bouton blanc **n’est pas** sur le popup récolte. Ce popup **bloque le double-clic** (le second clic tombe sur l’UI, pas sur la plante).
+
+1. [x] Cursor : double-clic prévu pour récolter **et** armer le glisser (tenir le second clic). **KO en jeu** tant que le popup s’ouvre au premier clic.
+2. [ ] Bezy `[BZ-FARM-HARVEST-BATCH-BTN-001]` : poser le bouton blanc `Batch` sur `FarmHarvestPanel.prefab` → `batchHarvestButton`. Prompt : `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_batch_button.md`
+3. [ ] Cursor : le popup ne doit plus manger le double-clic (ouvrir après un clic simple confirmé, ou laisser passer le second clic monde).
+4. [ ] Playtest souris une fois le bouton en place et le double-clic débloqué.
+5. [ ] **Playtest mobile (APK)** après le port tactile (aujourd’hui souris seulement).
 
 ### ~~P0 — Roquette footprint 1×1~~ `[P0-FARM-PLANT-ROQUETTE-001]` — **clos** 2026-10-01
 

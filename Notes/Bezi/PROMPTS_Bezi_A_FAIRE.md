@@ -1,6 +1,6 @@
 # Bezy — prompts encore à faire (index unique)
 
-**MAJ :** 2026-09-30 — caméra farm touch/pan **clos APK 2026-09-29** ; seul reset optionnel en file.  
+**MAJ :** 2026-10-01 — bouton blanc récolte batch à poser ; graines-avant-plante toujours en file.  
 **Texte complet des prompts :** `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` (fichier `@` dans Unity).  
 **Statut opérationnel :** cocher dans `Notes/Bezi/BEZY_QUEUE.md` après chaque phase.
 
@@ -12,6 +12,8 @@
 
 | Task ID | Phase | Notes |
 |---------|-------|--------|
+| `[BZ-FARM-HARVEST-BATCH-BTN-001]` | prefab | **P0** — bouton blanc `Batch` sur `FarmHarvestPanel`. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_batch_button.md` |
+| `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **P0** — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` + `@Notes/Bezi/RULES_bezy_code.md` |
 | `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | `@Notes/Art/PROMPTS_Bezi_laitue_atlas_reloc.md` — laitue déplacée + offsets |
 | ~~`[BZ-FARM-ROQUETTE-ATLAS-001]`~~ | — | **clos** 2026-10-01 (slice auteur + Bezy Ph.3) |
 | `[BZ-FARM-CAM-RESET-001]` | A→C | Reset vue (optionnel) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |

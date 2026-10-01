@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Clic grille : écran → monde → (col, row) via <see cref="GridManager"/>.
@@ -15,41 +14,48 @@ public class FarmGridPointerInput : MonoBehaviour
     private GridManager gridManager;
     private BiofiltreGridVisualizer visualizer;
     private BiofiltreManager biofiltreManager;
+    private FarmBatchHarvestInput batchHarvest;
 
     private void Awake()
     {
         gridManager      = GetComponent<GridManager>();
         visualizer       = GetComponent<BiofiltreGridVisualizer>();
         biofiltreManager = GetComponent<BiofiltreManager>();
+        batchHarvest     = GetComponent<FarmBatchHarvestInput>();
+        if (batchHarvest == null)
+            batchHarvest = gameObject.AddComponent<FarmBatchHarvestInput>();
 
         if (worldCamera == null)
             worldCamera = Camera.main;
+
+        batchHarvest.Initialise(gridManager, biofiltreManager, worldCamera);
     }
 
     private void Update()
     {
-        if (biofiltreManager != null && biofiltreManager.ShouldSuppressFarmPointerUi)
+        bool strokeActive = batchHarvest != null && batchHarvest.IsStrokeActive;
+        if (biofiltreManager != null && biofiltreManager.ShouldSuppressFarmPointerUi && !strokeActive)
             return;
 
-        if (UsesDeferredTouchTap())
+        if (FarmPointerInput.IsMouseDriven())
         {
-            // Tap au relâchement avant Tick : sinon TryGetLongPressPan reset l'état (doigt déjà levé).
-            TryHandleTouchTapRelease();
-            FarmCameraInput.TickLongPressPanTracking();
+            if (batchHarvest != null && batchHarvest.TickMouse())
+                return;
+
+            if (!FarmPointerInput.TryGetPrimaryPress(out Vector2 screenPosition, out int pointerId))
+                return;
+
+            if (FarmPointerInput.IsOverUi(pointerId))
+                return;
+
+            TryNotifyCellAtScreen(screenPosition);
             return;
         }
 
-        if (!FarmPointerInput.TryGetPrimaryPress(out Vector2 screenPosition, out int pointerId))
-            return;
-
-        if (FarmPointerInput.IsOverUi(pointerId))
-            return;
-
-        TryNotifyCellAtScreen(screenPosition);
+        // Tap au relâchement avant Tick : sinon TryGetLongPressPan reset l'état (doigt déjà levé).
+        TryHandleTouchTapRelease();
+        FarmCameraInput.TickLongPressPanTracking();
     }
-
-    /// <summary>Tactile / simulateur : tap au relâchement pour laisser place au long press pan.</summary>
-    private static bool UsesDeferredTouchTap() => Touchscreen.current != null;
 
     private void TryHandleTouchTapRelease()
     {

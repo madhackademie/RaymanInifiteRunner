@@ -1,5 +1,46 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-01 — Fin session : glisser pose + récolte batch (souris)
+
+### Contexte
+- Branche **`feature/farm-plant-paint`** (créée depuis `feature/ui-kit-refonte`, pas de merge `main`).
+- Tag retour poussé : `marker/avant-pose-glisser-2026-10-01` (`a7d233e`, ajout roquette).
+
+### Livré (non playtesté)
+- **Pose** `[P0-FARM-PLANT-TOUCH-MODE-001]` : glisser souris dans `PlantPlacementPreview`. Ancre calée sur le pas du footprint (roquette 1, laitue 2). Relâchement ou stock 0 (popup une fois) = fin. Tactile inchangé.
+- **Récolte** `[P0-FARM-HARVEST-BATCH-001]` : `FarmBatchHarvestInput` — balayage des plantes récoltables, une fois par plante, relâchement = fin. Double-clic prévu pour récolter et armer. Champ `HarvestPanelUI.batchHarvestButton` prêt, **bouton pas dans le prefab**.
+
+### Constat auteur
+- Le bouton blanc **n’est pas** sur le popup récolte.
+- Ce popup **bloque le double-clic** (le second clic tombe sur l’UI).
+
+### Prochaine session (priorité)
+1. **`[BZ-FARM-HARVEST-BATCH-BTN-001]`** — poser le bouton blanc. Prompt `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_batch_button.md`.
+2. **Double-clic** — le popup ne doit plus le manger.
+3. **Playtest mobile (APK)** pose + récolte. Le doigt n’a pas encore le geste : playtest = mesurer l’écart, puis porter le balayage au tactile.
+4. Playtest PC souris : fluidité roquette, puis laitue (pas 2).
+5. Bezy encore ouvert : `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`.
+
+### Git (auteur)
+- Push : **auteur**. Branche locale `feature/farm-plant-paint` (pas d’upstream tant que pas poussée).
+- Tag déjà sur le remote.
+
+---
+
+## 2026-10-01 — Note P0 Bezy : fermer graines avant popup plante
+
+### Contexte
+- Demande auteur : clic case vide → choix de graines OK ; clic sur une plante derrière ce popup → fermer les graines **avant** d’ouvrir le popup plante.
+- Tâche **Bezy** (pas Cursor), priorité immédiate.
+
+### Ajouté
+- **`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`** en tête de `Notes/Todo_project.md` § Prochaine session.
+- Prompt : `Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md`.
+- Cible : `BiofiltreManager.TryOpenPlantPopup` — appeler `HideFarmSeedSelectionPopup()` avant `TryOpenFarmPlantHarvestPopup`.
+- Référence prochaine « tâche du jour » : cette ligne, devant plantation mobile et zoom molette.
+
+---
+
 ## 2026-10-01 — Fin session : roquette 1×1 + atlas laitue + échelle stades
 
 ### Contexte
