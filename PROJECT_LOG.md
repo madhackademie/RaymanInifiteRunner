@@ -1,5 +1,26 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-03 — Fin session : gant idle + arrachage, polish ensuite
+
+### Constat auteur
+- Playtest PC : le gant **idle** joue quand la récolte batch est armée.
+- Clic tenu : le gant d’**arrachage** joue. Relâchement : le gant disparaît, curseur OS de retour.
+- Bezy a seulement recalculé les pivots de `GloveHarvest_01`–`_06`. La feuille idle n’a pas été retouchée.
+- L’icône est **trop grande**. Le placement reste à polir.
+
+### Prochaine session (référence « tâche du jour »)
+1. `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` — taille et placement du gant, **avant** le reste. Bezy sur `BatchHarvestCursor`.
+2. Playtest mobile (APK) pose + récolte batch.
+3. Si le playtest valide : mettre à jour `feature/ui-kit-refonte`, puis merger `feature/farm-plant-paint` dans `main`. Prévu **ce soir**.
+4. Hors créneau : `[P0-FARM-HARVEST-GRID-CLAMP-001]`, puis `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`.
+
+### Git
+- Push : **auteur**.
+- Branche : `feature/farm-plant-paint`.
+- Non commité : pivots `Plant_Harvest_Harvesting_Cursor.png.meta` + ces notes.
+
+---
+
 ## 2026-10-01 — Fin session : gant calé, prochaine fois
 
 ### Constat auteur

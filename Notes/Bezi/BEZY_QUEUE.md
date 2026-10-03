@@ -25,7 +25,8 @@
 
 | Statut | Task ID | Phase | Notes |
 |--------|---------|-------|-------|
-| [ ] | `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` | anim | **P0 première** — animation récolte du curseur encore à faire. Ph.1–4, une par appel. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_cursor_anim.md` |
+| [ ] | `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` | vue | **P0 première** — gant trop grand, placement à caler (idle + arrachage). Scale / offset sur `BatchHarvestCursor`. Pas de reslice. |
+| [x] | `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` | anim | Joue 2026-10-03 — idle armé, arrachage au clic tenu. Pivots récolte seulement. |
 | [x] | `[BZ-FARM-HARVEST-BATCH-BTN-001]` | prefab | Bouton blanc Batch câblé 2026-10-01 (Ph.1–3). |
 | [ ] | `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **P0 prochaine session** — pas de pile : case libre puis plante, le choix de graines ne reste pas ouvert. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` |
 | [~] | `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | Pivot + PPU 33 OK auteur 2026-10-01 ; clos si wiring + icônes OK |

@@ -1,6 +1,6 @@
 # Bezy — prompts encore à faire (index unique)
 
-**MAJ :** 2026-10-01 soir — gant calé. Prochain Bezy = animation récolte du curseur, Ph.1–4, avant le reste.  
+**MAJ :** 2026-10-03 — idle + arrachage jouent. Prochain Bezy = polish taille et placement du gant, avant playtest APK et merge.  
 **Texte complet des prompts :** `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` (fichier `@` dans Unity).  
 **Statut opérationnel :** cocher dans `Notes/Bezi/BEZY_QUEUE.md` après chaque phase.
 
@@ -12,7 +12,8 @@
 
 | Task ID | Phase | Notes |
 |---------|-------|--------|
-| `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` | anim 1→4 | **P0 première** — animation récolte du curseur. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_cursor_anim.md` |
+| `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` | vue | **P0 première** — taille trop grande + placement. `BatchHarvestCursor` dans `Biofiltre.prefab`. Pas de reslice idle. |
+| ~~`[BZ-FARM-HARVEST-CURSOR-ANIM-001]`~~ | anim | **joue** 2026-10-03 — idle armé, arrachage au clic tenu. |
 | ~~`[BZ-FARM-HARVEST-BATCH-BTN-001]`~~ | prefab | **clos** 2026-10-01 — bouton blanc câblé |
 | `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **P0** — pas de pile popup. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` + `@Notes/Bezi/RULES_bezy_code.md` |
 | `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | `@Notes/Art/PROMPTS_Bezi_laitue_atlas_reloc.md` — laitue déplacée + offsets |
