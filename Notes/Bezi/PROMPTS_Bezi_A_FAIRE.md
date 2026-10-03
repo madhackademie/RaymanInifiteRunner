@@ -12,6 +12,7 @@
 
 | Task ID | Phase | Notes |
 |---------|-------|--------|
+| ~~`[BZ-FARM-PLANTING-CURSOR-ANIM-001]`~~ | **5** | **livré** 2026-10-03 — prefab câblé. Reste : Ph. **2→3b→4** quand art `Plant_Planting_Sowing_Cursor.png`. |
 | `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` | vue | **P0 première** — taille trop grande + placement. `BatchHarvestCursor` dans `Biofiltre.prefab`. Pas de reslice idle. |
 | ~~`[BZ-FARM-HARVEST-CURSOR-ANIM-001]`~~ | anim | **joue** 2026-10-03 — idle armé, arrachage au clic tenu. |
 | ~~`[BZ-FARM-HARVEST-BATCH-BTN-001]`~~ | prefab | **clos** 2026-10-01 — bouton blanc câblé |

@@ -1,5 +1,42 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-04 — Fin session : curseur plantation + prep merge
+
+### Objectif session (suite `feature/farm-plant-paint`)
+- Art + animation **gant plantation** (preview graines), aligné récolte batch.
+- Câblage Bezy ; scripts Cursor sans toucher prefab (ownership).
+
+### Livré
+- **Art :** `Plant_Planting_Idle_Cursor.png` ; slices `GlovePlantIdle_01`–`_06` (PPU 256, pivot bas). Prompts §3 dans `Notes/Art/PROMPT_curseur_gant_recolte_batch.md` (idle paume vers le ciel + bounce graines ; sheet sowing §3.2 pour plus tard).
+- **Bezy :** `GlovePlantIdle.anim` (Ph. 3a) ; **Ph. 5** — enfant `PlantPlacementCursor` sur `Biofiltre.prefab` (scale 0,75, `GlovePlantCursor`, refs `FarmPlantingCursor`).
+- **Cursor (code) :** `FarmPlantingCursor.cs` ; `PlantPlacementPreview` — `IsPreviewModeActive` / `IsPaintStrokeActive`.
+- **Anim :** `GlovePlantCursor.controller` (bool `Planting` ; état sowing = **même clip idle** en attendant `Plant_Planting_Sowing_Cursor.png`).
+- **Docs Bezy :** `Assets/Docs/Bezi/PROMPTS_Bezi_farm_planting_cursor_anim.md` (ownership Bezy clips/controller/prefab).
+
+### Décisions auteur
+- Plantation : **2 sprite sheets** (idle + action) — pas 1 sheet pour garder le polish.
+- **Tout câblage visuel/prefab/anim = Bezy** — pas de bootstrap runtime ni YAML prefab côté Cursor (contournement retiré).
+
+### Backlog ajouté
+- **`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`** — feedback visible quand plus de PA (clignotement panneau PA, etc.).
+- **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`** — **prochaine session** : merge harvest + seeding controllers → `main`.
+
+### Reste sur la branche (avant merge)
+- Art sowing : `Plant_Planting_Sowing_Cursor.png` → Bezy Ph. 2 / 3b / 4.
+- **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** — taille/placement gant récolte.
+- **`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`** · **`[P0-FARM-HARVEST-GRID-CLAMP-001]`**.
+
+### Git
+- Branche : **`feature/farm-plant-paint`** (tracking `origin/feature/farm-plant-paint`).
+- **Non commité (auteur) :** prefab Biofiltre, scripts farm, anim plantation, art cursor idle, docs `Notes/` + `PROJECT_LOG.md`, `PROMPTS_Bezi_farm_planting_cursor_anim.md`.
+- **Commit / push / merge `main` : auteur** (checklist § `[P0-FARM-CURSOR-SYSTEM-MERGE-001]` dans `Notes/Todo_project.md`).
+
+### Prochaine session (référence « tâche du jour »)
+1. **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`** — playtest PC puis merge **`feature/farm-plant-paint`** → **`main`**.
+2. Puis APK si dispo ; polish gant récolte / feedback PA selon temps.
+
+---
+
 ## 2026-10-03 — Fin session : gant idle + arrachage, polish ensuite
 
 ### Constat auteur

@@ -70,6 +70,15 @@ public class FarmBatchHarvestInput : MonoBehaviour
         if (mode == FarmBatchHarvestMode.Idle)
             return false;
 
+        UnityEngine.InputSystem.Mouse mouse = UnityEngine.InputSystem.Mouse.current;
+        bool mouseDriven = mouse != null && FarmPointerInput.IsMouseDriven();
+
+        if (mode == FarmBatchHarvestMode.Armed && mouseDriven && mouse.rightButton.wasPressedThisFrame)
+        {
+            EndStroke();
+            return true;
+        }
+
         if (biofiltreManager != null && biofiltreManager.IsPlantPlacementPreviewActive)
         {
             SetMode(FarmBatchHarvestMode.Idle);
@@ -90,6 +99,13 @@ public class FarmBatchHarvestInput : MonoBehaviour
         {
             if (!pressed || overUi)
                 return false;
+
+            // Hors grille : on quitte. Sur une cellule, le balayage démarre.
+            if (!TryCellUnderPointer(out _))
+            {
+                EndStroke();
+                return true;
+            }
 
             EnterStroke();
         }

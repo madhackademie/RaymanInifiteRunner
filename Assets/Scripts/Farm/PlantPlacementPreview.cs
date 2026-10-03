@@ -34,6 +34,12 @@ public class PlantPlacementPreview : MonoBehaviour
     private bool             hasVisitedAnchor;
     private Vector2Int       visitedAnchor;
 
+    /// <summary>Preview graine actif (composant enabled après <see cref="Begin"/>).</summary>
+    public bool IsPreviewModeActive => enabled;
+
+    /// <summary>Clic / glisser en cours pour peindre des graines.</summary>
+    public bool IsPaintStrokeActive => enabled && strokeActive;
+
     // ── Initialisation ────────────────────────────────────────────────────────
 
     /// <summary>

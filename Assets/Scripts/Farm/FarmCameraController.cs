@@ -10,7 +10,6 @@ public class FarmCameraController : MonoBehaviour
 {
     private const float DefaultPaddingFactor = 1.08f;
     private const float DefaultMinOrthoSize = 1.5f;
-    private const float ScrollZoomSensitivity = 0.001f;
     private const float NoMaxOrthoSize = 0f;
 
     [SerializeField] private Camera worldCamera;
@@ -29,6 +28,9 @@ public class FarmCameraController : MonoBehaviour
 
     [Tooltip("Zoom arrière max (ortho size). 0 = pas de plafond.")]
     [SerializeField] [Min(0f)] private float maxOrthoSize = NoMaxOrthoSize;
+
+    [Tooltip("Pas de zoom de la molette PC. Ne change pas le pinch.")]
+    [SerializeField] [Min(0.0001f)] private float scrollZoomSensitivity = 0.1f;
 
     [SerializeField] private bool frameOnStart = true;
     [SerializeField] private bool allowPan = true;
@@ -129,7 +131,7 @@ public class FarmCameraController : MonoBehaviour
         Vector2 pivot = Mouse.current != null
             ? Mouse.current.position.ReadValue()
             : new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-        ApplyZoom(1f - scrollY * ScrollZoomSensitivity, pivot);
+        ApplyZoom(1f - scrollY * scrollZoomSensitivity, pivot);
     }
 
     private void HandlePinchZoom()

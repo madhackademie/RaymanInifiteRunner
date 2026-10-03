@@ -45,28 +45,65 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-03 fin :** branche **`feature/farm-plant-paint`**. Pose + récolte batch **PC OK**. Gant idle **et** gant d’arrachage **jouent** (clic tenu = arrachage, relâchement = curseur OS). **Polish à faire avant le reste :** placement du gant et taille de l’icône (trop grande). Playtest APK et merge prévus **ce soir**, après ce polish. Push = auteur.
+> **Session fermée 2026-10-04** — journal : `PROJECT_LOG.md` § « Fin session : curseur plantation + prep merge ».  
+> **Prochaine session = merge** **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`** (curseurs récolte + plantation → `main`). Branche : **`feature/farm-plant-paint`**. Commit / push / merge = **auteur**.
 
-**Ordre auteur (prochaine fois, ce soir) :**
+### ★★ P0 — Merge système curseurs harvest / seeding `[P0-FARM-CURSOR-SYSTEM-MERGE-001]`
 
-1. **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** — **en premier**. Réduire la taille du gant et caler son placement (idle et arrachage). Bezy, pas Cursor. Ne pas retoucher la feuille idle déjà en place sauf le scale / l’offset du curseur.
-2. **Playtest mobile (APK)** — pose au glisser + récolte batch. Pinch = zoom. Hors de ces modes, long press = pan.
-3. **Si le playtest valide :** mettre à jour **`feature/ui-kit-refonte`**, puis merger **`feature/farm-plant-paint`** dans **`main`**. Push = auteur.
+**Périmètre livré à intégrer dans `main` :**
 
-Ensuite, hors du créneau merge :
+| Couche | Récolte batch | Plantation (preview graines) |
+|--------|---------------|------------------------------|
+| Controllers | `GloveCursor` (`Harvesting`) | `GlovePlantCursor` (`Planting`) |
+| Clips | `GloveIdle` / `GloveHarvest` | `GlovePlantIdle` (+ `GlovePlantSowing` quand art prêt) |
+| Prefab | `BatchHarvestCursor` | `PlantPlacementCursor` |
+| Script | `FarmBatchHarvestCursor` | `FarmPlantingCursor` + `PlantPlacementPreview` |
 
-4. **`[P0-FARM-HARVEST-GRID-CLAMP-001]`** — clamp de grille, ou une plante par cellule et l’art qui porte la taille.
-5. **`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`** — pas de pile : fermer le choix de graines avant le popup plante.
+**Checklist merge (auteur) :**
+
+1. [ ] Commit / push **`feature/farm-plant-paint`** à jour (anim, prefab, scripts, art cursor plantation idle).
+2. [ ] Playtest PC rapide : pose graines (gant plantation) + récolte batch (gant idle / arrachage).
+3. [ ] Resync **`feature/ui-kit-refonte`** si nécessaire avant merge.
+4. [ ] Merge **`feature/farm-plant-paint`** → **`main`**. Résoudre conflits prefab `Biofiltre` / `NavigationHUD` si besoin.
+5. [ ] Playtest post-merge sur `main` (PC puis APK si dispo).
+
+**Hors merge (après ou en parallèle si blocage) :**
+
+- **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** — taille / placement gant récolte (Bezy).
+- **`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`** — feedback PA épuisés.
+- **`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`** · **`[P0-FARM-HARVEST-GRID-CLAMP-001]`**.
+
+### ★ P0 — Feedback PA épuisés `[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`
+
+**Symptôme auteur 2026-10-03 :** sans PA, je continue à essayer de **planter** ou **jouer** — pas assez clair que c’est bloqué par le budget PA.
+
+**Existant (à renforcer, pas dupliquer) :** `ActionPointService.OnSpendRefused` → `ActionPointsHudView.PlayRefusePulse` (trigger `Refuse`). Récolte batch : un message si PA insuffisants (`Notes/Todo_project.md` § récolte batch).
+
+**Objectif UX :** dès qu’une action farm consomme des PA et échoue faute de budget (pose graine, récolte, etc.), feedback **immédiat et visible** :
+- **Panneau PA** (`ActionPointsHudWidget` / `ActionPointsHudView`) : pulse / **clignotement** court (couleur, scale, ou anim Bezy sur le widget).
+- Optionnel : toast ou ligne HUD « Plus de points d’action » (si le pulse seul ne suffit pas au playtest).
+
+**Périmètre :**
+- Cursor : vérifier que **toutes** les actions concernées déclenchent bien `OnSpendRefused` (ex. `BiofiltreManager.TryPlantSeedAt`, récolte batch) ; spec + hook si manquant.
+- Bezy : anim / visuel sur le prefab PA si besoin (pas de refonte HUD entier).
+
+**Refs :** `Assets/Scripts/Systems/ActionPointService.cs` · `Assets/Scripts/UI/ActionPointsHudView.cs` · `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
+
+1. [ ] Playtest : reproduire « 0 PA + clic planter » — noter si `Refuse` se voit sur mobile.
+2. [ ] Renforcer feedback (pulse + clignotement panneau PA, ou toast).
+3. [ ] Playtest auteur : on comprend qu’il faut arrêter sans chercher pourquoi la pose ne part pas.
 
 ### ★★ P0 — Polish gant récolte `[BZ-FARM-HARVEST-CURSOR-POLISH-001]`
 
-**Constat auteur 2026-10-03 :** idle et arrachage fonctionnent. L’icône est **trop grande**. Le placement reste à polir.
+**Constat auteur 2026-10-03 :** idle et arrachage fonctionnent. L’icône est **trop grande**.
 
-**Bezy :** scale et offset sur `BatchHarvestCursor` dans `Assets/Prefabs/World/Biofiltre.prefab`. Pas de nouveau slice. Pas d’édition de `Plant_Harverst_Idle_Cursor.png`.
+**Décision 2026-10-03 soir :** scale fixe **0,75** de l’original (`localScale` 1 → 0,75 sur `BatchHarvestCursor`). Pas de lien avec le zoom ni la taille des plantes. Le clamp automatique du curseur sur la cellule vient **après**, à part.
 
-1. [ ] Réduire la taille du gant (idle et arrachage ensemble).
-2. [ ] Caler le placement sur le pointeur.
-3. [ ] Playtest auteur PC, puis seulement ensuite l’APK.
+**Bezy :** scale seul dans `Assets/Prefabs/World/Biofiltre.prefab`. Pas de nouveau slice. Pas d’édition de `Plant_Harverst_Idle_Cursor.png`.
+
+1. [x] Scale `0.75, 0.75, 0.75` sur `BatchHarvestCursor` — livré Bezy 2026-10-03. Position inchangée.
+2. [ ] Playtest auteur PC, puis seulement ensuite l’APK.
+3. [ ] Plus tard : clamp auto du curseur sur la cellule (réflexion à part, pas ce scale).
 
 ### ★ P0 — Animation curseur récolte `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` — **joue** 2026-10-03
 
@@ -142,12 +179,13 @@ Data + atlas + shop + playtest pose/croissance OK. Affinage optionnel : `stageDi
 
 **Constat 2026-10-01 :** le zoom souris est trop fin — un cran de molette ne change la vue que de quelques millimètres (pas « mm par millimètre »).
 
-**À faire :** remplacer la constante `ScrollZoomSensitivity` (`0.001f`) dans `FarmCameraController` par un `[SerializeField]` (ex. `scrollZoomSensitivity`). L’auteur tweake la valeur dans l’Inspector et playteste lui-même — pas de valeur figée par Cursor, pas de job Bezy.
+**Décision 2026-10-03 soir :** Bezy remplace `ScrollZoomSensitivity` (`0.001f`) par un `[SerializeField] scrollZoomSensitivity`, défaut **0,1**. Molette PC seulement. **Ne pas toucher** `HandlePinchZoom` ni `pinchZoomStrength`. L’auteur ajuste dans l’Inspector s’il faut.
 
 **Script :** `Assets/Scripts/Farm/FarmCameraController.cs` — `HandleScrollZoom` : `ApplyZoom(1f - scrollY * ScrollZoomSensitivity, pivot)`.
 
 1. [ ] Exposer le pas de zoom molette en `[SerializeField]`.
 2. [ ] Playtest auteur : cran de molette nettement plus large ; ajuster la valeur dans l’Inspector.
+3. [ ] Réglage joueur plus tard : `[BL-OPTION-CAM-SENS-001]` (`tag: option`). Pas dans ce correctif.
 
 ### ★ P0 — Bornes caméra niveau ferme `[P0-FARM-LEVEL-CAM-BOUNDS-001]`
 
@@ -404,7 +442,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 > **Caméra farm :** touch/pan/zoom **clos APK 2026-09-29** sur branche courante (`feature/ui-kit-refonte`). Suite : `[P0-FARM-LEVEL-CAM-BOUNDS-001]` en scène ; reset optionnel `[BZ-FARM-CAM-RESET-001]`.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
-> **Priorité immédiate (prochaine session, 2026-10-03) :** 1) `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` taille + placement du gant 2) playtest APK 3) si OK : màj `feature/ui-kit-refonte` puis merge `main` (prévu ce soir). Hors créneau : clamp grille, fermeture choix de graines. Détail : section « Prochaine session » en tête de fichier.  
+> **Priorité immédiate (prochaine session) :** **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`** — merge **`feature/farm-plant-paint`** → **`main`** (système curseurs récolte + plantation : controllers, prefab Biofiltre, scripts). Playtest avant merge. Détail : § « Prochaine session » en tête de fichier.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows (`NOTE_hud_biofiltre_prefab_en_dur.md`).  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
@@ -975,6 +1013,13 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 ### Ferme — QoL monétisé (plus tard)
 
 - [ ] **[BL-FARM-HARVEST-ALL-001]** Bouton **récolte en un clic** sur la grille biofiltre : simuler le clic + validation de récolte sur **chaque** objet récoltable de la grille (accélération joueur). **Gate monétisation** (à trancher) : vision pub récompensée **ou** monnaie produite via pubs **ou** pass NoPub. Spec GDD + UI + service harvest batch — **pas avant** fondation monétisation / ads.
+
+### Options — `tag: option`
+
+- [ ] **[BL-OPTION-CAM-SENS-001]** `tag: option` — Dans le panneau Options (suite de `[BL-PROTO-004]`), le joueur règle la **sensibilité** du déplacement caméra et du zoom. Les noms joueur sont **sensibilité**, pas vitesse : ça scale la réponse à un geste (glisser, molette, pinch), la caméra ne se déplace pas toute seule.
+  - Variables : `panSensitivity` (à ajouter — le pan est aujourd’hui 1:1), `scrollZoomSensitivity` (molette PC), `pinchZoomStrength` (pinch, déjà en place). Le pinch mobile actuel reste la base ; le slider ne le remplace pas tant qu’il n’est pas validé.
+  - **Scène sandbox** dédiée : sliders branchés sur ces champs, pour tester et figer les valeurs avant de les copier dans les Options. Pas de gameplay ferme dans cette scène.
+  - Hors du polish gant / APK / merge en cours.
 
 ### Prototype gameplay
 - [~] [BL-PROTO-001] Finaliser la state machine culture (transitions gameplay/récolte).

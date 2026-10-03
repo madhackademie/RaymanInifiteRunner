@@ -25,6 +25,7 @@
 
 | Statut | Task ID | Phase | Notes |
 |--------|---------|-------|-------|
+| [x] | `[BZ-FARM-PLANTING-CURSOR-ANIM-001]` | **5** | Livré Bezy 2026-10-03 — `PlantPlacementCursor` sur `Biofiltre.prefab` (scale 0.75, GlovePlantCursor, refs OK). |
 | [ ] | `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` | vue | **P0 première** — gant trop grand, placement à caler (idle + arrachage). Scale / offset sur `BatchHarvestCursor`. Pas de reslice. |
 | [x] | `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` | anim | Joue 2026-10-03 — idle armé, arrachage au clic tenu. Pivots récolte seulement. |
 | [x] | `[BZ-FARM-HARVEST-BATCH-BTN-001]` | prefab | Bouton blanc Batch câblé 2026-10-01 (Ph.1–3). |
