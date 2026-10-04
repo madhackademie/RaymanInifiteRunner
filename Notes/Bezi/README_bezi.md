@@ -22,7 +22,7 @@ Regle simple:
 - **Structure / services / persistance / cloud / clean code metier** -> Codex en premier.
 
 Regle Cursor : `.cursor/rules/bezy_prefab_ownership.mdc` + `.cursor/rules/bezy_delegate_simple_code.mdc`.  
-**Bezy `@` prompts :** `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` · **À faire :** `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` · Workflow : `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md` (sans GitHub MCP, sans commit par prompt).
+**Prompts Bezy :** index **`Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`** (fichiers `@` restants sous `Assets/Docs/Bezi/`). **Politique 2026-10-04 :** ne pas créer de nouveau fichier prompt sans demande auteur — jobs courants = texte **chat Bezy** préparé par Cursor. Workflow : `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`.
 
 **Workspace Rules Bezy.ai (UI Bezy)** : copier le bloc depuis `Notes/Bezi/WORKSPACE_RULES_paste_in_bezi.md` — **pas** l’ancienne règle « Cursor fournit tout le C# ».
 

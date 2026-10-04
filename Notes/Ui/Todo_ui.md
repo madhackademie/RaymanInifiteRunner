@@ -34,6 +34,20 @@ Règle :
 - **Fait** (branche `rework/shopitempopup`, merge `main`) : `ShopItemPopupController` / `ShopItemPopupView`, prefab `Assets/Prefabs/Ui/ShopItemPopup.prefab` — input quantité, Max, overlay confirmation, `CurrencyBalanceUI` (solde) dans le Header. Statuts : **`Notes/Todo_project.md`** [P0-SHOP-POP-001], [CT-SHOP-003]…[006].
 - **Reste optionnel** : passe UX globale shop [CT-SHOP-002] (focus, transitions, polish visuel).
 
+### Inventaire — sélection multiple / suppression bulk `[BL-INV-BULK-SELECT-001]`
+
+**Demande auteur 2026-10-04.** Compléter le flux actuel **1 slot → popup détail → Jeter/compost** (`InventoryUI`, `ScreenPopupHost`, drop V0).
+
+**UX cible (brouillon) :**
+- Bouton **Sélectionner** (ou long-press slot) → mode multi : coches sur slots, compteur « N sélectionnés ».
+- Actions barre : **Jeter / compost** (même règles métier que drop unitaire) ; option **Tout l’onglet** si filtre actif (Graines / Conso / Récoltes).
+- Confirmation **une fois** pour le lot (popup générique ou overlay dédié) ; inventaire plein / items non droppables → message clair, lot partiel si spec OK.
+- **Hors V1 :** vente bulk, craft bulk, sélection cross-onglets.
+
+**Fichiers probables :** `InventoryUI.cs`, `InventorySlotUI.cs`, `InventoryScreenController`, prefab `Assets/Prefabs/Ui/InventoryScreen.prefab`, popup drop existant.
+
+**Refs :** `Notes/GDD/SPEC_inventaire_multiverse_hub.md` (actions Jeter/compost) · statut **`Notes/Todo_project.md`**.
+
 ### Navigation Scene/UI
 - Revalider tous les chemins `SceneNavigator.ShowScene` (transitions, hub `HomeScene`, retour gameplay).
 - Vérifier `NavigationHUD` + `MapSceneController` + `FirstLvlController` en playtest.

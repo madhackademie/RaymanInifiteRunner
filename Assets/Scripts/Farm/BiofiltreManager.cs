@@ -254,6 +254,8 @@ public class BiofiltreManager : MonoBehaviour
 
         SetPlantSilhouetteHighlight(plantObj);
 
+        HideFarmSeedSelectionPopup();
+
         if (!TryOpenFarmPlantHarvestPopup(interactor, plantGrow, definition))
             ClearPlantSelectionHighlight();
     }
@@ -699,6 +701,8 @@ public class BiofiltreManager : MonoBehaviour
         ScreenPopupHost host = ResolveFarmPopupHost();
         if (host == null)
             return false;
+
+        HideFarmPlantHarvestPopup();
 
         if (!host.TryShowPopup(PopupId.FarmSeedSelection, out SeedSelectionUI ui))
         {

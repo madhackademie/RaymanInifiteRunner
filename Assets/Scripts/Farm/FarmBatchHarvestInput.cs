@@ -16,10 +16,12 @@ public enum FarmBatchHarvestMode
 /// <summary>
 /// Récolte en balayage souris ou doigt. Le mode s'éteint au relâchement.
 /// Une plante n'est prise qu'une fois, même si le curseur traverse son footprint.
+/// Cible grille : <see cref="GridManager.TryResolveClickTarget"/> (losanges footprint iso), pas raycast Unity UI.
 /// </summary>
 public class FarmBatchHarvestInput : MonoBehaviour
 {
     private GridManager gridManager;
+    private BiofiltreGridVisualizer gridVisualizer;
     private BiofiltreManager biofiltreManager;
     private Camera worldCamera;
     private FarmBatchHarvestMode mode = FarmBatchHarvestMode.Idle;
@@ -34,11 +36,33 @@ public class FarmBatchHarvestInput : MonoBehaviour
 
     public bool IsStrokeActive => mode == FarmBatchHarvestMode.Stroking;
 
-    public void Initialise(GridManager grid, BiofiltreManager manager, Camera camera)
+    public void Initialise(
+        GridManager grid,
+        BiofiltreManager manager,
+        BiofiltreGridVisualizer visualizer,
+        Camera camera)
     {
         gridManager = grid;
         biofiltreManager = manager;
+        gridVisualizer = visualizer;
         worldCamera = camera != null ? camera : Camera.main;
+    }
+
+    private void Update()
+    {
+        if (mode == FarmBatchHarvestMode.Idle)
+        {
+            ClearHarvestHover();
+            return;
+        }
+
+        if (FarmPointerInput.IsOverUi(GetPointerIdForHover()))
+        {
+            ClearHarvestHover();
+            return;
+        }
+
+        RefreshHarvestHover();
     }
 
     /// <summary>Bouton popup : attend le prochain clic grille, sans couper au relâchement du bouton.</summary>
@@ -100,12 +124,8 @@ public class FarmBatchHarvestInput : MonoBehaviour
             if (!pressed || overUi)
                 return false;
 
-            // Hors grille : on quitte. Sur une cellule, le balayage démarre.
-            if (!TryCellUnderPointer(out _))
-            {
-                EndStroke();
+            if (!TryResolveHarvestCellForAction(out _))
                 return true;
-            }
 
             EnterStroke();
         }
@@ -113,12 +133,28 @@ public class FarmBatchHarvestInput : MonoBehaviour
         if (mode != FarmBatchHarvestMode.Stroking)
             return false;
 
-        if (!overUi && (held || released) && TryCellUnderPointer(out Vector2Int cell))
+        if (!overUi && (held || released) && TryResolveHarvestCellForAction(out Vector2Int cell))
             HarvestPathTo(cell);
 
         if (mode == FarmBatchHarvestMode.Stroking && released)
             EndStroke();
 
+        return true;
+    }
+
+    /// <summary>
+    /// Position du gant : cellule résolue (centre / plante) ou pointeur brut — pas d'aimant auto.
+    /// </summary>
+    public bool TryGetCursorWorld(out Vector3 worldPosition)
+    {
+        worldPosition = default;
+        if (!TryGetPointerWorld(out Vector2 pointerWorld))
+            return false;
+
+        if (TryResolveHoverCell(out Vector2Int cell) && TryGetSnapWorldForCell(cell, out worldPosition))
+            return true;
+
+        worldPosition = new Vector3(pointerWorld.x, pointerWorld.y, 0f);
         return true;
     }
 
@@ -163,6 +199,7 @@ public class FarmBatchHarvestInput : MonoBehaviour
     {
         hasVisited = false;
         seenPlantIds.Clear();
+        ClearHarvestHover();
         SetMode(FarmBatchHarvestMode.Idle);
         biofiltreManager?.SuppressFarmPointerUiUntilPointerRelease();
     }
@@ -172,15 +209,88 @@ public class FarmBatchHarvestInput : MonoBehaviour
         if (mode == next)
             return;
 
+        if (next == FarmBatchHarvestMode.Idle)
+            ClearHarvestHover();
+
         mode = next;
         FarmCameraInput.SetHarvestBlocksPan(next != FarmBatchHarvestMode.Idle);
         ModeChanged?.Invoke(mode);
     }
 
-    private bool TryCellUnderPointer(out Vector2Int cell)
+    private void RefreshHarvestHover()
+    {
+        if (gridVisualizer == null || gridManager == null)
+            return;
+
+        if (!TryResolveHoverCell(out Vector2Int cell))
+        {
+            ClearHarvestHover();
+            return;
+        }
+
+        gridVisualizer.SetHarvestHoverCell(cell, IsCellHarvestable(cell));
+    }
+
+    private void ClearHarvestHover()
+    {
+        gridVisualizer?.ClearHarvestHoverCell();
+    }
+
+    private bool IsCellHarvestable(Vector2Int cell)
+    {
+        GameObject plant = gridManager.GetPlantAt(cell);
+        return plant != null &&
+               plant.TryGetComponent(out PlantHarvestInteractor interactor) &&
+               interactor.CanHarvestNow();
+    }
+
+    /// <summary>Hover / curseur : hit strict (losange footprint ou sol sous le pointeur).</summary>
+    private bool TryResolveHoverCell(out Vector2Int cell)
     {
         cell = default;
-        if (gridManager == null || !FarmPointerInput.TryGetScreenPosition(out Vector2 screen))
+        if (gridManager == null || !TryGetPointerWorld(out Vector2 world))
+            return false;
+
+        return gridManager.TryResolveClickTarget(world, out cell);
+    }
+
+    /// <summary>Clic / balayage : hit strict puis clamp bordure pour ne pas quitter le mode.</summary>
+    private bool TryResolveHarvestCellForAction(out Vector2Int cell)
+    {
+        cell = default;
+        if (gridManager == null || !TryGetPointerWorld(out Vector2 world))
+            return false;
+
+        if (gridManager.TryResolveClickTarget(world, out cell))
+            return true;
+
+        cell = gridManager.ClampWorldToBoundsCell(world);
+        return gridManager.IsInBounds(cell);
+    }
+
+    private bool TryGetSnapWorldForCell(Vector2Int cell, out Vector3 worldPosition)
+    {
+        worldPosition = default;
+        if (gridManager == null)
+            return false;
+
+        GameObject plant = gridManager.GetPlantAt(cell);
+        if (plant != null)
+        {
+            Vector3 p = plant.transform.position;
+            worldPosition = new Vector3(p.x, p.y, 0f);
+            return true;
+        }
+
+        Vector2 center = gridManager.GridToWorldCenter(cell);
+        worldPosition = new Vector3(center.x, center.y, 0f);
+        return true;
+    }
+
+    private bool TryGetPointerWorld(out Vector2 world)
+    {
+        world = default;
+        if (!FarmPointerInput.TryGetScreenPosition(out Vector2 screen))
             return false;
 
         Camera camera = worldCamera != null ? worldCamera : Camera.main;
@@ -188,7 +298,17 @@ public class FarmBatchHarvestInput : MonoBehaviour
             return false;
 
         float depth = Mathf.Abs(camera.transform.position.z);
-        Vector3 world = camera.ScreenToWorldPoint(new Vector3(screen.x, screen.y, depth));
-        return gridManager.TryResolveClickTarget(world, out cell);
+        Vector3 world3 = camera.ScreenToWorldPoint(new Vector3(screen.x, screen.y, depth));
+        world = new Vector2(world3.x, world3.y);
+        return true;
+    }
+
+    private static int GetPointerIdForHover()
+    {
+        UnityEngine.InputSystem.Mouse mouse = UnityEngine.InputSystem.Mouse.current;
+        if (mouse != null && FarmPointerInput.IsMouseDriven())
+            return -1;
+
+        return UnityEngine.InputSystem.Touchscreen.current?.primaryTouch.touchId.ReadValue() ?? -1;
     }
 }

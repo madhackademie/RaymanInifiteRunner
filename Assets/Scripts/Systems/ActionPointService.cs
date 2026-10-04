@@ -12,6 +12,7 @@ public class ActionPointService : MonoBehaviour
     public const int DefaultPlantSeedCost = 1;
     public const int DefaultHarvestCost = 1;
     public const int DefaultSellCost = 1;
+    private const float SpendRefusedFeedbackMinInterval = 0.25f;
 
     public static ActionPointService Instance { get; private set; }
 
@@ -26,6 +27,7 @@ public class ActionPointService : MonoBehaviour
 
     private int remainingPoints;
     private long lastResetUtcTicks;
+    private float lastSpendRefusedUnscaledTime = float.MinValue;
 
     public int RemainingPoints => remainingPoints;
     public int MaxDailyPoints => dailyBudget;
@@ -129,7 +131,7 @@ public class ActionPointService : MonoBehaviour
         {
             failureMessage =
                 $"Points d'action insuffisants ({remainingPoints} / {dailyBudget} restants).";
-            OnSpendRefused?.Invoke();
+            NotifySpendRefusedThrottled();
             return false;
         }
 
@@ -142,6 +144,16 @@ public class ActionPointService : MonoBehaviour
             this);
 
         return true;
+    }
+
+    private void NotifySpendRefusedThrottled()
+    {
+        float now = Time.unscaledTime;
+        if (now - lastSpendRefusedUnscaledTime < SpendRefusedFeedbackMinInterval)
+            return;
+
+        lastSpendRefusedUnscaledTime = now;
+        OnSpendRefused?.Invoke();
     }
 
     /// <summary>Rembourse des PA (rollback si une action échoue après débit).</summary>

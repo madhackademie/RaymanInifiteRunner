@@ -202,15 +202,21 @@ public class PlantPlacementPreview : MonoBehaviour
 
         // PlantGrow.Awake a déjà tourné pendant Instantiate (peut activer InsectPath).
         // On coupe croissance + insectes pour le fantôme de pose uniquement.
-        if (ghostInstance.TryGetComponent(out PlantGrow grow))
+        ghostRenderer = ghostInstance.GetComponent<SpriteRenderer>();
+
+        // Mature forcé AVANT de couper PlantGrow : applique sprite + échelle (prefab × GetStageDisplayScale(Mature)).
+        bool hasGrow = ghostInstance.TryGetComponent(out PlantGrow grow);
+        if (hasGrow)
+        {
+            grow.SetStage(PlantGrow.GrowthStage.Mature);
             grow.enabled = false;
+        }
 
         HideGhostInsects(ghostInstance);
         HideGhostSelectionGlow(ghostInstance);
 
-        // Mature = meilleure lecture du footprint 2×2 iso (seedling trop haut / déborde latéralement).
-        ghostRenderer = ghostInstance.GetComponent<SpriteRenderer>();
-        if (ghostRenderer != null)
+        // Fallback minimal uniquement si PlantGrow absent.
+        if (!hasGrow && ghostRenderer != null)
         {
             Sprite previewSprite = plantDefinition.spriteMature ?? plantDefinition.spriteGrowing;
             ghostRenderer.sprite = previewSprite ?? plantDefinition.spriteSeedling;
@@ -366,6 +372,14 @@ public class PlantPlacementPreview : MonoBehaviour
     {
         if (!biofiltreManager.TryPlantSeedAt(currentCell, plantDefinition, plantPrefab, seedItem))
         {
+            // PA insuffisants : TryConsume a déjà déclenché OnSpendRefused — garder le mode preview.
+            if (IsPlantBlockedByInsufficientActionPoints())
+            {
+                currentlyValid = biofiltreManager.CanPlace(currentCell, plantDefinition);
+                RefreshFootprintPreview();
+                return;
+            }
+
             Cancel();
             return;
         }
@@ -391,6 +405,16 @@ public class PlantPlacementPreview : MonoBehaviour
         BiofiltreManager managerForReopen = biofiltreManager;
         Cancel();
         managerForReopen.ReopenSeedSelectionAfterLastSeedPlanted(cellForReopen);
+    }
+
+    private static bool IsPlantBlockedByInsufficientActionPoints()
+    {
+        ActionPointService actionPoints = ActionPointService.Instance;
+        if (actionPoints == null)
+            return false;
+
+        int cost = actionPoints.GetCostForAction(ActionPointActionId.PlantSeed);
+        return cost > 0 && !actionPoints.CanAfford(cost);
     }
 
     /// <summary>Cancels the preview and destroys the ghost without placing anything.</summary>

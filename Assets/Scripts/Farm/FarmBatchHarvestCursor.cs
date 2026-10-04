@@ -1,7 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Curseur gant de la récolte en balayage. Suit la souris tant que le mode n'est pas Idle.
+/// Curseur gant de la récolte en balayage. La racine suit la cible grille ;
+/// le point de contact visuel (base du gant) est corrigé via <see cref="gripOffsetLocal"/>.
 /// </summary>
 public class FarmBatchHarvestCursor : MonoBehaviour
 {
@@ -10,6 +11,13 @@ public class FarmBatchHarvestCursor : MonoBehaviour
 
     [SerializeField] private SpriteRenderer marker;
     [SerializeField] private Animator animator;
+
+    [Header("Alignement grille (option B)")]
+    [Tooltip("Offset local ajouté au point de contact auto (bas-centre du sprite courant).")]
+    [SerializeField] private Vector2 gripOffsetLocal;
+
+    [Tooltip("Point de contact = bas-centre du sprite (bounds), recalculé chaque frame (anim).")]
+    [SerializeField] private bool autoGripFromSpriteBottomCenter = true;
 
     private FarmBatchHarvestInput harvestInput;
 
@@ -63,13 +71,34 @@ public class FarmBatchHarvestCursor : MonoBehaviour
         if (harvestInput == null || harvestInput.Mode == FarmBatchHarvestMode.Idle)
             return;
 
-        Camera camera = Camera.main;
-        if (camera == null || !FarmPointerInput.TryGetScreenPosition(out Vector2 screen))
+        if (!harvestInput.TryGetCursorWorld(out Vector3 targetWorld))
             return;
 
-        float depth = Mathf.Abs(camera.transform.position.z);
-        Vector3 world = camera.ScreenToWorldPoint(new Vector3(screen.x, screen.y, depth));
-        transform.position = new Vector3(world.x, world.y, 0f);
+        // Racine positionnée pour que le point de contact (grip) coïncide avec la cible monde.
+        transform.position = targetWorld - GetGripOffsetWorld();
+    }
+
+    /// <summary>
+    /// Décalage monde pivot → point de contact (bas-centre du sprite).
+    /// Le SpriteRenderer est sur ce transform : ne pas y ajouter localPosition,
+    /// sinon l'offset inclut la position du curseur et le gant part à l'opposé du pointeur.
+    /// </summary>
+    private Vector3 GetGripOffsetWorld()
+    {
+        Vector3 gripLocal = new Vector3(gripOffsetLocal.x, gripOffsetLocal.y, 0f);
+
+        if (autoGripFromSpriteBottomCenter && marker != null && marker.sprite != null)
+        {
+            Bounds bounds = marker.sprite.bounds;
+            gripLocal.x += bounds.center.x;
+            gripLocal.y += bounds.min.y;
+        }
+
+        Transform spriteTransform = marker != null ? marker.transform : transform;
+        if (spriteTransform != transform)
+            gripLocal += spriteTransform.localPosition;
+
+        return spriteTransform.TransformVector(gripLocal);
     }
 
     private void OnModeChanged(FarmBatchHarvestMode mode)

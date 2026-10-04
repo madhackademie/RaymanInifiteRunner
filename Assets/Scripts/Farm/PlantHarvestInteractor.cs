@@ -152,9 +152,24 @@ public class PlantHarvestInteractor : MonoBehaviour
     }
 
     /// <summary>
-    /// Arrache la plante sans récolter.
+    /// Arrache la plante sans récolter. Consomme des PA (même coût travail V0 que la récolte).
     /// </summary>
-    public void Uproot() => RemovePlantFromGrid();
+    public void Uproot()
+    {
+        ActionPointService actionPoints = ActionPointService.Instance;
+        int workCost = actionPoints != null
+            ? actionPoints.GetCostForAction(ActionPointActionId.Harvest)
+            : 0;
+
+        if (actionPoints != null &&
+            !actionPoints.TryConsume(ActionPointActionId.Harvest, workCost, out string apMessage))
+        {
+            Debug.Log($"[PlantHarvestInteractor] Uproot: {apMessage}", this);
+            return;
+        }
+
+        RemovePlantFromGrid();
+    }
 
     private void OnHarvestSuccess() => RemovePlantFromGrid();
 

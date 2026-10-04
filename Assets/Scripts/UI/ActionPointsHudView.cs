@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,8 @@ public class ActionPointsHudView : MonoBehaviour
 {
     private const string SpendTriggerName = "Spend";
     private const string RefuseTriggerName = "Refuse";
+    private const float RefuseLabelFlashDuration = 0.4f;
+    private static readonly Color RefuseLabelFlashColor = new Color(1f, 0.45f, 0.45f, 1f);
 
     [Header("Labels")]
     [SerializeField] private TextMeshProUGUI pointsLabel;
@@ -36,9 +39,13 @@ public class ActionPointsHudView : MonoBehaviour
     private bool subscribed;
     private bool buffSubscribed;
     private int lastConsumedPoints = -1;
+    private Coroutine refuseLabelFlashRoutine;
+    private Color pointsLabelNormalColor = Color.white;
+    private bool hasCachedPointsLabelColor;
 
     private void OnEnable()
     {
+        CachePointsLabelNormalColor();
         Subscribe();
         SubscribeBuffs();
         Refresh();
@@ -46,6 +53,7 @@ public class ActionPointsHudView : MonoBehaviour
 
     private void OnDisable()
     {
+        StopRefuseLabelFlash();
         Unsubscribe();
         UnsubscribeBuffs();
     }
@@ -124,10 +132,12 @@ public class ActionPointsHudView : MonoBehaviour
         }
 
         int consumed = service.ConsumedPoints;
+        int remaining = service.RemainingPoints;
         int max = Mathf.Max(1, service.MaxDailyPoints);
 
+        // Compteur = PA restants (0 = plus d'actions possibles). La barre = part consommée.
         if (pointsLabel != null)
-            pointsLabel.text = $"{consumed} / {max}";
+            pointsLabel.text = $"{remaining} / {max}";
 
         if (subtitleLabel != null)
             subtitleLabel.text = FormatConsumedWorkTimeSubtitle(consumed, service.MinutesPerPoint);
@@ -161,11 +171,62 @@ public class ActionPointsHudView : MonoBehaviour
 
     private void PlayRefusePulse()
     {
-        if (animator == null)
+        CachePointsLabelNormalColor();
+        StopRefuseLabelFlash();
+
+        if (animator != null)
+        {
+            animator.ResetTrigger(RefuseTriggerHash);
+            animator.SetTrigger(RefuseTriggerHash);
+        }
+
+        if (pointsLabel != null && isActiveAndEnabled)
+            refuseLabelFlashRoutine = StartCoroutine(RefuseLabelFlashRoutine());
+    }
+
+    // Mémorise une seule fois la couleur normale du label (avant tout flash).
+    private void CachePointsLabelNormalColor()
+    {
+        if (hasCachedPointsLabelColor)
             return;
 
-        animator.ResetTrigger(RefuseTriggerHash);
-        animator.SetTrigger(RefuseTriggerHash);
+        pointsLabelNormalColor = pointsLabel != null ? pointsLabel.color : Color.white;
+        hasCachedPointsLabelColor = pointsLabel != null;
+    }
+
+    private void RestorePointsLabelNormalColor()
+    {
+        CachePointsLabelNormalColor();
+        if (pointsLabel != null)
+            pointsLabel.color = pointsLabelNormalColor;
+    }
+
+    private void StopRefuseLabelFlash()
+    {
+        if (refuseLabelFlashRoutine != null)
+        {
+            StopCoroutine(refuseLabelFlashRoutine);
+            refuseLabelFlashRoutine = null;
+        }
+
+        RestorePointsLabelNormalColor();
+    }
+
+    private IEnumerator RefuseLabelFlashRoutine()
+    {
+        Color baseColor = pointsLabelNormalColor;
+        float elapsed = 0f;
+
+        while (elapsed < RefuseLabelFlashDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float wave = 0.5f + 0.5f * Mathf.Sin(elapsed * 28f);
+            pointsLabel.color = Color.Lerp(baseColor, RefuseLabelFlashColor, wave * (1f - elapsed / RefuseLabelFlashDuration));
+            yield return null;
+        }
+
+        refuseLabelFlashRoutine = null;
+        RestorePointsLabelNormalColor();
     }
 
     private void SetFallbackDisplay()

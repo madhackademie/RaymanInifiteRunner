@@ -45,8 +45,11 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-04 soir** — **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]` clos** (merge curseurs récolte + plantation dans **`main`**, validé auteur). Journal : `PROJECT_LOG.md` § « Merge curseurs farm clos ».  
-> **Priorité session en cours :** correctifs / polish (ex. **`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`**, **`[P0-FARM-CAM-SCROLL-STEP-001]`**, **`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`**). Branche IDE : **`feature/reworke_ui`** (iso `main` @ merge farm).
+> **2026-10-04 fin de session** — gros décalage gant récolte **réparé** (`FarmBatchHarvestCursor`, pas les pivots).  
+> **Priorité immédiate :** playtest scale 0,75 + balayage — **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** · **`[P0-FARM-HARVEST-GRID-CLAMP-001]`**.  
+> **Branche IDE :** **`feature/reworke_ui`** (merge farm déjà dans **`main`**, ref ~`7d2123e`).  
+> ~~**`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`**~~ — **clos 2026-10-04** (playtest auteur OK).  
+> **Annulé session :** layering sorting fantôme/gant/cases (`GhostSortingOrder` 50, pas de bump `BiofiltreCell`).
 
 ### ~~★★ P0 — Merge système curseurs harvest / seeding~~ `[P0-FARM-CURSOR-SYSTEM-MERGE-001]` — **clos 2026-10-04**
 
@@ -69,11 +72,14 @@ Convention d'IDs :
 
 **Suite immédiate (correctifs) :**
 
-- **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** — taille / placement gant récolte (Bezy).
-- **`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`** — feedback PA épuisés.
-- **`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`** · **`[P0-FARM-HARVEST-GRID-CLAMP-001]`**.
+- ~~**`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`**~~ — **clos** 2026-10-04 (Bezy + playtest OK auteur).
+- ~~**`[BZ-FARM-PLANT-CLOSE-BEFORE-SEED-001]`**~~ — **clos** 2026-10-04 (symétrique, même playtest).
+- ~~**`[BZ-FARM-PLANT-GHOST-MATURE-SCALE-001]`**~~ — **clos** 2026-10-04 (Bezy + validé auteur).
+- ~~**`[P0-FARM-CAM-SCROLL-STEP-001]`**~~ — **clos** 2026-10-04 (SerializeField + playtest OK auteur).
+- ~~**`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`**~~ — **clos 2026-10-04**.
+- **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** · **`[P0-FARM-HARVEST-GRID-CLAMP-001]`**.
 
-### ★ P0 — Feedback PA épuisés `[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`
+### ~~★ P0 — Feedback PA épuisés~~ `[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]` — **clos 2026-10-04**
 
 **Symptôme auteur 2026-10-03 :** sans PA, je continue à essayer de **planter** ou **jouer** — pas assez clair que c’est bloqué par le budget PA.
 
@@ -83,15 +89,15 @@ Convention d'IDs :
 - **Panneau PA** (`ActionPointsHudWidget` / `ActionPointsHudView`) : pulse / **clignotement** court (couleur, scale, ou anim Bezy sur le widget).
 - Optionnel : toast ou ligne HUD « Plus de points d’action » (si le pulse seul ne suffit pas au playtest).
 
-**Périmètre :**
-- Cursor : vérifier que **toutes** les actions concernées déclenchent bien `OnSpendRefused` (ex. `BiofiltreManager.TryPlantSeedAt`, récolte batch) ; spec + hook si manquant.
-- Bezy : anim / visuel sur le prefab PA si besoin (pas de refonte HUD entier).
+**Livré (Cursor + Bezy + playtest auteur 2026-10-04) :**
+- HUD **restants/max**, preview pose si 0 PA, throttle `OnSpendRefused` 0,25 s.
+- Grisé : graines (`SeedSlotUI`), récolte / batch / arracher (`HarvestPanelUI`) ; `Uproot()` consomme PA.
+- Clic sur action grisée → pulse HUD ; laitue + autres graines (`fitsGrid` vs PA) ; label PA revient blanc au spam (`ActionPointsHudView`).
 
-**Refs :** `Assets/Scripts/Systems/ActionPointService.cs` · `Assets/Scripts/UI/ActionPointsHudView.cs` · `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
+**Refs :** `ActionPointService.cs` · `ActionPointsHudView.cs` · `SeedSelectionUI.cs` · `SeedSlotUI.cs` · `HarvestPanelUI.cs` · `PlantHarvestInteractor.cs`
 
-1. [ ] Playtest : reproduire « 0 PA + clic planter » — noter si `Refuse` se voit sur mobile.
-2. [ ] Renforcer feedback (pulse + clignotement panneau PA, ou toast).
-3. [ ] Playtest auteur : on comprend qu’il faut arrêter sans chercher pourquoi la pose ne part pas.
+1. [x] Playtest PA 0 PC — validé auteur 2026-10-04.
+2. [ ] Playtest PA 0 **APK** — optionnel.
 
 ### ★★ P0 — Polish gant récolte `[BZ-FARM-HARVEST-CURSOR-POLISH-001]`
 
@@ -109,7 +115,7 @@ Convention d'IDs :
 
 **Playtest PC 2026-10-03 :** mode armé = idle. Clic tenu = arrachage. Relâchement = gant caché. Pivots récolte ajustés (Bezy) sur `GloveHarvest_01`–`_06` seulement.
 
-**Prompt :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_harvest_cursor_anim.md`
+**Prompt :** supprimé (clos) — `PROJECT_LOG.md` 2026-10-03.
 
 1. [x] Phase 1 — slice idle (`GloveIdle_01`–`_06`).
 2. [x] Phase 2 — slice récolte (`GloveHarvest_01`–`_06`).
@@ -117,16 +123,19 @@ Convention d'IDs :
 4. [x] Phase 4 — controller `GloveCursor` + câblage sur `BatchHarvestCursor`.
 5. [ ] Polish taille + placement → `[BZ-FARM-HARVEST-CURSOR-POLISH-001]`.
 
-### ★ P0 — Clamp grille récolte vs une cellule `[P0-FARM-HARVEST-GRID-CLAMP-001]`
+### ~~★ P0 — Clamp grille récolte~~ `[P0-FARM-HARVEST-GRID-CLAMP-001]` — **livré Cursor 2026-10-04**
 
-**Question auteur 2026-10-01 :** y a-t-il un clamp sur la grille pour les récoltes, et est-ce envisageable ?
+**Décision auteur 2026-10-04 :** clamp **oui**, même pas de grille que la plantation (cellule sous pointeur via `TryResolveClickTarget`).
 
-**Réserve :** avec des footprints différents, le clamp n’est peut-être pas la solution. Alternative à trancher : revenir à **un élément par cellule**. La production d’art s’adapte à la taille de la plante (plusieurs plants dans le sprite) plutôt que d’élargir le footprint.
+**Implémentation :** `FarmBatchHarvestInput.TryGetCursorWorld` — cellule résolue (plante ou centre). `FarmBatchHarvestCursor` aligne le bas du sprite sur cette cible.
 
-1. [ ] Dire si un clamp récolte existe déjà, et où.
-2. [ ] Trancher : clamp + footprints, ou 1 cellule + art multi-plants.
+**Bug 2026-10-04 soir (auteur OK) :** `GetGripOffsetWorld` ajoutait `localPosition` du curseur (même GameObject que le sprite) → gant renvoyé loin de la souris. Corrigé. Pivots idle `.meta` = repo.
 
-### ★ P0 — Fermer le choix de graines (pas de pile) `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`
+1. [x] Trancher : clamp sur pas grille (pas 1 cellule art-only).
+2. [x] Gros décalage gant vs souris — corrigé + OK auteur.
+3. [ ] Playtest auteur : balayage bordure, hover or/gris, scale 0,75.
+
+### ~~★ P0 — Fermer le choix de graines (pas de pile)~~ `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` — **clos 2026-10-04**
 
 **Symptôme auteur 2026-10-01 :** clic case libre → choix de graines. Clic ensuite sur une plante → le popup plante s’ouvre **par-dessus**. En fermant la plante, le choix de graines **reste ouvert**. Dans ce cas précis : **pas de stack**. Fermer aussi le choix de graines.
 
@@ -134,10 +143,30 @@ Convention d'IDs :
 
 **Script :** `Assets/Scripts/Farm/BiofiltreManager.cs` — `HandleCellClicked` ouvre `TryOpenPlantPopup` sans appeler `HideFarmSeedSelectionPopup()`. Le popup plante = `PopupId.FarmPlantHarvest` via `TryOpenFarmPlantHarvestPopup`.
 
-**Prompt :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` + `@Notes/Bezi/RULES_bezy_code.md`
+**Prompt :** supprimé (clos 2026-10-04) — journal.
 
-1. [ ] Bezy : `HideFarmSeedSelectionPopup()` juste avant `TryOpenFarmPlantHarvestPopup` dans `TryOpenPlantPopup`.
-2. [ ] Playtest auteur (hors prompt) : graines ouvertes → clic plante → graines fermées, popup plante seul. Fermer la plante ne laisse pas le choix de graines.
+1. [x] Bezy : `HideFarmSeedSelectionPopup()` dans `TryOpenPlantPopup` avant `TryOpenFarmPlantHarvestPopup`.
+2. [x] Playtest auteur — pas de pile graines ↔ popup plante.
+
+### ~~★ P0 — Fermer popup plante avant graines~~ `[BZ-FARM-PLANT-CLOSE-BEFORE-SEED-001]` — **clos 2026-10-04**
+
+**Symétrique 2026-10-04 :** popup plante ouvert → clic **case libre** → le choix graines ne doit **pas** s’empiler ; fermer l’UI info plante d’abord.
+
+**Bezy :** un seul fichier — `TryOpenFarmSeedSelection` → `HideFarmPlantHarvestPopup()` avant ouverture graines.
+
+**Prompt :** supprimé (clos 2026-10-04) — journal.
+
+1. [x] Bezy : `HideFarmPlantHarvestPopup()` dans `TryOpenFarmSeedSelection` avant `TryShowPopup` graines.
+2. [x] Playtest auteur — inclus dans validation popups 2026-10-04.
+
+### ★ P0 — Fantôme plantation = taille Mature `[BZ-FARM-PLANT-GHOST-MATURE-SCALE-001]` — **Bezy livré 2026-10-04**
+
+**Symptôme :** ghost roquette énorme vs plante mature (sprite Mature + échelle Graine ×2,2).
+
+**Fix :** `PlantPlacementPreview.SpawnGhost` — `SetStage(Mature)` puis `PlantGrow` off. Prompt supprimé (clos 2026-10-04).
+
+1. [x] Bezy — livré.
+2. [ ] Playtest auteur : preview roquette (et laitue si possible) alignée sur mature en grille.
 
 ### ★ P0 — Plantation mobile (touch ≠ souris) `[P0-FARM-PLANT-TOUCH-MODE-001]`
 
@@ -175,7 +204,7 @@ Même geste que la pose : balayage, une plante récoltable à la fois, **relâch
 
 Data + atlas + shop + playtest pose/croissance OK. Affinage optionnel : `stageDisplayScales`, `isoSpriteViewOffset` sur `Roquette.asset`.
 
-### ★ P0 — Zoom molette plus agressif `[P0-FARM-CAM-SCROLL-STEP-001]`
+### ~~★ P0 — Zoom molette plus agressif~~ `[P0-FARM-CAM-SCROLL-STEP-001]` — **clos 2026-10-04**
 
 **Constat 2026-10-01 :** le zoom souris est trop fin — un cran de molette ne change la vue que de quelques millimètres (pas « mm par millimètre »).
 
@@ -183,8 +212,8 @@ Data + atlas + shop + playtest pose/croissance OK. Affinage optionnel : `stageDi
 
 **Script :** `Assets/Scripts/Farm/FarmCameraController.cs` — `HandleScrollZoom` : `ApplyZoom(1f - scrollY * ScrollZoomSensitivity, pivot)`.
 
-1. [ ] Exposer le pas de zoom molette en `[SerializeField]`.
-2. [ ] Playtest auteur : cran de molette nettement plus large ; ajuster la valeur dans l’Inspector.
+1. [x] Exposer le pas de zoom molette — `[SerializeField] scrollZoomSensitivity` défaut **0,1** (`FarmCameraController.cs`).
+2. [x] Playtest auteur — cran molette OK (validation 2026-10-04).
 3. [ ] Réglage joueur plus tard : `[BL-OPTION-CAM-SENS-001]` (`tag: option`). Pas dans ce correctif.
 
 ### ★ P0 — Bornes caméra niveau ferme `[P0-FARM-LEVEL-CAM-BOUNDS-001]`
@@ -229,7 +258,7 @@ Théorie : `Notes/Ui/NOTE_ui_responsive_ratios.md`.
 3. [x] Slice 2 `[P0-FARM-CAMERA-TOUCH-001]` — playtest **APK OK 2026-09-29** (long press pan, pinch zoom, tap grille relâchement).
 4. [x] `[BZ-FARM-CAM-TOWN-PAN-001]` livré — voir archive Bezy.
 
-**Suite optionnelle (pas P0) :** `[BZ-FARM-CAM-RESET-001]` reset vue — Bezy Phase A→C.
+**Annulé :** ~~`[BZ-FARM-CAM-RESET-001]`~~ reset vue (2026-10-04) — options caméra existantes suffisantes.
 
 ### ~~CT — Pan caméra farm long press~~ `[P0-FARM-CAMERA-PAN-LONGPRESS-001]` — **clos** 2026-09-29 (même livrable que touch Township)
 
@@ -255,7 +284,7 @@ Théorie : `Notes/Ui/NOTE_ui_responsive_ratios.md`.
 
 **Objectif :** continuer la modification du **`PlayerHaloPanel`** (hauteur bandeau halo, scale slots / portrait via `HaloContentScaler`).
 
-**Refs :** `Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` · `Assets/Prefabs/Ui/InventoryScreen.prefab` · `Assets/Prefabs/Ui/Progression/PlayerHaloPanel.prefab`.
+**Refs :** prompt supprimé (livrable Bezy) · `Assets/Prefabs/Ui/InventoryScreen.prefab` · `Assets/Prefabs/Ui/Progression/PlayerHaloPanel.prefab`.
 
 1. [ ] Bezy Ph.1–3 si pas terminées (Preferred Height 560, `referenceHeight` 320 source panel).
 2. [ ] Playtest inventaire : halo ~2×, grille flexible OK, pas de régression wallet / overlay talents.
@@ -439,7 +468,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
 > Branche de travail : **`feature/reworke_ui`** (tracking `origin/feature/reworke_ui`, alignée **`main`** après merge farm 2026-10-04). Ex-ligne **`feature/farm-plant-paint`** intégrée. **Alignement IDE ↔ agent cloud :** même branche + `git pull` après push agent ; voir `Notes/WORKFLOW_cloud_agent_local.md`.  
-> **Caméra farm :** touch/pan/zoom **clos APK 2026-09-29**. Suite : `[P0-FARM-LEVEL-CAM-BOUNDS-001]` en scène ; reset optionnel `[BZ-FARM-CAM-RESET-001]`.  
+> **Caméra farm :** touch/pan/zoom/molette **clos** — pas de reset vue. Suite : `[P0-FARM-LEVEL-CAM-BOUNDS-001]` en scène si besoin.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
 > **Priorité immédiate :** correctifs farm/UI (§ « Suite immédiate » en tête) — merge curseurs **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]` clos**.  
@@ -942,6 +971,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [CT-INV-001] Stabiliser le wallet inventaire avec une seule source de vérité (`InventoryScreen` prefab via `UIManager`).
 - [ ] [CT-INV-002] Valider qu'il n'y a plus de dépendance runtime cachée à `Inventaire.unity` (ou documenter explicitement son rôle).
 - [ ] [CT-INV-003] Vérifier le flux `TryAdd` de bout en bout (id, quantités, stack, inventaire plein, refresh UI).
+- [ ] **[BL-INV-BULK-SELECT-001]** **Sélection multiple inventaire** — mode (toggle) pour cocher plusieurs slots / stacks, puis **une action groupée** : jeter / compost / supprimer (réutiliser la logique drop V0 `InventoryUI` + popup détail si confirmation unique). Barre d’actions + « tout sélectionner (onglet) » ; pas de multi-sélection shop/vente V1. **Cursor :** service `PlayerInventory` + état sélection ; **Bezy :** prefab `InventoryScreen` (cases à cocher, barre bulk). Détail : `Notes/Ui/Todo_ui.md` § bulk select.
 
 ### Ferme — polish & UI
 - [ ] **[P0-FARM-IBC-OVERFLOW-001]** Sprite IBC iso déborde l’écran ; croix HUD suit le cadrage (playtest 2026-09-10, Game view Free Aspect). Lié `[P0-NAV-EXIT-ANCHOR-001]`.

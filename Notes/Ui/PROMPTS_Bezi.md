@@ -1,10 +1,10 @@
 # Prompts Bezy — emplacement
 
-Les prompts détaillés ne sont plus dans `Notes/Ui/`.
+**Politique 2026-10-04 :** peu de fichiers prompt ; préférer le **chat Bezy** pour les jobs courants. Fichiers `@` Unity = liste dans [`Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`](../Bezi/PROMPTS_Bezi_A_FAIRE.md) uniquement.
 
 | Besoin | Fichier |
 |--------|---------|
-| **À faire maintenant** | [`Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`](../Bezi/PROMPTS_Bezi_A_FAIRE.md) |
-| **Texte `@` Unity** | `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` |
+| **Prompts actifs** | [`Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`](../Bezi/PROMPTS_Bezi_A_FAIRE.md) |
+| **Texte `@` Unity** | `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` (index ci-dessus) |
 | **File + coches** | [`Notes/Bezi/BEZY_QUEUE.md`](../Bezi/BEZY_QUEUE.md) |
-| **Livrés / supprimés** | [`Notes/Bezi/ARCHIVE_prompts_bezi_index.md`](../Bezi/ARCHIVE_prompts_bezi_index.md) |
+| **Livrés** | [`Notes/Bezi/ARCHIVE_prompts_bezi_index.md`](../Bezi/ARCHIVE_prompts_bezi_index.md) |

@@ -25,6 +25,11 @@ public class HarvestPanelUI : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private Button batchHarvestButton;
 
+    private const float DisabledAlpha = 0.35f;
+
+    // Alpha d'origine des graphics (targetGraphic + TMP) des boutons de travail, pour restauration.
+    private readonly System.Collections.Generic.Dictionary<Graphic, float> defaultGraphicAlphas = new();
+
     private PlantHarvestInteractor currentTarget;
     private PlantGrow currentPlantGrow;
     private PlantDefinition currentDefinition;
@@ -100,12 +105,15 @@ public class HarvestPanelUI : MonoBehaviour
 
         panel.SetActive(true);
         isOpen = true;
+        RefreshActionPointButtons();
+        SubscribeActionPoints();
     }
 
     /// <summary>Ferme le panneau et masque l'instance lazy via le host.</summary>
     public void Close()
     {
         isOpen = false;
+        UnsubscribeActionPoints();
         panel.SetActive(false);
         currentTarget     = null;
         currentPlantGrow  = null;
@@ -162,6 +170,112 @@ public class HarvestPanelUI : MonoBehaviour
 
         harvestButton.gameObject.SetActive(isHarvestable);
         harvestButton.interactable = isHarvestable;
+        RefreshActionPointButtons();
+    }
+
+    /// <summary>
+    /// Grise harvest / batch / arrachage si PA insuffisants (même coût travail V0). Close toujours actif.
+    /// </summary>
+    private void RefreshActionPointButtons()
+    {
+        bool canAffordWork = CanAffordAction(ActionPointActionId.Harvest);
+
+        if (harvestButton != null && harvestButton.gameObject.activeSelf)
+        {
+            bool isHarvestable = currentDefinition != null && currentPlantGrow != null
+                                 && currentDefinition.GetHarvestConfig(currentPlantGrow.CurrentStage).HasValue;
+            harvestButton.interactable = isHarvestable;
+        }
+
+        if (batchHarvestButton != null && batchHarvestButton.gameObject.activeSelf)
+            batchHarvestButton.interactable = true;
+
+        if (uprootButton != null && uprootButton.gameObject.activeSelf)
+            uprootButton.interactable = true;
+
+        ApplyWorkButtonPaVisual(harvestButton, canAffordWork);
+        ApplyWorkButtonPaVisual(batchHarvestButton, canAffordWork);
+        ApplyWorkButtonPaVisual(uprootButton, canAffordWork);
+    }
+
+    /// <summary>
+    /// Grise visuellement un bouton de travail si PA insuffisants, sans toucher à interactable.
+    /// Agit sur le targetGraphic et les TMP enfants (alpha), plus un CanvasGroup optionnel.
+    /// </summary>
+    private void ApplyWorkButtonPaVisual(Button button, bool canAffordWork)
+    {
+        if (button == null || !button.gameObject.activeSelf)
+            return;
+
+        if (button.targetGraphic != null)
+            SetGraphicAlpha(button.targetGraphic, canAffordWork);
+
+        TextMeshProUGUI[] labels = button.GetComponentsInChildren<TextMeshProUGUI>(false);
+        for (int i = 0; i < labels.Length; i++)
+            SetGraphicAlpha(labels[i], canAffordWork);
+
+        if (button.TryGetComponent(out CanvasGroup group))
+            group.alpha = canAffordWork ? 1f : DisabledAlpha;
+    }
+
+    // Applique l'alpha grisé ou restaure l'alpha d'origine (mis en cache au premier usage), RGB préservé.
+    private void SetGraphicAlpha(Graphic graphic, bool canAffordWork)
+    {
+        if (graphic == null)
+            return;
+
+        if (!defaultGraphicAlphas.TryGetValue(graphic, out float defaultAlpha))
+        {
+            defaultAlpha = graphic.color.a;
+            defaultGraphicAlphas[graphic] = defaultAlpha;
+        }
+
+        Color color = graphic.color;
+        color.a = canAffordWork ? defaultAlpha : DisabledAlpha;
+        graphic.color = color;
+    }
+
+    // Déclenche le feedback PA (throttle dans le service) sans effet gameplay.
+    private static void PlayPaRefuseFeedback(string actionId)
+    {
+        if (ActionPointService.Instance != null && !CanAffordAction(actionId))
+            ActionPointService.Instance.TryConsume(actionId, out _);
+    }
+
+    // Retourne true si les PA sont suffisants (ou si le service est absent).
+    private static bool CanAffordAction(string actionId)
+    {
+        ActionPointService service = ActionPointService.Instance;
+        return service == null || service.CanAfford(service.GetCostForAction(actionId));
+    }
+
+    private void SubscribeActionPoints()
+    {
+        UnsubscribeActionPoints();
+        if (ActionPointService.Instance != null)
+            ActionPointService.Instance.OnActionPointsChanged += HandleActionPointsChanged;
+    }
+
+    private void UnsubscribeActionPoints()
+    {
+        if (ActionPointService.Instance != null)
+            ActionPointService.Instance.OnActionPointsChanged -= HandleActionPointsChanged;
+    }
+
+    private void HandleActionPointsChanged()
+    {
+        if (isOpen)
+            RefreshActionPointButtons();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeActionPoints();
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeActionPoints();
     }
 
     /// <summary>Met à jour le label de temps restant du stade courant (rafraîchi chaque frame).</summary>
@@ -183,6 +297,7 @@ public class HarvestPanelUI : MonoBehaviour
 
     private void OnHarvestClicked()
     {
+        if (!CanAffordAction(ActionPointActionId.Harvest)) { PlayPaRefuseFeedback(ActionPointActionId.Harvest); return; }
         if (currentTarget == null) { Close(); return; }
         currentTarget.ConfirmHarvest();
         Close();
@@ -190,12 +305,14 @@ public class HarvestPanelUI : MonoBehaviour
 
     private void OnBatchHarvestClicked()
     {
+        if (!CanAffordAction(ActionPointActionId.Harvest)) { PlayPaRefuseFeedback(ActionPointActionId.Harvest); return; }
         Close();
         biofiltreManager?.ArmBatchHarvest();
     }
 
     private void OnUprootClicked()
     {
+        if (!CanAffordAction(ActionPointActionId.Harvest)) { PlayPaRefuseFeedback(ActionPointActionId.Harvest); return; }
         if (currentTarget == null) { Close(); return; }
         currentTarget.Uproot();
         Close();

@@ -377,6 +377,18 @@ public class GridManager : MonoBehaviour
         return IsInBounds(cell);
     }
 
+    /// <summary>Monde → cellule clampée dans les bornes (clics en bordure de grille).</summary>
+    public Vector2Int ClampWorldToBoundsCell(Vector2 worldPosition)
+    {
+        Vector2Int raw = WorldToGrid(worldPosition);
+        if (Grid == null)
+            return raw;
+
+        return new Vector2Int(
+            Mathf.Clamp(raw.x, 0, Mathf.Max(0, _columns - 1)),
+            Mathf.Clamp(raw.y, 0, Mathf.Max(0, _rows - 1)));
+    }
+
     /// <summary>
     /// Résout la cellule cliquée : priorité plante (losanges footprint iso uniquement) puis sol.
     /// La canopée hors footprint ne bloque pas le clic (plante derrière ou cellule voisine).

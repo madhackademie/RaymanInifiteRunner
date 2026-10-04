@@ -1,10 +1,10 @@
 # Archive — prompts Bezy livrés (index)
 
-**MAJ :** 2026-09-23  
-Les fichiers détaillés Phase 1–3 qui étaient dans `Notes/Ui/PROMPTS_Bezi_*.md` ont été retirés du dépôt (doublons ou tâches clos).  
-**Historique :** `PROJECT_LOG.md`, `Notes/Bezi/BEZY_QUEUE.md` (section Terminé), git history.
+**MAJ :** 2026-10-04  
+Purge des fichiers `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` **clos** (farm popups, curseurs, caméra scroll, etc.). **Prompts actifs :** liste dans `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` uniquement.
 
-**Prompts actifs restants :** uniquement sous `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` + index `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`.
+**Politique :** plus de nouveau fichier prompt sans demande auteur ; texte job = chat Bezy (Cursor).  
+**Historique détail phases :** `PROJECT_LOG.md`, `Notes/Bezi/BEZY_QUEUE.md` (Terminé), git history.
 
 ---
 
@@ -14,6 +14,8 @@ Les fichiers détaillés Phase 1–3 qui étaient dans `Notes/Ui/PROMPTS_Bezi_*.
 |---------|--------|-------------|
 | `[BZ-TAB-SPRITES-001]` | Onglets HUD NavigationHUD (×5) | Playtest OK 2026-09-23 |
 | `[BZ-FARM-HARVEST-READY-VFX-002]` | Sparkle idle récolte `HarvestReadyFx` | Playtest OK 2026-09-23 (Bezy 5c–5f) |
+| `[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]` | PA grisé + clic refuse + flash HUD | **Clos 2026-10-04** — prompts fichiers supprimés |
+| `[BZ-FARM-CAM-RESET-001]` | Reset vue + bouton UI | **Annulé 2026-10-04** — non implémenté |
 | `[BZ-FARM-CAM-TOWN-PAN-001]` | Long press pan Township + tap relâche grille | **Validé APK 2026-09-29** — ne pas refaire sauf bug |
 | `[BZ-FARM-CAMERA-TOUCH-ZOOM-001]` | Pinch 2 doigts farm cam (C# + FirstLvl Inspector) | **Validé APK 2026-09-29** (pinch zoom only) |
 | `[BZ-FARM-CAMERA-VIEW-001]` | BiofiltreViewBounds + FarmCameraController FirstLvl | Playtest OK 2026-09-23 |

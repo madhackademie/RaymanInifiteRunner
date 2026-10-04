@@ -35,6 +35,8 @@ public class BiofiltreGridVisualizer : MonoBehaviour
     private Sprite runtimeSquareSprite;
     private Sprite runtimeDiamondSprite;
     private readonly List<Vector2Int> selectionHighlightCells = new();
+    private bool hasHarvestHoverCell;
+    private Vector2Int harvestHoverCell;
 
     private void Awake()
     {
@@ -162,6 +164,42 @@ public class BiofiltreGridVisualizer : MonoBehaviour
             bioCell.SetSelectionHighlight(true);
             selectionHighlightCells.Add(cell);
         }
+    }
+
+    /// <summary>Illumine la cellule visée par la récolte batch (résolution monde → grille, pas raycast UI).</summary>
+    public void SetHarvestHoverCell(Vector2Int cell, bool harvestable)
+    {
+        if (hasHarvestHoverCell && harvestHoverCell == cell)
+        {
+            BiofiltreCell existing = GetCell(cell);
+            existing?.SetHarvestHoverHighlight(harvestable);
+            return;
+        }
+
+        ClearHarvestHoverCell();
+        BiofiltreCell bioCell = GetCell(cell);
+        if (bioCell == null)
+            return;
+
+        bioCell.SetHarvestHoverHighlight(harvestable);
+        harvestHoverCell = cell;
+        hasHarvestHoverCell = true;
+    }
+
+    /// <summary>Retire la surbrillance hover récolte batch.</summary>
+    public void ClearHarvestHoverCell()
+    {
+        if (!hasHarvestHoverCell)
+            return;
+
+        BiofiltreCell bioCell = GetCell(harvestHoverCell);
+        if (bioCell != null)
+            bioCell.ClearTransientHighlight();
+
+        if (gridManager != null)
+            bioCell?.SetVisualState(!gridManager.IsCellFree(harvestHoverCell));
+
+        hasHarvestHoverCell = false;
     }
 
     /// <summary>Retire la surbrillance de sélection plante.</summary>

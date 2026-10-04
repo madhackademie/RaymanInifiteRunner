@@ -24,13 +24,11 @@ Câblage Bezy : `PROMPTS_Bezi_farm_camera_view.md` Ph.1–2.
 **Ticket pan décor :** `[P0-FARM-CAMERA-PAN-LONGPRESS-001]`  
 **Constat 2026-09-23 :** pan perçu **horizontal seulement** — piste #1 : `ScreenToWorldPoint` sans profondeur Z ortho ; piste #2 : clamp Y quand frustum ≥ hauteur rect.
 
-**Plan Bezy restant :** `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md`
-
 | Passe | ID | Contenu |
 |-------|-----|---------|
 | ~~Pan au pinch~~ | — | **Annulé** — pinch = zoom ; pan = long press |
 | ~~Rotation twist~~ | `[BZ-FARM-CAM-ROTATE-001]` | **Annulé 2026-09-29** — pan + zoom suffisent |
-| 1 | `[BZ-FARM-CAM-RESET-001]` | Snapshot vue Start + bouton UI `FarmUICanvas` (optionnel) |
+| ~~Reset vue~~ | `[BZ-FARM-CAM-RESET-001]` | **Annulé 2026-10-04** — pas de bouton reset ; molette / pan / pinch suffisent |
 
 **Limites zoom (runtime) :** `minOrthoSize` (zoom in max) · zoom out max = tout le rect orange (`BiofiltreViewBounds` + `paddingFactor` ~1,08) via `FarmCameraViewMath`.
 
@@ -95,16 +93,6 @@ PC inchangé : molette + **clic milieu** pan ; LMB = clic grille, pas drag-pan.
 
 Thread plein pan/zoom/clic = **clos**. Ne pas rescanner tout le projet.
 
-**Message 1 (read-only)** — `@` les 7 scripts farm cam + `NOTE_camera_view_zoom.md` + `RULES_bezy_code.md` ; confirmer lecture + APIs publiques ; `ResetToDefault` absent = normal. STOP.
-
-**Message 2 — reset (optionnel) :**
-
-```
-@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md
-@Notes/Bezi/RULES_bezy_code.md
-[BZ-FARM-CAM-RESET-001] Phase A ONLY — Capture default view + ResetToDefault(). STOP.
-```
-
-**Message 2 — bug ciblé :** une phrase de symptôme + `@FarmCameraInput.cs` + `@FarmGridPointerInput.cs` + `RULES_bezy_code.md` ; change ONLY fix ; pas rotation ; pas `SceneNavigator`. STOP.
+**Bug caméra (Bezy) — message type :** une phrase de symptôme + `@FarmCameraInput.cs` + `@FarmGridPointerInput.cs` + `RULES_bezy_code.md` ; change ONLY fix ; pas rotation ; pas `SceneNavigator`. STOP.
 
 **Cursor (pas Bezy) :** bornes niveau — `Notes/Todo_project.md` `[P0-FARM-LEVEL-CAM-BOUNDS-001]`.

@@ -28,7 +28,7 @@ public class FarmGridPointerInput : MonoBehaviour
         if (worldCamera == null)
             worldCamera = Camera.main;
 
-        batchHarvest.Initialise(gridManager, biofiltreManager, worldCamera);
+        batchHarvest.Initialise(gridManager, biofiltreManager, visualizer, worldCamera);
     }
 
     private void Update()

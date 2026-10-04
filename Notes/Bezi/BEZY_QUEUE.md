@@ -5,7 +5,7 @@
 **Étude complète :** `Notes/Bezi/ETUDE_prompts_bezi_distance.md`  
 **Skill :** `/prefab-ui-3phases` (prefab) · scène : `@Assets/Docs/Bezi/PROMPTS_*.md` — `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`  
 **À faire (index) :** `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`  
-**Prompts détaillés (`@` Unity) :** `Assets/Docs/Bezi/PROMPTS_Bezi_*.md`  
+**Prompts `@` Unity (index minimal) :** `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` — pas de fichier pour jobs clos.  
 **Archive livrés :** `Notes/Bezi/ARCHIVE_prompts_bezi_index.md`
 
 ---
@@ -29,10 +29,10 @@
 | [ ] | `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` | vue | **P0 première** — gant trop grand, placement à caler (idle + arrachage). Scale / offset sur `BatchHarvestCursor`. Pas de reslice. |
 | [x] | `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` | anim | Joue 2026-10-03 — idle armé, arrachage au clic tenu. Pivots récolte seulement. |
 | [x] | `[BZ-FARM-HARVEST-BATCH-BTN-001]` | prefab | Bouton blanc Batch câblé 2026-10-01 (Ph.1–3). |
-| [ ] | `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **P0 prochaine session** — pas de pile : case libre puis plante, le choix de graines ne reste pas ouvert. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` |
+| [x] | `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **clos 2026-10-04** — playtest OK (prompt fichier supprimé ; voir `PROJECT_LOG.md`). |
 | [~] | `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | Pivot + PPU 33 OK auteur 2026-10-01 ; clos si wiring + icônes OK |
 | [x] | `[BZ-FARM-ROQUETTE-ATLAS-001]` | 1→3 | 2026-10-01 — slice/pivot auteur + Bezy Ph.3 wiring OK (review Cursor) |
-| [ ] | `[BZ-FARM-CAM-RESET-001]` | A→C | Reset vue (optionnel) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
+| — | ~~`[BZ-FARM-CAM-RESET-001]`~~ | — | **Annulé 2026-10-04** — pan/zoom/molette suffisent ; pas de bouton reset. |
 
 *(Voir Terminé + backlog ci-dessous.)*
 

@@ -1,57 +1,42 @@
-# Bezy — prompts encore à faire (index unique)
+# Bezy — prompts actifs (index minimal)
 
-**MAJ :** 2026-10-03 — idle + arrachage jouent. Prochain Bezy = polish taille et placement du gant, avant playtest APK et merge.  
-**Texte complet des prompts :** `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` (fichier `@` dans Unity).  
-**Statut opérationnel :** cocher dans `Notes/Bezi/BEZY_QUEUE.md` après chaque phase.
+**Politique (auteur 2026-10-04) :** pas de fichier `PROMPTS_Bezi_*.md` sauf **demande explicite** pour une tâche **planifiée et non validée**. Prompts courants = **copier-coller dans le chat Bezy** (Cursor) ; pas d’archive fichier pour le travail **clos**.
 
-**Livrés / historique :** `Notes/Bezi/ARCHIVE_prompts_bezi_index.md`
+**Coches phases :** `Notes/Bezi/BEZY_QUEUE.md` · **Livrés :** `Notes/Bezi/ARCHIVE_prompts_bezi_index.md` · **Journal :** `PROJECT_LOG.md`
 
----
-
-## Priorité immédiate (file courante)
-
-| Task ID | Phase | Notes |
-|---------|-------|--------|
-| ~~`[BZ-FARM-PLANTING-CURSOR-ANIM-001]`~~ | **5** | **livré** 2026-10-03 — prefab câblé. Reste : Ph. **2→3b→4** quand art `Plant_Planting_Sowing_Cursor.png`. |
-| `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` | vue | **P0 première** — taille trop grande + placement. `BatchHarvestCursor` dans `Biofiltre.prefab`. Pas de reslice idle. |
-| ~~`[BZ-FARM-HARVEST-CURSOR-ANIM-001]`~~ | anim | **joue** 2026-10-03 — idle armé, arrachage au clic tenu. |
-| ~~`[BZ-FARM-HARVEST-BATCH-BTN-001]`~~ | prefab | **clos** 2026-10-01 — bouton blanc câblé |
-| `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **P0** — pas de pile popup. `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_seed_close_before_plant.md` + `@Notes/Bezi/RULES_bezy_code.md` |
-| `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | `@Notes/Art/PROMPTS_Bezi_laitue_atlas_reloc.md` — laitue déplacée + offsets |
-| ~~`[BZ-FARM-ROQUETTE-ATLAS-001]`~~ | — | **clos** 2026-10-01 (slice auteur + Bezy Ph.3) |
-| `[BZ-FARM-CAM-RESET-001]` | A→C | Reset vue (optionnel) — `@Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_pan_y_rotation_reset.md` |
-
-Blocs copier-coller : section **Bloc de lancement** dans `BEZY_QUEUE.md`.
+**C# visuel :** `@Notes/Bezi/RULES_bezy_code.md` · Prefab : skill `/prefab-ui-3phases` (`Notes/Bezi/WORKFLOW_skill_prefab_ui.md`)
 
 ---
 
-## Backlog — rework UI kit
+## En cours — fichiers `@` Unity (`Assets/Docs/Bezi/`)
 
-| Task ID | Statut | Notes |
-|---------|--------|--------|
-| `[BZ-UIKIT-POPUP-MOCK-001]` | **À refaire entièrement** | Prefab `ShopItemPopup_WoodMockup` — aperçu 2026-09-23 : quelque chose en place mais pas validable. Repartir Ph.1–3 ou brief visuel auteur + prompts Bezy neufs. **Hors** popup runtime `ShopItemPopup`. |
-
----
-
-## Farm / caméra + VFX
-
-**`[BZ-FARM-CAMERA-VIEW-001]`** — clos 2026-09-23. **`[BZ-FARM-CAM-TOWN-PAN-001]`** / touch zoom — **clos APK 2026-09-29** (voir `NOTE_camera_view_zoom.md`). **`[BZ-FARM-HARVEST-READY-VFX-002]`** — clos 2026-09-23.
+| Task ID | Fichier |
+|---------|---------|
+| `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` (TabVente restant) | `PROMPTS_Bezi_tab_sprites.md` |
+| `[BZ-FARM-HARVEST-READY-VFX-002]` | `PROMPTS_Bezi_harvest_ready_vfx.md` |
 
 ---
 
-## Polish / backlog (pas P0 session)
+## Planifié — backlog (fichier conservé)
 
-| Task ID | Notes | Prompt `@` |
-|---------|-------|------------|
-| `[BZ-NAV-TAB5-CLIP-001]` | 5ᵉ onglet coupé — scène | `Assets/Docs/Bezi/PROMPTS_Bezi_nav_tab5_clip_fix.md` |
-| `[BZ-NAV-WOOD-FRAME-001]` / refonte | 9-slice bois onglets — après mockups 4 onglets | `Assets/Docs/Bezi/PROMPTS_Bezi_nav_wood_frame_slice.md` |
-| `[CT-FARM-BIO-SCALE-001]` | Scale mobile biofiltre | `Assets/Docs/Bezi/PROMPTS_Bezi_biofilter_mobile_scale.md` |
+| Task ID | Fichier |
+|---------|---------|
+| `[BZ-NAV-TAB5-CLIP-001]` | `PROMPTS_Bezi_nav_tab5_clip_fix.md` |
+| `[BZ-NAV-WOOD-REFONTE-001]` / cadre bois | `PROMPTS_Bezi_nav_wood_frame_slice.md` |
+| `[BZ-UIKIT-POPUP-MOCK-001]` rework | `PROMPTS_Bezi_shopitempopup_wood_mockup.md` |
+| `[CT-FARM-BIO-SCALE-001]` | `PROMPTS_Bezi_biofilter_mobile_scale.md` |
 
 ---
 
-## Règle d’usage
+## Art (hors `Assets/Docs/Bezi/`)
 
-1. Ouvrir le `.md` listé ci-dessus dans `Assets/Docs/Bezi/`.
-2. Nouveau thread Bezy → `@` ce fichier + `@Notes/Bezi/RULES_bezy_code.md` si C# visuel.
-3. Prefab UI : `/prefab-ui-3phases` + **une phase** par appel.
-4. Cocher `BEZY_QUEUE.md` + commit prefab (auteur).
+| Task ID | Fichier |
+|---------|---------|
+| `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | `Notes/Art/PROMPTS_Bezi_laitue_atlas_reloc.md` |
+
+---
+
+## Sans fichier prompt (spec / queue / chat)
+
+- `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` — playtest scale 0,75 (Bezy livré ; voir `Notes/Todo_project.md`).
+- ~~`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`~~ — **clos 2026-10-04** (prompts PA supprimés).

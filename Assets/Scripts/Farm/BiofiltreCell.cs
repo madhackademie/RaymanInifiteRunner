@@ -12,6 +12,8 @@ public class BiofiltreCell : MonoBehaviour
     private static readonly Color ColorPreviewValid   = new Color(0.22f, 0.95f, 0.38f, 0.82f);
     private static readonly Color ColorPreviewInvalid = new Color(1.00f, 0.22f, 0.22f, 0.60f);
     private static readonly Color ColorSelected       = new Color(0.22f, 0.95f, 0.38f, 0.88f);
+    private static readonly Color ColorHarvestTarget  = new Color(1.00f, 0.82f, 0.18f, 0.90f);
+    private static readonly Color ColorHarvestMiss    = new Color(0.55f, 0.55f, 0.60f, 0.55f);
 
     /// <summary>Column / row coordinates of this cell in its parent grid.</summary>
     public Vector2Int GridCoordinates { get; private set; }
@@ -26,6 +28,8 @@ public class BiofiltreCell : MonoBehaviour
         PlacementValid,
         PlacementInvalid,
         Selected,
+        HarvestTarget,
+        HarvestMiss,
     }
 
     private void Awake()
@@ -69,6 +73,13 @@ public class BiofiltreCell : MonoBehaviour
             ApplyHighlightColor();
     }
 
+    /// <summary>Surbrillance cellule visée en récolte batch (Armed / Stroking).</summary>
+    public void SetHarvestHoverHighlight(bool harvestable)
+    {
+        highlightMode = harvestable ? CellHighlightMode.HarvestTarget : CellHighlightMode.HarvestMiss;
+        ApplyHighlightColor();
+    }
+
     /// <summary>Retire preview / sélection et restaure l'état d'occupation.</summary>
     public void ClearTransientHighlight()
     {
@@ -92,6 +103,8 @@ public class BiofiltreCell : MonoBehaviour
             CellHighlightMode.PlacementValid   => ColorPreviewValid,
             CellHighlightMode.PlacementInvalid => ColorPreviewInvalid,
             CellHighlightMode.Selected         => ColorSelected,
+            CellHighlightMode.HarvestTarget    => ColorHarvestTarget,
+            CellHighlightMode.HarvestMiss      => ColorHarvestMiss,
             _                                  => occupied ? ColorOccupied : ColorEmpty,
         };
     }

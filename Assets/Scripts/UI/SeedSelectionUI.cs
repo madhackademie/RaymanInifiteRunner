@@ -116,6 +116,47 @@ public class SeedSelectionUI : MonoBehaviour
     private void OnDestroy()
     {
         UnsubscribeInventory();
+        UnsubscribeActionPoints();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeActionPoints();
+    }
+
+    // Retourne true si les PA sont suffisants (ou si le service est absent).
+    private static bool CanAffordAction(string actionId)
+    {
+        ActionPointService service = ActionPointService.Instance;
+        return service == null || service.CanAfford(service.GetCostForAction(actionId));
+    }
+
+    /// <summary>
+    /// Abonnement aux changements de PA tant que le popup est ouvert.
+    /// </summary>
+    private void SubscribeActionPoints()
+    {
+        UnsubscribeActionPoints();
+        if (ActionPointService.Instance != null)
+            ActionPointService.Instance.OnActionPointsChanged += HandleActionPointsChanged;
+    }
+
+    /// <summary>
+    /// Desabonnement securise des changements de PA.
+    /// </summary>
+    private void UnsubscribeActionPoints()
+    {
+        if (ActionPointService.Instance != null)
+            ActionPointService.Instance.OnActionPointsChanged -= HandleActionPointsChanged;
+    }
+
+    /// <summary>
+    /// Callback PA : rebuild des slots si le popup est actif pour rafraichir l'etat grise.
+    /// </summary>
+    private void HandleActionPointsChanged()
+    {
+        if (panel != null && panel.activeSelf)
+            BuildSlots();
     }
 
     /// <summary>
@@ -157,6 +198,7 @@ public class SeedSelectionUI : MonoBehaviour
         // Toujours reconstruire pour refleter le stock le plus recent.
         BuildSlots();
         panel.SetActive(true);
+        SubscribeActionPoints();
     }
 
     /// <summary>
@@ -164,6 +206,7 @@ public class SeedSelectionUI : MonoBehaviour
     /// </summary>
     public void Close()
     {
+        UnsubscribeActionPoints();
         panel.SetActive(false);
         targetCell = null;
         targetManager = null;
@@ -232,8 +275,8 @@ public class SeedSelectionUI : MonoBehaviour
             bool fits = targetManager != null &&
                         targetCell != null &&
                         targetManager.CanPlaceAtCell(targetCell.GridCoordinates, entry.plantDefinition);
-            // Le bouton de slot n'est cliquable que si la plante rentre ET si stock > 0.
-            slot.SetInteractable(fits && stock > 0);
+            // Cliquable si la plante rentre ET stock > 0 ; les PA ne bloquent que le gameplay (feedback refus).
+            slot.ConfigureSlot(fits, stock > 0, CanAffordAction(ActionPointActionId.PlantSeed));
 
             slot.OnSlotClicked += HandleSeedSelected;
             spawnedSlots.Add(slot);
