@@ -45,10 +45,10 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session fermée 2026-10-04** — journal : `PROJECT_LOG.md` § « Fin session : curseur plantation + prep merge ».  
-> **Prochaine session = merge** **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`** (curseurs récolte + plantation → `main`). Branche : **`feature/farm-plant-paint`**. Commit / push / merge = **auteur**.
+> **2026-10-04 soir** — **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]` clos** (merge curseurs récolte + plantation dans **`main`**, validé auteur). Journal : `PROJECT_LOG.md` § « Merge curseurs farm clos ».  
+> **Priorité session en cours :** correctifs / polish (ex. **`[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`**, **`[P0-FARM-CAM-SCROLL-STEP-001]`**, **`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`**). Branche IDE : **`feature/reworke_ui`** (iso `main` @ merge farm).
 
-### ★★ P0 — Merge système curseurs harvest / seeding `[P0-FARM-CURSOR-SYSTEM-MERGE-001]`
+### ~~★★ P0 — Merge système curseurs harvest / seeding~~ `[P0-FARM-CURSOR-SYSTEM-MERGE-001]` — **clos 2026-10-04**
 
 **Périmètre livré à intégrer dans `main` :**
 
@@ -61,13 +61,13 @@ Convention d'IDs :
 
 **Checklist merge (auteur) :**
 
-1. [ ] Commit / push **`feature/farm-plant-paint`** à jour (anim, prefab, scripts, art cursor plantation idle).
-2. [ ] Playtest PC rapide : pose graines (gant plantation) + récolte batch (gant idle / arrachage).
-3. [ ] Resync **`feature/ui-kit-refonte`** si nécessaire avant merge.
-4. [ ] Merge **`feature/farm-plant-paint`** → **`main`**. Résoudre conflits prefab `Biofiltre` / `NavigationHUD` si besoin.
-5. [ ] Playtest post-merge sur `main` (PC puis APK si dispo).
+1. [x] Commit / push branche farm à jour (anim, prefab, scripts, art cursor plantation idle).
+2. [x] Playtest PC rapide : pose graines (gant plantation) + récolte batch (gant idle / arrachage).
+3. [x] Resync branches UI si nécessaire avant merge.
+4. [x] Merge farm curseurs → **`main`** (ref commit merge : `7d2123e`).
+5. [~] Playtest post-merge APK — optionnel / à faire si pas encore fait.
 
-**Hors merge (après ou en parallèle si blocage) :**
+**Suite immédiate (correctifs) :**
 
 - **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** — taille / placement gant récolte (Bezy).
 - **`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`** — feedback PA épuisés.
@@ -438,11 +438,11 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 
 ### Contexte Git (rappel obligatoire « tâche du jour »)
 
-> Branche de travail : **`feature/farm-plant-paint`** (depuis `feature/ui-kit-refonte`, pas encore mergée dans `main`). **Alignement IDE ↔ agent cloud :** même branche + `git pull` après push agent ; voir `Notes/WORKFLOW_cloud_agent_local.md`.  
-> **Caméra farm :** touch/pan/zoom **clos APK 2026-09-29** sur branche courante (`feature/ui-kit-refonte`). Suite : `[P0-FARM-LEVEL-CAM-BOUNDS-001]` en scène ; reset optionnel `[BZ-FARM-CAM-RESET-001]`.  
+> Branche de travail : **`feature/reworke_ui`** (tracking `origin/feature/reworke_ui`, alignée **`main`** après merge farm 2026-10-04). Ex-ligne **`feature/farm-plant-paint`** intégrée. **Alignement IDE ↔ agent cloud :** même branche + `git pull` après push agent ; voir `Notes/WORKFLOW_cloud_agent_local.md`.  
+> **Caméra farm :** touch/pan/zoom **clos APK 2026-09-29**. Suite : `[P0-FARM-LEVEL-CAM-BOUNDS-001]` en scène ; reset optionnel `[BZ-FARM-CAM-RESET-001]`.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
 > **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
-> **Priorité immédiate (prochaine session) :** **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`** — merge **`feature/farm-plant-paint`** → **`main`** (système curseurs récolte + plantation : controllers, prefab Biofiltre, scripts). Playtest avant merge. Détail : § « Prochaine session » en tête de fichier.  
+> **Priorité immédiate :** correctifs farm/UI (§ « Suite immédiate » en tête) — merge curseurs **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]` clos**.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows (`NOTE_hud_biofiltre_prefab_en_dur.md`).  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  

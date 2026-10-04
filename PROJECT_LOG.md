@@ -1,5 +1,24 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-04 — Merge curseurs farm clos
+
+### Statut
+- **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`** — **clos** (validation auteur : merge déjà effectué).
+- **`main`** contient le livrable curseurs récolte + plantation (réf. commit **`7d2123e`** : gant plantation Bezy + scripts Cursor).
+- Branche IDE au moment de la clôture doc : **`feature/reworke_ui`** (alignée `main`).
+
+### Périmètre merge (rappel)
+- Récolte batch : `GloveCursor`, `BatchHarvestCursor`, `FarmBatchHarvestCursor`, clips idle/harvest.
+- Plantation : `GlovePlantCursor`, `PlantPlacementCursor`, `FarmPlantingCursor`, `PlantPlacementPreview`, `GlovePlantIdle`.
+
+### Prochaine session (référence)
+- Correctifs / polish : `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]`, `[P0-FARM-CAM-SCROLL-STEP-001]`, `[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`, playtest APK pose/récolte si besoin.
+
+### Git
+- Commit / push / merge : **auteur** (fait pour le merge ; docs `Notes/Todo_project.md` + ce journal = **non commités** par l’assistant).
+
+---
+
 ## 2026-10-04 — Fin session : curseur plantation + prep merge
 
 ### Objectif session (suite `feature/farm-plant-paint`)
@@ -19,7 +38,7 @@
 
 ### Backlog ajouté
 - **`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`** — feedback visible quand plus de PA (clignotement panneau PA, etc.).
-- **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`** — **prochaine session** : merge harvest + seeding controllers → `main`.
+- ~~**`[P0-FARM-CURSOR-SYSTEM-MERGE-001]`**~~ — merge harvest + seeding → `main` (**clos** même soir, voir entrée « Merge curseurs farm clos »).
 
 ### Reste sur la branche (avant merge)
 - Art sowing : `Plant_Planting_Sowing_Cursor.png` → Bezy Ph. 2 / 3b / 4.
