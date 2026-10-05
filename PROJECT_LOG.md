@@ -1,5 +1,65 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-05 — Fin de session : popup récolte bois, pièces une par une
+
+### Objectifs
+- Mockup popup récolte (Roquette) dans la charte bois, puis passage Bezy.
+- Fermer la session. Prochaine priorité = bouton teal isolé.
+
+### Changements
+- Mockup : `Assets/Art/Assets Store Dump/Ui/mockup_popup_recolte_roquette_20261005.jpg`.
+- Quatre PNG Dump (pas promus Sprites) : croix, danger corail, badge stade, remplissage teal.
+- Règle fond uni de détourage (magenta `#FF00FF`, auteur retire le fond) : `.cursor/rules/art_asset_dump.mdc`, `Notes/Art/WORKFLOW_creation_assets.md`.
+- `HarvestPanelUI` : `stageProgressFill` + `cancelButton` (Annuler ferme comme la croix).
+- Copie non branchée : `FarmHarvestPanel_WoodMockup.prefab` (phases 1–3 posées, phase 4 tailles **non appliquée**).
+- Pièce isolée : `Assets/Prefabs/Ui/BtnTeal.prefab` — root `BtnTeal`, RectTransform, layer 5, Image sans sprite.
+
+### Décisions
+- Popup entier d’un coup abandonné pour la suite : valider chaque pièce, puis assembler.
+- Pas de binding `farm.plant.harvest` : le jeu ouvre encore `FarmHarvestPanel`.
+- Bezy ne crée pas un prefab via un menu Unity. Coquille = Empty glissé sous un Canvas (Transform → RectTransform), puis drag vers `Assets/Prefabs/Ui/`.
+
+### Problème / solution
+- Bezy reste sur « check editor state / prefab content ». Cause vue : prefab Transform monde, ou chemin `UiKit_Piece_BtnTeal` alors que le fichier réel est `BtnTeal`.
+- **À voir prochaine session :** message Unity de nommage (root ≠ asset) comme second blocage.
+
+### Prochaines étapes
+- [ ] Thread Bezy neuf, prefab `BtnTeal` déjà ouvert, prompt dans `Notes/Todo_project.md` § Prochaine session.
+- [ ] Lire le message de nommage Unity avant de relancer.
+- [ ] Après ok visuel du teal : les autres pièces, puis assemblage.
+
+---
+
+## 2026-10-05 — Backlog bouton batch UI bois + clos curseur/exit
+
+- **`[BL-FARM-HARVEST-BATCH-BTN-UI-001]`** — noté Bezy backlog : polish bouton récolte batch (placeholder blanc) avec refonte chrome bois ; **Cursor** fournira mockup/génération → Dump avant Bezy.
+- **`[BZ-FARM-EXIT-RESET-MODES-001]`** · **`[BZ-FARM-CURSOR-OS-CLIP-001]`** — playtest auteur OK ; cochés file Bezy.
+
+---
+
+## 2026-10-05 — Bezy hide curseur OS récolte + build mobile auteur
+
+- **`[BZ-FARM-HARVEST-HIDE-SYSTEM-CURSOR-001]`** — livré Bezy : `FarmBatchHarvestCursor.RefreshSystemCursorVisibility()` (miroir plantation).
+- **Auteur :** build APK playtest touch réel (farm curseurs, PA, pinch/pan).
+
+---
+
+## 2026-10-05 — File Bezy : clos sparkle récolte + atlas laitue
+
+- **`[BZ-FARM-HARVEST-READY-VFX-002]`** — retiré de `PROMPTS_Bezi_A_FAIRE.md` / bloc lancement (déjà livré + playtest OK 2026-09-23).
+- **`[BZ-FARM-LAITUE-ATLAS-RELOC-002]`** — clos auteur : atlas `Assets/Art/Sprites/Plantes/AtlasLaitue.png`, phases 1–3 OK.
+- Index : `Notes/Bezi/BEZY_QUEUE.md`, `ARCHIVE_prompts_bezi_index.md`.
+
+---
+
+## 2026-10-05 — Clos polish + clamp gant récolte (playtest auteur)
+
+- **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** · **`[P0-FARM-HARVEST-GRID-CLAMP-001]`** — validation auteur : scale 0,75 + `gripOffsetLocal` sur `BatchHarvestCursor` (`Biofiltre.prefab`, ex. `{0.15, 0.2}`), idle + arrachage OK.
+- Réglage **Inspector scène** puis Apply prefab (pas Bezy).
+- **Cursor :** retrait composant dupliqué `FarmBatchHarvestCursor` sur le même GameObject (refs vides).
+
+---
+
 ## 2026-10-04 — Fin de session : gant récolte recalé sur la souris
 
 ### Objectifs

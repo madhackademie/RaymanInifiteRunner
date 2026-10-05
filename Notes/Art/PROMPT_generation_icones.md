@@ -49,7 +49,7 @@ Le sous-dossier Dump annonce déjà la cible. Promo = copier vers le chemin `Spr
 | `…/Dump/ElementProd/Biofiltre/` | `Assets/Art/Sprites/Farm/Biofiltre/` |
 | `…/Dump/Poisson/` | `Assets/Art/Sprites/Farm/Poisson/` |
 
-Le **§1** est le prompt **icône UI** (fond blanc). Les lignes monde (vague W) peuvent utiliser un autre prompt : le noter dans la colonne Prompt.
+Le **§1** est le prompt **icône UI** (fond uni de détourage, pas transparent). Les lignes monde (vague W) peuvent utiliser un autre prompt : le noter dans la colonne Prompt.
 
 ---
 
@@ -58,7 +58,7 @@ Le **§1** est le prompt **icône UI** (fond blanc). Les lignes monde (vague W) 
 Remplacer uniquement `[VOTRE OBJET ICI]` :
 
 ```
-A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors, isolated on a white background. Made with thick rustic light brown wooden textures, thick pure black outer outline, hard edges with NO anti-aliasing on the silhouette, smooth cel shading inside, cozy farming game aesthetic, high quality UI asset. EDGE LOCK: no gray semi-transparent fringe on alpha cutout, no outer glow.
+A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors, on a flat solid #FF00FF background. No transparency. Made with thick rustic light brown wooden textures, thick pure black outer outline, hard edges with NO anti-aliasing on the silhouette, smooth cel shading inside, cozy farming game aesthetic, high quality UI asset. EDGE LOCK: no gray semi-transparent fringe, no outer glow. BACKGROUND: #FF00FF only if that color is absent from the subject; otherwise #0000FF. Use #00FF00 only when the subject contains no green.
 ```
 
 **Exemple :** même phrase avec `a packet of lettuce seeds`.
@@ -71,7 +71,7 @@ A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors
 - **Contour :** bordure **noire nette**, **sans anti-aliasing** sur la découpe (évite halo sur HUD sombre — cf. `[P0-FARM-SPRITE-ALPHA-001]`).
 - Nommer le fichier : `Icone_[Objet]_[YYYYMMDD].png` (ex. `Icone_GrainesAntiSlug_20260831.png`).
 - Déposer dans le sous-dossier Dump de la famille (tableau §3).
-- Fond blanc isolé = prévu : on détourera / importera en sprite plus tard. Ne pas coller le PNG brut sur un prefab.
+- Fond uni `#FF00FF` (ou une autre couleur absente du dessin) = prévu : l’auteur détoure en deux clics, puis importe en sprite. Ne pas coller le PNG brut sur un prefab.
 
 ### Variantes (optionnel, même style)
 
@@ -225,6 +225,14 @@ Prompt §1 (icône fond blanc). Quêtes : **1 onglet parent + 3 sous-classes** (
 | H9 | Boulon (monnaie quête, wallet) | `a large rustic metal bolt token for a wallet currency icon` | `Dump/Ui/Currency/` | `Sprites/UI/Currency/` | à générer | |
 
 H9 = icône wallet (à côté du billet or A6). H8 = **onglet** du shop qui dépense des boulons, pas la monnaie elle-même.
+
+### Vague H-farm — popup plante (Bezy backlog UI bois)
+
+Task Bezy : **`[BL-FARM-HARVEST-BATCH-BTN-UI-001]`** — remplacer le carré blanc du bouton récolte batch (`HarvestPanelUI`). **Mockup Cursor** (ou génération) **avant** Bezy ; wiring déjà OK `[BZ-FARM-HARVEST-BATCH-BTN-001]`.
+
+| # | Objet FR | Prompt objet | Dump | Promo Sprites | Statut | Task |
+|---|----------|--------------|------|---------------|--------|------|
+| H-farm-1 | Bouton « récolte batch » (popup plante) | Bouton UI bois rustique + cel cartoon, icône balayage/récolte lisible ; cohérent nav bois / `FirstTryBandeauAtelier.png` | `Dump/Ui/Farm/` | `Sprites/UI/Farm/` (après OK) | **à générer (mockup)** | `[BL-FARM-HARVEST-BATCH-BTN-UI-001]` |
 
 #### Prompt ChatGPT — H1 Onglet Multiverse (coller tel quel)
 

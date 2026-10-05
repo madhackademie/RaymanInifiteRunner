@@ -45,9 +45,33 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-04 fin de session** — gros décalage gant récolte **réparé** (`FarmBatchHarvestCursor`, pas les pivots).  
-> **Priorité immédiate :** playtest scale 0,75 + balayage — **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** · **`[P0-FARM-HARVEST-GRID-CLAMP-001]`**.  
-> **Branche IDE :** **`feature/reworke_ui`** (merge farm déjà dans **`main`**, ref ~`7d2123e`).  
+> **2026-10-05 fin** — **priorité : bouton teal isolé** `[BZ-FARM-HARVEST-WOOD-001]`.  
+> **Branche IDE :** **`feature/reworke_ui`**.
+
+**Reprendre en premier :**
+
+1. Nouveau thread Bezy. Prefab **déjà ouvert** en Prefab Mode : `Assets/Prefabs/Ui/BtnTeal.prefab`.
+2. Le root s’appelle **`BtnTeal`** (RectTransform, layer 5, Image vide, 100×100). Le prompt doit utiliser **ce nom et ce chemin**, pas `UiKit_Piece_BtnTeal`.
+3. **À vérifier avant de relancer :** le message Unity sur le **nommage** (nom du root ≠ nom du fichier prefab, ou dialogue de rename). C’est le suspect n°2 du blocage Bezy (« check editor state » qui ne finit pas). Suspect n°1 déjà vu : coquille Transform monde, ou prefab pas ouvert.
+4. Une fois le teal validé (360×120, sprite `UiKit_BtnPrimary_teal_20260919`, multiplier 1.4, label `Récolter`) : décliner les autres pièces, puis seulement réassembler le popup. La copie `FarmHarvestPanel_WoodMockup` n’est pas le chemin de reprise.
+
+**Prompt prêt (ne pas élargir) :**
+
+```
+/prefab-ui-3phases
+Task ID: [BZ-FARM-HARVEST-WOOD-001]
+Prefab: Assets/Prefabs/Ui/BtnTeal.prefab
+Phase: 1
+
+Prefab is ALREADY open in Prefab Mode. Root name is BtnTeal. Do not check editor state. Do not scan the project. Do not rename the prefab or the root. Do not open any other file.
+
+On the open BtnTeal root only:
+- RectTransform size 360 x 120, anchors center.
+- Image sprite UiKit_BtnPrimary_teal_20260919 (guid e6c1309d4f8160d2b05e3c7fa12d4689), Type Sliced, color white, Pixels Per Unit Multiplier 1.4.
+- Child TMP Label, text Récolter, white, center, stretch to parent.
+
+Save. List size and sprite. STOP.
+```  
 > ~~**`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`**~~ — **clos 2026-10-04** (playtest auteur OK).  
 > **Annulé session :** layering sorting fantôme/gant/cases (`GhostSortingOrder` 50, pas de bump `BiofiltreCell`).
 
@@ -77,7 +101,7 @@ Convention d'IDs :
 - ~~**`[BZ-FARM-PLANT-GHOST-MATURE-SCALE-001]`**~~ — **clos** 2026-10-04 (Bezy + validé auteur).
 - ~~**`[P0-FARM-CAM-SCROLL-STEP-001]`**~~ — **clos** 2026-10-04 (SerializeField + playtest OK auteur).
 - ~~**`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`**~~ — **clos 2026-10-04**.
-- **`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`** · **`[P0-FARM-HARVEST-GRID-CLAMP-001]`**.
+- ~~**`[BZ-FARM-HARVEST-CURSOR-POLISH-001]`**~~ · ~~**`[P0-FARM-HARVEST-GRID-CLAMP-001]`**~~ — playtest PC OK auteur 2026-10-05.
 
 ### ~~★ P0 — Feedback PA épuisés~~ `[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]` — **clos 2026-10-04**
 
@@ -99,7 +123,7 @@ Convention d'IDs :
 1. [x] Playtest PA 0 PC — validé auteur 2026-10-04.
 2. [ ] Playtest PA 0 **APK** — optionnel.
 
-### ★★ P0 — Polish gant récolte `[BZ-FARM-HARVEST-CURSOR-POLISH-001]`
+### ~~★★ P0 — Polish gant récolte~~ `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` — **clos 2026-10-05**
 
 **Constat auteur 2026-10-03 :** idle et arrachage fonctionnent. L’icône est **trop grande**.
 
@@ -107,9 +131,9 @@ Convention d'IDs :
 
 **Bezy :** scale seul dans `Assets/Prefabs/World/Biofiltre.prefab`. Pas de nouveau slice. Pas d’édition de `Plant_Harverst_Idle_Cursor.png`.
 
-1. [x] Scale `0.75, 0.75, 0.75` sur `BatchHarvestCursor` — livré Bezy 2026-10-03. Position inchangée.
-2. [ ] Playtest auteur PC, puis seulement ensuite l’APK.
-3. [ ] Plus tard : clamp auto du curseur sur la cellule (réflexion à part, pas ce scale).
+1. [x] Scale `0.75, 0.75, 0.75` sur `BatchHarvestCursor` — livré Bezy 2026-10-03.
+2. [x] Playtest PC + `gripOffsetLocal` auteur (prefab scène → Apply) — OK 2026-10-05.
+3. [ ] Playtest **APK** — optionnel.
 
 ### ★ P0 — Animation curseur récolte `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` — **joue** 2026-10-03
 
@@ -121,9 +145,26 @@ Convention d'IDs :
 2. [x] Phase 2 — slice récolte (`GloveHarvest_01`–`_06`).
 3. [x] Phase 3 — clips `GloveIdle.anim` + `GloveHarvest.anim`.
 4. [x] Phase 4 — controller `GloveCursor` + câblage sur `BatchHarvestCursor`.
-5. [ ] Polish taille + placement → `[BZ-FARM-HARVEST-CURSOR-POLISH-001]`.
+5. [x] Polish taille + placement — clos 2026-10-05.
 
-### ~~★ P0 — Clamp grille récolte~~ `[P0-FARM-HARVEST-GRID-CLAMP-001]` — **livré Cursor 2026-10-04**
+### Backlog Bezy — bouton récolte batch (UI bois) `[BL-FARM-HARVEST-BATCH-BTN-UI-001]`
+
+**État 2026-10-05 :** wiring OK (`[BZ-FARM-HARVEST-BATCH-BTN-001]`, `HarvestPanelUI` → `ArmBatchHarvest`). **Visuel = carré blanc placeholder** — pas de polish Bezy tant que la refonte UI bois n’est pas cadrée.
+
+**Quand :** avec la **refonte UI chrome bois** (même famille que `[BZ-NAV-WOOD-REFONTE-001]`, mockups shop/nav).
+
+**Avant Bezy :**
+1. **Cursor** — mockup ou génération image de référence (bouton batch dans popup récolte plante : style bois rustique + cel cartoon, cohérent `RaymanFarm_UI_CartoonCel` / `FirstTryBandeauAtelier.png`).
+2. Déposer la ref brute dans **`Assets/Art/Assets Store Dump/Ui/Farm/`** (ex. `HarvestBatchButton_mockup.png`) — pas `Sprites/` tant que non validé auteur.
+3. Lister cible prefab (popup plante / `HarvestPanelUI` — bouton `batchHarvestButton`) dans le prompt Bezy.
+
+**Bezy (plus tard) :** remplacer Image/Button placeholder ; conserver le wiring `onClick` → `ArmBatchHarvest` ; layer UI **5**.
+
+**Refs :** `Assets/Scripts/UI/Inventory/HarvestPanelUI.cs` · `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` · `Notes/Art/PROMPT_generation_icones.md` (ajouter ligne si besoin).
+
+---
+
+### ~~★ P0 — Clamp grille récolte~~ `[P0-FARM-HARVEST-GRID-CLAMP-001]` — **clos 2026-10-05**
 
 **Décision auteur 2026-10-04 :** clamp **oui**, même pas de grille que la plantation (cellule sous pointeur via `TryResolveClickTarget`).
 
@@ -133,7 +174,7 @@ Convention d'IDs :
 
 1. [x] Trancher : clamp sur pas grille (pas 1 cellule art-only).
 2. [x] Gros décalage gant vs souris — corrigé + OK auteur.
-3. [ ] Playtest auteur : balayage bordure, hover or/gris, scale 0,75.
+3. [x] Playtest auteur PC — balayage + alignement souris OK 2026-10-05.
 
 ### ~~★ P0 — Fermer le choix de graines (pas de pile)~~ `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` — **clos 2026-10-04**
 
@@ -192,7 +233,8 @@ Même geste que la pose : balayage, une plante récoltable à la fois, **relâch
 **Curseur :** idle + arrachage **OK auteur 2026-10-03** (clic tenu = `GloveHarvest`, relâchement = curseur OS). **Suite :** polish taille (trop grand) et placement `[BZ-FARM-HARVEST-CURSOR-POLISH-001]`, avant playtest APK.
 
 1. [x] Cursor : double-clic prévu pour récolter **et** armer le glisser. L’entrée du mode est le bouton Batch.
-2. [x] Bezy `[BZ-FARM-HARVEST-BATCH-BTN-001]` — bouton blanc câblé, 2026-10-01.
+2. [x] Bezy `[BZ-FARM-HARVEST-BATCH-BTN-001]` — bouton blanc câblé, 2026-10-01 (placeholder fonctionnel).
+2b. [ ] **Bezy backlog** `[BL-FARM-HARVEST-BATCH-BTN-UI-001]` — polish visuel bouton récolte batch (carré blanc actuel) **lors refonte UI chrome bois** ; ref art/mockup Cursor → Dump puis Bezy `/prefab-ui-3phases` ou prompt ciblé. Voir § *Backlog Bezy — bouton batch* ci-dessous.
 3. [x] Cursor : `FarmBatchHarvestMode` (`Idle` / `Armed` / `Stroking`) + `ModeChanged`.
 4. [x] Bezy `[BZ-FARM-HARVEST-CURSOR-001]` — vue livrée, sprite encore vide.
 5. [ ] Art gant — `Notes/Art/PROMPT_curseur_gant_recolte_batch.md` (Dump, pas Sprites).
@@ -544,7 +586,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 **Ordre prochaine session farm :**
 0. [x] **[P0-FARM-CAMERA-VIEW-001]** PC + Township — clos 2026-09-29 (voir § Prochaine session).
 1. [ ] **[CT-FARM-BAKE-RECT-001]** Bake B sur biofiltre **rect plus grand** (dupliquer layout SO + variante prefab).
-2. [ ] **[BZ-FARM-HARVEST-READY-VFX-002]** Sparkle récolte Mature + Seedling plus lisible (Bezy Ph.5 — `PROMPTS_Bezi_harvest_ready_vfx.md`).
+2. [x] **[BZ-FARM-HARVEST-READY-VFX-002]** — **clos** (livré + playtest OK ; retiré file Bezy 2026-10-05).
 3. **Backlog :** `[BL-FARM-DECK-CIRCLE-MASK-001]` — `Notes/Farm/BACKLOG_deck_cercle_masque_plantable.md`.
 
 **Ordre prochaine session (autres chantiers) :**
@@ -573,8 +615,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 
 > **Priorité session 2026-09-10** (avec bake rect grand).
 
-**A — Sparkle récoltable (2 stades)** `[BZ-FARM-HARVEST-READY-VFX-002]`  
-> Mature + Seedling (`HarvestReadyFx` / `PlantGrow.SyncHarvestReadyFxForStage`) : effet **trop faible** en jeu → passe Bezy : **taille particules** (et si besoin rate/size over lifetime). Prompt Phase 5 : `Assets/Docs/Bezi/PROMPTS_Bezi_harvest_ready_vfx.md`.
+**A — Sparkle récoltable (2 stades)** `[BZ-FARM-HARVEST-READY-VFX-002]` — **clos** (playtest OK 2026-09-23 ; file Bezy retirée 2026-10-05).
 
 **B — Glow cible au clic** `[P0-FARM-PLANT-SELECT-GLOW-001]` — **clos 2026-09-10**  
 > Shader `Assets/Shaders/Farm/SpriteSelectionSilhouette.shader` (alpha → couleur unie). `PlantSelectionHighlight` : une cible active, socle vert conservé. Réglages : `silhouetteLocalScale` / `silhouetteLocalOffset` sur `LaitueObj`.
@@ -622,7 +663,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 1. [ ] Playtest : pivot sur hub vs sommet SE (tuner `isoSpriteViewOffset` par pas `0.02`, Y− = vers joueur)
 2. [ ] Valider preview pose + sélection (4 losanges verts) alignés avec le pied visuel
 3. [ ] Si besoin : ajouter mode ancrage `SommetSE` en code (alternative à offset manuel)
-4. [ ] Clore `[BZ-FARM-LAITUE-ATLAS-001]` si atlas wiring pas encore commité auteur
+4. [x] ~~`[BZ-FARM-LAITUE-ATLAS-RELOC-002]`~~ — **clos 2026-10-05** (atlas `Plantes/AtlasLaitue.png`, wiring auteur OK)
 
 **Clos playtest grille rework (2026-08-30, branche `feature/rework-biofiltre-grid`) :**
 

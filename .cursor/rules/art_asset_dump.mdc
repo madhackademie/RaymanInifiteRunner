@@ -20,6 +20,19 @@ Ne pas brancher un fichier Dump sur un prefab / `PlantDefinition` / UI runtime t
 
 Liste unique de ce qu’il reste à produire : `Notes/Art/PROMPT_generation_icones.md` (miroir Dump → dossier Sprites correspondant).
 
+## Fond de génération (détourage auteur)
+
+L’auteur retire le fond lui-même, en deux clics. L’assistant ne détoure pas.
+
+- Fond **uni**, une seule couleur, sans dégradé et sans ombre au sol.
+- Cette couleur **ne doit pas apparaître dans le dessin** (feuilles, reflets, parchemin, taches).
+- Kit UI habituel (bois, feuilles, teal, corail, parchemin) : magenta pur `#FF00FF`.
+- Vert pur `#00FF00` seulement si le sujet ne contient aucun vert.
+- Si le magenta est déjà dans le sujet : bleu pur `#0000FF`.
+- Ne pas demander un PNG transparent au générateur, ne pas chroma-key, ne pas recadrer l’alpha.
+
+Détail prompt : `Notes/Art/WORKFLOW_creation_assets.md` §3.1.
+
 ## Assistant
 
 Si tu génères ou importes de l’art : enregistrer sous Dump, donner le chemin, ne pas « ranger » dans Sprites tout seul.

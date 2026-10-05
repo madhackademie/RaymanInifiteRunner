@@ -1,7 +1,7 @@
 # Workflow — création d’assets (Dump → Sprites)
 
 **Création :** 2026-09-19  
-**MAJ :** 2026-09-23 (EDGE_LOCK contour noir · pas d’AA)  
+**MAJ :** 2026-10-05 (fond uni de détourage · l’auteur retire le fond)  
 **Règle dump :** `.cursor/rules/art_asset_dump.mdc`  
 **Backlog lignes :** `Notes/Art/PROMPT_generation_icones.md` §3  
 **Charte :** `Notes/Art/NOTE_graphique.md`
@@ -56,6 +56,14 @@ Pour **max conversion** vers la charte et **usage commercial indie** (salaire co
 ```
 EDGE LOCK: pure black (#000000) outer outline on the subject. NO anti-aliasing — hard pixel-clean alpha edge, no gray semi-transparent fringe, no soft halo, no outer glow.
 ```
+
+**CHROMA_BG (toute nouvelle génération, EN) :**
+
+```
+BACKGROUND: one flat solid color that does not appear anywhere in the subject. No gradient, no floor, no cast shadow. Default #FF00FF. Use #00FF00 only when the subject contains no green. Use #0000FF if the subject already contains magenta. Do not output transparency.
+```
+
+L’auteur retire ce fond en deux clics. L’assistant ne détoure pas, ne demande pas un PNG déjà transparent, et ne choisit pas une couleur présente dans le dessin (le vert mange les feuilles). Les prompts plus anciens qui disent « fond blanc » ou « fond transparent » suivent ce bloc pour toute génération nouvelle.
 
 Détail revue : `Notes/Art/NOTE_graphique.md` § Do / Alpha.
 

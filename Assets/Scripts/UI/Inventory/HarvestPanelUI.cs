@@ -18,11 +18,13 @@ public class HarvestPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stageLabel;
     [SerializeField] private TextMeshProUGUI timerLabel;
     [SerializeField] private TextMeshProUGUI yieldLabel;
+    [SerializeField] private Image stageProgressFill;
 
     [Header("Boutons")]
     [SerializeField] private Button harvestButton;
     [SerializeField] private Button uprootButton;
     [SerializeField] private Button closeButton;
+    [SerializeField] private Button cancelButton;
     [SerializeField] private Button batchHarvestButton;
 
     private const float DisabledAlpha = 0.35f;
@@ -60,6 +62,8 @@ public class HarvestPanelUI : MonoBehaviour
         harvestButton.onClick.AddListener(OnHarvestClicked);
         uprootButton.onClick.AddListener(OnUprootClicked);
         closeButton.onClick.AddListener(Close);
+        if (cancelButton != null)
+            cancelButton.onClick.AddListener(Close);
         if (batchHarvestButton != null)
             batchHarvestButton.onClick.AddListener(OnBatchHarvestClicked);
         panel.SetActive(false);
@@ -291,6 +295,18 @@ public class HarvestPanelUI : MonoBehaviour
         {
             timerLabel.text = "—";
         }
+
+        RefreshStageProgress(duration);
+    }
+
+    // Durée nulle = stade sans attente : barre pleine. Sinon avancement du stade courant.
+    private void RefreshStageProgress(float duration)
+    {
+        if (stageProgressFill == null || currentPlantGrow == null)
+            return;
+
+        float progress = duration > 0f ? currentPlantGrow.StageProgress : 1f;
+        stageProgressFill.fillAmount = Mathf.Clamp01(progress);
     }
 
     // ── Handlers ──────────────────────────────────────────────────────────────
