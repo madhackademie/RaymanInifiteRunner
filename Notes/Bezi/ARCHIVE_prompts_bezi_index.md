@@ -1,6 +1,6 @@
 # Archive — prompts Bezy livrés (index)
 
-**MAJ :** 2026-10-04  
+**MAJ :** 2026-10-05  
 Purge des fichiers `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` **clos** (farm popups, curseurs, caméra scroll, etc.). **Prompts actifs :** liste dans `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` uniquement.
 
 **Politique :** plus de nouveau fichier prompt sans demande auteur ; texte job = chat Bezy (Cursor).  
@@ -13,7 +13,9 @@ Purge des fichiers `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` **clos** (farm popups, c
 | Task ID | Sujet | Date / note |
 |---------|--------|-------------|
 | `[BZ-TAB-SPRITES-001]` | Onglets HUD NavigationHUD (×5) | Playtest OK 2026-09-23 |
-| `[BZ-FARM-HARVEST-READY-VFX-002]` | Sparkle idle récolte `HarvestReadyFx` | Playtest OK 2026-09-23 (Bezy 5c–5f) |
+| `[BZ-FARM-HARVEST-READY-VFX-002]` | Sparkle idle récolte `HarvestReadyFx` | Playtest OK 2026-09-23 (Bezy 5c–5f) ; retiré file active **2026-10-05** |
+| `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | Atlas laitue déplacé + wiring 7 stades | **Clos 2026-10-05** — `Plantes/AtlasLaitue.png`, PPU 33 |
+| `[BZ-FARM-HARVEST-HIDE-SYSTEM-CURSOR-001]` | Masquer curseur OS en récolte batch | Bezy livré **2026-10-05** — `FarmBatchHarvestCursor` |
 | `[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]` | PA grisé + clic refuse + flash HUD | **Clos 2026-10-04** — prompts fichiers supprimés |
 | `[BZ-FARM-CAM-RESET-001]` | Reset vue + bouton UI | **Annulé 2026-10-04** — non implémenté |
 | `[BZ-FARM-CAM-TOWN-PAN-001]` | Long press pan Township + tap relâche grille | **Validé APK 2026-09-29** — ne pas refaire sauf bug |

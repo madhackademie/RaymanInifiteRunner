@@ -4,8 +4,11 @@ using UnityEngine;
 /// Curseur gant de la récolte en balayage. La racine suit la cible grille ;
 /// le point de contact visuel (base du gant) est corrigé via <see cref="gripOffsetLocal"/>.
 /// </summary>
+[DefaultExecutionOrder(HarvestCursorExecutionOrder)]
 public class FarmBatchHarvestCursor : MonoBehaviour
 {
+    // Après FarmPlantingCursor (ordre 0) : les deux appliquent la même règle, celui-ci a le dernier mot dans la frame.
+    private const int HarvestCursorExecutionOrder = 100;
     private const int CursorSortingOrder = 60;
     private static readonly int HarvestingParameterId = Animator.StringToHash("Harvesting");
 
@@ -20,9 +23,11 @@ public class FarmBatchHarvestCursor : MonoBehaviour
     [SerializeField] private bool autoGripFromSpriteBottomCenter = true;
 
     private FarmBatchHarvestInput harvestInput;
+    private PlantPlacementPreview placementPreview;
 
     private void OnEnable()
     {
+        placementPreview = GetComponentInParent<PlantPlacementPreview>();
         BindInput();
     }
 
@@ -59,8 +64,7 @@ public class FarmBatchHarvestCursor : MonoBehaviour
             return;
         }
 
-        bool showGlove = harvestInput != null && harvestInput.Mode != FarmBatchHarvestMode.Idle;
-        Cursor.visible = !showGlove;
+        RefreshSystemCursorVisibility();
     }
 
     private void LateUpdate()
@@ -71,11 +75,36 @@ public class FarmBatchHarvestCursor : MonoBehaviour
         if (harvestInput == null || harvestInput.Mode == FarmBatchHarvestMode.Idle)
             return;
 
-        if (!harvestInput.TryGetCursorWorld(out Vector3 targetWorld))
-            return;
+        if (harvestInput.TryGetCursorWorld(out Vector3 targetWorld))
+        {
+            // Racine positionnée pour que le point de contact (grip) coïncide avec la cible monde.
+            transform.position = targetWorld - GetGripOffsetWorld();
+        }
 
-        // Racine positionnée pour que le point de contact (grip) coïncide avec la cible monde.
-        transform.position = targetWorld - GetGripOffsetWorld();
+        RefreshSystemCursorVisibility();
+    }
+
+    /// <summary>
+    /// Masque le pointeur système tant que le gant de récolte est actif (Armed / Stroking).
+    /// </summary>
+    private void RefreshSystemCursorVisibility()
+    {
+        ApplySystemCursorVisibility();
+    }
+
+    private bool ShouldHideSystemCursor()
+    {
+        bool plantingActive = placementPreview != null && placementPreview.IsPreviewModeActive;
+        bool harvestActive = harvestInput != null && harvestInput.Mode != FarmBatchHarvestMode.Idle;
+        return plantingActive || harvestActive;
+    }
+
+    private void ApplySystemCursorVisibility()
+    {
+        // N'écrire que sur changement : réécrire Cursor.visible chaque frame fait scintiller le pointeur Windows.
+        bool visible = !ShouldHideSystemCursor();
+        if (Cursor.visible != visible)
+            Cursor.visible = visible;
     }
 
     /// <summary>
@@ -116,7 +145,7 @@ public class FarmBatchHarvestCursor : MonoBehaviour
             marker.color = Color.white;
         }
 
-        Cursor.visible = !showGlove;
+        ApplySystemCursorVisibility();
 
         if (animator != null && showGlove)
         {

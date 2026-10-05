@@ -195,6 +195,12 @@ public class FarmBatchHarvestInput : MonoBehaviour
             EndStroke();
     }
 
+    /// <summary>Quitte le mode récolte groupée (Armed/Stroking) vers Idle, ex. avant de quitter la scène.</summary>
+    public void CancelBatchHarvest()
+    {
+        EndStroke();
+    }
+
     private void EndStroke()
     {
         hasVisited = false;

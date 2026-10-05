@@ -1,5 +1,7 @@
 # Bezy — laitue atlas déplacé + review offsets `[BZ-FARM-LAITUE-ATLAS-RELOC-002]`
 
+**Statut : CLOS 2026-10-05** (auteur) — ne plus planifier Bezy ; historique phases ci-dessous.
+
 **Contexte 2026-10-01 :** atlas déplacé par l’auteur  
 **Playtest auteur :** décalage grille = **pivot slices reset** (reimport) — corrigé pivots bas ; PPU **33** obligatoire pour la taille.  
 **Ancien :** `Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png` (guid mort — **ne plus utiliser**)  

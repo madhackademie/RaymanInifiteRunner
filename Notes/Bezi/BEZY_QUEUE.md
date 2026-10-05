@@ -26,11 +26,14 @@
 | Statut | Task ID | Phase | Notes |
 |--------|---------|-------|-------|
 | [x] | `[BZ-FARM-PLANTING-CURSOR-ANIM-001]` | **5** | Livré Bezy 2026-10-03 — `PlantPlacementCursor` sur `Biofiltre.prefab` (scale 0.75, GlovePlantCursor, refs OK). |
-| [ ] | `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` | vue | **P0 première** — gant trop grand, placement à caler (idle + arrachage). Scale / offset sur `BatchHarvestCursor`. Pas de reslice. |
+| [x] | `[BZ-FARM-HARVEST-CURSOR-POLISH-001]` | vue | **clos 2026-10-05** — scale 0,75 + `gripOffsetLocal` auteur ; playtest PC OK. |
 | [x] | `[BZ-FARM-HARVEST-CURSOR-ANIM-001]` | anim | Joue 2026-10-03 — idle armé, arrachage au clic tenu. Pivots récolte seulement. |
 | [x] | `[BZ-FARM-HARVEST-BATCH-BTN-001]` | prefab | Bouton blanc Batch câblé 2026-10-01 (Ph.1–3). |
 | [x] | `[BZ-FARM-SEED-CLOSE-BEFORE-PLANT-001]` | C# | **clos 2026-10-04** — playtest OK (prompt fichier supprimé ; voir `PROJECT_LOG.md`). |
-| [~] | `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | Pivot + PPU 33 OK auteur 2026-10-01 ; clos si wiring + icônes OK |
+| [x] | `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | 1→3 | **clos 2026-10-05** — atlas `Plantes/AtlasLaitue.png`, wiring + playtest auteur OK |
+| [x] | `[BZ-FARM-HARVEST-HIDE-SYSTEM-CURSOR-001]` | C# | **clos 2026-10-05** — Bezy `RefreshSystemCursorVisibility` sur `FarmBatchHarvestCursor` |
+| [x] | `[BZ-FARM-EXIT-RESET-MODES-001]` | C# | **clos 2026-10-05** — croix FirstLvl → `AbortActiveFarmInteractionModes` |
+| [x] | `[BZ-FARM-CURSOR-OS-CLIP-001]` | C# | **clos 2026-10-05** — visibilité OS unifiée planting/harvest + write-on-change |
 | [x] | `[BZ-FARM-ROQUETTE-ATLAS-001]` | 1→3 | 2026-10-01 — slice/pivot auteur + Bezy Ph.3 wiring OK (review Cursor) |
 | — | ~~`[BZ-FARM-CAM-RESET-001]`~~ | — | **Annulé 2026-10-04** — pan/zoom/molette suffisent ; pas de bouton reset. |
 
@@ -41,6 +44,7 @@
 | Task ID | Notes |
 |---------|--------|
 | `[BZ-UIKIT-POPUP-MOCK-001]` | Mockup `ShopItemPopup_WoodMockup` **à refaire entièrement** (2026-09-23 : base visible, qualité insuffisante). Pas runtime. Reprendre Ph.1→3 ou nouveau brief auteur avant Bezy. |
+| `[BL-FARM-HARVEST-BATCH-BTN-UI-001]` | Polish bouton récolte batch (placeholder blanc) — **après refonte UI bois** + **mockup Cursor** dans Dump (`Ui/Farm/`). Wiring OK `[BZ-FARM-HARVEST-BATCH-BTN-001]`. |
 
 ---
 
@@ -65,7 +69,6 @@ Puis `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` (coller le bloc Ph
 
 **Hauteur fond barre = 140 px `[BZ-NAV-BAR-HEIGHT-001]` :** **CLOS** Bezy + playtest 2026-09-16. `UIManager.NavBarHeight` reste 260. Checkpoint : `hud-bandeau-before-fond140-slots128`.  
 **Onglets `[BZ-TAB-SPRITES-001]` :** `@Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md` — TabVente dernier prompt.  
-**Sparkle récolte `[BZ-FARM-HARVEST-READY-VFX-002]` :** `@Assets/Docs/Bezi/PROMPTS_Bezi_harvest_ready_vfx.md` Phase 5.  
 **Glow cible `[BZ-FARM-PLANT-SELECT-GLOW-001]` :** **clos** 2026-09-10.  
 **Bandeaux vente / sac / halo / modales / nav 140 :** clos — voir `ARCHIVE_prompts_bezi_index.md`.
 
@@ -76,7 +79,8 @@ Puis `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_halo_scale.md` (coller le bloc Ph
 | Task ID | Prefab | Phase | Date | Commit / note |
 |---------|--------|-------|------|----------------|
 | `[BZ-TAB-SPRITES-001]` | `NavigationHUD` | pilotes | 2026-09-23 | Playtest OK — 5 onglets + HUD nav |
-| `[BZ-FARM-HARVEST-READY-VFX-002]` | `HarvestReadyFx.prefab` | 5–5f | 2026-09-23 | Playtest OK — sparkle récolte (Bezy tune) |
+| `[BZ-FARM-HARVEST-READY-VFX-002]` | `HarvestReadyFx.prefab` | 5–5f | 2026-09-23 | Playtest OK — sparkle récolte (Bezy tune) ; **retiré file active 2026-10-05** |
+| `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` | `AtlasLaitue.png` + refs | 1→3 | 2026-10-05 | Clos auteur — PPU 33, 7 stades, wiring laitue |
 | `[BZ-FARM-CAM-TOWN-PAN-001]` | C# farm cam | — | 2026-09-29 | Long press pan + tap relâche — playtest APK OK |
 | `[BZ-FARM-CAMERA-TOUCH-ZOOM-001]` | `FirstLvl` + C# farm cam | 1→2 | 2026-09-29 | Pinch zoom — inclus playtest APK 2026-09-29 |
 | `[BZ-FARM-CAMERA-VIEW-001]` | `Biofiltre.prefab` + `FirstLvl` | 1→2 | 2026-09-23 | Bezy + playtest OK — bounds + FarmCameraController |

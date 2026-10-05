@@ -63,6 +63,10 @@ public class FirstLvlController : MonoBehaviour
         if (SceneNavigator.Instance == null)
             return;
 
+        BiofiltreManager biofiltreManager = FindFirstObjectByType<BiofiltreManager>();
+        if (biofiltreManager != null)
+            biofiltreManager.AbortActiveFarmInteractionModes();
+
         await SceneNavigator.Instance.ShowScene(SceneId.HomeScene);
     }
 }

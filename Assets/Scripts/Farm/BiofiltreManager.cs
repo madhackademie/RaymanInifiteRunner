@@ -193,6 +193,22 @@ public class BiofiltreManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Coupe tous les modes d'interaction ferme (popups, placement graine, récolte groupée)
+    /// et restaure le curseur système. À appeler avant de quitter FirstLvl.
+    /// </summary>
+    public void AbortActiveFarmInteractionModes()
+    {
+        HideFarmSeedSelectionPopup();
+        HideFarmPlantHarvestPopup();
+
+        if (IsPlantPlacementPreviewActive)
+            placementPreview.Cancel();
+
+        GetComponent<FarmBatchHarvestInput>()?.CancelBatchHarvest();
+        Cursor.visible = true;
+    }
+
     /// <summary>Ferme le popup graines (panneau + instance lazy host).</summary>
     public void HideFarmSeedSelectionPopup()
     {

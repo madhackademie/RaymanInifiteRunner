@@ -12,10 +12,20 @@ public class FarmPlantingCursor : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private PlantPlacementPreview placementPreview;
 
+    private FarmBatchHarvestInput batchHarvest;
+
     private void Awake()
     {
         if (placementPreview == null)
             placementPreview = GetComponentInParent<PlantPlacementPreview>();
+
+        batchHarvest = GetComponentInParent<FarmBatchHarvestInput>();
+    }
+
+    private void OnEnable()
+    {
+        if (batchHarvest == null)
+            batchHarvest = GetComponentInParent<FarmBatchHarvestInput>();
     }
 
     private void OnDisable()
@@ -40,15 +50,20 @@ public class FarmPlantingCursor : MonoBehaviour
         if (placementPreview == null)
             placementPreview = GetComponentInParent<PlantPlacementPreview>();
 
+        // FarmBatchHarvestInput est ajouté à l'exécution par FarmGridPointerInput.Awake (parent) :
+        // il peut ne pas exister encore lors de Awake/OnEnable, on le résout tant qu'il est null.
+        if (batchHarvest == null)
+            batchHarvest = GetComponentInParent<FarmBatchHarvestInput>();
+
         if (placementPreview == null || !placementPreview.IsPreviewModeActive)
         {
             SetGloveVisible(false);
-            Cursor.visible = true;
+            ApplySystemCursorVisibility();
             return;
         }
 
         SetGloveVisible(true);
-        Cursor.visible = false;
+        ApplySystemCursorVisibility();
 
         if (animator != null)
         {
@@ -67,8 +82,22 @@ public class FarmPlantingCursor : MonoBehaviour
 
     private void RefreshSystemCursorVisibility()
     {
-        bool showGlove = placementPreview != null && placementPreview.IsPreviewModeActive;
-        Cursor.visible = !showGlove;
+        ApplySystemCursorVisibility();
+    }
+
+    private bool ShouldHideSystemCursor()
+    {
+        bool plantingActive = placementPreview != null && placementPreview.IsPreviewModeActive;
+        bool harvestActive = batchHarvest != null && batchHarvest.Mode != FarmBatchHarvestMode.Idle;
+        return plantingActive || harvestActive;
+    }
+
+    private void ApplySystemCursorVisibility()
+    {
+        // N'écrire que sur changement : réécrire Cursor.visible chaque frame fait scintiller le pointeur Windows.
+        bool visible = !ShouldHideSystemCursor();
+        if (Cursor.visible != visible)
+            Cursor.visible = visible;
     }
 
     private void SetGloveVisible(bool show)
