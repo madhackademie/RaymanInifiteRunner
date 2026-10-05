@@ -1,5 +1,53 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-05 — Fin de session : kit boutons OK, art batch + piste progression
+
+### Objectifs
+- Valider taille boutons kit popup récolte.
+- Consommer crédits art : barre batch + piste progression stade.
+
+### Changements
+- Prefabs kit validés : `UiKit_Piece_BtnPrimary_Teal`, `UiKit_Piece_BtnSecondary_Oval` (Apply auteur).
+- Art généré (fichiers à déposer Dump/Farm) : H-farm-1 barre batch+gant, H-farm-4 piste progression (validés visuellement en session).
+- `Notes/Art/PROMPT_generation_icones.md` — vague H-farm (prompts H-farm-1/2/4, statuts).
+- `Notes/Todo_project.md` — prochaine session = playtest 9-slice + promo Dump existant + Bezy close/panel.
+- Rappel Canvas test : **Scale With Screen Size** ref **1080×1920**, Game **1920×1080 Portrait**.
+
+### Décisions
+- Barre batch : tester **d’abord** H-farm-1 avec icône intégrée ; H-farm-2 (fond sans icône) **reporté** si 9-slice OK.
+- Progression : piste dédiée H-farm-4 ; fill = **`UiKit_Bar_fill_teal`** Dump (pas de regen sauf refus auteur).
+
+### Prochaines étapes
+- [ ] Importer PNG H-farm-1 + H-farm-4 dans Dump/Farm, détourage, 9-slice, playtest mockup.
+- [ ] Promo Dump : fill teal, close, danger, badge.
+- [ ] Bezy `UiKit_Piece_BtnClose_Wood` ou panel 9s.
+- [ ] Crédit art H-farm-2 seulement si batch icône illisible en stretch.
+
+---
+
+## 2026-10-05 — Validé auteur : pièces kit boutons récolte (teal + oval)
+
+### Clos
+- **`UiKit_Piece_BtnPrimary_Teal`** · **`UiKit_Piece_BtnSecondary_Oval`** — taille d’origine OK après Canvas Scaler **1080×1920** (test Game **1920×1080 Portrait**) ; oval : texte Annuler recoloré + gras, Apply prefab.
+- **`[BZ-UI-KIT-BTN-SECONDARY-001]`** — livré Bezy + validé.
+
+### Prochaine session
+- Pièce **close** ou **panel 9s** ; puis assemblage popup farm. Voir `Notes/Todo_project.md` § Prochaine session.
+
+---
+
+## 2026-10-05 — Pièce UiKit BtnSecondary_Oval + contrainte Unity Prefab Mode
+
+### Problème / solution
+- Prefab créé avec espace dans le nom fichier / root → Bezy « Prefab not found ». Corrigé : `UiKit_Piece_BtnSecondary_Oval.prefab`.
+- **Edit disque du `.prefab` alors que Prefab Mode ouvert** → Unity désync, erreurs, prefab ne s’ouvre plus. Récupération : fermer stage sans sauver, Reimport, redémarrer Unity si besoin.
+- Doc : `Notes/Bezi/README_bezi.md` (section 2026-10-05) · rappel dans `WORKFLOW_skill_prefab_ui.md`.
+
+### Règle
+- Fermer le prefab (ou Unity) **avant** tout rename / fix YAML côté Cursor ou Git ; rouvrir Prefab Mode **après** refresh, puis Bezy.
+
+---
+
 ## 2026-10-05 — Fin de session : popup récolte bois, pièces une par une
 
 ### Objectifs

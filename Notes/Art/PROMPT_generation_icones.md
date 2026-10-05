@@ -232,7 +232,89 @@ Task Bezy : **`[BL-FARM-HARVEST-BATCH-BTN-UI-001]`** — remplacer le carré bla
 
 | # | Objet FR | Prompt objet | Dump | Promo Sprites | Statut | Task |
 |---|----------|--------------|------|---------------|--------|------|
-| H-farm-1 | Bouton « récolte batch » (popup plante) | Bouton UI bois rustique + cel cartoon, icône balayage/récolte lisible ; cohérent nav bois / `FirstTryBandeauAtelier.png` | `Dump/Ui/Farm/` | `Sprites/UI/Farm/` (après OK) | **à générer (mockup)** | `[BL-FARM-HARVEST-BATCH-BTN-UI-001]` |
+| H-farm-1 | Barre bouton « récolte batch » (popup plante) | Bandeau horizontal bois + parchemin, gants + pousses à gauche, centre vide TMP ; voir prompt § H-farm-1 | `Dump/Ui/Farm/UiKit_BtnBatchHarvest_bar_20261005.png` | `Sprites/UI/Farm/` (après OK) | **généré — validation / 9-slice auteur** (2026-10-05) | `[BL-FARM-HARVEST-BATCH-BTN-UI-001]` |
+| H-farm-2 | Fond 9-slice barre batch (**sans** icône) | Même barre que H-farm-1 mais **aucune** illustration ; cap gauche parchemin vide pour icône en enfant Unity | `Dump/Ui/Farm/UiKit_Bar_batchHarvest_9s_20261005.png` | `Sprites/UI/Farm/` (après OK) | **reporté** (test barre+icône d’abord) | `[BL-FARM-HARVEST-BATCH-BTN-UI-001]` |
+| H-farm-4 | **Piste** progression stade (couloir vide) | Barre horizontale bois + rainure parchemin **vide** pour `Image` fill enfant ; remplace `UiKit_Row_list` sur mockup | `Dump/Ui/Farm/UiKit_Bar_progressTrack_9s_20261005.png` | `Sprites/UI/Farm/` (après OK) | **généré — validation / 9-slice auteur** (2026-10-05) | popup récolte / `stageProgressFill` |
+| H-farm-3 | (option) Icône batch seule | Crop / regen gant + pousses, fond magenta, **Simple** Image enfant | `Dump/Ui/Farm/UiKit_Icon_batchHarvest_20261005.png` | `Sprites/UI/Farm/` | **option** (crop H-farm-1 possible) | idem |
+
+**Déjà en Dump (pas de crédit art sauf regen) :** `UiKit_BtnClose_wood_20261005`, `UiKit_BtnDanger_coral_20261005`, `UiKit_Badge_stage_20261005`, **`UiKit_Bar_fill_teal_20261005`** (remplissage progression — `Image` **Filled** horizontal, pas promu Sprites) → détourage + promo.
+
+**Mockup actuel :** `ProgressTrack` = `UiKit_Row_list` (temporaire) → cible **H-farm-4** après import · `ProgressFill` = fill teal Dump.
+
+#### Prompt ChatGPT — H-farm-4 Piste progression stade (coller tel quel)
+
+**Dans ChatGPT :** joindre `mockup_popup_recolte_roquette_20261005.jpg` (zone barre sous le nom / stades). Fichier : `Assets/Art/Assets Store Dump/Ui/Farm/UiKit_Bar_progressTrack_9s_20261005.png`.
+
+```
+STYLE LOCK — RaymanFarm UI (strict):
+- 2D casual mobile game UI, cozy aquaponic farm, FUN cartoon (chunky, playful).
+- Rustic light brown WOOD; thick dark brown OUTLINES; smooth cel shading.
+- NOT photoreal, NOT 3D. Flat front view. NO text, NO numbers, NO icons.
+- 9-SLICE FRIENDLY: straight horizontal top/bottom wood beams; left/right caps; center repeatable.
+
+One UI asset only. Match the harvest popup mockup progress row.
+
+SUBJECT: horizontal PROGRESS BAR TRACK (empty groove only — no fill color inside). Landscape about 1024x160 pixels (~6:1). Outer frame: carved wood border with small corner nails, same family as popup buttons. INNER: a recessed horizontal channel (darker tan shadow) showing where fill will go — the channel interior must be EMPTY and UNIFORM (flat mid-brown/tan, no teal, no gradient stripes, no tick marks). The channel is one continuous capsule-shaped gutter centered vertically. NO stage labels (F1 F2…) — Unity uses TMP separately.
+
+BACKGROUND: flat solid #FF00FF only. #FF00FF must not appear inside the artwork.
+
+EDGE LOCK: thick pure black outer silhouette; no gray fringe.
+
+Output: single PNG.
+```
+
+**Unity :** piste = `Image` **Sliced** · enfant `ProgressFill` = `UiKit_Bar_fill_teal` (Dump → Sprites) · **Filled** horizontal · `HarvestPanelUI.stageProgressFill.fillAmount`.
+
+#### Prompt ChatGPT — H-farm-2 Fond barre batch 9-slice sans icône (coller tel quel)
+
+**Dans ChatGPT :** joindre **H-farm-1** (`UiKit_BtnBatchHarvest_bar_20261005.png` ou export chat) + mockup popup. Fichier : `Assets/Art/Assets Store Dump/Ui/Farm/UiKit_Bar_batchHarvest_9s_20261005.png`.
+
+```
+STYLE LOCK — RaymanFarm UI (strict):
+- 2D casual mobile game UI, cozy aquaponic farm, FUN cartoon (chunky, playful, not corporate flat).
+- Rustic LIGHT BROWN WOOD panels: visible grain, carved edges, small nail heads in corners, optional tiny leaf motif (subtle).
+- Thick dark brown OUTLINES; smooth cel shading; warm gold/orange wood highlights (NOT solid teal).
+- NOT photoreal, NOT 3D render. Flat orthographic front view only.
+- NO text, NO letters, NO numbers, NO characters, NO hands, NO plants, NO icons baked in.
+- 9-SLICE FRIENDLY: straight border beams ~18% width/height; center fill MUST be plain flat parchment only (no leaves, no gradient noise).
+
+One UI asset only. Use the attached batch bar ONLY as style reference for wood frame, rivets, rope inner border, and parchment color — but REMOVE the glove and seedlings completely.
+
+SUBJECT: same wide horizontal bar as the reference, landscape 1280x320 (4:1). Identical outer wood frame and corner rivets. Inner area: empty light tan parchment. The left 25% is EMPTY parchment (reserved for a separate Unity icon overlay) — same color as center, no drawing. Right 75% also empty parchment. No decorative leaf shapes anywhere (they break 9-slice repeat).
+
+BACKGROUND: flat solid #FF00FF only. #FF00FF must not appear inside the artwork.
+
+EDGE LOCK: thick pure black outer outline; no gray fringe.
+
+Output: single PNG.
+```
+
+#### Prompt ChatGPT — H-farm-1 Barre récolte batch (coller tel quel)
+
+**Dans ChatGPT :** joindre `Assets/Art/Assets Store Dump/Ui/mockup_popup_recolte_roquette_20261005.jpg` (+ optionnel `UiKit_BtnSecondary_oval_20260919.png`). Enregistrer brut : `Assets/Art/Assets Store Dump/Ui/Farm/UiKit_BtnBatchHarvest_bar_20261005.png`.
+
+```
+STYLE LOCK — RaymanFarm UI (strict):
+- 2D casual mobile game UI, cozy aquaponic farm, FUN cartoon (chunky, playful, not corporate flat).
+- Rustic LIGHT BROWN WOOD panels: visible grain, carved edges, small nail heads in corners, optional tiny leaf motif (subtle).
+- Thick dark brown OUTLINES on interactive elements; smooth cel shading; warm saturated accents (teal, orange, gold).
+- NOT photoreal, NOT 3D render, NOT glassmorphism, NOT minimal flat Material.
+- NOT isometric. Flat UI orthographic front view only.
+- NO text, NO letters, NO numbers baked in — Unity uses TMP.
+- 9-SLICE FRIENDLY: straight vertical/horizontal border zones (~18% of width/height), center strip plain enough for Unity Sliced Image.
+
+One UI asset only. Match the attached harvest popup mockup wood style.
+
+SUBJECT: a wide horizontal BATCH HARVEST action bar (full-width strip button), landscape about 1280x320 pixels (4:1). Light tan parchment or warm wood center, thick rustic wood border top and bottom, rope or stitched edge detail like the mockup secondary buttons. In the center-left area (about 25% width): a fun cartoon icon — yellow-orange work glove OR small sweeping harvest motion over 2–3 tiny plants (readable at 64px, no gore). Rest of center empty for TMP label later. Slight gold or soft orange highlight on the bar (NOT the same solid teal as primary Récolter). Small rivets in corners.
+
+BACKGROUND: flat solid #FF00FF only (no transparency, no gradient background, no shadow on floor). #FF00FF must not appear inside the artwork.
+
+EDGE LOCK: thick pure black outer outline on the UI shape silhouette; no gray fringe, no outer glow.
+
+Output: single PNG, one asset centered with padding inside the canvas.
+```
+
+**Post-génération :** détourage auteur (fond magenta) → Sprite Editor : bordures 9-slice avec **icône gant dans le cap gauche** (~28–32 % largeur), zone centrale parchemin **sans** l’icône dans le stretch. PPU multiplier au tuning comme les autres boutons kit.
 
 #### Prompt ChatGPT — H1 Onglet Multiverse (coller tel quel)
 

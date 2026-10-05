@@ -49,7 +49,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 160, y: 70, z: 160, w: 70}
+  spriteBorder: {x: 208, y: 99, z: 214, w: 123}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -114,12 +114,14 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: e6c1309d4f8160d2b05e3c7fa12d4689
-    internalID: 0
+    internalID: 1279078311
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
     nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0

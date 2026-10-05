@@ -45,33 +45,40 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-05 fin** — **priorité : bouton teal isolé** `[BZ-FARM-HARVEST-WOOD-001]`.  
+> **2026-10-06 (reprise)** — popup récolte bois : **playtest art Dump + 9-slice**, puis pièces kit / Bezy.  
 > **Branche IDE :** **`feature/reworke_ui`**.
 
-**Reprendre en premier :**
+### Clos session 2026-10-05
 
-1. Nouveau thread Bezy. Prefab **déjà ouvert** en Prefab Mode : `Assets/Prefabs/Ui/BtnTeal.prefab`.
-2. Le root s’appelle **`BtnTeal`** (RectTransform, layer 5, Image vide, 100×100). Le prompt doit utiliser **ce nom et ce chemin**, pas `UiKit_Piece_BtnTeal`.
-3. **À vérifier avant de relancer :** le message Unity sur le **nommage** (nom du root ≠ nom du fichier prefab, ou dialogue de rename). C’est le suspect n°2 du blocage Bezy (« check editor state » qui ne finit pas). Suspect n°1 déjà vu : coquille Transform monde, ou prefab pas ouvert.
-4. Une fois le teal validé (360×120, sprite `UiKit_BtnPrimary_teal_20260919`, multiplier 1.4, label `Récolter`) : décliner les autres pièces, puis seulement réassembler le popup. La copie `FarmHarvestPanel_WoodMockup` n’est pas le chemin de reprise.
+- [x] **`UiKit_Piece_BtnPrimary_Teal`** · **`UiKit_Piece_BtnSecondary_Oval`** — validés auteur (Canvas **1080×1920**, Game **1920×1080 Portrait**).
+- [x] Art généré (à importer Dump) : **H-farm-1** barre batch + icône · **H-farm-4** piste progression.
+- [x] Doc Bezy : prefab ouvert ≠ edit disque (`Notes/Bezi/README_bezi.md`).
 
-**Prompt prêt (ne pas élargir) :**
+### Demain — ordre (sans regénérer art tant que le playtest passe)
 
-```
-/prefab-ui-3phases
-Task ID: [BZ-FARM-HARVEST-WOOD-001]
-Prefab: Assets/Prefabs/Ui/BtnTeal.prefab
-Phase: 1
+1. **Importer + détourer** (magenta) → `Assets/Art/Assets Store Dump/Ui/Farm/` :
+   - `UiKit_BtnBatchHarvest_bar_20261005.png` (H-farm-1)
+   - `UiKit_Bar_progressTrack_9s_20261005.png` (H-farm-4)
+2. **Promo Sprites** (après OK visuel) : fill teal, close, danger, badge — **déjà en Dump**, pas de crédit art :
+   - `UiKit_Bar_fill_teal_20261005` · `UiKit_BtnClose_wood_20261005` · `UiKit_BtnDanger_coral_20261005` · `UiKit_Badge_stage_20261005` → `Assets/Art/Sprites/UI/` (ou `Sprites/UI/Farm/`).
+3. **Playtest Unity** sur `FarmHarvestPanel_WoodMockup` ou scène test :
+   - Barre batch **avec icône** (9-slice ou cap gauche large) — voir `Notes/Art/PROMPT_generation_icones.md` § H-farm-1.
+   - **Piste H-farm-4** (Sliced) + fill teal (**Filled** horizontal) · remplace `UiKit_Row_list` sur `ProgressTrack`.
+4. **Bezy** (prefab fermé avant edit disque) : **`UiKit_Piece_BtnClose_Wood`** (72×72, Dump close) **ou** **`UiKit_Piece_Panel_9s`** (sprite déjà Sprites).
+5. **Assemblage** popup réel — seulement après pièces OK ; pas tout le mockup d’un bloc.
 
-Prefab is ALREADY open in Prefab Mode. Root name is BtnTeal. Do not check editor state. Do not scan the project. Do not rename the prefab or the root. Do not open any other file.
+### Art — crédit générateur (seulement si playtest échoue)
 
-On the open BtnTeal root only:
-- RectTransform size 360 x 120, anchors center.
-- Image sprite UiKit_BtnPrimary_teal_20260919 (guid e6c1309d4f8160d2b05e3c7fa12d4689), Type Sliced, color white, Pixels Per Unit Multiplier 1.4.
-- Child TMP Label, text Récolter, white, center, stretch to parent.
+| Priorité | ID | Quand |
+|----------|-----|--------|
+| 1 | **H-farm-2** | Barre batch **sans** icône (9-slice propre) si H-farm-1 bouillie au stretch — prompt § H-farm-2 |
+| 2 | **H-farm-3** | Icône batch seule (crop H-farm-1 ou regen) si split fond + icône enfant |
+| — | regen fill / close | Uniquement si détourage Dump existant refusé |
 
-Save. List size and sprite. STOP.
-```  
+Liste complète + prompts : **`Notes/Art/PROMPT_generation_icones.md`** § Vague H-farm.
+
+**Rappels :** prefab **fermé** avant edit disque · nom fichier = nom root · coquille sous Canvas (RectTransform).
+
 > ~~**`[P0-UI-PA-INSUFFICIENT-FEEDBACK-001]`**~~ — **clos 2026-10-04** (playtest auteur OK).  
 > **Annulé session :** layering sorting fantôme/gant/cases (`GhostSortingOrder` 50, pas de bump `BiofiltreCell`).
 

@@ -101,6 +101,10 @@ Pas de `/prefab-ui-3phases` sur un job C#.
 2. Rejouer **la même phase** en sous-étapes — ne pas fusionner.
 3. Workaround disque (instancier dans `Bootstrap.unity` → apply → supprimer l’instance) **seulement** si l’auteur l’approuve. Détail : `Notes/Bezi/README_bezi.md`.
 
+## Edits disque + Unity ouvert
+
+**Ne pas** modifier / renommer un `.prefab` (Cursor, Git, script) tant que ce prefab est ouvert en **Prefab Mode** — risque d’erreur éditeur et prefab injouable jusqu’à Reimport / redémarrage Unity. Voir `Notes/Bezi/README_bezi.md` § *Unity — ne pas toucher le `.prefab` sur disque si Prefab Mode est ouvert*.
+
 ---
 
 ## Références

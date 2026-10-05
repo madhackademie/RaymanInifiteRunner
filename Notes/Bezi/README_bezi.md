@@ -138,6 +138,23 @@ Pattern obligatoire pour UI/prefab complexe:
 Si echec/timeout:
 - Rejouer la phase en sous-etapes plus petites (sans fusionner les 3 phases).
 
+### Unity — ne pas toucher le `.prefab` sur disque si Prefab Mode est ouvert (2026-10-05)
+
+**Symptôme :** erreurs Console, onglet Prefab Mode bloqué, prefab qui ne s’ouvre plus, asset « introuvable » alors que le fichier existe (souvent après **rename**, **delete**, ou **edit Git/Cursor** du YAML pendant que Unity a le prefab ouvert).
+
+**Cause :** en Prefab Mode, l’éditeur garde une **copie en mémoire** + un stage lié au chemin/GUID au moment de l’ouverture. Une modification **externe** du même asset (ou suppression d’un ancien nom de fichier) désynchronise stage ↔ disque.
+
+**Récupération (auteur) :**
+1. Fermer l’onglet Prefab Mode — **Ne pas enregistrer** si Unity propose de sauver un état incohérent.
+2. Revenir à une scène normale → clic droit sur le prefab dans Project → **Reimport**.
+3. Rouvrir le prefab. Si besoin : fermer Unity complètement et rouvrir le projet.
+
+**Règle (Cursor, Git, Bezy indirect) :**
+- **Avant** tout edit disque d’un `.prefab` / rename / fix YAML : l’auteur **ferme** le prefab dans Unity (ou ferme l’éditeur).
+- **Après** l’edit : refresh Unity → Reimport si besoin → **puis** rouvrir Prefab Mode → lancer Bezy.
+
+**Lié :** espaces en fin de nom de fichier ou de root GameObject → Bezy « Prefab not found » / « GameObject not found » (ex. `UiKit_Piece_BtnSecondary_Oval .prefab`). Nom fichier = nom root, **sans espaces**.
+
 ### Workaround Bezy — bug résolution de chemin sur prefabs disque (2026-07-23)
 
 **Symptôme :** la modification directe de GameObjects **déjà présents** dans un prefab sur disque via les actions standard Bezy échoue systématiquement (résolution de chemin). Reproductible aussi sur d’autres prefabs (ex. `ActionPointsHudWidget.prefab`).

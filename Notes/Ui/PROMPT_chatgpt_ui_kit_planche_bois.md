@@ -42,6 +42,28 @@ STYLE LOCK — RaymanFarm UI (strict):
 
 ---
 
+## 2bis) Bouton 9-slice — épaisseur du bois
+
+**Sprite en place** `UiKit_BtnPrimary_teal_20260919` : 582×317, bordures Unity L208 B99 R214 T123.  
+Sur un rect de 120 px de haut, **PPU Multiplier = 2,64** (`317 / 120`) garde les embouts sans couture. Largeur minimale = `422 / 2,64` ≈ **160 px**. Le bois à l’écran est alors la bordure du PNG divisée par 2,64 (environ 47 px en haut, 37 px en bas).
+
+**Prochain bouton, bois épais, multiplier réservé au @2x (pas pour compresser) :**
+
+| Zone | Pixels du PNG (@2x) | À l’écran (multiplier 2) |
+|------|---------------------|---------------------------|
+| Hauteur totale | 320 | 160 |
+| Bois haut | 72 | 36 |
+| Bois bas | 64 | 32 |
+| Centre teal plat | 184 | 92 |
+| Cap gauche / droit | 96 / 96 | 48 / 48 |
+| Largeur mini du rect | 192 de caps | 96 ; le centre s’étire |
+
+Feuilles et rivets **seulement** dans les caps et les coins. Le tiers central est un aplat teal, sans motif, sinon la coupe 9-slice le répète. Fond de génération : aplat `#FF00FF` (l’auteur détoure). Après import : Sprite Editor, bordures = les pixels du tableau, **Pixels Per Unit Multiplier = 2**, pas 2,64.
+
+Épaisseur écran = `bordure sprite / multiplier`. Un multiplier calé sur `hauteur PNG / hauteur du rect` réduit le bois en même temps que le bouton.
+
+---
+
 ## 3) Ordre de génération (max conversion Comfy → ChatGPT → Bezy)
 
 1. **P0 — Style lock** (1 image) : 1 panneau + 1 bouton sur fond transparent — valider bois + fun.  
