@@ -45,8 +45,15 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-06 (reprise)** — popup récolte bois : **playtest art Dump + 9-slice**, puis pièces kit / Bezy.  
+> **2026-10-07 (reprise)** — mockup popup : **Bezy refaire Récolter** (9-slice cassé / nested kit) → puis Annuler P2, H-farm-4, close bois.  
 > **Branche IDE :** **`feature/reworke_ui`**.
+
+### Clos / en cours session 2026-10-06
+
+- [x] H-farm-1 import + 9-slice auteur · barre batch MVP validée (art à refaire plus tard).
+- [~] Bezy P1 Récolter nested kit — **échec visuel** (stretch / 9-slice cassé à petite taille) → **REDO** : `Notes/Ui/PROMPTS_Bezi_farm_harvest_recolter_redo.md` `[BZ-FARM-HARVEST-MOCK-KIT-001-REDO]`.
+- [x] HomeScene rollback (`NodesContainer` + Canvas) après edit accidentel.
+- [ ] H-farm-4 `ProgressTrack` · promo Sprites · Bezy close · P2 Annuler (après Récolter REDO OK).
 
 ### Clos session 2026-10-05
 

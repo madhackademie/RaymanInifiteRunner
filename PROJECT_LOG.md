@@ -1,5 +1,32 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-06 — Fin de session : batch bar MVP OK, Récolter mockup à refaire Bezy
+
+### Objectifs
+- Playtest H-farm-1 / intégration mockup popup récolte.
+- Bezy P1 bouton Récolter (kit teal) sur `FarmHarvestPanel_WoodMockup`.
+
+### Changements
+- Art Dump `Ui/Farm/` : H-farm-1 + H-farm-4 importés ; 9-slice batch validé MVP (auteur).
+- Bezy P1 : nested `UiKit_Piece_BtnPrimary_Teal` sous `HarvestButton` + wiring `HarvestPanelUI`.
+- Cursor : footer layout batch (ordre VLG, LayoutElement 120) ; fix HomeScene rollback commit `3b23769`.
+- Prompt REDO Récolter : `Notes/Ui/PROMPTS_Bezi_farm_harvest_recolter_redo.md` — pattern **UprootButton**, pas nested kit.
+
+### Décisions
+- Récolter mockup : **abandon nested prefab étiré** ; recopier Image Sliced + taille fixe **320×96** (aligné Arracher).
+- Art batch H-farm-1 : OK MVP ; regen art plus tard si auteur insatisfait.
+
+### Problèmes
+- Récolter : 9-slice teal **cassé** si nested + stretch / réduction — auteur stop session.
+- Canvas scène test grisé en Prefab Mode : normal (mockup sans Canvas ; scaler sur Canvas `TestUi`).
+
+### Prochaine session
+1. Bezy `[BZ-FARM-HARVEST-MOCK-KIT-001-REDO]` (prompt fichier ci-dessus).
+2. Playtest mockup ; puis Bezy P2 **Annuler** (oval, même pattern fixe).
+3. H-farm-4 sur `ProgressTrack` · close bois Bezy.
+
+---
+
 ## 2026-10-05 — Fin de session : kit boutons OK, art batch + piste progression
 
 ### Objectifs
