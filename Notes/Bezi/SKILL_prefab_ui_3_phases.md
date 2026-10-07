@@ -120,7 +120,7 @@ Each invocation ends with exactly one phase's mutations applied live to the targ
 
 ## MCP requirements
 
-None. Prompt specs live in `Notes/Ui/PROMPTS_Bezi_*.md`; author copy-pastes into Bezy in Unity (see `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`).
+Prompt specs : **chat Cursor** ou fichiers listés dans `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` (`Assets/Docs/Bezi/`). Copy-paste Bezy in Unity (see `Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`).
 
 ## Runtime constraints
 

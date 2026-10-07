@@ -8,7 +8,7 @@ alwaysApply: true
 - Rappeler au planning de jobs Bezy / « tâche du jour » ; détail : `ASSISTANT_CONTEXT.md`, `Notes/Bezi/README_bezi.md`.
 - **P0 (premier message, chaque chat) :** `.cursor/rules/session_git_sync.mdc` §−1 — `Read` tampon d'abord ; gate non annulable ; crédits Bezy + script ou **STOP** ; aucun prep Bezy avant « pull ok ».
 - **Prod / peu de temps :** prefab = skill `/prefab-ui-3phases` ; C# simple = thread + `Notes/Bezi/RULES_bezy_code.md`. Note : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`.
-- À chaque ouverture : proposer un bloc de lancement (prefab Phase N **ou** job C# view/transform). Cursor rédige le `PROMPTS_Bezi_*.md` **avant** que l’auteur ouvre Unity. Ne pas skip Bezy « faute de temps ».
+- À chaque ouverture : proposer un bloc de lancement (prefab Phase N **ou** job C# view/transform) **dans le chat** **avant** que l’auteur ouvre Unity. Ne pas skip Bezy « faute de temps ». Pas de fichier `PROMPTS_Bezi_*.md` sauf demande explicite (`.cursor/rules/bezy_prompt_delivery.mdc`).
 
 ## Ownership (prioritaire)
 

@@ -1,0 +1,27 @@
+---
+description: Livraison des prompts Bezy — chat par défaut, pas de fichier Notes sauf demande explicite
+alwaysApply: true
+---
+
+# Prompts Bezy — livraison
+
+## Par défaut
+
+- Donner le **prompt Bezy complet dans le chat** (bloc copier-coller, ≤ 3500 caractères, une phase par appel si besoin).
+- Rappeler dans le chat d’attacher `@Notes/Bezi/RULES_bezy_code.md` (et le skill `/prefab-ui-3phases` si prefab UI).
+- **Ne pas** créer ni mettre à jour de fichiers `Notes/**/PROMPTS_Bezi_*.md` (ni équivalent « prompt Bezy » dans `Notes/`) **sauf demande explicite** de l’auteur.
+
+## Fichiers prompt autorisés (tâches planifiées)
+
+- **Index unique :** `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`
+- **Contenu `@` Unity :** uniquement les `.md` listés dans cet index sous `Assets/Docs/Bezi/` (en cours + backlog planifié).
+- **Ne pas** recréer de `Notes/Ui/PROMPTS_Bezi_*.md` ni d’archives prompt hors index.
+
+## Exceptions (écrire un fichier)
+
+Uniquement si l’auteur le demande clairement (todo / trace / « documente pour plus tard ») **et** l’entrée est ajoutée à `PROMPTS_Bezi_A_FAIRE.md` (souvent nouveau fichier sous `Assets/Docs/Bezi/`).
+
+## Fichiers déjà présents
+
+- **Référencer** un `PROMPTS_Bezi_*.md` existant si l’auteur `@` le fichier ou si la tâche du jour y pointe déjà.
+- Ne pas dupliquer en créant un nouveau `.md` pour le même job si le prompt vient d’être donné dans le chat.

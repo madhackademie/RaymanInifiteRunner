@@ -71,12 +71,12 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 
 - **`ScreenId.FirstLvlFarm`** : clé logique pour les bindings **sans** prefab d’écran UIManager (scène gameplay séparée).
 - **`PopupId.FarmSeedSelection`** : choix de graine (`SeedSelectionUI`).
-- **`PopupId.FarmPlantHarvest`** : info plante / récolte / arrachage (`HarvestPanelUI` sur prefab **`FarmHarvestPanel`**).
+- **`PopupId.FarmPlantHarvest`** : info plante / récolte / arrachage (`HarvestPanelUI` sur prefab **`FarmHarvestPanel_FromMockup`** — runtime depuis 2026-10-07 ; ancien **`FarmHarvestPanel`** conservé pour rollback).
 - **`PopupId.FarmInventoryFeedback`** : message court inventaire plein (`ResourceFeedbackPopup`, lazy).
 - **`PopupId.FarmHarvestReward`** : toast succès récolte (icône item + quantité animée, `HarvestRewardFeedbackPopup`, lazy).
 - **`UIManager.runtimePopupBindings`** (`NavigationHUD`) :
   - `farm.seed.selection` → **`SeedSelectionUI.prefab`** ;
-  - `farm.plant.harvest` → **`FarmHarvestPanel.prefab`** ;
+  - `farm.plant.harvest` → **`Assets/Prefabs/Ui/Farm/FarmHarvestPanel_FromMockup.prefab`** ;
   - `farm.inventory.feedback` → **`ResourceFeedbackPopup.prefab`** (partagé avec le shop).
   - `farm.harvest.reward` → **`HarvestRewardFeedbackPopup.prefab`**.
 - **`ScreenPopupHost`** sur **`LevelController`** (`FirstLvl`) : bindings appliqués au **`Start`** de **`BiofiltreManager`** via **`UIManager.ApplyRuntimePopupBindingsToHost(ScreenId.FirstLvlFarm, host)`** (instanciation lazy uniquement).

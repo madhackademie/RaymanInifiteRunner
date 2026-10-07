@@ -38,6 +38,7 @@ Debut de session :
 2. Lire `ASSISTANT_CONTEXT.md`
 3. Lire la derniere entree de `PROJECT_LOG.md`
 4. Ouvrir `Notes/Todo_project.md` -> section **Prochaine session (priorite immediate)** + bloc **Contexte Git**
+5. Nouvel ecran / popup UI : `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md` (mockup kit -> prefab coquille -> Bezy)
 5. Verifier la branche (`git branch --show-current`) — si feature/rework, le rappeler en tete lors d'une question *tache du jour*
 
 Pendant la session :

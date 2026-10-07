@@ -14,7 +14,7 @@ alwaysApply: true
 - **Cursor / l'assistant code** **doit** :
   - fournir constantes d’archi (`ScreenId`, `PopupId`, `ProgressionTrackId`, etc.) et **services / logique métier** ;
   - documenter l'arbre cible (hiérarchie, `SerializeField`, chemins prefab attendus) ;
-  - préparer des **prompts Bezy** phasés (prefab 3 phases **ou** C# view + `@Notes/Bezi/RULES_bezy_code.md`) ;
+  - préparer des **prompts Bezy** phasés **dans le chat** (prefab 3 phases **ou** C# view + `@Notes/Bezi/RULES_bezy_code.md` ; voir `.cursor/rules/bezy_prompt_delivery.mdc`) ;
   - revue qualité après Bezy, refactor **métier** (pas le tuning visuel onglets/HUD), mise à jour `Notes/`, `PROJECT_LOG.md`.
 - **Cursor ne doit pas** implémenter le C# **view/transform** (placement, zoom, glow, `RectTransform`, wiring visuel) — **Bezy** par défaut ; voir `.cursor/rules/bezy_delegate_simple_code.mdc`.
 - **Bezy** peut modifier `NavigationHUD.cs` (et scripts view listés au prompt) **uniquement** pour le visuel mockup onglets — pas `SceneNavigator`, `UIManager`, popups, services farm/vente.

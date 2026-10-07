@@ -1469,7 +1469,7 @@ MonoBehaviour:
     popupPrefab: {fileID: 1314203423932667239, guid: 483573e449ac17b4c8cce95e7729eb00, type: 3}
   - screenId: FirstLvlFarm
     popupId: farm.plant.harvest
-    popupPrefab: {fileID: 6970290879806310957, guid: a0561d2f41935514aba9d81923f4ff92, type: 3}
+    popupPrefab: {fileID: 2806634688034702208, guid: e82d75fffe0abd144a188b862282797a, type: 3}
   - screenId: FirstLvlFarm
     popupId: farm.inventory.feedback
     popupPrefab: {fileID: 8667043653346198443, guid: 72ca5fc0fce0fc74db56a4066de24fdb, type: 3}

@@ -811,6 +811,7 @@ GameObject:
   - component: {fileID: 7040767045167135860}
   - component: {fileID: 5647831766422433374}
   - component: {fileID: 2566753615524888011}
+  - component: {fileID: 3217475222947944240}
   m_Layer: 5
   m_Name: FarmHarvestPanel_FromMockup
   m_TagString: Untagged
@@ -885,6 +886,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3217475222947944240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2806634688034702208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8e40234fb7e3454fb54549c4f419df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HarvestPanelUI
+  panel: {fileID: 2806634688034702208}
+  plantIcon: {fileID: 6930900045401470854}
+  plantNameLabel: {fileID: 1500844458255682646}
+  stageLabel: {fileID: 8154885305713408334}
+  timerLabel: {fileID: 3414930516837449442}
+  yieldLabel: {fileID: 2508898364733487605}
+  stageProgressFill: {fileID: 0}
+  harvestButton: {fileID: 1441471946961176556}
+  uprootButton: {fileID: 2939466773488454100}
+  closeButton: {fileID: 5739115881478695803}
+  cancelButton: {fileID: 172015141656275770}
+  batchHarvestButton: {fileID: 4463627098383732534}
 --- !u!1 &2900993990771346990
 GameObject:
   m_ObjectHideFlags: 0

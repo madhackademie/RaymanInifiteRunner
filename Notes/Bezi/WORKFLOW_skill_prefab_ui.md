@@ -3,6 +3,8 @@
 **Pourquoi cette note :** l’auteur a **peu de temps Unity**. Les crédits Bezy se perdent, les crédits Cursor se consument trop.  
 Prefab = skill 3 phases. **C# simple (transforms, vues) = Bezy aussi** (`RULES_bezy_code.md`). Cursor prépare, n’exécute pas le visuel.
 
+**Chaîne complète écran/popup (mockup kit → coquille prefab → Bezy) :** `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md` (validé 2026-10-07, ex. popup récolte FromMockup).
+
 ## Décision workflow (2026-09-15)
 
 Voir **`Notes/Bezi/BEZY_PROMPT_COPYPASTE.md`** — `@Assets/Docs/Bezi/` pour Bezy ; pas GitHub MCP ; pas commit par prompt.

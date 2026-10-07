@@ -43,5 +43,5 @@ Pas encore de charte figée en GDD ; la **laitue runtime** sert de référence e
 
 ## Prompts / Bezy
 
-- Laitue : `Notes/Art/PROMPTS_Bezi_laitue_atlas.md`
+- Laitue : wiring **clos** — `[BZ-FARM-LAITUE-ATLAS-RELOC-002]` · `Notes/Bezi/ARCHIVE_prompts_bezi_index.md`
 - Roquette : `Notes/Art/PROMPTS_Bezi_roquette_atlas.md`

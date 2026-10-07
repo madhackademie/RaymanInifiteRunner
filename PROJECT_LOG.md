@@ -1,5 +1,61 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-07 — Fin de session (popup récolte runtime + docs)
+
+### Objectifs session
+- Passer le mockup popup récolte (`FarmHarvestPanel_FromMockup`) en **popup runtime** avec rollback possible.
+- Nettoyer la politique prompts Bezy et documenter le **workflow UI** mockup → Bezy.
+
+### Livré
+- **Bezy** `[BZ-FARM-HARVEST-FROMMOCKUP-WIRE-001]` — `HarvestPanelUI` sur `Assets/Prefabs/Ui/Farm/FarmHarvestPanel_FromMockup.prefab` (tous champs sauf `stageProgressFill`).
+- **Bezy** `[BZ-FARM-HARVEST-RUNTIME-BIND-001]` — `NavigationHUD.unity` · `FirstLvlFarm` + `farm.plant.harvest` → FromMockup (guid `e82d75ff…`).
+- **Tag Git** local `pre-farm-harvest-frommockup-runtime` (commit `b72f0e6` avant binding ; **push tag** auteur si besoin).
+- **Playtest auteur** : popup fonctionnelle (yield, stade, boutons) ; **`PlantIcon`** sans sprite · **grille biofiltre** par-dessus l’UI.
+- **Docs / rules** :
+  - `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md` (mockup kit → coquille prefab → Bezy → binding).
+  - `.cursor/rules/bezy_prompt_delivery.mdc` + alignement rules Bezy — prompts **chat** sauf todo `PROMPTS_Bezi_A_FAIRE.md`.
+  - Purge fichiers `Notes/Ui/PROMPTS_Bezi_farm_harvest_*`, art laitue reloc, `harvest_ready_vfx` ; index `ARCHIVE` + `PROMPTS_Bezi_A_FAIRE` MAJ.
+
+### Décisions
+- Barre progression popup : **abandonnée** (MVP timer TMP seul).
+- Ce soir : **sprite Mature seul** → **build + playtest mobile** → option taille icône → merge / art / rework UI graines.
+
+### Prochaine session (priorité — voir `Notes/Todo_project.md`)
+1. `[P0-FARM-HARVEST-POPUP-ICON-001]` — sprite **Mature** laitue dans `PlantIcon`.
+2. `[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]` — APK / device.
+3. Merge `feature/reworke_ui` → `main`, art, rework plantation graine.
+4. Backlog : `[P0-FARM-BIO-GRID-UI-DEPTH-001]` (grille vs popup).
+
+### Fichiers touchés (commit auteur)
+- Prefab FromMockup, `NavigationHUD.unity`, `Notes/`, `.cursor/rules/`, suppressions prompts Bezy obsolètes.
+
+---
+
+## 2026-10-07 — Workflow UI mockup → prefab → Bezy
+
+### Doc
+- **`Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md`** — (1) mockup UiKit + art Dump si manquant, (2) prefab UI coquille, (3) phases Bezy + runtime binding. Réf. popup récolte FromMockup.
+
+---
+
+## 2026-10-07 — Popup récolte FromMockup en runtime + prochaine session
+
+### Livré
+- Bezy **`[BZ-FARM-HARVEST-FROMMOCKUP-WIRE-001]`** — `HarvestPanelUI` câblé sur `FarmHarvestPanel_FromMockup.prefab`.
+- Bezy **`[BZ-FARM-HARVEST-RUNTIME-BIND-001]`** — `UIManager.runtimePopupBindings` · `farm.plant.harvest` → FromMockup (`NavigationHUD.unity`).
+- Playtest auteur : popup OK fonctionnellement ; **`PlantIcon`** sans sprite (cadre seul) · **grille biofiltre** dessine par-dessus l’UI.
+
+### Prochaine session (ce soir) — ordre auteur
+1. **`[P0-FARM-HARVEST-POPUP-ICON-001]`** — sprite **Mature seul** dans `PlantIcon` (laitue).
+2. **`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`** — build + playtest **mobile** juste après intégration sprite.
+3. Option — réduire taille `PlantIcon` si besoin.
+4. Puis merge → art → rework UI plantation graine.
+
+### File todo
+- Grille biofiltre vs popup : `[P0-FARM-BIO-GRID-UI-DEPTH-001]` (après P0 sprite / mobile).
+
+---
+
 ## 2026-10-07 — Abandon barre progression popup récolte
 
 ### Décision auteur

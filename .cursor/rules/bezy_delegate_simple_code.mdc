@@ -17,7 +17,7 @@ Objectif auteur : **consommer Bezy en priorité**, Cursor seulement pour l’arc
 - Wrappers `Animator.SetBool` / `SetTrigger` sans logique métier
 - Tweaks d’une méthode view existante qui ne fait que du visuel
 
-Réflexe : si ça se joue dans Unity (scène, prefab, Inspector, transform), **c’est Bezy**. Cursor rédige `Notes/Ui/PROMPTS_Bezi_*.md` + `@Notes/Bezi/RULES_bezy_code.md`.
+Réflexe : si ça se joue dans Unity (scène, prefab, Inspector, transform), **c’est Bezy**. Cursor donne le prompt **dans le chat** + `@Notes/Bezi/RULES_bezy_code.md` (pas de nouveau `PROMPTS_Bezi_*.md` sauf demande explicite auteur — `.cursor/rules/bezy_prompt_delivery.mdc`).
 
 ## Cursor PEUT implémenter
 

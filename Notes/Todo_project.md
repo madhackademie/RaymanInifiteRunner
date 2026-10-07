@@ -15,6 +15,7 @@ Références de détail :
 - **Câblage IBC + grille + Bezy (biofiltre)** : `Notes/Farm/CABLAGE_biofiltre_ibc_grille_bezi.md`
 - **HUD biofiltre en dur (plus d’Instantiate)** : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`
 - **Bezy distance / stack vocal (à voir)** : `Notes/Bezi/ETUDE_prompts_bezi_distance.md` · file : `Notes/Bezi/BEZY_QUEUE.md` · install : `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md`
+- **Workflow UI mockup → Bezy** : `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md`
 - Playtests batch : `Notes/Todo_playtest.md`
 - **Playtest live mobile (adb / APK) :** `Notes/WORKFLOW_playtest_mobile_live.md`
 - File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
@@ -45,17 +46,27 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-07 (reprise)** — mockup popup : **Bezy refaire Récolter** (9-slice cassé / nested kit) → puis Annuler P2 · batch orange (icône).  
-> **Branche IDE :** **`feature/reworke_ui`**.
+> **Prochaine ouverture (ce soir / 2026-10-07+)** — **P0 sprite Mature popup** → **build mobile + playtest mobile** → (option taille `PlantIcon`) → merge / art / graines.  
+> **Session Cursor 2026-10-07 après-midi :** **clos** — popup récolte FromMockup en runtime (Bezy wire + binding). Journal : `PROJECT_LOG.md` § *Fin de session*.  
+> **Branche courante :** **`feature/reworke_ui`** · rollback tag `pre-farm-harvest-frommockup-runtime`.
 
-### Clos / en cours session 2026-10-07
+### Ordre ce soir (1 → 2 → 3 → suite)
 
-- [x] **CloseButton** popup récolte (`FarmHarvestPanel_FromMockup` / mockup) — **validé auteur** 2026-10-07 · ~~Bezy close~~ · ~~H-farm-5 art~~ (plus de tâche close en file).
-- [x] **Barre progression stade popup** — **abandonné auteur 2026-10-07** (polish inutile) · ~~H-farm-4~~ · ~~`ProgressTrack` / fill~~ · ~~`[BZ-FARM-HARVEST-PANEL-BUILD-005]`~~ · kit `UiKitPrefab/Generic/ProgressTrack.prefab` non requis pour MVP mockup.
-- [x] H-farm-1 import + 9-slice auteur · barre batch MVP validée (art à refaire plus tard).
-- [~] Bezy P1 Récolter nested kit — **échec visuel** (stretch / 9-slice cassé à petite taille) → **REDO** : `Notes/Ui/PROMPTS_Bezi_farm_harvest_recolter_redo.md` `[BZ-FARM-HARVEST-MOCK-KIT-001-REDO]`.
-- [x] HomeScene rollback (`NodesContainer` + Canvas) après edit accidentel.
-- [ ] Promo Sprites (danger, badge) · P2 **Annuler** (après Récolter REDO OK) · icône batch `ImageBtnFarmBatch` si manquante.
+1. **`[P0-FARM-HARVEST-POPUP-ICON-001]`** — **`PlantIcon`** : intégrer **uniquement le sprite stade Mature** (laitue — `PlantDefinition` / atlas `AtlasLaitue`, pas les autres stades pour ce soir). Playtest **Editor** rapide sur plante Mature.
+2. **`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`** — **Build mobile + playtest mobile** dès que le sprite Mature est OK (popup récolte, icône visible). **Avant** merge / art / rework graines.
+3. **Option** — réduire un peu la taille **`PlantIcon`** / cadre si le playtest mobile le demande (Bezy RectTransform ou auteur Inspector).
+4. **Suite** (après mobile OK) — **merge** `feature/reworke_ui` → `main` · **génération art** (`PROMPT_generation_icones.md`) · **rework UI plantation graine**.
+
+### Backlog playtest popup (après P0 sprite / mobile)
+
+- [ ] **`[P0-FARM-BIO-GRID-UI-DEPTH-001]`** — **grille biofiltre** au-dessus de la popup : **masquer** pendant modal récolte **ou** **arrière-plan** (sorting / `GridLinesRenderer`).
+
+### Clos session 2026-10-07 (popup récolte runtime)
+
+- [x] **`[BZ-FARM-HARVEST-FROMMOCKUP-WIRE-001]`** · **`[BZ-FARM-HARVEST-RUNTIME-BIND-001]`** — FromMockup + `NavigationHUD`.
+- [x] **CloseButton** · barre progression abandonnée · H-farm-1 batch MVP · HomeScene rollback.
+- [~] Récolter nested REDO → alignement coral / playtest visuel (confirmer ce soir).
+- [ ] Promo danger / badge / icône batch — **étape 2 art** après merge.
 
 ### Clos session 2026-10-05
 
@@ -63,18 +74,7 @@ Convention d'IDs :
 - [x] Art généré (à importer Dump) : **H-farm-1** barre batch + icône · **H-farm-4** piste progression.
 - [x] Doc Bezy : prefab ouvert ≠ edit disque (`Notes/Bezi/README_bezi.md`).
 
-### Demain — ordre (sans regénérer art tant que le playtest passe)
-
-1. **Importer + détourer** (magenta) → `Assets/Art/Assets Store Dump/Ui/Farm/` :
-   - `UiKit_BtnBatchHarvest_bar_20261005.png` (H-farm-1) — si besoin regen batch.
-2. **Promo Sprites** (après OK visuel) : danger, badge — **déjà en Dump**, pas de crédit art :
-   - `UiKit_BtnDanger_coral_20261005` · `UiKit_Badge_stage_20261005` → `Assets/Art/Sprites/UI/` (ou `Sprites/UI/Farm/`). ~~Close~~ validé · ~~fill teal / H-farm-4 piste~~ abandonnés.
-3. **Playtest Unity** sur mockup / `TestUi` :
-   - Batch orange + icône · timer TMP seul (pas de barre fill).
-4. **Bezy** (prefab fermé avant edit disque) : **`UiKit_Piece_Panel_9s`** si besoin pièce kit ; ~~close~~ · ~~ProgressTrack~~ clos.
-5. **Assemblage** popup réel — seulement après pièces OK ; pas tout le mockup d’un bloc.
-
-### Art — crédit générateur (seulement si playtest échoue)
+### Art — crédit générateur (session ce soir, étape 2)
 
 | Priorité | ID | Quand |
 |----------|-----|--------|
@@ -526,8 +526,8 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 > Branche de travail : **`feature/reworke_ui`** (tracking `origin/feature/reworke_ui`, alignée **`main`** après merge farm 2026-10-04). Ex-ligne **`feature/farm-plant-paint`** intégrée. **Alignement IDE ↔ agent cloud :** même branche + `git pull` après push agent ; voir `Notes/WORKFLOW_cloud_agent_local.md`.  
 > **Caméra farm :** touch/pan/zoom/molette **clos** — pas de reset vue. Suite : `[P0-FARM-LEVEL-CAM-BOUNDS-001]` en scène si besoin.  
 > **Ouverture session :** premier message = lire `.cursor/session_pull_ok` et comparer `opened_at` à **Today**. `open` ≠ skip. Pull auteur (`powershell -ExecutionPolicy Bypass -File .\scripts\session-git-sync.ps1`) → dire **pull ok** **avant tout prompt** (lecture comprise). Tampon zombie (autre jour) = nouveau pull. 2e session le même jour (fixe / portable / tel, « on reprend ») = nouveau pull.  
-> **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` — `/prefab-ui-3phases` (prefab) **ou** thread + `@Notes/Bezi/RULES_bezy_code.md` (C# simple). Cursor prépare ; l’auteur lance 2–5 min. **Pas de C# transform/vue dans Cursor.**  
-> **Priorité immédiate :** correctifs farm/UI (§ « Suite immédiate » en tête) — merge curseurs **`[P0-FARM-CURSOR-SYSTEM-MERGE-001]` clos**.  
+> **Workflow Bezy prod :** `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` + **`Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md`** — prompts **chat** (`.cursor/rules/bezy_prompt_delivery.mdc`) ; fichiers `@` = `PROMPTS_Bezi_A_FAIRE.md` uniquement.  
+> **Priorité immédiate :** § *Prochaine session* — sprite Mature popup + playtest mobile, puis merge `feature/reworke_ui`.  
 > **Reporté après Bezy :** ancrage visuel laitue iso 2×2 `[P0-FARM-ISO-SPRITE-ANCHOR-001]` (hub / sommet SE, `isoSpriteViewOffset`).  
 > **HUD :** nested en dur dans `Biofiltre.prefab` (2026-09-07). **Pas de moule unique** — pose manuelle des rows (`NOTE_hud_biofiltre_prefab_en_dur.md`).  
 > **IBC ortho :** `[P0-FARM-IBC-GRID-001]` **clos** 2026-09-02 (`main`, grille carrée).  
@@ -646,7 +646,7 @@ Prompt Bezy : `@Assets/Docs/Bezi/PROMPTS_Bezi_inventory_wallet_nav_band.md`
 
 > Décision auteur **2026-09-08** : pause tuning pied plante — **priorité Bezy onglets** d’abord.  
 > Footprint logique **2×2 inchangé** (4 cellules). Code : sommet sud footprint, clic losanges, socle vert sélection, preview `spriteMature`. Glow silhouette : `[P0-FARM-PLANT-SELECT-GLOW-001]`.  
-> Atlas : `Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png` · SO : `Assets/Data/Ferme/Laitue.asset` · prompts Bezy atlas : `Notes/Art/PROMPTS_Bezi_laitue_atlas.md`
+> Atlas : `Assets/Art/Sprites/Plantes/Laitue/AtlasLaitue.png` · SO : `Assets/Data/Ferme/Laitue.asset` · atlas laitue **clos** (`[BZ-FARM-LAITUE-ATLAS-RELOC-002]` — voir `Notes/Bezi/ARCHIVE_prompts_bezi_index.md`).
 
 **Repère iso footprint** (offsets relatifs à l’ancre `(0,0)` — **pas de rotation** runtime) :
 

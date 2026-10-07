@@ -210,7 +210,7 @@ Déjà en Dump (ne pas regénérer tant que non validé) : `IconeMarket.png`, `I
 
 Prompt §1 (icône fond blanc). Quêtes : **1 onglet parent + 3 sous-classes** (daily / weekly / monthly).
 
-**Wiring Bezy (après promo Sprites) :** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` — stub `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`. Ne pas lancer Bezy tant que le brief visuel n’est pas validé.
+**Wiring Bezy (après promo Sprites) :** `[P0-TAB-SPRITES-001]` / `[BZ-TAB-SPRITES-001]` — `@Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md`. Ne pas lancer Bezy tant que le brief visuel n’est pas validé.
 
 | # | Objet FR | Prompt objet | Dump | Promo Sprites | Statut | Fichier |
 |---|----------|--------------|------|---------------|--------|---------|
@@ -588,7 +588,7 @@ Pas de réf obligatoire (ou joindre une icône « menu » existante du projet). 
 A simple "more features" navigation tab icon: a 2x2 grid of four rounded squares OR three horizontal dots inside a circle, cartoon style, bold thick outlines, same visual weight as the other tab icons. Centered, fills 85-90% of 128x128 frame. NO text.
 ```
 
-**Après validation :** promo → Trim → remplacer sprite sur les 4 `Icon` (mini prompt Bezy ou auteur Inspector). Doc wiring : `Notes/Ui/PROMPTS_Bezi_tab_sprites.md`.
+**Après validation :** promo → Trim → remplacer sprite sur les 4 `Icon` (mini prompt Bezy ou auteur Inspector). Doc wiring : `Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md`.
 
 **Nb d’onglets :** avec **4 onglets** la largeur cellule ≈ 25 % écran ; **5+ onglets** = icônes plus petites — prévoir regen ou barre plus haute (`NavBarContainer` 120→128 px).
 

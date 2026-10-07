@@ -1,7 +1,8 @@
 # Archive — prompts Bezy livrés (index)
 
-**MAJ :** 2026-10-05  
-Purge des fichiers `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` **clos** (farm popups, curseurs, caméra scroll, etc.). **Prompts actifs :** liste dans `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` uniquement.
+**MAJ :** 2026-10-07  
+Purge **2026-10-07** : tous les `Notes/Ui/PROMPTS_Bezi_farm_harvest_*.md`, `PROMPTS_Bezi_harvest_ready_vfx.md`, `Notes/Art/PROMPTS_Bezi_laitue_atlas_reloc.md` (tâches clos / prompts chat-only).  
+**Prompts actifs :** `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` → `Assets/Docs/Bezi/` uniquement.
 
 **Politique :** plus de nouveau fichier prompt sans demande auteur ; texte job = chat Bezy (Cursor).  
 **Historique détail phases :** `PROJECT_LOG.md`, `Notes/Bezi/BEZY_QUEUE.md` (Terminé), git history.
@@ -49,5 +50,5 @@ Purge des fichiers `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` **clos** (farm popups, c
 
 | Ancien | Nouveau |
 |--------|---------|
-| `Notes/Ui/PROMPTS_Bezi_*.md` | `Assets/Docs/Bezi/PROMPTS_Bezi_*.md` (si encore pertinent) ou cet index |
+| `Notes/Ui/PROMPTS_Bezi_*.md` | **Supprimés 2026-10-07** — chat Bezy ou `PROMPTS_Bezi_A_FAIRE.md` |
 | Liste « quoi lancer » | `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` |

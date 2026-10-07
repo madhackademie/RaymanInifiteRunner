@@ -932,7 +932,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3505815844697728451, guid: 0d0a2bc4d31f6cd40af0e1e6bc8cc770, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4742492645919588341, guid: 0d0a2bc4d31f6cd40af0e1e6bc8cc770, type: 3}
       propertyPath: m_fontColor32.rgba
@@ -1192,10 +1192,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmHarvestPanel_FromMockup
       objectReference: {fileID: 0}
-    - target: {fileID: 2806634688034702208, guid: e82d75fffe0abd144a188b862282797a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7040767045167135860, guid: e82d75fffe0abd144a188b862282797a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1275,22 +1271,6 @@ PrefabInstance:
     - target: {fileID: 7040767045167135860, guid: e82d75fffe0abd144a188b862282797a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9114807333576478366, guid: e82d75fffe0abd144a188b862282797a, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 83.7868
-      objectReference: {fileID: 0}
-    - target: {fileID: 9114807333576478366, guid: e82d75fffe0abd144a188b862282797a, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 82.9645
-      objectReference: {fileID: 0}
-    - target: {fileID: 9114807333576478366, guid: e82d75fffe0abd144a188b862282797a, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -30.100006
-      objectReference: {fileID: 0}
-    - target: {fileID: 9114807333576478366, guid: e82d75fffe0abd144a188b862282797a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -52.03546
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

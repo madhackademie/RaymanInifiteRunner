@@ -9,7 +9,7 @@
 **Playtests :** batch `Notes/Todo_playtest.md` (pas prioritaire tant que file Bezy).
 
 Statuts officiels : `Notes/Todo_project.md`.  
-Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (phases 1→2→3, &lt; 3500 car.).
+Prompts : **chat Bezy** (Cursor) ; fichiers `@` Unity seulement si listés dans `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md` (phases 1→2→3, &lt; 3500 car.).
 
 ---
 
@@ -41,7 +41,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 | 16 | **[BZ-POLISH-016]** / **[CT-FARM-POLISH-003]** | VFX particules plantation + récolte (burst circulaire) | prefab PS + sprites planting | M | art sheet prêt |
 | ~~17~~ | ~~**[BZ-POLISH-017]**~~ | ~~HUD Vente fond opaque~~ | — | — | **CLOS Bezy** (playtest auteur) |
 | 18 | **[BZ-POLISH-018]** | VFX pièces / billets au feedback vente (canal) | `SaleMoneyBurst` PS | M | art coin/billet (sinon Ph.1–2 placeholder) |
-| 19 | **[BZ-POLISH-019]** / **[CT-FARM-POLISH-004]** | Sparkle idle récoltable (Mature + graines) | `HarvestReadyFx` + ancre `LaitueObj` | M | Default-Particle — `PROMPTS_Bezi_harvest_ready_vfx.md` |
+| 19 | **[BZ-POLISH-019]** / **[CT-FARM-POLISH-004]** | Sparkle idle récoltable (Mature + graines) | `HarvestReadyFx` + ancre `LaitueObj` | M | **Livré** — `[BZ-FARM-HARVEST-READY-VFX-002]` |
 | 20 | **[BZ-INV-TABS-001]** / **[P0-INV-TABS-001]** | Barre onglets inventaire farm (Graines / Conso / Récoltes / Tout) | `InventoryScreen.prefab` | M | spec `SPEC_inventaire_multiverse_hub.md` — `PROMPTS_Bezi_inventory_tabs.md` |
 | 21 | **[P0-SALE-STAR-UI-001]** | Étoiles 3 bandeaux + tooltip palier hover `Stars` | `SaleChannelBandeauView` + `SaleChannelsScreen` | M | `PROMPTS_Bezi_sale_channel_stars.md` — **Ph.1–4 OK** |
 | 22 | **[P0-SALE-STAR-BARS-001]** | 3 jauges tooltip ★ + texte overlay | `SaleChannelsScreen` | S | `PROMPTS_Bezi_sale_channel_star_bars.md` — **Ph.1 maintenant** |
@@ -150,14 +150,14 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - **Bezy** : prefab `HarvestReadyFx` Ph.1–4 + ancre `LaitueObj` — **CLOS** (2026-07-29)
 - **Texture** : `StarsParticle.png` recentré + `M_HarvestReadySparkle` (Cursor 2026-07-29)
 - **Cursor après** : hook `PlantGrow` — **OK** (2026-07-29) `HarvestReadyFxAnchor` + sync récoltable
-- Prompts : `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md`
+- Sparkle récolte : **clos** — voir `Notes/Bezi/ARCHIVE_prompts_bezi_index.md`
 
 ### 28 — Cadre bois onglets `[BZ-NAV-WOOD-REFONTE-001]` — **POLISH / BUDGET** (2026-09-14)
 
 - **Décision auteur :** la base mockup (glow, zoom, label) est **assez jolie** — on **reporte** la refonte bois complète au polish payant.
 - **Bugs cibles :** `cadreBoisFinal` moche en stretch ; cadre **par-dessus le texte** de l’onglet.
 - **Bezy :** 9-slice + `Image` Sliced + hiérarchie (label hors cadre bois) + rollout 4 onglets — **pas** avant mockup zoom 4/4.
-- **Prompts :** `Notes/Ui/PROMPTS_Bezi_nav_wood_frame_slice.md` (Ph.1–3).
+- **Prompts :** `@Assets/Docs/Bezi/PROMPTS_Bezi_nav_wood_frame_slice.md` (Ph.1–3).
 - **Gate :** mockup `[BZ-TAB-INVENTAIRE-MOCKUP-001]` + Shop + Vente OK ; puis crédits / temps polish.
 
 ### 26 — Sprites onglets HUD `[BZ-TAB-SPRITES-001]` / `[P0-TAB-SPRITES-001]` — **EN ATTENTE BRIEF**
@@ -165,7 +165,7 @@ Prompts : créer/étendre `Notes/Ui/PROMPTS_Bezi_*.md` **avant** d’envoyer (ph
 - **Cible probable :** scène `NavigationHUD` — `TabAventures` / `TabInventaire` / `TabShop` / `TabVente` (Images déjà dans `NavigationHUD.cs`).
 - **Art :** promo auteur `Sprites/UI/` (Vague H) **avant** Bezy.
 - **Gate :** l’auteur liste les changements visuels → Cursor rédige Ph.1–3 → **validation prompts** → file `BEZY_QUEUE.md`.
-- **Ne pas envoyer** tant que `Notes/Ui/PROMPTS_Bezi_tab_sprites.md` n’a pas de phases collables validées.
+- **Ne pas envoyer** tant que `@Assets/Docs/Bezi/PROMPTS_Bezi_tab_sprites.md` n’a pas de phases collables validées.
 
 ---
 

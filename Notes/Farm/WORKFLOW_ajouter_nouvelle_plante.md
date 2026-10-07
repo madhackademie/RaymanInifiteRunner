@@ -15,7 +15,7 @@
 | Graines ↔ inventaire | `Notes/Farm/REFACTOR_graines_plantation_inventaire.md` |
 | Règle `harvestItemId` ↔ `itemId` | `Docs/PLANTES_ET_INVENTAIRE.md` |
 | Insecte Flowering | `Notes/Farm/SPEC_insecte_flowering.md` + `Notes/Ui/PROMPTS_Bezi_insecte_flowering.md` |
-| Sparkle récoltable | `Notes/Ui/PROMPTS_Bezi_harvest_ready_vfx.md` (`[BZ-POLISH-019]`) |
+| Sparkle récoltable | **Livrés** — `[BZ-FARM-HARVEST-READY-VFX-002]` / `[BZ-POLISH-019]` · prefab `HarvestReadyFx` · historique `ARCHIVE_prompts_bezi_index.md` |
 | Carte des systèmes | `Notes/Farm/SYSTEMES_carte_mentale.md` |
 | État codebase | `Notes/Codebase_etat_reference.md` |
 
@@ -180,7 +180,7 @@ Plante_Xxx (root)
 - Art insecte / sparkle = **1 fois pour tout le jeu**.
 - Par plante = **positions** (nodes InsectPath, hauteur `HarvestReadyAnchor` ~ au-dessus du feuillage).
 
-**Bezy** : prompts phasés dans `Notes/Ui/PROMPTS_Bezi_insecte_flowering.md` et `PROMPTS_Bezi_harvest_ready_vfx.md`.  
+**Bezy** : prompt **chat** (Cursor) pour nouveaux cas ; pas de fichier sauf entrée `PROMPTS_Bezi_A_FAIRE.md`. Sparkle récolte = réutiliser `HarvestReadyFx` existant.  
 **Cursor** : hooks déjà dans `PlantGrow` (`SyncInsectPathForStage`, `SyncHarvestReadyFxForStage`).
 
 Sur `PlantGrow` Inspector (recommandé) :

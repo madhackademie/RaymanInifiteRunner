@@ -1,6 +1,6 @@
 # Bezy — prompts actifs (index minimal)
 
-**Politique (auteur 2026-10-04) :** pas de fichier `PROMPTS_Bezi_*.md` sauf **demande explicite** pour une tâche **planifiée et non validée**. Prompts courants = **copier-coller dans le chat Bezy** (Cursor) ; pas d’archive fichier pour le travail **clos**.
+**Politique (auteur 2026-10-07) :** aucun fichier prompt hors **cette liste**. Jobs courants = **chat Bezy** (Cursor). Fichiers **clos** ou chantiers terminés = supprimés (historique : `ARCHIVE_prompts_bezi_index.md`, `PROJECT_LOG.md`, git).
 
 **Coches phases :** `Notes/Bezi/BEZY_QUEUE.md` · **Livrés :** `Notes/Bezi/ARCHIVE_prompts_bezi_index.md` · **Journal :** `PROJECT_LOG.md`
 
