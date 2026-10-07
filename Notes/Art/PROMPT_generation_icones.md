@@ -234,12 +234,44 @@ Task Bezy : **`[BL-FARM-HARVEST-BATCH-BTN-UI-001]`** — remplacer le carré bla
 |---|----------|--------------|------|---------------|--------|------|
 | H-farm-1 | Barre bouton « récolte batch » (popup plante) | Bandeau horizontal bois + parchemin, gants + pousses à gauche, centre vide TMP ; voir prompt § H-farm-1 | `Dump/Ui/Farm/UiKit_BtnBatchHarvest_bar_20261005.png` | `Sprites/UI/Farm/` (après OK) | **généré — validation / 9-slice auteur** (2026-10-05) | `[BL-FARM-HARVEST-BATCH-BTN-UI-001]` |
 | H-farm-2 | Fond 9-slice barre batch (**sans** icône) | Même barre que H-farm-1 mais **aucune** illustration ; cap gauche parchemin vide pour icône en enfant Unity | `Dump/Ui/Farm/UiKit_Bar_batchHarvest_9s_20261005.png` | `Sprites/UI/Farm/` (après OK) | **reporté** (test barre+icône d’abord) | `[BL-FARM-HARVEST-BATCH-BTN-UI-001]` |
-| H-farm-4 | **Piste** progression stade (couloir vide) | Barre horizontale bois + rainure parchemin **vide** pour `Image` fill enfant ; remplace `UiKit_Row_list` sur mockup | `Dump/Ui/Farm/UiKit_Bar_progressTrack_9s_20261005.png` | `Sprites/UI/Farm/` (après OK) | **généré — validation / 9-slice auteur** (2026-10-05) | popup récolte / `stageProgressFill` |
+| H-farm-4 | **Piste** progression stade (couloir vide) | Barre horizontale bois + rainure parchemin **vide** pour `Image` fill enfant ; remplace `UiKit_Row_list` sur mockup | `Dump/Ui/Farm/UiKit_Bar_progressTrack_9s_20261005.png` | — | **abandonné auteur 2026-10-07** (polish popup — timer TMP suffit) | ~~`stageProgressFill`~~ |
 | H-farm-3 | (option) Icône batch seule | Crop / regen gant + pousses, fond magenta, **Simple** Image enfant | `Dump/Ui/Farm/UiKit_Icon_batchHarvest_20261005.png` | `Sprites/UI/Farm/` | **option** (crop H-farm-1 possible) | idem |
+| H-farm-5 | **Croix close** popup récolte (rond rouge, X blanc) | Bouton circulaire rouge vif, X blanc, cel + highlight 3D — **pas** bois (illisible sur panneau bois) ; prompt § H-farm-5 | `Dump/Ui/Farm/UiKit_BtnClose_red_20261007.png` | `Sprites/UI/Farm/` (après OK) | **clos auteur 2026-10-07** (visuel OK sur prefab mockup ; regen optionnel) | ~~`[BZ-FARM-HARVEST-PANEL-BUILD-002]`~~ |
+| H-farm-6 | **Timer popup** (option post-MVP) | **MVP :** TMP **centré dans** `ProgressTrack` (pas de ligne séparée) ; art option = icône horloge 64px à côté du texte | `Dump/Ui/Farm/UiKit_Icon_timer_20261007.png` (icône seule) | `Sprites/UI/Farm/` | **backlog** | timer in-track |
 
-**Déjà en Dump (pas de crédit art sauf regen) :** `UiKit_BtnClose_wood_20261005`, `UiKit_BtnDanger_coral_20261005`, `UiKit_Badge_stage_20261005`, **`UiKit_Bar_fill_teal_20261005`** (remplissage progression — `Image` **Filled** horizontal, pas promu Sprites) → détourage + promo.
+**Déjà en Dump (pas de crédit art sauf regen) :** `UiKit_BtnClose_wood_20261005` (**remplacé visuellement par H-farm-5**), `UiKit_BtnDanger_coral_20261005`, `UiKit_Badge_stage_20261005`, **`UiKit_Bar_fill_teal_20261005`** (remplissage progression — `Image` **Filled** horizontal, pas promu Sprites) → détourage + promo.
 
-**Mockup actuel :** `ProgressTrack` = `UiKit_Row_list` (temporaire) → cible **H-farm-4** après import · `ProgressFill` = fill teal Dump.
+**Mockup popup (2026-10-07) :** pas de barre progression stade — **timer TMP** (`TimerLabel`) seulement. Art H-farm-4 / fill teal = hors scope MVP (fichiers Dump conservés, pas de promo).
+
+#### Prompt ChatGPT — H-farm-5 Croix close rouge (coller tel quel)
+
+**Dans ChatGPT :** joindre `UiKit_Panel_9s_20260919.png` ou `mockup_popup_recolte_roquette_20261005.jpg` (contexte bois). Fichier brut : `Assets/Art/Assets Store Dump/Ui/Farm/UiKit_BtnClose_red_20261007.png`. Détourage auteur (fond magenta).
+
+```
+STYLE LOCK — RaymanFarm UI (strict):
+- 2D casual mobile game UI, cozy aquaponic farm, FUN cartoon (chunky, playful).
+- Thick dark brown (#3d2817) OUTLINES on the button shape and on the X glyph. Cel shading, warm saturated colors.
+- NOT photoreal, NOT 3D render, NOT glassmorphism, NOT flat Material UI.
+- Flat orthographic front view. NO isometric.
+
+EDGE LOCK: pure black (#000000) outer outline on the entire button silhouette. NO anti-aliasing — hard pixel-clean alpha edge after author removes background, no gray fringe, no outer glow.
+
+BACKGROUND: one flat solid color that does not appear anywhere in the subject. No gradient, no floor, no cast shadow. Use #FF00FF. Do not output transparency.
+
+One UI asset only — popup close control (must read clearly on light brown wood panel).
+
+SUBJECT: a single CIRCULAR close button, square canvas 512x512 pixels, button fills ~88% of canvas (true circle, not oval). Painted red lacquer / warm coral-red (#d94a3a to #c62828 range), NOT wood texture on the disk.
+
+3D POP ILLUSION (2D cel only): soft highlight arc on top-left (~10–2 o'clock), slightly darker red band on bottom-right edge, tiny inner rim shadow where disk meets outline — like a chunky candy button, still 2D cartoon.
+
+GLYPH: bold white "X" (two thick rounded strokes), centered, ~45% of button diameter, white #FFFFFF with thin dark brown outline on the strokes so it stays readable on red. Strokes have rounded caps (friendly, not sharp military X).
+
+NO text other than the X shape. NO wood grain on the red disk. NO drop shadow on the ground.
+
+Export: one PNG, subject centered.
+```
+
+Unity : **Image Type Simple**, **Preserve Aspect**, ~72×72 sur `CloseButton` (TestUi / prefab build).
 
 #### Prompt ChatGPT — H-farm-4 Piste progression stade (coller tel quel)
 

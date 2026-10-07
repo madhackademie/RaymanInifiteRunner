@@ -45,15 +45,17 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **2026-10-07 (reprise)** — mockup popup : **Bezy refaire Récolter** (9-slice cassé / nested kit) → puis Annuler P2, H-farm-4, close bois.  
+> **2026-10-07 (reprise)** — mockup popup : **Bezy refaire Récolter** (9-slice cassé / nested kit) → puis Annuler P2 · batch orange (icône).  
 > **Branche IDE :** **`feature/reworke_ui`**.
 
-### Clos / en cours session 2026-10-06
+### Clos / en cours session 2026-10-07
 
+- [x] **CloseButton** popup récolte (`FarmHarvestPanel_FromMockup` / mockup) — **validé auteur** 2026-10-07 · ~~Bezy close~~ · ~~H-farm-5 art~~ (plus de tâche close en file).
+- [x] **Barre progression stade popup** — **abandonné auteur 2026-10-07** (polish inutile) · ~~H-farm-4~~ · ~~`ProgressTrack` / fill~~ · ~~`[BZ-FARM-HARVEST-PANEL-BUILD-005]`~~ · kit `UiKitPrefab/Generic/ProgressTrack.prefab` non requis pour MVP mockup.
 - [x] H-farm-1 import + 9-slice auteur · barre batch MVP validée (art à refaire plus tard).
 - [~] Bezy P1 Récolter nested kit — **échec visuel** (stretch / 9-slice cassé à petite taille) → **REDO** : `Notes/Ui/PROMPTS_Bezi_farm_harvest_recolter_redo.md` `[BZ-FARM-HARVEST-MOCK-KIT-001-REDO]`.
 - [x] HomeScene rollback (`NodesContainer` + Canvas) après edit accidentel.
-- [ ] H-farm-4 `ProgressTrack` · promo Sprites · Bezy close · P2 Annuler (après Récolter REDO OK).
+- [ ] Promo Sprites (danger, badge) · P2 **Annuler** (après Récolter REDO OK) · icône batch `ImageBtnFarmBatch` si manquante.
 
 ### Clos session 2026-10-05
 
@@ -64,14 +66,12 @@ Convention d'IDs :
 ### Demain — ordre (sans regénérer art tant que le playtest passe)
 
 1. **Importer + détourer** (magenta) → `Assets/Art/Assets Store Dump/Ui/Farm/` :
-   - `UiKit_BtnBatchHarvest_bar_20261005.png` (H-farm-1)
-   - `UiKit_Bar_progressTrack_9s_20261005.png` (H-farm-4)
-2. **Promo Sprites** (après OK visuel) : fill teal, close, danger, badge — **déjà en Dump**, pas de crédit art :
-   - `UiKit_Bar_fill_teal_20261005` · `UiKit_BtnClose_wood_20261005` · `UiKit_BtnDanger_coral_20261005` · `UiKit_Badge_stage_20261005` → `Assets/Art/Sprites/UI/` (ou `Sprites/UI/Farm/`).
-3. **Playtest Unity** sur `FarmHarvestPanel_WoodMockup` ou scène test :
-   - Barre batch **avec icône** (9-slice ou cap gauche large) — voir `Notes/Art/PROMPT_generation_icones.md` § H-farm-1.
-   - **Piste H-farm-4** (Sliced) + fill teal (**Filled** horizontal) · remplace `UiKit_Row_list` sur `ProgressTrack`.
-4. **Bezy** (prefab fermé avant edit disque) : **`UiKit_Piece_BtnClose_Wood`** (72×72, Dump close) **ou** **`UiKit_Piece_Panel_9s`** (sprite déjà Sprites).
+   - `UiKit_BtnBatchHarvest_bar_20261005.png` (H-farm-1) — si besoin regen batch.
+2. **Promo Sprites** (après OK visuel) : danger, badge — **déjà en Dump**, pas de crédit art :
+   - `UiKit_BtnDanger_coral_20261005` · `UiKit_Badge_stage_20261005` → `Assets/Art/Sprites/UI/` (ou `Sprites/UI/Farm/`). ~~Close~~ validé · ~~fill teal / H-farm-4 piste~~ abandonnés.
+3. **Playtest Unity** sur mockup / `TestUi` :
+   - Batch orange + icône · timer TMP seul (pas de barre fill).
+4. **Bezy** (prefab fermé avant edit disque) : **`UiKit_Piece_Panel_9s`** si besoin pièce kit ; ~~close~~ · ~~ProgressTrack~~ clos.
 5. **Assemblage** popup réel — seulement après pièces OK ; pas tout le mockup d’un bloc.
 
 ### Art — crédit générateur (seulement si playtest échoue)
@@ -80,7 +80,7 @@ Convention d'IDs :
 |----------|-----|--------|
 | 1 | **H-farm-2** | Barre batch **sans** icône (9-slice propre) si H-farm-1 bouillie au stretch — prompt § H-farm-2 |
 | 2 | **H-farm-3** | Icône batch seule (crop H-farm-1 ou regen) si split fond + icône enfant |
-| — | regen fill / close | Uniquement si détourage Dump existant refusé |
+| — | ~~regen fill / H-farm-4~~ | Abandonné 2026-10-07 (barre progression popup) |
 
 Liste complète + prompts : **`Notes/Art/PROMPT_generation_icones.md`** § Vague H-farm.
 

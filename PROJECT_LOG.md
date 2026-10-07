@@ -1,5 +1,29 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-07 — Abandon barre progression popup récolte
+
+### Décision auteur
+- **Pas de `ProgressTrack` / fill stade** sur le mockup popup plante — polish inutile pour MVP.
+- Timer **TMP** (`TimerLabel`) reste le repère temps ; pas de `stageProgressFill` UI sur ce mockup.
+- **Hors file :** H-farm-4 promo, `[BZ-FARM-HARVEST-PANEL-BUILD-005]`, instance kit `ProgressTrack` sur `FromMockup`. Fichiers Dump / prefab kit conservés, non requis.
+
+### Docs
+- `Notes/Todo_project.md` · `Notes/Art/PROMPT_generation_icones.md` (H-farm-4 abandonné) · prompt Bezy progress archivé.
+
+---
+
+## 2026-10-07 — CloseButton popup récolte validé auteur
+
+### Clos
+- **`CloseButton`** popup mockup récolte (`FarmHarvestPanel_FromMockup` / labo TestUi) — **OK auteur** (plus de tâche Bezy close ni promo close en file).
+- **`[BZ-FARM-HARVEST-PANEL-BUILD-002]`** — prompt close Build : historique seulement (`Notes/Ui/PROMPTS_Bezi_farm_harvest_panel_build_close.md`).
+- **H-farm-5** — backlog art marqué clos (regen rouge optionnel) dans `Notes/Art/PROMPT_generation_icones.md`.
+
+### Prochaine session (inchangé hors close)
+- ~~H-farm-4~~ abandonné · promo danger / badge · Bezy Récolter REDO · P2 Annuler · batch icône.
+
+---
+
 ## 2026-10-06 — Fin de session : batch bar MVP OK, Récolter mockup à refaire Bezy
 
 ### Objectifs
