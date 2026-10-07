@@ -16,6 +16,7 @@ Références de détail :
 - **HUD biofiltre en dur (plus d’Instantiate)** : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`
 - **Bezy distance / stack vocal (à voir)** : `Notes/Bezi/ETUDE_prompts_bezi_distance.md` · file : `Notes/Bezi/BEZY_QUEUE.md` · install : `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md`
 - **Workflow UI mockup → Bezy** : `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md`
+- **Méthodo UI IA / kit 9-slice / bouton générique / UX future** : `Notes/Ui/SPEC_methodologie_ui_ia_kit_bezi.md`
 - Playtests batch : `Notes/Todo_playtest.md`
 - **Playtest live mobile (adb / APK) :** `Notes/WORKFLOW_playtest_mobile_live.md`
 - File Bezy polish semaine : `Notes/Ui/TODO_Bezy_polish_semaine.md`
@@ -46,26 +47,29 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Prochaine ouverture (ce soir / 2026-10-07+)** — **P0 sprite Mature popup** → **build mobile + playtest mobile** → (option taille `PlantIcon`) → merge / art / graines.  
-> **Session Cursor 2026-10-07 après-midi :** **clos** — popup récolte FromMockup en runtime (Bezy wire + binding). Journal : `PROJECT_LOG.md` § *Fin de session*.  
-> **Branche courante :** **`feature/reworke_ui`** · rollback tag `pre-farm-harvest-frommockup-runtime`.
+> **Session 2026-10-07 soir :** **clos** — popup récolte polish (icône Mature, cadre, Annuler seul, grille masquée) · méthodo UI IA · journal `PROJECT_LOG.md` § *Fin de session (soir)*.  
+> **Branche courante :** **`feature/reworke_ui`** · tag rollback `pre-farm-harvest-frommockup-runtime`.
 
-### Ordre ce soir (1 → 2 → 3 → suite)
+### Ordre prochaine ouverture (1 → 2 → 3 → suite)
 
-1. **`[P0-FARM-HARVEST-POPUP-ICON-001]`** — **`PlantIcon`** : intégrer **uniquement le sprite stade Mature** (laitue — `PlantDefinition` / atlas `AtlasLaitue`, pas les autres stades pour ce soir). Playtest **Editor** rapide sur plante Mature.
-2. **`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`** — **Build mobile + playtest mobile** dès que le sprite Mature est OK (popup récolte, icône visible). **Avant** merge / art / rework graines.
-3. **Option** — réduire un peu la taille **`PlantIcon`** / cadre si le playtest mobile le demande (Bezy RectTransform ou auteur Inspector).
-4. **Suite** (après mobile OK) — **merge** `feature/reworke_ui` → `main` · **génération art** (`PROMPT_generation_icones.md`) · **rework UI plantation graine**.
+1. **`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`** — **Build APK + playtest device** : popup récolte FromMockup, icône Mature, pas de croix, grille OK ; noter **`[P0-FARM-CAM-PINCH-RESET-001]`** si pinch bloquant.
+2. **`[P0-FARM-CAM-PINCH-RESET-001]`** — pinch 2 doigts : éviter reset zoom sous cadrage initial (`FarmCameraInput` / `FarmCameraController`).
+3. **Merge** `feature/reworke_ui` → **`main`** (après mobile OK ou correctifs caméra prioritaires).
+4. **Suite** — art `PROMPT_generation_icones.md` · rework UI plantation graine · option taille `PlantIcon` si mobile le demande.
 
-### Backlog playtest popup (après P0 sprite / mobile)
+### Backlog playtest farm (mobile / caméra)
 
-- [ ] **`[P0-FARM-BIO-GRID-UI-DEPTH-001]`** — **grille biofiltre** au-dessus de la popup : **masquer** pendant modal récolte **ou** **arrière-plan** (sorting / `GridLinesRenderer`).
+- [x] **`[P0-FARM-HARVEST-POPUP-ICON-001]`** — icône **produit Mature** + cadre + playtest Editor **OK** 2026-10-07 (Bezy icon layout + Cursor `HarvestPanelUI`).
+- [x] **`[P0-FARM-BIO-GRID-UI-DEPTH-001]`** — grille GL masquée pendant popups ferme — **OK** 2026-10-07.
+- [x] **`[BZ-FARM-HARVEST-REMOVE-CLOSE-001]`** — croix supprimée, **Annuler** seul — **OK** 2026-10-07.
+- [ ] **`[P0-FARM-CAM-PINCH-RESET-001]`** — **Mobile pinch zoom frustrant** : pose **2 doigts** → zoom / position **reset** vers une vue **plus petite que le cadrage de départ** ; difficile de zoomer en 2 passes (reset à la détection du 2ᵉ touch). **Piste :** ne pas réinitialiser `pinchActive` / `lastPinchDistance` / ortho au début du geste ; conserver position caméra ; seuil min distance pinch ; repro APK `FirstLvl`. **Scripts :** `FarmCameraInput.cs`, `FarmCameraController.cs` · doc `Notes/Farm/NOTE_camera_view_zoom.md`.
 
-### Clos session 2026-10-07 (popup récolte runtime)
+### Clos session 2026-10-07 (popup récolte — journée)
 
 - [x] **`[BZ-FARM-HARVEST-FROMMOCKUP-WIRE-001]`** · **`[BZ-FARM-HARVEST-RUNTIME-BIND-001]`** — FromMockup + `NavigationHUD`.
-- [x] **CloseButton** · barre progression abandonnée · H-farm-1 batch MVP · HomeScene rollback.
-- [~] Récolter nested REDO → alignement coral / playtest visuel (confirmer ce soir).
+- [x] **`[BZ-FARM-HARVEST-POPUP-ICON-001]`** / **`[002]`** — PlantIcon prefab.
+- [x] Barre progression abandonnée · H-farm-1 batch MVP · HomeScene rollback · **CloseButton** retiré (runtime FromMockup).
+- [~] Récolter nested REDO → alignement coral — **reporté** post-merge.
 - [ ] Promo danger / badge / icône batch — **étape 2 art** après merge.
 
 ### Clos session 2026-10-05
@@ -1113,6 +1117,15 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [BL-PROTO-004] Terminer le panel Options du menu principal.
 - [ ] [BL-PROTO-005] Maintenir à jour la carte des flux système (`Notes/Farm/SYSTEMES_carte_mentale.md`).
 - [ ] [BL-QUEST-DAILY-001] Ajouter une feature de quêtes quotidiennes (missions courtes) avec récompenses en ressources + points de compétences (design, logique runtime, reset journalier UTC, UI de suivi, persistance).
+
+### UI — kit IA, 9-slice, bouton générique (épuration progressive)
+
+> **Cadre :** `Notes/Ui/SPEC_methodologie_ui_ia_kit_bezi.md` — **pas de refonte runtime** tant que P0 popup / mobile session en cours.
+
+- [ ] **[BL-UI-KIT-9SLICE-VALID-001]** Appliquer la **checklist §2** à chaque nouveau chrome Dump → Sprites (doc bordures + test largeur min/max en `TestUi`).
+- [ ] **[BL-UI-KIT-GENERIC-BUTTON-001]** Prefab **`UiKit_Btn_Generic_Base`** + **Prefab Variants** (teal / coral / …) + enfant **`Icon`** optionnel ; tier **320×96** popup aligné mockup harvest.
+- [ ] **[BL-UI-KIT-AUDIT-001]** Inventaire sprites / prefabs `UiKit_*` — retirer doublons, placeholders, assets abandonnés ; converger tiers §3 spec.
+- [ ] **[BL-UI-UX-CONTEXT-ACTION-BAR-001]** **Polish UX futur** (Township-like) : infos **sur la cible** (plante, zone), **barre d’actions** une ligne en bas + déroulé (serpe, arrosoir, …). **Ref screenshots auteur** → `Dump/Ui/RefUX/` avant spec détaillée. **Ne pas implémenter** — UI panneaux actuelle conservée.
 
 ### Navigation — polish cadre actif onglets (backlog)
 

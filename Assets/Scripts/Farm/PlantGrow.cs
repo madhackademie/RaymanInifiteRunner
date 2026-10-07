@@ -257,6 +257,9 @@ public class PlantGrow : MonoBehaviour
     /// <summary>Returns the current growth stage.</summary>
     public GrowthStage CurrentStage => currentStage;
 
+    /// <summary>Sprite affiché sur la grille (source fiable pour l’UI popup).</summary>
+    public Sprite DisplaySprite => spriteRenderer != null ? spriteRenderer.sprite : null;
+
     /// <summary>Progress within the current stage, from 0 to 1.</summary>
     public float StageProgress => currentStageDuration > 0f
         ? Mathf.Clamp01(stageTimer / currentStageDuration)

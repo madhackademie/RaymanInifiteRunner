@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Popup affiché quand le joueur clique sur une plante dans la grille.
-/// Affiche le sprite du stade courant, un timer, et des boutons conditionnels
+/// Affiche l’icône produit (stade Mature), le stade courant, un timer, et des boutons conditionnels
 /// selon le stade (récolter si Mature, graines si Seedling, arracher dans les deux cas).
 /// </summary>
 public class HarvestPanelUI : MonoBehaviour
@@ -23,7 +23,6 @@ public class HarvestPanelUI : MonoBehaviour
     [Header("Boutons")]
     [SerializeField] private Button harvestButton;
     [SerializeField] private Button uprootButton;
-    [SerializeField] private Button closeButton;
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button batchHarvestButton;
 
@@ -61,7 +60,6 @@ public class HarvestPanelUI : MonoBehaviour
     {
         harvestButton.onClick.AddListener(OnHarvestClicked);
         uprootButton.onClick.AddListener(OnUprootClicked);
-        closeButton.onClick.AddListener(Close);
         if (cancelButton != null)
             cancelButton.onClick.AddListener(Close);
         if (batchHarvestButton != null)
@@ -148,12 +146,12 @@ public class HarvestPanelUI : MonoBehaviour
         RefreshTimer(stage);
     }
 
-    /// <summary>Met à jour les éléments dépendant uniquement du stade (sprite, nom, rendement, boutons).</summary>
+    /// <summary>Met à jour les éléments dépendant uniquement du stade (icône produit, nom, rendement, boutons).</summary>
     private void RefreshStageVisuals(PlantGrow.GrowthStage stage)
     {
-        Sprite stageSprite = GetSpriteForStage(stage);
-        plantIcon.sprite  = stageSprite;
-        plantIcon.enabled = stageSprite != null;
+        Sprite productIcon = GetHarvestProductIconSprite();
+        plantIcon.sprite  = productIcon;
+        plantIcon.enabled = productIcon != null;
 
         stageLabel.text = StageNames.TryGetValue(stage, out string name) ? name : stage.ToString();
 
@@ -178,7 +176,7 @@ public class HarvestPanelUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Grise harvest / batch / arrachage si PA insuffisants (même coût travail V0). Close toujours actif.
+    /// Grise harvest / batch / arrachage si PA insuffisants (même coût travail V0). Annuler reste actif.
     /// </summary>
     private void RefreshActionPointButtons()
     {
@@ -336,8 +334,22 @@ public class HarvestPanelUI : MonoBehaviour
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    private Sprite GetSpriteForStage(PlantGrow.GrowthStage stage)
-        => currentDefinition != null ? currentDefinition.GetSprite(stage) : null;
+    /// <summary>
+    /// Icône popup = laitue / produit récoltable (stade Mature, slot SO), pas le sprite de croissance courant.
+    /// </summary>
+    private Sprite GetHarvestProductIconSprite()
+    {
+        if (currentDefinition == null)
+            return null;
+
+        Sprite mature = currentDefinition.GetSprite(PlantGrow.GrowthStage.Mature);
+        if (mature != null)
+            return mature;
+
+        return currentDefinition.GetSprite(currentPlantGrow != null
+            ? currentPlantGrow.CurrentStage
+            : PlantGrow.GrowthStage.Mature);
+    }
 
     private static string FormatTime(float seconds)
     {

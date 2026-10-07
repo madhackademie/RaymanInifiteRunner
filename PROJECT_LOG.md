@@ -1,5 +1,63 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-07 — Fin de session (soir) — popup récolte polish + méthodo UI + cam pinch backlog
+
+### Objectifs
+- Reprendre contexte post-pull sur **`feature/reworke_ui`** ; affiner workflow mockup → Bezy.
+- Livrer **PlantIcon** popup récolte, playtest, nettoyage UX (croix redondante, grille sur UI).
+
+### Livré
+- **Docs méthodo :** `Notes/Ui/SPEC_methodologie_ui_ia_kit_bezi.md` (9-slice, bouton generic, vision UX Township backlog) ; liens workflow + todos `[BL-UI-KIT-*]`.
+- **Popup récolte runtime (`FarmHarvestPanel_FromMockup`) :**
+  - **Bezy** `[BZ-FARM-HARVEST-POPUP-ICON-001]` / `[002]` — `PlantIcon` rect, cadre visible ; **Bezy** `[BZ-FARM-HARVEST-REMOVE-CLOSE-001]` — suppression **CloseButton**.
+  - **Cursor** — `HarvestPanelUI` : icône = **produit Mature** (`spriteMature`), pas stade croissance courant ; **`closeButton`** retiré → **Annuler** seul ; `PlantGrow.DisplaySprite` (grille, autre usage).
+  - **Cursor** — `BiofiltreManager` : masque **`GridLinesRenderer`** tant que popup ferme visible (GL au-dessus UI).
+- **Playtest auteur Editor** : popup propre (icône mature, cadre, Annuler, pas de grille sur UI).
+
+### Décisions
+- Icône popup = **visuel récoltable (Mature)**, labels/timer = stade **courant**.
+- Pinch mobile : bug reset zoom → **`[P0-FARM-CAM-PINCH-RESET-001]`** (pas traité ce soir).
+
+### Problèmes / solutions
+- Carré blanc / cadre masqué : `PlantIcon` alpha 0, stretch + Image sans sprite en prefab → layout type **Build** (115×115 centré), Image off en prefab.
+- Grille sur popup : pas un sorting Canvas — **GL fin de frame** → disable composant pendant modals.
+
+### Prochaine session (voir `Notes/Todo_project.md`)
+1. **`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`** — APK / device (popup + caméra).
+2. **`[P0-FARM-CAM-PINCH-RESET-001]`** — pinch 2 doigts sans reset sous cadrage initial.
+3. **Merge** `feature/reworke_ui` → **`main`** · art H-farm / rework UI graines.
+
+### Fichiers touchés (commit auteur)
+- `Assets/Prefabs/Ui/Farm/FarmHarvestPanel_FromMockup.prefab`
+- `Assets/Scripts/UI/Inventory/HarvestPanelUI.cs`
+- `Assets/Scripts/Farm/PlantGrow.cs`
+- `Assets/Scripts/Farm/BiofiltreManager.cs`
+- `Notes/` (`Todo_project.md`, `PROJECT_LOG.md`, `SPEC_methodologie_ui_ia_kit_bezi.md`, `WORKFLOW_creation_ui_mockup_bezi.md`, `NOTE_camera_view_zoom.md`)
+
+---
+
+## 2026-10-07 — Playtest mobile / popup récolte + backlog caméra pinch
+
+### Retours auteur
+- Popup récolte FromMockup : icône **Mature**, cadre, **Annuler** seul (croix supprimée), grille masquée — **OK**.
+- **Bug caméra mobile** : 2 doigts → reset zoom **sous** le cadrage initial ; pinch difficile en plusieurs passes → todo **`[P0-FARM-CAM-PINCH-RESET-001]`**.
+
+---
+
+## 2026-10-07 — Méthodologie UI IA + kit 9-slice + vision UX future
+
+### Décisions auteur
+- Redéfinir la **validation** des assets UI générés IA (tailles, contraintes **9-slice**, split fond / icône).
+- Cible **bouton générique** : prefab base + **variants** (couleur / rôle) + slot **icône** en enfant — gros travail **test & épuration** dans le temps.
+- **Grands panneaux** UI farm : direction future **plus fluide** (style Township — info sur la plante, **barre d’actions** bas d’écran) ; **screens ref auteur à fournir** ; **aucun changement runtime** pour l’instant.
+
+### Livré (docs)
+- `Notes/Ui/SPEC_methodologie_ui_ia_kit_bezi.md` — checklist validation, grille tailles, architecture bouton generic, programme épuration, § vision UX.
+- `Notes/Todo_project.md` — backlog `[BL-UI-KIT-*]` + `[BL-UI-UX-CONTEXT-ACTION-BAR-001]`.
+- Lien depuis `WORKFLOW_creation_ui_mockup_bezi.md`.
+
+---
+
 ## 2026-10-07 — Fin de session (popup récolte runtime + docs)
 
 ### Objectifs session

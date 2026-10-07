@@ -39,6 +39,7 @@ public class BiofiltreManager : MonoBehaviour
 
     private BiofiltreGridVisualizer visualizer;
     private GridManager gridManager;
+    private GridLinesRenderer gridLinesRenderer;
     private bool hasLoadedFromSave;
     private bool runtimeInitialized;
     private SeedSelectionUI cachedSeedSelectionUi;
@@ -58,9 +59,39 @@ public class BiofiltreManager : MonoBehaviour
     {
         visualizer  = GetComponent<BiofiltreGridVisualizer>();
         gridManager = GetComponent<GridManager>();
+        gridLinesRenderer = GetComponent<GridLinesRenderer>();
 
         if (placementPreview == null)
             placementPreview = GetComponent<PlantPlacementPreview>();
+    }
+
+    private void LateUpdate()
+    {
+        SyncGridLinesWithFarmModals();
+    }
+
+    /// <summary>
+    /// GridLinesRenderer dessine en GL après la caméra (ZTest Always) — au-dessus de l’UI.
+    /// Masquer tant qu’un popup ferme (récolte / graines) est visible.
+    /// </summary>
+    private void SyncGridLinesWithFarmModals()
+    {
+        if (gridLinesRenderer == null)
+            return;
+
+        bool farmModalVisible = IsFarmPopupInstanceVisible(PopupId.FarmPlantHarvest)
+            || IsFarmPopupInstanceVisible(PopupId.FarmSeedSelection);
+
+        gridLinesRenderer.enabled = !farmModalVisible;
+    }
+
+    private bool IsFarmPopupInstanceVisible(string popupId)
+    {
+        ScreenPopupHost host = ResolveFarmPopupHost();
+        if (host == null || !host.TryGetPopup<Component>(popupId, out Component popup))
+            return false;
+
+        return popup != null && popup.gameObject.activeInHierarchy;
     }
 
     private void OnEnable()

@@ -32,6 +32,8 @@ Câblage Bezy : `PROMPTS_Bezi_farm_camera_view.md` Ph.1–2.
 
 **Limites zoom (runtime) :** `minOrthoSize` (zoom in max) · zoom out max = tout le rect orange (`BiofiltreViewBounds` + `paddingFactor` ~1,08) via `FarmCameraViewMath`.
 
+**Backlog mobile (2026-10-07) :** pinch 2 doigts reset vue trop dézoomée / position — **`[P0-FARM-CAM-PINCH-RESET-001]`** dans `Notes/Todo_project.md` (statut unique).
+
 ### Option retenue — Township : long press + drag (grille incluse)
 
 **Prompt Bezy :** `Assets/Docs/Bezi/PROMPTS_Bezi_farm_camera_township_longpress_pan.md` · `[BZ-FARM-CAM-TOWN-PAN-001]`

@@ -44,6 +44,8 @@ MonoBehaviour:
   insectMoveSpeed: 0
   forageDurationMin: 0
   forageDurationMax: 0
+  globalDisplayScale: 1
+  stageDisplayScales: []
   stageDurations:
   - stage: 0
     durationSeconds: 1

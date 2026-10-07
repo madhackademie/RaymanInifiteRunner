@@ -5,6 +5,7 @@
 Objectif : **mockup visuel d’abord**, prefab cible **vide ou minimal**, puis **Bezy** pour la hiérarchie / composants / wiring — **pas** tout coder ou tout prefab-yaml côté Cursor.
 
 Références :
+- **Validation tailles / 9-slice / bouton générique / vision UX future :** `Notes/Ui/SPEC_methodologie_ui_ia_kit_bezi.md`
 - Skill prefab : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md` (`/prefab-ui-3phases`)
 - C# view / RectTransform : `@Notes/Bezi/RULES_bezy_code.md`
 - Prompts Bezy : **chat Cursor** (sauf tâche planifiée dans `Notes/Bezi/PROMPTS_Bezi_A_FAIRE.md`)
