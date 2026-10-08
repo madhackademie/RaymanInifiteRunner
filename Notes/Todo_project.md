@@ -23,7 +23,7 @@ Références de détail :
 - Journal : `PROJECT_LOG.md`
 - Guide utilisateur (suivi) : `Notes/GUIDE_suivi_projet.md`
 - **Direction art (iso 2:1 cartoon)** : `Notes/Art/NOTE_graphique.md` · prompt `Notes/Art/PROMPT_assets_monde_iso.md`
-- **Backlog art (Dump → Sprites)** : `Notes/Art/PROMPT_generation_icones.md`
+- **Backlog art (Sprites d’abord)** : `Notes/Art/PROMPT_generation_icones.md` · workflow `Notes/Art/WORKFLOW_creation_assets.md`
 - **Laitue 7 stades (sprite sheet)** : `Notes/Art/PROMPT_laitue_sprite_sheet_croissance.md`
 - **Repère iso footprint 2×2** : `Notes/Todo_project.md` § `[P0-FARM-ISO-SPRITE-ANCHOR-001]`
 
@@ -47,22 +47,29 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-10-07 soir :** **clos** — popup récolte polish (icône Mature, cadre, Annuler seul, grille masquée) · méthodo UI IA · journal `PROJECT_LOG.md` § *Fin de session (soir)*.  
+> **Session 2026-10-08 :** **clos** — popup récolte APK OK · fix pinch (build débloqué) · art curseur pan validé hors repo · workflow Sprites d’abord. Journal `PROJECT_LOG.md` § *Fin de session*.  
 > **Branche courante :** **`feature/reworke_ui`** · tag rollback `pre-farm-harvest-frommockup-runtime`.
 
 ### Ordre prochaine ouverture (1 → 2 → 3 → suite)
 
-1. **`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`** — **Build APK + playtest device** : popup récolte FromMockup, icône Mature, pas de croix, grille OK ; noter **`[P0-FARM-CAM-PINCH-RESET-001]`** si pinch bloquant.
-2. **`[P0-FARM-CAM-PINCH-RESET-001]`** — pinch 2 doigts : éviter reset zoom sous cadrage initial (`FarmCameraInput` / `FarmCameraController`).
-3. **Merge** `feature/reworke_ui` → **`main`** (après mobile OK ou correctifs caméra prioritaires).
-4. **Suite** — art `PROMPT_generation_icones.md` · rework UI plantation graine · option taille `PlantIcon` si mobile le demande.
+1. **`[P0-ART-PAN-CURSOR-IMPORT-001]`** — importer dans le Dump (auteur) les 2 PNG validés 2026-10-08 : anneau charge + losange 4 flèches → `Assets/Art/Assets Store Dump/Farm/Cursor/` (`Farm_PanCharge_Ring_20261008.png`, `Farm_PanMove_ArrowsDiamond_20261008.png`).
+2. **`[P0-FARM-CAM-PINCH-RESET-001]`** — fix livré ; confirmer le pinch sur APK si pas déjà joué, puis **merge** `feature/reworke_ui` → **`main`**.
+3. **`[BL-ART-DUMP-TRI-001]`** — tri art : Sprites / concept / suppression Dump. Workflow : import direct `Assets/Art/Sprites/…` ; Dump = rejet / inutilisé / refs. Détail : `Notes/Art/WORKFLOW_creation_assets.md` §1.
+4. **Suite** — prefab curseur pan (après import) · art `PROMPT_generation_icones.md` · rework UI plantation graine · option taille `PlantIcon` si mobile le demande.
+
+### Session 2026-10-08
+
+- [x] **`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`** — APK + popup récolte FromMockup **OK** auteur.
+- [~] **`[P0-FARM-CAM-PINCH-RESET-001]`** — code livré + build OK auteur (« ça roule ») ; checklist pinch dédiée non rejouée dans le journal.
+- [ ] **`[P0-ART-PAN-CURSOR-IMPORT-001]`** — 2 PNG curseur pan → Dump `Farm/Cursor/`.
+- [ ] **`[BL-ART-DUMP-TRI-001]`** — plan de tri Dump (promo unique ou suppression). Pas de copie Dump → Sprites ensuite.
 
 ### Backlog playtest farm (mobile / caméra)
 
 - [x] **`[P0-FARM-HARVEST-POPUP-ICON-001]`** — icône **produit Mature** + cadre + playtest Editor **OK** 2026-10-07 (Bezy icon layout + Cursor `HarvestPanelUI`).
 - [x] **`[P0-FARM-BIO-GRID-UI-DEPTH-001]`** — grille GL masquée pendant popups ferme — **OK** 2026-10-07.
 - [x] **`[BZ-FARM-HARVEST-REMOVE-CLOSE-001]`** — croix supprimée, **Annuler** seul — **OK** 2026-10-07.
-- [ ] **`[P0-FARM-CAM-PINCH-RESET-001]`** — **Mobile pinch zoom frustrant** : pose **2 doigts** → zoom / position **reset** vers une vue **plus petite que le cadrage de départ** ; difficile de zoomer en 2 passes (reset à la détection du 2ᵉ touch). **Piste :** ne pas réinitialiser `pinchActive` / `lastPinchDistance` / ortho au début du geste ; conserver position caméra ; seuil min distance pinch ; repro APK `FirstLvl`. **Scripts :** `FarmCameraInput.cs`, `FarmCameraController.cs` · doc `Notes/Farm/NOTE_camera_view_zoom.md`.
+- [~] **`[P0-FARM-CAM-PINCH-RESET-001]`** — fix 2026-10-08 dans `FarmCameraController` (`ClearPinchState`, ancrage 1ʳᵉ frame, seuil 8 px en constante). Build player débloqué (plus de `SerializeField` `minPinchDeltaPixels`). Symptôme d’origine : 2 doigts → saut de zoom. Zoom libre sur le niveau **conservé** (pas de plafond `BiofiltreViewBounds`).
 
 ### Clos session 2026-10-07 (popup récolte — journée)
 

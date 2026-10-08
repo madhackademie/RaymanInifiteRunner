@@ -1,25 +1,28 @@
-# Workflow — création d’assets (Dump → Sprites)
+# Workflow — création d’assets (Sprites d’abord)
 
 **Création :** 2026-09-19  
-**MAJ :** 2026-10-05 (fond uni de détourage · l’auteur retire le fond)  
+**MAJ :** 2026-10-08 (sprites d’abord · Dump = inutilisé / rejet)  
 **Règle dump :** `.cursor/rules/art_asset_dump.mdc`  
 **Backlog lignes :** `Notes/Art/PROMPT_generation_icones.md` §3  
 **Charte :** `Notes/Art/NOTE_graphique.md`
 
 ---
 
-## 1) Principe immuable
+## 1) Principe (2026-10-08)
 
 ```
 Brief (cette note + prompts spécialisés)
-    → génération → Assets/Art/Assets Store Dump/…     (en dump)
-    → OK auteur
-    → copie → Assets/Art/Sprites/…                    (promu)
+    → génération
+    → import direct → Assets/Art/Sprites/…   (bon sous-dossier, réglages Unity une fois)
     → Bezy : prefabs / 9-slice / wiring (UI)
     → Cursor : services, pas prefabs UI long terme
+    → si inutilisé ou rejeté → déplacer vers Dump, ou supprimer
 ```
 
-- **Jamais** brancher un brut Dump sur un prefab / `PlantDefinition` / UI runtime sans promo.
+- **Sprites d’abord.** L’asset de jeu vit dans `Assets/Art/Sprites/…`. On ne le copie plus depuis le Dump : un déplacement fait **réimporter** Unity et **reset** souvent PPU, pivot, sprite mode, 9-slice.
+- **Dump** = concepts non choisis, refs store, mocks, rendus à retravailler, et art **retiré** du jeu parce qu’inutilisé.
+- **Pas** de branchement runtime sur un fichier encore dans le Dump.
+- **Stock Dump existant** : tri planifié `[BL-ART-DUMP-TRI-001]` (promo éventuelle **une fois**, ou suppression) — pas le flux des nouveaux fichiers.
 - Nommer : `Type_Objet_YYYYMMDD.png` (ex. `UiKit_Panel_9s_20260919.png`).
 
 ---

@@ -11,6 +11,8 @@ public class FarmCameraController : MonoBehaviour
     private const float DefaultPaddingFactor = 1.08f;
     private const float DefaultMinOrthoSize = 1.5f;
     private const float NoMaxOrthoSize = 0f;
+    private const float DefaultMinPinchDeltaPixels = 8f;
+    private const float MinValidPinchDistance = 1f;
 
     [SerializeField] private Camera worldCamera;
 
@@ -82,6 +84,9 @@ public class FarmCameraController : MonoBehaviour
             HandlePinchZoom();
         else
         {
+            if (enableTouchCamera)
+                ClearPinchState();
+
             HandleScrollZoom();
             if (allowPan)
                 HandlePan();
@@ -138,19 +143,38 @@ public class FarmCameraController : MonoBehaviour
     {
         if (!FarmCameraInput.TryGetPinch(out float distance, out Vector2 midpoint))
         {
-            pinchActive = false;
-            lastPinchDistance = 0f;
+            ClearPinchState();
             return;
         }
 
-        if (pinchActive && lastPinchDistance > 1f)
+        if (distance <= MinValidPinchDistance)
         {
-            float ratio = lastPinchDistance / distance;
-            ApplyZoom(Mathf.Pow(ratio, pinchZoomStrength), midpoint);
+            ClearPinchState();
+            return;
         }
 
+        // Première frame valide : ancrage de la distance uniquement, aucun zoom.
+        if (!pinchActive || lastPinchDistance <= MinValidPinchDistance)
+        {
+            lastPinchDistance = distance;
+            pinchActive = true;
+            return;
+        }
+
+        // Anti-jitter : on garde l'ancre précédente pour accumuler le delta.
+        if (Mathf.Abs(distance - lastPinchDistance) < DefaultMinPinchDeltaPixels)
+            return;
+
+        float ratio = lastPinchDistance / distance;
+        ApplyZoom(Mathf.Pow(ratio, pinchZoomStrength), midpoint);
         lastPinchDistance = distance;
-        pinchActive = true;
+    }
+
+    /// <summary>Réinitialise l'état du pinch pour que le prochain geste reparte d'une ancre neuve.</summary>
+    private void ClearPinchState()
+    {
+        pinchActive = false;
+        lastPinchDistance = 0f;
     }
 
     private void HandlePan()

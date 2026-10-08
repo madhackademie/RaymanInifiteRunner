@@ -1,5 +1,42 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-08 — Fin de session — pinch caméra + art curseur pan + workflow Sprites
+
+### Objectifs
+- Reprendre `feature/reworke_ui` : playtest mobile popup récolte, puis pinch caméra.
+- Préparer le feedback visuel du mode pan (art), sans prefab cette session.
+
+### Livré
+- **Playtest auteur APK** : popup récolte FromMockup **OK** (`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`).
+- **Cursor** `[P0-FARM-CAM-PINCH-RESET-001]` — `FarmCameraController` : `ClearPinchState` en fin de geste, 1ʳᵉ frame = ancrage sans zoom, seuil anti-jitter **8 px** en constante (`DefaultMinPinchDeltaPixels`). Pas de plafond zoom biofiltre (zoom libre sur le niveau, décision déjà en place).
+- **Build** débloqué : le `[SerializeField] minPinchDeltaPixels` désalignait le TypeDB éditeur / player ; champ retiré.
+- **Art validé visuellement** (hors repo) : anneau charge teal + losange 4 flèches, charte `RaymanFarm_UI_CartoonCel`, fond magenta.
+- **Workflow art** : Sprites d’abord ; Dump = rejet / concept / refs / art retiré. Règle `.cursor/rules/art_asset_dump.mdc` + `Notes/Art/WORKFLOW_creation_assets.md` §1.
+
+### Décisions
+- Anneau = **1 PNG** + `Image` Filled Radial 360 (`fillAmount`). Flèches = **1 PNG**, pulse en code. Pas de sprite sheets.
+- Lot curseur pan déjà généré : **import Dump ponctuel** `[P0-ART-PAN-CURSOR-IMPORT-001]`. Ensuite les nouveaux fichiers vont directement dans `Sprites/`.
+- Tri du stock Dump à planifier : `[BL-ART-DUMP-TRI-001]`.
+- Prefab `FarmPanCursor` : **pas commencé** (après import des PNG).
+
+### Problèmes / solutions
+- Build player : `FarmCameraController has an extra field minPinchDeltaPixels` → constante, plus de champ sérialisé.
+
+### Prochaine session (voir `Notes/Todo_project.md`)
+1. Import Dump des 2 PNG curseur pan.
+2. Retest pinch APK si pas déjà confirmé, puis merge `feature/reworke_ui` → `main`.
+3. Tri art Dump → Sprites / suppression.
+4. Prefab curseur pan (anneau charge + flèches).
+
+### Fichiers touchés (commit auteur)
+- `Assets/Scripts/Farm/FarmCameraController.cs`
+- `Notes/Todo_project.md`
+- `Notes/Art/WORKFLOW_creation_assets.md`
+- `.cursor/rules/art_asset_dump.mdc`
+- `PROJECT_LOG.md`
+
+---
+
 ## 2026-10-07 — Fin de session (soir) — popup récolte polish + méthodo UI + cam pinch backlog
 
 ### Objectifs

@@ -1,24 +1,29 @@
 ---
-description: Toute création artistique (IA, concept, dump) va dans Assets Store Dump
+description: Art jeu dans Sprites ; Dump pour rejet, concepts et refs
 alwaysApply: true
 ---
 
-# Art — dépôt brut = Asset Dump
+# Art — Sprites d’abord, Dump si inutilisé
 
-Dossier unique : `Assets/Art/Assets Store Dump/`
+Décision auteur **2026-10-08**. Détail : `Notes/Art/WORKFLOW_creation_assets.md` §1.
 
-## Où écrire
+## Où écrire un nouvel asset de jeu
 
-- **Toujours ici** : images générées (Cursor / autre IA), concepts, refs store, mocks, rendus Blender non validés, captures à retravailler.
-- Sous-dossier thématique s’il existe déjà (`ElementProd/Biofiltre/`, `Ui/`, `Plantes/`, `Poisson/`, …). Sinon créer un sous-dossier clair, pas la racine Dump.
-- **Jamais** déposer une création brute dans `Assets/Art/Sprites/`, `Assets/Prefabs/`, ou une scène.
+- **Directement** dans `Assets/Art/Sprites/…`, sous-dossier déjà utilisé (`Farm/Cursor/`, `Ui/`, `Plantes/`, …).
+- Régler l’import Unity **une fois** (PPU, pivot, sprite mode, 9-slice) et **ne pas déplacer** le fichier ensuite.
+- Un move Dump → Sprites (ou l’inverse en boucle) relance l’import et **reset** souvent ces paramètres.
 
-## Promo vers le jeu
+## Dump — `Assets/Art/Assets Store Dump/`
 
-`Assets/Art/Sprites/` (et prefabs) = art **validé auteur** seulement.  
-Ne pas brancher un fichier Dump sur un prefab / `PlantDefinition` / UI runtime tant que l’auteur ne l’a pas promu.
+- Concepts non choisis, refs store, mocks, rendus Blender non validés, captures à retravailler.
+- Art **retiré** du jeu parce qu’inutilisé : le déplacer ici, ou le **supprimer**.
+- Sous-dossier thématique s’il existe déjà. Sinon un sous-dossier clair, pas la racine Dump.
+- **Ne pas** brancher un fichier Dump sur un prefab / `PlantDefinition` / UI runtime.
 
-Liste unique de ce qu’il reste à produire : `Notes/Art/PROMPT_generation_icones.md` (miroir Dump → dossier Sprites correspondant).
+## Stock déjà dans le Dump
+
+- Tri planifié : `[BL-ART-DUMP-TRI-001]` dans `Notes/Todo_project.md` (ce qui part en Sprites **une fois**, ce qui peut être supprimé).
+- Liste de production : `Notes/Art/PROMPT_generation_icones.md`.
 
 ## Fond de génération (détourage auteur)
 
@@ -35,4 +40,6 @@ Détail prompt : `Notes/Art/WORKFLOW_creation_assets.md` §3.1.
 
 ## Assistant
 
-Si tu génères ou importes de l’art : enregistrer sous Dump, donner le chemin, ne pas « ranger » dans Sprites tout seul.
+- Nouvel art de jeu : chemin `Assets/Art/Sprites/…`, pas une copie Dump → Sprites.
+- Ne pas « ranger » un fichier déjà importé en le déplaçant.
+- Lot déjà généré hors repo et explicitement prévu Dump (ex. curseur pan 2026-10-08) : suivre le todo, ne pas inventer un second emplacement.
