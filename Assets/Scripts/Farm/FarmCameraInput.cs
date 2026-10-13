@@ -160,6 +160,33 @@ public static class FarmCameraInput
     }
 
     /// <summary>
+    /// Charge du long press (0 à 1) tant que le doigt est posé et que le pan n'a pas démarré.
+    /// </summary>
+    public static bool TryGetLongPressCharge(out float charge01, out Vector2 screenPosition)
+    {
+        charge01 = 0f;
+        screenPosition = default;
+        if (!longPressTracking || longPressFired || placementBlocksPan || harvestBlocksPan)
+            return false;
+
+        if (IsPinchGestureActive())
+            return false;
+
+        Touchscreen touchscreen = Touchscreen.current;
+        if (touchscreen == null || !touchscreen.primaryTouch.press.isPressed)
+            return false;
+
+        int pointerId = touchscreen.primaryTouch.touchId.ReadValue();
+        if (FarmPointerInput.IsOverUi(pointerId))
+            return false;
+
+        screenPosition = touchscreen.primaryTouch.position.ReadValue();
+        float elapsed = Time.unscaledTime - longPressStartTime;
+        charge01 = Mathf.Clamp01(elapsed / LongPressSeconds);
+        return true;
+    }
+
+    /// <summary>
     /// Tap tactile au relâchement (Township) : court, sans slop, sans long press / pan caméra.
     /// À appeler en <c>Update</c> avant le <c>LateUpdate</c> caméra qui reset l'état.
     /// </summary>

@@ -1,5 +1,70 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-13 — Fin de session — curseur pan PC
+
+### Objectifs
+- Poser le feedback visuel du pan (anneau de charge + flèches) et le rendre jouable sur PC.
+
+### Livré
+- PNG dans `Assets/Art/Sprites/Farm/Cursor/` : anneau + losange 4 flèches (sprite unique, PPU 256).
+- **Bezy** `FarmPanCursor` prefab + script. **Cursor** : `TryGetLongPressCharge` dans `FarmCameraInput`, instance dans `Biofiltre.prefab`, `arrowsScale: 2` sur le prefab, `.meta` script complété.
+- Charge 0,45 s = anneau radial. Pan actif = flèches. Base prefab **0,166**, multipliée par `arrowsScale` (défaut **2**, slider 0,1–3) puis par le pulse 0,94–1,06.
+- Souris Windows masquée pendant le curseur pan. Ordre **200** pour passer après le gant récolte (100). `HidesSystemCursor` pour que `FarmPlantingCursor` ne réécrive pas `Cursor.visible` dans la même frame.
+
+### Décisions
+- Gabarit PC d’abord. **`[BL-FARM-PAN-CURSOR-SPLIT-001]`** : deux prefabs PC / mobile seulement après playtest PC OK.
+- Correctif scintillement d’octobre (`6d2ca75`) : n’écrire `Cursor.visible` que si la valeur change. Le clignotement revenu venait du conflit avec `FarmPlantingCursor`, pas d’un oubli de ce garde-fou.
+
+### Problèmes
+- Le pulse écrivait un scale absolu 0,94–1,06 et écrasait 0,166. Corrigé : `base × arrowsScale × pulse`.
+- Bezy a sauvé `FarmPanCursor.cs` à moitié (`CS0103` `SetSystemCursorVisible`) et rebouclait. Script final complet.
+- Playtest du non-scintillement **non refait** en fin de session.
+
+### Prochaine session
+1. Playtest PC : clic milieu, taille, souris cachée sans flicker.
+2. Split prefabs PC / mobile si OK.
+3. Pinch APK puis merge `feature/reworke_ui` → `main`.
+
+### Fichiers (commit auteur)
+- `Assets/Art/Sprites/Farm/Cursor/Farm_PanCharge_Ring_20261008.png` (+ `.meta`)
+- `Assets/Art/Sprites/Farm/Cursor/Farm_PanMove_ArrowsDiamond_20261008.png` (+ `.meta`)
+- `Assets/Prefabs/World/FarmPanCursor.prefab` (+ `.meta`)
+- `Assets/Prefabs/World/Biofiltre.prefab`
+- `Assets/Scripts/Farm/FarmPanCursor.cs` (+ `.meta`)
+- `Assets/Scripts/Farm/FarmCameraInput.cs`
+- `Assets/Scripts/Farm/FarmPlantingCursor.cs`
+- `Notes/Todo_project.md`
+- `Notes/Art/WORKFLOW_creation_assets.md`
+- `Notes/Art/PROMPT_generation_icones.md`
+- `PROJECT_LOG.md`
+
+Hors commit : `Assets/Resources/PerformanceTestRun*.json`.
+
+---
+
+## 2026-10-13 — Curseur pan : PC d’abord, puis deux prefabs
+
+### Décision
+- Anneau + flèches branchés sur `FarmPanCursor` (enfant de `Biofiltre`). Flèches trop grandes sur PC : scale 1 → 0,333, cible suivante **0,166**.
+- **Playtest PC** seulement une fois cette taille en jeu.
+- Ensuite **`[BL-FARM-PAN-CURSOR-SPLIT-001]`** : un prefab PC et un prefab mobile. Pas la même interface.
+
+---
+
+## 2026-10-13 — Art graines sorti de la file quotidienne
+
+### Décision
+- Les icônes **graines** sont un **polish** : l’art est à revoir, ce n’est pas le quota du jour (2–3 images).
+- Avant génération : recherche auteur sur un rendu qui donne le **bon et beau feedback**.
+- ID : `[BL-ART-SEEDS-FEEDBACK-001]`. Statut `polish` dans `Notes/Art/PROMPT_generation_icones.md` (A1, A3, colonne graine vague F, C1, G2–G4). La routine saute ces lignes.
+
+### Fichiers
+- `Notes/Art/PROMPT_generation_icones.md`
+- `Notes/Art/WORKFLOW_creation_assets.md`
+- `Notes/Todo_project.md`
+
+---
+
 ## 2026-10-08 — Fin de session — pinch caméra + art curseur pan + workflow Sprites
 
 ### Objectifs

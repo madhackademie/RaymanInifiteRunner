@@ -1,6 +1,6 @@
 # Backlog art — création (Dump) → validation → Sprites
 
-**Création :** 2026-08-31 · **MAJ :** 2026-09-23
+**Création :** 2026-08-31 · **MAJ :** 2026-10-13
 
 > **Workflow complet (outils, Comfy Krea/Kontext/Qwen → ChatGPT, licences, UI kit) :** `Notes/Art/WORKFLOW_creation_assets.md` · stack Comfy : `Notes/Art/GUIDE_comfy_flux_models_local.md`  
 > **Direction monde (2026-09-08) :** vue **iso 2:1** + **cartoon** (polish Zombie Castaways, sans thème zombie). Prompt : `Notes/Art/PROMPT_assets_monde_iso.md`. Icônes UI (§1) restent bois rustique.  
@@ -88,7 +88,7 @@ A 2D casual mobile game icon of [VOTRE OBJET ICI], cartoon style, vibrant colors
 
 Voir **`Notes/Art/WORKFLOW_creation_assets.md` §8** pour l’arbre outils (ChatGPT / Comfy / Bezy).
 
-1. Prendre **la première ligne `à générer`** du §3 (ordre = priorité produit).
+1. Prendre **la première ligne `à générer`** du §3 (ordre = priorité produit). **Sauter** tout statut `polish` (graines : recherche feedback, pas le quota du jour).
 2. Coller le prompt + objet anglais (colonne *Prompt objet*).
 3. Sauver le PNG dans le Dump indiqué.
 4. Dans ce fichier : passer la ligne en `en dump` + noter le nom de fichier.
@@ -108,14 +108,16 @@ Colonne **Promo** = dossier `Sprites/` après validation (voir miroir en tête d
 
 | # | Objet FR | Prompt objet (anglais) | Dump | Statut | Fichier |
 |---|----------|------------------------|------|--------|---------|
-| A1 | Graines de laitue | `a small rustic packet of lettuce seeds` | `Dump/Ui/Items/` | à générer | |
+| A1 | Graines de laitue | `a small rustic packet of lettuce seeds` | `Dump/Ui/Items/` | polish | |
 | A2 | Laitue récoltée (feuilles) | `a fresh harvested lettuce head` | `Dump/Ui/Items/` | à générer | |
-| A3 | Graines de tomate | `a small rustic packet of tomato seeds` | `Dump/Ui/Items/` | à générer | |
+| A3 | Graines de tomate | `a small rustic packet of tomato seeds` | `Dump/Ui/Items/` | polish | |
 | A4 | Tomate récoltée | `a ripe red tomato` | `Dump/Ui/Items/` | à générer | |
 | A5 | Compost (icône item) | `a small wooden bucket of dark compost` | `Dump/Ui/Items/` | à générer | |
 | A6 | Billet or (variante icône slot) | `a single gold banknote with a farm emblem` | `Dump/Ui/Currency/` | à générer | |
 
-> A1–A2 : des sprites laitue existent déjà en runtime (`Sprites/Plantes/Laitue/`) mais le **fond noir** est un bug import (`[P0-FARM-SPRITE-ALPHA-001]`). Nouvelle icône UI propre = file art ; le fix alpha = autre chantier.
+> **Graines = polish (2026-10-13).** A1, A3, colonne graine de la vague F, C1, paquets G2–G4 : **pas** le quota quotidien. L’art graines est à revoir. Avant toute génération : recherche auteur sur comment produire un rendu qui donne le **bon et beau feedback**. ID : `[BL-ART-SEEDS-FEEDBACK-001]`.
+>
+> A2 : des sprites laitue existent déjà en runtime (`Sprites/Plantes/Laitue/`) mais le **fond noir** est un bug import (`[P0-FARM-SPRITE-ALPHA-001]`). Nouvelle icône UI propre = file art ; le fix alpha = autre chantier.
 
 ### Vague B — halo inventaire (6 pistes)
 
@@ -136,7 +138,7 @@ Réf. `Notes/GDD/SPEC_biofiltre_slots_shields.md`.
 
 | # | Objet FR | Prompt objet | Dump | Statut | Fichier |
 |---|----------|--------------|------|--------|---------|
-| C1 | Graines anti-limaces (niv.1) | `a small packet of anti-slug pellets or seeds` | `Dump/Ui/Shields/` | à générer | |
+| C1 | Graines anti-limaces (niv.1) | `a small packet of anti-slug pellets or seeds` | `Dump/Ui/Shields/` | polish | |
 | C2 | Barrière cuivre (niv.2) | `a short copper garden barrier strip` | `Dump/Ui/Shields/` | à générer | |
 | C3 | Barrière cuivre électrifiée (niv.3) | `an electrified copper garden barrier with a tiny spark` | `Dump/Ui/Shields/` | à générer | |
 | C4 | Nématodes (niv.4) | `a small bottle of beneficial nematodes` | `Dump/Ui/Shields/` | à générer | |
@@ -173,23 +175,23 @@ Réf. `Notes/GDD/SPEC_craft_atelier_aquaponique.md`.
 
 ### Vague F — plantes palier 1 puis suivants (icônes items)
 
-Cible GDD : **15 plantes**, 3 par palier (lvl 1 / 3 / 5 / 7 / 10). Laitue + tomate = Vague A. Ici = **graine + récolte** par plante (2 jours / plante).
+Cible GDD : **15 plantes**, 3 par palier (lvl 1 / 3 / 5 / 7 / 10). Laitue + tomate = Vague A. Colonne **récolte** = file du jour. Colonne **graine** = polish `[BL-ART-SEEDS-FEEDBACK-001]` (pas le quota quotidien).
 
 | # | Palier | Plante | Prompt graine | Prompt récolte | Statut graine | Statut récolte |
 |---|--------|--------|---------------|----------------|---------------|----------------|
-| F1 | 1 | Basilic | `a packet of basil seeds` | `a bunch of fresh basil leaves` | à générer | à générer |
-| F2 | 1 | Blette (swiss chard) | `a packet of swiss chard seeds` | `a bunch of colorful swiss chard leaves` | à générer | à générer |
-| F3 | 3 | Épinard | `a packet of spinach seeds` | `a bunch of spinach leaves` | à générer | à générer |
-| F4 | 3 | Roquette | `a packet of arugula seeds` | `a bunch of arugula leaves` | à générer | à générer |
-| F5 | 3 | Persil | `a packet of parsley seeds` | `a bunch of parsley` | à générer | à générer |
-| F6 | 5 | Coriandre | `a packet of cilantro seeds` | `a bunch of cilantro` | à générer | à générer |
-| F7 | 5 | Chou kale | `a packet of kale seeds` | `a bunch of curly kale` | à générer | à générer |
-| F8 | 5 | Menthe | `a packet of mint seeds` | `a bunch of mint leaves` | à générer | à générer |
-| F9 | 7 | Poivron | `a packet of bell pepper seeds` | `a ripe red bell pepper` | à générer | à générer |
-| F10 | 7 | Concombre | `a packet of cucumber seeds` | `a fresh cucumber` | à générer | à générer |
-| F11 | 7 | Haricot | `a packet of green bean seeds` | `a handful of green beans` | à générer | à générer |
-| F12 | 10 | Fraise | `a packet of strawberry seeds` | `a ripe strawberry` | à générer | à générer |
-| F13 | 10 | Radis | `a packet of radish seeds` | `a bunch of radishes` | à générer | à générer |
+| F1 | 1 | Basilic | `a packet of basil seeds` | `a bunch of fresh basil leaves` | polish | à générer |
+| F2 | 1 | Blette (swiss chard) | `a packet of swiss chard seeds` | `a bunch of colorful swiss chard leaves` | polish | à générer |
+| F3 | 3 | Épinard | `a packet of spinach seeds` | `a bunch of spinach leaves` | polish | à générer |
+| F4 | 3 | Roquette | `a packet of arugula seeds` | `a bunch of arugula leaves` | polish | à générer |
+| F5 | 3 | Persil | `a packet of parsley seeds` | `a bunch of parsley` | polish | à générer |
+| F6 | 5 | Coriandre | `a packet of cilantro seeds` | `a bunch of cilantro` | polish | à générer |
+| F7 | 5 | Chou kale | `a packet of kale seeds` | `a bunch of curly kale` | polish | à générer |
+| F8 | 5 | Menthe | `a packet of mint seeds` | `a bunch of mint leaves` | polish | à générer |
+| F9 | 7 | Poivron | `a packet of bell pepper seeds` | `a ripe red bell pepper` | polish | à générer |
+| F10 | 7 | Concombre | `a packet of cucumber seeds` | `a fresh cucumber` | polish | à générer |
+| F11 | 7 | Haricot | `a packet of green bean seeds` | `a handful of green beans` | polish | à générer |
+| F12 | 10 | Fraise | `a packet of strawberry seeds` | `a ripe strawberry` | polish | à générer |
+| F13 | 10 | Radis | `a packet of radish seeds` | `a bunch of radishes` | polish | à générer |
 
 > Palier 10 fruits gourmands (tomate déjà en A) = plutôt **après** sabloponie / minéralisation. Liste F = proposition rendu mixte (feuilles tôt, fruits plus tard) — à recaler quand l’analyse MVP sera triée.
 
@@ -198,9 +200,9 @@ Cible GDD : **15 plantes**, 3 par palier (lvl 1 / 3 / 5 / 7 / 10). Laitue + toma
 | # | Objet FR | Prompt objet | Dump | Statut | Fichier |
 |---|----------|--------------|------|--------|---------|
 | G1 | Boulon wallet | → **H9** (ne pas dupliquer) | `Dump/Ui/Currency/` | alias H9 | |
-| G2 | Paquet graines commun (daily) | `a common brown seed bundle tied with twine` | `Dump/Ui/Quests/` | à générer | |
-| G3 | Paquet graines uncommon (hebdo) | `a uncommon green-ribbon seed bundle` | `Dump/Ui/Quests/` | à générer | |
-| G4 | Paquet graines rare (mensuel) | `a rare gold-ribbon seed bundle` | `Dump/Ui/Quests/` | à générer | |
+| G2 | Paquet graines commun (daily) | `a common brown seed bundle tied with twine` | `Dump/Ui/Quests/` | polish | |
+| G3 | Paquet graines uncommon (hebdo) | `a uncommon green-ribbon seed bundle` | `Dump/Ui/Quests/` | polish | |
+| G4 | Paquet graines rare (mensuel) | `a rare gold-ribbon seed bundle` | `Dump/Ui/Quests/` | polish | |
 | G5 | Icône Atelier (nav) | `a wooden workbench with a hammer` | `Dump/Ui/` | à générer | |
 | G6 | Icône Quêtes (nav) | → **H4** (onglet parent) | `Dump/Ui/` | alias H4 | |
 

@@ -47,10 +47,24 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-10-08 :** **clos** — popup récolte APK OK · fix pinch (build débloqué) · art curseur pan validé hors repo · workflow Sprites d’abord. Journal `PROJECT_LOG.md` § *Fin de session*.  
-> **Branche courante :** **`feature/reworke_ui`** · tag rollback `pre-farm-harvest-frommockup-runtime`.
+> **Session 2026-10-13 :** **clos** — curseur pan PC (anneau + flèches) branché. Playtest flicker souris **pas rejoué**. Journal `PROJECT_LOG.md` § *Fin de session*.  
+> **Branche courante :** **`feature/reworke_ui`**.
 
-### Ordre prochaine ouverture (1 → 2 → 3 → suite)
+### Ordre prochaine ouverture (1 → 2 → 3)
+
+1. **Playtest PC** curseur pan : clic milieu, flèches ~×2 (`arrowsScale` 2 sur base 0,166), souris Windows cachée **sans scintillement** (`HidesSystemCursor`).
+2. **`[BL-FARM-PAN-CURSOR-SPLIT-001]`** — si le gabarit PC est bon : deux prefabs (PC / mobile), même script.
+3. Suite : pinch APK `[P0-FARM-CAM-PINCH-RESET-001]` puis merge `feature/reworke_ui` → `main` · tri Dump `[BL-ART-DUMP-TRI-001]` · graines polish `[BL-ART-SEEDS-FEEDBACK-001]`.
+
+### Session 2026-10-13
+
+- [x] PNG anneau + flèches dans `Assets/Art/Sprites/Farm/Cursor/` (pas le Dump).
+- [x] `FarmPanCursor` dans `Biofiltre` : charge 0,45 s, flèches au pan, `arrowsScale` 0,1–3 (défaut 2).
+- [x] Souris OS masquée pendant le pan (`DefaultExecutionOrder(200)` + `HidesSystemCursor` pour ne plus se battre avec `FarmPlantingCursor`).
+- [ ] Playtest PC du non-scintillement — **à faire**.
+- [ ] **`[BL-FARM-PAN-CURSOR-SPLIT-001]`** — deux prefabs PC / mobile après ce playtest.
+
+### Ordre ouverture 2026-10-08 (historique)
 
 1. **`[P0-ART-PAN-CURSOR-IMPORT-001]`** — importer dans le Dump (auteur) les 2 PNG validés 2026-10-08 : anneau charge + losange 4 flèches → `Assets/Art/Assets Store Dump/Farm/Cursor/` (`Farm_PanCharge_Ring_20261008.png`, `Farm_PanMove_ArrowsDiamond_20261008.png`).
 2. **`[P0-FARM-CAM-PINCH-RESET-001]`** — fix livré ; confirmer le pinch sur APK si pas déjà joué, puis **merge** `feature/reworke_ui` → **`main`**.
@@ -61,7 +75,7 @@ Convention d'IDs :
 
 - [x] **`[P0-FARM-HARVEST-MOBILE-PLAYTEST-001]`** — APK + popup récolte FromMockup **OK** auteur.
 - [~] **`[P0-FARM-CAM-PINCH-RESET-001]`** — code livré + build OK auteur (« ça roule ») ; checklist pinch dédiée non rejouée dans le journal.
-- [ ] **`[P0-ART-PAN-CURSOR-IMPORT-001]`** — 2 PNG curseur pan → Dump `Farm/Cursor/`.
+- [x] **`[P0-ART-PAN-CURSOR-IMPORT-001]`** — **annulé comme import Dump** : les 2 PNG sont allés directement dans `Assets/Art/Sprites/Farm/Cursor/` (workflow Sprites d’abord).
 - [ ] **`[BL-ART-DUMP-TRI-001]`** — plan de tri Dump (promo unique ou suppression). Pas de copie Dump → Sprites ensuite.
 
 ### Backlog playtest farm (mobile / caméra)
@@ -92,8 +106,9 @@ Convention d'IDs :
 | 1 | **H-farm-2** | Barre batch **sans** icône (9-slice propre) si H-farm-1 bouillie au stretch — prompt § H-farm-2 |
 | 2 | **H-farm-3** | Icône batch seule (crop H-farm-1 ou regen) si split fond + icône enfant |
 | — | ~~regen fill / H-farm-4~~ | Abandonné 2026-10-07 (barre progression popup) |
+| — | **`[BL-ART-SEEDS-FEEDBACK-001]`** | **Polish, pas le quota du jour.** Icônes graines à revoir. Recherche auteur d’abord : génération qui donne le bon et beau feedback. |
 
-Liste complète + prompts : **`Notes/Art/PROMPT_generation_icones.md`** § Vague H-farm.
+Liste complète + prompts : **`Notes/Art/PROMPT_generation_icones.md`** § Vague H-farm. Graines (A1, A3, F, C1, G2–G4) = statut `polish`, sautées par la routine quotidienne.
 
 **Rappels :** prefab **fermé** avant edit disque · nom fichier = nom root · coquille sous Canvas (RectTransform).
 
@@ -1179,6 +1194,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [ ] [BL-DOC-004] [OPTIONNEL] Compléter `Notes/Bezi/README_bezi.md` (version Unity, scènes, bezi.actions).
 
 ### Art / assets
+- [ ] [BL-ART-SEEDS-FEEDBACK-001] **Polish (pas priorité quotidienne).** Revoir l’art des graines (sachets, paquets, anti-limaces). Recherche auteur avant génération : comment produire un rendu qui donne le bon et beau feedback. File : `Notes/Art/PROMPT_generation_icones.md` (statut `polish`).
 - [~] [BL-ART-001] Finaliser le cycle complet de la laitue prototype.
 - [~] [BL-ART-002] Terminer le nettoyage des assets temporaires.
 - [~] [BL-ART-003] Direction art : iso 2:1 **cartoon** (polish Zombie Castaways, sans zombie). Mix : Tribez village + SpongeBob farm pose. Prompt : `PROMPT_assets_monde_iso.md`.

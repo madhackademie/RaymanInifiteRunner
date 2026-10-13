@@ -94,6 +94,7 @@ public class FarmPlantingCursor : MonoBehaviour
 
     private void ApplySystemCursorVisibility()
     {
+        if (FarmPanCursor.HidesSystemCursor) return;
         // N'écrire que sur changement : réécrire Cursor.visible chaque frame fait scintiller le pointeur Windows.
         bool visible = !ShouldHideSystemCursor();
         if (Cursor.visible != visible)

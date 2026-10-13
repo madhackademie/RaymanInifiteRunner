@@ -165,7 +165,7 @@ Optionnel : **Flux1 Fill Dev** — inpaint masque serré (bandeau).
 
 ## 8) Routine session art (~15 min / asset)
 
-1. Lire la **première ligne `à générer`** §3 backlog (ou tâche `P0-ART-*` / UI kit).
+1. Lire la **première ligne `à générer`** §3 backlog (ou tâche `P0-ART-*` / UI kit). Sauter le statut `polish` — graines = `[BL-ART-SEEDS-FEEDBACK-001]`, recherche feedback avant génération.
 2. Choisir outil (§2).
 3. Générer → **Dump** (sous-dossier famille).
 4. Noter statut `en dump` + nom fichier dans backlog.
