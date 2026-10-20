@@ -17,23 +17,29 @@ Références :
 
 | # | Bloc | Qui | Livrable |
 |---|------|-----|----------|
-| **1** | **Mockup** avec le **UiKit** existant | Auteur + Cursor (spec / art) | Référence visuelle validée (scène labo ou capture) |
+| **1** | **Deux mockups** : kit seul, puis kit + pièces manquantes | Auteur + Cursor (spec / art) | Deux références visuelles validées (scène labo ou capture) |
 | **2** | **Prefab UI vide** (coquille) | Auteur ou Bezy Ph.1 minimal | `Assets/Prefabs/Ui/…/*.prefab` — root + CanvasGroup si besoin, **sans** tout l’écran |
 | **3** | **Génération UI Bezy** | Bezy (phases) | Hiérarchie, Image/TMP/Button, puis wiring `SerializeField` |
 
 ---
 
-## 1) Mockup — kit d’abord, génération si manquant
+## 1) Mockup — deux images, kit d’abord
+
+**Décision auteur 2026-10-19.** Chaque écran ou popup part en **deux mockups**, avant tout prefab et avant Bezy.
+
+| Mockup | Contenu | But |
+|--------|---------|-----|
+| **A — kit** | Uniquement les sprites déjà dans `Assets/Art/Sprites/UI/` (plus l’icône métier déjà en `Sprites/`). Aucune pièce inventée. | Voir ce que le kit sait faire, et **laisser les trous visibles**. |
+| **B — kit + pièces** | Les mêmes briques, plus une création **seulement** là où le kit ne couvre pas le geste, ou là où une brique déjà dessinée est plus juste (ex. danger corail encore au Dump). | Proposer le complément, pas un deuxième style. |
+
+Règles communes :
 
 1. **Lister** les pièces UiKit déjà dispo (`Assets/Prefabs/Ui/UiKitPrefab/…`, sprites `Assets/Art/Sprites/UI/…`).
-2. **Composer** le mockup avec ces pièces :
-   - scène labo dédiée (ex. `TestUi.unity`) **ou** prefab mockup temporaire ;
-   - **réutiliser** les patterns validés (ex. bouton danger = même 9-slice que `UprootButton`, pas nested kit étiré).
-3. **Élément absent du kit** :
-   - **Cursor / générateur** → déposer brut dans `Assets/Art/Assets Store Dump/…` (fond uni magenta, voir `Notes/Art/WORKFLOW_creation_assets.md`) ;
-   - auteur : détourage + **promo** vers Sprites si validé ;
-   - option : pièce UiKit prefab réutilisable si la même brique revient souvent.
-4. **Valider** le mockup auteur (Game view, résolution cible **1080×1920 Portrait**) **avant** d’engager Bezy sur le prefab prod.
+2. **Composer** A avec ces pièces (scène labo `TestUi` **ou** capture). Réutiliser les patterns validés (bouton danger = même famille que `UprootButton`, pas un nested kit étiré).
+3. **Trou dans le kit** → une pièce = un rôle (fond slicable **sans** icône ni texte baked). Fond uni magenta (`Notes/Art/WORKFLOW_creation_assets.md`). Déposer au Dump. L’auteur détoure et promeut vers `Sprites/` s’il valide.
+4. **Valider** les deux mockups (Game view, **1080×1920** portrait) **avant** d’engager Bezy.
+
+Exemple 2026-10-19 — popup quantité / jeter (`ShopItemPopup`, flux Drop) : A = cadre + boutons kit, stepper bricolé sur `UiKit_Row_list`, Jeter en orange faute de danger en `Sprites/`. B = steppers, plaque chiffre, chip Max, Jeter corail (Dump) + icône compost. Fichiers : `Dump/Ui/mockup_popup_item_qty_kit_20261019.png` et `mockup_popup_item_qty_propose_20261019.png`.
 
 **Exemple 2026-10-07 — popup récolte :** cadre bois + boutons teal / coral / orange batch ; barre progression **abandonnée** ; `CloseButton`, `YieldLabel`, alignement boutons copié depuis `UprootButton`.
 

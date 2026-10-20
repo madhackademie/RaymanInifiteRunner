@@ -47,14 +47,28 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-10-13 :** **clos** — curseur pan PC (anneau + flèches) branché. Playtest flicker souris **pas rejoué**. Journal `PROJECT_LOG.md` § *Fin de session*.  
+> **Session 2026-10-19 :** **clos.** Popup item quantité FromMockup branché. Anim jeter à reprendre.  
 > **Branche courante :** **`feature/reworke_ui`**.
 
 ### Ordre prochaine ouverture (1 → 2 → 3)
 
-1. **Playtest PC** curseur pan : clic milieu, flèches ~×2 (`arrowsScale` 2 sur base 0,166), souris Windows cachée **sans scintillement** (`HidesSystemCursor`).
-2. **`[BL-FARM-PAN-CURSOR-SPLIT-001]`** — si le gabarit PC est bon : deux prefabs (PC / mobile), même script.
-3. Suite : pinch APK `[P0-FARM-CAM-PINCH-RESET-001]` puis merge `feature/reworke_ui` → `main` · tri Dump `[BL-ART-DUMP-TRI-001]` · graines polish `[BL-ART-SEEDS-FEEDBACK-001]`.
+1. **`[P0-UI-DROP-COMPOST-ANIM-001]`** — reprendre l’anim jeter de `ShopItemPopup_FromMockup`.
+2. **Playtest PC** curseur pan : clic milieu, flèches ~×2 (`arrowsScale` 2 sur base 0,166), souris Windows cachée **sans scintillement** (`HidesSystemCursor`).
+3. **`[BL-FARM-PAN-CURSOR-SPLIT-001]`** — si le gabarit PC est bon : deux prefabs (PC / mobile), même script. Puis pinch APK `[P0-FARM-CAM-PINCH-RESET-001]` et merge `feature/reworke_ui` → `main`.
+
+### `[P0-UI-DROP-COMPOST-ANIM-001]` — anim jeter, ancres + disparition
+
+- [ ] Le clip `Assets/Animations/UI/ShopItemPopup_DropToTrash.anim` pose `FlyingIcon` et `TrashBin` en pixels. Ça décale dès que l’écran ou le popup change de taille.
+- [ ] Remplacer ces positions par **deux points d’ancrage** : départ = icône de l’item, arrivée = tas de compost. La course se recalcule selon la taille d’écran.
+- [ ] La graine **disparaît une fois arrivée** sur le tas de compost, pas avant.
+- Prefab : `Assets/Prefabs/Ui/ShopItemPopup_FromMockup.prefab`. Constat auteur 2026-10-19, reprise prochaine session.
+
+### Session 2026-10-19
+
+- [x] Mockup A retenu, prefab `ShopItemPopup_FromMockup`, Annuler à la place de la croix.
+- [x] Achat, vente et jeter branchés dans `NavigationHUD`. Ancien prefab intact.
+- [x] Anims ouverture + vol rebranchées. Décalages du vol **non** corrigés.
+- [ ] **`[BL-UI-BTN-SMALL-9SLICE-001]`** — jeu de boutons 9-slice plus petits (bordures fines), sinon chaque popup reste énorme. Pas la priorité d’ouverture.
 
 ### Session 2026-10-13
 

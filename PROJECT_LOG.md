@@ -1,5 +1,44 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-19 — Fin de session — popup item quantité
+
+### Objectifs
+- Tester le workflow UI : deux mockups, puis prefab Bezy, puis branchement dans le jeu.
+
+### Livré
+- Mockup A (kit `Assets/Art/Sprites/UI` seul) retenu. Mockup B (pièces manquantes) reste dans le Dump, non branché.
+- Prefab `Assets/Prefabs/Ui/ShopItemPopup_FromMockup.prefab`. Croix remplacée par un gros **Annuler**. Pas de `VerticalLayoutGroup` (ça casse le 9-slice).
+- Runtime : `shop.item.purchase`, `sale.channel.sell`, `inventory.item.detail` pointent vers ce prefab. Ancien `ShopItemPopup.prefab` non modifié.
+- Anims rebranchées : ouverture via `Root/Card`, vol jeter via `DropTrashRoot` / `FlyingIcon` / `TrashBin`.
+
+### Décisions
+- À partir de maintenant : mockup A (kit seul) puis mockup B (trous du kit) avant tout prefab.
+- Bezy UI = un prompt, image de référence, skill `/unity-ugui`. Pas le skill 3 phases.
+- Voile, solde, saisie clavier et question de confirmation absents de ce prefab : le script les saute.
+- Décalages de l’anim jeter reportés. Pas de retouche ce soir.
+
+### Problèmes
+- Le `Content` + layout Bezy écrasait le 9-slice. Retiré. Les rects à 0 venaient d’overrides de l’instance `TestUi` ; l’auteur a retouché le prefab.
+- Les bordures 9-slice du kit forcent des boutons hauts. Suite notée : `[BL-UI-BTN-SMALL-9SLICE-001]`.
+- Le clip `ShopItemPopup_DropToTrash` pose l’icône et la poubelle en pixels. Ça décale avec la taille d’écran.
+
+### Prochaine session
+1. **`[P0-UI-DROP-COMPOST-ANIM-001]`** — deux ancres (départ icône, arrivée tas de compost). La graine disparaît à l’arrivée sur le tas.
+2. Playtest PC curseur pan, puis `[BL-FARM-PAN-CURSOR-SPLIT-001]`.
+
+### Fichiers (commit auteur)
+- `Assets/Prefabs/Ui/ShopItemPopup_FromMockup.prefab` (+ `.meta`)
+- `Assets/Scenes/NavigationHUD.unity`
+- `Assets/Scenes/TestUi.unity`
+- `Assets/Art/Assets Store Dump/Ui/mockup_popup_item_qty_kit_20261019.png` (+ `.meta`)
+- `Assets/Art/Assets Store Dump/Ui/mockup_popup_item_qty_propose_20261019.png` (+ `.meta`)
+- `Assets/Art/Assets Store Dump/Ui/Farm/` — pièces mockup B (stepper, chip, plaque, icône compost), non runtime
+- `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md`
+- `Notes/Todo_project.md`
+- `PROJECT_LOG.md`
+
+---
+
 ## 2026-10-13 — Fin de session — curseur pan PC
 
 ### Objectifs

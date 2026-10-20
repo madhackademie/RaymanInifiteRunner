@@ -48,7 +48,8 @@ public class FarmPanCursor : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (FarmCameraInput.TryGetLongPressCharge(out float charge01, out Vector2 chargeScreen))
+        if (IsAndroidChargeRing
+            && FarmCameraInput.TryGetLongPressCharge(out float charge01, out Vector2 chargeScreen))
         {
             SetRingVisible(true);
             SetArrowsVisible(false);
@@ -76,6 +77,10 @@ public class FarmPanCursor : MonoBehaviour
         SetArrowsVisible(false);
         SetSystemCursorVisible(true);
     }
+
+    /// <summary>L'anneau de charge du long press est tactile Android. Sur PC le clic ne doit pas le lancer.</summary>
+    private static bool IsAndroidChargeRing =>
+        Application.platform == RuntimePlatform.Android;
 
     /// <summary>Affiche ou masque le curseur OS ; n'écrit Cursor.visible que si la valeur change.</summary>
     private void SetSystemCursorVisible(bool visible)
