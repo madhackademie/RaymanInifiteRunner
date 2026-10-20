@@ -4,6 +4,7 @@
 **Statut :** **cadre méthodo** — l’UI runtime **reste inchangée** tant que les P0 session (popup farm, mobile) ne sont pas clos ; ce doc guide les **prochaines** générations et l’**épuration** progressive du kit.
 
 **Lié :**
+- **Kit bouton modulaire (Frame / Fill, layout, itérations) :** `Notes/Ui/WORKFLOW_kit_bouton_modulaire.md`
 - Mockup → prefab → Bezy : `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md`
 - Skill `/prefab-ui-3phases` : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`
 - Génération art + Dump : `Notes/Art/WORKFLOW_creation_assets.md`

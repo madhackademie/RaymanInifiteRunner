@@ -1,5 +1,38 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-20 — Fin de session — Frame bouton kit
+
+### Objectifs
+- Poser un Frame 9-slice réutilisable, plus petit à l’écran, sans casser le bois.
+
+### Livré
+- Doc `Notes/Ui/WORKFLOW_kit_bouton_modulaire.md`.
+- `Assets/Art/Sprites/UI/KitBouton/Frame_Btn.png` **2172 × 652**, bordures L170 R170 T192 B196. Source gardée : `Frame_Btn_source.png`.
+- `Fill_Btn.png` **640 × 192** (placeholder, pas de dégradé).
+- Scène `TestUi` : `TestFrame_btn`, Image Sliced **320 × 96**, sprite Frame. Multiplier encore **1**.
+
+### Décisions
+- Taille à l’écran = RectTransform. Taille PNG = netteté. Pas de resize Paint.NET (flou).
+- ChatGPT ne sort pas en 10:3 : crop, pas resize. Comfy écarté (machine). Recraft = site, essai plus tard.
+- Fill relief et gloss : quand les crédits image reviennent. Même nom de fichier.
+
+### Prochaine session
+1. **`[P0-UI-KIT-BTN-FRAME-001]`** — multiplier **7**, largeur **480**, puis prefab `Btn_Primary_Base`.
+2. **`[P0-UI-DROP-COMPOST-ANIM-001]`**.
+
+### Fichiers (commit auteur)
+- `Assets/Art/Sprites/UI/KitBouton/Frame_Btn.png` (+ `.meta`)
+- `Assets/Art/Sprites/UI/KitBouton/Frame_Btn_source.png` (+ `.meta`)
+- `Assets/Art/Sprites/UI/KitBouton/Fill_Btn.png` (+ `.meta`)
+- `Assets/Scenes/TestUi.unity`
+- `Notes/Ui/WORKFLOW_kit_bouton_modulaire.md`
+- `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md`
+- `Notes/Ui/SPEC_methodologie_ui_ia_kit_bezi.md`
+- `Notes/Todo_project.md`
+- `PROJECT_LOG.md`
+
+---
+
 ## 2026-10-19 — Fin de session — popup item quantité
 
 ### Objectifs

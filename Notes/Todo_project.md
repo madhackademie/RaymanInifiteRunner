@@ -16,6 +16,7 @@ Références de détail :
 - **HUD biofiltre en dur (plus d’Instantiate)** : `Notes/Farm/NOTE_hud_biofiltre_prefab_en_dur.md`
 - **Bezy distance / stack vocal (à voir)** : `Notes/Bezi/ETUDE_prompts_bezi_distance.md` · file : `Notes/Bezi/BEZY_QUEUE.md` · install : `Notes/Bezi/INSTALL_fritzbox_wol_parsec.md`
 - **Workflow UI mockup → Bezy** : `Notes/Ui/WORKFLOW_creation_ui_mockup_bezi.md`
+- **Kit bouton modulaire (Frame / Fill, 9-slice, layout) :** `Notes/Ui/WORKFLOW_kit_bouton_modulaire.md`
 - **Méthodo UI IA / kit 9-slice / bouton générique / UX future** : `Notes/Ui/SPEC_methodologie_ui_ia_kit_bezi.md`
 - Playtests batch : `Notes/Todo_playtest.md`
 - **Playtest live mobile (adb / APK) :** `Notes/WORKFLOW_playtest_mobile_live.md`
@@ -47,14 +48,23 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-10-19 :** **clos.** Popup item quantité FromMockup branché. Anim jeter à reprendre.  
+> **Session 2026-10-20 :** **clos.** Frame kit bouton recadré et 9-slice posé. Test scène pas encore jugé.  
 > **Branche courante :** **`feature/reworke_ui`**.
 
 ### Ordre prochaine ouverture (1 → 2 → 3)
 
-1. **`[P0-UI-DROP-COMPOST-ANIM-001]`** — reprendre l’anim jeter de `ShopItemPopup_FromMockup`.
-2. **Playtest PC** curseur pan : clic milieu, flèches ~×2 (`arrowsScale` 2 sur base 0,166), souris Windows cachée **sans scintillement** (`HidesSystemCursor`).
-3. **`[BL-FARM-PAN-CURSOR-SPLIT-001]`** — si le gabarit PC est bon : deux prefabs (PC / mobile), même script. Puis pinch APK `[P0-FARM-CAM-PINCH-RESET-001]` et merge `feature/reworke_ui` → `main`.
+1. **`[P0-UI-KIT-BTN-FRAME-001]`** — dans `TestUi`, `TestFrame_btn` : multiplier **7**, élargir à **480**. Si les caps tiennent, prefab `Btn_Primary_Base` (Fill derrière).
+2. **`[P0-UI-DROP-COMPOST-ANIM-001]`** — reprendre l’anim jeter de `ShopItemPopup_FromMockup`.
+3. **Playtest PC** curseur pan, puis `[BL-FARM-PAN-CURSOR-SPLIT-001]`.
+
+### `[P0-UI-KIT-BTN-FRAME-001]` — Frame 9-slice labo
+
+- [x] `Frame_Btn.png` **2172 × 652** (crop, pas de resize). Copie `Frame_Btn_source.png` **2172 × 724**.
+- [x] Import Single, PPU 100, bordures L **170** R **170** T **192** B **196**.
+- [x] `TestFrame_btn` dans `TestUi` : Image Sliced, **320 × 96**. Multiplier livré à **1** — à passer à **7** avant de juger.
+- [ ] Stretch **480** : caps fixes, planche du milieu seulement.
+- [ ] Prefab `Assets/Prefabs/Ui/Kit/Btn_Primary_Base.prefab` (Fill + Frame + Label). Fill actuel **640 × 192**, sans relief. Remplacer le PNG plus tard, même nom.
+- Détail : `Notes/Ui/WORKFLOW_kit_bouton_modulaire.md`.
 
 ### `[P0-UI-DROP-COMPOST-ANIM-001]` — anim jeter, ancres + disparition
 
