@@ -1,5 +1,30 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-20 (soir) — Fin de session — boutons legacy + layout demain
+
+### Objectifs
+- Tester Fill/feuilles sur kit modulaire ; décider stratégie prod.
+
+### Livré / constats
+- **`TestUi`** : `TestBtn_Kit` (Fill + Frame), multiplier Frame ~5–7 ; Fill `Fill_Btn.png` **non aligné** (1863×292 vs Frame 2172×652) — **à refaire** (vector → PNG même cadre).
+- Feuilles : `Frame_Leaf.png` **256×256** ; config TR/BL documentée (pivot coins, ~104 px rect).
+- **Décision auteur :** garder **anciens boutons** monolithiques (teal/oval) ; accepter **tuning multiplier** par taille ; kit modulaire = **labo / plus tard**.
+
+### Problèmes
+- UI complexe = 9-slice **+** layout qui redimensionne les mauvais objets (cf. popup qty 2026-10-19).
+- Sans 9-patch : OK seulement si **taille fixe** ; texte responsive = **TMP sur Label**, pas bouton stretch.
+
+### Prochaine session
+1. **`[P0-UI-BTN-LAYOUT-TIERS-001]`** — règles layout + **3 prefabs** tiers (L/M/S), multipliers de départ **3 / 5 / 7** ; test `TestUi` puis intégration popup pilote.
+2. **`[P0-UI-DROP-COMPOST-ANIM-001]`** (si temps).
+
+### Fichiers touchés session (commit auteur)
+- `Assets/Scenes/TestUi.unity`
+- `Assets/Art/Sprites/UI/KitBouton/` (Fill, Frame_Leaf, etc.)
+- `Notes/Todo_project.md`, `PROJECT_LOG.md`
+
+---
+
 ## 2026-10-20 — Fin de session — Frame bouton kit
 
 ### Objectifs

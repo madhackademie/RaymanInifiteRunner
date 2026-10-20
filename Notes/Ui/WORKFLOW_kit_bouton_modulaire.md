@@ -1,7 +1,7 @@
 # Workflow — kit bouton modulaire (Frame / Fill / décor)
 
 **Création :** 2026-10-20  
-**Statut :** **en cours** — pilote `Assets/Art/Sprites/UI/KitBouton/` (`Frame_Btn`, `Fill_Btn`).
+**Statut :** **pause prod** (2026-10-20 soir) — labo `TestUi` ; **prod = prefabs legacy** teal/oval. Reprise kit après `[P0-UI-BTN-LAYOUT-TIERS-001]`. Pilote art : `Assets/Art/Sprites/UI/KitBouton/`.
 
 **Objectif :** documenter la procédure et les **contraintes** pour créer des boutons popup **homogènes**, **recolorables** (variants sans PNG par couleur), **réutilisables en layout**, et **itérables** quand une base (ancienne ou en cours) est incorrecte.
 
