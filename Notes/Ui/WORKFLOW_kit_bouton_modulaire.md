@@ -1,7 +1,7 @@
 # Workflow — kit bouton modulaire (Frame / Fill / décor)
 
 **Création :** 2026-10-20  
-**Statut :** **pause prod** (2026-10-20 soir) — labo `TestUi` ; **prod = prefabs legacy** teal/oval. Reprise kit après `[P0-UI-BTN-LAYOUT-TIERS-001]`. Pilote art : `Assets/Art/Sprites/UI/KitBouton/`.
+**Statut :** **art calques .pdn → export monolithe coloré** (2026-10-21) — runtime Unity = **1 PNG Sliced / couleur**, pas Fill+Frame séparés. Tier **M 320×80**. Pilote : `Assets/Art/Sprites/UI/KitBouton/`. Labo `Btn_Generic_M` = non prod.
 
 **Objectif :** documenter la procédure et les **contraintes** pour créer des boutons popup **homogènes**, **recolorables** (variants sans PNG par couleur), **réutilisables en layout**, et **itérables** quand une base (ancienne ou en cours) est incorrecte.
 
@@ -157,6 +157,8 @@ Deux grappes séparées (haut-droite, bas-gauche), PNG dédiés, **Simple**, anc
 | **Monolithe → variants couleur** | Un PNG par couleur | Fill blanc + `Image.color` + Prefab Variant. |
 
 **En cours (2026-10-20) :** Frame `KitBouton/` validé ; **Fill provisoire** (pas de dégradé relief neutre — crédits gen épuisés). Continuer prefab + wiring ; **remplacer `Fill_Btn.png` au même chemin** quand le PNG définitif est prêt (même nom → prefab Unity se met à jour, revoir inset / color si besoin).
+
+| **2026-10-21** | **Réf. art auteur** | **Récolter** (teal) + **Récolte groupée** (orange) @ **hauteur UI 80 px** — préférés pour le futur kit. Base Frame : extraire le **cadre bois** depuis cette silhouette primary (`UiKit_BtnPrimary_teal_20260919` / orange même forme). Fill vectoriel neutre ensuite. Tier popup cible **M = 320×80** (L=96 / S=72 optionnels). |
 
 ---
 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 51001ecf10292894abc6f782848bdeef
+guid: 00b4c6999a5ef6a4f94d2c4c38a2e928
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7440037600270465204
-    second: Fill_Btn_0
+      213: -2695352827048202450
+    second: Fill_Btn_Desatured_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Fill_Btn_0
+      name: Fill_Btn_Desatured_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 640
-        height: 192
+        x: 58
+        y: 55
+        width: 458
+        height: 195
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4b8bba747c2504760800000000000000
-      internalID: 7440037600270465204
+      spriteID: e2f627762ee289ad0800000000000000
+      internalID: -2695352827048202450
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Fill_Btn_0: 7440037600270465204
+      Fill_Btn_Desatured_0: -2695352827048202450
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

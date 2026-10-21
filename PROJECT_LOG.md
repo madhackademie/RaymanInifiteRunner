@@ -1,5 +1,35 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-21 — Fin de session — LayoutLab récolte + art bouton monolithe
+
+### Objectifs
+- Layout popup récolte sans casser le 9-slice ; tester prefab bouton générique ; pipeline art couleurs.
+
+### Livré
+- **`FarmHarvestPanel_FromMockup_LayoutLab.prefab`** + instance **TestUi** (prod FromMockup intact). **ActionsColumn** VLG, 4 boutons `LayoutElement` (80 px M pour batch/Annuler, etc.).
+- **`Btn_Generic_M.prefab`** (Frame_Wood + Fill désaturé) — **labo** ; alignement Fill/Frame au resize **non retenu** pour prod.
+- Art **`KitBouton/`** : `Frame_Btn_Wood.png` **582×317**, borders ~L126 B107 R134 T125 ; `Fill_Btn_Desatured.png` ; workflow Paint.NET teinte (Teinte/Saturation).
+- **Décision auteur :** kit **calques en .pdn**, export **bouton complet coloré** par PNG (6–8 couleurs max) → Unity **une Image Sliced** + **PPU multiplier** ; pas Fill + Frame séparés en runtime. Réf. visuelle tier **M 320×80** : Récolter + récolte groupée. Premier **vert** composé (frame + fill + reflet) validé visuellement auteur.
+
+### Problèmes / leçons
+- Teinte Unity sur Fill gris + 2 calques Sliced = décalages / « trous » au resize.
+- Feuilles dans le frame PNG : traits 9-slice top/bottom peuvent couper les feuilles si stretch largeur (acceptable test largeur fixe).
+
+### Prochaine session
+1. **`[P0-UI-BTN-MONO-COLORS-001]`** — Exporter PNG aplatis (vert + orange…) → import Sliced **mêmes borders** → prefabs **320×80** (mult ~5–6) → remplacer boutons **LayoutLab** puis prod si OK.
+2. **`[P0-UI-BTN-LAYOUT-TIERS-001]`** — playtest LayoutLab + homogénéité colonne (multipliers notés).
+3. **`[P0-UI-DROP-COMPOST-ANIM-001]`** si temps.
+
+### Fichiers (commit auteur)
+- `Assets/Prefabs/Ui/Farm/FarmHarvestPanel_FromMockup_LayoutLab.prefab`
+- `Assets/Prefabs/Ui/Kit/Btn_Generic_M.prefab`
+- `Assets/Art/Sprites/UI/KitBouton/` (Wood, Desatured, Source, …)
+- `Assets/Scenes/TestUi.unity`
+- `Notes/Ui/WORKFLOW_kit_bouton_modulaire.md`
+- `Notes/Todo_project.md`, `PROJECT_LOG.md`
+
+---
+
 ## 2026-10-20 (soir) — Fin de session — boutons legacy + layout demain
 
 ### Objectifs

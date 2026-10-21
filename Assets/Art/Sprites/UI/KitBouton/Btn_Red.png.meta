@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: dd08bdd880ae18b4880382d23c974bde
+guid: 9367d06d5d6a8cf489aa520a01389983
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5993668995580788345
-    second: Frame_Btn_0
+      213: -8804398115234529739
+    second: Btn_Red_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 170, y: 196, z: 170, w: 192}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Frame_Btn_0
+      name: Btn_Red_0
       rect:
         serializedVersion: 2
-        x: 39
-        y: 98
-        width: 2093
-        height: 455
+        x: 9
+        y: 8
+        width: 558
+        height: 296
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 97e7dd6123acd2350800000000000000
-      internalID: 5993668995580788345
+      spriteID: 53eb358df8e70d580800000000000000
+      internalID: -8804398115234529739
       vertices: []
       indices: 
       edges: []
@@ -138,8 +138,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Frame_Btn_0: 5993668995580788345
+      Btn_Red_0: -8804398115234529739
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

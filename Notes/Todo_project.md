@@ -48,40 +48,34 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-10-20 (soir) :** **clos.** Kit modulaire Frame/Fill/feuilles = **labo / pause prod** ; **prod = anciens boutons** teal/oval (`UiKit_Piece_BtnPrimary_Teal`, etc.).  
+> **Session 2026-10-21 :** **clos.** LayoutLab récolte livré ; art **bouton monolithe coloré** (calques .pdn → PNG, **582×317**, tier **M 320×80**) — premier **vert** OK auteur. **Pas** Fill+Frame séparés Unity.  
 > **Branche courante :** **`feature/reworke_ui`**.
 
 ### Ordre prochaine ouverture (1 → 2 → 3)
 
-1. **`[P0-UI-BTN-LAYOUT-TIERS-001]`** — **TestUi** (puis popup pilote) : layout boutons **sans casser le 9-slice** + **3 prefabs taille** (max) avec multipliers de départ **3 / 5 / 7**.
-2. **`[P0-UI-DROP-COMPOST-ANIM-001]`** — anim jeter `ShopItemPopup_FromMockup`.
-3. **Playtest PC** curseur pan, puis `[BL-FARM-PAN-CURSOR-SPLIT-001]`.
+1. **`[P0-UI-BTN-MONO-COLORS-001]`** — Export PNG → **réimport** (9-slice/PPU) → **prefabs Ui/Kit** → intégration **LayoutLab** puis prod récolte.
+2. **`[P0-UI-BTN-LAYOUT-TIERS-001]`** — Playtest colonne **ActionsColumn** ; noter **multiplier** par sprite ; homogénéité @ 80 px.
+3. **`[P0-UI-DROP-COMPOST-ANIM-001]`** — anim jeter (si temps).
 
-### `[P0-UI-BTN-LAYOUT-TIERS-001]` — layout + 3 tiers bouton (legacy kit)
+### `[P0-UI-BTN-MONO-COLORS-001]` — boutons monolithe (voie prod auteur)
 
-**Règles layout (rappel) :**
-- `VerticalLayoutGroup` / layout parent → **racine prefab bouton** + **`LayoutElement`** (`preferredWidth/Height`, `flexible*` = **0**).
-- **Pas** de `LayoutGroup` sur l’`Image` Sliced interne ; bouton = **taille fixe** par tier (pas de stretch horizontal sauf test volontaire).
-- **Label** : TMP **Auto Size** + marges inset ; overflow **Ellipsis** si 1 ligne.
+- [ ] Aplatir calques .pdn → `Assets/Art/Sprites/UI/KitBouton/Btn_M_Primary_*.png` (vert livré, puis orange, rouge, … **6–8 max**).
+- [ ] **Réimport Unity** (chaque nouveau PNG) : placer **une fois** dans `KitBouton/` (ne pas déplacer après coup) ; **Sprite Mode Single** ; **Mesh Type Full Rect** ; **PPU** aligné famille (~100 ou même que Wood) ; **9-slice** borders identiques (~126/107/134/125) ; vérifier **Filter/Compression** UI ; **Apply** + contrôle preview Sliced dans Inspector.
+- [ ] **Prefabs UI kit** (`Assets/Prefabs/Ui/Kit/`) : **1 prefab par rôle/couleur** (ex. `Btn_M_Primary_Green`) = racine **Button** + **1 Image Sliced** (sprite monolithe) + **Label TMP** + **`LayoutElement` 320×80** + **PPU multiplier** noté (~5–6) ; dupliquer depuis un **template M** pour les autres couleurs (swap sprite + texte par défaut seulement).
+- [ ] **Intégration** : instances prefab dans **`FarmHarvestPanel_FromMockup_LayoutLab`** (remplacer boutons inline) ; playtest **TestUi** ; puis même swap sur **`FarmHarvestPanel_FromMockup`** (prod) si LayoutLab OK.
+- Réf. : `Btn_Generic_M` = **labo abandonné runtime** ; doc `WORKFLOW_kit_bouton_modulaire.md` §7. **Perf prefab UI** : OK (voir note § ci-dessous).
 
-**Prefabs cibles (3 max, à créer / dupliquer depuis `UiKit_Piece_BtnPrimary_Teal` + oval secondaire si besoin) :**
+**Note — prefab UI bouton (perf)** : créer des **prefabs UI** pour les boutons est **recommandé** et **sans impact perf négatif** en soi (même coût qu’une hiérarchie équivalente en scène). Le coût vient surtout des **rebuilds Canvas** (layout/TMP qui change souvent), pas du fait d’utiliser un prefab. Bonnes pratiques : **une Image** par bouton, **pas de layout sur l’Image Sliced**, **`LayoutElement` sur la racine** ; regrouper les popups sur le **même Canvas** si possible ; éviter d’activer/désactiver des **Canvas** entiers sans besoin. Variantes par couleur = prefabs séparés ou **Prefab Variant** (sprite différent) — les deux conviennent à cette échelle (6–8 boutons, pas des milliers d’instances).
 
-| Tier | Rect indicatif | Multiplier **de départ** | Notes |
-|------|----------------|----------------------------|--------|
-| **L** | 320 × 96 | **3** | CTA principal popup |
-| **M** | 280 × 80 | **5** | Secondaire / Annuler |
-| **S** | 260 × 72 | **7** | Dense ; min touch **48 px** |
+### `[P0-UI-BTN-LAYOUT-TIERS-001]` — layout récolte (en cours)
 
-- [ ] Scène **`TestUi`** : colonne VLG avec les 3 prefabs + textes courts/longs (auto-size).
-- [ ] Noter multiplier **final** par tier sur le prefab (tuning à l’œil après resize).
-- [ ] Valider sur **`ShopItemPopup_FromMockup`** (ou une ligne de boutons) sans VLG sur Images Sliced.
-- Réf. popup : pas de VLG sur `Content` (2026-10-19). Prefabs existants : `Assets/Prefabs/Ui/UiKit_Piece_BtnPrimary_Teal.prefab` (**360×120**, mult ~2,64), `UiKit_Piece_BtnSecondary_Oval.prefab`.
+- [x] **`FarmHarvestPanel_FromMockup_LayoutLab`** + **TestUi** instance.
+- [ ] Playtest Game **1080×1920** ; ajuster **ActionsColumn** Y si besoin.
+- [ ] Intégration prefabs monolithe (ci-dessus) à la place des boutons bricolés.
 
-### `[P0-UI-KIT-BTN-FRAME-001]` — kit modulaire (backlog / TestUi seulement)
+### `[P0-UI-KIT-BTN-FRAME-001]` — kit modulaire Unity (backlog)
 
-- **Pause prod** — Frame test OK ; Fill/feuilles à refaire (vector → PNG). Reprendre après tiers legacy OK.
-- [x] Labo `TestBtn_Kit` + Fill enfant (alignement Fill ≠ Frame à refaire).
-- [ ] Suite kit : `Notes/Ui/WORKFLOW_kit_bouton_modulaire.md`.
+- Calques art **.pdn** conservés ; runtime = **monolithe** coloré. `Btn_Generic_M` / Fill+Frame **non prod**.
 
 ### `[P0-UI-DROP-COMPOST-ANIM-001]` — anim jeter, ancres + disparition
 
