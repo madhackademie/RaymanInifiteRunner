@@ -7,6 +7,7 @@ alwaysApply: true
 ## Règle par défaut
 
 - **Tous les prefabs** (UI gameplay, HUD, popups, modules inventaire, etc.) sont créés et modifiés par **Bezy.ai**, sauf **contre-indication explicite** de l'auteur du projet dans le message (ex. « fais le prefab toi-même », « sans Bezy pour cette fois »).
+- **Crédits Bezy à 0** : pas de contournement Cursor sur Unity UI/view — autre projet jusqu’au reset du **30**. Rôles : `.cursor/rules/cursor_role_architecture.mdc`.
 - **Cursor / l'assistant code** ne doit **pas** :
   - générer ou réécrire des `.prefab` / `.unity` (YAML) pour de la UI ;
   - ajouter de menus éditeur « build prefab » qui remplacent Bezy ;

@@ -75,6 +75,29 @@ public sealed class ShopItemPopupView : MonoBehaviour
     [SerializeField] private Animator dropTrashAnimator;
     [SerializeField] private float dropTrashDuration = DefaultDropTrashDuration;
 
+    [Tooltip("Départ du vol (défaut : itemIcon).")]
+    [SerializeField] private RectTransform dropFlightStartAnchor;
+    [Tooltip("Arrivée du vol (défaut : enfant TrashBin sous dropTrashRoot).")]
+    [SerializeField] private RectTransform dropFlightEndAnchor;
+
+    private const string DropTrashBinName = "TrashBin";
+    private const float DropFlightFadeStart = 0.94f;
+    private const float DropFlightShrinkStart = 0.6f;
+    private const float DropFlightStartScale = 1f;
+    private const float DropLandingHoldDuration = 0.25f;
+    private const float DropLandingStartScale = 0.45f;
+    private const float DropLandingEndScale = 0.15f;
+    private bool isDropLandingActive;
+    private float dropLandingProgress;
+    private const float DropFlightMinArc = 40f;
+    private const float DropFlightArcRatio = 0.25f;
+
+    private bool isDropFlightActive;
+    private float dropFlightProgress;
+    private Vector2 dropFlightStart;
+    private Vector2 dropFlightControl;
+    private Vector2 dropFlightEnd;
+
     private bool suppressQuantityInputEvent;
     private Coroutine transitionRoutine;
     private Coroutine dropTrashRoutine;
@@ -327,6 +350,11 @@ public sealed class ShopItemPopupView : MonoBehaviour
         {
             dropFlyingIcon.sprite = icon;
             dropFlyingIcon.enabled = icon != null;
+            Color flyingColor = dropFlyingIcon.color;
+            flyingColor.a = 1f;
+            dropFlyingIcon.color = flyingColor;
+            // Repart toujours à taille pleine (le clip ne pilote plus l'échelle de l'icône).
+            dropFlyingIcon.rectTransform.localScale = new Vector3(DropFlightStartScale, DropFlightStartScale, 1f);
         }
 
         dropTrashRoot.SetActive(true);
@@ -346,7 +374,10 @@ public sealed class ShopItemPopupView : MonoBehaviour
             dropTrashRoot.SetActive(false);
 
         if (dropFlyingIcon != null)
+        {
             dropFlyingIcon.enabled = false;
+            dropFlyingIcon.rectTransform.localScale = new Vector3(DropFlightStartScale, DropFlightStartScale, 1f);
+        }
     }
 
     public void RefreshWallet()
@@ -557,18 +588,149 @@ public sealed class ShopItemPopupView : MonoBehaviour
     {
         float duration = Mathf.Max(0.05f, dropTrashDuration);
         float elapsed = 0f;
+        bool hasFlight = PrepareDropFlight();
+        if (hasFlight)
+            ApplyDropFlight(0f);
+
         while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
+            if (hasFlight)
+                ApplyDropFlight(Mathf.Clamp01(elapsed / duration));
             yield return null;
         }
+
+        if (hasFlight)
+        {
+            ApplyDropFlight(1f);
+            isDropFlightActive = false;
+
+            // L'icône reste sur le compost : shrink final + fondu pendant ce maintien.
+            isDropLandingActive = true;
+            float landingElapsed = 0f;
+            while (landingElapsed < DropLandingHoldDuration)
+            {
+                landingElapsed += Time.unscaledDeltaTime;
+                dropLandingProgress = Mathf.Clamp01(landingElapsed / DropLandingHoldDuration);
+                ApplyDropLanding();
+                yield return null;
+            }
+
+            isDropLandingActive = false;
+        }
+
+        isDropFlightActive = false;
+        if (dropFlyingIcon != null)
+            dropFlyingIcon.enabled = false;
 
         dropTrashRoutine = null;
         onComplete?.Invoke();
     }
 
+    private void LateUpdate()
+    {
+        // Réapplique le chemin après l'Animator pour que le clip n'écrase pas la position/alpha.
+        if (isDropFlightActive)
+            ApplyDropFlight(dropFlightProgress);
+        else if (isDropLandingActive)
+            ApplyDropLanding();
+    }
+
+    /// <summary>Phase d'atterrissage : l'icône reste sur le tas, rétrécit puis disparaît.</summary>
+    private void ApplyDropLanding()
+    {
+        if (dropFlyingIcon == null)
+            return;
+
+        float scale = Mathf.Lerp(DropLandingStartScale, DropLandingEndScale, dropLandingProgress);
+        dropFlyingIcon.rectTransform.localScale = new Vector3(scale, scale, 1f);
+
+        Color color = dropFlyingIcon.color;
+        color.a = 1f - dropLandingProgress;
+        dropFlyingIcon.color = color;
+    }
+
+    /// <summary>Calcule départ / arrivée / contrôle (espace local du parent de l'icône volante).</summary>
+    private bool PrepareDropFlight()
+    {
+        isDropFlightActive = false;
+        if (dropFlyingIcon == null || !dropFlyingIcon.enabled)
+            return false;
+
+        RectTransform flying = dropFlyingIcon.rectTransform;
+        RectTransform parent = flying.parent as RectTransform;
+        if (parent == null)
+            return false;
+
+        RectTransform start = dropFlightStartAnchor != null
+            ? dropFlightStartAnchor
+            : (itemIcon != null ? itemIcon.rectTransform : null);
+        RectTransform end = dropFlightEndAnchor != null ? dropFlightEndAnchor : FindTrashBin();
+        if (start == null || end == null)
+            return false;
+
+        dropFlightStart = GetCenterInParentSpace(start, parent);
+        dropFlightEnd = GetCenterInParentSpace(end, parent);
+        float arcHeight = Mathf.Max(DropFlightMinArc, Vector2.Distance(dropFlightStart, dropFlightEnd) * DropFlightArcRatio);
+        dropFlightControl = (dropFlightStart + dropFlightEnd) * 0.5f + Vector2.up * arcHeight;
+        dropFlightProgress = 0f;
+        isDropFlightActive = true;
+        return true;
+    }
+
+    private RectTransform FindTrashBin()
+    {
+        if (dropTrashRoot == null)
+            return null;
+
+        Transform[] children = dropTrashRoot.GetComponentsInChildren<Transform>(true);
+        for (int i = 0; i < children.Length; i++)
+        {
+            if (children[i].name == DropTrashBinName)
+                return children[i] as RectTransform;
+        }
+
+        return null;
+    }
+
+    private static Vector2 GetCenterInParentSpace(RectTransform target, RectTransform parent)
+    {
+        Vector3[] corners = new Vector3[4];
+        target.GetWorldCorners(corners);
+        Vector3 worldCenter = (corners[0] + corners[2]) * 0.5f;
+        Vector3 local = parent.InverseTransformPoint(worldCenter);
+        return new Vector2(local.x, local.y);
+    }
+
+    private void ApplyDropFlight(float t)
+    {
+        if (dropFlyingIcon == null)
+            return;
+
+        dropFlightProgress = t;
+        float inv = 1f - t;
+        Vector2 position = inv * inv * dropFlightStart + 2f * inv * t * dropFlightControl + t * t * dropFlightEnd;
+
+        RectTransform flying = dropFlyingIcon.rectTransform;
+        // localPosition == position dans le repère du parent, indépendant des ancres.
+        flying.localPosition = new Vector3(position.x, position.y, flying.localPosition.z);
+
+        // Taille pleine la majeure partie du vol, puis rétrécissement doux à l'approche du compost.
+        float shrink = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(DropFlightShrinkStart, 1f, t));
+        float scale = Mathf.Lerp(DropFlightStartScale, DropLandingStartScale, shrink);
+        flying.localScale = new Vector3(scale, scale, 1f);
+
+        // Alpha reste à 1 pendant tout le vol ; le fondu se fait dans la phase d'atterrissage.
+        Color color = dropFlyingIcon.color;
+        color.a = 1f;
+        dropFlyingIcon.color = color;
+    }
+
     private void StopDropTrashRoutine()
     {
+        isDropFlightActive = false;
+        isDropLandingActive = false;
+
         if (dropTrashRoutine == null)
             return;
 

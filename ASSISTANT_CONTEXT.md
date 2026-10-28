@@ -5,7 +5,8 @@
 - Les **crédits Bezy se réinitialisent en dur le 30 de chaque mois** (pas le 1er, pas le dernier jour du mois si ≠ 30).
 - Ex. : reset le **30 juillet**, **30 août**, **30 septembre**… (février : confirmer comportement abonnement si 30 absent).
 - Planifier les jobs Bezy lourds **juste après le 30** ; éviter de laisser le stock mourir en fin de cycle.
-- **Peu de temps auteur ≠ skip Bezy.** Prefab : skill `/prefab-ui-3phases`. C# simple (transforms, vues) : thread Bezy + `@Notes/Bezi/RULES_bezy_code.md`. Cursor ne code pas le visuel « pour aller plus vite ». Notes : `Notes/Bezi/WORKFLOW_skill_prefab_ui.md`, `.cursor/rules/bezy_delegate_simple_code.mdc`.
+- **Peu de temps auteur ≠ skip Bezy.** Prefab : skill `/prefab-ui-3phases`. C# simple (transforms, vues) : thread Bezy + `@Notes/Bezi/RULES_bezy_code.md`. **Rôle Cursor (2026-10-28)** : contrôler, superviser l’architecture, refactor si brun, **prompts Bezy** — presque plus d’implé directe Unity ; détail `.cursor/rules/cursor_role_architecture.mdc`.
+- **Crédits Bezy épuisés** : ne pas compenser avec Cursor sur ce repo UI/view → **autre projet** (ex. site formation) jusqu’au reset du **30**.
 - À l'ouverture : proposer un **bloc de lancement prêt** (Task ID + prefab + phase) pour le prochain job de la file.
 
 ### Etat actuel (compact)

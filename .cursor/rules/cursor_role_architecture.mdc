@@ -1,0 +1,43 @@
+---
+description: Rôle Cursor — architecture, prompts Bezy, revue ; Bezy exécute Unity
+alwaysApply: true
+---
+
+# Rôle Cursor vs Bezy (décision auteur 2026-10-28)
+
+## Répartition
+
+| Agent | Rôle |
+|-------|------|
+| **Bezy** | Exécution Unity : prefabs, scènes UI, hiérarchie, wiring Inspector, C# **view/transform/anim visuelle** terrain. |
+| **Cursor** | **Contrôler**, **superviser l’architecture**, **refactorer** si c’est du brun, **rédiger les prompts Bezy**, revue `git diff` après Bezy. **Presque plus d’implémentation directe** sur le terrain Unity. |
+
+Références détail : `.cursor/rules/bezy_delegate_simple_code.mdc`, `bezi_prefab_ownership.mdc`, `bezy_skill_workflow.mdc`.
+
+## Cursor implémente directement (seulement)
+
+- Services, interfaces, persistance, cloud, farm/vente **métier**
+- `SceneNavigator`, `UIManager`, pipeline popup (`PopupId`, bindings, `ScreenPopupHost`)
+- Refactors multi-fichiers, dette structurelle, docs (`Notes/`, `PROJECT_LOG.md`)
+- Specs, constantes d’archi (`ScreenId`, `PopupId`, …)
+
+## Cursor n’implémente pas (prompt Bezy à la place)
+
+- Prefabs / `.unity` UI, `RectTransform`, layout, sprites, TMP, glow, `CanvasGroup`
+- Tweaks **view** (ex. anim jeter inventaire, vol icône → compost, triggers Animator **sans** logique métier)
+- « Je corrige vite en C# » pour éviter Bezy — **interdit** sauf exception ci-dessous
+
+**Exception unique :** l’auteur écrit explicitement **« sans Bezy »**, **« fais toi-même »**, ou un **cas particulier** validé dans le chat (correctif minimal one-liner YAML documenté → refaire Bezy ensuite).
+
+## Workflow attendu (tâche UI / anim)
+
+1. Cursor : spec courte + critères de succès (playtest auteur, pas Simulate Bezy).
+2. Cursor : **prompt complet dans le chat** (≤ 3500 car., une phase) + `@Notes/Bezi/RULES_bezy_code.md` ou `/prefab-ui-3phases`.
+3. Auteur : exécute Bezy dans Unity.
+4. Cursor : revue diff, refactor **métier** si besoin, pas retuning visuel.
+
+## Crédits Bezy épuisés
+
+- **Ne pas** remplacer Bezy par Cursor sur ce repo (UI, prefab, view C#).
+- Basculer sur **un autre projet** auteur + Cursor (ex. **site de formation**) jusqu’au **reset Bezy le 30** du mois.
+- Préparer la file Bezy (prompts, Task IDs) pour reprendre Unity **juste après** le reset.

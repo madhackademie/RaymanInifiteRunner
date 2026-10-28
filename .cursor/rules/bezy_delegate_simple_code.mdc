@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Délégation Bezy — C# simple + terrain Unity
 
-Objectif auteur : **consommer Bezy en priorité**, Cursor seulement pour l’architecture et les prompts.
+Objectif auteur : **consommer Bezy en priorité** ; Cursor = architecture, prompts, revue, refactor si brun — voir `.cursor/rules/cursor_role_architecture.mdc`.
 
 ## Cursor NE DOIT PAS implémenter (écrire un prompt Bezy à la place)
 
@@ -16,6 +16,7 @@ Objectif auteur : **consommer Bezy en priorité**, Cursor seulement pour l’arc
 - Layout (spacing, padding) via code ou Inspector
 - Wrappers `Animator.SetBool` / `SetTrigger` sans logique métier
 - Tweaks d’une méthode view existante qui ne fait que du visuel
+- Anim UI orchestrée en view (ex. vol jeter inventaire icône → compost, ancres écran, `LateUpdate` / lerp RectTransform)
 
 Réflexe : si ça se joue dans Unity (scène, prefab, Inspector, transform), **c’est Bezy**. Cursor donne le prompt **dans le chat** + `@Notes/Bezi/RULES_bezy_code.md` (pas de nouveau `PROMPTS_Bezi_*.md` sauf demande explicite auteur — `.cursor/rules/bezy_prompt_delivery.mdc`).
 

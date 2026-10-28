@@ -51,27 +51,31 @@ Convention d'IDs :
 > **Session 2026-10-21 :** **clos.** LayoutLab récolte livré ; art **bouton monolithe coloré** (calques .pdn → PNG, **582×317**, tier **M 320×80**) — premier **vert** OK auteur. **Pas** Fill+Frame séparés Unity.  
 > **Branche courante :** **`feature/reworke_ui`**.
 
+> **Session 2026-10-28 :** LayoutLab **propre** (prefabs kit + VLG) ; **PPU mult kit M = 4** (contour @ 320×80 — retuner par tier/taille sur instance si besoin). **Prod récolte** : garder **`FarmHarvestPanel_FromMockup`** tel quel pour l’instant ; pas de merge LayoutLab → prod tant que non validé hors layout.
+
 ### Ordre prochaine ouverture (1 → 2 → 3)
 
-1. **`[P0-UI-BTN-MONO-COLORS-001]`** — Export PNG → **réimport** (9-slice/PPU) → **prefabs Ui/Kit** → intégration **LayoutLab** puis prod récolte.
-2. **`[P0-UI-BTN-LAYOUT-TIERS-001]`** — Playtest colonne **ActionsColumn** ; noter **multiplier** par sprite ; homogénéité @ 80 px.
+1. **`[P0-UI-BTN-MONO-COLORS-001]`** — Autres couleurs PNG + prefabs kit ; mult **4** par défaut tier **M 320×80**.
+2. **`[P0-UI-BTN-LAYOUT-TIERS-001]`** — Backlog : prod récolte sans VLG (surveiller erreurs visuelles) ; autres popups en layout plus tard.
 3. **`[P0-UI-DROP-COMPOST-ANIM-001]`** — anim jeter (si temps).
 
 ### `[P0-UI-BTN-MONO-COLORS-001]` — boutons monolithe (voie prod auteur)
 
-- [ ] Aplatir calques .pdn → `Assets/Art/Sprites/UI/KitBouton/Btn_M_Primary_*.png` (vert livré, puis orange, rouge, … **6–8 max**).
-- [ ] **Réimport Unity** (chaque nouveau PNG) : placer **une fois** dans `KitBouton/` (ne pas déplacer après coup) ; **Sprite Mode Single** ; **Mesh Type Full Rect** ; **PPU** aligné famille (~100 ou même que Wood) ; **9-slice** borders identiques (~126/107/134/125) ; vérifier **Filter/Compression** UI ; **Apply** + contrôle preview Sliced dans Inspector.
-- [ ] **Prefabs UI kit** (`Assets/Prefabs/Ui/Kit/`) : **1 prefab par rôle/couleur** (ex. `Btn_M_Primary_Green`) = racine **Button** + **1 Image Sliced** (sprite monolithe) + **Label TMP** + **`LayoutElement` 320×80** + **PPU multiplier** noté (~5–6) ; dupliquer depuis un **template M** pour les autres couleurs (swap sprite + texte par défaut seulement).
-- [ ] **Intégration** : instances prefab dans **`FarmHarvestPanel_FromMockup_LayoutLab`** (remplacer boutons inline) ; playtest **TestUi** ; puis même swap sur **`FarmHarvestPanel_FromMockup`** (prod) si LayoutLab OK.
-- Réf. : `Btn_Generic_M` = **labo abandonné runtime** ; doc `WORKFLOW_kit_bouton_modulaire.md` §7. **Perf prefab UI** : OK (voir note § ci-dessous).
+- [x] Vert / rouge : `Btn_Green.png`, `Btn_Red.png` + prefabs **`Btn_M_Primary_Green`**, **`Btn_M_Primary_Red`** (`Assets/Prefabs/Ui/Kit/`).
+- [x] **LayoutLab** : instances kit + wiring **`HarvestPanelUI`** sur **`FarmHarvestPanel_FromMockup_LayoutLab`** — playtest **TestUi** OK auteur.
+- [ ] **Réimport** rappel pour prochains PNG (Single, borders Wood, PPU 100).
+- [ ] Autres couleurs (orange, gris Annuler, … **6–8 max**).
+- [ ] **Prefabs kit** : template **M 320×80**, **PPU multiplier 4** sur prefab (override instance si autre `LayoutElement`).
+- [ ] ~~Merge prod~~ **reporté** — **`FarmHarvestPanel_FromMockup`** = UI récolte actuelle inchangée jusqu’à décision auteur.
+- Réf. : `Btn_Generic_M` = labo ; doc `WORKFLOW_kit_bouton_modulaire.md` §7.
 
 **Note — prefab UI bouton (perf)** : créer des **prefabs UI** pour les boutons est **recommandé** et **sans impact perf négatif** en soi (même coût qu’une hiérarchie équivalente en scène). Le coût vient surtout des **rebuilds Canvas** (layout/TMP qui change souvent), pas du fait d’utiliser un prefab. Bonnes pratiques : **une Image** par bouton, **pas de layout sur l’Image Sliced**, **`LayoutElement` sur la racine** ; regrouper les popups sur le **même Canvas** si possible ; éviter d’activer/désactiver des **Canvas** entiers sans besoin. Variantes par couleur = prefabs séparés ou **Prefab Variant** (sprite différent) — les deux conviennent à cette échelle (6–8 boutons, pas des milliers d’instances).
 
-### `[P0-UI-BTN-LAYOUT-TIERS-001]` — layout récolte (en cours)
+### `[P0-UI-BTN-LAYOUT-TIERS-001]` — layout récolte
 
-- [x] **`FarmHarvestPanel_FromMockup_LayoutLab`** + **TestUi** instance.
-- [ ] Playtest Game **1080×1920** ; ajuster **ActionsColumn** Y si besoin.
-- [ ] Intégration prefabs monolithe (ci-dessus) à la place des boutons bricolés.
+- [x] **`FarmHarvestPanel_FromMockup_LayoutLab`** + prefabs kit + **TestUi** — OK auteur 2026-10-28.
+- [ ] **Prod** : pas de merge pour l’instant (`FromMockup` legacy) ; noter si boutons hors VLG posent problème en jeu.
+- [ ] Autres écrans / tiers L–S quand besoin (mult **4** = réf. M 320×80).
 
 ### `[P0-UI-KIT-BTN-FRAME-001]` — kit modulaire Unity (backlog)
 
