@@ -51,13 +51,14 @@ Convention d'IDs :
 > **Session 2026-10-21 :** **clos.** LayoutLab récolte livré ; art **bouton monolithe coloré** (calques .pdn → PNG, **582×317**, tier **M 320×80**) — premier **vert** OK auteur. **Pas** Fill+Frame séparés Unity.  
 > **Branche courante :** **`feature/reworke_ui`**.
 
-> **Session 2026-10-28 :** LayoutLab **propre** (prefabs kit + VLG) ; **PPU mult kit M = 4** (contour @ 320×80 — retuner par tier/taille sur instance si besoin). **Prod récolte** : garder **`FarmHarvestPanel_FromMockup`** tel quel pour l’instant ; pas de merge LayoutLab → prod tant que non validé hors layout.
+> **Session 2026-10-28 :** **clos.** Règle **Cursor = archi + prompts Bezy** (`.cursor/rules/cursor_role_architecture.mdc`). **Anim jeter** : 3 prompts Bezy livrés (ancres, ×2 taille, timing shrink/fade sur compost) — **exécution Bezy + playtest** prochaine ouverture.  
+> **Branche courante :** **`feature/reworke_ui`** (revalider `git status`).
 
 ### Ordre prochaine ouverture (1 → 2 → 3)
 
-1. **`[P0-UI-BTN-MONO-COLORS-001]`** — Autres couleurs PNG + prefabs kit ; mult **4** par défaut tier **M 320×80**.
-2. **`[P0-UI-BTN-LAYOUT-TIERS-001]`** — Backlog : prod récolte sans VLG (surveiller erreurs visuelles) ; autres popups en layout plus tard.
-3. **`[P0-UI-DROP-COMPOST-ANIM-001]`** — anim jeter (si temps).
+1. **Bezy + playtest** — `[P0-UI-DROP-COMPOST-ANIM-001]` · `[P0-UI-DROP-COMPOST-SCALE-002]` · `[P0-UI-DROP-COMPOST-TIMING-003]` (prompts session 2026-10-28).
+2. **`[P0-UI-BTN-MONO-COLORS-001]`** — Autres couleurs PNG + prefabs kit ; mult **4** par défaut tier **M 320×80**.
+3. **`[P0-UI-BTN-LAYOUT-TIERS-001]`** — Backlog layout / prod récolte.
 
 ### `[P0-UI-BTN-MONO-COLORS-001]` — boutons monolithe (voie prod auteur)
 
@@ -83,10 +84,11 @@ Convention d'IDs :
 
 ### `[P0-UI-DROP-COMPOST-ANIM-001]` — anim jeter, ancres + disparition
 
-- [ ] Le clip `Assets/Animations/UI/ShopItemPopup_DropToTrash.anim` pose `FlyingIcon` et `TrashBin` en pixels. Ça décale dès que l’écran ou le popup change de taille.
-- [ ] Remplacer ces positions par **deux points d’ancrage** : départ = icône de l’item, arrivée = tas de compost. La course se recalcule selon la taille d’écran.
-- [ ] La graine **disparaît une fois arrivée** sur le tas de compost, pas avant.
-- Prefab : `Assets/Prefabs/Ui/ShopItemPopup_FromMockup.prefab`. Constat auteur 2026-10-19, reprise prochaine session.
+- [ ] Vol **ancres** ItemIcon → TrashBin (pas pixels clip) — prompt Bezy **001** (2026-10-28).
+- [ ] **×2** taille visuelle FlyingIcon / TrashBin — prompt Bezy **SCALE-002**.
+- [ ] Graine **rétrécit tard**, **disparaît sur** le tas — prompt Bezy **TIMING-003** (clip scale + alpha C# ~0,94).
+- [ ] Playtest inventaire jeter (plusieurs résolutions).
+- Prefab : `Assets/Prefabs/Ui/ShopItemPopup_FromMockup.prefab`.
 
 ### Session 2026-10-19
 

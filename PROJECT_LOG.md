@@ -1,5 +1,36 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-28 — Fin de session — rôle Cursor/Bezy + prompts anim jeter
+
+### Objectifs
+- Corriger anim jeter inventaire (ancres écran, timing graine → compost).
+- Clarifier division Cursor vs Bezy pour les sessions suivantes.
+
+### Livré
+- **Règle** `.cursor/rules/cursor_role_architecture.mdc` : Bezy = exécution Unity ; Cursor = archi, revue, refactor si brun, **prompts Bezy** ; crédits Bezy à 0 → autre projet (ex. site formation), pas contournement Cursor sur UI/view.
+- **Rules liées** : `bezy_delegate_simple_code.mdc`, `bezy_skill_workflow.mdc`, `bezi_prefab_ownership.mdc`, `project_management_session_protocol.mdc`, `ASSISTANT_CONTEXT.md`.
+- **Prompts Bezy rédigés** (à exécuter auteur dans Unity) :
+  - `[P0-UI-DROP-COMPOST-ANIM-001]` — vol ancres (ItemIcon → TrashBin), clip sans positions pixels, `LateUpdate`.
+  - `[P0-UI-DROP-COMPOST-SCALE-002]` — doubler taille visuelle FlyingIcon + TrashBin sur prefab.
+  - `[P0-UI-DROP-COMPOST-TIMING-003]` — shrink plus tard (clip scale), alpha disparaît **sur** le tas (`DropFlightFadeStart` ~0,94), retirer fade clip t=0,65.
+
+### Décisions
+- Pas d’implémentation Cursor directe sur view/anim drop (revert tentatif Cursor ; spec → Bezy).
+- Playtest anim jeter **après** livraison Bezy des 3 jobs ci-dessus.
+
+### Prochaine session
+1. **Bezy** — enchaîner / valider `[P0-UI-DROP-COMPOST-ANIM-001]` puis SCALE-002 et TIMING-003 (prompts dans chat 2026-10-28).
+2. **Playtest** inventaire → jeter → confirmer (plusieurs résolutions Game view).
+3. **`[P0-UI-BTN-MONO-COLORS-001]`** — suite couleurs PNG + prefabs kit si crédits Bezy OK.
+
+### Fichiers (commit auteur)
+- `.cursor/rules/cursor_role_architecture.mdc` (+ mises à jour rules Bezy)
+- `ASSISTANT_CONTEXT.md`
+- `Notes/Todo_project.md`, `PROJECT_LOG.md`
+- (optionnel) `Assets/Scripts/UI/Shop/ShopItemPopupView.cs` si diff local vol ancres — vérifier avant commit vs sortie Bezy
+
+---
+
 ## 2026-10-21 — Fin de session — LayoutLab récolte + art bouton monolithe
 
 ### Objectifs
