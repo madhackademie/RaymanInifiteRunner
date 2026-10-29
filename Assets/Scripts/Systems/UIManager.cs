@@ -310,6 +310,14 @@ public class UIManager : MonoBehaviour
 
             if (!inventoryUi.IsBound && PlayerInventory.Instance != null)
                 inventoryUi.Bind(PlayerInventory.Instance);
+
+            return;
+        }
+
+        if (entry.screenId == ScreenId.FeaturesHub)
+        {
+            RuntimeFeaturesHubScreen hub = entry.instance.GetComponent<RuntimeFeaturesHubScreen>();
+            hub?.EnsureInitialized();
         }
     }
 

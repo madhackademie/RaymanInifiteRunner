@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "locale": "en",
+  "entries": [
+    { "key": "OPTIONS_TITLE", "value": "Options" },
+    { "key": "OPTIONS_CLOSE", "value": "Back" },
+    { "key": "OPTIONS_SECTION_LANGUAGE", "value": "Language" },
+    { "key": "HUB_BTN_SETTINGS", "value": "Options" },
+    { "key": "HUB_TITLE_UNDER_CONSTRUCTION", "value": "Under construction" },
+    { "key": "HUB_SUBTITLE_COMING_SOON", "value": "Coming soon" },
+    { "key": "LANG_NAME_FR", "value": "French" },
+    { "key": "LANG_NAME_DE", "value": "German" },
+    { "key": "LANG_NAME_EN", "value": "English" },
+    { "key": "LANG_NAME_ES", "value": "Spanish" },
+    { "key": "LANG_NAME_IT", "value": "Italian" }
+  ]
+}

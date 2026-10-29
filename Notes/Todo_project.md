@@ -48,38 +48,33 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-10-29 (après-midi) :** **clos.** Bandeaux vente — catalogue art `BandeauArtCatalog` + fix couleur **Illustration** en Play (authoring Unlocked) ; fix GUID script catalogue. **Playtest Vente** + sprites bandoulière/vélo au catalogue à enchaîner.  
+> **Session 2026-10-29 (soir) :** **clos.** **`[P0-I18N-JSON-001]`** — `LanguageManager` + JSON 5 langues + hub **Plus** → bouton Options prefab + panneau langue. Link UI = pilote hub/Options seulement.  
+> **Session 2026-10-29 (après-midi) :** **clos.** Bandeaux vente — `BandeauArtCatalog` + fix couleur Illustration Play.  
 > **Branche courante :** **`feature/reworke_ui`** (revalider `git status`).
 
-### Roadmap session — synthèse par compartiment
+### Ordre prochaine ouverture (1 → 4)
 
-| Compartiment | Ce soir (sans Bezy) | Après reset Bezy (30+) | Backlog |
-|--------------|---------------------|-------------------------|---------|
-| **Architecture** | `[P0-I18N-JSON-001]` spec keys + schéma JSON · `LanguageManager` · chargement tables · fallback · persistance override · event `OnLanguageChanged` | Brancher options hub · tests unitaires légers sur parser | `[BL-DOC-003]` doc keys · cloud save langue plus tard |
-| **Bezy** | *Rien d’exécution* — préparer prompts seulement | `LocalizedTMPText` sur prefabs shell · dropdown langue panneau Options (Plus) · refresh TMP au change | Anim compost 001–003 · onglets sprites · kit boutons couleurs |
-| **UI (métier Cursor)** | Playtest **`SaleChannelsScreen`** + **`BandeauArtCatalog`** ; puis pilote i18n keys | Migration progressive HUD / popups | Hub Plus (mailbox, quêtes…) |
-| **Art** | — | — | Monolithe boutons · pan cursor · graines polish |
+1. **Playtest** — Plus / Options (langue + relance jeu) · **Vente** / catalogue bandeaux si pas rejoué.
+2. **Bezy (crédits reset 30)** — polish bouton ⚙ hub · **`LocalizedTmpText`** sur prefabs shell (vague 1 keys).
+3. **Cursor** — keys JSON vague 1 (Loading, boutons kit) · `[BL-DOC-003]` conventions.
+4. **Bezy** — anim compost `[P0-UI-DROP-COMPOST-001]` → 003 si file OK.
 
 ### `[P0-I18N-JSON-001]` — localisation JSON (V1)
 
-**Langues V1 (figées pour le pipeline) :** `fr`, `de`, `en`, `es`, `it`.  
-**Hors scope V1 :** autres langues plus tard ; **pas de `zh`/`zh-CN` V1** (marché / complexité — réévaluer si besoin produit).
+**Langues V1 :** `fr`, `de`, `en`, `es`, `it` · fallback **en** · pas **zh** V1.
 
-**Décisions déjà actées** (`Decision_ui.md`, `Journal_ui.md`) :
-- `country` ≠ `language` (pub/market vs texte joueur).
-- Boot : défaut depuis pays → override joueur prioritaire (PlayerPrefs proto).
-- Changement langue → refresh global TMP via event.
+- [x] Socle : `LanguageManager`, JSON Resources, Options hub Plus (prefab bouton + panneau langue).
+- [ ] Bezy : polish `SettingsButton` + migration TMP HUD/popups (`LocalizedTmpText`).
+- [ ] Vague keys : Loading, kit (`BTN_CANCEL`, …) · audio Options (`FutureSectionsHost`).
 
-**Livrables architecture (ordre ce soir) :**
-1. Enum / ids stables : `GameLanguage` (fr, de, en, es, it) + mapping `defaultLanguageFromCountry` (proto).
-2. **Convention keys** : `SCREAMING_SNAKE` (`BTN_CANCEL`, `UI_LOADING_TIP_01`) — une key = une entrée dans **chaque** fichier langue.
-3. **Fichiers JSON** (ex. `Assets/Resources/Localization/strings_fr.json` … ou un dossier + loader) — structure cible :
-   - `{ "version": 1, "locale": "fr", "entries": { "BTN_CANCEL": "Annuler", … } }`
-4. **`LanguageManager`** (singleton service, pas view) : `CurrentLanguage`, `SetLanguage`, `GetText(key)`, fallback **`en`** si key manquante, log warning dev.
-5. **`LocalizedTMPText`** (composant minimal — Cursor OK car glue métier/event, pas layout) : `[SerializeField] string key`, subscribe `OnLanguageChanged`, refresh `OnEnable`.
-6. **Pilote** : 5–10 keys sur un écran déjà en prefab (texte hardcodé remplacé côté **data** ; wiring Bezy massif **après** 30 si prefab lourd).
+### Roadmap session — synthèse par compartiment (réf.)
 
-**Références :** `Notes/Ui/Todo_ui.md` § Localization · `Notes/Ui/Journal_ui.md` § LanguageManager · dossier vide `Assets/Scripts/Localisation/`.
+| Compartiment | Ce soir (sans Bezy) | Après reset Bezy (30+) | Backlog |
+|--------------|---------------------|-------------------------|---------|
+| **Architecture** | `[P0-I18N-JSON-001]` socle livré | Keys vague 1 + `[BL-DOC-003]` | cloud save langue |
+| **Bezy** | — (soir sans crédits) | `LocalizedTmpText` shell · polish bouton Plus | compost 001–003 · onglets |
+| **UI (métier Cursor)** | Pilote i18n hub/Options | Playtest Vente + i18n | Hub Plus features |
+| **Art** | — | — | monolithe boutons · pan cursor |
 
 ---
 

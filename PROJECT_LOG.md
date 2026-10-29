@@ -1,5 +1,44 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-29 (soir) — Fin de session — i18n JSON V1 + hub Plus Options
+
+### Contexte
+- Crédits Bezy épuisés : implémentation Cursor (exception auteur) pour socle multilangue + menu Options langue dans l’onglet **Plus**.
+- Roadmap compartmentée Architecture / Bezy / UI / Art documentée en tête de `Notes/Todo_project.md`.
+
+### Livré (Cursor)
+- **`[P0-I18N-JSON-001]`** — `LanguageManager`, `GameOptionsStore`, `LocalizedTmpText`, DTO JSON ; 5 fichiers `Assets/Resources/Localization/strings_{fr,de,en,es,it}.json` (11 keys UI pilote).
+- **Hub Plus** — `SettingsButton` dans **`FeaturesHubScreen.prefab`** (kit Image+Button, ⚙ TMP) ; `OptionsPanelHost` ; panneau langue (toggles) généré sous le host au 1er clic (`RuntimeOptionsPanelView`, `FeaturesHubOptionsUiBuilder`).
+- **`RuntimeFeaturesHubScreen`** + wiring **`UIManager.WireScreenAfterInstantiate`** (FeaturesHub).
+- Fix prefab : GUID **Button** aligné kit (`4e29b1a8efbd4b44bb3f3716e73f07ff`) — pas de bouton Options créé au runtime (décision auteur).
+
+### Décisions
+- Langues V1 : **fr, de, en, es, it** ; fallback missing key → **en** ; pas **zh** V1.
+- **Link UI partiel** : hub placeholder + panneau Options seulement ; HUD / popups / métier = migration progressive (même pipeline JSON).
+- **`HUB_BTN_SETTINGS`** en JSON mais label bouton prefab encore ⚙ en dur — Bezy peut brancher `LocalizedTmpText` ou TMP key.
+- **`FutureSectionsHost`** prêt pour volume musique / SFX plus tard.
+
+### Problèmes / leçons
+- YAML manuel sur `SettingsButton` → Missing Script si mauvais GUID ; bouton = prefab kit-like, pas script custom.
+- Overrides prefab ouverts dans Unity : **Revert / Reimport** si erreur sauvegarde persiste.
+
+### Prochaine session
+1. **Reset Bezy (30)** — polish `SettingsButton` (sprite roue / instance kit) + poser **`LocalizedTmpText`** sur shell HUD (vague 1 keys).
+2. **Playtest** Plus → Options → changement langue + persistance relance ; en parallèle **playtest Vente** / **`BandeauArtCatalog`** si pas fait (après-midi).
+3. **Cursor** — ajouter keys JSON vague 1 (Loading, `BTN_CANCEL`, …) + doc `[BL-DOC-003]` conventions keys.
+4. **Bezy file** — anim compost `[P0-UI-DROP-COMPOST-*]` si crédits OK.
+
+### Fichiers (commit auteur)
+- `Assets/Scripts/Localisation/*`, `Assets/Scripts/Options/GameOptionsStore.cs`
+- `Assets/Scripts/UI/Options/RuntimeOptionsPanelView.cs`
+- `Assets/Scripts/UI/FeaturesHub/*`
+- `Assets/Resources/Localization/*.json`
+- `Assets/Prefabs/Ui/FeaturesHubScreen.prefab`
+- `Assets/Scripts/Systems/UIManager.cs`
+- `Notes/Todo_project.md`, `Notes/Ui/Todo_ui.md`, `PROJECT_LOG.md`
+
+---
+
 ## 2026-10-29 (après-midi) — Fin de session — bandeaux vente (art data + couleur Play)
 
 ### Contexte
