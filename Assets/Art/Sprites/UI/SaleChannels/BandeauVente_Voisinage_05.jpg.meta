@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 10e7e9ba1f4ac7d49944694a5c8ee0ee
+guid: 2f49a998171757b44899e925246d731f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8110990150710747552
-    second: 03_GrowingLaituce_image_0
+      213: 774741688763040428
+    second: BandeauVente_Voisinage_05_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -98,14 +98,14 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 03_GrowingLaituce_image_0
+      name: BandeauVente_Voisinage_05_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 761
-        height: 550
-      alignment: 9
-      pivot: {x: 0.48130494, y: 0.06819523}
+        width: 2048
+        height: 352
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 06e913a8e69ff6f80800000000000000
-      internalID: -8110990150710747552
+      spriteID: ca2486f067f60ca00800000000000000
+      internalID: 774741688763040428
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ce1dd4d3150f6db4bad6cbd45d11a7dc
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      03_GrowingLaituce_image_0: -8110990150710747552
+      BandeauVente_Voisinage_05_0: 774741688763040428
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

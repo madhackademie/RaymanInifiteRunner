@@ -1,5 +1,47 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-10-29 (après-midi) — Fin de session — bandeaux vente (art data + couleur Play)
+
+### Contexte
+- Auteur : couleur/sprite **Illustration** par canal (voisinage) — overrides prefab imbriqué + **Apply All** pénibles ; couleur prefab **non visible en Play**.
+
+### Livré (Cursor)
+- **`SaleChannelBandeauArtCatalog`** (SO) + **`Assets/Data/SaleChannels/BandeauArtCatalog.asset`** — sprites par `channelId` ; wiring **`RuntimeSaleChannelsScreen.bandeauArtCatalog`** + `ApplyBandeauArtFromCatalog()` au `Refresh()`.
+- **`SaleChannelBandeauView`** : `ApplyIllustrationSprite` ; teinte **Unlocked** = couleur Inspector lue au `Awake` ; filigrane alpha **0,33** seulement **Unlockable** (plus sur Unlocked).
+- **Fix compile** : GUID `.meta` invalide sur `SaleChannelBandeauArtCatalog.cs` → CS0246.
+
+### Décisions
+- **Sprite canal** = catalogue (pas override nested `SaleChannelBandeauView`).
+- **Couleur décor** = PNG + blanc sur Image ; états verrou/cooldown = teintes code inchangées.
+- Prefab variants par canal = alternative Bezy, non retenue (catalogue central).
+
+### Prochaine session
+1. **Playtest** HUD Vente — voisinage débloillé, sans cooldown : sprite catalogue + couleur `Illustration` si réglée.
+2. **`BandeauArtCatalog`** — entrees `bandouliere` / `velo_marchand` quand PNG prêts.
+3. **Nettoyage** — Revert overrides `m_Sprite` / `Color` inutiles sur instances dans `SaleChannelsScreen.prefab` si playtest OK.
+4. Reprendre **`[P0-I18N-JSON-001]`** si priorité doc § *Prochaine session* inchangée.
+
+### Fichiers (commit auteur)
+- `Assets/Scripts/Systems/SaleChannelBandeauArtCatalog.cs` (+ `.meta`)
+- `Assets/Data/SaleChannels/BandeauArtCatalog.asset` (+ `.meta`)
+- `Assets/Scripts/UI/SaleChannels/RuntimeSaleChannelsScreen.cs`
+- `Assets/Scripts/UI/SaleChannels/SaleChannelBandeauView.cs`
+- `Assets/Prefabs/Ui/SaleChannelsScreen.prefab`
+- `Notes/Todo_project.md`, `PROJECT_LOG.md`
+
+---
+
+## 2026-10-29 — Spec polish rareté item (couleur noms popups)
+
+### Livré (docs)
+- **`Notes/Ui/SPEC_item_rarity_colors.md`** — enum `ItemRarity`, API `ItemRarityVisuals`, palette TMP, table MVP (laitue/roquette/euro), surfaces popup (`ShopItemPopup`), split Cursor `[CT-UI-RARITY-001]` / Bezy `[BZ-POLISH-020]`.
+- Références : `popup_generique.md` §2.4c, `Todo_project.md`, `TODO_Bezy_polish_semaine.md` #29, `Todo_ui.md`.
+
+### Décision gamedesign MVP
+- Contenu farm actuel = **Commun** ; paliers Uncommon → Légendaire prêts pour futurs items ; `euro` = pas de rareté (`None`).
+
+---
+
 ## 2026-10-28 — Fin de session — rôle Cursor/Bezy + prompts anim jeter
 
 ### Objectifs

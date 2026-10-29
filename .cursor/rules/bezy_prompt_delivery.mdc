@@ -9,6 +9,20 @@ alwaysApply: true
 
 - Donner le **prompt Bezy complet dans le chat** (bloc copier-coller, ≤ 3500 caractères, une phase par appel si besoin).
 - Rappeler dans le chat d’attacher `@Notes/Bezi/RULES_bezy_code.md` (et le skill `/prefab-ui-3phases` si prefab UI).
+
+## Mode copier-coller rapide (obligatoire)
+
+À **chaque** prompt Bezy livré dans le chat :
+
+1. **Un seul bloc** fenced `text` (pas `markdown`) contenant **100 % du texte à coller dans Bezy** — pas de tableaux, pas de listes à puces « autour » du prompt, pas de commentaire Cursor **à l’intérieur** du bloc.
+2. **En tête du bloc** (lignes 1–3) :
+   - `Task ID: [BZ-…]`
+   - `@Notes/Bezi/RULES_bezy_code.md` (+ `/prefab-ui-3phases` si prefab UI skill)
+3. **Corps** : instructions Bezy en impératif, chemins absolus projet `Assets/…`, fin **`Save. List what changed. STOP.`**
+4. **Hors bloc** (court) : rappels auteur uniquement (playtest, binding Cursor, conflit guid) — **jamais** mélangés au texte Bezy.
+5. **Plusieurs phases** = **plusieurs blocs** numérotés (`Phase 1/3`, `Phase 2/3`, …), chacun copiable seul ; ne pas fusionner si > 3500 caractères.
+
+Anti-patterns : prompt éclaté en prose + extrait partiel ; « voir ci-dessus » sans bloc ; prompt seulement dans un fichier `.md` sans bloc chat.
 - **Ne pas** créer ni mettre à jour de fichiers `Notes/**/PROMPTS_Bezi_*.md` (ni équivalent « prompt Bezy » dans `Notes/`) **sauf demande explicite** de l’auteur.
 
 ## Fichiers prompt autorisés (tâches planifiées)

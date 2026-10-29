@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.27, g: 0.58, b: 0.82, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -422,7 +422,7 @@ MonoBehaviour:
   lockedOverlay: {fileID: 284041785260022506}
   unlockableFxAnchor: {fileID: 0}
   illustrationImage: {fileID: 1545175117094763600}
-  channelId: 
+  channelId: voisinage
   cooldownOverlay: {fileID: 444655200389795788}
   cooldownLabel: {fileID: 8620438311816390175}
   cooldownCanvasGroup: {fileID: 0}
@@ -651,7 +651,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Voisinage
+  m_text: "Bandouli\xE8re"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b924850fe4ea4114da2c785b65fbc423, type: 2}
@@ -920,14 +920,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 774741688763040428, guid: 248a8ddb4d539e4409bc89b60bdd2e48, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1108,7 +1108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8743733916827986660
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1178,7 +1178,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -1206,13 +1206,13 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
   m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
-  m_isOrthographic: 0
+  m_isOrthographic: 1
   m_isCullingEnabled: 0
   m_horizontalMapping: 0
   m_verticalMapping: 0
@@ -1318,7 +1318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7058075289330165581, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7058075289330165581, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1326,7 +1326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7058075289330165581, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7058075289330165581, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1415,8 +1415,72 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7500276685587096919, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7579519108375791480}
+    - targetCorrespondingSourceObject: {fileID: 6440642077826350518, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4246246271585850078}
+    - targetCorrespondingSourceObject: {fileID: 8259046434865762975, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1290371920078891694}
+    - targetCorrespondingSourceObject: {fileID: 4893603864960600702, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7158981845414480857}
+    - targetCorrespondingSourceObject: {fileID: 5604702281190415010, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3048617726858262486}
+    - targetCorrespondingSourceObject: {fileID: 8984807938039792195, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3795440830321881180}
+    - targetCorrespondingSourceObject: {fileID: 7963344360542649011, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2676925271593610476}
+    - targetCorrespondingSourceObject: {fileID: 6914414874992108114, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3100922723352837732}
+    - targetCorrespondingSourceObject: {fileID: 1930088150829317844, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1016283545939435683}
+    - targetCorrespondingSourceObject: {fileID: 3152124751293113909, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5488501237629278196}
   m_SourcePrefab: {fileID: 100100000, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+--- !u!1 &576971113523831213 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1930088150829317844, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1016283545939435683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576971113523831213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
+--- !u!1 &4140571792130062668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3152124751293113909, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5488501237629278196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140571792130062668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
 --- !u!114 &5394505079219178853 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6347257495102591516, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
@@ -1428,8 +1492,144 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e5f6a7b8c94d0e1f2a3b4c5d6e7f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UiStarRowView
+--- !u!1 &5451920715284816591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6440642077826350518, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4246246271585850078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5451920715284816591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
+--- !u!1 &5565379761728142635 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6914414874992108114, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3100922723352837732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5565379761728142635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
+--- !u!1 &5846039623642666247 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4893603864960600702, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7158981845414480857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5846039623642666247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
+--- !u!1 &6849759384303420891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5604702281190415010, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3048617726858262486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849759384303420891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
+--- !u!1 &6941975709460041190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8259046434865762975, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1290371920078891694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6941975709460041190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
+--- !u!1 &7960305780758420794 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8984807938039792195, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3795440830321881180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7960305780758420794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
 --- !u!224 &8303387350686005300 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7058075289330165581, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
   m_PrefabInstance: {fileID: 1353574516019748729}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8853664763250539054 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7500276685587096919, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7579519108375791480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8853664763250539054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect
+--- !u!1 &8956436283947869642 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7963344360542649011, guid: b581d9f71a96f8f4c9ea8daee506de7e, type: 3}
+  m_PrefabInstance: {fileID: 1353574516019748729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2676925271593610476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956436283947869642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a9d3e15c284f1a8e6d4c2b0a9f7135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiQuadWarpMeshEffect

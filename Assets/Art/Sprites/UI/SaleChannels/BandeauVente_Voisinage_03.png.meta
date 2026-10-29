@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 10409ef9f5e117a47add3db8a83c9726
+guid: 526d37b6a5cfd7742b4439ee590c0e43
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -983521974740562808
-    second: 06_SeedlingLaituce_image_0
+      213: -4808697775087013534
+    second: BandeauVente_Voisinage_03_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -98,14 +98,14 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 06_SeedlingLaituce_image_0
+      name: BandeauVente_Voisinage_03_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 694
-        height: 827
-      alignment: 9
-      pivot: {x: 0.49719775, y: 0.07289827}
+        width: 2172
+        height: 724
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 88c4cc299f3d952f0800000000000000
-      internalID: -983521974740562808
+      spriteID: 2613ab3e9d2144db0800000000000000
+      internalID: -4808697775087013534
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2b82625a3e9e09942889138e4b816358
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      06_SeedlingLaituce_image_0: -983521974740562808
+      BandeauVente_Voisinage_03_0: -4808697775087013534
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

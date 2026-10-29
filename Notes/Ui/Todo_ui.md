@@ -32,6 +32,7 @@ Règle :
 
 ### Shop — popup achat (`ShopItemPopup`) — livré 2026-05-19
 - **Fait** (branche `rework/shopitempopup`, merge `main`) : `ShopItemPopupController` / `ShopItemPopupView`, prefab `Assets/Prefabs/Ui/ShopItemPopup.prefab` — input quantité, Max, overlay confirmation, `CurrencyBalanceUI` (solde) dans le Header. Statuts : **`Notes/Todo_project.md`** [P0-SHOP-POP-001], [CT-SHOP-003]…[006].
+- **Backlog polish :** noms colorés par rareté (achat + inventaire détail + vente) — **`Notes/Ui/SPEC_item_rarity_colors.md`** · `[CT-UI-RARITY-001]` puis `[BZ-POLISH-020]`.
 - **Reste optionnel** : passe UX globale shop [CT-SHOP-002] (focus, transitions, polish visuel).
 
 ### Inventaire — sélection multiple / suppression bulk `[BL-INV-BULK-SELECT-001]`
@@ -76,6 +77,13 @@ Décisions rappel :
 - Créer `LocalizedTMPText` (`key`, abonnement event, refresh au `OnEnable`).
 - Poser une convention stable de keys (`BTN_PLAY`, `TITLE_FARM`, ...).
 - Prévoir phase proto (table simple) puis phase finale (SO/JSON).
+
+### `[P0-I18N-JSON-001]` — JSON V1 (session 2026-10-29)
+
+- Langues : **fr, de, en, es, it** (fallback missing key → **en**).
+- Pas **zh** en V1 ; autres locales = backlog.
+- Fichiers JSON par locale sous `Resources/Localization/` (ou équivalent validé ce soir).
+- Détail ordre de travail : `Notes/Todo_project.md` § *Roadmap session*.
 
 ---
 

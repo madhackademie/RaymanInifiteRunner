@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: de09412c8bb7a8b449a75c0217588b17
+guid: d4fef0a513585da419c278ef6e7bc75b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8997401980803306944
-    second: "0_GraineGerm\xE9_0"
+      213: -3647647865285021204
+    second: BandeauVente_Voisinage_02_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -98,14 +98,14 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "0_GraineGerm\xE9_0"
+      name: BandeauVente_Voisinage_02_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 205
-        height: 256
-      alignment: 9
-      pivot: {x: 0.2621369, y: 0.003527467}
+        width: 2172
+        height: 724
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0c55d276e613ddc70800000000000000
-      internalID: 8997401980803306944
+      spriteID: ce179f3b793f06dc0800000000000000
+      internalID: -3647647865285021204
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2a03b7530011e444e8c86e6833e98fb4
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "0_GraineGerm\xE9_0": 8997401980803306944
+      BandeauVente_Voisinage_02_0: -3647647865285021204
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

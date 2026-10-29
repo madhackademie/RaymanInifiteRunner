@@ -17,5 +17,5 @@ MonoBehaviour:
   inventoryBehavior: 0
   itemCategory: 1
   gameScope: 1
-  icon: {fileID: 350555719694310779, guid: 4137567ff6bf2aa4a9b30aaffab71dd9, type: 3}
+  icon: {fileID: 168203161415380284, guid: 6e57c6ff3b80ae74d818c4f3724240c9, type: 3}
   maxStack: 99

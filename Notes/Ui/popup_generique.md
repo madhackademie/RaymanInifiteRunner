@@ -67,6 +67,13 @@ Document de référence pour le **magasin (Shop)** : état du code, intention pr
 - **Bezy** : binding + anims (`Notes/Ui/PROMPTS_Bezi_inventory_item_drop.md` Phases 1 / 4 / 5). Binding manquant → warning + pas d’ouverture.
 - Monnaie (`ItemInventoryBehavior.Currency`) : hors grille inventaire (wallet) — non droppable via ce flux.
 
+### 2.4c Polish — nom d’item coloré par rareté (backlog)
+
+- **Spec complète :** `Notes/Ui/SPEC_item_rarity_colors.md` (`[CT-UI-RARITY-001]` / `[BZ-POLISH-020]`).
+- **Cible :** popups partageant **`ShopItemPopup`** (achat shop, détail / drop inventaire, vente) — couleur du **nom** (+ libellé rareté) dérivée de **`ItemDefinition`** via code (`ItemRarity` + palette), pas du seul `ShopItemDefinition.rarityLabel`.
+- **État actuel :** rareté shop = string `Commun` ; pas de champ rareté sur `ItemDefinition` ; `ShopItemPopupView` ne applique pas de couleur.
+- **MVP items farm :** tout le catalogue actuel en **Commun** ; paliers Uncommon → Légendaire réservés (voir table items dans la spec).
+
 ### 2.5 Ferme FirstLvl — sélection de graine + popup plante (mode strict lazy)
 
 - **`ScreenId.FirstLvlFarm`** : clé logique pour les bindings **sans** prefab d’écran UIManager (scène gameplay séparée).

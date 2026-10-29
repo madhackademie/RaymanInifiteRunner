@@ -23,6 +23,10 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     [SerializeField] private SaleChannelUnlockTooltipHost unlockTooltipHost;
     [SerializeField] private SaleChannelStarTooltipHost starTooltipHost;
 
+    [Header("Bandeau art (data-driven)")]
+    [Tooltip("Sprites par channelId — évite les overrides sur SaleChannelBandeauView imbriqué.")]
+    [SerializeField] private SaleChannelBandeauArtCatalog bandeauArtCatalog;
+
     [Header("VFX vente")]
     [Tooltip("Prefab Bezy SaleMoneyBurst (ref Simulate / Phase 3). Runtime = burst UI Overlay.")]
     [SerializeField] private GameObject saleMoneyBurstPrefab;
@@ -69,7 +73,25 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
     public void Refresh()
     {
         ApplyShellBackdrop();
+        ApplyBandeauArtFromCatalog();
         RefreshBandeauStates(playUnlockableReveal: true);
+    }
+
+    private void ApplyBandeauArtFromCatalog()
+    {
+        if (bandeauArtCatalog == null)
+            return;
+
+        HookBandeauViews();
+
+        foreach (SaleChannelBandeauView bandeau in bandeauViews)
+        {
+            if (bandeau == null || !SaleChannelService.TryResolveChannelId(bandeau, out string channelId))
+                continue;
+
+            if (bandeauArtCatalog.TryGetIllustration(channelId, out Sprite illustration))
+                bandeau.ApplyIllustrationSprite(illustration);
+        }
     }
 
     private void RefreshBandeauStates(bool playUnlockableReveal)
@@ -480,7 +502,9 @@ public class RuntimeSaleChannelsScreen : MonoBehaviour
 
         if (!service.TryBuildSellPopupData(channelId, out ShopItemPopupData popupData))
         {
-            ShowFeedbackMessage(NoStockMessage);
+            ShowFeedbackMessage(service.TryGetSellPopupBlockMessage(channelId, out string blockMessage)
+                ? blockMessage
+                : NoStockMessage);
             return;
         }
 

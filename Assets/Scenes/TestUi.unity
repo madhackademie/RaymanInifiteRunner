@@ -1012,7 +1012,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 73065003938757990, guid: 9b4f84cda44e0cd4d889ae8b3628a436, type: 3}
       propertyPath: m_Name
-      value: ShopItemPopup_FromMockup
+      value: ShopItemPopup
       objectReference: {fileID: 0}
     - target: {fileID: 73065003938757990, guid: 9b4f84cda44e0cd4d889ae8b3628a436, type: 3}
       propertyPath: m_IsActive

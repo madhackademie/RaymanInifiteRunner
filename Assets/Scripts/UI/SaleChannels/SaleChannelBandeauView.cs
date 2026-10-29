@@ -15,7 +15,6 @@ public class SaleChannelBandeauView : MonoBehaviour
     private const int DefaultFilledStarCount = 0;
     private const float IllustrationFiligraneAlpha = 0.33f;
 
-    private static readonly Color IllustrationActiveColor = Color.white;
     private static readonly Color IllustrationCooldownColor = new(0.55f, 0.55f, 0.55f, 1f);
     private static readonly Color IllustrationLockedColor = new(0.45f, 0.45f, 0.45f, 1f);
     private static readonly Color IllustrationUnlockableColor = new(0.95f, 0.92f, 0.75f, 1f);
@@ -64,11 +63,16 @@ public class SaleChannelBandeauView : MonoBehaviour
     private readonly System.Collections.Generic.List<Coroutine> unlockableSparkleRoutines = new();
     private SaleChannelUnlockProgressSnapshot progressSnapshot;
     private int filledStarCount = DefaultFilledStarCount;
+    /// <summary>Couleur Inspector sur Illustration (lue avant le premier refresh runtime).</summary>
+    private Color illustrationAuthoringColor = Color.white;
 
     private void Awake()
     {
         ResolvePolishRefs();
         ResolveProgressionRefs();
+
+        if (illustrationImage != null)
+            illustrationAuthoringColor = illustrationImage.color;
 
         if (bandeauButton != null)
             bandeauButton.onClick.AddListener(HandleBandeauClicked);
@@ -130,7 +134,7 @@ public class SaleChannelBandeauView : MonoBehaviour
         }
 
         if (illustrationImage != null && !IsOnCooldown)
-            illustrationImage.color = GetIllustrationColorForPhase(ProgressionPhase);
+            RefreshIllustrationTint();
 
         ApplyUnlockableFx(ProgressionPhase == SaleChannelProgressionPhase.Unlockable);
 
@@ -214,6 +218,18 @@ public class SaleChannelBandeauView : MonoBehaviour
         ApplyInteractableState();
     }
 
+    /// <summary>
+    /// Illustration depuis <see cref="SaleChannelBandeauArtCatalog"/> (écran vente), pas override prefab.
+    /// </summary>
+    public void ApplyIllustrationSprite(Sprite sprite)
+    {
+        if (illustrationImage == null || sprite == null)
+            return;
+
+        illustrationImage.sprite = sprite;
+        RefreshIllustrationTint();
+    }
+
     public void ApplyCooldownState(bool onCooldown, string remainingText)
     {
         ResolvePolishRefs();
@@ -221,12 +237,7 @@ public class SaleChannelBandeauView : MonoBehaviour
         bool shouldShow = onCooldown && !IsProgressionBlockingSale;
         IsOnCooldown = shouldShow;
 
-        if (illustrationImage != null)
-        {
-            illustrationImage.color = shouldShow
-                ? IllustrationCooldownColor
-                : GetIllustrationColorForPhase(ProgressionPhase);
-        }
+        RefreshIllustrationTint();
 
         if (shouldShow)
             ShowCooldown(remainingText);
@@ -272,12 +283,22 @@ public class SaleChannelBandeauView : MonoBehaviour
             cooldownOverlay.SetActive(false);
     }
 
+    private void RefreshIllustrationTint()
+    {
+        if (illustrationImage == null)
+            return;
+
+        illustrationImage.color = IsOnCooldown
+            ? IllustrationCooldownColor
+            : GetIllustrationColorForPhase(ProgressionPhase);
+    }
+
     private Color GetIllustrationColorForPhase(SaleChannelProgressionPhase phase)
     {
         Color color = phase switch
         {
             SaleChannelProgressionPhase.Unlockable => IllustrationUnlockableColor,
-            SaleChannelProgressionPhase.Unlocked => IllustrationActiveColor,
+            SaleChannelProgressionPhase.Unlocked => GetAuthoringIllustrationColorOpaque(),
             _ => IllustrationLockedColor,
         };
 
@@ -292,8 +313,14 @@ public class SaleChannelBandeauView : MonoBehaviour
         if (illustrationImage == null || illustrationImage.sprite == null)
             return false;
 
-        return phase is SaleChannelProgressionPhase.Unlocked
-            or SaleChannelProgressionPhase.Unlockable;
+        return phase == SaleChannelProgressionPhase.Unlockable;
+    }
+
+    private Color GetAuthoringIllustrationColorOpaque()
+    {
+        Color color = illustrationAuthoringColor;
+        color.a = 1f;
+        return color;
     }
 
     private void ResolvePolishRefs()

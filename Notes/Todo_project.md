@@ -48,6 +48,41 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
+> **Session 2026-10-29 (après-midi) :** **clos.** Bandeaux vente — catalogue art `BandeauArtCatalog` + fix couleur **Illustration** en Play (authoring Unlocked) ; fix GUID script catalogue. **Playtest Vente** + sprites bandoulière/vélo au catalogue à enchaîner.  
+> **Branche courante :** **`feature/reworke_ui`** (revalider `git status`).
+
+### Roadmap session — synthèse par compartiment
+
+| Compartiment | Ce soir (sans Bezy) | Après reset Bezy (30+) | Backlog |
+|--------------|---------------------|-------------------------|---------|
+| **Architecture** | `[P0-I18N-JSON-001]` spec keys + schéma JSON · `LanguageManager` · chargement tables · fallback · persistance override · event `OnLanguageChanged` | Brancher options hub · tests unitaires légers sur parser | `[BL-DOC-003]` doc keys · cloud save langue plus tard |
+| **Bezy** | *Rien d’exécution* — préparer prompts seulement | `LocalizedTMPText` sur prefabs shell · dropdown langue panneau Options (Plus) · refresh TMP au change | Anim compost 001–003 · onglets sprites · kit boutons couleurs |
+| **UI (métier Cursor)** | Playtest **`SaleChannelsScreen`** + **`BandeauArtCatalog`** ; puis pilote i18n keys | Migration progressive HUD / popups | Hub Plus (mailbox, quêtes…) |
+| **Art** | — | — | Monolithe boutons · pan cursor · graines polish |
+
+### `[P0-I18N-JSON-001]` — localisation JSON (V1)
+
+**Langues V1 (figées pour le pipeline) :** `fr`, `de`, `en`, `es`, `it`.  
+**Hors scope V1 :** autres langues plus tard ; **pas de `zh`/`zh-CN` V1** (marché / complexité — réévaluer si besoin produit).
+
+**Décisions déjà actées** (`Decision_ui.md`, `Journal_ui.md`) :
+- `country` ≠ `language` (pub/market vs texte joueur).
+- Boot : défaut depuis pays → override joueur prioritaire (PlayerPrefs proto).
+- Changement langue → refresh global TMP via event.
+
+**Livrables architecture (ordre ce soir) :**
+1. Enum / ids stables : `GameLanguage` (fr, de, en, es, it) + mapping `defaultLanguageFromCountry` (proto).
+2. **Convention keys** : `SCREAMING_SNAKE` (`BTN_CANCEL`, `UI_LOADING_TIP_01`) — une key = une entrée dans **chaque** fichier langue.
+3. **Fichiers JSON** (ex. `Assets/Resources/Localization/strings_fr.json` … ou un dossier + loader) — structure cible :
+   - `{ "version": 1, "locale": "fr", "entries": { "BTN_CANCEL": "Annuler", … } }`
+4. **`LanguageManager`** (singleton service, pas view) : `CurrentLanguage`, `SetLanguage`, `GetText(key)`, fallback **`en`** si key manquante, log warning dev.
+5. **`LocalizedTMPText`** (composant minimal — Cursor OK car glue métier/event, pas layout) : `[SerializeField] string key`, subscribe `OnLanguageChanged`, refresh `OnEnable`.
+6. **Pilote** : 5–10 keys sur un écran déjà en prefab (texte hardcodé remplacé côté **data** ; wiring Bezy massif **après** 30 si prefab lourd).
+
+**Références :** `Notes/Ui/Todo_ui.md` § Localization · `Notes/Ui/Journal_ui.md` § LanguageManager · dossier vide `Assets/Scripts/Localisation/`.
+
+---
+
 > **Session 2026-10-21 :** **clos.** LayoutLab récolte livré ; art **bouton monolithe coloré** (calques .pdn → PNG, **582×317**, tier **M 320×80**) — premier **vert** OK auteur. **Pas** Fill+Frame séparés Unity.  
 > **Branche courante :** **`feature/reworke_ui`**.
 
@@ -1083,6 +1118,7 @@ Backlog vente (déjà dans l’ordre ci-dessus, items 2–4) : `[P0-SALE-QTY-RAN
 - [x] [CT-SHOP-004] Bouton Max (`floor(solde/prix)` + plafonds métier + place inventaire).
 - [x] [CT-SHOP-005] Confirmation avant paiement (overlay `ConfirmOverlay` sur `ShopItemPopup.prefab`).
 - [x] [CT-SHOP-006] Références Inspector popup item (prefab + `ShopItemPopupView` / `CurrencyBalanceUI` wallet).
+- [ ] **[CT-UI-RARITY-001]** Noms d’item **colorés par rareté** — enum `ItemRarity` sur `ItemDefinition`, resolver + palette (`ItemRarityVisuals`), branchement `ShopItemPopupData` / `ShopItemPopupView` (HeaderTitle + ItemName + rarityText). Spec + table items MVP : **`Notes/Ui/SPEC_item_rarity_colors.md`**. Bezy wiring prefab après code : **`[BZ-POLISH-020]`**.
 
 ### Inventaire / wallet / runtime UI
 - [x] **[CT-UI-SAFE-PA-001]** HUD PA slot chrome haut-droite + TreeMount plein cadre + convention `Notes/Ui/CONVENTION_hud_pa_safe_zone.md` (2026-07-30). Playtest auteur.

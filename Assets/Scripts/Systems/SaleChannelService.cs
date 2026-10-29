@@ -170,6 +170,52 @@ public class SaleChannelService : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Message utilisateur quand <see cref="TryBuildSellPopupData"/> échoue (canal, stock, config).
+    /// </summary>
+    public bool TryGetSellPopupBlockMessage(string channelId, out string message)
+    {
+        message = null;
+
+        if (channelId != SaleChannelId.Neighbor)
+        {
+            message = "Les ventes sur ce canal ne sont pas encore disponibles.";
+            return true;
+        }
+
+        if (!IsChannelUnlocked(channelId))
+        {
+            message = "Ce canal de vente n'est pas encore débloqué.";
+            return true;
+        }
+
+        if (IsOnCooldown(channelId) &&
+            TryGetCooldownMessage(channelId, out string cooldownMessage))
+        {
+            message = cooldownMessage;
+            return true;
+        }
+
+        ItemDefinition item = ResolveSellItem();
+        if (item == null)
+        {
+            message = "Configuration vente incomplète (laitue mature introuvable).";
+            return true;
+        }
+
+        PlayerInventory inventory = PlayerInventory.Instance;
+        int owned = inventory != null ? inventory.Count(item) : 0;
+        if (owned <= 0)
+        {
+            message =
+                "Aucune laitue mature à vendre pour ce canal. " +
+                "Seules les laitues récoltées comptent (pas les graines).";
+            return true;
+        }
+
+        return false;
+    }
+
     public bool CanSell(string channelId, int quantity)
     {
         if (channelId != SaleChannelId.Neighbor)

@@ -51,6 +51,7 @@ Prompts : **chat Bezy** (Cursor) ; fichiers `@` Unity seulement si listés dans 
 | 26 | **[BZ-TAB-SPRITES-001]** / **[P0-TAB-SPRITES-001]** | Mise en place + polish **sprites onglets** HUD | `NavigationHUD` (tabs) | M | TabVente dernier prompt — `PROMPTS_Bezi_tab_sprites.md` |
 | ~~27~~ | ~~**[BZ-AP-HUD-SCALE-001]**~~ | ~~HUD PA ×2~~ | — | — | **Bezy Ph.1–3 OK** 2026-09-10 — playtest auteur |
 | 28 | **[BZ-NAV-WOOD-REFONTE-001]** | **Cadre bois** nav : 9-slice + refonte layout (cadre **ne couvre pas** le label TMP) | `NavigationHUD` + `cadreBoisFinal.png` | M | **Après** mockup 4 onglets OK + **budget polish** ; garder base glow/zoom actuelle — `PROMPTS_Bezi_nav_wood_frame_slice.md` |
+| 29 | **[BZ-POLISH-020]** | Popup item : câbler **HeaderTitle** + **rarityText** ; contrastes TMP (nom coloré par rareté — couleurs pilotées par C#) | `ShopItemPopup.prefab` | S | **Après** `[CT-UI-RARITY-001]` — spec `Notes/Ui/SPEC_item_rarity_colors.md` |
 
 ---
 

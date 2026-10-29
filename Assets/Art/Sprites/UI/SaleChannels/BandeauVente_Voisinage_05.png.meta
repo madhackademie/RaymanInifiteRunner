@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: da396c48ed420804c8c39bf1cd2a0fb5
+guid: 248a8ddb4d539e4409bc89b60bdd2e48
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7563757053863171705
-    second: 01_StartingPlant_0
+      213: 774741688763040428
+    second: BandeauVente_Voisinage_05_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -98,14 +98,14 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 01_StartingPlant_0
+      name: BandeauVente_Voisinage_05_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 226
-        height: 400
-      alignment: 9
-      pivot: {x: 0.60613215, y: 0.002351583}
+        width: 2048
+        height: 352
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7896125b803280790800000000000000
-      internalID: -7563757053863171705
+      spriteID: ca2486f067f60ca00800000000000000
+      internalID: 774741688763040428
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8f70127c5698fc54aa5fea1e98e763d9
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      01_StartingPlant_0: -7563757053863171705
+      BandeauVente_Voisinage_05_0: 774741688763040428
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
