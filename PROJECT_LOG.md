@@ -1,5 +1,36 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-11-10 — Fin de session — i18n chrome HUD / inventaire / récolte
+
+### Objectifs
+- Brancher la traduction sur les textes fixes restants (hors hub Options).
+- Laisser le playtest en priorité de la prochaine ouverture.
+
+### Livré (Bezy)
+- **`[BZ-I18N-SHELL-001]`** — 11 clés nav + inventaire dans les 5 `strings_*.json`.
+- **`[BZ-I18N-SHELL-001b]`** — `LocalizedTmpText` sur `NavigationHUD.unity` (5 onglets, pas le X) et `InventoryScreen.prefab` (titre, Retour, 4 filtres).
+- **`[BZ-I18N-SHELL-002]`** — `LocalizedTmpText` sur `FarmHarvestPanel_FromMockup` (4 boutons), `ShopItemPopup` Annuler, `SeedSelectionUI` Acheter / Fermer. 6 clés `BTN_*` dans les 5 JSON.
+
+### Décisions
+- Pas d’édition YAML à la main quand Bezi est déconnecté.
+- Textes runtime (boutique vide, graines vides, stats vente, Jeter, noms de plantes) restent hors Bezy : le C# les écrase.
+- Layers Default déjà présents (titre inventaire, croix sortie, Fermer graines) non touchés.
+
+### Prochaine session
+1. **`[P0-I18N-PLAY-001]`** — playtest langue (allemand, relance, retour français). Priorité immédiate.
+2. Si OK : textes C# ou compost. Si KO : corriger le label qui ne suit pas la langue.
+
+### Fichiers (commit auteur)
+- `Assets/Scenes/NavigationHUD.unity`
+- `Assets/Prefabs/Ui/InventoryScreen.prefab`
+- `Assets/Prefabs/Ui/Farm/FarmHarvestPanel_FromMockup.prefab`
+- `Assets/Prefabs/Ui/ShopItemPopup.prefab`
+- `Assets/Prefabs/Ui/SeedSelectionUI.prefab`
+- `Assets/Resources/Localization/strings_{fr,de,en,es,it}.json`
+- `Notes/Todo_project.md`, `PROJECT_LOG.md`
+
+---
+
 ## 2026-10-29 (soir) — Fin de session — i18n JSON V1 + hub Plus Options
 
 ### Contexte

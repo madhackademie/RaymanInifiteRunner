@@ -12,6 +12,23 @@
     { "key": "LANG_NAME_DE", "value": "Alemán" },
     { "key": "LANG_NAME_EN", "value": "Inglés" },
     { "key": "LANG_NAME_ES", "value": "Español" },
-    { "key": "LANG_NAME_IT", "value": "Italiano" }
+    { "key": "LANG_NAME_IT", "value": "Italiano" },
+    { "key": "NAV_TAB_ADVENTURES", "value": "Aventuras" },
+    { "key": "NAV_TAB_INVENTORY", "value": "Inventario" },
+    { "key": "NAV_TAB_SHOP", "value": "Tienda" },
+    { "key": "NAV_TAB_SALE", "value": "Venta" },
+    { "key": "NAV_TAB_MORE", "value": "Más" },
+    { "key": "INV_TITLE", "value": "Inventario" },
+    { "key": "INV_BACK", "value": "Volver" },
+    { "key": "INV_FILTER_SEEDS", "value": "Semillas" },
+    { "key": "INV_FILTER_CONSUMABLES", "value": "Consumibles" },
+    { "key": "INV_FILTER_HARVEST", "value": "Cosechas" },
+    { "key": "INV_FILTER_ALL", "value": "Todo" },
+    { "key": "BTN_UPROOT", "value": "Arrancar" },
+    { "key": "BTN_HARVEST", "value": "Cosechar" },
+    { "key": "BTN_CANCEL", "value": "Cancelar" },
+    { "key": "BTN_HARVEST_BATCH", "value": "Cosecha grupal" },
+    { "key": "BTN_BUY", "value": "Comprar" },
+    { "key": "BTN_CLOSE", "value": "Cerrar" }
   ]
 }

@@ -12,6 +12,23 @@
     { "key": "LANG_NAME_DE", "value": "German" },
     { "key": "LANG_NAME_EN", "value": "English" },
     { "key": "LANG_NAME_ES", "value": "Spanish" },
-    { "key": "LANG_NAME_IT", "value": "Italian" }
+    { "key": "LANG_NAME_IT", "value": "Italian" },
+    { "key": "NAV_TAB_ADVENTURES", "value": "Adventures" },
+    { "key": "NAV_TAB_INVENTORY", "value": "Inventory" },
+    { "key": "NAV_TAB_SHOP", "value": "Shop" },
+    { "key": "NAV_TAB_SALE", "value": "Sale" },
+    { "key": "NAV_TAB_MORE", "value": "More" },
+    { "key": "INV_TITLE", "value": "Inventory" },
+    { "key": "INV_BACK", "value": "Back" },
+    { "key": "INV_FILTER_SEEDS", "value": "Seeds" },
+    { "key": "INV_FILTER_CONSUMABLES", "value": "Consumables" },
+    { "key": "INV_FILTER_HARVEST", "value": "Harvests" },
+    { "key": "INV_FILTER_ALL", "value": "All" },
+    { "key": "BTN_UPROOT", "value": "Uproot" },
+    { "key": "BTN_HARVEST", "value": "Harvest" },
+    { "key": "BTN_CANCEL", "value": "Cancel" },
+    { "key": "BTN_HARVEST_BATCH", "value": "Batch harvest" },
+    { "key": "BTN_BUY", "value": "Buy" },
+    { "key": "BTN_CLOSE", "value": "Close" }
   ]
 }

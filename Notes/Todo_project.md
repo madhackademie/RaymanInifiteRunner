@@ -48,24 +48,31 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-10-29 (soir) :** **clos.** **`[P0-I18N-JSON-001]`** — `LanguageManager` + JSON 5 langues + hub **Plus** → bouton Options prefab + panneau langue. Link UI = pilote hub/Options seulement.  
-> **Session 2026-10-29 (après-midi) :** **clos.** Bandeaux vente — `BandeauArtCatalog` + fix couleur Illustration Play.  
+> **Session 2026-11-10 :** **clos.** i18n vague chrome : `LocalizedTmpText` sur HUD, inventaire, récolte FromMockup, Annuler shop, Acheter/Fermer graines + clés JSON. **Playtest non fait.**  
 > **Branche courante :** **`feature/reworke_ui`** (revalider `git status`).
 
-### Ordre prochaine ouverture (1 → 4)
+### Ordre prochaine ouverture (1 → 3)
 
-1. **Playtest** — Plus / Options (langue + relance jeu) · **Vente** / catalogue bandeaux si pas rejoué.
-2. **Bezy (crédits reset 30)** — polish bouton ⚙ hub · **`LocalizedTmpText`** sur prefabs shell (vague 1 keys).
-3. **Cursor** — keys JSON vague 1 (Loading, boutons kit) · `[BL-DOC-003]` conventions.
-4. **Bezy** — anim compost `[P0-UI-DROP-COMPOST-001]` → 003 si file OK.
+1. **`[P0-I18N-PLAY-001]`** — Playtest langue (priorité). Plus → Options → allemand → onglets bas, inventaire (titre, Retour, 4 filtres), popup récolte (Arracher / Récolter / Annuler / Récolte groupée), graines Acheter/Fermer, shop Annuler. Quitter et relancer : langue conservée. Revenir au français.
+2. Si playtest OK : noter le résultat. Si un label ne change pas, le signaler (souvent un texte écrit par le C#).
+3. Ensuite seulement : textes runtime C# (boutique vide, graines vides, stats vente) ou anim compost.
+
+### `[P0-I18N-PLAY-001]` — playtest langue
+
+- [ ] Allemand en jeu sur HUD + inventaire + récolte + graines + Annuler shop.
+- [ ] Relance : `options.language` conservé.
+- [ ] Retour français OK.
 
 ### `[P0-I18N-JSON-001]` — localisation JSON (V1)
 
 **Langues V1 :** `fr`, `de`, `en`, `es`, `it` · fallback **en** · pas **zh** V1.
 
-- [x] Socle : `LanguageManager`, JSON Resources, Options hub Plus (prefab bouton + panneau langue).
-- [ ] Bezy : polish `SettingsButton` + migration TMP HUD/popups (`LocalizedTmpText`).
-- [ ] Vague keys : Loading, kit (`BTN_CANCEL`, …) · audio Options (`FutureSectionsHost`).
+- [x] Socle : `LanguageManager`, JSON Resources, Options hub Plus.
+- [x] Chrome statique : onglets HUD, inventaire, boutons récolte FromMockup, `BTN_CANCEL` popup shop, `BTN_BUY` / `BTN_CLOSE` graines (Bezy 2026-11-10).
+- [ ] Playtest `[P0-I18N-PLAY-001]`.
+- [ ] Textes écrits par le C# (catalogue vide, aucune graine, canaux de vente, Jeter xN).
+- [ ] Données métier (noms de plantes, fiches, catalogue shop).
+- [ ] Audio Options (`FutureSectionsHost`) · polish sprite bouton ⚙ · `[BL-DOC-003]`.
 
 ### Roadmap session — synthèse par compartiment (réf.)
 

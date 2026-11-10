@@ -12,6 +12,23 @@
     { "key": "LANG_NAME_DE", "value": "Allemand" },
     { "key": "LANG_NAME_EN", "value": "Anglais" },
     { "key": "LANG_NAME_ES", "value": "Espagnol" },
-    { "key": "LANG_NAME_IT", "value": "Italien" }
+    { "key": "LANG_NAME_IT", "value": "Italien" },
+    { "key": "NAV_TAB_ADVENTURES", "value": "Aventures" },
+    { "key": "NAV_TAB_INVENTORY", "value": "Inventaire" },
+    { "key": "NAV_TAB_SHOP", "value": "Shop" },
+    { "key": "NAV_TAB_SALE", "value": "Vente" },
+    { "key": "NAV_TAB_MORE", "value": "Plus" },
+    { "key": "INV_TITLE", "value": "Inventaire" },
+    { "key": "INV_BACK", "value": "Retour" },
+    { "key": "INV_FILTER_SEEDS", "value": "Graines" },
+    { "key": "INV_FILTER_CONSUMABLES", "value": "Consommables" },
+    { "key": "INV_FILTER_HARVEST", "value": "Récoltes" },
+    { "key": "INV_FILTER_ALL", "value": "Tout" },
+    { "key": "BTN_UPROOT", "value": "Arracher" },
+    { "key": "BTN_HARVEST", "value": "Récolter" },
+    { "key": "BTN_CANCEL", "value": "Annuler" },
+    { "key": "BTN_HARVEST_BATCH", "value": "Récolte groupée" },
+    { "key": "BTN_BUY", "value": "Acheter" },
+    { "key": "BTN_CLOSE", "value": "Fermer" }
   ]
 }

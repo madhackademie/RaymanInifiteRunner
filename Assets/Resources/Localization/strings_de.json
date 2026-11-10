@@ -12,6 +12,23 @@
     { "key": "LANG_NAME_DE", "value": "Deutsch" },
     { "key": "LANG_NAME_EN", "value": "Englisch" },
     { "key": "LANG_NAME_ES", "value": "Spanisch" },
-    { "key": "LANG_NAME_IT", "value": "Italienisch" }
+    { "key": "LANG_NAME_IT", "value": "Italienisch" },
+    { "key": "NAV_TAB_ADVENTURES", "value": "Abenteuer" },
+    { "key": "NAV_TAB_INVENTORY", "value": "Inventar" },
+    { "key": "NAV_TAB_SHOP", "value": "Shop" },
+    { "key": "NAV_TAB_SALE", "value": "Verkauf" },
+    { "key": "NAV_TAB_MORE", "value": "Mehr" },
+    { "key": "INV_TITLE", "value": "Inventar" },
+    { "key": "INV_BACK", "value": "Zurück" },
+    { "key": "INV_FILTER_SEEDS", "value": "Samen" },
+    { "key": "INV_FILTER_CONSUMABLES", "value": "Verbrauch" },
+    { "key": "INV_FILTER_HARVEST", "value": "Ernten" },
+    { "key": "INV_FILTER_ALL", "value": "Alle" },
+    { "key": "BTN_UPROOT", "value": "Entfernen" },
+    { "key": "BTN_HARVEST", "value": "Ernten" },
+    { "key": "BTN_CANCEL", "value": "Abbrechen" },
+    { "key": "BTN_HARVEST_BATCH", "value": "Sammelernten" },
+    { "key": "BTN_BUY", "value": "Kaufen" },
+    { "key": "BTN_CLOSE", "value": "Schließen" }
   ]
 }

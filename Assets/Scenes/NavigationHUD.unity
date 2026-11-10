@@ -1100,6 +1100,7 @@ GameObject:
   - component: {fileID: 590220677}
   - component: {fileID: 590220676}
   - component: {fileID: 590220675}
+  - component: {fileID: 590220678}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -1246,6 +1247,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 590220673}
   m_CullTransparentMesh: 1
+--- !u!114 &590220678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590220673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4560a228860e7b646b5c25ae64c9c5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedTmpText
+  localizationKey: NAV_TAB_INVENTORY
 --- !u!1 &628439018
 GameObject:
   m_ObjectHideFlags: 0
@@ -2212,6 +2226,7 @@ GameObject:
   - component: {fileID: 1101524744}
   - component: {fileID: 1101524743}
   - component: {fileID: 1101524742}
+  - component: {fileID: 1101524745}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -2358,6 +2373,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101524740}
   m_CullTransparentMesh: 1
+--- !u!114 &1101524745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101524740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4560a228860e7b646b5c25ae64c9c5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedTmpText
+  localizationKey: NAV_TAB_ADVENTURES
 --- !u!1 &1117111404
 GameObject:
   m_ObjectHideFlags: 0
@@ -3788,6 +3816,7 @@ GameObject:
   - component: {fileID: 1616515092}
   - component: {fileID: 1616515091}
   - component: {fileID: 1616515090}
+  - component: {fileID: 1616515093}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -3934,6 +3963,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1616515088}
   m_CullTransparentMesh: 1
+--- !u!114 &1616515093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616515088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4560a228860e7b646b5c25ae64c9c5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedTmpText
+  localizationKey: NAV_TAB_SHOP
 --- !u!1 &1656879410
 GameObject:
   m_ObjectHideFlags: 0
@@ -5260,6 +5302,7 @@ GameObject:
   - component: {fileID: 2102581682}
   - component: {fileID: 2102581683}
   - component: {fileID: 2102581684}
+  - component: {fileID: 2102581685}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -5406,6 +5449,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2102581685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102581680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4560a228860e7b646b5c25ae64c9c5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedTmpText
+  localizationKey: NAV_TAB_MORE
 --- !u!21 &2130192468
 Material:
   serializedVersion: 8
@@ -5873,6 +5929,7 @@ GameObject:
   - component: {fileID: 3100000224}
   - component: {fileID: 3100000222}
   - component: {fileID: 3100000223}
+  - component: {fileID: 3100000225}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -6019,6 +6076,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3100000220}
   m_CullTransparentMesh: 1
+--- !u!114 &3100000225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3100000220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4560a228860e7b646b5c25ae64c9c5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedTmpText
+  localizationKey: NAV_TAB_SALE
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
