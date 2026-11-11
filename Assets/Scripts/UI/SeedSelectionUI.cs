@@ -21,8 +21,23 @@ using TMPro;
 public class SeedSelectionUI : MonoBehaviour
 {
     // Message standard affiche quand aucune graine n'est disponible.
-    private const string DefaultEmptyMessage =
+    private const string EmptyMessageKey = "SEED_EMPTY";
+    private const string PickTitleKey = "SEED_PICK_TITLE";
+    private const string FallbackEmptyMessage =
         "Aucune graine dans l'inventaire. Ouvrez le Shop (barre du bas) pour en acheter.";
+    private const string FallbackPickTitle = "Choisir une graine";
+
+    /// <summary>
+    /// Message "inventaire vide" localise (phrase francaise si LanguageManager absent).
+    /// </summary>
+    private static string DefaultEmptyMessage =>
+        LanguageManager.Instance != null ? LanguageManager.Instance.GetText(EmptyMessageKey) : FallbackEmptyMessage;
+
+    /// <summary>
+    /// Titre du panneau localise (texte francais si LanguageManager absent).
+    /// </summary>
+    private static string LocalizedPickTitle =>
+        LanguageManager.Instance != null ? LanguageManager.Instance.GetText(PickTitleKey) : FallbackPickTitle;
 
     /// <summary>
     /// Etat visuel global du panneau.
@@ -119,9 +134,54 @@ public class SeedSelectionUI : MonoBehaviour
         UnsubscribeActionPoints();
     }
 
+    private void OnEnable()
+    {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged += HandleLanguageChanged;
+
+        ApplyLocalizedTexts();
+    }
+
     private void OnDisable()
     {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged -= HandleLanguageChanged;
+
         UnsubscribeActionPoints();
+    }
+
+    // Reapplique les textes localises quand la langue change.
+    private void HandleLanguageChanged()
+    {
+        ApplyLocalizedTexts();
+    }
+
+    /// <summary>
+    /// Reapplique le titre (SEED_PICK_TITLE) et le message vide (SEED_EMPTY) si visible.
+    /// </summary>
+    private void ApplyLocalizedTexts()
+    {
+        defaultPanelTitle = LocalizedPickTitle;
+        bool isEmpty = visualState == SeedInventoryVisualState.Empty;
+
+        if (emptyStatePanel != null)
+        {
+            RestoreDefaultPanelTitle();
+            if (isEmpty && emptyStatePanel.activeSelf && emptyStateLabel != null)
+                emptyStateLabel.text = DefaultEmptyMessage;
+            return;
+        }
+
+        if (isEmpty)
+        {
+            TextMeshProUGUI fallbackLabel = ResolveFallbackTitleLabel();
+            if (fallbackLabel != null)
+                fallbackLabel.text = DefaultEmptyMessage;
+        }
+        else
+        {
+            RestoreDefaultPanelTitle();
+        }
     }
 
     // Retourne true si les PA sont suffisants (ou si le service est absent).
@@ -358,9 +418,7 @@ public class SeedSelectionUI : MonoBehaviour
         TextMeshProUGUI fallbackLabel = ResolveFallbackTitleLabel();
         if (fallbackLabel != null)
         {
-            if (fallbackLabel.text != message)
-                defaultPanelTitle = fallbackLabel.text;
-
+            defaultPanelTitle = LocalizedPickTitle;
             fallbackLabel.text = message;
         }
     }
@@ -370,9 +428,7 @@ public class SeedSelectionUI : MonoBehaviour
     /// </summary>
     private void CacheDefaultPanelTitle()
     {
-        TextMeshProUGUI fallbackLabel = ResolveFallbackTitleLabel();
-        if (fallbackLabel != null)
-            defaultPanelTitle = fallbackLabel.text;
+        defaultPanelTitle = LocalizedPickTitle;
     }
 
     /// <summary>
@@ -414,6 +470,7 @@ public class SeedSelectionUI : MonoBehaviour
     /// </summary>
     private void RestoreDefaultPanelTitle()
     {
+        defaultPanelTitle = LocalizedPickTitle;
         if (string.IsNullOrEmpty(defaultPanelTitle))
             return;
 

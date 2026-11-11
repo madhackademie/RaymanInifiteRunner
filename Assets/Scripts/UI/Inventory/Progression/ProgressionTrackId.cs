@@ -31,18 +31,24 @@ public static class ProgressionTrackId
 
     public static string GetShortLabel(string trackId)
     {
-        return trackId switch
+        switch (trackId)
         {
-            Commerce => "Commerce",
-            PlantCulture => "Plante",
-            FishCulture => "Poisson",
-            Agronomy => "Agro",
-            Logistics => "Logis",
-            Technology => "Tech",
-            Reserved07 => "Bientot",
-            Reserved08 => "Bientot",
-            _ => "Inconnu",
-        };
+            case Commerce: return Localize("TRACK_SHORT_COMMERCE", "Commerce");
+            case PlantCulture: return Localize("TRACK_SHORT_PLANT", "Plante");
+            case FishCulture: return Localize("TRACK_SHORT_FISH", "Poisson");
+            case Agronomy: return Localize("TRACK_SHORT_AGRO", "Agro");
+            case Logistics: return Localize("TRACK_SHORT_LOGISTICS", "Logis");
+            case Technology: return Localize("TRACK_SHORT_TECH", "Tech");
+            case Reserved07:
+            case Reserved08:
+                return Localize("TRACK_SHORT_SOON", "Bientôt");
+            default: return "Inconnu";
+        }
+    }
+
+    private static string Localize(string key, string frenchFallback)
+    {
+        return LanguageManager.Instance != null ? LanguageManager.Instance.GetText(key) : frenchFallback;
     }
 
     public static string GetDisplayName(string trackId)

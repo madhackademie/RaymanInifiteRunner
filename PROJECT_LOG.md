@@ -1,5 +1,37 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-11-11 — Fin de session — i18n graines, talents, halo, récolte
+
+### Objectifs
+- Corriger les textes restés en français au playtest partiel.
+- Laisser le test et le contrôle pour la prochaine ouverture.
+
+### Livré
+- **`[BZ-I18N-SEED-TITLE-001]`** — `SeedSelectionUI` : `SEED_PICK_TITLE`, `SEED_EMPTY`. Fix Cursor : allemand fusionné dans `strings_de.json`.
+- **`[BZ-I18N-TALENT-001]`** — `TalentTreeOverlayController` : bouton achat `BTN_BUY`, hints `TALENT_*`, placeholder inventaire.
+- **`[BZ-I18N-HALO-001]`** — `ProgressionTrackId.GetShortLabel` + refresh halo. Cursor : `RefreshPlaceholderPresentation` aussi dans `OnEnable`.
+- **`[BZ-I18N-HARVEST-LABELS-001]`** — code présent : stades `STAGE_*`, `PLANT_ROQUETTE`, `PLANT_LETTUCE` dans `HarvestPanelUI` et les 5 JSON. Playtest non confirmé.
+
+### Décisions
+- Prochaine session = **test et contrôle**, pas un nouveau lot de clés.
+- Titres longs des pistes et textes vente / Jeter restent hors lot.
+
+### Prochaine session
+1. **`[P0-I18N-PLAY-001]`** — playtest allemand complet + contrôle JSON (pas de valeur vide, pas de phrases collées).
+
+### Fichiers (commit auteur)
+- `Assets/Scripts/UI/SeedSelectionUI.cs`
+- `Assets/Scripts/UI/Inventory/Progression/TalentTreeOverlayController.cs`
+- `Assets/Scripts/UI/Inventory/Progression/ProgressionTrackId.cs`
+- `Assets/Scripts/UI/Inventory/Progression/PlayerHaloPanelController.cs`
+- `Assets/Scripts/UI/Inventory/HarvestPanelUI.cs`
+- `Assets/Prefabs/Ui/SeedSelectionUI.prefab`
+- `Assets/Prefabs/Ui/InventoryScreen.prefab`
+- `Assets/Resources/Localization/strings_{fr,de,en,es,it}.json`
+- `Notes/Todo_project.md`, `PROJECT_LOG.md`
+
+---
+
 ## 2026-11-10 — Fin de session — i18n chrome HUD / inventaire / récolte
 
 ### Objectifs

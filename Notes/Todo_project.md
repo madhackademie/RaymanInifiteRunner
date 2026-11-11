@@ -48,31 +48,30 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-11-10 :** **clos.** i18n vague chrome : `LocalizedTmpText` sur HUD, inventaire, récolte FromMockup, Annuler shop, Acheter/Fermer graines + clés JSON. **Playtest non fait.**  
+> **Session 2026-11-11 :** **clos.** i18n suite : graines, talents, halo, nom de plante + stade récolte. **Pas de playtest validé.** Prochaine ouverture = **test et contrôle**.  
 > **Branche courante :** **`feature/reworke_ui`** (revalider `git status`).
 
-### Ordre prochaine ouverture (1 → 3)
+### Ordre prochaine ouverture (1 → 2)
 
-1. **`[P0-I18N-PLAY-001]`** — Playtest langue (priorité). Plus → Options → allemand → onglets bas, inventaire (titre, Retour, 4 filtres), popup récolte (Arracher / Récolter / Annuler / Récolte groupée), graines Acheter/Fermer, shop Annuler. Quitter et relancer : langue conservée. Revenir au français.
-2. Si playtest OK : noter le résultat. Si un label ne change pas, le signaler (souvent un texte écrit par le C#).
-3. Ensuite seulement : textes runtime C# (boutique vide, graines vides, stats vente) ou anim compost.
+1. **`[P0-I18N-PLAY-001]`** — Test et contrôle langue. Playtest allemand, puis relecture des JSON / scripts si un libellé reste en français ou si deux phrases sont collées dans une clé.
+2. Noter le résultat. Pas de nouveau lot Bezy tant que ce contrôle n’est pas fait.
 
-### `[P0-I18N-PLAY-001]` — playtest langue
+### `[P0-I18N-PLAY-001]` — test et contrôle
 
-- [ ] Allemand en jeu sur HUD + inventaire + récolte + graines + Annuler shop.
-- [ ] Relance : `options.language` conservé.
-- [ ] Retour français OK.
+- [ ] Allemand : onglets, inventaire, boutons récolte, **Rauke** + **Samen** sur la roquette en graines, Acheter/Fermer graines, titre **Saatgut wählen**, halo (**Handel**, **Pflanze**, **Fisch**, **Logistik**, **Bald**), bouton talents **Kaufen**.
+- [ ] Changer la langue puis rouvrir l’inventaire : les pastilles suivent.
+- [ ] Relance : langue conservée. Retour français OK.
+- [ ] Contrôle JSON `strings_de.json` : aucune valeur vide, aucune fusion de deux phrases.
 
 ### `[P0-I18N-JSON-001]` — localisation JSON (V1)
 
 **Langues V1 :** `fr`, `de`, `en`, `es`, `it` · fallback **en** · pas **zh** V1.
 
-- [x] Socle : `LanguageManager`, JSON Resources, Options hub Plus.
-- [x] Chrome statique : onglets HUD, inventaire, boutons récolte FromMockup, `BTN_CANCEL` popup shop, `BTN_BUY` / `BTN_CLOSE` graines (Bezy 2026-11-10).
-- [ ] Playtest `[P0-I18N-PLAY-001]`.
-- [ ] Textes écrits par le C# (catalogue vide, aucune graine, canaux de vente, Jeter xN).
-- [ ] Données métier (noms de plantes, fiches, catalogue shop).
-- [ ] Audio Options (`FutureSectionsHost`) · polish sprite bouton ⚙ · `[BL-DOC-003]`.
+- [x] Socle + chrome HUD / inventaire / boutons récolte / shop Annuler / graines Acheter-Fermer.
+- [x] 2026-11-11 : titre graines, message vide, talents, halo, stades + `PLANT_ROQUETTE` / `PLANT_LETTUCE` (code présent, playtest non validé).
+- [ ] Playtest et contrôle `[P0-I18N-PLAY-001]`.
+- [ ] Titres longs des pistes (« Culture des plantes »…). Catalogue vide, stats vente, Jeter xN.
+- [ ] Audio Options · polish bouton ⚙ · `[BL-DOC-003]`.
 
 ### Roadmap session — synthèse par compartiment (réf.)
 

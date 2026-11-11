@@ -43,18 +43,76 @@ public class HarvestPanelUI : MonoBehaviour
     private PlantGrow.GrowthStage lastRenderedStage;
     private bool hasRenderedStage;
 
-    // Noms lisibles des stades
-    private static readonly System.Collections.Generic.Dictionary<PlantGrow.GrowthStage, string> StageNames =
+    private const string PlantIdRoquette = "roquette";
+    private const string PlantIdLettuce = "lettuce";
+    private const string PlantKeyRoquette = "PLANT_ROQUETTE";
+    private const string PlantKeyLettuce = "PLANT_LETTUCE";
+    private const string PlantFallbackRoquette = "Roquette";
+    private const string PlantFallbackLettuce = "Laitue";
+
+    // Clé de localisation + fallback français par stade
+    private static readonly System.Collections.Generic.Dictionary<PlantGrow.GrowthStage, (string key, string fallback)> StageNames =
         new()
         {
-            { PlantGrow.GrowthStage.Graine,    "Graine"      },
-            { PlantGrow.GrowthStage.Starting,  "Germination" },
-            { PlantGrow.GrowthStage.Baby,      "Plantule"    },
-            { PlantGrow.GrowthStage.Growing,   "Croissance"  },
-            { PlantGrow.GrowthStage.Mature,    "Mature"      },
-            { PlantGrow.GrowthStage.Flowering, "Floraison"   },
-            { PlantGrow.GrowthStage.Seedling,  "Graines"     },
+            { PlantGrow.GrowthStage.Graine,    ("STAGE_GRAINE",    "Graine")      },
+            { PlantGrow.GrowthStage.Starting,  ("STAGE_STARTING",  "Germination") },
+            { PlantGrow.GrowthStage.Baby,      ("STAGE_BABY",      "Plantule")    },
+            { PlantGrow.GrowthStage.Growing,   ("STAGE_GROWING",   "Croissance")  },
+            { PlantGrow.GrowthStage.Mature,    ("STAGE_MATURE",    "Mature")      },
+            { PlantGrow.GrowthStage.Flowering, ("STAGE_FLOWERING", "Floraison")   },
+            { PlantGrow.GrowthStage.Seedling,  ("STAGE_SEEDLING",  "Graines")     },
         };
+
+    // Retourne le texte localisé, ou le fallback si le manager est absent ou si la clé est introuvable.
+    private static string GetLocalizedOrFallback(string key, string fallback)
+    {
+        LanguageManager manager = LanguageManager.Instance;
+        if (manager == null)
+            return fallback;
+
+        string text = manager.GetText(key);
+        return string.IsNullOrEmpty(text) || text == key ? fallback : text;
+    }
+
+    // Texte du stade localisé (fallback français, puis nom de l'enum).
+    private static string GetStageText(PlantGrow.GrowthStage stage)
+    {
+        return StageNames.TryGetValue(stage, out var entry)
+            ? GetLocalizedOrFallback(entry.key, entry.fallback)
+            : stage.ToString();
+    }
+
+    // Nom de plante localisé selon l'id ; autres ids : displayName de la définition.
+    private string GetPlantNameText()
+    {
+        if (currentDefinition != null)
+        {
+            string id = currentDefinition.plantId;
+            if (string.Equals(id, PlantIdRoquette, System.StringComparison.OrdinalIgnoreCase))
+                return GetLocalizedOrFallback(PlantKeyRoquette, PlantFallbackRoquette);
+            if (string.Equals(id, PlantIdLettuce, System.StringComparison.OrdinalIgnoreCase))
+                return GetLocalizedOrFallback(PlantKeyLettuce, PlantFallbackLettuce);
+            return currentDefinition.displayName;
+        }
+
+        return currentTarget != null ? currentTarget.gameObject.name : string.Empty;
+    }
+
+    private void OnEnable()
+    {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged += HandleLanguageChanged;
+    }
+
+    // Rafraîchit nom de plante et label de stade si le panneau est ouvert.
+    private void HandleLanguageChanged()
+    {
+        if (!isOpen || currentPlantGrow == null)
+            return;
+
+        plantNameLabel.text = GetPlantNameText();
+        stageLabel.text = GetStageText(currentPlantGrow.CurrentStage);
+    }
 
     private void Awake()
     {
@@ -100,7 +158,7 @@ public class HarvestPanelUI : MonoBehaviour
         currentPlantGrow  = plantGrow;
         currentDefinition = definition;
 
-        plantNameLabel.text = definition != null ? definition.displayName : interactor.gameObject.name;
+        plantNameLabel.text = GetPlantNameText();
 
         hasRenderedStage = false;
         RefreshDynamic();
@@ -153,7 +211,7 @@ public class HarvestPanelUI : MonoBehaviour
         plantIcon.sprite  = productIcon;
         plantIcon.enabled = productIcon != null;
 
-        stageLabel.text = StageNames.TryGetValue(stage, out string name) ? name : stage.ToString();
+        stageLabel.text = GetStageText(stage);
 
         HarvestStageConfig? harvestConfig = currentDefinition?.GetHarvestConfig(stage);
         bool isHarvestable = harvestConfig.HasValue;
@@ -272,6 +330,8 @@ public class HarvestPanelUI : MonoBehaviour
 
     private void OnDisable()
     {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged -= HandleLanguageChanged;
         UnsubscribeActionPoints();
     }
 

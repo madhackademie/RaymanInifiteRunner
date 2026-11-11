@@ -9,11 +9,13 @@ using UnityEngine.UI;
 /// </summary>
 public class TalentTreeOverlayController : MonoBehaviour
 {
-    private const string MissingServiceMessage =
-        "Service de talents absent.\nAjoute TalentProgressionService dans la scene.";
-
-    private const string MissingTreePrefabMessage =
-        "Arbre visuel a venir pour cette piste.\nLe resume texte reste disponible ci-dessous.";
+    private const string MissingServiceMessage = "TALENT_MISSING_SERVICE";
+    private const string MissingTreePrefabMessage = "TALENT_MISSING_TREE";
+    private const string KeyBuy = "BTN_BUY";
+    private const string KeyHintClick = "TALENT_HINT_CLICK";
+    private const string KeyHintBuy = "TALENT_HINT_BUY";
+    private const string KeyHintNone = "TALENT_HINT_NONE";
+    private const string DefaultBuyLabel = "Acheter";
 
     private const float DefaultTreeContentWidth = 800f;
     private const float DefaultTreeContentHeight = 600f;
@@ -56,6 +58,7 @@ public class TalentTreeOverlayController : MonoBehaviour
     private bool isTransitioning;
     private bool purchaseButtonWasAutoAdded;
     private GameObject runtimePurchaseButtonRoot;
+    private TextMeshProUGUI runtimePurchaseLabel;
     private string lastPurchaseFeedback;
     private TalentTreeLayoutRoot activeLayoutRoot;
     private GameObject activeTreeInstance;
@@ -77,6 +80,40 @@ public class TalentTreeOverlayController : MonoBehaviour
         SubscribeProgressionEvents();
 
         ApplyCanvasGroupState(0f);
+    }
+
+    private void OnEnable()
+    {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged += HandleLanguageChanged;
+
+        ApplyPurchaseLabelText();
+    }
+
+    private void OnDisable()
+    {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged -= HandleLanguageChanged;
+    }
+
+    private void HandleLanguageChanged()
+    {
+        if (IsOpen)
+            RefreshOverlayContent();
+
+        ApplyPurchaseLabelText();
+    }
+
+    /// <summary>Returns the localized text for a key, or the fallback when LanguageManager is unavailable.</summary>
+    private static string Localize(string key, string fallback)
+    {
+        return LanguageManager.Instance != null ? LanguageManager.Instance.GetText(key) : fallback;
+    }
+
+    private void ApplyPurchaseLabelText()
+    {
+        if (runtimePurchaseLabel != null)
+            runtimePurchaseLabel.text = Localize(KeyBuy, DefaultBuyLabel);
     }
 
     private void OnDestroy()
@@ -553,7 +590,8 @@ public class TalentTreeOverlayController : MonoBehaviour
         labelRect.offsetMax = Vector2.zero;
 
         TextMeshProUGUI label = labelRoot.AddComponent<TextMeshProUGUI>();
-        label.text = "Acheter";
+        label.text = Localize(KeyBuy, DefaultBuyLabel);
+        runtimePurchaseLabel = label;
         label.alignment = TextAlignmentOptions.Center;
         label.fontSize = 16f;
         label.color = Color.white;
@@ -695,11 +733,13 @@ public class TalentTreeOverlayController : MonoBehaviour
             return string.Empty;
 
         if (progressionService == null || string.IsNullOrEmpty(CurrentTrackId))
-            return MissingServiceMessage;
+            return Localize(MissingServiceMessage, "Service de talents absent.");
 
         string summary = progressionService.BuildTrackSummary(CurrentTrackId);
         string actionHint = GetActionHint();
-        string missingTreeHint = isVisualTreeActive ? string.Empty : $"\n\n{MissingTreePrefabMessage}";
+        string missingTreeHint = isVisualTreeActive
+            ? string.Empty
+            : $"\n\n{Localize(MissingTreePrefabMessage, "Arbre visuel à venir pour cette piste.")}";
 
         if (string.IsNullOrEmpty(lastPurchaseFeedback))
             return $"{summary}\n\n{actionHint}{missingTreeHint}";
@@ -710,10 +750,10 @@ public class TalentTreeOverlayController : MonoBehaviour
     private string GetActionHint()
     {
         if (isVisualTreeActive)
-            return "Clique un noeud disponible pour debloquer la branche.";
+            return Localize(KeyHintClick, "Clique un noeud disponible pour débloquer la branche.");
 
         return HasPurchasableNode()
-            ? "Appuie sur « Acheter » (en bas a droite) pour debloquer le prochain noeud."
-            : "Aucun noeud achetable pour l'instant (points ou pre-requis manquants).";
+            ? Localize(KeyHintBuy, "Appuie sur « Acheter » (en bas à droite) pour débloquer le prochain noeud.")
+            : Localize(KeyHintNone, "Aucun noeud achetable pour l'instant.");
     }
 }

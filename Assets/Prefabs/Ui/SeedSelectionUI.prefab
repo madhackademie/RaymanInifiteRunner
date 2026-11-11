@@ -477,6 +477,7 @@ GameObject:
   - component: {fileID: 5705786804758984394}
   - component: {fileID: 7467942251397611058}
   - component: {fileID: 2162172229894705731}
+  - component: {fileID: 9100000000000000001}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -1253,3 +1254,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &9100000000000000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5313242734024001018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4560a228860e7b646b5c25ae64c9c5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedTmpText
+  localizationKey: SEED_PICK_TITLE

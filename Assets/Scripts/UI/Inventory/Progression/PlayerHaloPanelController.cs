@@ -31,12 +31,37 @@ public class PlayerHaloPanelController : MonoBehaviour
     public event Action<string> OnTrackSelected;
 
     private Coroutine pendingTrackRoutine;
+    private LanguageManager subscribedLanguageManager;
 
     private void Awake()
     {
         EnsureSlotsFromChildren();
         WireSlots();
         RefreshPlaceholderPresentation();
+    }
+
+    private void OnEnable()
+    {
+        UnsubscribeLanguageChanged();
+        subscribedLanguageManager = LanguageManager.Instance;
+        if (subscribedLanguageManager != null)
+            subscribedLanguageManager.LanguageChanged += RefreshPlaceholderPresentation;
+
+        RefreshPlaceholderPresentation();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeLanguageChanged();
+    }
+
+    private void UnsubscribeLanguageChanged()
+    {
+        if (subscribedLanguageManager == null)
+            return;
+
+        subscribedLanguageManager.LanguageChanged -= RefreshPlaceholderPresentation;
+        subscribedLanguageManager = null;
     }
 
     private void OnDestroy()
