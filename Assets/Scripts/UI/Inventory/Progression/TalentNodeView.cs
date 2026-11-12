@@ -10,6 +10,7 @@ public class TalentNodeView : MonoBehaviour
 {
     private const string ClickTriggerName = "Click";
     private const float DefaultClickFeedbackDelay = 0.12f;
+    private const string MissingNodeKey = "TALENT_NODE_MISSING";
 
     [Header("Definition")]
     [SerializeField] private TalentNodeDefinition nodeDefinition;
@@ -76,7 +77,7 @@ public class TalentNodeView : MonoBehaviour
         }
 
         if (titleLabel != null)
-            titleLabel.text = nodeDefinition.DisplayName;
+            titleLabel.text = LocalizedNodeName(nodeDefinition);
 
         TalentNodeStatus status = progressionService != null
             ? progressionService.GetNodeStatus(nodeDefinition.NodeId)
@@ -143,7 +144,7 @@ public class TalentNodeView : MonoBehaviour
     private void ApplyMissingDefinitionState()
     {
         if (titleLabel != null)
-            titleLabel.text = "Noeud (SO manquant)";
+            titleLabel.text = GetLocalizedOrFallback(MissingNodeKey, "Noeud (SO manquant)");
 
         SetOverlayActive(lockedOverlay, true);
         SetOverlayActive(availableOverlay, false);
@@ -178,6 +179,36 @@ public class TalentNodeView : MonoBehaviour
         titleRect.pivot = new Vector2(0.5f, 0f);
         titleRect.anchoredPosition = new Vector2(0f, titleOffsetAboveNode);
         titleRect.sizeDelta = new Vector2(160f, 32f);
+    }
+
+    private static string LocalizedNodeName(TalentNodeDefinition node)
+    {
+        switch (node.NodeId)
+        {
+            case "talent.commerce.root":
+                return GetLocalizedOrFallback("TALENT_NODE_COMMERCE_ROOT", "Racine Commerce");
+            case "talent.commerce.buyer.discount1":
+                return GetLocalizedOrFallback("TALENT_NODE_COMMERCE_BUYER", "Acheteur -5%");
+            case "talent.commerce.seller.price1":
+                return GetLocalizedOrFallback("TALENT_NODE_COMMERCE_SELLER", "Vendeur +5%");
+            default:
+                return node.DisplayName;
+        }
+    }
+
+    /// <summary>
+    /// Retourne le texte localise pour la cle, ou le fallback si indisponible ou non traduit.
+    /// </summary>
+    private static string GetLocalizedOrFallback(string key, string fallback)
+    {
+        if (LanguageManager.Instance == null)
+            return fallback;
+
+        string text = LanguageManager.Instance.GetText(key);
+        if (string.IsNullOrEmpty(text) || text == key)
+            return fallback;
+
+        return text;
     }
 
     private static void SetOverlayActive(GameObject overlay, bool active)

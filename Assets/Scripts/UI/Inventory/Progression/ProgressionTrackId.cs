@@ -48,21 +48,26 @@ public static class ProgressionTrackId
 
     private static string Localize(string key, string frenchFallback)
     {
-        return LanguageManager.Instance != null ? LanguageManager.Instance.GetText(key) : frenchFallback;
+        if (LanguageManager.Instance == null)
+            return frenchFallback;
+
+        string text = LanguageManager.Instance.GetText(key);
+        return string.IsNullOrEmpty(text) || text == key ? frenchFallback : text;
     }
 
+    /// <summary>Nom complet localise de la piste (fallback francais si cle absente).</summary>
     public static string GetDisplayName(string trackId)
     {
         return trackId switch
         {
-            Commerce => "Commerce",
-            PlantCulture => "Culture des plantes",
-            FishCulture => "Culture des poissons",
-            Agronomy => "Agronomie",
-            Logistics => "Logistique",
-            Technology => "Technologie",
-            Reserved07 => "Piste reservee 7",
-            Reserved08 => "Piste reservee 8",
+            Commerce => Localize("TRACK_NAME_COMMERCE", "Commerce"),
+            PlantCulture => Localize("TRACK_NAME_PLANT", "Culture des plantes"),
+            FishCulture => Localize("TRACK_NAME_FISH", "Culture des poissons"),
+            Agronomy => Localize("TRACK_NAME_AGRO", "Agronomie"),
+            Logistics => Localize("TRACK_NAME_LOGISTICS", "Logistique"),
+            Technology => Localize("TRACK_NAME_TECH", "Technologie"),
+            Reserved07 => Localize("TRACK_NAME_RESERVED_07", "Piste reservee 7"),
+            Reserved08 => Localize("TRACK_NAME_RESERVED_08", "Piste reservee 8"),
             _ => trackId,
         };
     }

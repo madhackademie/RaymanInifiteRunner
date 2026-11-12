@@ -48,11 +48,15 @@ public class ActionPointsHudView : MonoBehaviour
         CachePointsLabelNormalColor();
         Subscribe();
         SubscribeBuffs();
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged += Refresh;
         Refresh();
     }
 
     private void OnDisable()
     {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged -= Refresh;
         StopRefuseLabelFlash();
         Unsubscribe();
         UnsubscribeBuffs();
@@ -243,19 +247,31 @@ public class ActionPointsHudView : MonoBehaviour
 
     private static string FormatConsumedWorkTimeSubtitle(int consumedPoints, int minutesPerPoint)
     {
-        int totalMinutes = consumedPoints * minutesPerPoint;
-        if (totalMinutes <= 0)
-            return "~ 0 min de travail effectué";
-
+        int totalMinutes = Mathf.Max(0, consumedPoints * minutesPerPoint);
         if (totalMinutes < 60)
-            return $"~ {totalMinutes} min de travail effectué";
+            return string.Format(GetLocalizedOrFallback("AP_WORK_MINUTES", "~ {0} min de travail effectué"), totalMinutes);
 
         int hours = totalMinutes / 60;
         int minutes = totalMinutes % 60;
         if (minutes == 0)
-            return $"~ {hours} h de travail effectué";
+            return string.Format(GetLocalizedOrFallback("AP_WORK_HOURS", "~ {0} h de travail effectué"), hours);
 
-        return $"~ {hours} h {minutes} min de travail effectué";
+        return string.Format(GetLocalizedOrFallback("AP_WORK_HOURS_MINUTES", "~ {0} h {1} min de travail effectué"), hours, minutes);
+    }
+
+    /// <summary>
+    /// Retourne le texte localisé de la clé, ou le fallback si le LanguageManager est absent ou la clé introuvable.
+    /// </summary>
+    private static string GetLocalizedOrFallback(string key, string fallback)
+    {
+        if (LanguageManager.Instance == null)
+            return fallback;
+
+        string text = LanguageManager.Instance.GetText(key);
+        if (string.IsNullOrEmpty(text) || text == key)
+            return fallback;
+
+        return text;
     }
 
     private static ActionPointFatigueTier ResolveFatigueTier(int consumedPoints)

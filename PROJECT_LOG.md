@@ -1,5 +1,44 @@
 # Project log — RaymanInfiniteRunner journal chronologique
 
+## 2026-11-12 — Fin de session — i18n accueil, PA, talents, shop
+
+### Objectifs
+- Reprendre par le test langue, puis traduire les libellés encore français signalés au playtest.
+
+### Livré (Bezy, non commité)
+- **`[BZ-I18N-MAP-START-001]`** — bouton accueil `MAP_START_ADVENTURE` via `MapNodeButton`.
+- **`[BZ-AP-BAR-HEIGHT-001]`** — barres PA 12 → 32 px, widget 140 px (prefab + override scène).
+- **`[BZ-I18N-AP-SUBTITLE-001]`** / **`[BZ-I18N-AP-TOOLTIP-001]`** — sous-titre travail et tooltips de zone.
+- **`[BZ-AP-TOOLTIP-CONTRAST-001]`** — état Shown sans Write Default Values, fond tooltip opaque, texte blanc.
+- **`[BZ-I18N-TALENT-NODES-001]`** / **`[BZ-I18N-TALENT-TRACK-TITLE-001]`** — noms de nœuds commerce et titres longs de piste.
+- **`[BZ-I18N-SHOP-BTN-001]`** / **`[BZ-I18N-SHOP-ITEM-001]`** — bouton prix et noms roquette / laitue.
+
+### Décisions
+- Playtest de contrôle **non validé**. Prochaine ouverture = rejouer ces écrans en allemand.
+- Overlay « Confirmer l'achat ? » / « Total : » laissé en français.
+
+### Prochaine session
+1. **`[P0-I18N-PLAY-001]`** — contrôle allemand des lots du 12/11.
+2. Si besoin : prompt Bezy pour l’overlay de confirmation shop.
+
+### Fichiers (commit auteur)
+- `Assets/Scripts/UI/Map/MapNodeButton.cs`
+- `Assets/Scripts/UI/ActionPointsHudView.cs`
+- `Assets/Scripts/UI/ActionPointFatigueUiCopy.cs`
+- `Assets/Scripts/UI/Inventory/Progression/TalentNodeView.cs`
+- `Assets/Scripts/UI/Inventory/Progression/ProgressionTrackId.cs`
+- `Assets/Scripts/UI/Inventory/Progression/TalentTreeOverlayController.cs`
+- `Assets/Scripts/UI/Shop/ShopItemPopupView.cs`
+- `Assets/Prefabs/Ui/ActionPoints/ActionPointsHudWidget.prefab`
+- `Assets/Scenes/NavigationHUD.unity`
+- `Assets/Animations/UI/ActionPointsHudTooltip.controller`
+- `Assets/Animations/UI/ActionPointsHud_TooltipFadeIn.anim`
+- `Assets/Animations/UI/ActionPointsHud_TooltipFadeOut.anim`
+- `Assets/Resources/Localization/strings_{fr,de,en,es,it}.json`
+- `Notes/Todo_project.md`, `PROJECT_LOG.md`
+
+---
+
 ## 2026-11-11 — Fin de session — i18n graines, talents, halo, récolte
 
 ### Objectifs

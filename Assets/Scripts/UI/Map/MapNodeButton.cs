@@ -37,6 +37,18 @@ public class MapNodeButton : MonoBehaviour
         button.onClick.AddListener(HandleClick);
     }
 
+    private void OnEnable()
+    {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged += ApplyLabel;
+    }
+
+    private void OnDisable()
+    {
+        if (LanguageManager.Instance != null)
+            LanguageManager.Instance.LanguageChanged -= ApplyLabel;
+    }
+
     private void OnDestroy()
     {
         button.onClick.RemoveListener(HandleClick);
@@ -51,8 +63,7 @@ public class MapNodeButton : MonoBehaviour
     {
         nodeData = data;
 
-        if (label != null)
-            label.text = data.displayName;
+        ApplyLabel();
 
         if (subtitleLabel != null)
         {
@@ -72,6 +83,35 @@ public class MapNodeButton : MonoBehaviour
             lockIcon.gameObject.SetActive(!isUnlocked);
 
         button.interactable = isUnlocked;
+    }
+
+    // ── Label ─────────────────────────────────────────────────────────────────
+
+    private const string FirstLevelNodeId = "FirstLvl";
+    private const string StartAdventureKey = "MAP_START_ADVENTURE";
+    private const string StartAdventureFallback = "Commencer l'aventure";
+
+    private void ApplyLabel()
+    {
+        if (label == null || nodeData == null)
+            return;
+
+        if (nodeData.nodeId == FirstLevelNodeId)
+            label.text = GetLocalizedOrFallback(StartAdventureKey, StartAdventureFallback);
+        else
+            label.text = nodeData.displayName;
+    }
+
+    private string GetLocalizedOrFallback(string key, string fallback)
+    {
+        if (LanguageManager.Instance == null)
+            return fallback;
+
+        string text = LanguageManager.Instance.GetText(key);
+        if (string.IsNullOrEmpty(text) || text == key)
+            return fallback;
+
+        return text;
     }
 
     // ── Callbacks ─────────────────────────────────────────────────────────────

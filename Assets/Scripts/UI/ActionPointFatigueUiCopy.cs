@@ -9,28 +9,53 @@ public static class ActionPointFatigueUiCopy
     {
         return tier switch
         {
-            ActionPointFatigueTier.Caution => "Zone modérée",
-            ActionPointFatigueTier.Fatigue => "Zone fatigue",
-            _ => "Zone confort",
+            ActionPointFatigueTier.Caution => GetLocalizedOrFallback("AP_ZONE_CAUTION_TITLE", "Zone modérée"),
+            ActionPointFatigueTier.Fatigue => GetLocalizedOrFallback("AP_ZONE_FATIGUE_TITLE", "Zone fatigue"),
+            _ => GetLocalizedOrFallback("AP_ZONE_COMFORT_TITLE", "Zone confort"),
         };
     }
 
     public static string GetZoneTooltipBody(ActionPointFatigueTier tier)
     {
-        return tier switch
+        const string RangeBodyKey = "AP_ZONE_RANGE_BODY";
+        const string RangeBodyFallback = "De {0} à {1} PA consommés.\n+{2} % sur le coût de toutes vos actions.";
+
+        switch (tier)
         {
-            ActionPointFatigueTier.Caution =>
-                $"De {BuffManager.ComfortZoneEnd} à {BuffManager.CautionZoneEnd} PA consommés.\n" +
-                $"+{(int)(BuffManager.CautionCostMultiplier * 100f)} % sur le coût de toutes vos actions.",
+            case ActionPointFatigueTier.Caution:
+                return string.Format(
+                    GetLocalizedOrFallback(RangeBodyKey, RangeBodyFallback),
+                    BuffManager.ComfortZoneEnd,
+                    BuffManager.CautionZoneEnd,
+                    (int)(BuffManager.CautionCostMultiplier * 100f));
 
-            ActionPointFatigueTier.Fatigue =>
-                $"De {BuffManager.CautionZoneEnd} à {BuffManager.MaxDailyActionPoints} PA consommés.\n" +
-                $"+{(int)(BuffManager.FatigueCostMultiplier * 100f)} % sur le coût de toutes vos actions.",
+            case ActionPointFatigueTier.Fatigue:
+                return string.Format(
+                    GetLocalizedOrFallback(RangeBodyKey, RangeBodyFallback),
+                    BuffManager.CautionZoneEnd,
+                    BuffManager.MaxDailyActionPoints,
+                    (int)(BuffManager.FatigueCostMultiplier * 100f));
 
-            _ =>
-                $"De 0 à {BuffManager.ComfortZoneEnd} PA consommés.\n" +
-                "Aucun malus sur vos actions.",
-        };
+            default:
+                return string.Format(
+                    GetLocalizedOrFallback("AP_ZONE_COMFORT_BODY", "De 0 à {0} PA consommés.\nAucun malus sur vos actions."),
+                    BuffManager.ComfortZoneEnd);
+        }
+    }
+
+    /// <summary>
+    /// Retourne le texte localisé de la clé, ou le fallback si le LanguageManager est absent ou la clé introuvable.
+    /// </summary>
+    private static string GetLocalizedOrFallback(string key, string fallback)
+    {
+        if (LanguageManager.Instance == null)
+            return fallback;
+
+        string text = LanguageManager.Instance.GetText(key);
+        if (string.IsNullOrEmpty(text) || text == key)
+            return fallback;
+
+        return text;
     }
 
     public static string GetZoneTooltip(ActionPointFatigueTier tier)

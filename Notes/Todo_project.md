@@ -48,20 +48,24 @@ Convention d'IDs :
 
 ## Prochaine session (priorité immédiate)
 
-> **Session 2026-11-11 :** **clos.** i18n suite : graines, talents, halo, nom de plante + stade récolte. **Pas de playtest validé.** Prochaine ouverture = **test et contrôle**.  
-> **Branche courante :** **`feature/reworke_ui`** (revalider `git status`).
+> **Session 2026-11-12 :** **clos.** Lots Bezy i18n posés dans le code (accueil, PA, talents, shop). **Playtest non validé.** Prochaine ouverture = **test et contrôle**, pas un nouveau lot.  
+> **Branche courante :** **`feature/reworke_ui`** (changements **non commités**).
 
 ### Ordre prochaine ouverture (1 → 2)
 
-1. **`[P0-I18N-PLAY-001]`** — Test et contrôle langue. Playtest allemand, puis relecture des JSON / scripts si un libellé reste en français ou si deux phrases sont collées dans une clé.
-2. Noter le résultat. Pas de nouveau lot Bezy tant que ce contrôle n’est pas fait.
+1. **`[P0-I18N-PLAY-001]`** — Playtest allemand des lots du 12/11, puis noter ce qui reste en français.
+2. Si le shop confirme encore en français : prompt Bezy pour « Confirmer l'achat ? » / « Total : ». Pas d’autre lot avant ce retour.
 
 ### `[P0-I18N-PLAY-001]` — test et contrôle
 
-- [ ] Allemand : onglets, inventaire, boutons récolte, **Rauke** + **Samen** sur la roquette en graines, Acheter/Fermer graines, titre **Saatgut wählen**, halo (**Handel**, **Pflanze**, **Fisch**, **Logistik**, **Bald**), bouton talents **Kaufen**.
-- [ ] Changer la langue puis rouvrir l’inventaire : les pastilles suivent.
+- [ ] Accueil : **Abenteuer starten**.
+- [ ] PA : sous-titre **~ 0 Min. Arbeit geleistet**, barres plus hautes, tooltips **Komfortzone** / **Moderate Zone** / **Ermüdungszone** lisibles (texte blanc, fond opaque) au survol vert et jaune.
+- [ ] Talents commerce : titre **Handel**, **Handelswurzel**, **Käufer -5%**, **Verkäufer +5%**.
+- [ ] Shop : **Raukesamen**, bouton **Kaufen 4**. **Abbrechen** déjà OK.
+- [ ] Rappel 11/11 : onglets, inventaire, récolte **Rauke** + **Samen**, **Saatgut wählen**, halo **Handel / Pflanze / Fisch / Logistik / Bald**, talent **Kaufen**.
 - [ ] Relance : langue conservée. Retour français OK.
 - [ ] Contrôle JSON `strings_de.json` : aucune valeur vide, aucune fusion de deux phrases.
+- [ ] Encore français (hors playtest tant que non demandé) : overlay shop « Confirmer l'achat ? », « Total : ».
 
 ### `[P0-I18N-JSON-001]` — localisation JSON (V1)
 
@@ -69,8 +73,9 @@ Convention d'IDs :
 
 - [x] Socle + chrome HUD / inventaire / boutons récolte / shop Annuler / graines Acheter-Fermer.
 - [x] 2026-11-11 : titre graines, message vide, talents, halo, stades + `PLANT_ROQUETTE` / `PLANT_LETTUCE` (code présent, playtest non validé).
+- [x] 2026-11-12 : code présent (playtest non validé) — `MAP_START_ADVENTURE`, PA (`AP_WORK_*`, `AP_ZONE_*`, barres 32 px, tooltip opaque), titres de pistes `TRACK_NAME_*`, nœuds commerce `TALENT_NODE_*`, shop `SHOP_BTN_*` + `ITEM_*`.
 - [ ] Playtest et contrôle `[P0-I18N-PLAY-001]`.
-- [ ] Titres longs des pistes (« Culture des plantes »…). Catalogue vide, stats vente, Jeter xN.
+- [ ] Overlay confirmation shop. Catalogue vide, stats vente.
 - [ ] Audio Options · polish bouton ⚙ · `[BL-DOC-003]`.
 
 ### Roadmap session — synthèse par compartiment (réf.)

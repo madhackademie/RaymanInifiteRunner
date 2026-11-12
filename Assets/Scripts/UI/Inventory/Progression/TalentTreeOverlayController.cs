@@ -721,10 +721,10 @@ public class TalentTreeOverlayController : MonoBehaviour
 
     private string GetTrackTitle()
     {
-        if (progressionService == null || string.IsNullOrEmpty(CurrentTrackId))
+        if (string.IsNullOrEmpty(CurrentTrackId))
             return CurrentTrackId;
 
-        return progressionService.GetTrackDisplayName(CurrentTrackId);
+        return ProgressionTrackId.GetDisplayName(CurrentTrackId);
     }
 
     private string GetBodyText()

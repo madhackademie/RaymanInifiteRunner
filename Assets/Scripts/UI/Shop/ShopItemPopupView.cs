@@ -167,7 +167,7 @@ public sealed class ShopItemPopupView : MonoBehaviour
             itemIcon.sprite = data.Icon;
 
         if (itemNameText != null)
-            itemNameText.text = data.DisplayName;
+            itemNameText.text = LocalizedItemName(data);
 
         if (rarityText != null)
             rarityText.text = data.RarityLabel;
@@ -201,17 +201,54 @@ public sealed class ShopItemPopupView : MonoBehaviour
 
         if (flowMode == ShopItemPopupFlowMode.Drop)
         {
-            confirmButtonText.text = $"Jeter x{Mathf.Max(1, quantity)}";
+            confirmButtonText.text = string.Format(
+                GetLocalizedOrFallback("SHOP_BTN_DROP", "Jeter x{0}"),
+                Mathf.Max(1, quantity));
             return;
         }
 
         int value = Mathf.Max(0, totalPrice);
         confirmButtonText.text = flowMode switch
         {
-            ShopItemPopupFlowMode.Sell => $"Vendre {value}",
-            ShopItemPopupFlowMode.Research => "Lancer la recherche",
-            _ => $"Acheter {value}"
+            ShopItemPopupFlowMode.Sell => string.Format(GetLocalizedOrFallback("SHOP_BTN_SELL", "Vendre {0}"), value),
+            ShopItemPopupFlowMode.Research => GetLocalizedOrFallback("SHOP_BTN_RESEARCH", "Lancer la recherche"),
+            _ => string.Format(GetLocalizedOrFallback("SHOP_BTN_BUY", "Acheter {0}"), value)
         };
+    }
+
+    /// <summary>
+    /// Retourne le nom d'item localisé selon son ItemId, ou DisplayName par défaut.
+    /// </summary>
+    private static string LocalizedItemName(ShopItemPopupData data)
+    {
+        switch (data.ItemId)
+        {
+            case "roquette_seed":
+                return GetLocalizedOrFallback("ITEM_ROQUETTE_SEED", "Graines de roquette");
+            case "laitue_seed":
+                return GetLocalizedOrFallback("ITEM_LAITUE_SEED", "Laitue Seedling");
+            case "roquette_mature":
+                return GetLocalizedOrFallback("ITEM_ROQUETTE_MATURE", "Roquette");
+            case "laitue_mature":
+                return GetLocalizedOrFallback("ITEM_LAITUE_MATURE", "Laitue Mature");
+            default:
+                return data.DisplayName;
+        }
+    }
+
+    /// <summary>
+    /// Retourne le texte localisé pour la clé, ou le fallback si indisponible.
+    /// </summary>
+    private static string GetLocalizedOrFallback(string key, string fallback)
+    {
+        if (LanguageManager.Instance == null)
+            return fallback;
+
+        string text = LanguageManager.Instance.GetText(key);
+        if (string.IsNullOrEmpty(text) || text == key)
+            return fallback;
+
+        return text;
     }
 
     public void SetQuantityControlsVisible(bool visible)
